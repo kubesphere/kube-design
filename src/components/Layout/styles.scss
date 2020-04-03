@@ -1,0 +1,16 @@
+@import "../../scss/variables";
+
+.columns.is-variable {
+  margin-right: calc(-1 * var(--columnGap));
+  margin-left: calc(-1 * var(--columnGap));
+  --columnGap: $column-gap;
+  .column {
+    padding-right: var(--columnGap);
+    padding-left: var(--columnGap);
+  }
+  @for $i from 0 through 8 {
+    &.is-#{$i} {
+      --columnGap: #{$i * $column-gap / 3};
+    }
+  }
+}

@@ -1,0 +1,28 @@
+@import './variables.scss';
+
+.#{$icon-prefix}-light {
+  color: $icon-light-color;
+  fill: $icon-light-fill;
+}
+
+.#{$icon-prefix}-dark {
+  color: $icon-dark-color;
+  fill: $icon-dark-fill;
+}
+
+.#{$icon-prefix}-coloured {
+  color: $icon-coloured-color;
+  fill: $icon-coloured-fill;
+}
+
+.icon-changeable,
+.button:not([disabled]).is-text,
+.breadcrumb-link {
+  &:hover,
+  &:active {
+    .#{$icon-prefix} {
+      color: $icon-coloured-color;
+      fill: $icon-coloured-fill;
+    }
+  }
+}

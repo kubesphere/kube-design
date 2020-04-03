@@ -1,0 +1,134 @@
+@import "../../scss/variables";
+@import "../../scss/mixins";
+
+.notify-wrapper {
+  .notify {
+    position: fixed;
+    background-color: transparent;
+    padding: 0;
+    border: none;
+    top: 0;
+    z-index: 2010;
+    pointer-events: none;
+    .notice {
+      box-shadow: 0 8px 16px 0 rgba(72, 91, 127, 0.2);
+      width: 376px;
+      position: relative;
+      border-radius: $border-radius;
+      border: solid 1px #fff;
+      background-color: #fff;
+      margin: 10px 0 20px;
+      color: $dark-color04;
+      pointer-events: auto;
+
+      &-error {
+        border-color: #ca2621;
+
+        .notify-icon {
+          background-color: #ca2621;
+        }
+
+        .notify-title {
+          color: #a80600;
+        }
+
+        .notice-close {
+          color: #a80600;
+        }
+      }
+
+      &-warning {
+        border-color: #f5c414;
+
+        .notify-icon {
+          background-color: #f5c414;
+        }
+
+        .notify-title {
+          color: #d6a800;
+        }
+
+        .notice-close {
+          color: #d6a800;
+        }
+      }
+
+      &-success {
+        border-color: #55bc8a;
+
+        .notify-icon {
+          background-color: #55bc8a;
+        }
+
+        .notify-title {
+          color: #55bc8a;
+        }
+
+        .notice-close {
+          color: #55bc8a;
+        }
+      }
+
+      &-info {
+        border-color: #51a6d3;
+
+        .notify-icon {
+          background-color: #51a6d3;
+        }
+
+        .notify-title {
+          color: #51a6d3;
+        }
+
+        .notice-close {
+          color: #51a6d3;
+        }
+      }
+    }
+  }
+
+  .notify-with-icon {
+    position: relative;
+    .notify-icon {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 56px;
+      text-align: center;
+      .icon {
+        height: 100% !important;
+      }
+    }
+    .notify-text {
+      height: 100%;
+      margin-left: 56px;
+      padding: 7px 16px;
+    }
+
+    .notify-title {
+      font-weight: 500;
+      line-height: 20px;
+      padding-right: 40px;
+    }
+
+    .notify-content {
+      font-family: $font-family-id;
+      font-weight: $font-bold;
+      line-height: 20px;
+      color: $dark-color04;
+      @include break-all;
+    }
+  }
+  .notice-close {
+    position: absolute;
+    top: 7px;
+    right: 16px;
+    height: 20px;
+    width: auto;
+    padding: 0;
+    font-size: $body-size;
+    font-weight: $font-thin;
+    line-height: 20px;
+  }
+}

@@ -1,0 +1,60 @@
+import { Meta, Preview, Story, Props } from "@storybook/addon-docs/blocks";
+import { Columns, Column } from "components/Layout";
+
+import BasicGridDemo from "./BasicGridDemo.jsx";
+
+<Meta title="Layout/Grid" />
+
+# Grid
+
+A 12-grid system based on Flexbox
+
+## Columns Props
+
+<Props of={Columns} />
+
+## Column Props
+
+<Props of={Column} />
+
+### Basic Usage
+
+<Preview>
+  <Story name="basic usage">
+    <Columns>
+      <Column>
+        <p className="grid-item is-dark">1</p>
+      </Column>
+      <Column>
+        <p className="grid-item is-dark">2</p>
+      </Column>
+      <Column>
+        <p className="grid-item is-dark">3</p>
+      </Column>
+      <Column>
+        <p className="grid-item is-dark">4</p>
+      </Column>
+    </Columns>
+  </Story>
+</Preview>
+
+### Column Size
+
+<Preview>
+  <Story name="column size">
+    <div>
+      {Array(11)
+        .fill("")
+        .map((_, index) => (
+          <Columns key={index}>
+            <Column className={`is-${index+1}`} >
+              <p className="grid-item is-dark">is-{index+1}</p>
+            </Column>
+            <Column key={index}>
+              <p className="grid-item">Auto</p>
+            </Column>
+          </Columns>
+        ))}
+    </div>
+  </Story>
+</Preview>

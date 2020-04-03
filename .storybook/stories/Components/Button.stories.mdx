@@ -1,0 +1,45 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+import Button from 'components/Button';
+
+<Meta title="Components/Button" component={Button} />
+
+# Button
+
+Html button.
+
+## Props
+<Props of={Button} />
+
+
+## Examples
+
+### Basic
+
+With `MDX` we can define a story for `Button` right in the middle of our
+markdown documentation.
+
+<Preview>
+  <Story name="basic buttons">
+    <div>
+      <Button type="primary">Kube Design</Button>
+      <Button type="control">Kube Design</Button>
+      <Button>Kube Design</Button>
+      <Button type="danger">Kube Design</Button>
+      <Button type="flat">Kube Design</Button>
+      <Button disabled>Kube Design</Button>
+    </div>
+  </Story>
+</Preview>
+
+
+### With Icon
+With `MDX` we can define a story for `Button` right in the middle of our
+markdown documentation.
+
+<Preview>
+  <Story name="buttons with icon">
+    <div>
+      <Button icon="add">Kube Design</Button>
+    </div>
+  </Story>
+</Preview>

@@ -1,0 +1,41 @@
+@import "../../scss/variables";
+
+.spin {
+  display: inline-block;
+  align-self: center;
+}
+
+.spin-indicator-container {
+  display: flex;
+  justify-content: center;
+  width: 648px;
+  height: 180px;
+  background-color: $light-color01;
+}
+
+.spin-nested-loading {
+  position: relative;
+  .spin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    z-index: 4;
+  }
+  .spin-blur {
+    opacity: 0.3;
+    overflow: hidden;
+    &:after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: #fff;
+      opacity: 0.3;
+      transition: all 0.3s;
+      content: '';
+      z-index: 4;
+    }
+  }
+}

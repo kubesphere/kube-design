@@ -1,0 +1,27 @@
+import { Meta, Story, Preview, Props } from "@storybook/addon-docs/blocks";
+import Tag from "components/Tag";
+
+<Meta title="Components/Tag" component={Tag} />
+
+# Tag
+
+Tag
+
+## Props
+<Props of={Tag} />
+
+
+## Examples
+
+With `MDX` we can define a story for `Tag` right in the middle of our
+markdown documentation.
+
+<Preview>
+  <Story name="basic alerts">
+    <div>
+      <Tag>Kube Design</Tag> &nbsp;
+      <Tag type="warning">Kube Design</Tag> &nbsp;
+      <Tag type="primary">Kube Design</Tag> &nbsp;
+    </div>
+  </Story>
+</Preview>

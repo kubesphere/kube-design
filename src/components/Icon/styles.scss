@@ -1,0 +1,73 @@
+@import "../../scss/variables";
+
+.icon {
+  display: inline-flex;
+  align-self: start;
+  background-position: 50%;
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &-changable {
+    &:hover,
+    &:active {
+      & > svg {
+        color: #00aa72;
+        fill: #90e0c5;
+      }
+    }
+  }
+
+  &-clickable {
+    cursor: pointer;
+    border-radius: $border-radius;
+    pointer-events: auto;
+
+    &:hover {
+      background-color: $light-color01;
+    }
+    &:active {
+      background-color: $light-color02;
+    }
+  }
+
+  &-dark > svg {
+    color: #324558;
+    fill: #b6c2cd;
+  }
+
+  &-light > svg {
+    color: hsla(0, 0%, 100%, 0.9);
+    fill: hsla(0, 0%, 100%, 0.4);
+  }
+
+  &-coloured > svg {
+    color: #00aa72;
+    fill: #90e0c5;
+  }
+
+  &.is-small {
+    width: 16px;
+    height: 16px;
+  }
+
+  &.is-medium {
+    width: 24px;
+    height: 24px;
+  }
+
+  &.is-large {
+    width: 32px;
+    height: 32px;
+  }
+}
