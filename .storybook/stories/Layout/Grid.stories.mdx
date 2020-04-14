@@ -23,16 +23,16 @@ A 12-grid system based on Flexbox
   <Story name="basic usage">
     <Columns>
       <Column>
-        <p className="grid-item is-dark">1</p>
+        <div className="grid-item is-dark">1</div>
       </Column>
       <Column>
-        <p className="grid-item is-dark">2</p>
+        <div className="grid-item is-dark">2</div>
       </Column>
       <Column>
-        <p className="grid-item is-dark">3</p>
+        <div className="grid-item is-dark">3</div>
       </Column>
       <Column>
-        <p className="grid-item is-dark">4</p>
+        <div className="grid-item is-dark">4</div>
       </Column>
     </Columns>
   </Story>
@@ -47,11 +47,11 @@ A 12-grid system based on Flexbox
         .fill("")
         .map((_, index) => (
           <Columns key={index}>
-            <Column className={`is-${index+1}`} >
-              <p className="grid-item is-dark">is-{index+1}</p>
+            <Column className={`is-${index + 1}`}>
+              <div className="grid-item is-dark">is-{index + 1}</div>
             </Column>
             <Column key={index}>
-              <p className="grid-item">Auto</p>
+              <div className="grid-item">Auto</div>
             </Column>
           </Columns>
         ))}

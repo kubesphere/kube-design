@@ -42,6 +42,15 @@ $yellow-color05: #8d663e;
 $white: #ffffff;
 $black: #000000;
 
+$primary: $green-color03;
+$sub: $blue-color03;
+$warning: $yellow-color03;
+$danger: $red-color03;
+
+$title-color: $dark-color06;
+$second-title-color: $dark-color03;
+$text-color: $dark-color07;
+
 // border
 $border-color: $light-color06;
 $border-hover-color: $dark-color01;
@@ -105,7 +114,7 @@ $trans-speed: 0.3s;
 $icon-prefix: qicon;
 $icon-light-color: rgba(255, 255, 255, 0.9);
 $icon-light-fill: rgba(255, 255, 255, 0.4);
-$icon-dark-color: #324558;
+$icon-dark-color: $dark-color06;
 $icon-dark-fill: #b6c2cd;
 $icon-coloured-color: #00aa72;
 $icon-coloured-fill: #90e0c5;

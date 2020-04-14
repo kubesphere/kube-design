@@ -1,0 +1,97 @@
+@import "../../scss/variables";
+@import "../../scss/mixins";
+
+.form-item {
+  margin-bottom: 12px;
+
+  &-desc {
+    margin-top: 4px;
+    @include TypographyParagraph($dark-color01);
+
+    a {
+      color: $blue-color03;
+    }
+  }
+
+  &-control {
+    position: relative;
+  }
+
+  &-label {
+    display: block;
+    margin-bottom: 4px;
+    @include TypographyParagraph($dark-color06);
+  }
+
+  &-error {
+    margin-top: 4px;
+    @include TypographyParagraph($red-color03);
+  }
+
+  &-required {
+    margin: 0 6px;
+    @include TypographyParagraph($red-color03);
+  }
+
+  .input,
+  .textarea,
+  .select {
+    width: 100%;
+    max-width: 455px;
+  }
+
+  &.error-item {
+    .input,
+    .textarea,
+    .select-control {
+      border: solid 1px $input-error-color !important;
+      &:focus,
+      &:hover {
+        border: solid 1px $input-error-color !important;
+        box-shadow: 0 4px 8px 0 rgba(202, 38, 33, 0.2) !important;
+      }
+    }
+  }
+}
+
+.form-group {
+  margin-bottom: 12px;
+  padding: 11px 16px;
+  border-radius: 4px;
+  border: solid 1px $border-color;
+  background-color: $white;
+
+  &-title {
+    font-weight: $font-bold;
+
+    label.checkbox span.label-value {
+      font-weight: $font-bold;
+      padding-left: 11px;
+    }
+  }
+
+  &-desc {
+    @include TypographyParagraph($dark-color01);
+  }
+
+  &-content {
+    border-radius: 4px;
+    background-color: $light-color01;
+    padding: 12px;
+    margin: 0 -8px;
+    margin-top: 12px;
+  }
+
+  &-hide {
+    height: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  &-checkable {
+    .form-group-desc {
+      padding-left: 23px;
+    }
+  }
+}

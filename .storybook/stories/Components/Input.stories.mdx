@@ -1,0 +1,33 @@
+import { Meta, Story, Preview, Props } from "@storybook/addon-docs/blocks";
+import Input from "components/Input";
+
+<Meta title="Components/Input" component={Input} />
+
+# Input
+
+A Wrap of html input.
+
+## Props
+
+All of the html input props can be used.
+
+<Props of={Input} />
+
+## Examples
+
+### Basic
+
+Basic usages for ``Input`` component.
+
+<Preview>
+  <Story name="basic input">
+    <div>
+      <p>Normal</p>
+      <Input name="test" placeholder="please input a word" />
+      <p>Readonly</p>
+      <Input name="test" placeholder="please input a word" readOnly />
+      <p>Disabled</p>
+      <Input name="test" placeholder="please input a word" disabled />
+    </div>
+  </Story>
+</Preview>

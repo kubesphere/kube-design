@@ -1,0 +1,87 @@
+import { useState } from 'react';
+import { Meta, Story, Preview, Props } from "@storybook/addon-docs/blocks";
+import { Radio, RadioGroup } from "components/Radio";
+
+<Meta title="Components/Radio" component={Radio} />
+
+# Radio
+
+A Wrap of html Radio.
+
+## Props
+
+All of the html Radio props can be used.
+
+<Props of={Radio} />
+
+## Examples
+
+### Basic
+
+Basic usages for `Radio` component.
+
+<Preview>
+  <Story name="basic radio">
+      {
+        () => {
+          const [checked1, setChecked1] = useState(false);
+          const [checked2, setChecked2] = useState(false);
+          return (
+            <>
+              <Radio name="test1" checked={checked1} onChange={(checked) => setChecked1(checked)}>Test1</Radio>
+              <Radio name="test2" checked={checked2} onChange={(checked) => setChecked2(checked)}>Test2</Radio>
+              <Radio name="test3" disabled>
+                Test3
+              </Radio>
+            </>
+          )
+        }
+      }
+  </Story>
+</Preview>
+
+# RadioGroup
+
+A Wrap of html RadioGroup.
+
+## Props
+
+All of the html RadioGroup props can be used.
+
+<Props of={RadioGroup} />
+
+## Examples
+
+### Basic
+
+Basic usages for `RadioGroup` component.
+
+<Preview>
+  <Story name="basic radio group">
+    {() => {
+      const options = [
+        {
+          label: "中国",
+          value: "China"
+        },
+        {
+          label: "巴西",
+          value: "Brazil"
+        },
+        {
+          label: "俄罗斯",
+          value: "Russian"
+        },
+        {
+          label: "南非",
+          value: "South Africa"
+        },
+        {
+          label: "印度",
+          value: "Indian"
+        }
+      ];
+      return <RadioGroup name="test" options={options} />;
+    }}
+  </Story>
+</Preview>
