@@ -4,11 +4,12 @@
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
-    "start": "start-storybook --docs",
+    "start": "start-storybook --docs -p 9090",
     "build-storybook": "build-storybook --docs -s public",
     "build": "webpack -p"
   },
   "dependencies": {
+    "async-validator": "^3.2.4",
     "bulma": "^0.8.1",
     "classnames": "^2.2.6",
     "lodash": "^4.17.15",

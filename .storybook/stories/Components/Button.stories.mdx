@@ -15,8 +15,7 @@ Html button.
 
 ### Basic
 
-With `MDX` we can define a story for `Button` right in the middle of our
-markdown documentation.
+Basic usage for ``Button`` Component, using type to customize button styles.
 
 <Preview>
   <Story name="basic buttons">
@@ -33,13 +32,15 @@ markdown documentation.
 
 
 ### With Icon
-With `MDX` we can define a story for `Button` right in the middle of our
-markdown documentation.
+Passing ``icon`` prop to ``Button``.
 
 <Preview>
   <Story name="buttons with icon">
     <div>
       <Button icon="add">Kube Design</Button>
+      <Button icon="add" />
+      <Button icon="add" type="flat" />
+      <Button icon="add" disabled />
     </div>
   </Story>
 </Preview>

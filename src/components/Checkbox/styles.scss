@@ -1,0 +1,117 @@
+@import "../../scss/variables";
+@import "../../scss/mixins";
+
+label.checkbox {
+  display: inline-block;
+  position: relative;
+  color: $dark-color07;
+  &:not(.disabled) {
+    &:hover {
+      &:before {
+        background-color: $light-color01;
+      }
+    }
+    &:active {
+      &:before {
+        background-color: $light-color01;
+      }
+      &.checked:before,
+      &.indeterminate:before {
+        border-color: transparent;
+        background-color: $primary;
+      }
+    }
+  }
+  &:before {
+    position: absolute;
+    top: 3px;
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 1px solid $border-color;
+    border-radius: 2px;
+    outline: none !important;
+    background-color: #fff;
+    transition: border 0.2s ease;
+    box-sizing: content-box;
+    content: '';
+    z-index: 1;
+  }
+  &.checked:before,
+  &.checked:hover:before {
+    border-color: transparent;
+    background-color: $primary;
+  }
+  &.checked:after {
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    display: block;
+    width: 4px;
+    height: 8px;
+    border-width: 0 1.6px 1.6px 0;
+    border-style: solid;
+    border-color: #fff;
+    transform: rotate(45deg);
+    backface-visibility: hidden;
+    content: '';
+    will-change: transform;
+    z-index: 1;
+  }
+  &.disabled {
+    box-shadow: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  &.indeterminate {
+    &:before,
+    &:hover:before {
+      border-color: transparent;
+      background-color: #fff;
+    }
+    &:after {
+      position: absolute;
+      top: 3px;
+      left: 4px;
+      display: block;
+      width: 4px;
+      height: 8px;
+      border: solid #fff;
+      border-width: 0 2px 0 0;
+      transform: rotate(90deg);
+      content: '';
+      z-index: 1;
+    }
+  }
+  & span.label-value {
+    display: inline-block;
+    vertical-align: middle;
+    @include TypographyParagraph;
+    padding: 0 8px;
+    user-select: none;
+  }
+}
+
+label.checkbox input[type='checkbox'] {
+  outline: none !important;
+  opacity: 0;
+}
+
+.checkbox input[type='checkbox'] {
+  margin: 0;
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.checkbox-group[data-direction='column'] {
+  display: flex;
+  flex-direction: column;
+  label.checkbox {
+    width: 100%;
+    margin-bottom: 12px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

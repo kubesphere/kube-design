@@ -1,0 +1,41 @@
+@import "../../scss/variables";
+@import "../../scss/mixins";
+
+.textarea {
+  width: 376px;
+  padding: 6px 12px;
+  border-radius: $border-radius;
+  border: solid 1px $input-border-color;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  @include TypographySymbolText;
+  transition: all $trans-speed ease-in-out;
+  outline: none;
+  caret-color: $dark-color06;
+
+  &::placeholder {
+    font-weight: $font-normal;
+    color: $dark-color03;
+  }
+
+  &:not([readonly]):not([disabled]):hover {
+    border-color: $input-hover-color;
+  }
+
+  &:not([readonly]):not([disabled]):focus {
+    border-color: $input-focus-color;
+  }
+
+  &[readonly],
+  &[disabled] {
+    background-color: $light-color02;
+  }
+
+  &[readonly] {
+    cursor: initial;
+  }
+
+  &[disabled] {
+    cursor: not-allowed;
+  }
+}

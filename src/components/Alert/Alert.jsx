@@ -26,11 +26,11 @@ import "./styles.scss";
 
 const ICON_COLORS = {
   info: {
-    primary: "#fff",
-    secondary: "#329dce"
+    primary: "#3385b0",
+    secondary: "#fff"
   },
   error: {
-    primary: "#ea8573",
+    primary: "#8c3231",
     secondary: "#fff"
   },
   warning: {
@@ -40,10 +40,10 @@ const ICON_COLORS = {
 };
 
 const ICONS = {
-  info: "question",
+  info: "check",
   error: "close",
-  warning: "exclamation",
-  default: "question"
+  warning: "substract",
+  default: "information"
 };
 
 export default class Alert extends React.PureComponent {
@@ -65,9 +65,9 @@ export default class Alert extends React.PureComponent {
     return (
       <div className={classnames("alert", className, `alert-${type}`)}>
         {!!title && this.renderIcon()}
-        <div className="alert-message">
-          {title && <h3>{title}</h3>}
-          <span>{message}</span>
+        <div className="alert-content">
+          {title && <div className="alert-title">{title}</div>}
+          <span className="alert-message">{message}</span>
         </div>
       </div>
     );

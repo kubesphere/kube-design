@@ -13,7 +13,7 @@
   &-info {
     background-color: #c7deef;
 
-    .alert-message {
+    .alert-content {
       color: #3385b0;
     }
   }
@@ -21,7 +21,7 @@
   &-error {
     background-color: #fae7e5;
 
-    .alert-message {
+    .alert-content {
       color: #8c3231;
     }
   }
@@ -29,7 +29,7 @@
   &-warning {
     background-color: $yellow-color01;
 
-    .alert-message {
+    .alert-content {
       color: $yellow-color05;
     }
   }
@@ -37,17 +37,20 @@
   &-default {
     background-color: $light-color01;
 
-    .alert-message {
+    .alert-content {
       color: $dark-color07;
     }
   }
+}
 
-  .alert-message {
-    margin-left: 5px;
-    @include TypographyParagraph();
+.alert-content {
+  @include TypographyParagraph();
+}
 
-    h3 {
-      font-weight: 600;
-    }
-  }
+.alert-title {
+  font-weight: 600;
+}
+
+.alert-icon {
+  margin-right: 12px;
 }
