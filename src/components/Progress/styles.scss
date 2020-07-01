@@ -1,0 +1,33 @@
+@import '../../scss/variables';
+@import '../../scss/mixins';
+
+.progress {
+  display: block;
+  position: relative;
+  height: 8px;
+  border-radius: 5px;
+  background-color: $light-color02;
+  overflow: hidden;
+
+  &-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    transition: all 0.3s ease;
+    z-index: 1;
+    
+    &-primary {
+      background-color: $primary;
+    }
+  
+    &-warning {
+      background-color: $warning;
+    }  
+  
+    &-danger {
+      background-color: $danger;
+    }
+  }
+}
