@@ -1,0 +1,15 @@
+@import "../../scss/variables";
+
+.popper-trigger {
+  display: inline-block;
+}
+
+.tippy-box {
+  font-size: 12px;
+  line-height: 20px;
+  background-color: $dark-color07;
+}
+
+.tippy-arrow {
+  color: $dark-color07;
+}

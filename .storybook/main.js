@@ -7,7 +7,7 @@ module.exports = {
     "./stories/Layout/*.stories.(js|tsx|mdx)",
     "./stories/Components/*.stories.(js|tsx|mdx)"
   ],
-  addons: ["@storybook/addon-docs", "@storybook/addon-knobs"],
+  addons: ["@storybook/addon-docs"],
   webpackFinal: async config => {
     config.module.rules.push({
       test: /\.scss$/,

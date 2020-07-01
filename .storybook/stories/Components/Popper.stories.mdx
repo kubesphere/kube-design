@@ -1,0 +1,36 @@
+import { Meta, Story, Preview, Props } from "@storybook/addon-docs/blocks";
+import Popper from "components/Popper";
+import Button from "components/Button";
+
+<Meta title="Components/Popper" component={Popper} />
+
+# Popper
+
+## Props
+
+<Props of={Popper} />
+
+## Examples
+
+### Basic
+
+Basic usages for ``Popper`` component.
+
+<Preview>
+  <Story name="basic popper">
+    <div>
+      <Popper content="Kube Design" placement="left">
+        <Button>Left</Button>
+      </Popper>
+      <Popper content="Kube Design" placement="top">
+        <Button>Top</Button>
+      </Popper>
+      <Popper content="Kube Design" placement="bottom">
+        <Button>Bottom</Button>
+      </Popper>
+      <Popper content="Kube Design" placement="right">
+        <Button>Right</Button>
+      </Popper>
+    </div>
+  </Story>
+</Preview>
