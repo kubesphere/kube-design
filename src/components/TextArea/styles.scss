@@ -6,7 +6,7 @@
   padding: 6px 12px;
   border-radius: $border-radius;
   border: solid 1px $input-border-color;
-  background-color: #ffffff;
+  background-color: $white;
   box-sizing: border-box;
   @include TypographySymbolText;
   transition: all $trans-speed ease-in-out;

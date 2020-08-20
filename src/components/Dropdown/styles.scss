@@ -1,0 +1,48 @@
+@import "../../scss/variables";
+
+.popper.dropdown {
+  opacity: 0;
+  margin-top: -5px;
+  transition-property: opacity, margin-top;
+  transition-duration: $trans-speed;
+  transition-timing-function: cubic-bezier(0.175, 0.35, 0.32, 1);
+
+  &.is-active {
+    opacity: 1;
+    margin-top: 8px;
+  }
+}
+
+.dropdown-content {
+  padding: 0;
+  margin: 0;
+  border-radius: $border-radius;
+}
+
+.dropdown-dark {
+  .dropdown-content {
+    background-color: $dark-color07;
+  }
+
+  .menu {
+    padding: 8px;
+    min-width: 208px;
+    border-radius: $border-radius;
+    background-color: $dark-color07;
+    box-shadow: $btn-default-active-shadow;
+
+    &-item {
+      height: auto;
+      border-radius: 3px;
+      line-height: 20px;
+      padding: 6px 19px 6px 12px;
+      color: $white;
+      font-size: $size-small;
+      background-color: transparent;
+
+      &:hover {
+        background-color: #36435c;
+      }
+    }
+  }
+}

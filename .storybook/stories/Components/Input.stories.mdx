@@ -1,5 +1,5 @@
 import { Meta, Story, Preview, Props } from "@storybook/addon-docs/blocks";
-import Input from "components/Input";
+import { Input, InputPassword } from "components/Input";
 
 <Meta title="Components/Input" component={Input} />
 
@@ -28,6 +28,8 @@ Basic usages for ``Input`` component.
       <Input name="test" placeholder="please input a word" readOnly />
       <p>Disabled</p>
       <Input name="test" placeholder="please input a word" disabled />
+      <p>Password</p>
+      <InputPassword name="password" defaultValue="password" />
     </div>
   </Story>
 </Preview>

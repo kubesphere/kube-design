@@ -40,3 +40,24 @@
     cursor: not-allowed;
   }
 }
+
+.input-password {
+  position: relative;
+  display: inline-block;
+
+  &.has-icons-right {
+    .icon.clickable {
+      opacity: 0.5;
+      pointer-events: auto;
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    .icon.is-right {
+      z-index: 5;
+      @include vertical-center;
+      right: 12px;
+    }
+  }
+}

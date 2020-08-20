@@ -1,0 +1,79 @@
+@import "../../scss/variables";
+@import "../../scss/mixins";
+
+.slider {
+  position: relative;
+  height: 20px;
+  padding: 5px 0;
+  margin-top: 7px;
+
+  &-rail {
+    height: 10px;
+    border-radius: 5px;
+    background-color: $light-color01;
+  }
+
+  &-track {
+    position: absolute;
+    top: 5px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: $primary;
+  }
+
+  &-handler {
+    position: absolute;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid $primary;
+    background-color: #fff;
+    box-shadow: 0 4px 8px 0 rgba(85, 188, 138, 0.36);
+    transition: box-shadow $trans-speed ease-in-out;
+    cursor: pointer;
+    outline: none;
+    user-select: none;
+
+    &:active {
+      box-shadow: none;
+    }
+
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background-color: $primary;
+      transition: transform $trans-speed ease-in-out;
+    }
+
+    &:hover,
+    &:active {
+      &::after {
+        transform: scale(1.35);
+      }
+    }
+  }
+
+  &-marks {
+    position: absolute;
+    top: 29px;
+    left: 0;
+    width: 100%;
+    user-select: none;
+
+    & > span {
+      position: absolute;
+      top: 0;
+      @include TypographyParagraph($dark-color01);
+      user-select: none;
+      white-space: nowrap;
+      transform: translateX(-50%);
+    }
+  }
+}
