@@ -1,0 +1,55 @@
+import { Meta, Story, Preview, Props } from "@storybook/addon-docs/blocks";
+import Dropdown from "components/Dropdown";
+import Button from "components/Button";
+import Menu from "components/Menu";
+
+<Meta title="Components/Dropdown" component={Dropdown} />
+
+# Dropdown
+
+## Props
+
+<Props of={Dropdown} />
+
+## Examples
+
+### Basic
+
+Basic usages for ``Dropdown`` component.
+
+<Preview>
+  <Story name="basic dropdown">
+    <div style={{ textAlign: "center", padding: '100px 20px' }}>
+      <Dropdown content={
+        <Menu>
+          <Menu.MenuItem key="option-1">
+            value-1
+          </Menu.MenuItem>
+          <Menu.MenuItem key="option-2">
+            value-2
+          </Menu.MenuItem>
+          <Menu.MenuItem key="option-3">
+            value-3
+          </Menu.MenuItem>
+        </Menu>
+      }>
+        <Button>Dropdown</Button>
+      </Dropdown>
+      <Dropdown mode="dark" content={
+        <Menu>
+          <Menu.MenuItem key="option-1">
+            value-1
+          </Menu.MenuItem>
+          <Menu.MenuItem key="option-2">
+            value-2
+          </Menu.MenuItem>
+          <Menu.MenuItem key="option-3">
+            value-3
+          </Menu.MenuItem>
+        </Menu>
+      }>
+        <Button>Dark</Button>
+      </Dropdown>
+    </div>
+  </Story>
+</Preview>

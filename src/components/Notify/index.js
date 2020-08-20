@@ -17,6 +17,5 @@
  */
 
 import Notify from './Notify'
-import './index.scss'
 
 export default Notify
