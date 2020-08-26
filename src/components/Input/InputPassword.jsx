@@ -49,10 +49,11 @@ class InputPassword extends PureComponent {
 
   render() {
     const { type, value } = this.state;
+    const { defaultValue, ...rest } = this.props
 
     return (
       <div className="input-password has-icons-right">
-        <Input {...this.props} type={type} value={value} onChange={this.handleInputChange} />
+        <Input {...rest} type={type} value={value} onChange={this.handleInputChange} />
         <Icon
           className="is-right"
           name={type === 'text' ? 'eye' : 'eye-closed'}

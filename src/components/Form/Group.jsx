@@ -1,21 +1,3 @@
-/*
- * This file is part of KubeSphere Console.
- * Copyright (C) 2019 The KubeSphere Console Authors.
- *
- * KubeSphere Console is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * KubeSphere Console is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with KubeSphere Console.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
@@ -24,31 +6,31 @@ import { get, unset, isUndefined } from "lodash";
 
 export default class Group extends React.Component {
   static propTypes = {
-    keepDataWhenUnCheck: PropTypes.bool
+    keepDataWhenUnCheck: PropTypes.bool,
   };
 
   static defaultProps = {
-    keepDataWhenUnCheck: false
+    keepDataWhenUnCheck: false,
   };
 
   static contextTypes = {
-    formData: PropTypes.object
+    formData: PropTypes.object,
   };
 
   static childContextTypes = {
     registerGroup: PropTypes.func,
-    unRegisterGroup: PropTypes.func
+    unRegisterGroup: PropTypes.func,
   };
 
   getChildContext() {
     return {
       registerGroup: this.registerGroup,
-      unRegisterGroup: this.unRegisterGroup
+      unRegisterGroup: this.unRegisterGroup,
     };
   }
 
   state = {
-    isCheck: false
+    isCheck: false,
   };
 
   items = new Set();
@@ -61,17 +43,17 @@ export default class Group extends React.Component {
       !keepDataWhenUnCheck &&
       formData &&
       this.items.size > 0 &&
-      Array.from(this.items).some(item => !isUndefined(get(formData, item)))
+      Array.from(this.items).some((item) => !isUndefined(get(formData, item)))
     ) {
       this.setState({ isCheck: true });
     }
   }
 
-  registerGroup = name => {
+  registerGroup = (name) => {
     this.items.add(name);
   };
 
-  unRegisterGroup = name => {
+  unRegisterGroup = (name) => {
     this.items.delete(name);
   };
 
@@ -81,7 +63,7 @@ export default class Group extends React.Component {
       if (!keepDataWhenUnCheck && !check) {
         const { formData } = this.context;
         if (formData && this.items.size > 0) {
-          this.items.forEach(item => unset(formData, item));
+          this.items.forEach((item) => unset(formData, item));
         }
       }
     });
@@ -100,7 +82,7 @@ export default class Group extends React.Component {
     return (
       <div
         className={classNames("form-group", {
-          "form-group-checkable": checkable
+          "form-group-checkable": checkable,
         })}
       >
         <div>
@@ -118,7 +100,7 @@ export default class Group extends React.Component {
         {noWrapper ? (
           <div
             className={classNames({
-              "form-group-hide": hideChildren
+              "form-group-hide": hideChildren,
             })}
           >
             {children}
@@ -126,7 +108,7 @@ export default class Group extends React.Component {
         ) : (
           <div
             className={classNames("form-group-content", {
-              "form-group-hide": hideChildren
+              "form-group-hide": hideChildren,
             })}
           >
             {children}

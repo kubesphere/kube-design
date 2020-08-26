@@ -18,6 +18,7 @@
 .icon-changeable,
 .button:not([disabled]).is-text,
 .breadcrumb-link {
+  cursor: pointer;
   &:hover,
   &:active {
     .#{$icon-prefix} {
@@ -25,4 +26,9 @@
       fill: $icon-coloured-fill;
     }
   }
+}
+
+.icon-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

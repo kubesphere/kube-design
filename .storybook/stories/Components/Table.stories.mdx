@@ -1,0 +1,84 @@
+import { Meta, Story, Preview, Props } from "@storybook/addon-docs/blocks";
+import Table from "components/Table";
+import Button from "components/Button";
+import { InputSearch } from "components/Input";
+import Pagination from "components/Pagination";
+import TableDataWrapper from "./TableDataWrapper";
+
+<Meta title="Components/Table" component={Table} />
+
+# Table
+
+## Props
+
+<Props of={Table} />
+
+## Examples
+
+### Basic
+
+Basic usages for `Table` component.
+
+<Preview>
+  <Story name="basic table">
+    <TableDataWrapper>
+      {({
+        fetchList,
+        list: { pagination, filters, sorter, data, isLoading, selectedRowKeys },
+        setSelectedRowKeys,
+        columns,
+      }) => {
+        const rowSelection = {
+          selectedRowKeys,
+          onSelect: (record, checked, rowKeys) => {
+            setSelectedRowKeys(rowKeys);
+          },
+          onSelectAll: (checked, rowKeys) => {
+            setSelectedRowKeys(rowKeys);
+          },
+        };
+        const title = (
+          <div style={{ display: "flex" }}>
+            <InputSearch
+              style={{ flex: 1 }}
+              placeholder="please input a word"
+              onSearch={(name) => fetchList({ name })}
+            />
+            <Button
+              style={{ marginLeft: 12 }}
+              icon="refresh"
+              type="flat"
+              onClick={() => fetchList({ pagination, filters, sorter })}
+            />
+          </div>
+        );
+        const footer = (
+          <Pagination
+            {...pagination}
+            onChange={(page) =>
+              fetchList({
+                pagination: { ...pagination, page },
+                filters,
+                sorter,
+              })
+            }
+          />
+        );
+        return (
+          <Table
+            rowKey="name"
+            columns={columns}
+            filters={filters}
+            sorter={sorter}
+            dataSource={data}
+            loading={isLoading}
+            rowSelection={rowSelection}
+            title={title}
+            footer={footer}
+            onChange={(filters, sorter) => fetchList({ filters, sorter })}
+          />
+        );
+      }}
+    </TableDataWrapper>
+  </Story>
+</Preview>

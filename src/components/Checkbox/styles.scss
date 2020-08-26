@@ -5,6 +5,7 @@ label.checkbox {
   display: inline-block;
   position: relative;
   color: $dark-color07;
+  cursor: pointer;
   &:not(.disabled) {
     &:hover {
       &:before {
@@ -67,7 +68,7 @@ label.checkbox {
     &:before,
     &:hover:before {
       border-color: transparent;
-      background-color: #fff;
+      background-color: $primary;
     }
     &:after {
       position: absolute;
