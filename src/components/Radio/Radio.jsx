@@ -10,19 +10,19 @@ export default class Radio extends Component {
     value: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.bool,
-      PropTypes.number
+      PropTypes.number,
     ]),
     checked: PropTypes.bool,
     children: PropTypes.node,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
   };
 
   static defaultProps = {
     checked: false,
-    onChange() {}
+    onChange() {},
   };
 
-  handleChange = e => {
+  handleChange = (e) => {
     const { onChange, value } = this.props;
     const checked = e.target.checked;
 
@@ -38,7 +38,7 @@ export default class Radio extends Component {
           "radio",
           {
             checked,
-            disabled: rest.disabled
+            disabled: rest.disabled,
           },
           className
         )}

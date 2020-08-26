@@ -12,8 +12,8 @@ export default class CheckboxGroup extends Component {
         PropTypes.shape({
           value: PropTypes.any,
           label: PropTypes.string,
-          disabled: PropTypes.bool
-        })
+          disabled: PropTypes.bool,
+        }),
       ])
     ),
     value: PropTypes.array,
@@ -21,18 +21,18 @@ export default class CheckboxGroup extends Component {
     direction: PropTypes.oneOf(["row", "column"]),
     className: PropTypes.string,
     disabled: PropTypes.bool,
-    children: PropTypes.node
+    children: PropTypes.node,
   };
 
   static defaultProps = {
     direction: "row",
     options: [],
     value: [],
-    onChange() {}
+    onChange() {},
   };
 
   state = {
-    values: this.props.value || []
+    values: this.props.value || [],
   };
 
   handleOptionChange = (checked, value) => {
@@ -42,15 +42,10 @@ export default class CheckboxGroup extends Component {
     if (checked) {
       newValues = [...values, value];
     } else {
-      newValues = values.filter(item => item === value);
+      newValues = values.filter((item) => item !== value);
     }
 
-    this.setState(
-      {
-        values: newValues
-      },
-      () => onChange(newValues)
-    );
+    this.setState({ values: newValues }, () => onChange(newValues));
   };
 
   render() {
@@ -62,7 +57,7 @@ export default class CheckboxGroup extends Component {
         data-direction={direction}
         className={classNames(`checkbox-group`, className)}
       >
-        {options.map(option => (
+        {options.map((option) => (
           <Checkbox
             key={option.value}
             name={name}

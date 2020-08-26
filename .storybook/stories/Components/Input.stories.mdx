@@ -1,5 +1,5 @@
 import { Meta, Story, Preview, Props } from "@storybook/addon-docs/blocks";
-import { Input, InputPassword } from "components/Input";
+import { Input, InputSearch, InputPassword } from "components/Input";
 
 <Meta title="Components/Input" component={Input} />
 
@@ -17,7 +17,7 @@ All of the html input props can be used.
 
 ### Basic
 
-Basic usages for ``Input`` component.
+Basic usages for `Input` component.
 
 <Preview>
   <Story name="basic input">
@@ -30,6 +30,16 @@ Basic usages for ``Input`` component.
       <Input name="test" placeholder="please input a word" disabled />
       <p>Password</p>
       <InputPassword name="password" defaultValue="password" />
+    </div>
+  </Story>
+</Preview>
+
+### Search
+
+<Preview>
+  <Story name="search input">
+    <div style={{ padding: 40 }}>
+      <InputSearch name="search" placeholder="please input a word" />
     </div>
   </Story>
 </Preview>

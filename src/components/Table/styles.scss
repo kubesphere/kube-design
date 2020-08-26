@@ -1,0 +1,107 @@
+@import "../../scss/variables";
+@import "../../scss/mixins";
+
+.table table {
+  width: 100%;
+  text-align: left;
+
+  & > thead {
+    & > tr > th {
+      padding: 16px 12px;
+      @include TypographySymbolText($dark-color01);
+
+      .is-trigger {
+        cursor: pointer;
+
+        & > span {
+          display: inline-block;
+          vertical-align: middle;
+
+          & + span {
+            margin-left: 4px;
+          }
+        }
+      }
+
+      .icon > svg {
+        color: $dark-color01;
+      }
+    }
+  }
+
+  & > tbody {
+    & > tr {
+      & > td {
+        height: 56px;
+        padding: 8px 12px;
+        border-top: 1px solid $light-color02;
+        @include TypographyParagraph($dark-color07);
+        word-break: break-all;
+        box-sizing: border-box;
+
+        &:first-child {
+          border-left: 1px solid transparent;
+        }
+      }
+
+      &:hover {
+        & > td {
+          background-color: $light-color01;
+        }
+      }
+
+      &:last-child {
+        & > td {
+          border-bottom: 1px solid $light-color02;
+        }
+
+        &.table-row-selected > td {
+          border-bottom: 1px solid $primary;
+        }
+      }
+
+      &.table-row-selected > td {
+        border-top: 1px solid $primary;
+        background-color: $light-color01;
+
+        &:first-child {
+          border-left: 1px solid $primary;
+        }
+
+        &:last-child {
+          border-right: 1px solid $primary;
+        }
+      }
+    }
+
+    .table-row-selected + tr {
+      & > td {
+        border-top: 1px solid $primary;
+      }
+    }
+
+    .table-row-selected + .table-row-selected {
+      & > td {
+        border-top: 1px solid transparent;
+      }
+    }
+  }
+}
+
+.table-title {
+  position: relative;
+  padding: 8px 20px;
+  background-color: $light-color01;
+  box-shadow: 0 1px 0 0 $light-color02;
+  border-top-left-radius: $border-radius;
+  border-top-right-radius: $border-radius;
+}
+
+.table-footer {
+  position: relative;
+  padding: 16px 20px;
+  background-color: $light-color01;
+  border-bottom-left-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
+  color: $dark-color01;
+}

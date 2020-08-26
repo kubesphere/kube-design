@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { omit, isNaN, isNumber } from "lodash";
+import { omit, isNumber } from "lodash";
 import Icon from "./LoadingIcon";
 
 import "./styles.scss";
@@ -9,7 +9,7 @@ import "./styles.scss";
 const sizeObj = {
   small: 20,
   medium: 32,
-  large: 48
+  large: 48,
 };
 
 class Loading extends Component {
@@ -17,19 +17,19 @@ class Loading extends Component {
     className: PropTypes.string,
     size: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     spinning: PropTypes.bool,
-    children: PropTypes.element
+    children: PropTypes.element,
   };
 
   static defaultProps = {
     spinning: true,
-    size: "medium"
+    size: "medium",
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      spinning: props.spinning
+      spinning: props.spinning,
     };
   }
 
@@ -37,7 +37,7 @@ class Loading extends Component {
     const { spinning: prevSpinning } = prevState;
     const { spinning } = nextProps;
 
-    if (!prevSpinning && spinning) {
+    if (prevSpinning !== spinning) {
       return { spinning };
     }
 
@@ -65,7 +65,13 @@ class Loading extends Component {
   }
 
   render() {
-    const { className, size, children, ...restProps } = this.props;
+    const {
+      className,
+      size,
+      children,
+      wrapperClassName,
+      ...restProps
+    } = this.props;
     const { spinning } = this.state;
 
     const spinClassName = classNames(
@@ -73,7 +79,7 @@ class Loading extends Component {
       {
         "spin-sm": size === "small",
         "spin-lg": size === "large",
-        "spin-spinning": spinning
+        "spin-spinning": spinning,
       },
       className
     );
@@ -93,7 +99,7 @@ class Loading extends Component {
       }
       const containerClassName = classNames({
         "spin-container": true,
-        "spin-blur": spinning
+        "spin-blur": spinning,
       });
       return (
         <div {...divProps} className={animateClassName}>

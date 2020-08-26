@@ -10,25 +10,31 @@ export default class Checkbox extends Component {
     value: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.bool,
-      PropTypes.number
+      PropTypes.number,
     ]),
     checked: PropTypes.bool,
     children: PropTypes.node,
     indeterminate: PropTypes.bool,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
   };
 
   static defaultProps = {
     checked: false,
     indeterminate: false,
-    onChange() {}
+    onChange() {},
   };
 
   state = {
-    checked: !!this.props.checked
+    checked: !!this.props.checked,
   };
 
-  handleChange = e => {
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.checked !== prevState.checked) {
+      this.setState({ checked: this.props.checked });
+    }
+  }
+
+  handleChange = (e) => {
     const { onChange, value } = this.props;
     const checked = e.target.checked;
 

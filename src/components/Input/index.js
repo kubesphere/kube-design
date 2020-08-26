@@ -1,4 +1,5 @@
 import Input from './Input'
+import InputSearch from './InputSearch'
 import InputPassword from './InputPassword'
 
-export  { Input, InputPassword }
+export  { Input, InputSearch, InputPassword }

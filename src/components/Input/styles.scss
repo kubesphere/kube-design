@@ -1,7 +1,7 @@
 @import "../../scss/variables";
 @import "../../scss/mixins";
 
-.input {
+input.input {
   width: 376px;
   height: 32px;
   padding: 6px 12px;
@@ -58,6 +58,54 @@
       z-index: 5;
       @include vertical-center;
       right: 12px;
+    }
+  }
+}
+
+.input-search {
+  position: relative;
+
+  &.has-icons-left {
+    .input {
+      padding-left: 40px;
+    }
+    .icon.is-left {
+      left: 12px;
+    }
+  }
+
+  &.has-icons-right {
+    .input {
+      padding-right: 40px;
+    }
+    .icon.is-right {
+      right: 12px;
+    }
+  }
+
+  .icon {
+    @include vertical-center;
+  }
+
+  .input {
+    width: 100%;
+    opacity: 0.6;
+    border-radius: 18px;
+    border-color: transparent;
+    background-color: $light-color01;
+    padding: 5px 12px;
+    color: $text-color;
+
+    &:not([readonly]):not([disabled]):focus,
+    &:not([readonly]):not([disabled]):active,
+    &:not([readonly]):not([disabled]):visited {
+      background-color: $white;
+      border-color: $dark-color01;
+      box-shadow: none;
+    }
+
+    &::placeholder {
+      color: $second-text-color;
     }
   }
 }

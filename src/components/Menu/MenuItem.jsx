@@ -7,6 +7,7 @@ class MenuItem extends Component {
 
   static propTypes = {
     disabled: PropTypes.bool,
+    selected: PropTypes.bool,
     className: PropTypes.string,
     value: PropTypes.any,
     specKey: PropTypes.string,
@@ -26,12 +27,14 @@ class MenuItem extends Component {
       className,
       children,
       disabled,
+      selected,
     } = this.props;
 
     return (
       <li
         className={classnames('menu-item', className, {
           'menu-item-disabled': disabled,
+          'menu-item-selected': selected,
         })}
         onClick={this.handleClick}
       >
