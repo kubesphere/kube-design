@@ -1,7 +1,7 @@
 import React from "react";
 import { mount } from "enzyme";
-import { Button } from "components/Base";
-import Input from "../Input";
+import Button from "../Button";
+import { Input } from "../Input";
 import TextArea from "../TextArea";
 
 import Form from "./index";

@@ -29,13 +29,19 @@
 }
 
 .is-loading {
+  opacity: 0.6;
   pointer-events: none;
   user-select: none;
   cursor: not-allowed;
 
   .button-content {
     display: inline-block;
+    vertical-align: middle;
     margin-right: 12px;
+  }
+
+  .spin {
+    vertical-align: middle;
   }
 }
 

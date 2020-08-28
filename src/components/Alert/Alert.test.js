@@ -13,7 +13,7 @@ it("renders correctly", () => {
   const wrapper = mount(<Alert {...props} />);
   expect(wrapper).toIncludeText(props.title);
   expect(wrapper).toIncludeText(props.message);
-  expect(wrapper.find(".kubed-icon-question")).toHaveLength(1);
+  expect(wrapper.find(".kubed-icon-check")).toHaveLength(1);
 });
 
 it("hidden icon", () => {
