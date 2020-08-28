@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import classNames from 'classnames';
+import classNames from "classnames";
 import { Checkbox } from "../Checkbox";
 
 export default class Tr extends Component {

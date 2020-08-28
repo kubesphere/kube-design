@@ -1,94 +1,96 @@
-import React from 'react'
-import { includes, omit, isString } from 'lodash'
-import Icon from '../Icon'
-import NotifyManager from './NotifyManager'
-import { generateUUID } from './utils'
+import React from "react";
+import { includes, omit, isString } from "lodash";
 
-import './styles.scss'
+import Icon from "@kube-design/icons";
 
-const PLACEMENT = ['topLeft', 'bottomLeft', 'bottomRight', 'topRight']
-const prefixCls = 'notify'
+import NotifyManager from "./NotifyManager";
+import { generateUUID } from "./utils";
+
+import "./styles.scss";
+
+const PLACEMENT = ["topLeft", "bottomLeft", "bottomRight", "topRight"];
+const prefixCls = "notify";
 const IconMap = {
-  success: 'check',
-  warning: 'exclamation',
-  error: 'exclamation',
-}
-const defaultTop = 24
-const defaultBottom = 24
-const notifyInstance = {}
+  success: "check",
+  warning: "exclamation",
+  error: "exclamation",
+};
+const defaultTop = 24;
+const defaultBottom = 24;
+const notifyInstance = {};
 
-const getPlacementStyle = placement => {
-  let style
+const getPlacementStyle = (placement) => {
+  let style;
   switch (placement) {
-    case 'topLeft':
+    case "topLeft":
       style = {
         left: 20,
         top: defaultTop,
-        bottom: 'auto',
-      }
-      break
-    case 'bottomLeft':
+        bottom: "auto",
+      };
+      break;
+    case "bottomLeft":
       style = {
         left: 20,
-        top: 'auto',
+        top: "auto",
         bottom: defaultBottom,
-      }
-      break
-    case 'bottomRight':
+      };
+      break;
+    case "bottomRight":
       style = {
         right: 20,
-        top: 'auto',
+        top: "auto",
         bottom: defaultBottom,
-      }
-      break
+      };
+      break;
     default:
       style = {
         right: 20,
         top: defaultTop,
-        bottom: 'auto',
-      }
-      break
+        bottom: "auto",
+      };
+      break;
   }
-  return style
-}
+  return style;
+};
 
-const open = args => {
+const open = (args) => {
   const defaultOptions = {
     duration: 4500,
     closable: true,
-    placement: 'topRight',
-    type: 'info',
-  }
+    placement: "topRight",
+    type: "info",
+  };
 
-  const options = { ...defaultOptions, ...args }
+  const options = { ...defaultOptions, ...args };
 
-  let position
+  let position;
   if (!includes(PLACEMENT, options.placement)) {
-    position = defaultOptions.placement
+    position = defaultOptions.placement;
   } else {
-    position = options.placement
+    position = options.placement;
   }
 
-  const { title, content, type, btns, key } = options
+  const { title, content, type, btns, key } = options;
 
-  const cacheKey = `${prefixCls}-${position}`
+  const cacheKey = `${prefixCls}-${position}`;
 
   const newOptions = omit(options, [
-    'title',
-    'content',
-    'placement',
-    'icon',
-    'btns',
-  ])
+    "title",
+    "content",
+    "placement",
+    "icon",
+    "btns",
+  ]);
 
-  const target = key || generateUUID('notify')
-  const createNotice = notify => {
+  const target = key || generateUUID("notify");
+  const createNotice = (notify) => {
     notify.createNotice({
       key: target,
       content: (
         <div className={`${prefixCls}-with-icon`}>
           <div className={`${prefixCls}-icon`}>
-            <Icon name={IconMap[type] || 'check'} type="light" size={20} />
+            <Icon name={IconMap[type] || "check"} type="light" size={20} />
           </div>
           <div className={`${prefixCls}-text`}>
             {title && <div className={`${prefixCls}-title`}>{title}</div>}
@@ -98,49 +100,49 @@ const open = args => {
         </div>
       ),
       ...newOptions,
-    })
-  }
+    });
+  };
 
   if (notifyInstance[cacheKey]) {
-    createNotice(notifyInstance[cacheKey])
+    createNotice(notifyInstance[cacheKey]);
   } else {
     NotifyManager.newInstance(
       {
         prefixCls,
-        animation: 'drop',
+        animation: "drop",
         className: cacheKey,
         style: getPlacementStyle(position),
       },
-      notify => {
-        notifyInstance[cacheKey] = notify
-        createNotice(notify)
+      (notify) => {
+        notifyInstance[cacheKey] = notify;
+        createNotice(notify);
       }
-    )
+    );
   }
-  return { ...notifyInstance[cacheKey], key: target }
-}
+  return { ...notifyInstance[cacheKey], key: target };
+};
 
 const convert = (args1, args2, type) => {
   if (isString(args1)) {
-    return open({ title: args1, content: args2, type })
+    return open({ title: args1, content: args2, type });
   }
-  return open({ ...args1, type })
-}
+  return open({ ...args1, type });
+};
 
 export default {
-  open: args => open(args),
+  open: (args) => open(args),
 
-  info: (args1, args2) => convert(args1, args2, 'info'),
+  info: (args1, args2) => convert(args1, args2, "info"),
 
-  success: (args1, args2) => convert(args1, args2, 'success'),
+  success: (args1, args2) => convert(args1, args2, "success"),
 
-  warning: (args1, args2) => convert(args1, args2, 'warning'),
+  warning: (args1, args2) => convert(args1, args2, "warning"),
 
-  error: (args1, args2) => convert(args1, args2, 'error'),
+  error: (args1, args2) => convert(args1, args2, "error"),
 
-  close: key => {
-    Object.keys(notifyInstance).forEach(cacheKey =>
+  close: (key) => {
+    Object.keys(notifyInstance).forEach((cacheKey) =>
       notifyInstance[cacheKey].removeNotice(key)
-    )
+    );
   },
-}
+};

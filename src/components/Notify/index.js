@@ -1,3 +1,3 @@
-import Notify from './Notify'
+import Notify from "./Notify";
 
-export default Notify
+export default Notify;

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 
-import Icon from "../Icon";
+import Icon from "@kube-design/icons";
 
 import "./styles.scss";
 

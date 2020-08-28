@@ -9,20 +9,20 @@ export default class Progress extends React.Component {
     className: PropTypes.string,
     percent: PropTypes.number.isRequired,
     status: PropTypes.oneOf(["primary", "warning", "danger", "auto"]),
-    range: PropTypes.arrayOf(PropTypes.number)
+    range: PropTypes.arrayOf(PropTypes.number),
   };
 
   static defaultProps = {
     percent: 0,
     status: "auto",
-    range: [80, 95]
+    range: [80, 95],
   };
 
   render() {
     const { percent, status, range, className } = this.props;
 
     const style = {
-      width: `${percent}%`
+      width: `${percent}%`,
     };
 
     let type = status;

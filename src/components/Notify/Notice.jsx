@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
-import classNames from 'classnames'
-import PropTypes from 'prop-types'
-import Button from '../Button'
+import React, { Component } from "react";
+import classNames from "classnames";
+import PropTypes from "prop-types";
+import Button from "../Button";
 
 class Notice extends Component {
   static propTypes = {
@@ -13,44 +13,51 @@ class Notice extends Component {
     closable: PropTypes.bool,
     children: PropTypes.node,
     prefixCls: PropTypes.string,
-  }
+  };
 
   static defaultProps = {
     duration: 3000,
     closable: false,
-    prefixCls: 'notice',
-  }
+    prefixCls: "notice",
+  };
 
   componentDidMount() {
-    this.startCloseTimer()
+    this.startCloseTimer();
   }
 
   componentWillUnmount() {
-    this.clearCloseTimer()
+    this.clearCloseTimer();
   }
 
   close = () => {
-    this.clearCloseTimer()
-    this.props.onClose()
-  }
+    this.clearCloseTimer();
+    this.props.onClose();
+  };
 
   startCloseTimer = () => {
-    const { duration } = this.props
-    if (duration === 0) return
+    const { duration } = this.props;
+    if (duration === 0) return;
     this.closeTimer = setTimeout(() => {
-      this.close()
-    }, duration)
-  }
+      this.close();
+    }, duration);
+  };
 
   clearCloseTimer = () => {
     if (this.closeTimer) {
-      clearTimeout(this.closeTimer)
-      this.closeTimer = null
+      clearTimeout(this.closeTimer);
+      this.closeTimer = null;
     }
-  }
+  };
 
   render() {
-    const { className, style, type, closable, children, prefixCls } = this.props
+    const {
+      className,
+      style,
+      type,
+      closable,
+      children,
+      prefixCls,
+    } = this.props;
 
     return (
       <div
@@ -77,8 +84,8 @@ class Notice extends Component {
           </Button>
         ) : null}
       </div>
-    )
+    );
   }
 }
 
-export default Notice
+export default Notice;

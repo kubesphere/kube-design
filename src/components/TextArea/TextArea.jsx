@@ -10,41 +10,41 @@ export default class TextArea extends Component {
     rows: PropTypes.string,
     autoResize: PropTypes.bool,
     maxHeight: PropTypes.number,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
   };
 
   static defaultProps = {
     rows: "2",
     autoResize: false,
     maxHeight: 800,
-    onChange() {}
+    onChange() {},
   };
 
-  ref = React.createRef()
+  ref = React.createRef();
 
   componentDidMount() {
-    this.autoResize()
+    this.autoResize();
   }
 
-  handleChange = e => {
-    this.autoResize()
-    const { onChange } = this.props
-    onChange && onChange(e.target.value)
-  }
+  handleChange = (e) => {
+    this.autoResize();
+    const { onChange } = this.props;
+    onChange && onChange(e.target.value);
+  };
 
   autoResize() {
-    const { maxHeight, autoResize } = this.props
+    const { maxHeight, autoResize } = this.props;
     if (!autoResize) {
-      return false
+      return false;
     }
-    const node = this.ref.current
-    node.style.height = ''
+    const node = this.ref.current;
+    node.style.height = "";
     if (node.scrollHeight > maxHeight) {
-      node.style.height = `${maxHeight}px`
-      node.style.overflow = 'auto'
+      node.style.height = `${maxHeight}px`;
+      node.style.overflow = "auto";
     } else {
-      node.style.height = `${node.scrollHeight}px`
-      node.style.overflow = 'hidden'
+      node.style.height = `${node.scrollHeight}px`;
+      node.style.overflow = "hidden";
     }
   }
 
@@ -54,11 +54,11 @@ export default class TextArea extends Component {
     const props = {
       ...rest,
       onChange: this.handleChange,
-    }
+    };
 
     const style = autoResize
       ? classNames("textarea", "textareaAuto", className)
-      : classNames("textarea", className)
+      : classNames("textarea", className);
 
     return <textarea ref={this.ref} {...props} className={style} />;
   }

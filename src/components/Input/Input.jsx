@@ -8,12 +8,12 @@ export default class Input extends Component {
   static propTypes = {
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     type: PropTypes.string,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
   };
 
   static defaultProps = {
     type: "text",
-    onChange() {}
+    onChange() {},
   };
 
   render() {

@@ -2,9 +2,11 @@ import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-import Icon from '../Icon';
+import Icon from "@kube-design/icons";
 
-import './styles.scss'
+import Loading from "../Loading";
+
+import "./styles.scss";
 
 export default class Button extends PureComponent {
   static propTypes = {
@@ -50,7 +52,7 @@ export default class Button extends PureComponent {
           {
             "has-icon": icon,
             "is-loading": loading,
-            "is-ghost": ghost
+            "is-ghost": ghost,
           },
           className
         )}
@@ -59,7 +61,7 @@ export default class Button extends PureComponent {
       >
         {icon && <Icon name={icon} type={iconType} />}
         {children && <div className="button-content">{children}</div>}
-        {/* {loading && <Loading size={12} />} */}
+        {loading && <Loading size={12} />}
       </button>
     );
   }

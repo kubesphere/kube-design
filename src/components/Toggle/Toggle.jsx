@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { isFunction, isBoolean } from 'lodash';
-import classNames from 'classnames';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { isFunction, isBoolean } from "lodash";
+import classNames from "classnames";
 
-import './styles.scss'
+import "./styles.scss";
 
 class Toggle extends Component {
   static propTypes = {
@@ -31,7 +31,7 @@ class Toggle extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const { checked } = prevState;
-    if ('checked' in nextProps && nextProps.checked !== checked) {
+    if ("checked" in nextProps && nextProps.checked !== checked) {
       return { checked: nextProps.checked };
     }
     return null;
@@ -69,11 +69,14 @@ class Toggle extends Component {
 
     return (
       <label
-        className={classNames('toggle', { disabled }, { checked })}
+        className={classNames("toggle", { disabled }, { checked })}
         onClick={this.toggleSwitch}
       >
         {showText ? (
-          <span className={classNames('text', { checked })} style={{ opacity: switching ? 0 : 1 }}>
+          <span
+            className={classNames("text", { checked })}
+            style={{ opacity: switching ? 0 : 1 }}
+          >
             {showText}
           </span>
         ) : null}

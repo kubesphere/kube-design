@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import Icon from "../Icon";
+import { get } from "lodash";
+
+import Icon from "@kube-design/icons";
+
 import Dropdown from "../Dropdown";
 import Menu from "../Menu";
-import { get } from "lodash";
 
 const MenuItem = Menu.MenuItem;
 

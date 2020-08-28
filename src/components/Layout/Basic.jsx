@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import React from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
 
 const propTypes = {
   children: PropTypes.node,
@@ -9,7 +9,13 @@ const propTypes = {
   as: PropTypes.string,
 };
 
-const Basic = ({ children, as: ElementType = 'div', componentCls, className, ...restProps }) => (
+const Basic = ({
+  children,
+  as: ElementType = "div",
+  componentCls,
+  className,
+  ...restProps
+}) => (
   <ElementType className={classNames(componentCls, className)} {...restProps}>
     {children}
   </ElementType>

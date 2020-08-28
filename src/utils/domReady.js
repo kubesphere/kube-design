@@ -9,7 +9,7 @@ const IEContentLoaded = (w, callback) => {
   };
   const polling = () => {
     try {
-      d.documentElement.doScroll('left');
+      d.documentElement.doScroll("left");
     } catch (e) {
       setTimeout(polling, 50);
       return;
@@ -18,23 +18,25 @@ const IEContentLoaded = (w, callback) => {
   };
   polling();
   d.onreadystatechange = () => {
-    if (d.readyState === 'complete') {
+    if (d.readyState === "complete") {
       d.onreadystatechange = null;
       init();
     }
   };
 };
 
-const DOMReady = fn => {
+const DOMReady = (fn) => {
   if (document.addEventListener) {
-    if (['complete', 'loaded', 'interactive'].indexOf(document.readyState) > -1) {
+    if (
+      ["complete", "loaded", "interactive"].indexOf(document.readyState) > -1
+    ) {
       setTimeout(fn, 0);
     } else {
       const loadFn = () => {
-        document.removeEventListener('DOMContentLoaded', loadFn, false);
+        document.removeEventListener("DOMContentLoaded", loadFn, false);
         fn();
       };
-      document.addEventListener('DOMContentLoaded', loadFn, false);
+      document.addEventListener("DOMContentLoaded", loadFn, false);
     }
   } else if (document.attachEvent) {
     IEContentLoaded(window, fn);

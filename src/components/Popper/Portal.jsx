@@ -1,6 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
+import React from "react";
+import ReactDOM from "react-dom";
+import PropTypes from "prop-types";
 
 class Portal extends React.Component {
   static propTypes = {
@@ -12,7 +12,7 @@ class Portal extends React.Component {
     this.state = {
       mounted: false,
     };
-    this.el = document.createElement('div');
+    this.el = document.createElement("div");
   }
 
   componentDidMount() {

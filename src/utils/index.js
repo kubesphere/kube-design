@@ -1,12 +1,16 @@
 export function getScrollParent(node) {
   if (node == null) return null;
-  if (node.nodeName === 'HTML') return window;
+  if (node.nodeName === "HTML") return window;
 
   const { scrollHeight, clientHeight } = node;
   const overflowRegex = /(auto|scroll)/;
-  const { overflow, overflowX, overflowY } = window.getComputedStyle(node, false);
+  const { overflow, overflowX, overflowY } = window.getComputedStyle(
+    node,
+    false
+  );
   if (
-    (scrollHeight > clientHeight || (scrollHeight === 0 && clientHeight === 0)) &&
+    (scrollHeight > clientHeight ||
+      (scrollHeight === 0 && clientHeight === 0)) &&
     overflowRegex.test(overflow + overflowY + overflowX)
   ) {
     return node;
@@ -28,27 +32,29 @@ export function fireEvent(node, eventName) {
 
   if (node.dispatchEvent) {
     // Gecko-style approach (now the standard) takes more work
-    let eventClass = '';
+    let eventClass = "";
 
     // Different events have different event classes.
     // If this switch statement can't map an eventName to an eventClass,
     // the event firing is going to fail.
     switch (eventName) {
-      case 'click': // Dispatching of 'click' appears to not work correctly in Safari. Use 'mousedown' or 'mouseup' instead.
-      case 'mousedown':
-      case 'mouseup':
-        eventClass = 'MouseEvents';
+      case "click": // Dispatching of 'click' appears to not work correctly in Safari. Use 'mousedown' or 'mouseup' instead.
+      case "mousedown":
+      case "mouseup":
+        eventClass = "MouseEvents";
         break;
 
-      case 'focus':
-      case 'change':
-      case 'blur':
-      case 'select':
-        eventClass = 'HTMLEvents';
+      case "focus":
+      case "change":
+      case "blur":
+      case "select":
+        eventClass = "HTMLEvents";
         break;
 
       default:
-        throw new Error(`fireEvent: Couldn't find an event class for event '${eventName}'.`);
+        throw new Error(
+          `fireEvent: Couldn't find an event class for event '${eventName}'.`
+        );
     }
 
     const event = doc.createEvent(eventClass);

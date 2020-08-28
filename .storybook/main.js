@@ -7,16 +7,7 @@ module.exports = {
     "./stories/Layout/*.stories.(js|tsx|mdx)",
     "./stories/Components/*.stories.(js|tsx|mdx)",
   ],
-  addons: [
-    {
-      name: "@storybook/addon-docs",
-      options: {
-        configureJSX: true,
-        babelOptions: {},
-        sourceLoaderOptions: null,
-      },
-    },
-  ],
+  addons: ["@storybook/addon-docs"],
   webpackFinal: async (config) => {
     config.module.rules.push({
       test: /\.scss$/,
