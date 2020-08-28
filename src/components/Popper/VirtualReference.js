@@ -1,6 +1,6 @@
 class VirtualReference {
   constructor(x, y, scrollParent) {
-    const update = e => this.updateRect(e);
+    const update = (e) => this.updateRect(e);
 
     this.rect = {
       top: y,
@@ -16,9 +16,9 @@ class VirtualReference {
     this.originScrollX = scrollParent.scrollX;
     this.originScrollY = scrollParent.scrollY;
 
-    scrollParent.addEventListener('scroll', update);
+    scrollParent.addEventListener("scroll", update);
     this.destroy = () => {
-      scrollParent.removeEventListener('scroll', update);
+      scrollParent.removeEventListener("scroll", update);
     };
   }
 

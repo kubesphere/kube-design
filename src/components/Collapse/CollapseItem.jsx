@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import Icon from '../Icon';
-import CollapseTransition from './CollapseTransition';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+
+import Icon from "@kube-design/icons";
+
+import CollapseTransition from "./CollapseTransition";
 
 export default class CollapseItem extends Component {
   static propTypes = {
@@ -27,7 +29,7 @@ export default class CollapseItem extends Component {
 
   render() {
     const { label, children, visible, isLast, className, style } = this.props;
-    const prefixCls = 'collapse';
+    const prefixCls = "collapse";
     const classLabel = classNames({
       [`${prefixCls}-item-label`]: true,
       [`${prefixCls}-item-label-border-bottom`]: !!visible,
@@ -41,7 +43,11 @@ export default class CollapseItem extends Component {
       <li className={classNames(`${prefixCls}-item`, className)} style={style}>
         <div className={classLabel} onClick={this.handleVisible}>
           {label}
-          <Icon name={`caret-${visible ? 'up' : 'down'}`} type="dark" size={20} />
+          <Icon
+            name={`caret-${visible ? "up" : "down"}`}
+            type="dark"
+            size={20}
+          />
         </div>
         <CollapseTransition visible={visible}>
           <div className={classContent}>{children}</div>

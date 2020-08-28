@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import { isEmpty, trim } from "lodash";
 
+import Icon from "@kube-design/icons";
+
 import Input from "./Input";
-import Icon from "../Icon";
 
 export default class InputSearch extends React.Component {
   static propTypes = {

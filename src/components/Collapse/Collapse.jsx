@@ -1,10 +1,10 @@
-import React, { Component, cloneElement, Children } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { noop, remove, isEqual } from 'lodash';
-import CollapseItem from './CollapseItem';
+import React, { Component, cloneElement, Children } from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+import { noop, remove, isEqual } from "lodash";
+import CollapseItem from "./CollapseItem";
 
-import './styles.scss'
+import "./styles.scss";
 
 export default class Collapse extends Component {
   static CollapseItem = CollapseItem;
@@ -33,7 +33,10 @@ export default class Collapse extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if ('activeKey' in nextProps && !isEqual(nextProps.activeKey, prevState.activeKey)) {
+    if (
+      "activeKey" in nextProps &&
+      !isEqual(nextProps.activeKey, prevState.activeKey)
+    ) {
       return { activeKey: nextProps.activeKey };
     }
     return null;
@@ -52,10 +55,10 @@ export default class Collapse extends Component {
       nextKey = activeKey.concat(key);
     }
     if (!accordion && !visible && activeKey.includes(key)) {
-      remove(nextKey, k => k === key);
+      remove(nextKey, (k) => k === key);
     }
 
-    if (!('activeKey' in this.props)) {
+    if (!("activeKey" in this.props)) {
       this.setState({ activeKey: nextKey });
     }
 
@@ -84,7 +87,10 @@ export default class Collapse extends Component {
   render() {
     const { children, className, style } = this.props;
     return (
-      <div className={classNames({ collapse: !!children.length }, className)} style={style}>
+      <div
+        className={classNames({ collapse: !!children.length }, className)}
+        style={style}
+      >
         <ul>{this.renderChildren()}</ul>
       </div>
     );

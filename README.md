@@ -7,7 +7,7 @@ Kube Design is a set of React component libraries created for KubeSphere console
 ## Install
 
 ```bash
-npm install --save kube-design
+yarn add @kube-design/components
 ```
 
 ## Usage

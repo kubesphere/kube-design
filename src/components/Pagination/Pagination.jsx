@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import Icon from "../Icon";
+
+import Icon from "@kube-design/icons";
+
 import "./styles.scss";
 
 export default class Pagination extends Component {

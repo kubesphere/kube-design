@@ -1,28 +1,28 @@
-import React, { Component, Fragment, cloneElement } from 'react';
-import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
-import { noop, isFunction } from 'lodash';
-import PopperJS from 'popper.js';
-import classNames from 'classnames';
-import { fireEvent, getScrollParent } from '../../utils';
-import VirtualReference from './VirtualReference';
-import Portal from './Portal';
+import React, { Component, Fragment, cloneElement } from "react";
+import ReactDOM from "react-dom";
+import PropTypes from "prop-types";
+import { noop, isFunction } from "lodash";
+import PopperJS from "popper.js";
+import classNames from "classnames";
+import { fireEvent, getScrollParent } from "../../utils";
+import VirtualReference from "./VirtualReference";
+import Portal from "./Portal";
 
-import './styles.scss';
+import "./styles.scss";
 
 const placementMapper = {
-  top: 'top',
-  left: 'left',
-  right: 'right',
-  bottom: 'bottom',
-  topLeft: 'top-start',
-  topRight: 'top-end',
-  leftTop: 'left-start',
-  leftBottom: 'left-end',
-  bottomLeft: 'bottom-start',
-  bottomRight: 'bottom-end',
-  rightTop: 'right-start',
-  rightBottom: 'right-end',
+  top: "top",
+  left: "left",
+  right: "right",
+  bottom: "bottom",
+  topLeft: "top-start",
+  topRight: "top-end",
+  leftTop: "left-start",
+  leftBottom: "left-end",
+  bottomLeft: "bottom-start",
+  bottomRight: "bottom-end",
+  rightTop: "right-start",
+  rightBottom: "right-end",
 };
 
 class Popper extends Component {
@@ -32,7 +32,11 @@ class Popper extends Component {
     trigger: PropTypes.string,
     placement: PropTypes.string,
     visible: PropTypes.bool,
-    content: PropTypes.oneOfType([PropTypes.node, PropTypes.element, PropTypes.func]),
+    content: PropTypes.oneOfType([
+      PropTypes.node,
+      PropTypes.element,
+      PropTypes.func,
+    ]),
     hideInterval: PropTypes.number,
     showArrow: PropTypes.bool,
     className: PropTypes.string,
@@ -47,11 +51,11 @@ class Popper extends Component {
   };
 
   static defaultProps = {
-    type: 'popper',
+    type: "popper",
     always: false,
     hideInterval: 200,
-    trigger: 'hover',
-    placement: 'top',
+    trigger: "hover",
+    placement: "top",
     showArrow: true,
     closeAfterClick: true,
     closeAfterMouseLeave: false,
@@ -92,18 +96,18 @@ class Popper extends Component {
       this.destroyPopper();
       this.createPopper(placement);
     }
-    if ('visible' in this.props && visible && !prevVisible) {
+    if ("visible" in this.props && visible && !prevVisible) {
       this.runPopper();
     } else if (this.popperInstance) {
       this.popperInstance.update();
     }
-    if ('visible' in this.props && !visible && prevVisible) {
+    if ("visible" in this.props && !visible && prevVisible) {
       this.hidePopper();
     }
-    if (stateVisible && trigger === 'click') {
-      document.addEventListener('click', this.handleDocumentClick);
+    if (stateVisible && trigger === "click") {
+      document.addEventListener("click", this.handleDocumentClick);
     } else {
-      document.removeEventListener('click', this.handleDocumentClick);
+      document.removeEventListener("click", this.handleDocumentClick);
     }
   }
 
@@ -116,7 +120,7 @@ class Popper extends Component {
   }
 
   // Show Popper
-  showPopper = e => {
+  showPopper = (e) => {
     const { onOpen } = this.props;
     const { visible } = this.state;
     e && e.stopPropagation();
@@ -135,13 +139,13 @@ class Popper extends Component {
   };
 
   // Hide Popper
-  hidePopper = e => {
+  hidePopper = (e) => {
     const { hideInterval } = this.props;
     const { visible } = this.state;
     if (e) e.stopPropagation();
     if (this.isPopperMounted && visible) {
       const { trigger, closeAfterMouseLeave, onClose } = this.props;
-      const isHoverTrigger = trigger === 'hover' || closeAfterMouseLeave;
+      const isHoverTrigger = trigger === "hover" || closeAfterMouseLeave;
       if (!isHoverTrigger) {
         this.setState({ visible: false }, () => {
           if (onClose && onClose !== noop) onClose(e);
@@ -151,20 +155,23 @@ class Popper extends Component {
         this.timer = setTimeout(() => {
           this.setState({ visible: false }, () => {
             if (onClose && onClose !== noop) onClose(e);
-            if (this.popperInstance) this.popperInstance.disableEventListeners();
+            if (this.popperInstance)
+              this.popperInstance.disableEventListeners();
           });
         }, hideInterval);
       }
     }
   };
 
-  createPopper = placement => {
+  createPopper = (placement) => {
     if (this.arrow) {
-      this.arrow.setAttribute('x-arrow', '');
+      this.arrow.setAttribute("x-arrow", "");
     }
 
     const options = {
-      placement: placementMapper[placement] ? placementMapper[placement] : 'bottom',
+      placement: placementMapper[placement]
+        ? placementMapper[placement]
+        : "bottom",
       positionFixed: true,
       modifiers: {
         hide: { enabled: true },
@@ -174,7 +181,7 @@ class Popper extends Component {
   };
 
   // Init Poppoer || Update Popper
-  runPopper = e => {
+  runPopper = (e) => {
     const { placement } = this.props;
     e && e.stopPropagation();
 
@@ -195,19 +202,19 @@ class Popper extends Component {
     }
   };
 
-  handleTogglePopper = e => {
+  handleTogglePopper = (e) => {
     const { onClick } = this.props;
     if (e && isFunction(onClick) && onClick !== noop) onClick(e);
     const { visible } = this.state;
     if (visible) {
       this.hidePopper(e);
     } else {
-      fireEvent(document, 'click');
+      fireEvent(document, "click");
       this.runPopper(e);
     }
   };
 
-  handlePopperClick = e => {
+  handlePopperClick = (e) => {
     const { closeAfterClick } = this.props;
     const { visible } = this.state;
     if (!visible) return;
@@ -220,7 +227,7 @@ class Popper extends Component {
     }
   };
 
-  handleDocumentClick = e => {
+  handleDocumentClick = (e) => {
     const { visible } = this.state;
     const rootNode = ReactDOM.findDOMNode(this);
     if (!rootNode || !this.reference || !this.popper || !visible) {
@@ -233,40 +240,40 @@ class Popper extends Component {
     const { trigger, closeAfterMouseLeave, closeAfterMouseUp } = this.props;
     if (!this.reference || !this.popper) return;
 
-    if (trigger === 'hover' || closeAfterMouseLeave) {
-      this.reference.addEventListener('mouseleave', this.hidePopper);
-      this.popper.addEventListener('mouseenter', this.showPopper);
-      this.popper.addEventListener('mouseleave', this.hidePopper);
+    if (trigger === "hover" || closeAfterMouseLeave) {
+      this.reference.addEventListener("mouseleave", this.hidePopper);
+      this.popper.addEventListener("mouseenter", this.showPopper);
+      this.popper.addEventListener("mouseleave", this.hidePopper);
     }
-    if (trigger === 'hover') {
-      this.reference.addEventListener('mouseenter', this.runPopper);
+    if (trigger === "hover") {
+      this.reference.addEventListener("mouseenter", this.runPopper);
       if (closeAfterMouseUp) {
-        document.addEventListener('mouseup', this.hidePopper);
+        document.addEventListener("mouseup", this.hidePopper);
       }
     }
-    if (trigger === 'click') {
-      this.reference.addEventListener('click', this.handleTogglePopper);
+    if (trigger === "click") {
+      this.reference.addEventListener("click", this.handleTogglePopper);
     }
   };
 
   removeEvent = () => {
     const { trigger, closeAfterMouseLeave, closeAfterMouseUp } = this.props;
-    if (trigger === 'click') {
-      document.removeEventListener('click', this.handleDocumentClick);
+    if (trigger === "click") {
+      document.removeEventListener("click", this.handleDocumentClick);
     }
-    if (trigger === 'hover' && closeAfterMouseUp) {
-      document.addEventListener('mouseup', this.hidePopper);
+    if (trigger === "hover" && closeAfterMouseUp) {
+      document.addEventListener("mouseup", this.hidePopper);
     }
 
     if (!this.reference) return;
-    if (trigger === 'hover' || closeAfterMouseLeave) {
-      this.reference.removeEventListener('mouseleave', this.hidePopper);
+    if (trigger === "hover" || closeAfterMouseLeave) {
+      this.reference.removeEventListener("mouseleave", this.hidePopper);
     }
-    if (trigger === 'hover') {
-      this.reference.removeEventListener('mouseenter', this.runPopper);
+    if (trigger === "hover") {
+      this.reference.removeEventListener("mouseenter", this.runPopper);
     }
-    if (trigger === 'click') {
-      this.reference.removeEventListener('click', this.handleTogglePopper);
+    if (trigger === "click") {
+      this.reference.removeEventListener("click", this.handleTogglePopper);
     }
   };
 
@@ -283,20 +290,24 @@ class Popper extends Component {
 
     return (
       <div
-        className={classNames('popper', propsClassName, {
-          'is-active': visible || always,
+        className={classNames("popper", propsClassName, {
+          "is-active": visible || always,
         })}
-        ref={ref => {
+        ref={(ref) => {
           this.popper = ref;
         }}
         style={style}
         onClick={this.handlePopperClick}
       >
-        <div className={`${type}-content`}>{isFunction(content) ? content() : content}</div>
+        <div className={`${type}-content`}>
+          {isFunction(content) ? content() : content}
+        </div>
         {showArrow ? (
           <div
             className="popper-arrow"
-            ref={ref => { this.arrow = ref; }}
+            ref={(ref) => {
+              this.arrow = ref;
+            }}
           />
         ) : null}
       </div>
@@ -306,7 +317,7 @@ class Popper extends Component {
   render() {
     const { children } = this.props;
     const cloneChildren = cloneElement(React.Children.only(children), {
-      ref: ref => {
+      ref: (ref) => {
         this.referenceNode = ref;
       },
     });

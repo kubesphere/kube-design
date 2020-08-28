@@ -12,8 +12,8 @@ export default class RadioGroup extends Component {
         PropTypes.shape({
           value: PropTypes.any,
           label: PropTypes.string,
-          disabled: PropTypes.bool
-        })
+          disabled: PropTypes.bool,
+        }),
       ])
     ),
     value: PropTypes.array,
@@ -21,17 +21,17 @@ export default class RadioGroup extends Component {
     direction: PropTypes.oneOf(["row", "column"]),
     className: PropTypes.string,
     disabled: PropTypes.bool,
-    children: PropTypes.node
+    children: PropTypes.node,
   };
 
   static defaultProps = {
     direction: "row",
     options: [],
-    onChange() {}
+    onChange() {},
   };
 
   state = {
-    value: this.props.value || ""
+    value: this.props.value || "",
   };
 
   handleOptionChange = (checked, value) => {
@@ -49,7 +49,7 @@ export default class RadioGroup extends Component {
         data-direction={direction}
         className={classNames(`radio-group`, className)}
       >
-        {options.map(option => (
+        {options.map((option) => (
           <Radio
             key={option.value}
             name={name}

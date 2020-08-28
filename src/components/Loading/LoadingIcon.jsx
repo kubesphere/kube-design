@@ -1,7 +1,7 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { isNumber, noop } from 'lodash';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+import { isNumber, noop } from "lodash";
 
 class LoadingIcon extends PureComponent {
   static propTypes = {
@@ -18,9 +18,9 @@ class LoadingIcon extends PureComponent {
   };
 
   static defaultProps = {
-    type: 'dark',
-    size: 'small',
-    prefix: 'qicon',
+    type: "dark",
+    size: "small",
+    prefix: "qicon",
     style: {},
     changeable: false,
     clickable: false,
@@ -44,21 +44,24 @@ class LoadingIcon extends PureComponent {
 
     let styles = style;
     if (isNumber(size)) {
-      styles = Object.assign({}, style, { width: `${size}px`, height: `${size}px` });
+      styles = Object.assign({}, style, {
+        width: `${size}px`,
+        height: `${size}px`,
+      });
     }
 
     return (
       <span
         style={styles}
         className={classNames(
-          'icon',
+          "icon",
           {
             [`is-${size}`]: !isNumber(size),
-            'icon-clickable': clickable,
-            'icon-changeable': changeable && !disabled,
-            'icon-disabled': disabled,
+            "icon-clickable": clickable,
+            "icon-changeable": changeable && !disabled,
+            "icon-disabled": disabled,
           },
-          className,
+          className
         )}
         onClick={onClick}
       >
@@ -70,11 +73,23 @@ class LoadingIcon extends PureComponent {
           viewBox="0 0 48 48"
         >
           <defs>
-            <linearGradient id="icon-line-spinner-a" x1="4.167%" x2="4.167%" y1="0%" y2="100%">
+            <linearGradient
+              id="icon-line-spinner-a"
+              x1="4.167%"
+              x2="4.167%"
+              y1="0%"
+              y2="100%"
+            >
               <stop offset="0%" stopColor="#E4EBF1" />
               <stop offset="100%" stopColor="#86919C" />
             </linearGradient>
-            <linearGradient id="icon-line-spinner-b" x1="95.833%" x2="95.833%" y1="0%" y2="100%">
+            <linearGradient
+              id="icon-line-spinner-b"
+              x1="95.833%"
+              x2="95.833%"
+              y1="0%"
+              y2="100%"
+            >
               <stop offset="0%" stopColor="#324558" />
               <stop offset="100%" stopColor="#86919C" />
             </linearGradient>

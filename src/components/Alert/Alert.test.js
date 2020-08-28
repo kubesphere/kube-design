@@ -13,7 +13,7 @@ it("renders correctly", () => {
   const wrapper = mount(<Alert {...props} />);
   expect(wrapper).toIncludeText(props.title);
   expect(wrapper).toIncludeText(props.message);
-  expect(wrapper.find(".qicon-question")).toHaveLength(1);
+  expect(wrapper.find(".kubed-icon-question")).toHaveLength(1);
 });
 
 it("hidden icon", () => {
@@ -23,5 +23,5 @@ it("hidden icon", () => {
   };
 
   const wrapper = mount(<Alert {...props} />);
-  expect(wrapper.find(".qicon")).toHaveLength(0);
+  expect(wrapper.find(".kubed-icon")).toHaveLength(0);
 });

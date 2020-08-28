@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 export default class CollapseTransition extends Component {
   static propTypes = {
@@ -53,31 +53,31 @@ export default class CollapseTransition extends Component {
 
   enter() {
     const el = this.selfRef;
-    el.style.display = 'block';
+    el.style.display = "block";
     if (el.scrollHeight !== 0) {
       el.style.height = `${el.scrollHeight}px`;
     } else {
-      el.style.height = '';
+      el.style.height = "";
     }
-    el.style.overflow = 'hidden';
+    el.style.overflow = "hidden";
     this.enterTimer = setTimeout(() => this.afterEnter(), 300);
   }
 
   afterEnter() {
     const el = this.selfRef;
-    el.style.display = 'block';
-    el.style.height = '';
+    el.style.display = "block";
+    el.style.height = "";
     el.style.overflow = el.dataset.oldOverflow;
   }
 
   beforeLeave() {
     const el = this.selfRef;
     el.dataset.oldOverflow = el.style.overflow;
-    el.style.display = 'block';
+    el.style.display = "block";
     if (el.scrollHeight !== 0) {
       el.style.height = `${el.scrollHeight}px`;
     }
-    el.style.overflow = 'hidden';
+    el.style.overflow = "hidden";
   }
 
   leave() {
@@ -91,8 +91,8 @@ export default class CollapseTransition extends Component {
   afterLeave() {
     const el = this.selfRef;
     if (!el) return;
-    el.style.display = 'none';
-    el.style.height = '';
+    el.style.display = "none";
+    el.style.height = "";
     el.style.overflow = el.dataset.oldOverflow;
   }
 
@@ -101,7 +101,7 @@ export default class CollapseTransition extends Component {
     return (
       <div
         className="collapse-transition"
-        ref={e => {
+        ref={(e) => {
           this.selfRef = e;
         }}
       >
