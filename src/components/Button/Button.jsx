@@ -61,7 +61,7 @@ export default class Button extends PureComponent {
       >
         {icon && <Icon name={icon} type={iconType} />}
         {children && <div className="button-content">{children}</div>}
-        {loading && <Loading size={12} />}
+        {loading && <Loading size={16} />}
       </button>
     );
   }

@@ -1,0 +1,25 @@
+name: Main
+on:
+  push:
+    branches:
+      - master
+
+  # Run build for any PRs.
+  pull_request:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Install dependencies
+        run: yarn
+      - name: Unit Tests
+        run: yarn test
+      - name: Build package
+        run: yarn build

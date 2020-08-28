@@ -7,7 +7,7 @@ module.exports = {
   output: {
     filename: "index.js",
     libraryTarget: "umd",
-    library: "kube-design"
+    library: "kube-design",
   },
   module: {
     rules: [
@@ -15,29 +15,29 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
-        }
+          loader: "babel-loader",
+        },
       },
       {
         test: /\.scss$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
-      }
-    ]
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+      },
+    ],
   },
   optimization: {
-    minimize: false
+    minimize: false,
   },
   resolve: {
-    extensions: [".js", ".jsx", ".scss"]
+    extensions: [".js", ".jsx", ".scss"],
   },
   externals: {
     react: "react",
-    classnames: "classnames"
+    classnames: "classnames",
   },
   plugins: [
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: "index.css"
-    })
-  ]
+      filename: "index.css",
+    }),
+  ],
 };

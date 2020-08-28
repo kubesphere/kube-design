@@ -6,12 +6,10 @@ module.exports = {
         corejs: "2",
         useBuiltIns: "entry",
         targets: ["> 5%", "ie 9"],
-        modules: "commonjs"
-      }
+        modules: "commonjs",
+      },
     ],
-    "@babel/preset-react"
+    "@babel/preset-react",
   ],
-  plugins: [
-    ["@babel/plugin-proposal-class-properties", { loose: true }]
-  ]
+  plugins: [["@babel/plugin-proposal-class-properties", { loose: true }]],
 };
