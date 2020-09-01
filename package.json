@@ -2,13 +2,15 @@
   "name": "@kube-design/components",
   "version": "0.1.0",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
+  "module": "esm/index.js",
   "scripts": {
     "start": "start-storybook --docs -p 9090",
     "build-storybook": "build-storybook --docs -s public",
-    "build": "webpack -p",
     "lint": "eslint src/**/*.jsx src/**/*.js",
-    "test": "jest"
+    "test": "jest",
+    "clean": "rimraf lib esm dist",
+    "build": "npm run clean && gulp"
   },
   "husky": {
     "hooks": {
@@ -26,6 +28,7 @@
     ]
   },
   "dependencies": {
+    "@babel/runtime": "^7.11.2",
     "@kube-design/icons": "^1.1.1",
     "async-validator": "^3.4.0",
     "bulma": "^0.9.0",
@@ -35,44 +38,37 @@
     "react": "^16.13.1",
     "react-dom": "^16.12.0"
   },
-  "peerDependencies": {
-    "classnames": "^2.2.6",
-    "lodash": "^4.17.15",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0"
-  },
   "devDependencies": {
-    "@babel/core": "^7.11.1",
+    "@babel/core": "^7.11.5",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
-    "@babel/preset-env": "^7.11.0",
+    "@babel/plugin-transform-runtime": "^7.11.5",
+    "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.10.4",
     "@storybook/addon-docs": "^6.0.12",
     "@storybook/addon-info": "^5.3.18",
     "@storybook/react": "^6.0.12",
     "babel-eslint": "^10.1.0",
-    "babel-loader": "^8.1.0",
-    "clean-webpack-plugin": "^3.0.0",
-    "css-loader": "^4.2.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.3",
     "eslint": "^7.7.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.6",
-    "file-loader": "^6.0.0",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^7.0.1",
+    "gulp-babel": "^8.0.0",
+    "gulp-sass": "^4.1.0",
     "husky": "^4.2.5",
     "jest": "^26.4.2",
     "jest-enzyme": "^7.1.2",
     "jsdom": "^16.4.0",
     "lint-staged": "^10.2.13",
-    "mini-css-extract-plugin": "^0.10.0",
     "mockjs": "^1.1.0",
     "node-sass": "^4.14.1",
     "react-is": "^16.13.1",
     "sass-loader": "^9.0.3",
     "style-loader": "^1.1.3",
-    "webpack": "^4.44.1",
-    "webpack-cli": "^3.3.11"
+    "through2": "^4.0.2"
   },
   "repository": "https://github.com/kubesphere/kube-design.git"
 }

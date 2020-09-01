@@ -1,0 +1,8 @@
+dist/
+lib/
+esm/
+jest/
+node_modules/
+jest.config.js
+babel.config.js
+.eslintrc.js
