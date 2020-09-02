@@ -21,5 +21,7 @@ jobs:
         run: yarn
       - name: Unit Tests
         run: yarn test
+      - name: Spot UI changes
+        run: yarn chromatic
       - name: Build package
         run: yarn build
