@@ -4,8 +4,6 @@ import classNames from "classnames";
 import { noop, remove, isEqual } from "lodash";
 import CollapseItem from "./CollapseItem";
 
-import "./styles.scss";
-
 export default class Collapse extends Component {
   static CollapseItem = CollapseItem;
 

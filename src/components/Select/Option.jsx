@@ -4,8 +4,6 @@ import classNames from "classnames";
 import Checkbox from "../Checkbox/Checkbox";
 
 import Icon from "@kube-design/icons";
-import "./styles.scss";
-
 export default class Option extends React.Component {
   static propTypes = {
     isActive: PropTypes.bool,

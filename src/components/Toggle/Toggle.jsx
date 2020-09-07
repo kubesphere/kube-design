@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import { isFunction, isBoolean } from "lodash";
 import classNames from "classnames";
 
-import "./styles.scss";
-
 class Toggle extends Component {
   static propTypes = {
     onText: PropTypes.string,

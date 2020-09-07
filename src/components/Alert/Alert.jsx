@@ -4,8 +4,6 @@ import classnames from "classnames";
 
 import Icon from "@kube-design/icons";
 
-import "./styles.scss";
-
 const ICON_COLORS = {
   info: {
     primary: "#3385b0",

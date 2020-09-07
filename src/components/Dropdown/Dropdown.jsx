@@ -5,8 +5,6 @@ import PropTypes from "prop-types";
 import { noop } from "lodash";
 import Popper from "../Popper";
 
-import "./styles.scss";
-
 class Dropdown extends Component {
   static propTypes = {
     trigger: PropTypes.string,

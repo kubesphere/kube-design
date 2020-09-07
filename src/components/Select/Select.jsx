@@ -1,16 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { findParentNode } from "../../utils/index";
-import ElementPagePos from "./elementPos.js";
 import { isEmpty, debounce, isEqual, cloneDeep } from "lodash";
-
 import Icon from "@kube-design/icons";
+
 import Tag from "../Tag/Tag";
 import Option from "./Option";
 import Loading from "../Loading/Loading";
-
-import "./styles.scss";
+import { findParentNode } from "../../utils/index";
+import ElementPagePos from "./elementPos.js";
 
 export default class Select extends React.Component {
   static propTypes = {

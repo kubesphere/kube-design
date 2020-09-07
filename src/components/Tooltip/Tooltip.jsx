@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import Popper from "../Popper";
-import "./styles.scss";
-
 class Tooltip extends Component {
   static propTypes = {
     always: PropTypes.bool,
