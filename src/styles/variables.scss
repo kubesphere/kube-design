@@ -94,11 +94,27 @@ $btn-danger-shadow: 0 8px 16px 0 rgba(202, 38, 33, 0.28);
 $box-shadow: 0 4px 16px 0 rgba(39, 50, 71, 0.28);
 
 // font
-$font-family: "PingFang SC", "Lantinghei SC", "Helvetica Neue", Helvetica, Arial,
-  "Microsoft YaHei", 微软雅黑, STHeitiSC-Light, simsun, 宋体,
-  "WenQuanYi Zen Hei", "WenQuanYi Micro Hei", sans-serif;
-$font-family-id: Roboto, $font-family;
-$font-family-code: "PT Mono", Monaco, Menlo, Consolas, "Courier New", monospace;
+$font-family: "PingFang SC",
+"Lantinghei SC",
+"Helvetica Neue",
+Helvetica,
+Arial,
+"Microsoft YaHei",
+微软雅黑,
+STHeitiSC-Light,
+simsun,
+宋体,
+"WenQuanYi Zen Hei",
+"WenQuanYi Micro Hei",
+sans-serif;
+$font-family-id: Roboto,
+$font-family;
+$font-family-code: "PT Mono",
+Monaco,
+Menlo,
+Consolas,
+"Courier New",
+monospace;
 
 $size-small: 12px;
 $size-normal: 14px;
@@ -127,5 +143,9 @@ $column-gap: 12px !default;
 $tooltip-background: $dark-color07;
 $tooltip-color: $white;
 $tooltip-box-shadow: 0 6px 12px 0 rgba(2, 5, 8, 0.08),
-  0 1px 2px 0 rgba(2, 5, 8, 0.08);
+0 1px 2px 0 rgba(2, 5, 8, 0.08);
 $tooltip-max-width: 300px;
+
+// ------- Select --------
+$select-box-shadow: 0 6px 12px 0 rgba(2, 5, 8, .04),
+0 1px 2px 0 rgba(2, 5, 8, .08);

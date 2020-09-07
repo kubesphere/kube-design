@@ -36,9 +36,9 @@ export default class Checkbox extends Component {
 
   handleChange = (e) => {
     const { onChange, value } = this.props;
-    const checked = e.target.checked;
+    const { checked } = this.state;
 
-    this.setState({ checked });
+    this.setState({ checked: !checked });
 
     onChange(checked, value, e);
   };
@@ -49,9 +49,9 @@ export default class Checkbox extends Component {
       children,
       onChange,
       indeterminate,
+      checked,
       ...rest
     } = this.props;
-    const { checked } = this.state;
 
     return (
       <label
@@ -59,7 +59,7 @@ export default class Checkbox extends Component {
           "checkbox",
           {
             indeterminate,
-            checked,
+            checked: this.state.checked,
             disabled: rest.disabled,
           },
           className
@@ -68,8 +68,8 @@ export default class Checkbox extends Component {
         <input
           type="checkbox"
           {...rest}
+          checked={this.state.checked}
           onChange={this.handleChange}
-          checked={checked}
         />
         {children ? <span className="label-value">{children}</span> : null}
       </label>
