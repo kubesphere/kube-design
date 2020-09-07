@@ -8,8 +8,6 @@ import TableContext from "./context";
 
 import Loading from "../Loading";
 
-import "./styles.scss";
-
 export default class Table extends Component {
   static propTypes = {
     columns: PropTypes.array,

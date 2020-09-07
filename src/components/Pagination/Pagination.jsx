@@ -2,8 +2,6 @@ import React, { Component } from "react";
 
 import Icon from "@kube-design/icons";
 
-import "./styles.scss";
-
 export default class Pagination extends Component {
   handlePrev = () => {
     const { page, onChange } = this.props;

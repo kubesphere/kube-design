@@ -5,8 +5,6 @@ import { isEqual, isUndefined, isEmpty } from "lodash";
 
 import Tooltip from "../Tooltip";
 
-import "./styles.scss";
-
 export default class Slider extends React.Component {
   static propTypes = {
     value: PropTypes.number,

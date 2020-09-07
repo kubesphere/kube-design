@@ -4,8 +4,6 @@ import classnames from "classnames";
 import Schema from "async-validator";
 import { set, get, isFunction } from "lodash";
 
-import "./styles.scss";
-
 export default class Form extends React.Component {
   static propTypes = {
     className: PropTypes.string,

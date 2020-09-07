@@ -6,8 +6,6 @@ import Icon from "@kube-design/icons";
 
 import Loading from "../Loading";
 
-import "./styles.scss";
-
 export default class Button extends PureComponent {
   static propTypes = {
     type: PropTypes.string,

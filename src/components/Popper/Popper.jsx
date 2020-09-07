@@ -8,8 +8,6 @@ import { fireEvent, getScrollParent } from "../../utils";
 import VirtualReference from "./VirtualReference";
 import Portal from "./Portal";
 
-import "./styles.scss";
-
 const placementMapper = {
   top: "top",
   left: "left",

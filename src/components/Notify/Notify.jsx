@@ -6,8 +6,6 @@ import Icon from "@kube-design/icons";
 import NotifyManager from "./NotifyManager";
 import { generateUUID } from "./utils";
 
-import "./styles.scss";
-
 const PLACEMENT = ["topLeft", "bottomLeft", "bottomRight", "topRight"];
 const prefixCls = "notify";
 const IconMap = {

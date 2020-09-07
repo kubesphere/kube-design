@@ -4,8 +4,6 @@ import classNames from "classnames";
 import { omit, isNumber } from "lodash";
 import Icon from "./LoadingIcon";
 
-import "./styles.scss";
-
 const sizeObj = {
   small: 20,
   medium: 32,
