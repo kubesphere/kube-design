@@ -38,7 +38,7 @@ export default class Checkbox extends Component {
 
     this.setState({ checked: !checked });
 
-    onChange(checked, value, e);
+    onChange(!checked, value, e);
   };
 
   render() {

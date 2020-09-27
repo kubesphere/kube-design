@@ -1,0 +1,76 @@
+@import "../../styles/variables";
+
+.icon {
+  display: inline-flex;
+  align-self: center;
+  background-position: 50%;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.icon-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.icon-changeable {
+  cursor: pointer;
+  &:hover,
+  &:active {
+    & > svg {
+      color: #00aa72;
+      fill: #90e0c5;
+    }
+  }
+}
+
+.icon-clickable {
+  cursor: pointer;
+  border-radius: $border-radius;
+  pointer-events: auto;
+}
+
+.icon-clickable:hover,
+.icon-clickable:active {
+  background-color: $bg-color;
+
+  & > svg {
+    color: $text-color;
+  }
+}
+
+.kubed-icon-dark {
+  color: #324558;
+  fill: #b6c2cd;
+}
+
+.kubed-icon-light {
+  color: rgba(255, 255, 255, 0.9);
+  fill: rgba(255, 255, 255, 0.4);
+}
+
+.kubed-icon-coloured {
+  color: #00aa72;
+  fill: #90e0c5;
+}
+
+.icon.is-small {
+  width: 16px;
+  height: 16px;
+}
+
+.icon.is-medium {
+  width: 24px;
+  height: 24px;
+}
+
+.icon.is-large {
+  width: 32px;
+  height: 32px;
+}

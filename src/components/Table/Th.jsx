@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { get } from "lodash";
 
-import Icon from "@kube-design/icons";
+import Icon from "../Icon";
 
 import Dropdown from "../Dropdown";
 import Menu from "../Menu";

@@ -8,7 +8,7 @@
   box-sizing: border-box;
   cursor: pointer;
   transition: all $trans-speed ease-in-out;
-  @include TypographySymbolText();
+  @include TypographySymbolText;
 
   &-content {
     height: 20px;
@@ -25,6 +25,10 @@
     opacity: 0.6;
     pointer-events: none;
     cursor: not-allowed;
+  }
+
+  & + .button {
+    margin-left: 12px;
   }
 }
 
@@ -71,7 +75,6 @@
   border: 1px solid $btn-default-border;
   background-color: $btn-default-bg;
   box-shadow: $btn-default-shadow;
-  text-shadow: $btn-text-shadow;
 
   &:hover {
     background-color: $btn-default-hover-bg;
@@ -86,45 +89,35 @@
 }
 
 .button-primary {
-  color: $white;
+  color: $btn-primary-text-color;
   border: 1px solid $btn-primary-bg;
   background-color: $btn-primary-bg;
   box-shadow: $btn-primary-shadow;
 
-  &:hover {
-    background-color: $btn-primary-hover-bg;
-  }
-
   &:active {
-    background-color: $btn-primary-hover-bg;
     box-shadow: $btn-primary-active-shadow;
   }
 }
 
 .button-control {
-  color: $white;
+  color: $btn-control-text-color;
   border: 1px solid $btn-control-bg;
   background-color: $btn-control-bg;
   box-shadow: $btn-control-shadow;
 
-  &:hover {
-    background-color: $btn-control-hover-bg;
-  }
-
   &:active {
-    border-color: $dark-color06;
+    box-shadow: $btn-control-active-shadow;
   }
 }
 
 .button-danger {
-  color: $white;
+  color: $btn-danger-text-color;
   border: 1px solid $btn-danger-bg;
   background-color: $btn-danger-bg;
-  text-shadow: $btn-text-shadow;
   box-shadow: $btn-danger-shadow;
 
   &:active {
-    background-color: $btn-danger-active-bg;
+    box-shadow: $btn-danger-active-shadow;
   }
 }
 

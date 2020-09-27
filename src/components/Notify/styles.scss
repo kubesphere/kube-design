@@ -11,77 +11,77 @@
     z-index: 2010;
     pointer-events: none;
     .notice {
-      box-shadow: 0 8px 16px 0 rgba(72, 91, 127, 0.2);
-      width: 376px;
+      box-shadow: $notify-shadow;
+      width: $notify-width;
       position: relative;
       border-radius: $border-radius;
-      border: solid 1px #fff;
-      background-color: #fff;
+      border: solid 1px $notify-default-color;
+      background-color: $notify-default-color;
       margin: 10px 0 20px;
-      color: $dark-color04;
+      color: $notify-default-text;
       pointer-events: auto;
 
       &-error {
-        border-color: #ca2621;
+        border-color: $notify-error-color;
 
         .notify-icon {
-          background-color: #ca2621;
+          background-color: $notify-error-color;
         }
 
         .notify-title {
-          color: #a80600;
+          color: $notify-error-text;
         }
 
         .notice-close {
-          color: #a80600;
+          color: $notify-error-text;
         }
       }
 
       &-warning {
-        border-color: #f5c414;
+        border-color: $notify-warning-color;
 
         .notify-icon {
-          background-color: #f5c414;
+          background-color: $notify-warning-color;
         }
 
         .notify-title {
-          color: #d6a800;
+          color: $notify-warning-text;
         }
 
         .notice-close {
-          color: #d6a800;
+          color: $notify-warning-text;
         }
       }
 
       &-success {
-        border-color: #55bc8a;
+        border-color: $notify-success-color;
 
         .notify-icon {
-          background-color: #55bc8a;
+          background-color: $notify-success-color;
         }
 
         .notify-title {
-          color: #55bc8a;
+          color: $notify-success-text;
         }
 
         .notice-close {
-          color: #55bc8a;
+          color: $notify-success-text;
         }
       }
 
       &-info {
-        border-color: #51a6d3;
+        border-color: $notify-info-color;
 
         .notify-icon {
-          background-color: #51a6d3;
+          background-color: $notify-info-color;
         }
 
         .notify-title {
-          color: #51a6d3;
+          color: $notify-info-text;
         }
 
         .notice-close {
-          color: #51a6d3;
+          color: $notify-info-text;
         }
       }
     }
@@ -116,7 +116,7 @@
       font-family: $font-family-id;
       font-weight: $font-bold;
       line-height: 20px;
-      color: $dark-color04;
+      color: $notify-default-text;
       @include break-all;
     }
   }

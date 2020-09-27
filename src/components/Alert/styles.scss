@@ -11,40 +11,40 @@
   }
 
   &-info {
-    background-color: #c7deef;
+    background-color: $alert-info-background;
 
     .alert-content {
-      color: #3385b0;
+      color: $alert-info-text-color;
     }
   }
 
   &-error {
-    background-color: #fae7e5;
+    background-color: $alert-error-background;
 
     .alert-content {
-      color: #8c3231;
+      color: $alert-error-text-color;
     }
   }
 
   &-warning {
-    background-color: $yellow-color01;
+    background-color: $alert-warning-background;
 
     .alert-content {
-      color: $yellow-color05;
+      color: $alert-warning-text-color;
     }
   }
 
   &-default {
-    background-color: $light-color01;
+    background-color: $alert-default-background;
 
     .alert-content {
-      color: $dark-color07;
+      color: $alert-default-text-color;
     }
   }
 }
 
 .alert-content {
-  @include TypographyParagraph();
+  @include TypographyParagraph;
 }
 
 .alert-title {

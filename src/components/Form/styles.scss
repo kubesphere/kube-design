@@ -6,10 +6,11 @@
 
   &-desc {
     margin-top: 4px;
-    @include TypographyParagraph($dark-color01);
+    @include TypographyParagraph;
+    color: $form-item-desc-color;
 
     a {
-      color: $blue-color03;
+      color: $primary;
     }
   }
 
@@ -20,17 +21,20 @@
   &-label {
     display: block;
     margin-bottom: 4px;
-    @include TypographyParagraph($dark-color06);
+    @include TypographyParagraph;
+    color: $form-item-label-color;
   }
 
   &-error {
     margin-top: 4px;
-    @include TypographyParagraph($red-color03);
+    @include TypographyParagraph;
+    color: $form-item-error-color;
   }
 
   &-required {
     margin: 0 6px;
-    @include TypographyParagraph($red-color03);
+    @include TypographyParagraph;
+    color: $form-item-required-color;
   }
 
   .input,
@@ -57,9 +61,8 @@
 .form-group {
   margin-bottom: 12px;
   padding: 11px 16px;
-  border-radius: 4px;
+  border-radius: $border-radius;
   border: solid 1px $border-color;
-  background-color: $white;
 
   &-title {
     font-weight: $font-bold;
@@ -71,15 +74,15 @@
   }
 
   &-desc {
-    @include TypographyParagraph($dark-color01);
+    @include TypographyParagraph($form-item-desc-color);
   }
 
   &-content {
-    border-radius: 4px;
-    background-color: $light-color01;
-    padding: 12px;
+    padding: $base-margin;
     margin: 0 -8px;
-    margin-top: 12px;
+    margin-top: $base-margin;
+    border-radius: $border-radius;
+    background-color: $form-group-content-bg;
   }
 
   &-hide {

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import Icon from "@kube-design/icons";
+import Icon from "../Icon";
 
 export default class Pagination extends Component {
   handlePrev = () => {
@@ -10,35 +10,32 @@ export default class Pagination extends Component {
 
   handleNext = () => {
     const { total, page, limit, onChange } = this.props;
-    const totalPage = Math.round(total / limit);
+    const totalPage = Math.round(total / limit) + 1;
     onChange && onChange(Math.min(page + 1, totalPage));
   };
 
   render() {
     const { total, page, limit } = this.props;
-    const totalPage = Math.round(total / limit);
+    const totalPage = Math.round(total / limit) + 1;
     return (
       <div className="pagination">
-        <div>
-          Total {total} item{total > 1 ? "s" : ""}
-        </div>
-        <div>
-          <Icon
-            name="previous"
-            disabled={page <= 1}
-            changeable
-            onClick={this.handlePrev}
-          />
-          <span>
-            {page}/{totalPage}
-          </span>
-          <Icon
-            name="next"
-            disabled={page >= totalPage}
-            changeable
-            onClick={this.handleNext}
-          />
-        </div>
+        <Icon
+          name="previous"
+          disabled={page <= 1}
+          size={20}
+          changeable
+          onClick={this.handlePrev}
+        />
+        <span>
+          {page} / {totalPage}
+        </span>
+        <Icon
+          name="next"
+          disabled={page >= totalPage}
+          size={20}
+          changeable
+          onClick={this.handleNext}
+        />
       </div>
     );
   }

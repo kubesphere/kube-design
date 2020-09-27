@@ -1,0 +1,16 @@
+@import "./variables";
+
+* {
+  box-sizing: inherit;
+}
+
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+a {
+  &:hover {
+    color: $primary;
+  }
+}

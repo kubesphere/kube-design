@@ -1,28 +1,15 @@
+@import "../src/styles/index.scss";
+
 body {
   line-height: 1;
   font-size: 12px;
-  font-family: "Nunito Sans", -apple-system, ".SFNSText-Regular",
+  font-family: PingFang SC, -apple-system, ".SFNSText-Regular",
     "San Francisco", BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica,
     Arial, sans-serif;
 }
-ol,
-ul {
-  list-style: none;
-}
-blockquote,
-q {
-  quotes: none;
-}
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-  content: "";
-  content: none;
-}
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
+
+p {
+  margin: 12px 0;
 }
 
 .button + .button {
@@ -94,6 +81,3 @@ table {
   background-color: #3e5265;
   color: #c6d1dc !important;
 }
-
-@import "../src/styles/index.scss";
-@import "../src/styles/all.scss";

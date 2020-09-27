@@ -70,17 +70,3 @@ export function fireEvent(node, eventName) {
     node.fireEvent(`on${eventName}`, event);
   }
 }
-
-export function findParentNode(node, parentNode) {
-  if (!node || !parentNode) {
-    return false;
-  }
-  let parent = node.parentNode;
-  while (parent && parent !== document.body) {
-    parent = parent.parentNode;
-    if (parent === parentNode) {
-      return true;
-    }
-  }
-  return false;
-}

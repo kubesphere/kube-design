@@ -1,72 +1,74 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { isEmpty, debounce, isEqual, cloneDeep } from "lodash";
-import Icon from "@kube-design/icons";
+import { get, isEmpty, isEqual, isFunction } from "lodash";
 
-import Tag from "../Tag/Tag";
+import Tag from "../Tag";
+import Icon from "../Icon";
+import Loading from "../Loading";
 import Option from "./Option";
-import Loading from "../Loading/Loading";
-import { findParentNode } from "../../utils/index";
 import ElementPagePos from "./elementPos.js";
 
 export default class Select extends React.Component {
   static propTypes = {
+    name: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
     defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
     options: PropTypes.array,
     className: PropTypes.string,
     style: PropTypes.object,
-    valueKey: PropTypes.string,
-    labelKey: PropTypes.string,
     searchable: PropTypes.bool,
     disabled: PropTypes.bool,
     clearable: PropTypes.bool,
     placeholder: PropTypes.string,
-    name: PropTypes.string,
     multi: PropTypes.bool,
+    prefixIcon: PropTypes.node,
+    isLoading: PropTypes.bool,
+    pagination: PropTypes.shape({
+      page: PropTypes.number,
+      limit: PropTypes.number,
+      total: PropTypes.number,
+    }),
+    onFetch: PropTypes.func,
     onChange: PropTypes.func,
     optionRenderer: PropTypes.func,
     valueRenderer: PropTypes.func,
-    prefixIcon: PropTypes.node,
-    isLoading: PropTypes.bool,
   };
 
   static defaultProps = {
     className: "",
     style: {},
-    valueKey: "value",
-    labelKey: "label",
     searchable: false,
     disabled: false,
     clearable: false,
-    placeholder: "请选择",
+    placeholder: "PLEASE_SELECT",
     name: null,
     multi: false,
-    onChange() {},
     prefixIcon: null,
     isLoading: false,
     options: [],
+    onChange() {},
+    onPaging() {},
   };
 
   state = {
     visible: false,
     value: this.props.multi ? [] : "",
-    options: this.props.options,
-    oldOption: this.props.options,
     inputValue: this.props.defaultValue,
     inputVisible: true,
   };
 
-  input = null;
-  select = null;
-  inputSearchMessage = null;
+  inputRef = React.createRef();
+  selectRef = React.createRef();
+  inputValueRef = React.createRef();
 
   componentDidMount() {
     this.handleInitValue();
 
-    this.selectPos = new ElementPagePos(this.select);
-    this.selectPos.init();
+    if (this.selectRef && this.selectRef.current) {
+      this.selectPos = new ElementPagePos(this.selectRef.current);
+      this.selectPos.init();
+    }
 
     document.body.addEventListener("click", this.handleDocumentClick);
     document.addEventListener("scroll", this.handleDocumentScroll);
@@ -100,7 +102,7 @@ export default class Select extends React.Component {
         (defaultValueType !== "array" && multi) ||
         (!multi && defaultValueType === "array")
       ) {
-        throw "default value 类型不对";
+        throw "wrong default value type";
       } else {
         this.setState({
           inputValue: defaultValue,
@@ -115,7 +117,7 @@ export default class Select extends React.Component {
         (valueType !== "array" && multi) ||
         (!multi && valueType === "array")
       ) {
-        throw "value 类型不对";
+        throw "wrong value type";
       } else {
         this.setState({ value, inputValue: value, inputVisible: false });
       }
@@ -129,7 +131,16 @@ export default class Select extends React.Component {
       this.selectPos.getDocumentscrollTop();
       this.selectPos.getDocumentscrollLeft();
       if (isNeedRender) {
-        this.setState({ a: 1 });
+        this.forceUpdate();
+      }
+    }
+  };
+
+  updateInputDOM = ({ width, focus }) => {
+    if (this.inputRef && this.inputRef.current) {
+      this.inputRef.current.style.width = width;
+      if (focus) {
+        this.inputRef.current.focus();
       }
     }
   };
@@ -139,12 +150,12 @@ export default class Select extends React.Component {
       return;
     }
 
-    const { labelKey, multi, searchable } = this.props;
+    const { multi, searchable } = this.props;
     const { visible, value } = this.state;
-    const selectValue = option[labelKey];
+    const selectValue = option.value;
 
     if (multi) {
-      let chooseValue = cloneDeep(value);
+      let chooseValue = [...value];
       if (value.includes(selectValue)) {
         chooseValue = chooseValue.filter((v) => v !== selectValue);
       } else {
@@ -155,99 +166,104 @@ export default class Select extends React.Component {
         this.setState({ inputVisible: true });
       }
 
-      if (searchable) {
-        this.inputEle.focus();
-        if (isEmpty(chooseValue)) {
-          this.inputWidth = "auto";
-        } else {
-          this.inputWidth = "2px";
+      this.setState(
+        { value: chooseValue, inputValue: "", inputVisible: false },
+        () => {
+          this.selectPos.init();
+          if (searchable) {
+            this.updateInputDOM({
+              width: isEmpty(this.state.value) ? "auto" : "2px",
+              focus: true,
+            });
+          }
+          this.props.onChange(this.state.value);
         }
-      }
-
-      this.setState({ value: chooseValue, inputVisible: false }, () => {
-        this.selectPos.init();
-      });
+      );
     } else {
-      this.setState({
-        value: selectValue,
-        visible: !visible,
-        inputVisible: false,
-      });
+      this.setState(
+        {
+          visible: !visible,
+          value: selectValue,
+          inputValue: selectValue,
+          inputVisible: false,
+        },
+        () => {
+          this.props.onChange(this.state.value);
+        }
+      );
     }
-    this.props.onChange(`select ${selectValue}`);
   };
 
   handleOptionsOpen = (e) => {
-    const { visible, oldOption } = this.state;
+    const { visible } = this.state;
     const { searchable } = this.props;
 
     this.handleDocumentScroll(false);
 
-    this.setState({ visible: !visible, options: oldOption });
+    this.setState({ visible: searchable ? true : !visible });
 
     if (searchable) {
-      this.inputEle.focus();
       this.handleInputStatus(true);
     }
   };
 
   handleOptionsClose = () => {
-    const { visible, oldOption } = this.state;
-    this.setState({ visible: !visible, options: oldOption });
+    const { visible } = this.state;
+    this.setState({ visible: !visible });
+  };
+
+  handleOptionsScroll = (e) => {
+    const { onFetch, pagination = {} } = this.props;
+    const { page = 1 } = pagination;
+    const { scrollTop, scrollHeight, clientHeight } = e.target;
+    if (scrollTop + clientHeight - scrollHeight >= 0) {
+      onFetch({ page: page + 1 });
+    }
   };
 
   handleDocumentClick = (e) => {
     const { visible } = this.state;
-    const { searchable } = this.props;
-    if (visible) {
-      const eventNode = e.target;
-      const isInSelect = findParentNode(eventNode, this.select);
-
-      if (!isInSelect) {
+    if (visible && this.selectRef && this.selectRef.current) {
+      if (!this.selectRef.current.contains(e.target)) {
         this.handleOptionsClose();
-      } else if (searchable) {
-        this.handleInputStatus(true);
       }
     }
   };
 
   handleInputStatus = (visible) => {
-    const { value } = this.state;
-    const { multi } = this.props;
-    const currentValue = multi ? "" : value;
-    this.inputEle.value = currentValue;
-    this.setState({ inputVisible: visible, inputValue: currentValue }, () => {
-      if (multi) {
-        this.inputWidth = isEmpty(value) ? "auto" : "2px";
+    const { value, inputValue } = this.state;
+    const { multi, searchable, options } = this.props;
+    const option = options.find((item) => item.value === value) || {};
+    const currentInputValue = multi ? "" : option.label || inputValue || "";
+    this.setState(
+      { inputVisible: visible, inputValue: currentInputValue },
+      () => {
+        if (multi && searchable) {
+          this.updateInputDOM({
+            width: isEmpty(value) ? "auto" : "2px",
+            focus: visible,
+          });
+        }
       }
-    });
+    );
   };
 
   handleInputChange = (e) => {
     const value = e.target.value;
-    const { multi, searchable } = this.props;
+    const { multi, searchable, onFetch } = this.props;
     this.setState({ inputValue: value }, () => {
       if (multi && searchable) {
-        this.inputWidth = this.inputSearchMessage.clientWidth + 5;
+        const width = isEmpty(this.state.value)
+          ? "auto"
+          : `${get(this.inputValueRef, "current.clientWidth", 0) + 5}px`;
+        this.updateInputDOM({ width });
       }
     });
 
-    this.handleOptionsChange(value);
-  };
-
-  handleOptionsChange = debounce((value) => {
-    const { oldOption } = this.state;
-    const { labelKey } = this.props;
-    const filterOptions = oldOption.filter(
-      (v, i) => v[labelKey].indexOf(value) > -1
-    );
-
-    if (isEmpty(filterOptions)) {
-      filterOptions.push({ label: "暂无数据" });
+    if (isFunction(onFetch)) {
+      onFetch({ name: value });
     }
-
-    this.setState({ options: filterOptions });
-  }, 200);
+  };
 
   handleMultiValueDelete = (e, i) => {
     e.nativeEvent.stopImmediatePropagation();
@@ -259,7 +275,7 @@ export default class Select extends React.Component {
 
     if (isEmpty(value)) {
       if (this.props.searchable) {
-        this.inputWidth = "auto";
+        this.updateInputDOM({ width: "auto" });
       }
       this.setState({ inputVisible: true });
     }
@@ -268,26 +284,34 @@ export default class Select extends React.Component {
   handleClearValue = (e) => {
     e.nativeEvent.stopImmediatePropagation();
     e.stopPropagation();
-    const { multi } = this.props;
+    const { multi, searchable, onChange, onFetch } = this.props;
 
-    this.setState({
-      value: multi ? [] : null,
-      inputVisible: true,
-    });
+    this.setState(
+      {
+        value: multi ? [] : "",
+        inputValue: "",
+        inputVisible: true,
+      },
+      () => {
+        onChange();
+        if (searchable && isFunction(onFetch)) {
+          onFetch();
+        }
+      }
+    );
   };
 
   renderIcon = () => {
     const { clearable, disabled } = this.props;
-    const { visible, value } = this.state;
-
+    const { visible, inputValue } = this.state;
     return (
       <span
         className="select-icon"
         onClick={disabled ? null : this.handleOptionsOpen}
       >
         <span className="select-icon-item">
-          {clearable && !isEmpty(value) ? (
-            <Icon name="close" onClick={this.handleClearValue} />
+          {clearable && !isEmpty(inputValue) ? (
+            <Icon name="close" onClick={this.handleClearValue} clickable />
           ) : visible ? (
             <Icon name="chevron-up" />
           ) : (
@@ -310,18 +334,21 @@ export default class Select extends React.Component {
   };
 
   renderOptions = () => {
-    const { visible, options } = this.state;
-    const { isLoading } = this.props;
+    const { visible } = this.state;
+    const { options, isLoading, pagination = {}, onFetch } = this.props;
+    const { page = 1, total = 0, limit = 10 } = pagination;
 
-    if (!visible) {
+    if (!visible || !get(this.selectRef, "current")) {
       return null;
     }
 
-    const elementTop =
-      this.selectPos.top +
-      this.select.clientHeight -
-      this.selectPos.docScrollTop;
-    const elementLeft = this.selectPos.left - this.selectPos.docScrollLeft;
+    const { clientWidth, clientHeight } = this.selectRef.current;
+    const { top, left, docScrollTop, docScrollLeft } = this.selectPos;
+
+    const elementTop = top + clientHeight - docScrollTop;
+    const elementLeft = left - docScrollLeft;
+
+    const canFetch = isFunction(onFetch) && page * limit < total;
 
     return (
       <div
@@ -329,47 +356,51 @@ export default class Select extends React.Component {
         style={{
           top: elementTop,
           left: elementLeft,
-          width: this.select.clientWidth,
+          width: clientWidth,
         }}
-        ref={(ref) => (this.selectOptions = ref)}
+        onScrollCapture={canFetch ? this.handleOptionsScroll : null}
       >
-        {isLoading === true ? (
+        {options.length === 0 && !isLoading
+          ? this.renderEmpty()
+          : this.renderOption(options)}
+        {isLoading && (
           <div className="select-options-loading">
-            <Loading size="small" />
+            <Loading size={20} />
           </div>
-        ) : (
-          this.renderOption(options)
         )}
       </div>
     );
   };
 
+  renderEmpty = () => {
+    return <div className="select-options-empty">No Data</div>;
+  };
+
   renderOption = (options) => {
     const { value } = this.state;
-    const { labelKey, multi, optionRenderer } = this.props;
+    const { multi, optionRenderer } = this.props;
     const isActive = (v) =>
-      multi ? value.includes(v[labelKey]) : v[labelKey] === value;
+      multi ? value.includes(v.value) : v.value === value;
 
-    return options.map((v, i) => {
-      if (v.options) {
+    return options.map((item, i) => {
+      if (item.options) {
         return (
           <div className="select-group-option" key={i}>
-            <p className="select-group-title">{v[labelKey]}</p>
-            {this.renderOption(v.options)}
+            <p className="select-group-title">{item.label}</p>
+            {this.renderOption(item.options)}
           </div>
         );
       } else {
         return (
           <Option
             key={i}
-            label={v[labelKey]}
             multi={multi}
-            disabled={v.disabled}
+            disabled={item.disabled}
             onClick={this.handleOptionClick}
-            isActive={isActive(v)}
-            option={v}
+            isActive={isActive(item)}
+            option={item}
           >
-            {optionRenderer ? optionRenderer(v) : v[labelKey]}
+            {optionRenderer ? optionRenderer(item) : item.label}
           </Option>
         );
       }
@@ -394,33 +425,34 @@ export default class Select extends React.Component {
     return (
       <div className={multiClassName}>
         <input
-          style={{ width: this.inputWidth }}
-          readOnly={!searchable}
-          ref={(ref) => {
-            this.inputEle = ref;
-          }}
-          placeholder={multiPlaceholder}
           name={name}
+          ref={this.inputRef}
+          placeholder={multiPlaceholder}
+          value={inputValue || ""}
           onChange={this.handleInputChange}
+          readOnly={!searchable}
+          autoComplete="off"
         />
-        <span
-          className="select-input-search"
-          ref={(ref) => (this.inputSearchMessage = ref)}
-        >
+        <span className="select-input-search" ref={this.inputValueRef}>
           {inputValue}
         </span>
       </div>
     );
   };
 
-  renderMultiValue = (v, i) => {
-    const { valueRenderer } = this.props;
+  renderMultiValue = (value, i) => {
+    const { valueRenderer, options } = this.props;
+
+    const option = options.find((item) => item.value === value) || {
+      label: value,
+      value,
+    };
 
     return (
       <Tag className="select-multi-value-item" key={i}>
         <span>
           <span className="select-multi-value-item-label">
-            {valueRenderer ? valueRenderer(v) : v}
+            {valueRenderer ? valueRenderer(option) : option.label}
           </span>
           <span
             className="select-multi-value-item-icon"
@@ -435,15 +467,20 @@ export default class Select extends React.Component {
 
   renderBaseValues = () => {
     const { value, inputVisible } = this.state;
-    const { multi, valueRenderer } = this.props;
+    const { multi, valueRenderer, options } = this.props;
 
     if (isEmpty(value)) {
       return null;
     }
 
     if (multi) {
-      return <>{value.map(this.renderMultiValue)}</>;
+      return value.map(this.renderMultiValue);
     }
+
+    const option = options.find((item) => item.value === value) || {
+      label: value,
+      value,
+    };
 
     return (
       <div
@@ -453,29 +490,28 @@ export default class Select extends React.Component {
           "select-multi-value": multi,
         })}
       >
-        {valueRenderer ? valueRenderer(value) : value}
+        {valueRenderer ? valueRenderer(option) : option.label}
       </div>
     );
   };
 
   render() {
     const { style, className, multi, prefixIcon, disabled } = this.props;
-    const { value } = this.state;
+    const { visible } = this.state;
 
     return (
       <div
         className={classNames(
-          { select: !multi, "select-multi": multi },
+          multi ? "select-multi" : "select",
           { "select-disabled": disabled },
+          { "is-open": visible },
           className
         )}
         style={style}
-        ref={(ref) => (this.select = ref)}
+        ref={this.selectRef}
       >
         <div
-          className={classNames("select-container", {
-            "padding-left8": multi && !isEmpty(value),
-          })}
+          className="select-control"
           onClick={disabled ? null : this.handleOptionsOpen}
         >
           {this.renderPrefixIcon(prefixIcon)}

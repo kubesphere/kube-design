@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import Checkbox from "../Checkbox/Checkbox";
+import Icon from "../Icon";
 
-import Icon from "@kube-design/icons";
 export default class Option extends React.Component {
   static propTypes = {
     isActive: PropTypes.bool,
@@ -30,6 +30,7 @@ export default class Option extends React.Component {
     const { disabled, isActive } = this.props;
     return (
       <Checkbox
+        size="small"
         checked={isActive}
         disabled={disabled}
         onChange={this.handleCancelBubble}
@@ -69,7 +70,7 @@ export default class Option extends React.Component {
       <div
         className={classNames("select-option", {
           "select-option-disabled": disabled,
-          "select-option-isActive": isActive,
+          "select-option-active": isActive,
         })}
         onClick={this.handleSelectedValue}
       >

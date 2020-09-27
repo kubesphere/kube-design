@@ -8,7 +8,7 @@ import Popper from "../Popper";
 class Dropdown extends Component {
   static propTypes = {
     trigger: PropTypes.string,
-    mode: PropTypes.oneOf(["dark", ""]),
+    theme: PropTypes.oneOf(["dark", ""]),
     content: PropTypes.oneOfType([
       PropTypes.node,
       PropTypes.element,
@@ -25,7 +25,7 @@ class Dropdown extends Component {
   };
 
   static defaultProps = {
-    mode: "",
+    theme: "",
     trigger: "click",
     placement: "bottomLeft",
     showArrow: false,
@@ -35,14 +35,14 @@ class Dropdown extends Component {
   };
 
   render() {
-    const { className, children, onClick, mode, ...restProps } = this.props;
+    const { className, children, onClick, theme, ...restProps } = this.props;
     const isTriggerValid = isValidElement(children);
 
     return (
       <Popper
         {...restProps}
         type="dropdown"
-        className={classNames("dropdown", `dropdown-${mode}`, className)}
+        className={classNames("dropdown", `dropdown-${theme}`, className)}
         onClick={onClick}
       >
         {isTriggerValid ? (

@@ -4,6 +4,7 @@ import classNames from "classnames";
 
 export default class Tag extends React.Component {
   static propTypes = {
+    color: PropTypes.string,
     type: PropTypes.oneOf(["default", "warning", "primary"]),
     className: PropTypes.string,
   };
@@ -13,9 +14,19 @@ export default class Tag extends React.Component {
   };
 
   render() {
-    const { type, children, className } = this.props;
+    const { type, children, className, color } = this.props;
+
+    const style = {};
+
+    if (color) {
+      style.backgroundColor = color;
+    }
+
     return (
-      <span className={classNames("tag", `tag-${type}`, className)}>
+      <span
+        className={classNames("tag", `tag-${type}`, className)}
+        style={style}
+      >
         {children}
       </span>
     );

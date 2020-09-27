@@ -1,5 +1,5 @@
-@import '../../styles/variables';
-@import '../../styles/mixins';
+@import "../../styles/variables";
+@import "../../styles/mixins";
 
 .progress {
   display: block;
@@ -17,17 +17,17 @@
     height: 100%;
     transition: all 0.3s ease;
     z-index: 1;
-    
+
     &-primary {
       background-color: $primary;
     }
-  
+
     &-warning {
       background-color: $warning;
-    }  
-  
+    }
+
     &-danger {
-      background-color: $danger;
+      background-color: $error;
     }
   }
 }

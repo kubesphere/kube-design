@@ -3,11 +3,7 @@ import classnames from "classnames";
 import { noop, isFunction } from "lodash";
 import PropTypes from "prop-types";
 
-import MenuItem from "./MenuItem";
-
 class Menu extends Component {
-  static MenuItem = MenuItem;
-
   static propTypes = {
     onClick: PropTypes.func,
     style: PropTypes.object,

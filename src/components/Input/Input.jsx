@@ -11,11 +11,18 @@ export default class Input extends Component {
 
   static defaultProps = {
     type: "text",
+    value: "",
     onChange() {},
   };
 
   render() {
-    const { className, ...rest } = this.props;
-    return <input {...rest} className={classNames("input", className)} />;
+    const { className, innerRef, ...rest } = this.props;
+    return (
+      <input
+        {...rest}
+        ref={innerRef}
+        className={classNames("input", className)}
+      />
+    );
   }
 }

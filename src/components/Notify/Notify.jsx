@@ -1,7 +1,7 @@
 import React from "react";
 import { includes, omit, isString } from "lodash";
 
-import Icon from "@kube-design/icons";
+import Icon from "../Icon";
 
 import NotifyManager from "./NotifyManager";
 import { generateUUID } from "./utils";
