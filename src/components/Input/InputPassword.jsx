@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import propTypes from "prop-types";
 import { noop } from "lodash";
 
-import Icon from "@kube-design/icons";
+import Icon from "../Icon";
 
 import Input from "./Input";
 

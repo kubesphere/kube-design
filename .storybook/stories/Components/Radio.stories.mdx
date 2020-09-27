@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { Meta, Story, Preview, Props } from "@storybook/addon-docs/blocks";
-import { Radio, RadioGroup } from "components/Radio";
+import { Radio, RadioButton, RadioGroup } from "components/Radio";
 
 <Meta title="Components/Radio" component={Radio} />
 
@@ -22,21 +22,35 @@ Basic usages for `Radio` component.
 
 <Preview>
   <Story name="basic radio">
-      {
-        () => {
-          const [checked1, setChecked1] = useState(false);
-          const [checked2, setChecked2] = useState(false);
-          return (
-            <>
-              <Radio name="test1" checked={checked1} onChange={(checked) => setChecked1(checked)}>Test1</Radio>
-              <Radio name="test2" checked={checked2} onChange={(checked) => setChecked2(checked)}>Test2</Radio>
-              <Radio name="test3" disabled>
-                Test3
-              </Radio>
-            </>
-          )
-        }
-      }
+    {() => {
+      const [value, setValue] = useState(1);
+      return (
+        <>
+          <Radio
+            name="test1"
+            checked={value === 1}
+            onChange={(checked) => setValue(1)}
+          >
+            Test1
+          </Radio>
+          <Radio
+            name="test2"
+            checked={value === 2}
+            onChange={(checked) => setValue(2)}
+          >
+            Test2
+          </Radio>
+          <Radio
+            name="test3"
+            checked={value === 3}
+            onChange={(checked) => setValue(3)}
+            disabled
+          >
+            Test3
+          </Radio>
+        </>
+      );
+    }}
   </Story>
 </Preview>
 
@@ -62,26 +76,64 @@ Basic usages for `RadioGroup` component.
       const options = [
         {
           label: "中国",
-          value: "China"
+          value: "China",
         },
         {
           label: "巴西",
-          value: "Brazil"
+          value: "Brazil",
         },
         {
           label: "俄罗斯",
-          value: "Russian"
+          value: "Russian",
         },
         {
           label: "南非",
-          value: "South Africa"
+          value: "South Africa",
         },
         {
           label: "印度",
-          value: "Indian"
-        }
+          value: "Indian",
+        },
       ];
       return <RadioGroup name="test" options={options} />;
+    }}
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="basic radio group button">
+    {() => {
+      const options = [
+        {
+          label: "中国",
+          value: "China",
+        },
+        {
+          label: "巴西",
+          value: "Brazil",
+        },
+        {
+          label: "俄罗斯",
+          value: "Russian",
+        },
+        {
+          label: "南非",
+          value: "South Africa",
+        },
+        {
+          label: "印度",
+          value: "Indian",
+        },
+      ];
+      return (
+        <RadioGroup buttonWidth={100} wrapClassName="radio-group-button">
+          {options.map((option) => (
+            <RadioButton key={option.value} value={option.value}>
+              {option.label}
+            </RadioButton>
+          ))}
+        </RadioGroup>
+      );
     }}
   </Story>
 </Preview>

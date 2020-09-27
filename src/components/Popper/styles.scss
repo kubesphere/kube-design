@@ -1,8 +1,6 @@
 @import "../../styles/variables";
 
-$arrow-border-width: 16px;
-$arrow-margin: 12px;
-$popper-background: $white;
+$popper-z-index: 100;
 
 .popper {
   position: fixed;
@@ -11,12 +9,10 @@ $popper-background: $white;
   background-color: $popper-background;
   box-shadow: $box-shadow;
   opacity: 0;
-  font-weight: 400;
-  line-height: 1.7143;
   white-space: normal;
   text-align: left;
   pointer-events: none;
-  z-index: 100;
+  z-index: $popper-z-index;
   &.is-active {
     opacity: 1;
     pointer-events: auto;
@@ -41,37 +37,37 @@ $popper-background: $white;
   z-index: -1;
 }
 
-.popper[x-placement^='bottom'] {
+.popper[x-placement^="bottom"] {
   margin-top: $arrow-margin;
   .popper-arrow {
-    top: -$arrow-border-width / 2;
+    top: $arrow-border-width / -2;
     border-top-left-radius: $border-radius / 2;
     clip-path: polygon(0 0, 0 100%, 100% 0);
   }
 }
 
-.popper[x-placement^='top'] {
+.popper[x-placement^="top"] {
   margin-bottom: $arrow-margin;
   .popper-arrow {
-    bottom: -$arrow-border-width / 2;
+    bottom: $arrow-border-width / -2;
     border-bottom-right-radius: $border-radius / 2;
     clip-path: polygon(100% 0, 0% 100%, 100% 100%);
   }
 }
 
-.popper[x-placement^='left'] {
+.popper[x-placement^="left"] {
   margin-right: $arrow-margin;
   .popper-arrow {
-    right: -$arrow-border-width / 2;
+    right: $arrow-border-width / -2;
     border-top-right-radius: $border-radius / 2;
     clip-path: polygon(100% 0, 0 0, 100% 100%);
   }
 }
 
-.popper[x-placement^='right'] {
+.popper[x-placement^="right"] {
   margin-left: $arrow-margin;
   .popper-arrow {
-    left: -$arrow-border-width / 2;
+    left: $arrow-border-width / -2;
     border-bottom-left-radius: $border-radius / 2;
     clip-path: polygon(0 100%, 0 0, 100% 100%);
   }

@@ -19,8 +19,8 @@
     &-label {
       position: relative;
       padding: 8px 20px;
-      color: $white;
-      background-color: $dark-color07;
+      color: $collapse-item-text;
+      background-color: $collapse-item-bg;
       font-weight: $font-bold;
       line-height: 20px;
       cursor: pointer;
@@ -30,8 +30,8 @@
         @include vertical-center;
       }
       &-border-bottom {
-        color: $dark-color07;
-        background-color: $light-color01;
+        color: $collapse-item-active-text;
+        background-color: $collapse-item-active-bg;
       }
       &-last-border-bottom {
         border-radius: 0 0 $border-radius $border-radius;
@@ -39,9 +39,10 @@
     }
     &-content {
       padding: 20px;
-      background-color: $white;
-      overflow: hidden auto;
       @include TypographyParagraph;
+      background-color: $collapse-content-bg;
+      overflow: hidden auto;
+      color: $collapse-content-text;
       &-last-border-bottom {
         border-radius: 0 0 $border-radius $border-radius;
       }

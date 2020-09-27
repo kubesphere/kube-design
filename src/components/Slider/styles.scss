@@ -10,7 +10,7 @@
   &-rail {
     height: 10px;
     border-radius: 5px;
-    background-color: $light-color01;
+    background-color: $bg-color;
   }
 
   &-track {
@@ -70,7 +70,7 @@
     & > span {
       position: absolute;
       top: 0;
-      @include TypographyParagraph($dark-color01);
+      @include TypographyParagraph;
       user-select: none;
       white-space: nowrap;
       transform: translateX(-50%);

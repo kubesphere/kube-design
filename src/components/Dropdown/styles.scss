@@ -21,27 +21,27 @@
 
 .dropdown-dark {
   .dropdown-content {
-    background-color: $dark-color07;
+    background-color: $dropdown-dark-bg;
   }
 
   .menu {
     padding: 8px;
     min-width: 208px;
     border-radius: $border-radius;
-    background-color: $dark-color07;
-    box-shadow: $btn-default-active-shadow;
+    background-color: $dropdown-dark-bg;
+    box-shadow: $dropdown-menu-shadow;
 
     &-item {
       height: auto;
       border-radius: 3px;
       line-height: 20px;
       padding: 6px 19px 6px 12px;
-      color: $white;
+      color: $dropdown-dark-text;
       font-size: $size-small;
       background-color: transparent;
 
       &:hover {
-        background-color: #36435c;
+        background-color: $dropdown-menu-item-hover;
       }
     }
   }

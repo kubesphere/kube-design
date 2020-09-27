@@ -55,12 +55,16 @@ export default class Tr extends Component {
       return (
         <th>
           <Checkbox
-            checked={selectedRowKeys.length === records.length}
+            checked={
+              selectedRowKeys.length === records.length &&
+              selectedRowKeys.length > 0
+            }
             indeterminate={
               selectedRowKeys.length < records.length &&
               selectedRowKeys.length > 0
             }
             onChange={this.handleAllChange}
+            disabled={records.length <= 0}
           />
         </th>
       );

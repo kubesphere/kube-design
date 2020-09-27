@@ -1,7 +1,8 @@
 <!-- @format -->
 
+import { useState } from "react";
 import { Meta, Story, Preview, Props } from "@storybook/addon-docs/blocks";
-import Icon from "@kube-design/icons";
+import Icon from "components/Icon";
 import Select from "components/Select";
 
 <Meta title="Components/Select" component={Select} />
@@ -19,132 +20,207 @@ import Select from "components/Select";
 Basic usages for `Select` component.
 
 <Preview>
-	<Story name="select">
-	{()=>{
-		const options = [
-			{ value: "CentOS", label: "CentOS 5.8 32bit" },
-			{ value: "Debian", label: "Debian Jessie 8.1 64bit" },
-			{ value: "Ubuntu", label: "Ubuntu Server 14.04.3 LTS 64bit", disabled: true },
-			{ value: "Windows", label: "Windows Server 2003 R2" },
-		];
-		const options2 = [
-          {
-            label: 'Cent OS',
-            options: [
-              { value: 'CentOS-5.8', label: 'CentOS 5.8 32bit' },
-              { value: 'CentOS-6.6', label: 'CentOS 6.6 64bit', disabled: true },
-              { value: 'CentOS-7', label: 'CentOS 7 64bit' },
-            ],
-          },
-          {
-            label: 'Debian',
-            options: [
-              { value: 'Debian-8.3', label: 'Debian Jessie 8.3 64bit' },
-              { value: 'Debian-9.3', label: 'Debian Stretch 9.3 64bit' },
-            ],
-          },
-        ];
-		return (
-			<>
-				<div>
-					<Select name="select" options={options}/>
-				</div>
-				<div style={{ marginTop: "10px" }}>
-					<Select name="select"  disabled options={options}/>
-				</div>
-				<div style={{ marginTop: "10px" }}>
-					<Select
-						options={options2}
-						name="select"
-						defaultValue="center"
-					/>
-				</div>
-			</>
-		)
-	}}
-	</Story>
+  <Story name="select">
+    {() => {
+      const options = [
+        { value: "CentOS", label: "CentOS 5.8 32bit" },
+        { value: "Debian", label: "Debian Jessie 8.1 64bit" },
+        {
+          value: "Ubuntu",
+          label: "Ubuntu Server 14.04.3 LTS 64bit",
+          disabled: true,
+        },
+        { value: "Windows", label: "Windows Server 2003 R2" },
+      ];
+      const options2 = [
+        {
+          label: "Cent OS",
+          options: [
+            { value: "CentOS-5.8", label: "CentOS 5.8 32bit" },
+            { value: "CentOS-6.6", label: "CentOS 6.6 64bit", disabled: true },
+            { value: "CentOS-7", label: "CentOS 7 64bit" },
+          ],
+        },
+        {
+          label: "Debian",
+          options: [
+            { value: "Debian-8.3", label: "Debian Jessie 8.3 64bit" },
+            { value: "Debian-9.3", label: "Debian Stretch 9.3 64bit" },
+          ],
+        },
+      ];
+      return (
+        <>
+          <div>
+            <p>Normal</p>
+            <Select name="select" options={options} />
+          </div>
+          <div style={{ marginTop: "10px" }}>
+            <p>Disabled</p>
+            <Select name="select" disabled options={options} />
+          </div>
+          <div style={{ marginTop: "10px" }}>
+            <p>Group</p>
+            <Select options={options2} name="select" defaultValue="center" />
+          </div>
+          <div style={{ marginTop: "10px" }}>
+            <p>Prefix Icon</p>
+            <Select
+              prefixIcon={<Icon name="cluster" />}
+              options={options}
+              name="select"
+              defaultValue="center"
+            />
+          </div>
+        </>
+      );
+    }}
+  </Story>
 </Preview>
 
 ### Search Select
 
 <Preview>
-	<Story name="select-search">
-		{()=>{
-			const options = [
-				{ value: "CentOS", label: "CentOS 5.8 32bit" },
-				{ value: "Debian", label: "Debian Jessie 8.1 64bit" },
-				{ value: "Ubuntu", label: "Ubuntu Server 14.04.3 LTS 64bit" },
-				{ value: "Windows", label: "Windows Server 2003 R2" },
-			];
-			return <Select searchable name="select-search" options={options}/>
-		}}
-	</Story>
+  <Story name="select-search">
+    {() => {
+      const data = [
+        { value: "CentOS", label: "CentOS 5.8 32bit" },
+        { value: "Debian", label: "Debian Jessie 8.1 64bit" },
+        { value: "Ubuntu", label: "Ubuntu Server 14.04.3 LTS 64bit" },
+        { value: "Windows", label: "Windows Server 2003 R2" },
+        { value: "CentOS1", label: "CentOS 5.8 32bit" },
+        { value: "Debian1", label: "Debian Jessie 8.1 64bit" },
+        { value: "Ubuntu1", label: "Ubuntu Server 14.04.3 LTS 64bit" },
+        { value: "Windows1", label: "Windows Server 2003 R2" },
+        { value: "CentOS2", label: "CentOS 5.8 32bit" },
+        { value: "Debian2", label: "Debian Jessie 8.1 64bit" },
+        { value: "Ubuntu2", label: "Ubuntu Server 14.04.3 LTS 64bit" },
+        { value: "Windows2", label: "Windows Server 2003 R2" },
+        { value: "CentOS3", label: "CentOS 5.8 32bit" },
+        { value: "Debian3", label: "Debian Jessie 8.1 64bit" },
+        { value: "Ubuntu3", label: "Ubuntu Server 14.04.3 LTS 64bit" },
+        { value: "Windows3", label: "Windows Server 2003 R2" },
+      ];
+      const [pagination, setPagination] = useState({
+        page: 1,
+        total: data.length,
+        limit: 10,
+      });
+      const [options, setOptions] = useState(data.slice(0, pagination.limit));
+      const [loading, setLoading] = useState(false);
+      const handleFetch = ({ keyword, page = 1 }) => {
+        setLoading(true);
+        setTimeout(() => {
+          setLoading(false);
+          setPagination({ ...pagination, page });
+          setOptions(
+            data
+              .filter(
+                (item) =>
+                  !keyword ||
+                  item.label.toLowerCase().indexOf(keyword.toLowerCase()) !== -1
+              )
+              .slice(0, pagination.limit * page)
+          );
+        }, 500);
+      };
+      return (
+        <Select
+          searchable
+          name="select-search"
+          options={options}
+          pagination={pagination}
+          onFetch={handleFetch}
+          isLoading={loading}
+          clearable
+        />
+      );
+    }}
+  </Story>
+</Preview>
+
+### Multi Select
+
+<Preview>
+  <Story name="select-multi">
+    {() => {
+      const options = [
+        { value: "CentOS", label: "CentOS 5.8 32bit" },
+        { value: "Debian", label: "Debian Jessie 8.1 64bit" },
+        {
+          value: "Ubuntu",
+          label: "Ubuntu Server 14.04.3 LTS 64bit",
+          disabled: true,
+        },
+        { value: "Windows", label: "Windows Server 2003 R2" },
+      ];
+      return <Select multi name="select-multi" options={options} />;
+    }}
+  </Story>
 </Preview>
 
 ### Multi Search Select
 
 <Preview>
-	<Story name="select-multi-searchable">
-		{()=>{
-			const options = [
-				{ value: "CentOS", label: "CentOS 5.8 32bit" },
-				{ value: "Debian", label: "Debian Jessie 8.1 64bit" },
-				{ value: "Ubuntu", label: "Ubuntu Server 14.04.3 LTS 64bit", disabled: true },
-				{ value: "Windows", label: "Windows Server 2003 R2" },
-			];
-			return <Select multi searchable name="select-multi" options={options} />
-		}}
-	</Story>
+  <Story name="select-multi-searchable">
+    {() => {
+      const options = [
+        { value: "CentOS", label: "CentOS 5.8 32bit" },
+        { value: "Debian", label: "Debian Jessie 8.1 64bit" },
+        {
+          value: "Ubuntu",
+          label: "Ubuntu Server 14.04.3 LTS 64bit",
+          disabled: true,
+        },
+        { value: "Windows", label: "Windows Server 2003 R2" },
+      ];
+      return <Select multi searchable name="select-multi" options={options} />;
+    }}
+  </Story>
 </Preview>
 
 ### Custom Select Render
 
 <Preview>
-	<Story name="select-render">
-		{() => {
-			const options = [
-				{ value: "CentOS", label: "CentOS 5.8 32bit" },
-				{ value: "Debian", label: "Debian Jessie 8.1 64bit" },
-				{ value: "Ubuntu", label: "Ubuntu Server 14.04.3 LTS 64bit", disabled: true },
-				{ value: "Windows", label: "Windows Server 2003 R2" },
-			];
-			const optionRenderer = (option) => (
-				<span
-					className="option-with-icon"
-					style={{ display: "flex", alignItems: "center" }}
-				>
-					<Icon
-						name="kubesphere"
-						size="small"
-						style={{ marginRight: 10 }}
-						type="dark"
-					/>
-					{option.label}
-				</span>
-			);
-			const valueRenderer = (option) => (
-				<span
-					className="option-with-icon"
-					style={{ display: "flex", alignItems: "center" }}
-				>
-					<Icon
-						name="kubesphere"
-						size="small"
-						type="coloured"
-						style={{ marginRight: 10 }}
-					/>
-					<span style={{ color: "#00aa72" }}>{option}</span>
-				</span>
-			);
-			return (
-				<Select
-					clearable
-					name="select-render"
-					optionRenderer={optionRenderer}
-					valueRenderer={valueRenderer}
-					options={options}
-				/>
-			);
-		}}
-	</Story>
+  <Story name="select-render">
+    {() => {
+      const options = [
+        { value: "CentOS", label: "CentOS 5.8 32bit" },
+        { value: "Debian", label: "Debian Jessie 8.1 64bit" },
+        {
+          value: "Ubuntu",
+          label: "Ubuntu Server 14.04.3 LTS 64bit",
+          disabled: true,
+        },
+        { value: "Windows", label: "Windows Server 2003 R2" },
+      ];
+      const optionRenderer = (option) => (
+        <span className="option-with-icon">
+          <Icon
+            name="cluster"
+            style={{ marginRight: 6, verticalAlign: "middle" }}
+            type="light"
+          />
+          <span>{option.label}</span>
+        </span>
+      );
+      const valueRenderer = (option) => (
+        <span className="option-with-icon">
+          <Icon
+            name="cluster"
+            style={{ marginRight: 6, verticalAlign: "middle" }}
+          />
+          <span>{option.label}</span>
+        </span>
+      );
+      return (
+        <Select
+          name="select-render"
+          optionRenderer={optionRenderer}
+          valueRenderer={valueRenderer}
+          options={options}
+        />
+      );
+    }}
+  </Story>
 </Preview>

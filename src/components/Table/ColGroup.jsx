@@ -8,7 +8,7 @@ export default class ColGroup extends Component {
       <TableContext.Consumer>
         {({ columns, rowSelection }) => (
           <colgroup>
-            {rowSelection && <col />}
+            {rowSelection && <col width="12" />}
             {columns.map((column) => (
               <col
                 key={column.key || column.dataIndex}

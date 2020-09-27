@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import { isEmpty, trim } from "lodash";
 
-import Icon from "@kube-design/icons";
+import Icon from "../Icon";
 
 import Input from "./Input";
 

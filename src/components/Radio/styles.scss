@@ -6,6 +6,7 @@ label.radio {
   position: relative;
   color: $dark-color07;
   & input[type="radio"] {
+    margin: 0;
     outline: none !important;
     opacity: 0;
     visibility: hidden;
@@ -14,7 +15,7 @@ label.radio {
   &:hover {
     &:not(.disabled) {
       &:before {
-        background-color: $light-color01;
+        background-color: $bg-color;
       }
       &:active {
         &:before {
@@ -29,7 +30,7 @@ label.radio {
   }
   &:before {
     position: absolute;
-    top: 3px;
+    top: 2px;
     left: 0;
     display: inline-block;
     width: 14px;
@@ -54,7 +55,7 @@ label.radio {
     }
     &:after {
       position: absolute;
-      top: 7px;
+      top: 6px;
       left: 4px;
       display: inline-block;
       width: 6px;
@@ -70,7 +71,7 @@ label.radio {
       will-change: transform;
     }
   }
-  & input {
+  & > input {
     &[disabled] {
       border-color: $light-color01;
       color: $dark-color07;
@@ -79,10 +80,11 @@ label.radio {
       cursor: not-allowed;
     }
   }
-  & span.label-value {
+  & > span.label-value {
     display: inline-block;
     vertical-align: middle;
     @include TypographyParagraph;
+    color: inherit;
     padding: 0 8px;
     user-select: none;
   }
@@ -99,9 +101,19 @@ label.radio.disabled {
 }
 
 .radio-group {
+  display: inline-flex;
+
+  label.radio {
+    margin-right: 24px;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
   label.radio-button {
     position: relative;
-    box-shadow: 0 1px 2px 0 rgba(2, 5, 8, 0.04) !important;
+    height: 28px;
+    padding: 4px 24px;
     input {
       display: none;
     }
@@ -120,31 +132,27 @@ label.radio.disabled {
       cursor: not-allowed;
     }
     &.checked {
-      border-color: $btn-primary-bg;
-      color: $btn-primary-bg;
-      background-color: #fff;
+      color: $btn-control-text-color;
+      background-color: $btn-control-bg;
       z-index: 10;
     }
+
+    span.label-value {
+      display: block;
+      height: 20px;
+      line-height: 20px;
+      text-align: center;
+    }
+  }
+
+  .button + .button {
+    margin-left: 0;
   }
 }
 
-.radio-group[direction="row"] {
-  label.radio {
-    margin-right: 24px;
-    &:last-child {
-      margin-right: 0;
-    }
-  }
-}
-
-.radio-group[direction="column"] {
-  display: flex;
-  flex-direction: column;
-  label.radio {
-    margin-right: 0;
-    margin-bottom: 4px;
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
+.radio-group-button {
+  padding: 1px;
+  border-radius: 16px;
+  background-color: $secondary-bg-color;
+  border: 1px solid $border-color;
 }

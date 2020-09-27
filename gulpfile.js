@@ -2,7 +2,6 @@ const gulp = require("gulp");
 const babel = require("gulp-babel");
 const sass = require("gulp-sass");
 const autoprefixer = require("gulp-autoprefixer");
-const through2 = require("through2");
 
 sass.compiler = require("node-sass");
 
@@ -36,18 +35,6 @@ function compileESM() {
 function buildStyles() {
   return gulp
     .src(paths.styles)
-    .pipe(
-      through2.obj(function z(file, encoding, next) {
-        if (file.path.match(/(\/|\\)styles(\/|\\)index\.scss/)) {
-          const content = file.contents.toString(encoding);
-          file.contents = Buffer.from(
-            content.replace(/@import\s+\"~/g, '@import "node_modules/')
-          );
-        }
-        this.push(file);
-        next();
-      })
-    )
     .pipe(sass())
     .pipe(autoprefixer())
     .pipe(gulp.dest(paths.dest.lib))

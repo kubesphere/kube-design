@@ -1,66 +1,149 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-
+import { isFunction } from "lodash";
 import Radio from "./Radio";
 
-export default class RadioGroup extends Component {
+class RadioGroup extends Component {
   static propTypes = {
-    options: PropTypes.arrayOf(
-      PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.shape({
-          value: PropTypes.any,
-          label: PropTypes.string,
-          disabled: PropTypes.bool,
-        }),
-      ])
-    ),
-    value: PropTypes.array,
+    options: PropTypes.array,
+    value: PropTypes.any,
+    defaultValue: PropTypes.any,
     onChange: PropTypes.func,
-    direction: PropTypes.oneOf(["row", "column"]),
-    className: PropTypes.string,
     disabled: PropTypes.bool,
+    name: PropTypes.string,
+    style: PropTypes.object,
+    className: PropTypes.string,
+    wrapClassName: PropTypes.string,
+    prefixCls: PropTypes.string,
     children: PropTypes.node,
+    buttonWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  };
+
+  static childContextTypes = {
+    radioGroup: PropTypes.any,
   };
 
   static defaultProps = {
-    direction: "row",
-    options: [],
-    onChange() {},
+    prefixCls: "radio-group",
+    buttonWidth: "auto",
   };
 
-  state = {
-    value: this.props.value || "",
-  };
+  constructor(props) {
+    super(props);
 
-  handleOptionChange = (checked, value) => {
-    const { onChange } = this.props;
+    let newValue;
+    if ("value" in props) {
+      newValue = props.value;
+    } else if ("defaultValue" in props) {
+      newValue = props.defaultValue;
+    }
 
-    this.setState({ value }, () => onChange(value));
+    this.state = {
+      value: newValue,
+    };
+  }
+
+  getChildContext() {
+    const { disabled, name, buttonWidth } = this.props;
+    const { value } = this.state;
+    return {
+      radioGroup: {
+        onChange: this.handleChange,
+        value,
+        disabled,
+        name,
+        buttonWidth,
+      },
+    };
+  }
+
+  static getDerivedStateFromProps(nextProps) {
+    if ("value" in nextProps) {
+      return { value: nextProps.value };
+    }
+
+    let newValue = null;
+    let matched = false;
+
+    React.Children.forEach(nextProps.children, (radio) => {
+      if (radio && radio.props && radio.props.checked) {
+        newValue = radio.props.value;
+        matched = true;
+      }
+    });
+
+    return matched ? { value: newValue } : null;
+  }
+
+  handleChange = (e) => {
+    const { onChange, name } = this.props;
+    const { value: stateValue } = this.state;
+    const { value } = e.target;
+    if (!e.target.checked) return;
+    if (!("value" in this.props)) {
+      this.setState({
+        value,
+      });
+    }
+
+    if (isFunction(onChange) && value !== stateValue) {
+      onChange(value, name);
+    }
   };
 
   render() {
-    const { className, name, direction, options } = this.props;
+    const {
+      options,
+      className,
+      wrapClassName,
+      prefixCls,
+      name,
+      style,
+      children,
+      disabled,
+    } = this.props;
     const { value } = this.state;
 
-    return (
-      <div
-        data-direction={direction}
-        className={classNames(`radio-group`, className)}
-      >
-        {options.map((option) => (
+    let newChildren = children;
+
+    if (options && options.length > 0) {
+      newChildren = options.map((option) => {
+        const restProps = {
+          name,
+          className,
+        };
+
+        let newLabel = null;
+        if (typeof option === "string") {
+          restProps.value = option;
+          restProps.checked = value === option;
+          restProps.disabled = disabled;
+          newLabel = option;
+        } else {
+          restProps.value = option.value;
+          restProps.checked = value === option.value;
+          restProps.disabled = option.disabled || disabled;
+          newLabel = option.label;
+        }
+        return (
           <Radio
-            key={option.value}
-            name={name}
-            value={option.value}
-            checked={value === option.value}
-            onChange={this.handleOptionChange}
+            key={`radio-${restProps.value}`}
+            {...restProps}
+            onChange={this.handleChange}
           >
-            {option.label}
+            {newLabel}
           </Radio>
-        ))}
+        );
+      });
+    }
+
+    return (
+      <div className={classNames(prefixCls, wrapClassName)} style={style}>
+        {newChildren}
       </div>
     );
   }
 }
+
+export default RadioGroup;

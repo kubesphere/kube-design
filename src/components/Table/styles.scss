@@ -8,7 +8,12 @@
   & > thead {
     & > tr > th {
       padding: 16px 12px;
-      @include TypographySymbolText($dark-color01);
+      @include TypographySymbolText;
+      color: $dark-color01;
+
+      a {
+        color: $dark-color01;
+      }
 
       .is-trigger {
         cursor: pointer;
@@ -46,7 +51,11 @@
 
       &:hover {
         & > td {
-          background-color: $light-color01;
+          background-color: $bg-color;
+
+          a {
+            color: $primary;
+          }
         }
       }
 
@@ -62,7 +71,7 @@
 
       &.table-row-selected > td {
         border-top: 1px solid $primary;
-        background-color: $light-color01;
+        background-color: $bg-color;
 
         &:first-child {
           border-left: 1px solid $primary;
@@ -90,18 +99,34 @@
 
 .table-title {
   position: relative;
-  padding: 8px 20px;
-  background-color: $light-color01;
+  padding: 10px 20px;
+  background-color: $secondary-bg-color;
   box-shadow: 0 1px 0 0 $light-color02;
   border-top-left-radius: $border-radius;
   border-top-right-radius: $border-radius;
 }
 
+.table-body {
+  padding: 0 12px 12px;
+}
+
+.table-placeholder {
+  position: relative;
+  padding: 16px;
+  background: $white;
+  text-align: center;
+  z-index: 1;
+}
+
 .table-footer {
   position: relative;
   padding: 16px 20px;
-  background-color: $light-color01;
+  background-color: $secondary-bg-color;
   border-bottom-left-radius: $border-radius;
   border-bottom-right-radius: $border-radius;
   color: $dark-color01;
+}
+
+.table-hasSelected > .table-title {
+  background-color: $heading-color;
 }

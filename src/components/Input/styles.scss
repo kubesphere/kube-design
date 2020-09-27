@@ -2,21 +2,21 @@
 @import "../../styles/mixins";
 
 input.input {
-  width: 376px;
+  width: $input-default-width;
   height: 32px;
   padding: 6px 12px;
   border-radius: $border-radius;
   border: solid 1px $input-border-color;
-  background-color: #ffffff;
+  background-color: $input-bg-color;
   box-sizing: border-box;
   @include TypographySymbolText;
   transition: all $trans-speed ease-in-out;
+  caret-color: $input-caret-color;
   outline: none;
-  caret-color: $dark-color06;
 
   &::placeholder {
     font-weight: $font-normal;
-    color: $dark-color03;
+    color: $input-placeholder-color;
   }
 
   &:not([readonly]):not([disabled]):hover {
@@ -25,11 +25,12 @@ input.input {
 
   &:not([readonly]):not([disabled]):focus {
     border-color: $input-focus-color;
+    box-shadow: $input-focus-shadow;
   }
 
   &[readonly],
   &[disabled] {
-    background-color: $light-color02;
+    background-color: $input-disabled-color;
   }
 
   &[readonly] {
@@ -42,8 +43,8 @@ input.input {
 }
 
 .input-password {
-  position: relative;
   display: inline-block;
+  position: relative;
 
   &.has-icons-right {
     .icon.clickable {
@@ -85,27 +86,26 @@ input.input {
 
   .icon {
     @include vertical-center;
+    z-index: 4;
   }
 
   .input {
     width: 100%;
-    opacity: 0.6;
     border-radius: 18px;
     border-color: transparent;
-    background-color: $light-color01;
+    background-color: $input-search-bg;
     padding: 5px 12px;
-    color: $text-color;
+
+    &:not([readonly]):not([disabled]):hover {
+      border-color: $input-search-hover-border;
+    }
 
     &:not([readonly]):not([disabled]):focus,
     &:not([readonly]):not([disabled]):active,
     &:not([readonly]):not([disabled]):visited {
-      background-color: $white;
-      border-color: $dark-color01;
+      background-color: $input-search-hover-bg;
+      border-color: $input-search-hover-border;
       box-shadow: none;
-    }
-
-    &::placeholder {
-      color: $second-text-color;
     }
   }
 }

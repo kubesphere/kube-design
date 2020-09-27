@@ -21,9 +21,10 @@
 
   &-title {
     margin-bottom: 8px;
-    @include TypographySymbolText($white);
+    @include TypographySymbolText;
+    color: $white;
   }
   &-desc {
-    @include TypographyParagraph($dark-color01);
+    @include TypographyParagraph;
   }
 }

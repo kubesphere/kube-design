@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 
-import Icon from "@kube-design/icons";
+import Icon from "../Icon";
 
 const ICON_COLORS = {
   info: {

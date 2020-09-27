@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
+import { get, isEmpty } from "lodash";
 
 import ColGroup from "./ColGroup";
 import Thead from "./Thead";
@@ -31,18 +33,42 @@ export default class Table extends Component {
     onChange() {},
   };
 
+  get hasSelected() {
+    return get(this.props, "rowSelection.selectedRowKeys.length") > 0;
+  }
+
   render() {
-    const { title, footer, loading, ...rest } = this.props;
+    const {
+      title,
+      footer,
+      loading,
+      className,
+      emptyText,
+      ...rest
+    } = this.props;
     return (
       <TableContext.Provider value={rest}>
         <Loading spinning={loading}>
-          <div className="table">
+          <div
+            className={classNames(
+              "table",
+              {
+                "table-hasSelected": this.hasSelected,
+              },
+              className
+            )}
+          >
             {title && <div className="table-title">{title}</div>}
-            <table>
-              <ColGroup />
-              <Thead />
-              <Tbody />
-            </table>
+            <div className="table-body">
+              <table>
+                <ColGroup />
+                <Thead />
+                <Tbody />
+              </table>
+            </div>
+            {isEmpty(rest.dataSource) && (
+              <div className="table-placeholder">{emptyText}</div>
+            )}
             {footer && <div className="table-footer">{footer}</div>}
           </div>
         </Loading>

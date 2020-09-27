@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-import Icon from "@kube-design/icons";
+import Icon from "../Icon";
 
 import Loading from "../Loading";
 

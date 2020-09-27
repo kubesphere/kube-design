@@ -2,59 +2,58 @@
 @import "../../styles/mixins";
 
 .menu {
+  margin: 0;
+  padding: $menu-padder;
+  min-width: $menu-min-width;
+  border-radius: $border-radius;
+  background-color: $menu-bg;
   list-style: none;
   box-sizing: border-box;
-  min-width: 210px;
-  margin: 0;
-  padding: 8px;
-  border-radius: $border-radius;
-  background-color: $white;
-  z-index: 100;
+  z-index: $menu-z-index;
+
   &-label {
-    padding: 8px 22px;
+    padding: $menu-item-padder;
   }
+
   &-item {
     position: relative;
     display: flex;
     align-items: center;
-    padding: 8px 22px;
+    padding: $menu-item-padder;
     border-radius: $border-radius;
     font-weight: $font-bold;
-    color: $dark-color04;
+    color: $menu-item-color;
     line-height: 20px;
     cursor: pointer;
     @include ellipsis;
 
     &:hover {
-      background-color: $light-color03;
+      background-color: $menu-item-hover-bg;
     }
 
     &-selected {
-      background-color: $light-color02;
+      background-color: $menu-item-selected-bg;
     }
-    
+
     &:active {
-      background-color: $light-color03;
+      background-color: $menu-item-active-bg;
     }
 
     &-disabled {
       opacity: 0.5;
       cursor: not-allowed;
-      &:hover {
-        border-color: transparent;
-        background-color: $white;
-      }
     }
 
     & > a {
       flex: 1;
-      padding: 0 12px;
-      margin: 0 -12px;
+      padding: 0 $base-margin;
+      margin: 0 -$base-margin;
       line-height: 32px;
     }
   }
+
   .icon {
     margin-top: 2px;
-    margin-right: 12px;
+    margin-right: $base-margin;
   }
 }

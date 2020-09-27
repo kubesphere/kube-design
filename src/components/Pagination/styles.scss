@@ -1,8 +1,5 @@
 .pagination {
-  display: flex;
-  justify-content: space-between;
-
-  & > div > span {
+  & > span {
     display: inline-block;
     vertical-align: middle;
 
