@@ -1,19 +1,28 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { get, isEmpty, isEqual, isFunction } from "lodash";
+import { get, isEmpty, isUndefined, isFunction } from "lodash";
 
 import Tag from "../Tag";
 import Icon from "../Icon";
 import Loading from "../Loading";
 import Option from "./Option";
-import ElementPagePos from "./elementPos.js";
+import { getScrollParents } from "../../utils";
+import { locale } from "../LocaleProvider";
 
 export default class Select extends React.Component {
   static propTypes = {
     name: PropTypes.string,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-    defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+    value: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+      PropTypes.array,
+    ]),
+    defaultValue: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+      PropTypes.array,
+    ]),
     options: PropTypes.array,
     className: PropTypes.string,
     style: PropTypes.object,
@@ -41,7 +50,7 @@ export default class Select extends React.Component {
     searchable: false,
     disabled: false,
     clearable: false,
-    placeholder: "PLEASE_SELECT",
+    placeholder: "KUBE_PLEASE_SELECT",
     name: null,
     multi: false,
     prefixIcon: null,
@@ -54,84 +63,135 @@ export default class Select extends React.Component {
   state = {
     visible: false,
     value: this.props.multi ? [] : "",
-    inputValue: this.props.defaultValue,
+    inputValue: "",
     inputVisible: true,
   };
 
   inputRef = React.createRef();
   selectRef = React.createRef();
+  optionsRef = React.createRef();
   inputValueRef = React.createRef();
+  reachBottom = false;
 
   componentDidMount() {
     this.handleInitValue();
 
     if (this.selectRef && this.selectRef.current) {
-      this.selectPos = new ElementPagePos(this.selectRef.current);
-      this.selectPos.init();
+      this.addScrollEvents();
     }
 
     document.body.addEventListener("click", this.handleDocumentClick);
-    document.addEventListener("scroll", this.handleDocumentScroll);
   }
 
-  static getDerivedStateFromProps(props, state) {
-    if (props.value && isEqual(props.value, state.value)) {
-      return { value: props.value };
+  componentDidUpdate(prevProps, prevState) {
+    const { value, options } = this.props;
+    if (prevProps.options.length !== options.length) {
+      this.reachBottom = false;
     }
-    return null;
+
+    if (!isUndefined(value) && value !== prevState.value) {
+      this.setState({
+        value,
+        inputValue: value,
+        inputVisible: false,
+      });
+    }
+
+    if (this.state.visible && !prevState.visible) {
+      this.handleParentScroll();
+    }
   }
 
   componentWillUnmount() {
     document.body.removeEventListener("click", this.handleDocumentClick);
-    document.removeEventListener("scroll", this.handleDocumentScroll);
   }
 
-  handleInitValue = () => {
-    const { value, defaultValue, multi } = this.props;
-    const isType = (testValue) =>
-      Object.prototype.toString
-        .call(testValue)
-        .toLowerCase()
-        .match(/\[object ([a-z]+)\]/)[1];
+  addScrollEvents = () => {
+    this.scrollParents = getScrollParents(this.selectRef.current);
 
-    const valueType = isType(value);
-    const defaultValueType = isType(defaultValue);
-
-    if (defaultValueType !== "undefined") {
-      if (
-        (defaultValueType !== "array" && multi) ||
-        (!multi && defaultValueType === "array")
-      ) {
-        throw "wrong default value type";
-      } else {
-        this.setState({
-          inputValue: defaultValue,
-          value: defaultValue,
-          inputVisible: false,
-        });
-      }
-    }
-
-    if (valueType !== "undefined") {
-      if (
-        (valueType !== "array" && multi) ||
-        (!multi && valueType === "array")
-      ) {
-        throw "wrong value type";
-      } else {
-        this.setState({ value, inputValue: value, inputVisible: false });
-      }
+    if (this.scrollParents.length > 0) {
+      this.scrollParents.forEach((parent) => {
+        parent.addEventListener("scroll", this.handleParentScroll);
+      });
     }
   };
 
-  handleDocumentScroll = (isNeedRender = true) => {
+  removeScrollEvents = () => {
+    if (this.scrollParents.length > 0) {
+      this.scrollParents.forEach((parent) => {
+        parent.removeEventListener("scroll", this.handleParentScroll);
+      });
+    }
+  };
+
+  handleInitValue = () => {
+    const { value, defaultValue } = this.props;
+
+    if (!isUndefined(value)) {
+      return this.setState({ value, inputValue: value, inputVisible: false });
+    }
+
+    if (!isUndefined(defaultValue)) {
+      return this.setState({
+        value: defaultValue,
+        inputValue: defaultValue,
+        inputVisible: false,
+      });
+    }
+  };
+
+  handleParentScroll = (e) => {
     const { visible } = this.state;
 
-    if (visible || !isNeedRender) {
-      this.selectPos.getDocumentscrollTop();
-      this.selectPos.getDocumentscrollLeft();
-      if (isNeedRender) {
-        this.forceUpdate();
+    if (
+      this.optionsRef &&
+      this.optionsRef.current &&
+      this.scrollParents.length > 0
+    ) {
+      const scrollParent = e ? e.target : this.scrollParents[0];
+      const controlRect = this.selectRef.current.getBoundingClientRect();
+      const optionsRect = this.optionsRef.current.getBoundingClientRect();
+
+      const top = controlRect.top + controlRect.height;
+      const optionsMargin = 4;
+
+      this.optionsRef.current.style.left = `${controlRect.left}px`;
+
+      if (scrollParent === window || scrollParent === document) {
+        const hasRoomBelow =
+          top + optionsRect.height + optionsMargin < window.innerHeight;
+        const hasRoomAbove =
+          controlRect.top - optionsRect.height - optionsMargin * 2 > 0;
+        if ((!hasRoomBelow && !hasRoomAbove) || hasRoomBelow) {
+          this.optionsRef.current.style.top = `${top}px`;
+        }
+        if (!hasRoomBelow && hasRoomAbove) {
+          this.optionsRef.current.style.top = `${
+            controlRect.top - optionsRect.height - optionsMargin * 2
+          }px`;
+        }
+      } else {
+        const scrollRect = scrollParent.getBoundingClientRect();
+        const scrollerBottom = scrollRect.top + scrollRect.height;
+        const hasRoomBelow =
+          top + optionsRect.height + optionsMargin < scrollerBottom;
+        const hasRoomAbove =
+          controlRect.top - optionsRect.height - optionsMargin * 2 >
+          scrollRect.top;
+        if ((!hasRoomBelow && !hasRoomAbove) || hasRoomBelow) {
+          this.optionsRef.current.style.top = `${top}px`;
+          if (scrollRect.top > top && visible) {
+            this.handleOptionsClose();
+          }
+        }
+        if (!hasRoomBelow && hasRoomAbove) {
+          this.optionsRef.current.style.top = `${
+            controlRect.top - optionsRect.height - optionsMargin * 2
+          }px`;
+          if (scrollerBottom < controlRect.top && visible) {
+            this.handleOptionsClose();
+          }
+        }
       }
     }
   };
@@ -169,10 +229,9 @@ export default class Select extends React.Component {
       this.setState(
         { value: chooseValue, inputValue: "", inputVisible: false },
         () => {
-          this.selectPos.init();
           if (searchable) {
             this.updateInputDOM({
-              width: isEmpty(this.state.value) ? "auto" : "2px",
+              width: isEmpty(this.state.value) ? "100%" : "2px",
               focus: true,
             });
           }
@@ -198,8 +257,6 @@ export default class Select extends React.Component {
     const { visible } = this.state;
     const { searchable } = this.props;
 
-    this.handleDocumentScroll(false);
-
     this.setState({ visible: searchable ? true : !visible });
 
     if (searchable) {
@@ -213,11 +270,16 @@ export default class Select extends React.Component {
   };
 
   handleOptionsScroll = (e) => {
+    if (this.reachBottom) {
+      return;
+    }
+
     const { onFetch, pagination = {} } = this.props;
     const { page = 1 } = pagination;
     const { scrollTop, scrollHeight, clientHeight } = e.target;
     if (scrollTop + clientHeight - scrollHeight >= 0) {
-      onFetch({ page: page + 1 });
+      this.reachBottom = true;
+      onFetch({ page: page + 1, more: true });
     }
   };
 
@@ -240,7 +302,7 @@ export default class Select extends React.Component {
       () => {
         if (multi && searchable) {
           this.updateInputDOM({
-            width: isEmpty(value) ? "auto" : "2px",
+            width: isEmpty(value) ? "100%" : "2px",
             focus: visible,
           });
         }
@@ -254,7 +316,7 @@ export default class Select extends React.Component {
     this.setState({ inputValue: value }, () => {
       if (multi && searchable) {
         const width = isEmpty(this.state.value)
-          ? "auto"
+          ? "100%"
           : `${get(this.inputValueRef, "current.clientWidth", 0) + 5}px`;
         this.updateInputDOM({ width });
       }
@@ -275,7 +337,7 @@ export default class Select extends React.Component {
 
     if (isEmpty(value)) {
       if (this.props.searchable) {
-        this.updateInputDOM({ width: "auto" });
+        this.updateInputDOM({ width: "100%" });
       }
       this.setState({ inputVisible: true });
     }
@@ -342,11 +404,9 @@ export default class Select extends React.Component {
       return null;
     }
 
-    const { clientWidth, clientHeight } = this.selectRef.current;
-    const { top, left, docScrollTop, docScrollLeft } = this.selectPos;
-
-    const elementTop = top + clientHeight - docScrollTop;
-    const elementLeft = left - docScrollLeft;
+    const dimensions = this.selectRef.current.getBoundingClientRect();
+    const optionsTop = dimensions.top + dimensions.height;
+    const optionsLeft = dimensions.left;
 
     const canFetch = isFunction(onFetch) && page * limit < total;
 
@@ -354,10 +414,11 @@ export default class Select extends React.Component {
       <div
         className="select-options"
         style={{
-          top: elementTop,
-          left: elementLeft,
-          width: clientWidth,
+          top: optionsTop,
+          left: optionsLeft,
+          width: dimensions.width,
         }}
+        ref={this.optionsRef}
         onScrollCapture={canFetch ? this.handleOptionsScroll : null}
       >
         {options.length === 0 && !isLoading
@@ -373,7 +434,11 @@ export default class Select extends React.Component {
   };
 
   renderEmpty = () => {
-    return <div className="select-options-empty">No Data</div>;
+    return (
+      <div className="select-options-empty">
+        {locale.get("KUBE_NO_AVAILABLE_DATA")}
+      </div>
+    );
   };
 
   renderOption = (options) => {
@@ -419,8 +484,14 @@ export default class Select extends React.Component {
             "select-input-opacity": !inputVisible,
             "select-input-multi": !isEmpty(value) && multi,
           });
+
+    const localePlaceholder = locale.get(placeholder);
     const multiPlaceholder =
-      multi && searchable ? (isEmpty(value) ? placeholder : "") : placeholder;
+      multi && searchable
+        ? isEmpty(value)
+          ? localePlaceholder
+          : ""
+        : localePlaceholder;
 
     return (
       <div className={multiClassName}>
@@ -469,18 +540,25 @@ export default class Select extends React.Component {
     const { value, inputVisible } = this.state;
     const { multi, valueRenderer, options } = this.props;
 
-    if (isEmpty(value)) {
-      return null;
-    }
-
     if (multi) {
+      if (isEmpty(value)) {
+        return null;
+      }
       return value.map(this.renderMultiValue);
     }
 
-    const option = options.find((item) => item.value === value) || {
-      label: value,
-      value,
-    };
+    let option = { label: value, value };
+    options.forEach((item) => {
+      if (item.value === value) {
+        option = item;
+      } else if (item.options) {
+        item.options.forEach((op) => {
+          if (op.value === value) {
+            option = op;
+          }
+        });
+      }
+    });
 
     return (
       <div

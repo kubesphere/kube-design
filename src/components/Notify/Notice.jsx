@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import Button from "../Button";
+import Icon from "../Icon";
 
 class Notice extends Component {
   static propTypes = {
@@ -75,13 +75,11 @@ class Notice extends Component {
       >
         <div className={`${prefixCls}-content`}>{children}</div>
         {closable ? (
-          <Button
-            type="text"
-            onClick={this.close}
+          <Icon
             className={`${prefixCls}-close`}
-          >
-            Close
-          </Button>
+            name="close"
+            onClick={this.close}
+          />
         ) : null}
       </div>
     );

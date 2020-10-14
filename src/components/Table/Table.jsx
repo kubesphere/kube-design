@@ -21,6 +21,7 @@ export default class Table extends Component {
     title: PropTypes.node,
     footer: PropTypes.node,
     onChange: PropTypes.func,
+    expandedRowRender: PropTypes.func,
   };
 
   static defaultProps = {
@@ -30,8 +31,51 @@ export default class Table extends Component {
     filters: {},
     sorter: {},
     loading: false,
+    defaultExpandAllRows: false,
     onChange() {},
   };
+
+  constructor(props) {
+    super(props);
+
+    const [heads, columns] = this.getColumns(props);
+    this.state = { heads, columns };
+  }
+
+  getColumns(props) {
+    const { columns } = props;
+
+    const heads = [];
+    const newColumns = [];
+    const walk = (data) => {
+      heads.push([]);
+      const index = heads.length - 1;
+      const children = [];
+      data.forEach((clm) => {
+        if (clm.children) {
+          children.push(...clm.children);
+          heads[index].push({
+            title: clm.title,
+            colspan: clm.children.length,
+          });
+        } else {
+          newColumns.push(clm);
+          heads[index].push(clm);
+        }
+      });
+      if (children.length > 0) {
+        walk(children);
+      }
+      heads[index].forEach((head) => {
+        head.rowspan = heads.length - index;
+        if (head.colspan) {
+          head.rowspan -= 1;
+        }
+      });
+    };
+    walk(columns);
+    return [heads, newColumns];
+  }
 
   get hasSelected() {
     return get(this.props, "rowSelection.selectedRowKeys.length") > 0;
@@ -47,13 +91,14 @@ export default class Table extends Component {
       ...rest
     } = this.props;
     return (
-      <TableContext.Provider value={rest}>
+      <TableContext.Provider value={{ ...rest, ...this.state }}>
         <Loading spinning={loading}>
           <div
             className={classNames(
               "table",
               {
-                "table-hasSelected": this.hasSelected,
+                "table-has-selected": this.hasSelected,
+                "table-multi-heads": this.state.heads.length > 1,
               },
               className
             )}

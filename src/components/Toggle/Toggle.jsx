@@ -16,6 +16,8 @@ class Toggle extends Component {
   static defaultProps = {
     disabled: false,
     defaultChecked: false,
+    onText: "On",
+    offText: "Off",
   };
 
   constructor(props) {

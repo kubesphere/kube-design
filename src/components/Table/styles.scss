@@ -15,6 +15,12 @@
         color: $dark-color01;
       }
 
+      &[colspan] {
+        padding: 8px 12px;
+        text-align: center;
+        background-color: $secondary-bg-color;
+      }
+
       .is-trigger {
         cursor: pointer;
 
@@ -30,6 +36,16 @@
 
       .icon > svg {
         color: $dark-color01;
+      }
+    }
+
+    & > tr:not(:first-of-type) {
+      label.checkbox {
+        display: none;
+      }
+
+      & > th {
+        padding: 8px 12px;
       }
     }
   }
@@ -106,10 +122,6 @@
   border-top-right-radius: $border-radius;
 }
 
-.table-body {
-  padding: 0 12px 12px;
-}
-
 .table-placeholder {
   position: relative;
   padding: 16px;
@@ -127,6 +139,16 @@
   color: $dark-color01;
 }
 
-.table-hasSelected > .table-title {
+.table-has-selected > .table-title {
   background-color: $heading-color;
+}
+
+.table.table-multi-heads table > thead > tr {
+  & > th {
+    border-right: 1px solid $light-color02;
+  }
+
+  & + tr > th {
+    border-top: 1px solid $light-color02;
+  }
 }

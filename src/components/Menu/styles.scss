@@ -25,7 +25,6 @@
     color: $menu-item-color;
     line-height: 20px;
     cursor: pointer;
-    @include ellipsis;
 
     &:hover {
       background-color: $menu-item-hover-bg;

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import { isFunction } from "lodash";
 import Radio from "./Radio";
+import RadioButton from "./RadioButton";
 
 class RadioGroup extends Component {
   static propTypes = {
@@ -17,6 +18,7 @@ class RadioGroup extends Component {
     wrapClassName: PropTypes.string,
     prefixCls: PropTypes.string,
     children: PropTypes.node,
+    mode: PropTypes.string,
     buttonWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   };
 
@@ -27,6 +29,7 @@ class RadioGroup extends Component {
   static defaultProps = {
     prefixCls: "radio-group",
     buttonWidth: "auto",
+    mode: "",
   };
 
   constructor(props) {
@@ -102,6 +105,7 @@ class RadioGroup extends Component {
       style,
       children,
       disabled,
+      mode,
     } = this.props;
     const { value } = this.state;
 
@@ -126,20 +130,28 @@ class RadioGroup extends Component {
           restProps.disabled = option.disabled || disabled;
           newLabel = option.label;
         }
+
+        const RadioComponent = mode === "button" ? RadioButton : Radio;
+
         return (
-          <Radio
+          <RadioComponent
             key={`radio-${restProps.value}`}
             {...restProps}
             onChange={this.handleChange}
           >
             {newLabel}
-          </Radio>
+          </RadioComponent>
         );
       });
     }
 
     return (
-      <div className={classNames(prefixCls, wrapClassName)} style={style}>
+      <div
+        className={classNames(prefixCls, wrapClassName, {
+          "radio-group-button": mode === "button",
+        })}
+        style={style}
+      >
         {newChildren}
       </div>
     );

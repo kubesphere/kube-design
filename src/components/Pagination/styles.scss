@@ -1,8 +1,5 @@
 .pagination {
   & > span {
-    display: inline-block;
-    vertical-align: middle;
-
     & + span {
       margin-left: 12px;
     }

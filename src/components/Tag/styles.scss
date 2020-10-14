@@ -15,6 +15,11 @@
     background-color: $dark-color07;
   }
 
+  &-secondary {
+    color: $dark-color06;
+    background-color: $light-color03;
+  }
+
   &-warning {
     color: $yellow-color05;
     background-color: $yellow-color01;
@@ -23,5 +28,10 @@
   &-primary {
     color: $green-color05;
     background-color: $green-color01;
+  }
+
+  &-info {
+    color: $blue-color05;
+    background-color: $blue-color01;
   }
 }

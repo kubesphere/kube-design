@@ -2,9 +2,8 @@
 @import "../../styles/mixins";
 
 .select {
-  display: inline-block;
   position: relative;
-  width: 445px;
+  width: $input-default-width;
 
   &-control {
     position: relative;
@@ -43,7 +42,7 @@
     .select-placeholder {
       position: absolute;
       top: 0;
-      right: 32px;
+      right: 0;
       bottom: 0;
       left: 0;
       display: inline-flex;
@@ -94,7 +93,6 @@
 
   &-input {
     height: 20px;
-    max-width: 200px;
     overflow: hidden;
     vertical-align: middle;
     box-sizing: border-box;
@@ -143,7 +141,7 @@
     box-shadow: 0 4px 8px 0 rgba(36, 46, 66, 0.16);
     box-sizing: border-box;
     overflow-y: auto;
-    z-index: 100;
+    z-index: 1000;
 
     .select-option {
       display: flex;

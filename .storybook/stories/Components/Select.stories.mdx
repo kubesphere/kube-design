@@ -49,11 +49,21 @@ Basic usages for `Select` component.
           ],
         },
       ];
+      const options3 = [
+        { label: "Last 1 hour", value: 3600 },
+        { label: "Last 2 hours", value: 7200 },
+        { label: "Last 5 hours", value: 18000 },
+        { label: "Last 12 hours", value: 43200 },
+        { label: "Last 1 day", value: 86400 },
+        { label: "Last 2 days", value: 172800 },
+        { label: "Last 3 days", value: 259200 },
+        { label: "Last 7 days", value: 604800 },
+      ];
       return (
         <>
           <div>
             <p>Normal</p>
-            <Select name="select" options={options} />
+            <Select name="select" options={options3} value={43200} />
           </div>
           <div style={{ marginTop: "10px" }}>
             <p>Disabled</p>
@@ -61,7 +71,7 @@ Basic usages for `Select` component.
           </div>
           <div style={{ marginTop: "10px" }}>
             <p>Group</p>
-            <Select options={options2} name="select" defaultValue="center" />
+            <Select options={options2} name="select" defaultValue="CentOS-7" />
           </div>
           <div style={{ marginTop: "10px" }}>
             <p>Prefix Icon</p>
@@ -69,7 +79,7 @@ Basic usages for `Select` component.
               prefixIcon={<Icon name="cluster" />}
               options={options}
               name="select"
-              defaultValue="center"
+              defaultValue="CentOS"
             />
           </div>
         </>
@@ -108,7 +118,7 @@ Basic usages for `Select` component.
       });
       const [options, setOptions] = useState(data.slice(0, pagination.limit));
       const [loading, setLoading] = useState(false);
-      const handleFetch = ({ keyword, page = 1 }) => {
+      const handleFetch = ({ name, page = 1 } = {}) => {
         setLoading(true);
         setTimeout(() => {
           setLoading(false);
@@ -117,8 +127,8 @@ Basic usages for `Select` component.
             data
               .filter(
                 (item) =>
-                  !keyword ||
-                  item.label.toLowerCase().indexOf(keyword.toLowerCase()) !== -1
+                  !name ||
+                  item.label.toLowerCase().indexOf(name.toLowerCase()) !== -1
               )
               .slice(0, pagination.limit * page)
           );

@@ -1,12 +1,10 @@
 import React, { Component, Fragment, cloneElement } from "react";
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
-import { noop, isFunction } from "lodash";
+import { noop, isFunction, setWith } from "lodash";
 import PopperJS from "popper.js";
 import classNames from "classnames";
-import { fireEvent, getScrollParent } from "../../utils";
-import VirtualReference from "./VirtualReference";
-import Portal from "./Portal";
+import { fireEvent } from "../../utils";
 
 const placementMapper = {
   top: "top",
@@ -42,6 +40,7 @@ class Popper extends Component {
     closeAfterMouseLeave: PropTypes.bool,
     closeAfterMouseUp: PropTypes.bool,
     style: PropTypes.object,
+    modifiers: PropTypes.object,
     children: PropTypes.node,
     onOpen: PropTypes.func,
     onClose: PropTypes.func,
@@ -58,6 +57,7 @@ class Popper extends Component {
     closeAfterClick: true,
     closeAfterMouseLeave: false,
     closeAfterMouseUp: false,
+    modifiers: {},
     onOpen: noop,
     onClose: noop,
     onClick: noop,
@@ -171,9 +171,7 @@ class Popper extends Component {
         ? placementMapper[placement]
         : "bottom",
       positionFixed: true,
-      modifiers: {
-        hide: { enabled: true },
-      },
+      modifiers: this.props.modifiers,
     };
     this.popperInstance = new PopperJS(this.reference, this.popper, options);
   };

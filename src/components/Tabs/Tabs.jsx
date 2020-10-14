@@ -9,19 +9,19 @@ class Tabs extends Component {
   static TabPanel = TabPanel;
 
   static propTypes = {
-    onChange: PropTypes.func,
+    type: PropTypes.oneOf(["default", "button"]),
     direction: PropTypes.string,
-    alignment: PropTypes.string,
     className: PropTypes.string,
     style: PropTypes.object,
     activeName: PropTypes.string,
     defaultActiveName: PropTypes.string,
     children: PropTypes.node,
+    onChange: PropTypes.func,
   };
 
   static defaultProps = {
+    type: "default",
     direction: "horizon",
-    alignment: "start",
     style: {},
     onChange: noop,
   };
@@ -41,12 +41,6 @@ class Tabs extends Component {
     }
     return null;
   }
-
-  handleClose = (e, name) => {
-    e.stopPropagation();
-    const { onClose } = this.props;
-    onClose(name);
-  };
 
   handleSelect = (activeName) => {
     const { activeName: propsActiveName, onChange } = this.props;
@@ -121,7 +115,7 @@ class Tabs extends Component {
   }
 
   render() {
-    const { type, className, style, direction, alignment } = this.props;
+    const { type, className, direction } = this.props;
     const { tabLabels, tabPanels } = this.renderTabPanels();
 
     return (
@@ -129,25 +123,9 @@ class Tabs extends Component {
         className={classNames("tabs-container", className, {
           "tabs-container-vertical": direction === "vertical",
         })}
-        ref={(n) => {
-          this.container = n;
-        }}
       >
-        <div
-          className={classNames("tabs", {
-            "is-horizon": direction === "horizon",
-            "is-vertical": direction === "vertical",
-            [`is-${alignment}`]: alignment,
-          })}
-          style={style}
-        >
-          <ul
-            ref={(n) => {
-              this.tabs = n;
-            }}
-          >
-            {tabLabels}
-          </ul>
+        <div className={classNames("tabs", `tabs-${type}`)}>
+          <ul>{tabLabels}</ul>
         </div>
         <div className="tab-content">{tabPanels}</div>
       </div>

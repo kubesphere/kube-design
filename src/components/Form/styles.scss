@@ -2,8 +2,6 @@
 @import "../../styles/mixins";
 
 .form-item {
-  margin-bottom: 12px;
-
   &-desc {
     margin-top: 4px;
     @include TypographyParagraph;
@@ -55,6 +53,11 @@
         box-shadow: 0 4px 8px 0 rgba(202, 38, 33, 0.2) !important;
       }
     }
+  }
+
+  & + .form-item,
+  & + .form-group {
+    margin-top: 12px;
   }
 }
 

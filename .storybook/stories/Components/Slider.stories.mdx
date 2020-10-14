@@ -20,13 +20,13 @@ Basic usages for `Slider` component.
 <Preview>
   <Story name="basic slider">
     {() => {
-      const [size, setSize] = useState(10);
+      const [size, setSize] = useState("10MiB");
       return (
         <div style={{ textAlign: "center", padding: 40 }}>
           <Slider
             max={80}
+            min={10}
             marks={{
-              0: "0 MiB",
               10: "10 MiB",
               20: "20 MiB",
               30: "30 MiB",
@@ -60,30 +60,24 @@ Basic usages for `Slider` component.
             range
           />
           <div style={{ marginBottom: 80 }} />
-          <div style={{ display: "flex" }}>
-            <Slider
-              style={{ flex: 1 }}
-              max={80}
-              marks={{
-                0: "0",
-                10: "10",
-                20: "20",
-                30: "30",
-                40: "40",
-                50: "50",
-                60: "60",
-                70: "70",
-                80: "80",
-              }}
-              value={size}
-              onChange={(value) => setSize(value)}
-            />
-            <Input
-              style={{ width: 60, marginLeft: 20, textAlign: "center" }}
-              value={size}
-              onChange={(e) => setSize(e.target.value)}
-            />
-          </div>
+          <Slider
+            max={80}
+            marks={{
+              0: "0",
+              10: "10",
+              20: "20",
+              30: "30",
+              40: "40",
+              50: "50",
+              60: "60",
+              70: "70",
+              80: "80",
+            }}
+            value={size}
+            unit={"MiB"}
+            onChange={(value) => setSize(value)}
+            withInput
+          />
         </div>
       );
     }}

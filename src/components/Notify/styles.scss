@@ -33,7 +33,9 @@
         }
 
         .notice-close {
-          color: $notify-error-text;
+          .kubed-icon {
+            color: $notify-error-text;
+          }
         }
       }
 
@@ -49,7 +51,9 @@
         }
 
         .notice-close {
-          color: $notify-warning-text;
+          .kubed-icon {
+            color: $notify-warning-text;
+          }
         }
       }
 
@@ -65,7 +69,9 @@
         }
 
         .notice-close {
-          color: $notify-success-text;
+          .kubed-icon {
+            color: $notify-success-text;
+          }
         }
       }
 
@@ -81,7 +87,9 @@
         }
 
         .notice-close {
-          color: $notify-info-text;
+          .kubed-icon {
+            color: $notify-info-text;
+          }
         }
       }
     }
@@ -120,15 +128,13 @@
       @include break-all;
     }
   }
+
   .notice-close {
     position: absolute;
     top: 7px;
-    right: 16px;
+    right: 8px;
     height: 20px;
-    width: auto;
-    padding: 0;
-    font-size: $body-size;
-    font-weight: $font-thin;
-    line-height: 20px;
+    width: 20px;
+    cursor: pointer;
   }
 }

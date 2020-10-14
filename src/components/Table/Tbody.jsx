@@ -8,7 +8,14 @@ export default class Tbody extends Component {
   render() {
     return (
       <TableContext.Consumer>
-        {({ dataSource, columns, rowKey, rowSelection }) => (
+        {({
+          dataSource,
+          columns,
+          rowKey,
+          rowSelection,
+          expandedRowRender,
+          defaultExpandAllRows,
+        }) => (
           <tbody>
             {dataSource.map((item) => (
               <Tr
@@ -17,6 +24,8 @@ export default class Tbody extends Component {
                 rowKey={rowKey}
                 columns={columns}
                 rowSelection={rowSelection}
+                expandedRowRender={expandedRowRender}
+                defaultExpandAllRows={defaultExpandAllRows}
               >
                 {(column) => (
                   <Td

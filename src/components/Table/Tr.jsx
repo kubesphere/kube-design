@@ -1,8 +1,13 @@
 import React, { Component } from "react";
 import classNames from "classnames";
 import { Checkbox } from "../Checkbox";
+import Icon from "../Icon";
 
 export default class Tr extends Component {
+  state = {
+    showExpand: this.props.defaultExpandAllRows,
+  };
+
   get isChecked() {
     const { rowKey, rowSelection = {}, record, isSelectAll } = this.props;
     const { selectedRowKeys = [] } = rowSelection;
@@ -42,8 +47,18 @@ export default class Tr extends Component {
     }
   };
 
+  toggleExpand = () => {
+    this.setState(({ showExpand }) => ({ showExpand: !showExpand }));
+  };
+
   renderSelection() {
-    const { rowSelection, isSelectAll, records } = this.props;
+    const {
+      index,
+      checkboxRowSpan,
+      rowSelection,
+      isSelectAll,
+      records,
+    } = this.props;
 
     if (!rowSelection) {
       return null;
@@ -52,8 +67,12 @@ export default class Tr extends Component {
     const { selectedRowKeys = [] } = rowSelection;
 
     if (isSelectAll) {
+      if (index > 0) {
+        return null;
+      }
+
       return (
-        <th>
+        <th rowSpan={checkboxRowSpan}>
           <Checkbox
             checked={
               selectedRowKeys.length === records.length &&
@@ -77,17 +96,61 @@ export default class Tr extends Component {
     );
   }
 
-  render() {
-    const { data, columns, children } = this.props;
+  renderExpandToggle() {
+    const { expandedRowRender } = this.props;
+    const { showExpand } = this.state;
+
+    if (!expandedRowRender) {
+      return null;
+    }
+
+    return (
+      <td>
+        <Icon
+          name={showExpand ? "minus-square" : "plus-square"}
+          onClick={this.toggleExpand}
+          clickable
+        />
+      </td>
+    );
+  }
+
+  renderExpand() {
+    const { record, rowSelection, columns, expandedRowRender } = this.props;
+    const { showExpand } = this.state;
+
+    if (!expandedRowRender || !showExpand) {
+      return null;
+    }
+
     return (
       <tr
-        className={classNames("table-row", {
+        className={classNames("table-row table-row-expand", {
           "table-row-selected": this.isChecked,
         })}
       >
-        {this.renderSelection()}
-        {columns.map((column) => children(column, data))}
+        {rowSelection && <td></td>}
+        <td colSpan={columns.length}>{expandedRowRender(record)}</td>
       </tr>
+    );
+  }
+
+  render() {
+    const { columns, children } = this.props;
+
+    return (
+      <>
+        <tr
+          className={classNames("table-row", {
+            "table-row-selected": this.isChecked,
+          })}
+        >
+          {this.renderSelection()}
+          {columns.map((column) => children(column))}
+          {this.renderExpandToggle()}
+        </tr>
+        {this.renderExpand()}
+      </>
     );
   }
 }

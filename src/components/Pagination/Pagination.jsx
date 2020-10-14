@@ -10,13 +10,13 @@ export default class Pagination extends Component {
 
   handleNext = () => {
     const { total, page, limit, onChange } = this.props;
-    const totalPage = Math.round(total / limit) + 1;
+    const totalPage = Math.floor(total / limit) + 1;
     onChange && onChange(Math.min(page + 1, totalPage));
   };
 
   render() {
     const { total, page, limit } = this.props;
-    const totalPage = Math.round(total / limit) + 1;
+    const totalPage = Math.floor(total / limit) + 1;
     return (
       <div className="pagination">
         <Icon

@@ -43,8 +43,8 @@ input.input {
 }
 
 .input-password {
-  display: inline-block;
   position: relative;
+  width: $input-default-width;
 
   &.has-icons-right {
     .icon.clickable {

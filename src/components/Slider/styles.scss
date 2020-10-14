@@ -1,11 +1,23 @@
 @import "../../styles/variables";
 @import "../../styles/mixins";
 
+.slider-wrapper {
+  display: flex;
+  padding: 5px;
+
+  .input {
+    width: 100px;
+    margin-left: 20px;
+    margin-right: 8px;
+  }
+}
+
 .slider {
   position: relative;
+  flex: 1;
   height: 20px;
   padding: 5px 0;
-  margin-top: 7px;
+  margin-bottom: 14px;
 
   &-rail {
     height: 10px;
@@ -43,8 +55,8 @@
       content: "";
       display: block;
       position: absolute;
-      top: 3px;
-      left: 3px;
+      top: 2px;
+      left: 2px;
       width: 14px;
       height: 14px;
       border-radius: 50%;
@@ -62,7 +74,7 @@
 
   &-marks {
     position: absolute;
-    top: 29px;
+    top: 22px;
     left: 0;
     width: 100%;
     user-select: none;
@@ -74,6 +86,14 @@
       user-select: none;
       white-space: nowrap;
       transform: translateX(-50%);
+
+      &:first-of-type {
+        transform: none;
+      }
+
+      &:last-of-type {
+        transform: translateX(-100%);
+      }
     }
   }
 }
