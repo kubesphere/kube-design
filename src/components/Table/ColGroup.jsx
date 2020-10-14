@@ -6,7 +6,7 @@ export default class ColGroup extends Component {
   render() {
     return (
       <TableContext.Consumer>
-        {({ columns, rowSelection }) => (
+        {({ columns, rowSelection, expandedRowRender }) => (
           <colgroup>
             {rowSelection && <col width="12" />}
             {columns.map((column) => (
@@ -15,6 +15,7 @@ export default class ColGroup extends Component {
                 {...pick(column, ["width"])}
               />
             ))}
+            {expandedRowRender && <col width="12" />}
           </colgroup>
         )}
       </TableContext.Consumer>

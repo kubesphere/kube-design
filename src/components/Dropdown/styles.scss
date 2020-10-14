@@ -2,14 +2,29 @@
 
 .popper.dropdown {
   opacity: 0;
-  margin-top: -5px;
   transition-property: opacity, margin-top;
   transition-duration: $trans-speed;
   transition-timing-function: cubic-bezier(0.175, 0.35, 0.32, 1);
 
+  &[x-placement^="bottom"] {
+    margin-top: 0;
+  }
+
+  &[x-placement^="top"] {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
   &.is-active {
     opacity: 1;
-    margin-top: 8px;
+
+    &[x-placement^="bottom"] {
+      margin-top: $arrow-margin - 4px;
+    }
+
+    &[x-placement^="top"] {
+      margin-top: -($arrow-margin - 4px);
+    }
   }
 }
 

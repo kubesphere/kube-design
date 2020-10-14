@@ -5,7 +5,13 @@ import classNames from "classnames";
 export default class Tag extends React.Component {
   static propTypes = {
     color: PropTypes.string,
-    type: PropTypes.oneOf(["default", "warning", "primary"]),
+    type: PropTypes.oneOf([
+      "default",
+      "secondary",
+      "info",
+      "warning",
+      "primary",
+    ]),
     className: PropTypes.string,
   };
 

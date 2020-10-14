@@ -1,3 +1,4 @@
+@import "../../node_modules/bulma/sass/base/minireset.sass";
 @import "./variables";
 
 * {
@@ -13,4 +14,29 @@ a {
   &:hover {
     color: $primary;
   }
+}
+
+strong {
+  font-weight: 500;
+}
+
+.has-icons-right,
+.has-icons-left {
+  position: relative;
+
+  .icon {
+    position: absolute;
+    top: 50%;
+    width: 16px;
+    height: 16px;
+    transform: translateY(-50%);
+  }
+}
+
+.has-icons-right .icon.is-right {
+  right: 12px;
+}
+
+.has-icons-left .icon.is-left {
+  left: 12px;
 }

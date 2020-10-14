@@ -78,7 +78,7 @@ export default class FormItem extends React.Component {
       resetValidateResults && resetValidateResults(name);
     }
 
-    this.forceUpdate();
+    this.setState({ value });
 
     if (this.schema && !this.state.componentError) {
       this.validate({ [name]: value });
@@ -123,15 +123,7 @@ export default class FormItem extends React.Component {
   };
 
   render() {
-    const {
-      children,
-      error,
-      className,
-      controlClassName,
-      desc,
-      label,
-      rules = [],
-    } = this.props;
+    const { children, error, className, desc, label, rules = [] } = this.props;
     const { validateResults } = this.context;
     const name = children.props.name;
 

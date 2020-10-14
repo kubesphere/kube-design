@@ -1,112 +1,71 @@
 @import "../../styles/variables";
+@import "../../styles/mixins";
 
 .tabs-container {
   display: flex;
   flex-direction: column;
+
   .tabs {
     position: relative;
-    ul li {
-      cursor: pointer;
-      span {
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        .icon {
-          margin-right: 12px;
-          margin-left: 0;
+
+    & > ul {
+      background-color: $bg-color;
+
+      & > li {
+        display: inline-block;
+        @include TypographySymbolText;
+        padding: 12px;
+        min-width: 120px;
+
+        cursor: pointer;
+        text-align: center;
+
+        &:hover,
+        &:active,
+        &.is-active {
+          color: $primary;
         }
-      }
-      &:hover {
-        color: $green-color02;
-      }
-      &:active {
-        color: $primary;
-      }
-      &.is-active {
-        color: $primary;
-        font-weight: 500;
-      }
-      &.is-disabled {
-        color: $text-color;
-        opacity: 0.5;
-        cursor: not-allowed;
-        span {
+
+        &:active,
+        &.is-active {
+          background-color: $white;
+        }
+
+        &.is-disabled {
+          opacity: 0.5;
           color: $text-color;
+          cursor: not-allowed;
         }
       }
     }
-  }
-  .tabs.is-horizon {
-    overflow: hidden;
-    ul {
-      flex-direction: row;
-    }
-    &.is-start ul {
-      justify-content: flex-start;
-    }
-    &.is-middle ul {
-      justify-content: center;
-    }
-    &.is-end ul {
-      justify-content: flex-end;
-    }
-    ul li {
-      display: inline-flex;
-      align-items: center;
-      padding: 11px 0;
-      border-bottom: 1px solid transparent;
-      margin: 0 24px;
-      margin-bottom: -1px;
-      &:hover {
-        border-color: $border-color;
-      }
-      &.is-active {
-        border-color: $border-color;
-      }
-      &:first-child {
-        margin-left: 0;
-      }
-      &:last-child {
-        margin-right: 0;
-      }
-    }
-    &:not(:last-child) {
-      margin: 0;
-    }
-  }
-  .tabs.is-vertical {
-    ul {
-      flex-direction: column;
-      border-right:  1px solid $border-color;
-      border-bottom: none;
-    }
-    &.is-start ul li {
-      justify-content: flex-start;
-    }
-    &.is-middle ul li {
-      justify-content: center;
-    }
-    &.is-end ul li {
-      justify-content: flex-end;
-    }
-    ul li {
-      display: flex;
-      width: 100%;
-      padding: 11px 24px;
-      margin: 8px 0;
-      margin-right: -2px;
-      border-right: 1px solid transparent;
-      &:hover {
-        border-color: $border-color;
-      }
-      &.is-active {
-        border-right:  1px solid $border-color;
-      }
-      &:first-child {
-        margin-top: 0;
-      }
-      &:last-child {
-        margin-bottom: 0;
+
+    &.tabs-button {
+      & > ul {
+        display: inline-block;
+        padding: 1px;
+        border: 1px solid $border-color;
+        border-radius: 16px;
+        background-color: $secondary-bg-color;
+
+        & > li {
+          padding: 4px 12px;
+          border-radius: 14px;
+
+          &:hover {
+            color: $text-color;
+          }
+
+          &:active {
+            background-color: $text-color;
+            color: $white;
+          }
+
+          &.is-active {
+            background-color: $text-color;
+            border-color: $white;
+            color: $white;
+          }
+        }
       }
     }
   }
@@ -114,19 +73,35 @@
 
 .tab-content {
   padding: 12px 0;
+
   .tab-panel {
     display: none;
+
     &.is-active {
-      display: flex;
+      display: block;
     }
   }
 }
 
 .tabs-container-vertical {
   flex-direction: row;
+  border: 1px solid $border-color;
+
   .tabs {
     min-width: 128px;
+
+    & > ul {
+      height: 100%;
+      border-right: 1px solid $border-color;
+
+      & > li {
+        display: block;
+        padding: 12px;
+        border-bottom: 1px solid $border-color;
+      }
+    }
   }
+
   .tab-content {
     padding: 0 12px;
   }

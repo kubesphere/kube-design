@@ -20,46 +20,56 @@ export default class TableDataWrapper extends Component {
 
     this.columns = [
       {
-        title: "Name",
-        dataIndex: "name",
-        sorter: true,
-        search: true,
-      },
-      {
-        title: "Node",
-        dataIndex: "node",
-        isHideable: true,
-        width: "18%",
-      },
-      {
-        title: "Status",
-        dataIndex: "status",
-        filters: [
-          { text: "Running", value: "running" },
-          { text: "Pending", value: "pending" },
+        title: "Group1",
+        children: [
+          {
+            title: "Name",
+            dataIndex: "name",
+            sorter: true,
+            search: true,
+          },
+          {
+            title: "Node",
+            dataIndex: "node",
+            isHideable: true,
+            width: "18%",
+          },
+          {
+            title: "Status",
+            dataIndex: "status",
+            filters: [
+              { text: "Running", value: "running" },
+              { text: "Pending", value: "pending" },
+            ],
+            isHideable: true,
+            search: true,
+          },
+          {
+            title: "Pod IP",
+            dataIndex: "podIP",
+            isHideable: true,
+            width: "15%",
+          },
         ],
-        isHideable: true,
-        search: true,
       },
       {
-        title: "Pod IP",
-        dataIndex: "podIP",
-        isHideable: true,
-        width: "15%",
-      },
-      {
-        title: "Application",
-        dataIndex: "app",
-        isHideable: true,
-        search: true,
-        width: "15%",
-      },
-      {
-        title: "Updated Time",
-        dataIndex: "startTime",
-        sorter: true,
-        isHideable: true,
-        width: 150,
+        title: "Group2",
+        children: [
+          {
+            title: "Application",
+            dataIndex: "app",
+            isHideable: true,
+            search: true,
+            width: "15%",
+          },
+          {
+            title: "Updated Time",
+            dataIndex: "startTime",
+            sorter: true,
+            isHideable: true,
+            width: 150,
+          },
+        ],
       },
     ];
 

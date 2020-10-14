@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import locale from "@pitrix/lego-locale";
+import { merge } from "lodash";
+import defaultLocales from "./locales";
 
 class LocaleProvider extends Component {
   static locale = locale;
@@ -47,7 +49,7 @@ class LocaleProvider extends Component {
     locale
       .init({
         currentLocale: curLocale,
-        locales,
+        locales: merge(defaultLocales, locales),
         ignoreWarnings,
       })
       .then(this.setState({ initDone: true }));

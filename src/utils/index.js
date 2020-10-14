@@ -1,7 +1,8 @@
-export function getScrollParent(node) {
-  if (node == null) return null;
-  if (node.nodeName === "HTML") return window;
+export function getScrollParents(node, parents = []) {
+  if (node == null) return [];
+  if (node.nodeName === "HTML") return [...parents, window];
 
+  let isNodeScroll = false;
   const { scrollHeight, clientHeight } = node;
   const overflowRegex = /(auto|scroll)/;
   const { overflow, overflowX, overflowY } = window.getComputedStyle(
@@ -13,9 +14,13 @@ export function getScrollParent(node) {
       (scrollHeight === 0 && clientHeight === 0)) &&
     overflowRegex.test(overflow + overflowY + overflowX)
   ) {
-    return node;
+    isNodeScroll = true;
   }
-  return getScrollParent(node.parentNode);
+
+  return getScrollParents(
+    node.parentNode,
+    isNodeScroll ? [...parents, node] : [...parents]
+  );
 }
 
 export function fireEvent(node, eventName) {

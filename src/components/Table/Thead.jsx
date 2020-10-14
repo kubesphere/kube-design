@@ -8,7 +8,7 @@ export default class Thead extends Component {
     return (
       <TableContext.Consumer>
         {({
-          columns,
+          heads,
           filters,
           sorter,
           dataSource,
@@ -17,23 +17,28 @@ export default class Thead extends Component {
           rowSelection,
         }) => (
           <thead>
-            <Tr
-              columns={columns}
-              rowKey={rowKey}
-              rowSelection={rowSelection}
-              records={dataSource}
-              isSelectAll
-            >
-              {(column) => (
-                <Th
-                  key={column.key || column.dataIndex}
-                  column={column}
-                  onChange={onChange}
-                  filters={filters}
-                  sorter={sorter}
-                />
-              )}
-            </Tr>
+            {heads.map((head, index) => (
+              <Tr
+                key={index}
+                index={index}
+                columns={head}
+                rowKey={rowKey}
+                rowSelection={rowSelection}
+                records={dataSource}
+                checkboxRowSpan={heads.length}
+                isSelectAll
+              >
+                {(column) => (
+                  <Th
+                    key={column.key || column.dataIndex}
+                    column={column}
+                    onChange={onChange}
+                    filters={filters}
+                    sorter={sorter}
+                  />
+                )}
+              </Tr>
+            ))}
           </thead>
         )}
       </TableContext.Consumer>

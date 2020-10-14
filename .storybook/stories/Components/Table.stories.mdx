@@ -76,6 +76,7 @@ Basic usages for `Table` component.
             title={title}
             footer={footer}
             onChange={(filters, sorter) => fetchList({ filters, sorter })}
+            expandedRowRender={(record) => <div>{record.name}</div>}
           />
         );
       }}

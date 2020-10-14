@@ -4,9 +4,8 @@
 .toggle {
   position: relative;
   display: inline-block;
-  height: 16px;
-  min-width: 32px;
-  border: 1px solid transparent;
+  height: 20px;
+  min-width: 48px;
   border-radius: 100px;
   background-color: $light-color04;
   vertical-align: middle;
@@ -88,6 +87,7 @@
     font-weight: $font-bold;
     margin-left: 20px;
     margin-right: 8px;
+    color: $white;
 
     &.checked {
       margin-left: 8px;

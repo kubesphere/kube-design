@@ -25,5 +25,4 @@ export * from "./components/Checkbox";
 export * from "./components/Input";
 export * from "./components/Layout";
 export * from "./components/LocaleProvider";
-export * from "./components/Mention";
 export * from "./components/Radio";

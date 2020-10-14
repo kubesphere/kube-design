@@ -5,7 +5,7 @@ import classNames from "classnames";
 export default class TextArea extends Component {
   static propTypes = {
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    rows: PropTypes.string,
+    rows: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     autoResize: PropTypes.bool,
     maxHeight: PropTypes.number,
     onChange: PropTypes.func,

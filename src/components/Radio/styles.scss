@@ -114,6 +114,7 @@ label.radio.disabled {
     position: relative;
     height: 28px;
     padding: 4px 24px;
+    transition: none;
     input {
       display: none;
     }

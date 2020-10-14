@@ -5,6 +5,7 @@ import Icon from "../Icon";
 
 import Dropdown from "../Dropdown";
 import Menu from "../Menu";
+import { locale } from "../LocaleProvider";
 
 const MenuItem = Menu.MenuItem;
 
@@ -30,17 +31,17 @@ export default class Th extends Component {
     if (column.sorter) {
       return (
         <Menu
-          label="OPERATE"
+          label={locale.get("KUBE_OPERATE")}
           selectedKey={sorter.field === column.dataIndex ? sorter.order : ""}
           onClick={this.handleSorterChange}
         >
-          <MenuItem key="asc">
+          <MenuItem key="ascend">
             <Icon name="sort-ascending" />
-            <span>ASC...</span>
+            <span>{locale.get("KUBE_ASCENDING_ORDER")}</span>
           </MenuItem>
-          <MenuItem key="desc">
+          <MenuItem key="descend">
             <Icon name="sort-descending" />
-            <span>DESC...</span>
+            <span>{locale.get("KUBE_DESCENDING_ORDER")}</span>
           </MenuItem>
         </Menu>
       );
@@ -49,7 +50,7 @@ export default class Th extends Component {
     if (column.filters) {
       return (
         <Menu
-          label="FILTER"
+          label={locale.get("KUBE_FILTER")}
           selectedKey={get(filters, column.dataIndex, "")}
           onClick={this.handleFiltersChange}
         >
@@ -66,9 +67,14 @@ export default class Th extends Component {
   render() {
     const { column } = this.props;
 
+    const props = {
+      colSpan: column.colspan < 2 ? undefined : column.colspan,
+      rowSpan: column.rowspan < 2 ? undefined : column.rowspan,
+    };
+
     if (this.hasFilter) {
       return (
-        <th className="table-column-has-filters">
+        <th {...props} className="table-column-has-filters">
           <Dropdown content={this.renderFilters()}>
             <a>
               <span>{column.title}</span>
@@ -79,6 +85,6 @@ export default class Th extends Component {
       );
     }
 
-    return <th>{column.title}</th>;
+    return <th {...props}>{column.title}</th>;
   }
 }

@@ -1,14 +1,27 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { isEqual, isUndefined, isEmpty } from "lodash";
+import { isUndefined, isEmpty, clone } from "lodash";
 
 import Tooltip from "../Tooltip";
+import { Input } from "../Input";
 
 export default class Slider extends React.Component {
   static propTypes = {
-    value: PropTypes.number,
-    defaultValue: PropTypes.number,
+    value: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+      PropTypes.arrayOf(
+        PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+      ),
+    ]),
+    defaultValue: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+      PropTypes.arrayOf(
+        PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+      ),
+    ]),
     min: PropTypes.number,
     max: PropTypes.number,
     step: PropTypes.number,
@@ -18,6 +31,9 @@ export default class Slider extends React.Component {
     hasTooltip: PropTypes.bool,
     className: PropTypes.string,
     style: PropTypes.object,
+    railStyle: PropTypes.object,
+    handlerStyle: PropTypes.object,
+    trackStyle: PropTypes.object,
     onChange: PropTypes.func,
   };
 
@@ -30,6 +46,9 @@ export default class Slider extends React.Component {
     hasTooltip: false,
     className: "",
     style: {},
+    railStyle: {},
+    handlerStyle: {},
+    trackStyle: {},
     onChange() {},
   };
 
@@ -47,7 +66,7 @@ export default class Slider extends React.Component {
 
   getValueFromPercent(percent) {
     const { min, max, step } = this.props;
-    const value = ((max - min) * percent) / 100;
+    const value = ((max - min) * percent) / 100 + min;
     return Math.min(
       (value - ((value - min) % step)).toFixed(this.precision),
       max
@@ -60,36 +79,35 @@ export default class Slider extends React.Component {
   }
 
   getStateFromProps() {
-    const { range, value: _value, defaultValue } = this.props;
-    const value = !isUndefined(_value) ? _value : defaultValue;
+    const { unit, range, min, value: _value, defaultValue } = this.props;
+    let value = clone(!isUndefined(_value) ? _value : defaultValue);
 
     let left;
     let right;
     let stateValue;
 
     if (range) {
+      if (!value) {
+        value = [min, min];
+      } else {
+        value[0] = Number(String(value[0]).replace(unit, ""));
+        value[1] = Number(String(value[1]).replace(unit, ""));
+      }
       left = this.getValuePercent(value[0]) * 100;
       right = this.getValuePercent(value[1]) * 100;
       stateValue = value;
     } else {
+      if (!value) {
+        value = min;
+      } else {
+        value = Number(String(value).replace(unit, ""));
+      }
       left = 0;
       right = this.getValuePercent(value) * 100;
-      stateValue = [0, value];
+      stateValue = [min, value];
     }
 
-    return { left, right, value: stateValue };
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      this.props.value &&
-      !isEqual(
-        this.props.value,
-        this.props.range ? prevState.value : prevState.value[1]
-      )
-    ) {
-      this.setState(this.getStateFromProps());
-    }
+    return { left, right, value: stateValue, originValue: _value };
   }
 
   componentDidMount() {
@@ -97,6 +115,12 @@ export default class Slider extends React.Component {
       this.ref.current.addEventListener("mousedown", this.handleMouseDown);
       this.rect = this.ref.current.getBoundingClientRect();
       window.addEventListener("resize", this.handleResize);
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.value !== prevState.originValue) {
+      this.setState(this.getStateFromProps());
     }
   }
 
@@ -146,7 +170,6 @@ export default class Slider extends React.Component {
       this.type = e.target.dataset.type;
     } else if (this.ref.current.contains(e.target)) {
       let dx = ((e.x - this.rect.x) / this.rect.width) * 100;
-
       if (dx > this.endPercent) {
         dx = 100;
       }
@@ -206,8 +229,23 @@ export default class Slider extends React.Component {
     document.removeEventListener("mousemove", this.handleMouseMove);
   };
 
+  handleInputChange = (e) => {
+    const { min, unit, onChange } = this.props;
+    const { value } = e.target;
+    this.setState(
+      {
+        value: [min, Number(value)],
+        left: 0,
+        right: this.getValuePercent(Number(value)) * 100,
+      },
+      () => {
+        onChange(`${value}${unit}`);
+      }
+    );
+  };
+
   renderSlider(type) {
-    const { hasTooltip, unit } = this.props;
+    const { hasTooltip, handlerStyle, unit } = this.props;
     const { value } = this.state;
     const percent = this.state[type];
 
@@ -216,7 +254,7 @@ export default class Slider extends React.Component {
         className="slider-handler"
         role="slider"
         data-type={type}
-        style={{ left: `calc(${percent}% - 10px)` }}
+        style={{ ...handlerStyle, left: `calc(${percent}% - 10px)` }}
       />
     );
 
@@ -253,24 +291,52 @@ export default class Slider extends React.Component {
   }
 
   render() {
-    const { left, right } = this.state;
-    const { className, style, range } = this.props;
+    const { left, right, value } = this.state;
+    const {
+      className,
+      style,
+      railStyle,
+      trackStyle,
+      range,
+      unit,
+      withInput,
+      min,
+      max,
+    } = this.props;
 
     return (
-      <div
-        className={classNames("slider", className)}
-        ref={this.ref}
-        style={style}
-      >
-        <div className="slider-rail" />
+      <div className="slider-wrapper">
         <div
-          className="slider-track"
-          role="track"
-          style={{ left: `${left}%`, width: `${right - left}%` }}
-        />
-        {range && this.renderSlider("left")}
-        {this.renderSlider("right")}
-        {this.renderMarks()}
+          className={classNames("slider", className)}
+          ref={this.ref}
+          style={style}
+        >
+          <div className="slider-rail" style={railStyle} />
+          <div
+            className="slider-track"
+            role="track"
+            style={{
+              ...trackStyle,
+              left: `${left}%`,
+              width: `${right - left}%`,
+            }}
+          />
+          {range && this.renderSlider("left")}
+          {this.renderSlider("right")}
+          {this.renderMarks()}
+        </div>
+        {withInput && (
+          <div className="has-icons-right">
+            <Input
+              type="number"
+              value={value[1]}
+              onChange={this.handleInputChange}
+              max={max}
+              min={min}
+            />
+            {unit && <span className="is-right">{unit}</span>}
+          </div>
+        )}
       </div>
     );
   }
