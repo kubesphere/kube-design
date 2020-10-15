@@ -1,6 +1,6 @@
 {
   "name": "@kube-design/components",
-  "version": "0.0.0-development",
+  "version": "0.1.0",
   "license": "MIT",
   "main": "lib/index.js",
   "module": "esm/index.js",
@@ -10,8 +10,7 @@
     "lint": "eslint src/**/*.jsx src/**/*.js",
     "test": "jest src",
     "clean": "rimraf lib esm dist",
-    "build": "npm run clean && gulp",
-    "semantic-release": "semantic-release"
+    "build": "npm run clean && gulp"
   },
   "husky": {
     "hooks": {
@@ -70,7 +69,6 @@
     "node-sass": "^4.14.1",
     "react-is": "^16.13.1",
     "sass-loader": "^9.0.3",
-    "semantic-release": "^17.2.1",
     "storybook-dark-mode": "^1.0.2",
     "style-loader": "^1.1.3"
   },
