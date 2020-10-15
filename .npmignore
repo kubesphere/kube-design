@@ -1,0 +1,8 @@
+.*
+src
+jest
+node_modules
+yarn.lock
+jest.config.js
+babel.config.js
+gulpfile.js
