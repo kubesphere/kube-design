@@ -44,7 +44,7 @@ export default class Alert extends React.PureComponent {
 
     return (
       <div className={classnames("alert", className, `alert-${type}`)}>
-        {!!title && this.renderIcon()}
+        {this.renderIcon()}
         <div className="alert-content">
           {title && <div className="alert-title">{title}</div>}
           <span className="alert-message">{message}</span>
@@ -54,13 +54,19 @@ export default class Alert extends React.PureComponent {
   }
 
   renderIcon() {
-    const { icon, type } = this.props;
+    const { icon, type, title } = this.props;
+
+    if (!icon && !title) {
+      return null;
+    }
+
     const iconName = icon || ICONS[type];
+
     return (
       <Icon
         className="alert-icon"
         name={iconName}
-        size={32}
+        size={!!title ? 32 : 20}
         color={ICON_COLORS[type]}
       />
     );
