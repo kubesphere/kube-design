@@ -1,4 +1,4 @@
-name: Main
+name: Release
 on:
   push:
     branches:
@@ -8,7 +8,7 @@ on:
   pull_request:
 
 jobs:
-  build-and-push:
+  release:
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout
@@ -23,3 +23,8 @@ jobs:
         run: yarn test
       - name: Build package
         run: yarn build
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: yarn semantic-release
