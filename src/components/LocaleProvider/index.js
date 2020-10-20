@@ -1,3 +1,5 @@
 import LocaleProvider from "./LocaleProvider";
 
-export default LocaleProvider;
+const { locale } = LocaleProvider;
+
+export { LocaleProvider, locale };

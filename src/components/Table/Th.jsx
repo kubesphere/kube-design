@@ -5,11 +5,9 @@ import Icon from "../Icon";
 
 import Dropdown from "../Dropdown";
 import Menu from "../Menu";
-import LocaleProvider from "../LocaleProvider";
+import { locale } from "../LocaleProvider";
 
 const MenuItem = Menu.MenuItem;
-
-const { locale } = LocaleProvider;
 
 export default class Th extends Component {
   get hasFilter() {

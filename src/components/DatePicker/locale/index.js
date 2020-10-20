@@ -1,6 +1,4 @@
-import LocaleProvider from "../../LocaleProvider";
-
-const { locale } = LocaleProvider;
+import { locale } from "../../LocaleProvider";
 
 const getDefaultLocale = () => {
   const t = locale.get;
