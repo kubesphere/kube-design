@@ -5,4 +5,5 @@ node_modules
 yarn.lock
 jest.config.js
 babel.config.js
+babel.plugin.import.js
 gulpfile.js
