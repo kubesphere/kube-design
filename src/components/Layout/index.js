@@ -1,11 +1,8 @@
-import Basic from "./Basic";
-import Generator from "../../utils/Generator";
-
-const Columns = Generator({ componentCls: "columns" })(Basic);
-const Column = Generator({ componentCls: "column" })(Basic);
-const Level = Generator({ componentCls: "level" })(Basic);
-const LevelLeft = Generator({ componentCls: "level-left" })(Basic);
-const LevelRight = Generator({ componentCls: "level-right" })(Basic);
-const LevelItem = Generator({ componentCls: "level-item" })(Basic);
+import Columns from "./Columns";
+import Column from "./Column";
+import Level from "./Level";
+import LevelLeft from "./LevelLeft";
+import LevelRight from "./LevelRight";
+import LevelItem from "./LevelItem";
 
 export { Columns, Column, Level, LevelLeft, LevelRight, LevelItem };
