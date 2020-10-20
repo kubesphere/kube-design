@@ -5,7 +5,7 @@
   position: relative;
   display: inline-block;
   height: 20px;
-  min-width: 48px;
+  min-width: 40px;
   border-radius: 100px;
   background-color: $light-color04;
   vertical-align: middle;
@@ -47,13 +47,13 @@
     }
     &:after {
       left: 100%;
-      transform: translateX(calc(-100% - 3px)) translateY(-50%);
+      transform: translateX(calc(-100% - 5px)) translateY(-50%);
     }
     &:hover:after {
       background-color: $bg-color;
     }
     &:active:after {
-      transform: translateX(calc(-100% - 3px)) translateY(-50%);
+      transform: translateX(calc(-100% - 5px)) translateY(-50%);
     }
     &:hover:active:after {
       background-color: $light-color02;
@@ -64,8 +64,7 @@
     top: 50%;
     width: 12px;
     height: 12px;
-    right: 2px;
-    left: 2px;
+    left: 5px;
     border-radius: 18px;
     margin-left: 0;
     background-color: $white;
