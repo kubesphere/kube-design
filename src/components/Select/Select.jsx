@@ -7,8 +7,10 @@ import Tag from "../Tag";
 import Icon from "../Icon";
 import Loading from "../Loading";
 import Option from "./Option";
+import LocaleProvider from "../LocaleProvider";
 import { getScrollParents } from "../../utils";
-import { locale } from "../LocaleProvider";
+
+const { locale } = LocaleProvider;
 
 export default class Select extends React.Component {
   static propTypes = {
