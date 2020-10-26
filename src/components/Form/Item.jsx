@@ -16,7 +16,6 @@ export default class FormItem extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     error: PropTypes.object,
-    onChange: PropTypes.func,
   };
 
   static contextTypes = {
