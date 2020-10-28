@@ -21,6 +21,7 @@ export default class FormItem extends React.Component {
 
   static contextTypes = {
     formData: PropTypes.object,
+    onFormChange: PropTypes.func,
     registerValidate: PropTypes.func,
     resetValidate: PropTypes.func,
     validateResults: PropTypes.array,
@@ -62,8 +63,9 @@ export default class FormItem extends React.Component {
     value = get(value, "currentTarget.value", value);
 
     if (name) {
-      const { formData } = this.context;
+      const { formData, onFormChange } = this.context;
       set(formData, name, value);
+      onFormChange && onFormChange(name, value);
     }
 
     if (isFunction(onChange)) {

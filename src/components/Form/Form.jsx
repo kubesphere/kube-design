@@ -2,11 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import Schema from "async-validator";
-import { set, get, isFunction } from "lodash";
+import { debounce, set, get, isFunction } from "lodash";
 
 export default class Form extends React.Component {
   static propTypes = {
     className: PropTypes.string,
+    onChange: PropTypes.func,
     onSubmit: PropTypes.func,
     defaultData: PropTypes.object,
     data: PropTypes.object,
@@ -21,6 +22,7 @@ export default class Form extends React.Component {
 
   static childContextTypes = {
     formData: PropTypes.object,
+    onFormChange: PropTypes.func,
     registerValidate: PropTypes.func,
     resetValidate: PropTypes.func,
     validateResults: PropTypes.array,
@@ -30,6 +32,7 @@ export default class Form extends React.Component {
   getChildContext() {
     return {
       formData: this.state.formData,
+      onFormChange: this.triggerFormChange,
       registerValidate: this.registerValidate,
       resetValidate: this.resetValidate,
       validateResults: this.state.errors,
@@ -42,6 +45,11 @@ export default class Form extends React.Component {
     this.descriptor = {};
 
     this.state = { errors: [], formData: props.data || {} };
+
+    this.triggerFormChange = props.onChange
+      ? debounce(props.onChange, 500)
+      : null;
+
     this.customValidator = null;
   }
 
