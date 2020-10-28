@@ -582,7 +582,8 @@ export default class Select extends React.Component {
     return (
       <div
         className={classNames(
-          multi ? "select-multi" : "select",
+          "select",
+          { "select-multi": multi },
           { "select-disabled": disabled },
           { "is-open": visible },
           className
