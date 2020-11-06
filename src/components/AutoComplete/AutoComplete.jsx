@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { debounce, get } from "lodash";
-import Fuse from "fuse.js";
+import Fuse from "fuse.js/dist/fuse.min.js";
 
 import Dropdown from "../Dropdown";
 import Menu from "../Menu";
