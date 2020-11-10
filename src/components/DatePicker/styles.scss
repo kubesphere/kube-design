@@ -1,7 +1,12 @@
 @import "../../styles/variables";
 @import "./flatpickr.scss";
 
+.datepicker {
+  display: inline-flex;
+}
+
 .datepicker-input {
+  position: relative;
   &.input {
     &[readonly="readonly"] {
       background-color: $white;

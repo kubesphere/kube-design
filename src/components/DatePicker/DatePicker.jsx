@@ -48,20 +48,6 @@ const defaultOptions = {
   prevArrow: ReactDomServer.renderToString(<Icon name="previous" size={20} />),
 };
 
-const pickFormValidateStatusClassNames = (className = "") => {
-  return [
-    "is-danger",
-    "has-danger-help",
-    "is-warning",
-    "has-warning-help",
-    "is-success",
-  ]
-    .filter((acceptableClassName) => {
-      return className.indexOf(acceptableClassName) !== -1;
-    })
-    .join(" ");
-};
-
 class DatePicker extends Component {
   static propTypes = {
     defaultValue: PropTypes.oneOfType([
@@ -87,7 +73,6 @@ class DatePicker extends Component {
       PropTypes.number,
     ]),
     className: PropTypes.string,
-    children: PropTypes.node,
     showClearBtn: PropTypes.bool,
     disabled: PropTypes.bool,
     enableTime: PropTypes.bool,
@@ -295,7 +280,6 @@ class DatePicker extends Component {
       options,
       defaultValue,
       value,
-      children,
       className,
       showClearBtn,
       ...props
@@ -310,23 +294,13 @@ class DatePicker extends Component {
 
     props.className = classNames(
       "datepicker-input input",
-      pickFormValidateStatusClassNames(className),
       { "is-hover": isHover },
       { "is-active": isOpen }
     );
 
-    return options.wrap ? (
+    return (
       <div
-        {...props}
-        ref={(n) => {
-          this.node = n;
-        }}
-      >
-        {children}
-      </div>
-    ) : (
-      <div
-        className={classNames(className, "has-icons-right")}
+        className={classNames("datepicker has-icons-right", className)}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
       >
