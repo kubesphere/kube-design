@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { debounce, get } from "lodash";
+import { debounce, get, isEqual } from "lodash";
 import Fuse from "fuse.js/dist/fuse.min.js";
 
 import Dropdown from "../Dropdown";
@@ -35,7 +35,7 @@ export default class AutoComplete extends PureComponent {
   fuseOptions = {
     includeScore: true,
     includeMatches: true,
-    minMatchCharLength: 2,
+    minMatchCharLength: 1,
   };
 
   modifiers = {
@@ -44,7 +44,7 @@ export default class AutoComplete extends PureComponent {
   };
 
   componentDidUpdate(prevProps) {
-    if (prevProps.options !== this.props.options) {
+    if (!isEqual(prevProps.options, this.props.options)) {
       this.setState({ options: [...this.props.options], searchResult: [] });
       this.fuse = new Fuse(this.props.options, this.fuseOptions);
     }

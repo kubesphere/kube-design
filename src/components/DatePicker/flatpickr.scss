@@ -10,8 +10,8 @@
   border-radius: 5px;
   background: transparent;
   background: #fff;
-  box-shadow: 1px 0 0 #e6e6e6, -1px 0 0 #e6e6e6, 0 1px 0 #e6e6e6, 0 -1px 0 #e6e6e6,
-    0 3px 13px rgba(0, 0, 0, 0.08);
+  box-shadow: 1px 0 0 #e6e6e6, -1px 0 0 #e6e6e6, 0 1px 0 #e6e6e6,
+    0 -1px 0 #e6e6e6, 0 3px 13px rgba(0, 0, 0, 0.08);
   opacity: 0;
   visibility: hidden;
   direction: ltr;
@@ -63,10 +63,6 @@
   .hasWeeks .dayContainer {
     border-left: 0;
   }
-  &.showTimeInput.hasTime .flatpickr-time {
-    height: 40px;
-    border-top: 1px solid #e6e6e6;
-  }
   &.noCalendar.hasTime .flatpickr-time {
     height: auto;
   }
@@ -78,7 +74,7 @@
     width: 0;
     height: 0;
     border: solid transparent;
-    content: '';
+    content: "";
     pointer-events: none;
   }
   &.rightMost {
@@ -237,7 +233,7 @@
     &:after {
       position: absolute;
       display: block;
-      content: '';
+      content: "";
     }
     &.arrowUp {
       top: 0;
@@ -595,7 +591,8 @@ span.flatpickr-weekday {
 .flatpickr-time {
   display: flex;
   box-sizing: border-box;
-  height: 0;
+  height: 40px;
+  border-top: 1px solid #e6e6e6;
   max-height: 40px;
   outline: 0;
   overflow: hidden;
@@ -604,10 +601,9 @@ span.flatpickr-weekday {
   &:after {
     clear: both;
     display: table;
-    content: '';
+    content: "";
   }
   .numInputWrapper {
-    // float: left;
     flex: 1;
     width: 40%;
     height: 40px;

@@ -11,12 +11,17 @@ class LocaleProvider extends Component {
     currentLocale: PropTypes.string,
     locales: PropTypes.object,
     localeKey: PropTypes.string,
+    localeFallback: PropTypes.object,
     children: PropTypes.node,
     ignoreWarnings: PropTypes.bool,
   };
 
   static defaultProps = {
     locales: {},
+    localeFallback: {
+      "zh-CN": "zh",
+      "en-US": "en",
+    },
     ignoreWarnings: false,
   };
 
@@ -26,13 +31,19 @@ class LocaleProvider extends Component {
 
   static getDerivedStateFromProps(props, state) {
     const { currentLocale: stateCurLocale, initDone } = state;
-    const { currentLocale: nextCurLocale, locales, localeKey } = props;
+    const {
+      currentLocale: nextCurLocale,
+      locales,
+      localeKey,
+      localeFallback,
+    } = props;
     let curLocale = null;
     if (!(nextCurLocale in locales)) {
       curLocale = locale.determineLocale({
         cookieLocaleKey: localeKey,
         urlLocaleKey: localeKey,
       });
+      curLocale = localeFallback[curLocale] || curLocale;
     }
     if (nextCurLocale && nextCurLocale !== stateCurLocale) {
       curLocale = nextCurLocale;
