@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { debounce, get, isEqual } from "lodash";
+import { get, isEqual } from "lodash";
 import Fuse from "fuse.js/dist/fuse.min.js";
 
 import Dropdown from "../Dropdown";
@@ -43,10 +43,14 @@ export default class AutoComplete extends PureComponent {
     preventOverflow: { enabled: false },
   };
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (!isEqual(prevProps.options, this.props.options)) {
       this.setState({ options: [...this.props.options], searchResult: [] });
       this.fuse = new Fuse(this.props.options, this.fuseOptions);
+    }
+
+    if ("value" in this.props && this.props.value !== prevState.value) {
+      this.setState({ value: this.props.value });
     }
   }
 
@@ -60,12 +64,12 @@ export default class AutoComplete extends PureComponent {
     this.setState({ showOptions: false });
   };
 
-  triggerChange = debounce(() => {
+  triggerChange = () => {
     const { onChange } = this.props;
     const { value } = this.state;
 
     onChange(value);
-  }, 200);
+  };
 
   handleOptionsClick = (e, key) => {
     this.handleInputChange({ target: { value: key } });
