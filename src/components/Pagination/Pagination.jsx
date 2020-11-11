@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import Icon from "../Icon";
+import Button from "../Button";
 
 export default class Pagination extends Component {
   handlePrev = () => {
@@ -19,21 +19,21 @@ export default class Pagination extends Component {
     const totalPage = Math.floor(total / limit) + 1;
     return (
       <div className="pagination">
-        <Icon
-          name="previous"
+        <Button
+          type="flat"
+          icon="previous"
+          iconSize={20}
           disabled={page <= 1}
-          size={20}
-          changeable
           onClick={this.handlePrev}
         />
         <span>
           {page} / {totalPage}
         </span>
-        <Icon
-          name="next"
+        <Button
+          type="flat"
+          icon="next"
+          iconSize={20}
           disabled={page >= totalPage}
-          size={20}
-          changeable
           onClick={this.handleNext}
         />
       </div>

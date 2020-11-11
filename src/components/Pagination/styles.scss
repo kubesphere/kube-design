@@ -1,7 +1,16 @@
+@import "../../styles/variables";
+
 .pagination {
+  display: inline-flex;
+  align-items: center;
+
   & > span {
-    & + span {
-      margin-left: 12px;
-    }
+    margin: 0 12px;
+  }
+
+  .button {
+    height: 32px;
+    padding: 5px 12px;
+    border-radius: $border-radius;
   }
 }
