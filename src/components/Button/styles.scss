@@ -3,6 +3,7 @@
 
 .button {
   position: relative;
+  height: 32px;
   border: none;
   border-radius: 100px;
   box-sizing: border-box;
@@ -61,7 +62,7 @@
   .icon {
     height: 16px;
     width: 16px;
-    vertical-align: middle;
+    vertical-align: text-bottom;
   }
 
   .button-content {

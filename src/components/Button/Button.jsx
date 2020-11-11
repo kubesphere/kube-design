@@ -14,6 +14,7 @@ export default class Button extends PureComponent {
     style: PropTypes.object,
     size: PropTypes.oneOf(["small", "normal", "large"]),
     icon: PropTypes.string,
+    iconSize: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     iconType: PropTypes.string,
     loading: PropTypes.bool,
     disabled: PropTypes.bool,
@@ -36,6 +37,7 @@ export default class Button extends PureComponent {
       size,
       icon,
       iconType,
+      iconSize,
       loading,
       ghost,
       ...rest
@@ -57,7 +59,7 @@ export default class Button extends PureComponent {
         type={htmlType}
         {...rest}
       >
-        {icon && <Icon name={icon} type={iconType} />}
+        {icon && <Icon name={icon} type={iconType} size={iconSize} />}
         {children && <div className="button-content">{children}</div>}
         {loading && <Loading size={16} />}
       </button>
