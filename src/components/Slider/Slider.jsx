@@ -113,9 +113,8 @@ export default class Slider extends React.Component {
   componentDidMount() {
     if (this.ref && this.ref.current) {
       this.ref.current.addEventListener("mousedown", this.handleMouseDown);
-      this.rect = this.ref.current.getBoundingClientRect();
-      window.addEventListener("resize", this.handleResize);
     }
+    window.addEventListener("resize", this.handleResize);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -125,12 +124,10 @@ export default class Slider extends React.Component {
   }
 
   componentWillUnmount() {
-    if (this.ref && this.ref.current) {
-      this.ref.current.removeEventListener("mousedown", this.handleMouseDown);
-      document.removeEventListener("mousemove", this.handleMouseMove);
-      document.removeEventListener("mouseup", this.handleMouseUp);
-      window.removeEventListener("resize", this.handleResize);
-    }
+    document.removeEventListener("mousedown", this.handleMouseDown);
+    document.removeEventListener("mousemove", this.handleMouseMove);
+    document.removeEventListener("mouseup", this.handleMouseUp);
+    window.removeEventListener("resize", this.handleResize);
   }
 
   triggerChange = ({ left, right }) => {
@@ -160,15 +157,21 @@ export default class Slider extends React.Component {
   };
 
   handleMouseDown = (e) => {
+    document.removeEventListener("mouseup", this.handleMouseUp);
     document.addEventListener("mouseup", this.handleMouseUp);
 
-    const { left, right } = this.state;
-    const { range } = this.props;
+    if (this.ref.current.contains(e.target)) {
+      this.rect = this.ref.current.getBoundingClientRect();
 
-    if (e.target.getAttribute("role") === "slider") {
-      document.addEventListener("mousemove", this.handleMouseMove);
-      this.type = e.target.dataset.type;
-    } else if (this.ref.current.contains(e.target)) {
+      if (e.target.getAttribute("role") === "slider") {
+        document.addEventListener("mousemove", this.handleMouseMove);
+        this.type = e.target.dataset.type;
+        return;
+      }
+
+      const { left, right } = this.state;
+      const { range } = this.props;
+
       let dx = ((e.x - this.rect.x) / this.rect.width) * 100;
       if (dx > this.endPercent) {
         dx = 100;
