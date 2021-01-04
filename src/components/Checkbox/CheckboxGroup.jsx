@@ -49,8 +49,28 @@ export default class CheckboxGroup extends Component {
   };
 
   render() {
-    const { className, name, direction, options } = this.props;
+    const { className, name, direction, options, children } = this.props;
     const { values } = this.state;
+
+    if (children && children.length > 0) {
+      const childContent = React.Children.map(children, (child) =>
+        React.cloneElement(child, {
+          ...child.props,
+          name,
+          checked: values.includes(child.props.value),
+          onChange: this.handleOptionChange,
+        })
+      );
+
+      return (
+        <div
+          data-direction={direction}
+          className={classNames(`checkbox-group`, className)}
+        >
+          {childContent}
+        </div>
+      );
+    }
 
     return (
       <div
