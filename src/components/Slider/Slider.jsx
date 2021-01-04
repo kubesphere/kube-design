@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { isUndefined, isEmpty, clone } from "lodash";
+import { isUndefined, isEmpty, clone, throttle } from "lodash";
 
 import Tooltip from "../Tooltip";
 import { Input } from "../Input";
@@ -184,7 +184,7 @@ export default class Slider extends React.Component {
     }
   };
 
-  handleMouseMove = (e) => {
+  handleMouseMove = throttle((e) => {
     const { range } = this.props;
     const { left, right } = this.state;
     let percent = ((e.x - this.rect.x) * 100) / this.rect.width;
@@ -226,7 +226,7 @@ export default class Slider extends React.Component {
       left,
       right: percent,
     });
-  };
+  }, 80);
 
   handleMouseUp = () => {
     document.removeEventListener("mousemove", this.handleMouseMove);

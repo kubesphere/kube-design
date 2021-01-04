@@ -53,6 +53,36 @@ Basic usages for `CheckboxGroup` component.
       const options = [
         {
           label: "中国",
+          value: "China",
+        },
+        {
+          label: "巴西",
+          value: "Brazil",
+        },
+        {
+          label: "俄罗斯",
+          value: "Russian",
+        },
+        {
+          label: "南非",
+          value: "South Africa",
+        },
+        {
+          label: "印度",
+          value: "Indian",
+        },
+      ];
+      return <CheckboxGroup name="test" options={options} />;
+    }}
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="checkbox group with children">
+    {() => {
+      const options = [
+        {
+          label: "中国",
           value: "China"
         },
         {
@@ -72,7 +102,17 @@ Basic usages for `CheckboxGroup` component.
           value: "Indian"
         }
       ];
-      return <CheckboxGroup name="test" options={options} />;
+      return (
+        <CheckboxGroup name="test" options={options}>
+          {
+            options.map(item => (
+              <Checkbox key={item.value} value={item.value}>
+                {item.label}
+              </Checkbox>
+            ))
+          }
+        </CheckboxGroup>
+      );
     }}
   </Story>
 </Preview>
