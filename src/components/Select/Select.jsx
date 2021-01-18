@@ -261,9 +261,7 @@ export default class Select extends React.Component {
 
     this.setState({ visible: searchable ? true : !visible });
 
-    if (searchable) {
-      this.handleInputStatus(true);
-    }
+    searchable && this.handleInputStatus(true);
   };
 
   handleOptionsClose = () => {
@@ -298,7 +296,7 @@ export default class Select extends React.Component {
     const { value, inputValue } = this.state;
     const { multi, searchable, options } = this.props;
     const option = options.find((item) => item.value === value) || {};
-    const currentInputValue = multi ? "" : option.label || inputValue || "";
+    const currentInputValue = multi ? "" : option.value || inputValue || "";
     this.setState(
       { inputVisible: visible, inputValue: currentInputValue },
       () => {
@@ -314,14 +312,15 @@ export default class Select extends React.Component {
 
   handleInputChange = (e) => {
     const value = e.target.value;
-    const { multi, searchable, onFetch } = this.props;
-    this.setState({ inputValue: value }, () => {
+    const { multi, searchable, onFetch, onChange } = this.props;
+    this.setState({ inputValue: value, value }, () => {
       if (multi && searchable) {
         const width = isEmpty(this.state.value)
           ? "100%"
           : `${get(this.inputValueRef, "current.clientWidth", 0) + 5}px`;
         this.updateInputDOM({ width });
       }
+      onChange(value);
     });
 
     if (isFunction(onFetch)) {
