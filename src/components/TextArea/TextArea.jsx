@@ -47,12 +47,16 @@ export default class TextArea extends Component {
   }
 
   render() {
-    const { className, autoResize, maxHeight, ...rest } = this.props;
+    const { className, autoResize, maxHeight, resize, ...rest } = this.props;
 
     const props = {
       ...rest,
       onChange: this.handleChange,
     };
+
+    if (resize) {
+      props.resize = "true";
+    }
 
     const style = autoResize
       ? classNames("textarea", "textareaAuto", className)
