@@ -313,14 +313,19 @@ export default class Select extends React.Component {
   handleInputChange = (e) => {
     const value = e.target.value;
     const { multi, searchable, onFetch, onChange } = this.props;
-    this.setState({ inputValue: value, value }, () => {
+
+    const newState = { inputValue: value };
+    if (!multi) {
+      newState.value = value;
+    }
+    this.setState(newState, () => {
       if (multi && searchable) {
         const width = isEmpty(this.state.value)
           ? "100%"
           : `${get(this.inputValueRef, "current.clientWidth", 0) + 5}px`;
         this.updateInputDOM({ width });
       }
-      onChange(value);
+      onChange(this.state.value);
     });
 
     if (isFunction(onFetch)) {
