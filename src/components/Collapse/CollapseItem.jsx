@@ -45,7 +45,7 @@ export default class CollapseItem extends Component {
           {label}
           <Icon
             name={`caret-${visible ? "up" : "down"}`}
-            type="dark"
+            type={visible ? "dark" : "light"}
             size={20}
           />
         </div>

@@ -46,8 +46,8 @@ export default class Collapse extends Component {
 
     let nextKey = [...activeKey];
 
-    if (accordion && visible) {
-      nextKey = [key];
+    if (accordion) {
+      nextKey = visible ? [key] : [];
     }
     if (!accordion && visible && !activeKey.includes(key)) {
       nextKey = activeKey.concat(key);
