@@ -3,20 +3,25 @@ import React, { Component } from "react";
 import Button from "../Button";
 
 export default class Pagination extends Component {
+  get totalPage() {
+    const { total, limit } = this.props;
+    const left = total % limit;
+    return left === 0 ? total / limit : (total - left) / limit + 1;
+  }
+
   handlePrev = () => {
     const { page, onChange } = this.props;
     onChange && onChange(Math.max(page - 1, 1));
   };
 
   handleNext = () => {
-    const { total, page, limit, onChange } = this.props;
-    const totalPage = Math.floor(total / limit) + 1;
-    onChange && onChange(Math.min(page + 1, totalPage));
+    const { page, onChange } = this.props;
+    onChange && onChange(Math.min(page + 1, this.totalPage));
   };
 
   render() {
-    const { total, page, limit } = this.props;
-    const totalPage = Math.floor(total / limit) + 1;
+    const { page } = this.props;
+    const totalPage = this.totalPage;
     return (
       <div className="pagination">
         <Button
