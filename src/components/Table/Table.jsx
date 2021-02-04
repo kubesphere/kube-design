@@ -42,6 +42,16 @@ export default class Table extends Component {
     this.state = { heads, columns };
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.columns.length !== prevProps.columns.length) {
+      const [heads, columns] = this.getColumns(this.props);
+      this.setState({
+        heads,
+        columns,
+      });
+    }
+  }
+
   getColumns(props) {
     const { columns } = props;
 
