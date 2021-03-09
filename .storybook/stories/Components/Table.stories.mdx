@@ -36,6 +36,9 @@ Basic usages for `Table` component.
           onSelectAll: (checked, rowKeys) => {
             setSelectedRowKeys(rowKeys);
           },
+          getCheckboxProps: record => ({
+            disabled: record.node === 'node-4',
+          })
         };
         const title = (
           <div style={{ display: "flex" }}>

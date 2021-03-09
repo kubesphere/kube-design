@@ -67,7 +67,14 @@ export default class InputSearch extends React.Component {
 
   render() {
     const { value } = this.state;
-    const { name, placeholder, disabled, className, style } = this.props;
+    const {
+      name,
+      placeholder,
+      disabled,
+      className,
+      style,
+      ...rest
+    } = this.props;
 
     return (
       <div
@@ -88,6 +95,7 @@ export default class InputSearch extends React.Component {
           name={name}
           value={value || ""}
           disabled={disabled}
+          {...rest}
         />
         {!isEmpty(value) && (
           <Icon
