@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import classNames from "classnames";
 import { Checkbox } from "../Checkbox";
 import Icon from "../Icon";
+import { isFunction } from "lodash";
 
 export default class Tr extends Component {
   state = {
@@ -33,13 +34,23 @@ export default class Tr extends Component {
 
   handleAllChange = (checked) => {
     const { rowKey, rowSelection = {}, records } = this.props;
-    const { onSelectAll } = rowSelection;
+    const { onSelectAll, getCheckboxProps } = rowSelection;
 
     if (onSelectAll) {
       if (checked) {
         onSelectAll(
           checked,
-          records.map((item) => item[rowKey])
+          records
+            .filter((item) => {
+              if (getCheckboxProps) {
+                const result = getCheckboxProps(item);
+                if (result && result.disabled) {
+                  return false;
+                }
+              }
+              return true;
+            })
+            .map((item) => item[rowKey])
         );
       } else {
         onSelectAll(checked, []);
@@ -57,6 +68,7 @@ export default class Tr extends Component {
       checkboxRowSpan,
       rowSelection,
       isSelectAll,
+      record,
       records,
     } = this.props;
 
@@ -64,7 +76,7 @@ export default class Tr extends Component {
       return null;
     }
 
-    const { selectedRowKeys = [] } = rowSelection;
+    const { selectedRowKeys = [], getCheckboxProps } = rowSelection;
 
     if (isSelectAll) {
       if (index > 0) {
@@ -89,9 +101,18 @@ export default class Tr extends Component {
       );
     }
 
+    let props = {};
+    if (isFunction(getCheckboxProps)) {
+      props = getCheckboxProps(record);
+    }
+
     return (
       <td>
-        <Checkbox checked={this.isChecked} onChange={this.handleChange} />
+        <Checkbox
+          {...props}
+          checked={this.isChecked}
+          onChange={this.handleChange}
+        />
       </td>
     );
   }
@@ -136,7 +157,7 @@ export default class Tr extends Component {
   }
 
   render() {
-    const { columns, children } = this.props;
+    const { columns, children, rowKeyData } = this.props;
 
     return (
       <>
@@ -144,6 +165,7 @@ export default class Tr extends Component {
           className={classNames("table-row", {
             "table-row-selected": this.isChecked,
           })}
+          data-row-key={rowKeyData}
         >
           {this.renderSelection()}
           {columns.map((column) => children(column))}

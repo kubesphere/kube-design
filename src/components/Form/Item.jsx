@@ -155,7 +155,7 @@ export default class FormItem extends React.Component {
     const isRequired = rules.some((rule) => rule.required);
 
     return (
-      <div className={classNames} data-test={`form-item-${name}`}>
+      <div className={classNames}>
         {label && (
           <label className="form-item-label" htmlFor={name}>
             {label}

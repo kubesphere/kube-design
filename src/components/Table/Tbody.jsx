@@ -23,6 +23,7 @@ export default class Tbody extends Component {
                 record={item}
                 rowKey={rowKey}
                 columns={columns}
+                rowKeyData={item[rowKey]}
                 rowSelection={rowSelection}
                 expandedRowRender={expandedRowRender}
                 defaultExpandAllRows={defaultExpandAllRows}
