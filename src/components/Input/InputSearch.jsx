@@ -73,6 +73,7 @@ export default class InputSearch extends React.Component {
       disabled,
       className,
       style,
+      onSearch,
       ...rest
     } = this.props;
 
@@ -93,9 +94,9 @@ export default class InputSearch extends React.Component {
           onChange={this.handleChange}
           onKeyUp={this.handleKeyUp}
           name={name}
-          value={value || ""}
           disabled={disabled}
           {...rest}
+          value={value || ""}
         />
         {!isEmpty(value) && (
           <Icon
