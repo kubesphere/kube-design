@@ -17,17 +17,24 @@ export default class Checkbox extends Component {
   };
 
   static defaultProps = {
-    checked: false,
     indeterminate: false,
     onChange() {},
   };
 
-  state = {
-    checked: !!this.props.checked,
-  };
+  constructor(props) {
+    super(props);
+
+    if ("checked" in this.props) {
+      this.isControlled = true;
+    }
+
+    this.state = {
+      checked: !!this.props.checked,
+    };
+  }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.checked !== prevState.checked) {
+    if (this.isControlled && this.props.checked !== prevState.checked) {
       this.setState({ checked: this.props.checked });
     }
   }
@@ -36,7 +43,9 @@ export default class Checkbox extends Component {
     const { onChange, value } = this.props;
     const { checked } = this.state;
 
-    this.setState({ checked: !checked });
+    if (!this.isControlled) {
+      this.setState({ checked: !checked });
+    }
 
     onChange(!checked, value, e);
   };
