@@ -6,7 +6,7 @@ export default class Pagination extends Component {
   get totalPage() {
     const { total, limit } = this.props;
     const left = total % limit;
-    return left === 0 ? total / limit : (total - left) / limit + 1;
+    return left === 0 ? Math.max(total / limit, 1) : (total - left) / limit + 1;
   }
 
   handlePrev = () => {
