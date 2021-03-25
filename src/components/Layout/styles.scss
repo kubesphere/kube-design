@@ -9,7 +9,7 @@ $column-gap: $base-margin !default;
 .columns.is-variable {
   margin-right: calc(-1 * var(--columnGap));
   margin-left: calc(-1 * var(--columnGap));
-  --columnGap: $column-gap;
+  --columnGap: #{$column-gap};
   .column {
     padding-right: var(--columnGap);
     padding-left: var(--columnGap);
