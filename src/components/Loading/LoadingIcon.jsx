@@ -2,8 +2,11 @@ import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { isNumber, noop } from "lodash";
+import { generateId } from "../../utils";
 
 class LoadingIcon extends PureComponent {
+  id = generateId(4);
+
   static propTypes = {
     prefix: PropTypes.string,
     name: PropTypes.string.isRequired,
@@ -74,7 +77,7 @@ class LoadingIcon extends PureComponent {
         >
           <defs>
             <linearGradient
-              id="icon-line-spinner-a"
+              id={`icon-line-spinner-a${this.id}`}
               x1="4.167%"
               x2="4.167%"
               y1="0%"
@@ -84,7 +87,7 @@ class LoadingIcon extends PureComponent {
               <stop offset="100%" stopColor="#86919C" />
             </linearGradient>
             <linearGradient
-              id="icon-line-spinner-b"
+              id={`icon-line-spinner-b${this.id}`}
               x1="95.833%"
               x2="95.833%"
               y1="0%"
@@ -107,7 +110,7 @@ class LoadingIcon extends PureComponent {
               />
             </path>
             <path
-              fill="url(#icon-line-spinner-a)"
+              fill={`url(#icon-line-spinner-a${this.id})`}
               d="M24,48 L24,46 C36.1502645,46 46,36.1502645 46,24 C46,12.1554065 36.6396211,2.49704654 24.9125246,2.01858157 L24.9954814,0.0202708022 C37.7886803,0.542235439 48,11.078627 48,24 C48,37.254834 37.254834,48 24,48 Z"
             >
               <animateTransform
@@ -121,7 +124,7 @@ class LoadingIcon extends PureComponent {
               />
             </path>
             <path
-              fill="url(#icon-line-spinner-b)"
+              fill={`url(#icon-line-spinner-b${this.id})`}
               d="M24,46 L24,48 C10.745166,48 0,37.254834 0,24.0000001 C0,11.0786271 10.2113197,0.542235649 23.0045134,0.0202712255 L23.0874754,2.01858177 C11.3603789,2.49704674 2,12.1554066 2,24.0000001 C2,36.1502645 11.8497355,46 24,46 Z"
             >
               <animateTransform

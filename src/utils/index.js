@@ -1,3 +1,5 @@
+import generate from "nanoid/generate";
+
 export function getScrollParents(node, parents = []) {
   if (node == null) return [];
   if (node.nodeName === "HTML") return [...parents, window];
@@ -75,3 +77,6 @@ export function fireEvent(node, eventName) {
     node.fireEvent(`on${eventName}`, event);
   }
 }
+
+export const generateId = (length) =>
+  generate("0123456789abcdefghijklmnopqrstuvwxyz", length || 6);
