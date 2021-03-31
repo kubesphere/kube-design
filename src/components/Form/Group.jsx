@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { Checkbox } from "../Checkbox";
+import Icon from "../Icon";
 import { get, unset, isUndefined } from "lodash";
 
 export default class Group extends React.Component {
@@ -69,8 +70,48 @@ export default class Group extends React.Component {
     });
   };
 
+  handleTitleClick = () => {
+    this.setState(({ isCheck }) => ({
+      isCheck: !isCheck,
+    }));
+  };
+
+  renderTitle() {
+    const { checkable, label, desc, keepDataWhenUnCheck } = this.props;
+    const { isCheck } = this.state;
+
+    let title = label;
+
+    if (checkable && !keepDataWhenUnCheck) {
+      title = (
+        <Checkbox checked={isCheck} onChange={this.handleCheck}>
+          {label}
+        </Checkbox>
+      );
+    }
+
+    if (checkable && keepDataWhenUnCheck) {
+      title = (
+        <div
+          className="form-group-title-toggle"
+          onClick={this.handleTitleClick}
+        >
+          <Icon name={isCheck ? "chevron-up" : "chevron-down"} size={20} />
+          {label}
+        </div>
+      );
+    }
+
+    return (
+      <div>
+        <div className="form-group-title">{title}</div>
+        {desc && <div className="form-group-desc">{desc}</div>}
+      </div>
+    );
+  }
+
   render() {
-    const { children, checkable, label, desc, noWrapper } = this.props;
+    const { children, checkable, noWrapper } = this.props;
     const { isCheck } = this.state;
 
     if (!children) {
@@ -85,18 +126,7 @@ export default class Group extends React.Component {
           "form-group-checkable": checkable,
         })}
       >
-        <div>
-          <div className="form-group-title">
-            {checkable ? (
-              <Checkbox checked={isCheck} onChange={this.handleCheck}>
-                {label}
-              </Checkbox>
-            ) : (
-              label
-            )}
-          </div>
-          {desc && <div className="form-group-desc">{desc}</div>}
-        </div>
+        {this.renderTitle()}
         {noWrapper ? (
           <div
             className={classNames({

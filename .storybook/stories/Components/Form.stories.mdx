@@ -18,22 +18,25 @@ Form component.
 
 ### Basic
 
-Basic usages for ``Form`` component.
+Basic usages for `Form` component.
 
 <Preview>
   <Story name="basic form">
     <Form onSubmit={console.log}>
-      <Form.Item 
-        label="Username" 
-        desc="It can only contain lowercase letters, numbers and hyphens(-)." 
-        rules={ [{required: true, message: 'Please input username' }] }
+      <Form.Item
+        label="Username"
+        desc="It can only contain lowercase letters, numbers and hyphens(-)."
+        rules={[{ required: true, message: "Please input username" }]}
       >
-        <Input name="name" placeholder="Please input a word"/>
+        <Input name="name" placeholder="Please input a word" />
       </Form.Item>
       <Form.Item label="Description">
         <TextArea name="description" />
       </Form.Item>
-      <Button type="primary" htmlType="submit">Submit</Button>
+      <br />
+      <Button type="primary" htmlType="submit">
+        Submit
+      </Button>
     </Form>
   </Story>
 </Preview>
@@ -49,12 +52,24 @@ Form Group can group a section of form items.
         label="Open Session Sticky"
         desc="the maximum session sticky time is 10800s(3 hours)"
         checkable
+        keepDataWhenUnCheck
       >
         <Form.Item label="Maximum session sticky time(s)">
           <Input name="sessionTimeOut" />
         </Form.Item>
       </Form.Group>
-      <Button type="primary" htmlType="submit">Submit</Button>
+      <Form.Group
+        label="Open Session Sticky"
+        desc="the maximum session sticky time is 10800s(3 hours)"
+        checkable
+      >
+        <Form.Item label="Maximum session sticky time(s)">
+          <Input name="sessionTimeOut2" />
+        </Form.Item>
+      </Form.Group>
+      <Button type="primary" htmlType="submit">
+        Submit
+      </Button>
     </Form>
   </Story>
 </Preview>
