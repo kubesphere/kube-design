@@ -69,10 +69,20 @@
 
   &-title {
     font-weight: $font-bold;
+    color: $form-item-label-color;
 
     label.checkbox span.label-value {
       font-weight: $font-bold;
       padding-left: 11px;
+      color: $form-item-label-color;
+    }
+
+    &-toggle {
+      cursor: pointer;
+
+      .icon {
+        margin-right: 8px;
+      }
     }
   }
 
