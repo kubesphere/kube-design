@@ -104,7 +104,9 @@ it("update props", () => {
   );
 
   wrapper.setProps({ data: data2 });
-  expect(wrapper.find('input[name="name"]')).toHaveProp("value", data2.name);
-  wrapper.find('button[type="submit"]').simulate("submit");
-  expect(handleSubmit).toHaveBeenCalledWith(data2);
+  setTimeout(() => {
+    expect(wrapper.find('input[name="name"]')).toHaveProp("value", data2.name);
+    wrapper.find('button[type="submit"]').simulate("submit");
+    expect(handleSubmit).toHaveBeenCalledWith(data2);
+  });
 });
