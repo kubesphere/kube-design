@@ -9,10 +9,9 @@ const paths = {
   dest: {
     lib: "lib",
     esm: "esm",
-    dist: "dist",
   },
   styles: ["src/**/**/*.scss"],
-  scripts: ["src/**/**/*.{js,jsx}", "!src/**/**/*.test.js"],
+  scripts: ["src/**/**/*.{ts,tsx}", "!src/**/**/*.test.js"],
 };
 
 function compileScripts(babelEnv, destDir) {
