@@ -237,7 +237,7 @@ export default class Slider extends React.Component {
     const { value } = e.target;
     this.setState(
       {
-        value: [min, Number(value)],
+        value: [min, value],
         left: 0,
         right: this.getValuePercent(Number(value)) * 100,
       },
