@@ -129,7 +129,7 @@ export default class Select extends React.Component {
   handleInitValue = () => {
     const { value, defaultValue } = this.props;
 
-    if (!isUndefined(value)) {
+    if (!isUndefined(value) && !isEmpty(value)) {
       return this.setState({ value, inputValue: value, inputVisible: false });
     }
 
