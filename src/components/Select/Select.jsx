@@ -451,7 +451,7 @@ export default class Select extends React.Component {
     const { value } = this.state;
     const { multi, optionRenderer } = this.props;
     const isActive = (v) =>
-      multi ? value.includes(v.value) : v.value === value;
+      multi ? value.includes(v.value) : v.disabled ? false : v.value === value;
 
     return options.map((item, i) => {
       if (item.options) {
