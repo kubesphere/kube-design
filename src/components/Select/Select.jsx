@@ -92,11 +92,19 @@ export default class Select extends React.Component {
     }
 
     if (!isUndefined(value) && value !== prevState.value) {
-      this.setState({
-        value,
-        inputValue: value,
-        inputVisible: false,
-      });
+      if (isEmpty(value)) {
+        this.setState({
+          value,
+          inputValue: value,
+          inputVisible: true,
+        });
+      } else {
+        this.setState({
+          value,
+          inputValue: value,
+          inputVisible: false,
+        });
+      }
     }
 
     if (this.state.visible && !prevState.visible) {
