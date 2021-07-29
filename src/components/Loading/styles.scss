@@ -1,7 +1,7 @@
 @import "../../styles/variables";
 
 @keyframes loading {
-  form {
+  from {
     transform: rotate(0deg);
   }
 
@@ -51,7 +51,7 @@
       background: #fff;
       opacity: 0.3;
       transition: all 0.3s;
-      content: '';
+      content: "";
       z-index: 4;
     }
   }
