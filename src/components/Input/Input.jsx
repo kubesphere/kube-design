@@ -17,6 +17,8 @@ export default class Input extends Component {
     onChange() {},
   };
 
+  inputRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.state = {
@@ -33,12 +35,35 @@ export default class Input extends Component {
     return null;
   }
 
+  componentDidMount() {
+    this.clearPasswordValueAttribute();
+  }
+
+  componentWillUnmount() {
+    if (this.removePasswordTimeout) {
+      clearTimeout(this.removePasswordTimeout);
+    }
+  }
+
+  clearPasswordValueAttribute = (e) => {
+    const { innerRef } = this.props;
+    const ref = innerRef || this.inputRef;
+    this.removePasswordTimeout = setTimeout(() => {
+      if (
+        ref.current.getAttribute("type") === "password" &&
+        ref.current.getAttribute("value")
+      ) {
+        ref.current.removeAttribute("value");
+      }
+    });
+  };
+
   handleChange = (e) => {
     const { value } = e.target;
     const { value: propsValue, onChange } = this.props;
     const newValue = propsValue || value;
 
-    this.setState({ value: newValue });
+    this.setState({ value: newValue }, this.clearPasswordValueAttribute);
     onChange(e, value);
   };
 
@@ -49,7 +74,7 @@ export default class Input extends Component {
     return (
       <input
         {...omit(rest, "onChange", "value", "defaultValue")}
-        ref={innerRef}
+        ref={innerRef || this.inputRef}
         value={value}
         onChange={this.handleChange}
         className={classNames("input", className)}
