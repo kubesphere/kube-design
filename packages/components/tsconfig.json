@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "include": ["./src", "./demos"],
+  "compilerOptions": {
+    "rootDir": ".",
+    "baseUrl": ".",
+    "outDir": "lib",
+    "declaration": true,
+    "declarationMap": true,
+    "declarationDir": "lib",
+    "composite": true,
+    "paths": {
+      "@kubed/*": ["packages/*/src"],
+    }
+  },
+  "references": [{ "path": "../hooks" }]
+}
