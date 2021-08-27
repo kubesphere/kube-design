@@ -1,0 +1,21 @@
+{
+  "name": "@kubed/hooks",
+  "version": "0.0.1",
+  "main": "cjs/index.js",
+  "module": "esm/index.js",
+  "browser": "lib/index.umd.js",
+  "types": "lib/index.d.ts",
+  "license": "MIT",
+  "sideEffects": false,
+  "homepage": "https://github.com/kubesphere/kube-design",
+  "repository": {
+    "url": "https://github.com/kubesphere/kube-design.git",
+    "type": "git",
+    "directory": "packages/hooks"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
