@@ -1,6 +1,5 @@
 import React from 'react';
 import { TippyProps } from '@tippyjs/react';
-import './tooltip.css';
 import { StyledTippy } from './Tooltip.styles';
 
 export type BasePlacement = 'top' | 'left' | 'right' | 'bottom';
