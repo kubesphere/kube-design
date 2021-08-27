@@ -30,7 +30,7 @@ export interface ContainerProps extends React.ComponentPropsWithoutRef<'div'> {
   fluid?: boolean;
 }
 
-export function Container({ className, size, padding = 'md', fluid, ...others }: ContainerProps) {
+export function Container({ className, size, padding = 'md', ...others }: ContainerProps) {
   return <ContainerDiv className={className} size={size} padding={padding} {...others} />;
 }
 

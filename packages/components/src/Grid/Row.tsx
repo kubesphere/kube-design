@@ -42,7 +42,6 @@ export function Row({
   grow = false,
   justify = 'flex-start',
   align = 'stretch',
-  style,
   columns = 12,
   className,
   ...others
