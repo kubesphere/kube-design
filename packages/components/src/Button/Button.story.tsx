@@ -23,13 +23,13 @@ storiesOf('@kubed/components/Button', module)
     </Group>
   ));
 
-storiesOf('@kubed/components/Button', module).add('Color', () => (
+storiesOf('@kubed/components/Button', module).add('Colors', () => (
   <Button variant="filled" color="warning" shadow radius="xl">
     KubeSphere
   </Button>
 ));
 
-storiesOf('@kubed/components/Button', module).add('Icon', () => (
+storiesOf('@kubed/components/Button', module).add('With Icon', () => (
   <Button variant="filled" color="default" radius="xl" leftIcon={<Add size={16} />}>
     KubeSphere
   </Button>
