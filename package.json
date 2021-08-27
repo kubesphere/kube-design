@@ -21,6 +21,8 @@
     "test": "npm run syncpack && npm run typecheck && npm run lint && npm run jest"
   },
   "devDependencies": {
+    "@changesets/changelog-github": "^0.4.0",
+    "@changesets/cli": "^2.16.0",
     "@rollup/plugin-alias": "^3.1.2",
     "@rollup/plugin-commonjs": "^19.0.0",
     "@rollup/plugin-json": "^4.1.0",
