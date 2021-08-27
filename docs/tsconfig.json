@@ -1,0 +1,31 @@
+{
+  "extends": "../tsconfig.json",
+//  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "../packages/**/*.tsx"],
+  "compilerOptions": {
+    "paths": {
+      "@docs/demos": [
+        "./docs/src/demos"
+      ],
+      "@kubed/*": [
+        "packages/*/src"
+      ],
+      "@demos/*": [
+        "packages/*/src/demos"
+      ]
+    },
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "noImplicitAny": false
+  }
+}
