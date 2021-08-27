@@ -58,10 +58,10 @@ export interface TooltipProps extends TippyProps {
   trigger?: string;
 }
 
-export function Tooltip({ children, content, ...rest }: TooltipProps) {
+export function Tooltip({ children, content, maxWidth = 200, ...rest }: TooltipProps) {
   return (
     // @ts-ignore
-    <StyledTippy content={content} animation="shift-toward-subtle" {...rest}>
+    <StyledTippy content={content} maxWidth={maxWidth} animation="shift-toward-subtle" {...rest}>
       {children}
     </StyledTippy>
   );
