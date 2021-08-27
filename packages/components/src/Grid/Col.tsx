@@ -37,9 +37,7 @@ export function Col({ span, gutter, offset = 0, grow, columns, className, ...oth
 
   const flex = `${grow ? '1' : '0'} 0 calc(${100 / (columns / span)}% - ${spacing})`;
   const margin = `calc(${spacing} / 2)`;
-  const marginLeft = isValidSpan(offset)
-    ? `calc(${100 / (columns / offset)}% + ${spacing / 2}px)`
-    : null;
+  const marginLeft = isValidSpan(offset) ? `calc(${100 / (columns / offset)}% + ${margin})` : null;
 
   return <ColDiv flex={flex} margin={margin} marginLeft={marginLeft} {...others} />;
 }
