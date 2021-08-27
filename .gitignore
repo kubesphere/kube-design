@@ -33,3 +33,4 @@ dist
 
 # nextjs
 docs/.next
+!docs/lib

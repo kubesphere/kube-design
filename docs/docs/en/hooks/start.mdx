@@ -1,0 +1,82 @@
+---
+group: 'mantine-core'
+package: '@mantine/core'
+title: Avatar
+order: 1
+slug: /core/avatar/
+category: 'data-display'
+description: 'Display user profile image, initials or fallback icon'
+props: ['Avatar']
+source: 'mantine-core/src/components/Avatar/Avatar.tsx'
+docs: 'core/Avatar.mdx'
+styles: ['Avatar']
+---
+
+## Usage
+
+## Placeholder
+
+If `src` prop is not set, equals to null or image cannot be loaded,
+placeholder icon will be rendered instead.
+You can use any React node instead of placeholder icon.
+Usually icon or initials are used in this case:
+
+
+## Size and radius
+
+
+Control avatar width and height with `size` and border-radius with `radius`.
+Both props have predefined values: xs, sm, md, lg, xl.
+Alternatively, you can use a number to set radius or size in px:
+
+```tsx
+<Avatar radius="lg" /> // -> theme predefined large radius
+<Avatar radius={10} /> // -> { borderRadius: '10px' }
+
+<Avatar size="sm" /> // -> predefined small size
+<Avatar size={50} /> // -> { width: '50px', height: '50px' }
+```
+
+You can get predefined avatar sizes by importing `AVATAR_SIZES`:
+
+```tsx
+const a = 123;
+```
+
+
+## Accessibility
+
+Avatar renders img html element. It is important to add alt text.
+In case of image load failing alt will be used as `title` for placeholder.
+
+```tsx
+// alt is used as alt img attribute
+const a = 123;
+
+// alt is used as title attribute
+const a = 123;
+```
+
+## Edit
+
+```js
+import React from 'react'
+import Example from './place'
+
+export default () => <Example />
+```
+
+```js render=true
+<div
+  style={{backgroundColor: 'rebeccapurple', padding: '20px', marginTop: '20px'}}
+/>
+```
+
+```js live=true
+<div style={{backgroundColor: 'tomato', padding: '20px'}} />
+```
+
+## awsome list
+
+Avatar renders img html element. It is important to add alt text.
+In case of image load failing alt will be used as `title` for placeholder.

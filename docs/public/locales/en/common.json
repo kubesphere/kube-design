@@ -1,0 +1,9 @@
+{
+  "h1": "A simple example",
+  "get-started": "Get Started",
+  "LandingDesc": "A suite of components, hooks, and icons. Originally built for KubeSphere Console but it can also be used for developing any other React web apps.",
+  "Guide": "Guide",
+  "Components": "Components",
+  "Hooks": "Hooks",
+  "Widgets": "Widgets"
+}
