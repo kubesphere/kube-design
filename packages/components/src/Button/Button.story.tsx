@@ -4,7 +4,7 @@ import { Add } from '@kubed/icons';
 import { Group } from '../Group/Group';
 import { Button } from './Button';
 
-storiesOf('@kubed/components/Button', module)
+storiesOf('Components/Button', module)
   .addParameters({ component: Button })
   .add('Demos', () => (
     <Group spacing="xl">
@@ -23,13 +23,13 @@ storiesOf('@kubed/components/Button', module)
     </Group>
   ));
 
-storiesOf('@kubed/components/Button', module).add('Colors', () => (
+storiesOf('Components/Button', module).add('Colors', () => (
   <Button variant="filled" color="warning" shadow radius="xl">
     KubeSphere
   </Button>
 ));
 
-storiesOf('@kubed/components/Button', module).add('With Icon', () => (
+storiesOf('Components/Button', module).add('With Icon', () => (
   <Button variant="filled" color="default" radius="xl" leftIcon={<Add size={16} />}>
     KubeSphere
   </Button>
