@@ -34,7 +34,6 @@ export const Divider = forwardRef<DividerProps, 'hr'>(
   (
     {
       className,
-      style,
       color,
       direction = 'horizontal',
       size = 'xs',
