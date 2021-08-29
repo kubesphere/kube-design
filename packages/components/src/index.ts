@@ -13,3 +13,4 @@ export { Tooltip } from './Tooltip/Tooltip';
 export { Popover } from './Popover/Popover';
 export { Divider } from './Divider/Divider';
 export { MenuLabel, MenuItem, Menu } from './Menu/Menu';
+export { StatusDot } from './StatusDot/StatusDot';
