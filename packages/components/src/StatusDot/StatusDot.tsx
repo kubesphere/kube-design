@@ -92,9 +92,9 @@ export interface StatusDotProps {
 }
 
 export const StatusDot = forwardRef<StatusDotProps, 'div'>(
-  ({ color, motion = false, children }, ref) => {
+  ({ color, motion = false, children, ...rest }, ref) => {
     return (
-      <DotWrapper ref={ref}>
+      <DotWrapper ref={ref} {...rest}>
         <Dot color={color} motion={motion} />
         {children && <Label>{children}</Label>}
       </DotWrapper>

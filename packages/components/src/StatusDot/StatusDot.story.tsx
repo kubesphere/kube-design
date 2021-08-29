@@ -27,10 +27,14 @@ export const withoutLabel = () => (
 );
 
 export const Motion = () => (
-  <Group>
+  <Group spacing={30}>
     <StatusDot motion />
     <StatusDot motion color="warning" />
-    <StatusDot motion color="success" />
-    <StatusDot motion color="error" />
+    <StatusDot motion color="success">
+      启动中
+    </StatusDot>
+    <StatusDot motion color="error">
+      重启中
+    </StatusDot>
   </Group>
 );
