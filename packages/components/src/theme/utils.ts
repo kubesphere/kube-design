@@ -15,7 +15,7 @@ export const getSizeValue = (
   return sizes[size] || size || sizes[defaultSize];
 };
 
-export const getColor = (color, theme: KubedTheme) => {
+export const getColor = (color: string, theme: KubedTheme, defaultColor?: string) => {
   const { palette } = theme;
   if (palette[color]) {
     return palette[color];
@@ -23,7 +23,7 @@ export const getColor = (color, theme: KubedTheme) => {
   if (palette.colors[color]) {
     return palette.colors[color][2];
   }
-  return palette.accents_5;
+  return palette[defaultColor] || palette.accents_5;
 };
 
 export type UserTheme = DeepPartial<KubedTheme> & { type: string };
