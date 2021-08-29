@@ -14,3 +14,4 @@ export { Popover } from './Popover/Popover';
 export { Divider } from './Divider/Divider';
 export { MenuLabel, MenuItem, Menu } from './Menu/Menu';
 export { StatusDot } from './StatusDot/StatusDot';
+export { Tag } from './Tag/Tag';
