@@ -28,7 +28,7 @@ const getColors = (type, theme: KubedTheme) => {
   return typeMapper[type];
 };
 
-const getColorStyle = (type, theme: KubedTheme) => {
+const getColorStyle = (type = 'default', theme: KubedTheme) => {
   const { color, backgroundColor } = getColors(type, theme);
   return css`
     color: ${color};
@@ -118,12 +118,12 @@ export interface AlertProps extends DefaultProps {
 }
 
 export const Alert = forwardRef<AlertProps, 'div'>(
-  ({ children, icon, showIcon = true, type = 'default', title, closable, ...rest }, ref) => {
-    const iconElement = icon || ICONS[type];
+  ({ children, icon, showIcon = true, title, closable, ...rest }, ref) => {
+    const iconElement = icon || ICONS[rest.type || 'default'];
     const hasTitle = !!title;
 
     return (
-      <AlertWrapper type={type} ref={ref} {...rest}>
+      <AlertWrapper ref={ref} {...rest}>
         {showIcon && <IconWrapper className={hasTitle && 'has-title'}>{iconElement}</IconWrapper>}
         <AlertContent>
           {hasTitle && <AlertTitle>{title}</AlertTitle>}
