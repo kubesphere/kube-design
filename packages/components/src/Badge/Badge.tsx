@@ -58,17 +58,15 @@ export interface BadgeProps extends DefaultProps {
   motion?: boolean;
 }
 
-export const Badge = forwardRef<BadgeProps, 'div'>(
-  ({ children, shadow, dot, motion, color, className }, ref) => {
-    if (dot) {
-      return <StatusDot color={color} motion={motion} ref={ref} className="badge" />;
-    }
-    return (
-      <BadgeWrapper ref={ref} color={color} shadow={shadow} className={cx('badge', className)}>
-        {children}
-      </BadgeWrapper>
-    );
+export const Badge = forwardRef<BadgeProps, 'div'>(({ children, dot, className, ...rest }, ref) => {
+  if (dot) {
+    return <StatusDot ref={ref} className="badge" {...rest} />;
   }
-);
+  return (
+    <BadgeWrapper {...rest} ref={ref} className={cx('badge', className)}>
+      {children}
+    </BadgeWrapper>
+  );
+});
 
 Badge.displayName = '@kubed/components/Badge';
