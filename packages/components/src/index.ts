@@ -16,3 +16,4 @@ export { MenuLabel, MenuItem, Menu } from './Menu/Menu';
 export { StatusDot } from './StatusDot/StatusDot';
 export { Tag } from './Tag/Tag';
 export { Badge, BadgeAnchor } from './Badge/Badge';
+export { Alert } from './Alert/Alert';
