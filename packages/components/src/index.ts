@@ -18,3 +18,4 @@ export { Tag } from './Tag/Tag';
 export { Badge, BadgeAnchor } from './Badge/Badge';
 export { Alert } from './Alert/Alert';
 export { Card } from './Card/Card';
+export { Descriptions, Description } from './Descriptions/Descriptions';
