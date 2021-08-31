@@ -102,5 +102,21 @@ export const StyledTippy = styled(Tippy)<TippyProps>`
     &[data-animation='shift-toward-subtle'][data-state='hidden'][data-placement^='right'][data-state='hidden'] {
       transform: translateX(5px);
     }
+
+    &[data-animation='shift-away'][data-state='hidden'] {
+      opacity: 0;
+    }
+    &[data-animation='shift-away'][data-state='hidden'][data-placement^='top'][data-state='hidden'] {
+      transform: translateY(10px);
+    }
+    &[data-animation='shift-away'][data-state='hidden'][data-placement^='bottom'][data-state='hidden'] {
+      transform: translateY(-15px);
+    }
+    &[data-animation='shift-away'][data-state='hidden'][data-placement^='left'][data-state='hidden'] {
+      transform: translateX(10px);
+    }
+    &[data-animation='shift-away'][data-state='hidden'][data-placement^='right'][data-state='hidden'] {
+      transform: translateX(-10px);
+    }
   }
 `;
