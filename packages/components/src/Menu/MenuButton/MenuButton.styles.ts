@@ -23,9 +23,16 @@ export const MenuButtonElement = styled('button')`
   .item-inner {
     display: flex;
     align-items: center;
+    height: 20px;
   }
 
   .item-icon {
+    display: inline-flex;
     margin-right: 12px;
+
+    .kubed-icon {
+      width: 16px;
+      height: 16px;
+    }
   }
 `;
