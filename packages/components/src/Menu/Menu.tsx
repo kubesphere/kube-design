@@ -39,7 +39,15 @@ export function Menu({ children }: MenuProps) {
     }
 
     if (item.type === Divider) {
-      return <Divider variant="solid" className="menu-divider" key={index} />;
+      return (
+        <Divider
+          variant="solid"
+          margins={10}
+          className="menu-divider"
+          key={index}
+          {...(item.props as any)}
+        />
+      );
     }
 
     return null;
