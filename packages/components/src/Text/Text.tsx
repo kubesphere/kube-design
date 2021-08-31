@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import forwardRef from '../utils/forwardRef';
 import { DefaultProps, KubedNumberSize, KubedTheme, themeUtils } from '../theme';
 
@@ -9,6 +9,15 @@ const fontSizes = {
   md: '14px',
   lg: '16px',
   xl: '18px',
+};
+
+const hSizes = {
+  h1: '3rem',
+  h2: '2.25rem',
+  h3: '1.5rem',
+  h4: '1.25rem',
+  h5: '1rem',
+  h6: '0.875rem',
 };
 
 const getColor = (color, theme: KubedTheme) => {
@@ -25,10 +34,20 @@ const getColor = (color, theme: KubedTheme) => {
   return palette.accents_7;
 };
 
+const getSize = (size, variant) => {
+  if (size) {
+    return themeUtils.getSizeValue(size, fontSizes);
+  }
+  if (variant !== 'text' && variant !== 'link') {
+    return hSizes[variant];
+  }
+  return fontSizes.sm;
+};
+
 const TextWrapper = styled('div')<TextOptions>`
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
-  font-size: ${({ size }) => themeUtils.getSizeValue(size, fontSizes)};
+  font-size: ${({ size, variant }) => getSize(size, variant)};
   color: ${({ color, theme }) => getColor(color, theme)};
   ${({ underline }) => underline && 'text-decoration: underline;'};
   ${({ italic }) => italic && 'font-style: italic;'};
@@ -69,32 +88,19 @@ interface TextOptions {
   align?: 'left' | 'center' | 'right';
 
   /** Link or text variant */
-  variant?: 'text' | 'link';
+  variant?: 'text' | 'link' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 }
 
 export interface TextProps extends TextOptions, DefaultProps {}
 
 export const Text = forwardRef<TextProps, 'div'>(
-  (
-    {
-      as = 'div',
-      children,
-      size = 'sm',
-      weight,
-      transform,
-      align,
-      style,
-      variant = 'text',
-      ...rest
-    },
-    ref
-  ) => {
+  ({ as = 'div', children, weight, transform, align, style, variant = 'text', ...rest }, ref) => {
+    const element = variant !== 'text' && variant !== 'link' ? variant : as;
     return (
       <TextWrapper
         ref={ref}
         variant={variant}
-        size={size}
-        as={as}
+        as={element}
         style={{ fontWeight: weight, textTransform: transform, textAlign: align, ...style }}
         {...rest}
       >
