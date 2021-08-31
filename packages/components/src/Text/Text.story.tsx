@@ -25,3 +25,14 @@ export const Styles = () => (
     <Text size="lg">text weight</Text>
   </Group>
 );
+
+export const HeadText = () => (
+  <Group direction="column">
+    <Text variant="h1">h1 title</Text>
+    <Text variant="h2">h2 title</Text>
+    <Text variant="h3">h3 title</Text>
+    <Text variant="h4">h4 title</Text>
+    <Text variant="h5">h5 title</Text>
+    <Text variant="h6">h6 title</Text>
+  </Group>
+);
