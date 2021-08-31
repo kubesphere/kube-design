@@ -79,7 +79,7 @@ export const Text = forwardRef<TextProps, 'div'>(
     {
       as = 'div',
       children,
-      size = 'md',
+      size = 'sm',
       weight,
       transform,
       align,

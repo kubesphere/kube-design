@@ -19,3 +19,4 @@ export { Badge, BadgeAnchor } from './Badge/Badge';
 export { Alert } from './Alert/Alert';
 export { Card } from './Card/Card';
 export { Descriptions, Description } from './Descriptions/Descriptions';
+export { Entity, Field } from './Entity/Entity';
