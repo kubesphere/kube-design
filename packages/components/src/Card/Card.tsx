@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { DefaultProps, KubedNumberSize } from '../theme';
 import forwardRef from '../utils/forwardRef';
 import { addColorAlpha } from '../utils/color';
+import { getSizeValue } from '../theme/utils';
 
 const CardWrapper = styled.div``;
 
@@ -13,7 +14,7 @@ const SectionTitle = styled.div`
 `;
 
 const CardContent = styled('div')<CardProps>`
-  padding: 12px;
+  padding: ${({ padding = 'sm', theme }) => getSizeValue(padding, theme.layout.spacing)};
   border-radius: 4px;
   background-color: ${({ theme }) => theme.palette.background};
   box-shadow: ${({ theme }) => `0 4px 8px ${addColorAlpha(theme.palette.accents_8, 0.06)}`};
@@ -48,8 +49,11 @@ export interface CardProps extends DefaultProps {
 }
 
 export const Card = forwardRef<CardProps, 'div'>(
-  ({ sectionTitle, children, contentStyle, contentClassName, hoverable, ...rest }, ref) => {
-    const contentProps = { contentStyle, contentClassName, hoverable };
+  (
+    { sectionTitle, padding, children, contentStyle, contentClassName, hoverable, ...rest },
+    ref
+  ) => {
+    const contentProps = { contentStyle, contentClassName, hoverable, padding };
     return (
       <CardWrapper ref={ref} {...rest}>
         {sectionTitle && <SectionTitle>{sectionTitle}</SectionTitle>}

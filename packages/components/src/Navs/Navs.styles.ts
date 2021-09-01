@@ -77,14 +77,14 @@ const getContainerStyles = (variant, theme: KubedTheme, radius) => {
 };
 
 interface NavsStyles extends React.ComponentPropsWithoutRef<any> {
-  theme: KubedTheme;
-  fullWidth: boolean;
-  color: string;
-  radius: KubedNumberSize;
-  reduceMotion: boolean;
-  transitionDuration: number;
-  transitionTimingFunction: string;
-  size: KubedSizes;
+  theme?: KubedTheme;
+  fullWidth?: boolean;
+  color?: string;
+  radius?: KubedNumberSize;
+  reduceMotion?: boolean;
+  transitionDuration?: number;
+  transitionTimingFunction?: string;
+  size?: KubedSizes;
 }
 
 export const NavItemDiv = styled('div')<NavsStyles>`

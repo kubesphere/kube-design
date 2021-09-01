@@ -12,7 +12,7 @@ import {
   LineBg,
 } from './Navs.styles';
 
-interface NavItem {
+export interface NavItem {
   value: string;
   label: React.ReactNode;
 }
