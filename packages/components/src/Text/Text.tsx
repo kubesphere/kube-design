@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import forwardRef from '../utils/forwardRef';
 import { DefaultProps, KubedNumberSize, KubedTheme, themeUtils } from '../theme';
 
