@@ -18,7 +18,8 @@
     "jest": "jest",
     "clean": "rimraf packages/*/{esm,cjs,lib,dist} packages/**/*.tsbuildinfo",
     "storybook": "esno scripts/storybook-start",
-    "test": "npm run syncpack && npm run typecheck && npm run lint && npm run jest"
+    "test": "npm run syncpack && npm run typecheck && npm run lint && npm run jest",
+    "docs:docgen": "esno scripts/docgen"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.0",

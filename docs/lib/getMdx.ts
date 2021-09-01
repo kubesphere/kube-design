@@ -13,10 +13,13 @@ export async function getMdxData(cate: string, lang: string, filename: string) {
   const realFileName = filename.startsWith('use') ? toCamelCase(filename) : toPascalCase(filename);
   const fullPath = path.join(catePath, `${realFileName}.mdx`);
 
+  const metaDataPath = path.join(process.cwd(), '.docgen/docgen.json');
+
   let toc = [];
   let mdxSource = {};
   let frontMatter = {};
   let error = false;
+  let metaData = {};
 
   try {
     const source = fs.readFileSync(fullPath);
@@ -50,10 +53,17 @@ export async function getMdxData(cate: string, lang: string, filename: string) {
     error = true;
   }
 
+  try {
+    metaData = fs.readJSONSync(metaDataPath);
+  } catch (e) {
+    error = true;
+  }
+
   return {
     error,
     toc,
     source: mdxSource,
     frontMatter,
+    metaData,
   };
 }

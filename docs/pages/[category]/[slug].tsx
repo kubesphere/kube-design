@@ -10,6 +10,7 @@ import { DocLayout } from '../../lib/layouts/DocLayout';
 import MetadataCard from '../../lib/components/MetadataCard';
 import TOC from '../../lib/components/TOC';
 import CodeBox from '../../lib/components/CodeBox';
+import PropsTable from '../../lib/components/PropsTable';
 
 const Pre = ({ children }: React.PropsWithChildren<any>) => <>{children}</>;
 
@@ -67,7 +68,6 @@ type Params = {
 
 export default function Slug(props: any) {
   const { category, slug } = props.params;
-
   if (props.error) {
     return (
       <DocLayout category={category} slug={slug}>
@@ -106,7 +106,7 @@ export default function Slug(props: any) {
               </MainContent>
             </Tab>
             <Tab label="Component Props" key="props">
-              props
+              <PropsTable component={title} data={props.metaData} />
             </Tab>
           </Tabs>
         </>
@@ -138,7 +138,7 @@ export default function Slug(props: any) {
 
 export async function getServerSideProps({ params, locale }: Params) {
   const { category, slug } = params;
-  const { source, frontMatter, toc, error } = await getMdxData(category, locale, slug);
+  const { source, frontMatter, toc, error, metaData } = await getMdxData(category, locale, slug);
   return {
     props: {
       error,
@@ -147,6 +147,7 @@ export async function getServerSideProps({ params, locale }: Params) {
       frontMatter,
       toc,
       locale,
+      metaData,
       ...(await serverSideTranslations(locale, ['common'])),
     },
   };
