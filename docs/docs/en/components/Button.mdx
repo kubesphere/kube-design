@@ -1,0 +1,91 @@
+---
+group: 'components'
+category: 'state'
+title: Button
+description: 'Used to trigger an operation'
+order: 1
+---
+
+## Usage
+
+Basic usage of button.
+
+```js live=true
+<Group spacing="xl">
+  <Button variant="filled" color="secondary" shadow radius="xl">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="default" radius="xl">
+    KubeSphere
+  </Button>
+  <Button variant="text" radius="xl">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="default" radius="xl" disabled>
+    KubeSphere
+  </Button>
+</Group>
+```
+
+## Variant
+
+Use the variant prop to change the visual style of the Button. You can set the value to filled, text, outline, or link.
+
+```js live=true
+<Group spacing="xl">
+  <Button variant="filled" color="secondary">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="default" radius="xl">
+    KubeSphere
+  </Button>
+  <Button variant="text" radius="xl">
+    KubeSphere
+  </Button>
+  <Button variant="link" color="default">
+    KubeSphere
+  </Button>
+</Group>
+```
+
+## Colors
+
+Set color of button
+
+```js live=true
+<Group spacing="xl">
+  <Button variant="filled" color="default">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="success">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="error">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="warning">
+    KubeSphere
+  </Button>
+</Group>
+```
+
+## Size and Radius
+
+Use the size, radius prop to change the size or radius of the button. You can set the value to xs, sm, md, lg or xl.
+
+```js live=true
+<Group spacing="xl">
+  <Button variant="filled" color="default" radius="sm" size="sm">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="success" radius="md" size="md">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="error" radius="lg" size="sm">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="warning" radius="xl" size="lg">
+    KubeSphere
+  </Button>
+</Group>
+```
