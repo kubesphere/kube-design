@@ -21,3 +21,4 @@ export { Card } from './Card/Card';
 export { Descriptions, Description } from './Descriptions/Descriptions';
 export { Entity, Field } from './Entity/Entity';
 export { Dropdown } from './Dropdown/Dropdown';
+export { Loading } from './Loading/Loading';
