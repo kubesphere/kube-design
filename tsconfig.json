@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.base.json",
+  "include": ["./packages", "./types", "./docs", "./scripts", "./configs", "./envs"],
+  "exclude": ["public", ".cache", "configs/jest"],
+  "compilerOptions": {
+    "paths": {
+      "@kubed/*": ["packages/*/src"],
+      "@demos/*": ["packages/*/src/demos"]
+    }
+  }
+}
