@@ -4,11 +4,12 @@ import { addColorAlpha } from '../utils/color';
 interface InputProps {
   focused?: boolean;
   disabled?: boolean;
+  width?: number;
 }
 
 export const InputWrapper = styled('div')<InputProps>`
   display: inline-flex;
-  width: 100%;
+  width: ${({ width }) => (width ? `${width}px` : '100%')};
   border-radius: 3px;
   height: 32px;
   padding: 6px 12px;
@@ -54,9 +55,9 @@ export const SuffixWrapper = styled('div')`
   align-items: center;
 `;
 
-export const InputGroup = styled('div')`
+export const InputGroup = styled('div')<InputProps>`
   display: flex;
-  width: 100%;
+  width: ${({ width }) => (width ? `${width}px` : '100%')};
 
   &.has-addon-before {
     .input-wrapper {

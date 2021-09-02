@@ -8,7 +8,7 @@ export default {
   component: Input,
 };
 
-export const Basic = () => <Input placeholder="please input some text" />;
+export const Basic = () => <Input placeholder="please input some text" width={360} />;
 
 export const PrefixAndSuffix = () => (
   <Group direction="column">
@@ -20,8 +20,8 @@ export const PrefixAndSuffix = () => (
 export const Disabled = () => <Input placeholder="please input some text" disabled />;
 
 export const Addon = () => (
-  <Group direction="column">
-    <Input addonBefore="https://" />
-    <Input addonAfter=".com" prefix={<Appcenter size={16} />} />
+  <Group>
+    <Input addonBefore="https://" width={350} />
+    <Input addonAfter=".com" width={350} prefix={<Appcenter size={16} />} />
   </Group>
 );

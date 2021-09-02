@@ -18,6 +18,9 @@ export interface InputProps extends DefaultProps {
   /** Right section of input */
   addonAfter?: React.ReactNode;
 
+  /** width of input */
+  width?: number;
+
   /** Prefix element of input, like icon */
   prefix?: React.ReactNode;
 
@@ -32,7 +35,7 @@ export interface InputProps extends DefaultProps {
 }
 
 export const Input = forwardRef<InputProps, 'div'>(
-  ({ className, prefix, suffix, disabled, addonAfter, addonBefore, ...rest }, ref) => {
+  ({ className, width, prefix, suffix, disabled, addonAfter, addonBefore, ...rest }, ref) => {
     const [focused, setFocused] = useState(false);
     const onFocus = () => {
       setFocused(true);
@@ -42,32 +45,38 @@ export const Input = forwardRef<InputProps, 'div'>(
       setFocused(false);
     };
 
-    const wrapperProps = { focused, disabled };
+    const wrapperProps = { focused, disabled, width: undefined };
 
-    const inputInner = () => (
-      <InputWrapper
-        ref={ref}
-        {...wrapperProps}
-        className={cx(className, 'input-wrapper', {
-          'input-focus': focused,
-          'input-disabled': disabled,
-        })}
-      >
-        {prefix && <PrefixWrapper>{prefix}</PrefixWrapper>}
-        <input
-          className="kubed-input"
-          disabled={disabled}
-          {...rest}
-          onFocus={onFocus}
-          onBlur={onBlur}
-        />
-        {suffix && <SuffixWrapper>{suffix}</SuffixWrapper>}
-      </InputWrapper>
-    );
+    const inputInner = (_width?: number) => {
+      if (_width) {
+        wrapperProps.width = _width;
+      }
+      return (
+        <InputWrapper
+          ref={ref}
+          {...wrapperProps}
+          className={cx(className, 'input-wrapper', {
+            'input-focus': focused,
+            'input-disabled': disabled,
+          })}
+        >
+          {prefix && <PrefixWrapper>{prefix}</PrefixWrapper>}
+          <input
+            className="kubed-input"
+            disabled={disabled}
+            {...rest}
+            onFocus={onFocus}
+            onBlur={onBlur}
+          />
+          {suffix && <SuffixWrapper>{suffix}</SuffixWrapper>}
+        </InputWrapper>
+      );
+    };
 
     if (addonBefore || addonAfter) {
       return (
         <InputGroup
+          width={width}
           className={cx({ 'has-addon-before': addonBefore, 'has-addon-after': addonAfter })}
         >
           {addonBefore && <AddonWrapper className="addon-before">{addonBefore}</AddonWrapper>}
@@ -77,7 +86,7 @@ export const Input = forwardRef<InputProps, 'div'>(
       );
     }
 
-    return <>{inputInner()}</>;
+    return <>{inputInner(width)}</>;
   }
 );
 
