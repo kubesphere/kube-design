@@ -12,6 +12,7 @@ import forwardRef from '../utils/forwardRef';
 import { DefaultProps } from '../theme';
 import { FormItem } from './FormItem/FormItem';
 import useForm, { FormInstance } from './hooks/useForm';
+import { addColorAlpha } from '../utils/color';
 
 export { List, FormItem };
 
@@ -21,6 +22,15 @@ const StyledFieldForm = styled(FieldForm)`
   &.form-inline {
     display: flex;
     gap: 12px;
+  }
+
+  .form-item-status-error {
+    .input-wrapper {
+      border-color: ${({ theme }) => theme.palette.error};
+      &.input-focus {
+        box-shadow: 0 4px 8px 0 ${({ theme }) => addColorAlpha(theme.palette.error, 0.2)};
+      }
+    }
   }
 `;
 
