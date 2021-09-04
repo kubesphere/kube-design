@@ -43,7 +43,6 @@ export function Row({
   justify = 'flex-start',
   align = 'stretch',
   columns = 12,
-  className,
   ...others
 }: RowProps) {
   const cols = (Children.toArray(children) as React.ReactElement[]).map((col, index) =>

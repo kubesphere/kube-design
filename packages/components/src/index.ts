@@ -22,3 +22,5 @@ export { Descriptions, Description } from './Descriptions/Descriptions';
 export { Entity, Field } from './Entity/Entity';
 export { Dropdown } from './Dropdown/Dropdown';
 export { Loading } from './Loading/Loading';
+export { Input } from './Input/Input';
+export { Form, FormItem, List } from './Form/Form';
