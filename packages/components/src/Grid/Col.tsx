@@ -27,7 +27,7 @@ export function isValidSpan(span: number) {
   return typeof span === 'number' && span > 0 && span % 1 === 0;
 }
 
-export function Col({ span, gutter, offset = 0, grow, columns, className, ...others }: ColProps) {
+export function Col({ span, gutter, offset = 0, grow, columns, ...others }: ColProps) {
   const theme = useTheme();
   const spacing = themeUtils.getSizeValue(gutter, theme.layout.spacing);
 
