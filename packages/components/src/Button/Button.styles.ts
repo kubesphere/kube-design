@@ -62,7 +62,7 @@ const getButtonSize = (size, block) => css`
   height: ${({ theme }) => theme.layout.inputSizes[size]};
 `;
 
-const getButtonColor = (variant = 'filled', colorSchema, disabled, theme: KubedTheme) => {
+const getButtonColor = (variant = 'filled', colorSchema, disabled, loading, theme: KubedTheme) => {
   const { palette } = theme;
   if (disabled) {
     return css`
@@ -105,6 +105,7 @@ const getButtonHoverColor = (
   variant = 'filled',
   colorSchema,
   disabled,
+  loading,
   shadow,
   theme: KubedTheme
 ) => {
@@ -153,7 +154,14 @@ const getShadow = (shadow, colorSchema, theme) => {
   return null;
 };
 
-const getButtonStyles = (theme: KubedTheme, color = 'default', variant, shadow, disabled) => {
+const getButtonStyles = (
+  theme: KubedTheme,
+  color = 'default',
+  variant,
+  shadow,
+  disabled,
+  loading
+) => {
   const { palette } = theme;
   const { background, border, accents_1, accents_2, accents_7, accents_8, accents_9, primary } =
     palette;
@@ -204,10 +212,10 @@ const getButtonStyles = (theme: KubedTheme, color = 'default', variant, shadow, 
 
   return css`
     box-shadow: ${getShadow(shadow, colorSchema, theme)};
-    ${getButtonColor(variant, colorSchema, disabled, theme)};
+    ${getButtonColor(variant, colorSchema, disabled, loading, theme)};
 
     &:hover {
-      ${getButtonHoverColor(variant, colorSchema, disabled, shadow, theme)};
+      ${getButtonHoverColor(variant, colorSchema, disabled, loading, shadow, theme)};
     }
   `;
 };
@@ -225,8 +233,9 @@ export const ButtonContainer = styled('div')<ButtonStylesProps>`
   display: ${(props) => (props.block ? 'block' : 'inline-block')};
   ${({ loading, disabled }) => getButtonCursor(loading, disabled)};
   ${({ size, block }) => getButtonSize(size, block)};
-  ${({ theme, color, variant, shadow, disabled }) =>
-    getButtonStyles(theme, color, variant, shadow, disabled)};
+  ${({ theme, color, variant, shadow, disabled, loading }) =>
+    getButtonStyles(theme, color, variant, shadow, disabled, loading)};
+  ${({ loading }) => (loading ? 'opacity: 0.6;' : null)};
 `;
 
 export const ButtonInner = styled('div')<ButtonStylesProps>`

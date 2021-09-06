@@ -8,6 +8,7 @@ import {
   IconLeftSpan,
   IconRightSpan,
 } from './Button.styles';
+import { Loading } from '../Loading/Loading';
 
 interface ButtonOptions {
   /** Predefined button size */
@@ -56,17 +57,20 @@ export const Button = forwardRef<ButtonProps, 'button'>(
       leftIcon,
       rightIcon,
       variant = 'filled',
+      loading,
       children,
       ...others
     },
     ref
   ) => {
+    const mergedRightIcon = loading ? <Loading size={16} /> : rightIcon;
     return (
       <ButtonContainer
         {...others}
         as={as}
         size={size}
         disabled={disabled}
+        loading={loading}
         shadow={shadow}
         variant={variant}
         color={color}
@@ -77,7 +81,7 @@ export const Button = forwardRef<ButtonProps, 'button'>(
         <ButtonInner>
           {leftIcon && <IconLeftSpan>{leftIcon}</IconLeftSpan>}
           <ButtonLabel>{children}</ButtonLabel>
-          {rightIcon && <IconRightSpan>{rightIcon}</IconRightSpan>}
+          {mergedRightIcon && <IconRightSpan>{mergedRightIcon}</IconRightSpan>}
         </ButtonInner>
       </ButtonContainer>
     );
