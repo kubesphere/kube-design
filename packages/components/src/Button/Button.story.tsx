@@ -40,3 +40,20 @@ storiesOf('Components/Button', module).add('Size', () => (
     KubeSphere
   </Button>
 ));
+
+storiesOf('Components/Button', module).add('Loading', () => (
+  <Group>
+    <Button variant="filled" color="default" radius="xl" loading>
+      KubeSphere
+    </Button>
+    <Button variant="filled" color="secondary" shadow radius="xl" loading>
+      KubeSphere
+    </Button>
+    <Button variant="text" radius="xl" loading>
+      KubeSphere
+    </Button>
+    <Button variant="filled" color="warning" radius="xl" loading>
+      KubeSphere
+    </Button>
+  </Group>
+));
