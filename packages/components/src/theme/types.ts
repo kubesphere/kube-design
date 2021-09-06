@@ -48,6 +48,7 @@ export interface KubedThemeExpressiveness {
 
 export interface KubedThemeLayout {
   spacing: Record<string, any>;
+  inputSizes: Record<string, any>;
   gap: string;
   gapNegative: string;
   gapHalf: string;
@@ -83,13 +84,13 @@ export interface KubedThemeBreakpoints {
 
 export type KubedSizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
-export const sizes = {
-  xs: 30,
-  sm: 36,
-  md: 42,
-  lg: 50,
-  xl: 60,
-};
+// export const sizes = {
+//   xs: 30,
+//   sm: 36,
+//   md: 42,
+//   lg: 50,
+//   xl: 60,
+// };
 
 export type KubedNumberSize = KubedSizes | number;
 
