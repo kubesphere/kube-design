@@ -36,34 +36,30 @@ const getButtonCursor = (loading: boolean, disabled: boolean) => {
 const sizes = {
   xs: css`
     font-size: 10px;
-    height: 28px;
     padding: 0 14px;
   `,
   sm: css`
     font-size: 12px;
-    height: 32px;
     padding: 0 20px;
   `,
   md: css`
     font-size: 14px;
-    height: 36px;
     padding: 0 23px;
   `,
   lg: css`
     font-size: 16px;
-    height: 48px;
     padding: 0 26px;
   `,
   xl: css`
     font-size: 18px;
-    height: 56px;
     padding: 0 30px;
   `,
 };
 
 const getButtonSize = (size, block) => css`
-  ${sizes[size]}
-  width: ${block ? '100%' : 'auto'}
+  ${sizes[size]};
+  width: ${block ? '100%' : 'auto'};
+  height: ${({ theme }) => theme.layout.inputSizes[size]};
 `;
 
 const getButtonColor = (variant = 'filled', colorSchema, disabled, theme: KubedTheme) => {
