@@ -93,7 +93,7 @@ export interface FormItemProps extends FieldProps {
 export const FormItem = forwardRef<FormItemProps, 'div'>(
   ({ name, label, help, tooltip, rules, validateStatus, children, ...rest }) => {
     const formContext = React.useContext(FormContext);
-    const { labelCol, wrapperCol, labelAlign, layout } = formContext;
+    const { labelCol, wrapperCol, labelAlign, layout, size } = formContext;
 
     const getStatus = (meta?: Meta) => {
       let mergedValidateStatus: ValidateStatus = '';
@@ -116,7 +116,7 @@ export const FormItem = forwardRef<FormItemProps, 'div'>(
           const childNode =
             typeof children === 'function'
               ? children(control, meta, form)
-              : React.cloneElement(children as React.ReactElement, { ...control });
+              : React.cloneElement(children as React.ReactElement, { ...control, size });
 
           const formItemStatus = getStatus(meta);
           const wrapperClassName = formItemStatus && `form-item-status-${formItemStatus}`;

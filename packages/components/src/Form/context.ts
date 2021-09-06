@@ -5,6 +5,7 @@ import { FormProvider } from 'rc-field-form';
 import { FormProviderProps as RcFormProviderProps } from 'rc-field-form/lib/FormContext';
 import { FormLabelAlign } from './types';
 import { ColProps } from '../Grid/Col';
+import { KubedSizes } from '../theme';
 
 export interface FormContextProps {
   layout: string;
@@ -14,6 +15,7 @@ export interface FormContextProps {
   labelCol?: ColProps;
   wrapperCol?: ColProps;
   itemRef?: (name: (string | number)[]) => (node: React.ReactElement) => void;
+  size?: KubedSizes;
 }
 
 export const FormContext = React.createContext<FormContextProps>({
