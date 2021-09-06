@@ -22,13 +22,21 @@ const ErrorWrapper = styled.ul`
   }
 `;
 
+const HelpWrapper = styled.div`
+  margin-top: 4px;
+  line-height: 1.67;
+  color: ${({ theme }) => theme.palette.accents_5};
+`;
+
 interface ErrorListProps {
   errors?: string[];
   warnings?: string[];
+  help?: React.ReactNode;
 }
 
-export const ErrorList = ({ errors = [], warnings = [] }: ErrorListProps) => {
-  if (errors.length < 1 && warnings.length < 1) return null;
+export const ErrorList = ({ errors = [], warnings = [], help }: ErrorListProps) => {
+  if (errors.length < 1 && warnings.length < 1)
+    return help ? <HelpWrapper>{help}</HelpWrapper> : null;
 
   return (
     <ErrorWrapper>

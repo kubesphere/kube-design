@@ -12,11 +12,12 @@ const onFinish = (values) => {
 
 export const Basic = () => (
   <Form onFinish={onFinish} initialValues={{ usename: 'wayne' }}>
-    <Row gutter={40}>
+    <Row gutter={[10, 40]}>
       <Col span={6}>
         <FormItem
           name="usename"
           label="Username"
+          help="user name must input"
           rules={[{ required: true, message: 'Please input your username!' }]}
         >
           <Input />
@@ -33,12 +34,7 @@ export const Basic = () => (
         </FormItem>
       </Col>
       <Col span={6}>
-        <FormItem
-          name="group"
-          label="Group"
-          help="help content"
-          rules={[{ required: true, message: 'Please input your uid!' }]}
-        >
+        <FormItem name="group" label="Group" help="help content" required>
           <Input />
         </FormItem>
       </Col>

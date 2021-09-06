@@ -25,16 +25,42 @@ const FieldCol = styled(Col)<FieldColProps>`
   vertical-align: middle;
 `;
 
-const FieldLabel = styled('label')`
+interface FieldLabelProps {
+  isRequired?: boolean;
+  layout?: string;
+}
+
+const FieldLabel = styled('label')<FieldLabelProps>`
   position: relative;
   height: 32px;
   display: inline-flex;
   align-items: center;
   color: ${({ theme }) => theme.palette.accents_8};
-  &:after {
-    content: ':';
-    margin-left: 2px;
+  &:before {
+    color: ${({ theme }) => theme.palette.error};
   }
+  ${({ isRequired, layout }) => `
+    ${
+      isRequired
+        ? `
+      &:before {
+        content: '*';
+        margin-right: 2px;
+      }
+    `
+        : null
+    };
+    ${
+      layout !== 'vertical'
+        ? `
+      &:after {
+        content: ':';
+        margin-left: 2px;
+      }
+    `
+        : null
+    };
+  `}
 `;
 
 const FieldWrapper = styled('div')`
@@ -60,7 +86,7 @@ export interface FormItemProps extends FieldProps {
 }
 
 export const FormItem = forwardRef<FormItemProps, 'div'>(
-  ({ name, label, validateStatus, children, ...rest }) => {
+  ({ name, label, help, rules, validateStatus, children, ...rest }) => {
     const formContext = React.useContext(FormContext);
     const { labelCol, wrapperCol, labelAlign, layout } = formContext;
 
@@ -80,7 +106,7 @@ export const FormItem = forwardRef<FormItemProps, 'div'>(
     };
 
     return (
-      <Field name={name} {...rest}>
+      <Field name={name} rules={rules} {...rest}>
         {(control, meta, form) => {
           const childNode =
             typeof children === 'function'
@@ -90,11 +116,27 @@ export const FormItem = forwardRef<FormItemProps, 'div'>(
           const formItemStatus = getStatus(meta);
           const wrapperClassName = formItemStatus && `form-item-status-${formItemStatus}`;
 
+          const isRequired = !!(
+            rules &&
+            rules.some((rule) => {
+              if (rule && typeof rule === 'object' && rule.required) {
+                return true;
+              }
+              if (typeof rule === 'function') {
+                const ruleEntity = rule(form);
+                return ruleEntity && ruleEntity.required;
+              }
+              return false;
+            })
+          );
+
           if (layout === 'horizontal') {
             return (
               <FieldRow columns={24} className={wrapperClassName}>
                 <FieldCol className="label-col" labelAlign={labelAlign} {...labelCol}>
-                  <FieldLabel>{label || name}</FieldLabel>
+                  <FieldLabel isRequired={isRequired} layout={layout}>
+                    {label || name}
+                  </FieldLabel>
                 </FieldCol>
                 <Col {...wrapperCol}>
                   <div className="form-item">{childNode}</div>
@@ -107,11 +149,13 @@ export const FormItem = forwardRef<FormItemProps, 'div'>(
           return (
             <FieldWrapper className={wrapperClassName}>
               <FieldLabelWrapper>
-                <FieldLabel>{label || name}</FieldLabel>
+                <FieldLabel isRequired={isRequired} layout={layout}>
+                  {label || name}
+                </FieldLabel>
               </FieldLabelWrapper>
               <FieldItemWrapper>
                 <div className="form-item">{childNode}</div>
-                <ErrorList errors={meta.errors} warnings={meta.warnings} />
+                <ErrorList errors={meta.errors} warnings={meta.warnings} help={help} />
               </FieldItemWrapper>
             </FieldWrapper>
           );
