@@ -27,7 +27,7 @@ export const Basic = () => (
 );
 
 export const Gutter = () => (
-  <Row gutter={50}>
+  <Row gutter={[50, 20]}>
     <Col span={4}>
       <PlaceHolder>1</PlaceHolder>
     </Col>
@@ -41,7 +41,7 @@ export const Gutter = () => (
 );
 
 export const MultiRows = () => (
-  <Row gutter={50}>
+  <Row gutter={[20, 50]}>
     <Col span={4}>
       <PlaceHolder>1</PlaceHolder>
     </Col>
