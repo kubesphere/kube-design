@@ -26,7 +26,7 @@ export const Basic = () => (
       <Col span={6}>
         <FormItem
           name="uid"
-          label="UID"
+          label="用户名"
           help="help content"
           rules={[{ required: true, message: 'Please input your uid!' }]}
         >
@@ -34,7 +34,7 @@ export const Basic = () => (
         </FormItem>
       </Col>
       <Col span={6}>
-        <FormItem name="group" label="Group" help="help content" required>
+        <FormItem name="group" label="Group" help="help content" tooltip="tooltip 内容 content">
           <Input />
         </FormItem>
       </Col>
