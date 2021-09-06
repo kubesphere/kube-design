@@ -1,5 +1,4 @@
 // https://github.dev/ant-design/ant-design/blob/master/components/date-picker/index.tsx
-
 import React from 'react';
 import { FormProvider } from 'rc-field-form';
 import { FormProviderProps as RcFormProviderProps } from 'rc-field-form/lib/FormContext';
@@ -36,4 +35,5 @@ export const FormItemContext = React.createContext<FormItemContextProps>({
 /** Form Provider */
 export interface FormProviderProps extends Omit<RcFormProviderProps, 'validateMessages'> {}
 
+// @ts-ignore
 export { FormProvider };

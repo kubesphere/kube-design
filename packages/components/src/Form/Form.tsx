@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import cx from 'clsx';
 import styled from 'styled-components';
-import FieldForm, { List } from 'rc-field-form';
+import FieldForm, { List as FormList } from 'rc-field-form';
 import { FormProps as RcFormProps } from 'rc-field-form/lib/Form';
 import { Options } from 'scroll-into-view-if-needed';
 import { ValidateErrorEntity } from 'rc-field-form/lib/interface';
@@ -14,7 +14,7 @@ import { FormItem } from './FormItem/FormItem';
 import useForm, { FormInstance } from './hooks/useForm';
 import { addColorAlpha } from '../utils/color';
 
-export { List, FormItem };
+export { FormList, FormItem, useForm };
 
 export type FormLayout = 'horizontal' | 'inline' | 'vertical';
 
