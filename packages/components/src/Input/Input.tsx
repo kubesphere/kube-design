@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import cx from 'clsx';
-import { DefaultProps, KubedNumberSize } from '../theme';
+import { DefaultProps, KubedNumberSize, KubedSizes } from '../theme';
 import forwardRef from '../utils/forwardRef';
 
 import {
@@ -32,10 +32,16 @@ export interface InputProps extends DefaultProps {
 
   /** Input border-radius from theme or number to set border-radius in px */
   radius?: KubedNumberSize;
+
+  /** Predefined input size */
+  size?: KubedSizes;
 }
 
 export const Input = forwardRef<InputProps, 'div'>(
-  ({ className, width, prefix, suffix, disabled, addonAfter, addonBefore, ...rest }, ref) => {
+  (
+    { className, width, size = 'sm', prefix, suffix, disabled, addonAfter, addonBefore, ...rest },
+    ref
+  ) => {
     const [focused, setFocused] = useState(false);
     const onFocus = () => {
       setFocused(true);
@@ -45,7 +51,7 @@ export const Input = forwardRef<InputProps, 'div'>(
       setFocused(false);
     };
 
-    const wrapperProps = { focused, disabled, width: undefined };
+    const wrapperProps = { focused, disabled, width: undefined, size };
 
     const inputInner = (_width?: number) => {
       if (_width) {

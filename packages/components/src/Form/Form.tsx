@@ -9,7 +9,7 @@ import { ColProps } from '../Grid/Col';
 import { FormContext, FormContextProps } from './context';
 import { FormLabelAlign } from './types';
 import forwardRef from '../utils/forwardRef';
-import { DefaultProps } from '../theme';
+import { DefaultProps, KubedSizes } from '../theme';
 import { FormItem } from './FormItem/FormItem';
 import useForm, { FormInstance } from './hooks/useForm';
 import { addColorAlpha } from '../utils/color';
@@ -42,6 +42,7 @@ export interface FormProps<Values = any> extends Omit<RcFormProps<Values>, 'form
   wrapperCol?: ColProps;
   form?: FormInstance<Values>;
   scrollToFirstError?: Options | boolean;
+  size?: KubedSizes;
 }
 
 export const Form = forwardRef<FormProps, null>(
@@ -56,6 +57,7 @@ export const Form = forwardRef<FormProps, null>(
       scrollToFirstError,
       form,
       className,
+      size = 'sm',
       ...rest
     },
     ref
@@ -72,8 +74,9 @@ export const Form = forwardRef<FormProps, null>(
         wrapperCol,
         layout,
         itemRef: __INTERNAL__.itemRef,
+        size,
       }),
-      [name, labelAlign, labelCol, wrapperCol, layout]
+      [name, labelAlign, labelCol, wrapperCol, layout, size]
     );
 
     React.useImperativeHandle(ref, () => wrapForm);

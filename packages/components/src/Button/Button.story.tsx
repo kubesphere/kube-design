@@ -34,3 +34,9 @@ storiesOf('Components/Button', module).add('With Icon', () => (
     KubeSphere
   </Button>
 ));
+
+storiesOf('Components/Button', module).add('Size', () => (
+  <Button variant="filled" color="default" radius="xl" size="md" leftIcon={<Add size={16} />}>
+    KubeSphere
+  </Button>
+));

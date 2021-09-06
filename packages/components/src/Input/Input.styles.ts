@@ -1,17 +1,19 @@
 import styled from 'styled-components';
 import { addColorAlpha } from '../utils/color';
+import { KubedSizes } from '../theme';
 
 interface InputProps {
   focused?: boolean;
   disabled?: boolean;
   width?: number;
+  size?: KubedSizes;
 }
 
 export const InputWrapper = styled('div')<InputProps>`
   display: inline-flex;
   width: ${({ width }) => (width ? `${width}px` : '100%')};
   border-radius: 3px;
-  height: 32px;
+  height: ${({ size, theme }) => theme.layout.inputSizes[size]};
   padding: 6px 12px;
   border: 1px solid ${({ theme }) => theme.palette.accents_4};
   line-height: 1.67;
