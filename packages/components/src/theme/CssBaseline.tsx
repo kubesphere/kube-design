@@ -262,6 +262,10 @@ const CssBaseline = createGlobalStyle`
     color: ${(p) => p.theme.palette.foreground};
   }
 
+  [type='search']::-webkit-search-cancel-button {
+    appearance: none;
+  }
+
   .kubed-icon__light {
     color: rgba(255, 255, 255, 0.9);
     fill: rgba(255, 255, 255, 0.4);
