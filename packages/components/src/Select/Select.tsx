@@ -1,15 +1,16 @@
 // https://github.dev/ant-design/ant-design/blob/756dc8f130547277a28548c5b46658ff46f131f9/components/select/index.tsx
 import React from 'react';
-import {
-  Option as SelectOption,
-  OptGroup as SelectOptGroup,
-  SelectProps as RcSelectProps,
-} from 'rc-select';
+import { Option as SelectOption, OptGroup as SelectOptGroup } from 'rc-select';
 import { OptionProps } from 'rc-select/lib/Option';
-import { KubedSizes } from '../theme';
 import forwardRef from '../utils/forwardRef';
 import getIcons from './iconUtil';
-import { StyledSelect, SelectStyles } from './Select.styles';
+import {
+  StyledSelect,
+  SelectStyles,
+  Empty,
+  InternalSelectProps,
+  SelectProps,
+} from './Select.styles';
 
 type RawValue = string | number;
 
@@ -25,21 +26,6 @@ export interface LabeledValue {
 
 export type SelectValue = RawValue | RawValue[] | LabeledValue | LabeledValue[] | undefined;
 
-export interface InternalSelectProps<VT> extends Omit<RcSelectProps<VT>, 'mode'> {
-  suffixIcon?: React.ReactNode;
-  size?: KubedSizes;
-  mode?: 'multiple' | 'tags' | 'SECRET_COMBOBOX_MODE_DO_NOT_USE';
-  bordered?: boolean;
-}
-
-export interface SelectProps<VT>
-  extends Omit<
-    InternalSelectProps<VT>,
-    'inputIcon' | 'mode' | 'getInputElement' | 'getRawInputElement' | 'backfill'
-  > {
-  mode?: 'multiple' | 'tags';
-}
-
 export interface RefSelectProps {
   focus: () => void;
   blur: () => void;
@@ -47,7 +33,7 @@ export interface RefSelectProps {
 
 const SECRET_COMBOBOX_MODE_DO_NOT_USE = 'SECRET_COMBOBOX_MODE_DO_NOT_USE';
 
-const Select = forwardRef<SelectProps<any>, 'div'>(
+const InternalSelect = forwardRef<SelectProps<any>, 'div'>(
   (
     {
       bordered = true,
@@ -80,11 +66,11 @@ const Select = forwardRef<SelectProps<any>, 'div'>(
     // ===================== Empty =====================
     let mergedNotFound: React.ReactNode;
     if (notFoundContent !== undefined) {
-      mergedNotFound = notFoundContent;
+      mergedNotFound = <Empty>{notFoundContent}</Empty>;
     } else if (mode === 'combobox') {
       mergedNotFound = null;
     } else {
-      mergedNotFound = <div>Empty</div>;
+      mergedNotFound = <Empty>No Data</Empty>;
     }
 
     const { suffixIcon, itemIcon, removeIcon, clearIcon } = getIcons({
@@ -110,17 +96,26 @@ const Select = forwardRef<SelectProps<any>, 'div'>(
           notFoundContent={mergedNotFound}
           getPopupContainer={getPopupContainer}
           prefixCls="kubed-select"
+          bordered={bordered}
         />
       </>
     );
   }
 );
 
-export type SelectComponentType = typeof Select & {
-  Option: typeof SelectOption;
-};
-(Select as SelectComponentType).Option = SelectOption;
+type InternalSelectType = typeof InternalSelect;
 
-export default Select as SelectComponentType;
+interface SelectInterface extends InternalSelectType {
+  Option: typeof SelectOption;
+  OptGroup: typeof SelectOptGroup;
+}
+
+const Select = InternalSelect as SelectInterface;
+
+Select.Option = SelectOption;
+
+Select.OptGroup = SelectOptGroup;
 
 Select.displayName = '@kubed/components/Select';
+
+export default Select;

@@ -65,6 +65,12 @@ export const SelectStyles = createGlobalStyle`
   }
 `;
 
+export const Empty = styled.div`
+  color: ${({ theme }) => theme.palette.background};
+  padding: 20px 0;
+  text-align: center;
+`;
+
 export const StyledSelect = styled(RcSelect)<SelectProps<any>>`
   display: inline-block;
   line-height: 1.67;
