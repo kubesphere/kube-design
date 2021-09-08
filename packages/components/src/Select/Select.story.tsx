@@ -1,7 +1,7 @@
 import React from 'react';
 import { Select } from '@kubed/components';
 
-const { Option } = Select;
+const { Option, OptGroup } = Select;
 
 export default {
   title: 'Components/Select',
@@ -13,6 +13,7 @@ export const Basic = () => (
     <Option value="China">按 CPU 平均负载排行</Option>
     <Option value="USA">按内存用量排行</Option>
     <Option value="Russian">按磁盘用量排行</Option>
+    <Option value="France">按磁盘用量排行2</Option>
   </Select>
 );
 
