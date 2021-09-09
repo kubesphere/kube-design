@@ -266,9 +266,51 @@ const CssBaseline = createGlobalStyle`
     appearance: none;
   }
 
+  // components
   .kubed-icon__light {
     color: rgba(255, 255, 255, 0.9);
     fill: rgba(255, 255, 255, 0.4);
+  }
+
+  .kubed-modal-mask {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    height: 100%;
+    background-color: rgba(35, 45, 65, 0.7);
+  }
+
+  .kubed-modal-wrap {
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: auto;
+    outline: 0;
+  }
+
+  .kubed-modal-centered {
+    text-align: center;
+
+    &:before {
+      display: inline-block;
+      width: 0;
+      height: 100%;
+      vertical-align: middle;
+      content: "";
+    }
+
+    .kubed-modal {
+      top: 0;
+      display: inline-block;
+      text-align: left;
+      vertical-align: middle;
+    }
   }
 `;
 
