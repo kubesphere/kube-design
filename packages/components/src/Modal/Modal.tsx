@@ -1,9 +1,11 @@
 import React from 'react';
 import cx from 'clsx';
 import Close from '@kubed/icons/dist/close';
-import { StyledDialog, CloseIcon } from './Modal.styles';
+import { StyledDialog } from './Modal.styles';
 import { ButtonProps, Button } from '../Button/Button';
 import { useLocales } from '../ConfigProvider/LocaleProvider/LocaleContext';
+import { getTransitionName } from '../utils/motion';
+import { Field } from '../Entity/Field';
 
 type getContainerFunc = () => HTMLElement;
 
@@ -16,6 +18,12 @@ export interface ModalProps {
 
   /** Modal title, displayed in header before close button */
   title?: React.ReactNode | string;
+
+  /** Modal description */
+  description?: React.ReactNode | string;
+
+  /** Modal Icon */
+  icon?: React.ReactNode;
 
   /** Show or hide close button, modal still can be closed with escape key and by clicking outside */
   closable?: boolean;
@@ -34,6 +42,9 @@ export interface ModalProps {
 
   /** Width of the modal dialog */
   width?: string | number;
+
+  /** Custom header content */
+  header?: React.ReactNode;
 
   /** Custom footer content */
   footer?: React.ReactNode;
@@ -135,10 +146,16 @@ const Modal: React.FC<ModalProps> = (props: ModalProps) => {
     focusTriggerAfterClose = true,
     width = 600,
     wrapClassName,
+    header,
+    title,
+    description,
+    icon,
     ...restProps
   } = props;
 
   const renderCloseIcon = <>{closeIcon || <Close size={24} />}</>;
+
+  const renderHeader = header || <Field value={title} label={description} avatar={icon} />;
 
   return (
     <StyledDialog
@@ -150,7 +167,10 @@ const Modal: React.FC<ModalProps> = (props: ModalProps) => {
       width={width}
       closeIcon={renderCloseIcon}
       onClose={handleCancel}
+      title={renderHeader}
       footer={footer || renderFooter()}
+      transitionName={getTransitionName('kubed', 'zoom', props.transitionName)}
+      maskTransitionName={getTransitionName('kubed', 'fade', props.maskTransitionName)}
     />
   );
 };

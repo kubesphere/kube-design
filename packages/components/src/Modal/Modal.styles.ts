@@ -11,7 +11,7 @@ export const StyledDialog = styled(Dialog)`
 
   .kubed-modal-close {
     position: absolute;
-    top: 12px;
+    top: 14px;
     right: 20px;
     z-index: 10;
     cursor: pointer;
@@ -44,8 +44,8 @@ export const StyledDialog = styled(Dialog)`
 
   .kubed-modal-title {
     color: ${({ theme }) => theme.palette.accents_8};
-    font-weight: 700;
     min-height: 40px;
+    display: flex;
   }
 
   .kubed-modal-content {
