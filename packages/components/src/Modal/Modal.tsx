@@ -1,9 +1,10 @@
 import React from 'react';
 import cx from 'clsx';
 import Close from '@kubed/icons/dist/close';
-import { StyledDialog, CloseIcon } from './Modal.styles';
+import { StyledDialog } from './Modal.styles';
 import { ButtonProps, Button } from '../Button/Button';
 import { useLocales } from '../ConfigProvider/LocaleProvider/LocaleContext';
+import { getTransitionName } from '../utils/motion';
 
 type getContainerFunc = () => HTMLElement;
 
@@ -140,6 +141,8 @@ const Modal: React.FC<ModalProps> = (props: ModalProps) => {
 
   const renderCloseIcon = <>{closeIcon || <Close size={24} />}</>;
 
+  // const renderTitle = ();
+
   return (
     <StyledDialog
       {...restProps}
@@ -151,6 +154,8 @@ const Modal: React.FC<ModalProps> = (props: ModalProps) => {
       closeIcon={renderCloseIcon}
       onClose={handleCancel}
       footer={footer || renderFooter()}
+      transitionName={getTransitionName('kubed', 'zoom', props.transitionName)}
+      maskTransitionName={getTransitionName('kubed', 'fade', props.maskTransitionName)}
     />
   );
 };

@@ -312,6 +312,118 @@ const CssBaseline = createGlobalStyle`
       vertical-align: middle;
     }
   }
+
+  .kubed-fade-enter, .kubed-fade-appear {
+    animation-duration: .2s;
+    animation-fill-mode: both;
+    animation-play-state: paused
+  }
+
+  .kubed-fade-leave {
+    animation-duration: .2s;
+    animation-fill-mode: both;
+    animation-play-state: paused
+  }
+
+  .kubed-fade-enter.kubed-fade-enter-active,.kubed-fade-appear.kubed-fade-appear-active {
+    animation-name: kubedFadeIn;
+    animation-play-state: running
+  }
+
+  .kubed-fade-leave.kubed-fade-leave-active {
+    animation-name: kubedFadeOut;
+    animation-play-state: running;
+    pointer-events: none
+  }
+
+  .kubed-fade-enter,.kubed-fade-appear {
+    opacity: 0;
+    animation-timing-function: linear
+  }
+
+  .kubed-fade-leave {
+    animation-timing-function: linear
+  }
+
+  @keyframes kubedFadeIn {
+    0% {
+      opacity: 0
+    }
+
+    to {
+      opacity: 1
+    }
+  }
+
+  @keyframes kubedFadeOut {
+    0% {
+      opacity: 1
+    }
+
+    to {
+      opacity: 0
+    }
+  }
+
+  .kubed-zoom-enter,.kubed-zoom-appear {
+    animation-duration: .2s;
+    animation-fill-mode: both;
+    animation-play-state: paused
+  }
+
+  .kubed-zoom-leave {
+    animation-duration: .2s;
+    animation-fill-mode: both;
+    animation-play-state: paused
+  }
+
+  .kubed-zoom-enter.kubed-zoom-enter-active,.kubed-zoom-appear.kubed-zoom-appear-active {
+    animation-name: kubedZoomIn;
+    animation-play-state: running
+  }
+
+  .kubed-zoom-leave.kubed-zoom-leave-active {
+    animation-name: kubedZoomOut;
+    animation-play-state: running;
+    pointer-events: none
+  }
+
+  .kubed-zoom-enter,.kubed-zoom-appear {
+    transform: scale(0);
+    opacity: 0;
+    animation-timing-function: cubic-bezier(.08,.82,.17,1)
+  }
+
+  .kubed-zoom-enter-prepare,.kubed-zoom-appear-prepare {
+    transform: none
+  }
+
+  .kubed-zoom-leave {
+    animation-timing-function: cubic-bezier(.78,.14,.15,.86)
+  }
+
+  @keyframes kubedZoomIn {
+    0% {
+      transform: scale(.9);
+      opacity: 0
+    }
+
+    to {
+      transform: scale(1);
+      opacity: 1
+    }
+  }
+
+  @keyframes kubedZoomOut {
+    0% {
+      transform: scale(1)
+    }
+
+    to {
+      transform: scale(.9);
+      opacity: 0
+    }
+  }
 `;
 
 const MemoCssBaseline = React.memo(CssBaseline);
