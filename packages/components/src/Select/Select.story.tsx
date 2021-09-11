@@ -1,7 +1,7 @@
-import React from 'react';
-import { Select } from '@kubed/components';
+import * as React from 'react';
+import { Select } from '../index';
 
-const { Option, OptGroup } = Select;
+const { Option } = Select;
 
 export default {
   title: 'Components/Select',

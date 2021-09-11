@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Meta } from '@storybook/react';
 
-import { Row, Col } from '@kubed/components';
+import { Row, Col } from '../index';
 
 export default {
   title: 'Components/Grid',

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Tabs, Tab } from '@kubed/components';
+import * as React from 'react';
+import { Tabs, Tab } from '../index';
 
 export default {
   title: 'Components/Tabs',

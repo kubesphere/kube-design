@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Meta } from '@storybook/react';
-import { StatusDot, Group, Tooltip } from '@kubed/components';
+import { StatusDot, Group, Tooltip } from '../index';
 
 export default {
   title: 'Components/StatusDot',

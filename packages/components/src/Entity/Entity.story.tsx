@@ -1,6 +1,6 @@
-import React from 'react';
-import { BadgeAnchor, Entity, Field, Tooltip, Text } from '@kubed/components';
+import * as React from 'react';
 import { Error, Pod, Docker } from '@kubed/icons';
+import { BadgeAnchor, Entity, Field, Tooltip, Text } from '../index';
 
 export default {
   title: 'Components/Entity',
