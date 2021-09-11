@@ -1,6 +1,6 @@
-import React from 'react';
-import { Card } from '@kubed/components';
-import { LoadingOverlay } from '../LoadingOverlay/LoadingOverlay';
+import * as React from 'react';
+import { Card } from '../index';
+import { LoadingOverlay } from './LoadingOverlay';
 
 export default {
   title: 'Components/LoadingOverlay',

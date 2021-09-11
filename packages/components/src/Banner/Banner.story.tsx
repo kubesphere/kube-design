@@ -1,6 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 import { Cluster } from '@kubed/icons';
-import { Navs } from '@kubed/components';
+import { Navs } from '../Navs/Navs';
 import { Banner } from './Banner';
 import { BannerTip } from './BannerTip';
 

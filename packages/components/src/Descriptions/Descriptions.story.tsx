@@ -1,5 +1,5 @@
-import React from 'react';
-import { Description, Card, Descriptions } from '@kubed/components';
+import * as React from 'react';
+import { Description, Card, Descriptions } from '../index';
 
 export default {
   title: 'Components/Descriptions',

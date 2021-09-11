@@ -1,6 +1,6 @@
-import React from 'react';
-import { Menu, MenuItem, MenuLabel, Card, Divider } from '@kubed/components';
+import * as React from 'react';
 import { Add, Stop, Pen, Trash } from '@kubed/icons';
+import { Menu, MenuItem, MenuLabel, Card, Divider } from '../index';
 
 export default {
   title: 'Components/Menu',

@@ -1,6 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 import { Meta } from '@storybook/react';
-import { Group, Button, Divider } from '@kubed/components';
+import { Group, Button, Divider } from '../index';
 
 export default {
   title: 'Components/Divider',

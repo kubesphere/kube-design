@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Meta } from '@storybook/react';
-import { Tag, Group } from '@kubed/components';
 import { Add } from '@kubed/icons';
+import { Tag, Group } from '../index';
 
 export default {
   title: 'Components/Tag',

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Meta } from '@storybook/react';
-import { Badge, BadgeAnchor, Group, Tooltip } from '@kubed/components';
 import { Storage, Pod, Error } from '@kubed/icons';
+import { Badge, BadgeAnchor, Group, Tooltip } from '../index';
 
 export default {
   title: 'Components/Badge',

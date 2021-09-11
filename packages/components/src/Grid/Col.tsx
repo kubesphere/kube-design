@@ -23,6 +23,7 @@ export interface ColProps extends React.ComponentPropsWithoutRef<'div'> {
   offset?: number;
   gutter?: GutterType;
   grow?: boolean;
+  children?: React.ReactNode;
 }
 
 export function isValidSpan(span: number) {

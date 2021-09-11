@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { Meta } from '@storybook/react';
 
-import { Row, Col } from '@kubed/components';
+import { Row, Col } from '../index';
 
 export default {
   title: 'Components/Grid',
   component: Row,
 } as Meta;
 
+// eslint-disable-next-line react/prop-types
 const PlaceHolder = ({ children }) => (
   <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>{children}</div>
 );

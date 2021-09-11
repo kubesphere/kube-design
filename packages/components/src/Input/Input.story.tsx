@@ -1,6 +1,6 @@
-import React from 'react';
-import { Group, Loading, Tooltip } from '@kubed/components';
+import * as React from 'react';
 import { Magnifier, Appcenter } from '@kubed/icons';
+import { Group, Loading, Tooltip } from '../index';
 import { Input } from './Input';
 
 export default {

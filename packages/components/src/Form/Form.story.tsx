@@ -1,6 +1,6 @@
-import React from 'react';
-import { Form, FormItem, FormList, Input, Row, Col, Button, useForm } from '@kubed/components';
+import * as React from 'react';
 import { Add, Trash } from '@kubed/icons';
+import { Form, FormItem, FormList, Input, Row, Col, Button, useForm } from '../index';
 
 export default {
   title: 'Components/Form',

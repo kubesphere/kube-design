@@ -1,6 +1,6 @@
-import React from 'react';
-import { Button, Dropdown, Menu, MenuItem, MenuLabel } from '@kubed/components';
+import * as React from 'react';
 import { Add, Pen, Stop, Trash, More } from '@kubed/icons';
+import { Button, Dropdown, Menu, MenuItem, MenuLabel } from '../index';
 
 export default {
   title: 'Components/Dropdown',

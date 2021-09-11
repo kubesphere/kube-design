@@ -1,5 +1,5 @@
-import React from 'react';
-import { Popover, Button } from '@kubed/components';
+import * as React from 'react';
+import { Popover, Button } from '../index';
 
 export default {
   title: 'Components/Popover',

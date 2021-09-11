@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { KubedNumberSize, themeUtils } from '../theme';
+import { DefaultProps, KubedNumberSize, themeUtils } from '../theme';
 
 export const sizes = {
   xs: '570px',
@@ -19,7 +19,7 @@ const ContainerDiv = styled('div')<ContainerProps>`
   padding: 0 ${({ padding, theme }) => getSizeValue(padding, theme.layout.spacing)};
 `;
 
-export interface ContainerProps extends React.ComponentPropsWithoutRef<'div'> {
+export interface ContainerProps extends DefaultProps, React.ComponentPropsWithoutRef<'div'> {
   /** Predefined container max-width or number for max-width in px */
   size?: KubedNumberSize;
 
@@ -28,6 +28,8 @@ export interface ContainerProps extends React.ComponentPropsWithoutRef<'div'> {
 
   /** If fluid is set to true, size prop is ignored and Container always take 100% of width */
   fluid?: boolean;
+
+  children?: React.ReactNode;
 }
 
 export function Container({ className, size, padding = 'md', ...others }: ContainerProps) {
