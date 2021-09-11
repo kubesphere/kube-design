@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, CSSProperties, Children, cloneElement } from 'react';
 import styled, { css } from 'styled-components';
 import cx from 'clsx';
-import { KubedNumberSize, themeUtils } from '../theme';
+import { DefaultProps, KubedNumberSize, themeUtils } from '../theme';
 
 const { getSizeValue } = themeUtils;
 
@@ -45,7 +45,7 @@ const GroupContainer = styled('div')<GroupProps>`
   }
 `;
 
-export interface GroupProps extends React.ComponentPropsWithoutRef<'div'> {
+export interface GroupProps extends DefaultProps, React.ComponentPropsWithoutRef<'div'> {
   /** Defines justify-content property */
   position?: GroupPosition;
 

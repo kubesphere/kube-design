@@ -8,6 +8,7 @@ export default {
   component: Row,
 } as Meta;
 
+// eslint-disable-next-line react/prop-types
 const PlaceHolder = ({ children }) => (
   <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>{children}</div>
 );
