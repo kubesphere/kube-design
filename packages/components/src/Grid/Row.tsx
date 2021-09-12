@@ -1,19 +1,32 @@
 import React, { Children, ComponentPropsWithoutRef } from 'react';
-import styled from 'styled-components';
-import { Col, ColProps } from './Col';
-import { KubedNumberSize, themeUtils } from '../theme';
+import styled, { css } from 'styled-components';
+import { Col, ColProps, GutterType } from './Col';
+import { themeUtils } from '../theme';
 
 export { Col };
 export type { ColProps };
 
-const RowDiv = styled('div')<RowProps>`
+const getGutter = (gutter: GutterType, theme) => {
+  const [gutterVertical, gutterHorizontal] = gutter;
+  if (gutterHorizontal) {
+    const marginV = themeUtils.getSizeValue(gutterVertical, theme.layout.spacing) / -2;
+    const marginH = themeUtils.getSizeValue(gutterHorizontal, theme.layout.spacing) / -2;
+    return css`
+      margin: calc(${marginV}) calc(${marginH});
+    `;
+  }
+  const margin = themeUtils.getSizeValue(gutterHorizontal, theme.layout.spacing) / -2;
+  return css`
+    margin: calc(${margin});
+  `;
+};
+
+const RowElement = styled('div')<RowProps>`
   display: flex;
   flex-wrap: wrap;
   justify-content: ${(props) => props.justify};
   align-items: ${(props) => props.align};
-  margin: calc(
-    ${({ gutter, theme }) => themeUtils.getSizeValue(gutter, theme.layout.spacing)} / -2
-  );
+  ${({ gutter, theme }) => getGutter(gutter, theme)};
 `;
 
 export interface RowProps extends ComponentPropsWithoutRef<'div'> {
@@ -21,7 +34,7 @@ export interface RowProps extends ComponentPropsWithoutRef<'div'> {
   children: React.ReactNode;
 
   /** Spacing between columns predefined value from theme.spacing or number for gutter in px  */
-  gutter?: KubedNumberSize;
+  gutter?: GutterType;
 
   /** Should columns in the last row take 100% of grid width */
   grow?: boolean;
@@ -37,13 +50,12 @@ export interface RowProps extends ComponentPropsWithoutRef<'div'> {
 }
 
 export function Row({
-  gutter = 'md',
+  gutter = ['md'],
   children,
   grow = false,
   justify = 'flex-start',
   align = 'stretch',
   columns = 12,
-  className,
   ...others
 }: RowProps) {
   const cols = (Children.toArray(children) as React.ReactElement[]).map((col, index) =>
@@ -51,9 +63,9 @@ export function Row({
   );
 
   return (
-    <RowDiv gutter={gutter} align={align} justify={justify} {...others}>
+    <RowElement gutter={gutter} align={align} justify={justify} {...others}>
       {cols}
-    </RowDiv>
+    </RowElement>
   );
 }
 

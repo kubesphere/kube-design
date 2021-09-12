@@ -1,5 +1,5 @@
-import React from 'react';
-import { Loading, Group } from '@kubed/components';
+import * as React from 'react';
+import { Loading, Group } from '../index';
 
 export default {
   title: 'Components/Loading',

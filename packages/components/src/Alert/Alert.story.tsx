@@ -1,6 +1,6 @@
-import React from 'react';
-import { Alert, Group } from '@kubed/components';
+import * as React from 'react';
 import { Meta } from '@storybook/react';
+import { Alert, Group } from '../index';
 
 export default {
   title: 'Components/Alert',

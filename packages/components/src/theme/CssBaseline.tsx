@@ -262,9 +262,167 @@ const CssBaseline = createGlobalStyle`
     color: ${(p) => p.theme.palette.foreground};
   }
 
+  [type='search']::-webkit-search-cancel-button {
+    appearance: none;
+  }
+
+  // components
   .kubed-icon__light {
     color: rgba(255, 255, 255, 0.9);
     fill: rgba(255, 255, 255, 0.4);
+  }
+
+  .kubed-modal-mask {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    height: 100%;
+    background-color: rgba(35, 45, 65, 0.7);
+  }
+
+  .kubed-modal-wrap {
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: auto;
+    outline: 0;
+  }
+
+  .kubed-modal-centered {
+    text-align: center;
+
+    &:before {
+      display: inline-block;
+      width: 0;
+      height: 100%;
+      vertical-align: middle;
+      content: "";
+    }
+
+    .kubed-modal {
+      top: 0;
+      display: inline-block;
+      text-align: left;
+      vertical-align: middle;
+    }
+  }
+
+  .kubed-fade-enter, .kubed-fade-appear {
+    animation-duration: .2s;
+    animation-fill-mode: both;
+    animation-play-state: paused
+  }
+
+  .kubed-fade-leave {
+    animation-duration: .2s;
+    animation-fill-mode: both;
+    animation-play-state: paused
+  }
+
+  .kubed-fade-enter.kubed-fade-enter-active,.kubed-fade-appear.kubed-fade-appear-active {
+    animation-name: kubedFadeIn;
+    animation-play-state: running
+  }
+
+  .kubed-fade-leave.kubed-fade-leave-active {
+    animation-name: kubedFadeOut;
+    animation-play-state: running;
+    pointer-events: none
+  }
+
+  .kubed-fade-enter,.kubed-fade-appear {
+    opacity: 0;
+    animation-timing-function: linear
+  }
+
+  .kubed-fade-leave {
+    animation-timing-function: linear
+  }
+
+  @keyframes kubedFadeIn {
+    0% {
+      opacity: 0
+    }
+
+    to {
+      opacity: 1
+    }
+  }
+
+  @keyframes kubedFadeOut {
+    0% {
+      opacity: 1
+    }
+
+    to {
+      opacity: 0
+    }
+  }
+
+  .kubed-zoom-enter,.kubed-zoom-appear {
+    animation-duration: .2s;
+    animation-fill-mode: both;
+    animation-play-state: paused
+  }
+
+  .kubed-zoom-leave {
+    animation-duration: .2s;
+    animation-fill-mode: both;
+    animation-play-state: paused
+  }
+
+  .kubed-zoom-enter.kubed-zoom-enter-active,.kubed-zoom-appear.kubed-zoom-appear-active {
+    animation-name: kubedZoomIn;
+    animation-play-state: running
+  }
+
+  .kubed-zoom-leave.kubed-zoom-leave-active {
+    animation-name: kubedZoomOut;
+    animation-play-state: running;
+    pointer-events: none
+  }
+
+  .kubed-zoom-enter,.kubed-zoom-appear {
+    transform: scale(0);
+    opacity: 0;
+    animation-timing-function: cubic-bezier(.08,.82,.17,1)
+  }
+
+  .kubed-zoom-enter-prepare,.kubed-zoom-appear-prepare {
+    transform: none
+  }
+
+  .kubed-zoom-leave {
+    animation-timing-function: cubic-bezier(.78,.14,.15,.86)
+  }
+
+  @keyframes kubedZoomIn {
+    0% {
+      transform: scale(.9);
+      opacity: 0
+    }
+
+    to {
+      transform: scale(1);
+      opacity: 1
+    }
+  }
+
+  @keyframes kubedZoomOut {
+    0% {
+      transform: scale(1)
+    }
+
+    to {
+      transform: scale(.9);
+      opacity: 0
+    }
   }
 `;
 

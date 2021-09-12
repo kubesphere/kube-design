@@ -22,10 +22,16 @@
   },
   "dependencies": {
     "@tippyjs/react": "^4.2.5",
+    "classnames": "^2.3.1",
     "clsx": "^1.1.1",
+    "rc-dialog": "^8.6.0",
+    "rc-field-form": "^1.21.2",
+    "rc-motion": "^2.4.4",
+    "rc-select": "^12.1.13",
     "react-textarea-autosize": "^8.3.2",
     "react-transition-group": "^4.4.2",
-    "react-feather": "^2.0.9"
+    "react-feather": "^2.0.9",
+    "scroll-into-view-if-needed": "^2.2.28"
   },
   "devDependencies": {
     "@kubed/tests": "0.0.1"

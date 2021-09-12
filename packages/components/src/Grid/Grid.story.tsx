@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { Meta } from '@storybook/react';
 
-import { Row, Col } from '@kubed/components';
+import { Row, Col } from '../index';
 
 export default {
   title: 'Components/Grid',
   component: Row,
 } as Meta;
 
+// eslint-disable-next-line react/prop-types
 const PlaceHolder = ({ children }) => (
   <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>{children}</div>
 );
@@ -27,7 +28,7 @@ export const Basic = () => (
 );
 
 export const Gutter = () => (
-  <Row gutter={50}>
+  <Row gutter={[50, 20]}>
     <Col span={4}>
       <PlaceHolder>1</PlaceHolder>
     </Col>
@@ -41,7 +42,7 @@ export const Gutter = () => (
 );
 
 export const MultiRows = () => (
-  <Row gutter={50}>
+  <Row gutter={[20, 50]}>
     <Col span={4}>
       <PlaceHolder>1</PlaceHolder>
     </Col>

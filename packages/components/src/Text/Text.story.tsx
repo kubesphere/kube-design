@@ -1,5 +1,5 @@
-import React from 'react';
-import { Text, Group } from '@kubed/components';
+import * as React from 'react';
+import { Text, Group } from '../index';
 
 export default {
   title: 'Components/Text',

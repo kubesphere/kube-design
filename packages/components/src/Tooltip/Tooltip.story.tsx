@@ -1,5 +1,5 @@
-import React from 'react';
-import { Tooltip, Button, Col, Row, Group } from '@kubed/components';
+import * as React from 'react';
+import { Tooltip, Button, Col, Row, Group } from '../index';
 
 export default {
   title: 'Components/Tooltip',

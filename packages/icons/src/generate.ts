@@ -25,7 +25,7 @@ const parseSvg = (svg: string) => {
   let newSvg = svg.replace(/-([a-z])(?=[a-z\-]*[=\s/>])/g, (g) => g[1].toUpperCase());
   newSvg = newSvg.replace(
     /<svg([^>]+)>/,
-    `<svg$1 fill="#b6c2cd" color="#324558" {...props} height={size} width={size} className={classNames}>`
+    `<svg$1 fill="#b6c2cd" ref={ref} color="#324558" {...props} height={size} width={size} className={classNames}>`
   );
 
   return newSvg;
@@ -47,11 +47,11 @@ export default (async () => {
       const { data } = await svgo.optimize(fileContent);
       const optimizedSvgString = data.replace(new RegExp(`${primaryColor}`, 'g'), 'currentColor');
 
-      const component = `import React from 'react';
-const ${componentName} = ({ variant = 'dark' ,size = 24, className = '', ...props }) => {
+      const component = `import React, {forwardRef} from 'react';
+const ${componentName} = forwardRef(({ variant = 'dark' ,size = 24, className = '', ...props }, ref) => {
   const classNames = \`kubed-icon kubed-icon__\${variant} \${className}\`;
   return ${parseSvg(optimizedSvgString)};
-}
+});
 export default ${componentName};`;
 
       exports += `export { default as ${componentName} } from './${fileName}';\n`;

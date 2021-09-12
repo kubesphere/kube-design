@@ -37,6 +37,14 @@ export const defaultBreakpoints: KubedThemeBreakpoints = {
 //   xl: '18px',
 // };
 
+const inputSizes = {
+  xs: '28px',
+  sm: '32px',
+  md: '36px',
+  lg: '48px',
+  xl: '56px',
+};
+
 const spacing = {
   xs: '10px',
   sm: '12px',
@@ -55,6 +63,7 @@ const radius = {
 
 export const defaultLayout: KubedThemeLayout = {
   spacing,
+  inputSizes,
   gap: '20px',
   gapNegative: '-20px',
   gapHalf: '10px',

@@ -5,7 +5,9 @@ import forwardRef from '../utils/forwardRef';
 import { addColorAlpha } from '../utils/color';
 import { getSizeValue } from '../theme/utils';
 
-const CardWrapper = styled.div``;
+const CardWrapper = styled.div`
+  position: relative;
+`;
 
 const SectionTitle = styled.div`
   margin-bottom: 8px;
@@ -19,6 +21,7 @@ const CardContent = styled('div')<CardProps>`
   background-color: ${({ theme }) => theme.palette.background};
   box-shadow: ${({ theme }) => `0 4px 8px ${addColorAlpha(theme.palette.accents_8, 0.06)}`};
   transition: all 0.3s;
+  height: 100%;
 
   &:hover {
     ${({ theme, hoverable }) =>

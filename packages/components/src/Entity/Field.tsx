@@ -9,12 +9,14 @@ const FieldWrapper = styled('div')<FieldProps>`
   line-height: 1.67;
   display: flex;
   flex-direction: row;
+  align-items: center;
   flex-grow: 1;
   flex-shrink: 1;
   ${({ width }) => (width ? `flex-basis: ${width}px;flex-grow:0;flex-shrink:0;` : null)};
 `;
 
 const FieldAvatar = styled('div')`
+  display: inline-flex;
   margin-right: 12px;
 `;
 
