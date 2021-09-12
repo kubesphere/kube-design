@@ -54,7 +54,6 @@ const getStateStyles = (checked, theme) => {
 };
 
 interface ControlProps {
-  state?: string;
   theme?: KubedTheme;
   disabled?: boolean;
   checked?: boolean;
