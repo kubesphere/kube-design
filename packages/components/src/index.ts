@@ -29,3 +29,4 @@ export { default as Modal } from './Modal';
 export { CheckboxGroup, Checkbox } from './Checkbox/Checkbox';
 export { RadioGroup, Radio } from './Radio/Radio';
 export { Switch } from './Switch/Switch';
+export { InputNumber } from './InputNumber/InputNumber';
