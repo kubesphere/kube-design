@@ -21,6 +21,10 @@ export const InputWrapper = styled('div')<InputProps>`
   outline: none;
   transition: all 0.3s ease-in-out;
 
+  &:hover {
+    border-color: ${({ theme }) => theme.palette.accents_5};
+  }
+
   &.input-focus {
     border-color: ${({ theme }) => theme.palette.colors.green[2]};
     box-shadow: 0 4px 8px 0 ${({ theme }) => addColorAlpha(theme.palette.colors.green[2], 0.2)};
@@ -29,6 +33,7 @@ export const InputWrapper = styled('div')<InputProps>`
   &.input-disabled {
     cursor: not-allowed;
     background-color: ${({ theme }) => theme.palette.accents_1};
+    border-color: ${({ theme }) => theme.palette.accents_4};
   }
 
   input {

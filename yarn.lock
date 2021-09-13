@@ -11118,6 +11118,15 @@ rc-field-form@^1.21.2:
     async-validator "^4.0.2"
     rc-util "^5.8.0"
 
+rc-input-number@^7.3.0:
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/rc-input-number/-/rc-input-number-7.3.0.tgz#44e1f4be8ed01920cf0996781424baf0ffb024b7"
+  integrity sha512-vNGHYAbSIeD7xJ7V4E0MwtGjrewoKPyLY511IZXWXZDGhncJTYbo+jdpve8tCVtfLwGedRcRqUpr1KmXxi++3g==
+  dependencies:
+    "@babel/runtime" "^7.10.1"
+    classnames "^2.2.5"
+    rc-util "^5.9.8"
+
 rc-motion@^2.0.0, rc-motion@^2.0.1, rc-motion@^2.3.0, rc-motion@^2.4.4:
   version "2.4.4"
   resolved "https://registry.yarnpkg.com/rc-motion/-/rc-motion-2.4.4.tgz#e995d5fa24fc93065c24f714857cf2677d655bb0"
