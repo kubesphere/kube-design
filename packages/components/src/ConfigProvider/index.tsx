@@ -3,6 +3,7 @@ import { KubedTheme } from '../theme';
 import LocaleProvider from './LocaleProvider/LocaleProvider';
 import ThemeProvider from '../theme/ThemeProvider';
 import { ILocale } from './LocaleProvider/types';
+import { ModalProvider } from '../Modal/ModalProvider/ModalProvider';
 
 export interface Props {
   children: React.ReactNode;
@@ -15,7 +16,7 @@ export function KubedConfigProvider({ children, themes, themeType, locale }: Pro
   return (
     <LocaleProvider locale={locale}>
       <ThemeProvider themes={themes} themeType={themeType}>
-        {children}
+        <ModalProvider>{children}</ModalProvider>
       </ThemeProvider>
     </LocaleProvider>
   );

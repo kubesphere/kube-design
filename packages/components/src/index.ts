@@ -25,7 +25,7 @@ export { Loading } from './Loading/Loading';
 export { Input } from './Input/Input';
 export { Form, FormItem, FormList, useForm } from './Form/Form';
 export { default as Select } from './Select/Select';
-export { default as Modal } from './Modal';
+export { Modal, useModal, IModalContext } from './Modal';
 export { CheckboxGroup, Checkbox } from './Checkbox/Checkbox';
 export { RadioGroup, Radio } from './Radio/Radio';
 export { Switch } from './Switch/Switch';
