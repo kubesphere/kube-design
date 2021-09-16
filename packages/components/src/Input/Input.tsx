@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import cx from 'clsx';
+import cx from 'classnames';
 import { DefaultProps, KubedNumberSize, KubedSizes } from '../theme';
 import forwardRef from '../utils/forwardRef';
 
