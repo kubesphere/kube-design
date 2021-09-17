@@ -1,4 +1,4 @@
 import Modal from './Modal';
-import { useModal, IModalContext } from './ModalProvider/ModalContext';
+import { useModal } from './ModalProvider/ModalContext';
 
-export { Modal, useModal, IModalContext };
+export { Modal, useModal };
