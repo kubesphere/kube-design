@@ -112,10 +112,10 @@ export default function generatePicker<DateType>(generateConfig: GenerateConfig<
       Picker.displayName = displayName;
     }
 
-    return Picker;
+    return Picker as FunctionComponent<InnerPickerProps>;
   }
 
-  const DatePicker = getPicker<Omit<DatePickerProps, 'picker'>>();
+  const DatePicker = getPicker<Omit<PickerDateProps<DateType>, 'picker'>>('date', 'DatePicker');
   const WeekPicker = getPicker<Omit<PickerDateProps<DateType>, 'picker'>>('week', 'WeekPicker');
   const MonthPicker = getPicker<Omit<PickerDateProps<DateType>, 'picker'>>('month', 'MonthPicker');
   const YearPicker = getPicker<Omit<PickerDateProps<DateType>, 'picker'>>('year', 'YearPicker');
