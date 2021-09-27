@@ -154,7 +154,7 @@ export const PillsBg = styled('span')<BgSpanStyles>`
   background-color: ${({ theme, color }) => getColor(color, theme)};
   width: ${({ width }) => width}px;
   transform: translateX(${({ transform }) => transform}px);
-  transition: transform 150ms ease 0s, width 100ms linear 0s;
+  transition: transform 150ms ease 0s;
 `;
 
 export const LineBg = styled('span')<BgSpanStyles>`
@@ -167,5 +167,5 @@ export const LineBg = styled('span')<BgSpanStyles>`
   bottom: 0;
   margin-bottom: -1px;
   transform: translateX(${({ transform }) => transform}px);
-  transition: transform 150ms ease 0s, width 100ms linear 0s;
+  transition: transform 150ms ease 0s;
 `;
