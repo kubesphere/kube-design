@@ -68,7 +68,7 @@ export default function generatePicker<DateType>(generateConfig: GenerateConfig<
   ) {
     const Picker = forwardRef<InnerPickerProps, any>((props, ref) => {
       const prefixCls = 'kubed-picker';
-      const rootPrefixCls = 'kubed-picker-root';
+      // const rootPrefixCls = 'kubed-picker-root';
 
       const {
         prefixCls: customizePrefixCls,
@@ -156,7 +156,7 @@ export default function generatePicker<DateType>(generateConfig: GenerateConfig<
     return Picker as FunctionComponent<InnerPickerProps>;
   }
 
-  const DatePicker = getPicker<Omit<PickerDateProps<DateType>, 'picker'>>('date', 'DatePicker');
+  const DatePicker = getPicker<DatePickerProps>();
   const WeekPicker = getPicker<Omit<PickerDateProps<DateType>, 'picker'>>('week', 'WeekPicker');
   const MonthPicker = getPicker<Omit<PickerDateProps<DateType>, 'picker'>>('month', 'MonthPicker');
   const YearPicker = getPicker<Omit<PickerDateProps<DateType>, 'picker'>>('year', 'YearPicker');
