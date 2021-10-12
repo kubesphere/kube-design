@@ -123,7 +123,7 @@ export default function generateRangePicker<DateType>(
     } = props;
     const { format, showTime, picker } = props as any;
     const prefixCls = 'kubed-picker';
-    const rootPrefixCls = 'kubed-picker-root';
+    // const rootPrefixCls = 'kubed-picker-root';
 
     let additionalOverrideProps: any = {};
 
@@ -152,21 +152,17 @@ export default function generateRangePicker<DateType>(
 
     return (
       <RCRangePicker<DateType>
-        separator={
-          <span aria-label="to" className={`${prefixCls}-separator`}>
-            <Next />
-          </span>
-        }
+        separator={<Next size={16} />}
         ref={pickerRef}
         placeholder={getRangePlaceholder(picker, locales, placeholder)}
-        suffixIcon={picker === 'time' ? <Clock /> : <Calendar />}
-        clearIcon={<Close />}
+        suffixIcon={picker === 'time' ? <Clock size={16} /> : <Calendar size={16} />}
+        clearIcon={<Close size={16} />}
         prevIcon={<span className={`${prefixCls}-prev-icon`} />}
         nextIcon={<span className={`${prefixCls}-next-icon`} />}
         superPrevIcon={<span className={`${prefixCls}-super-prev-icon`} />}
         superNextIcon={<span className={`${prefixCls}-super-next-icon`} />}
         allowClear
-        transitionName={`${rootPrefixCls}-slide-up`}
+        // transitionName={`${rootPrefixCls}-slide-up`}
         {...restProps}
         {...additionalOverrideProps}
         className={classNames(

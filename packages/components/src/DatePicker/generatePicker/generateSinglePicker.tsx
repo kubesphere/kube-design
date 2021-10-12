@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useImperativeHandle, useRef } from 'react';
 import classNames from 'classnames';
-import styled from 'styled-components';
 import Calendar from '@kubed/icons/dist/calendar';
 import Clock from '@kubed/icons/dist/clock';
 import Close from '@kubed/icons/dist/close';
@@ -14,50 +13,9 @@ import { useLocales } from '../../ConfigProvider/LocaleProvider/LocaleContext';
 import { PickerProps, PickerDateProps, PickerTimeProps, getTimeProps, Components } from '.';
 import { CommonPickerMethods } from './interface';
 import forwardRef from '../../utils/forwardRef';
-import { addColorAlpha } from '../../utils/color';
 import { PickerDropdown } from '../DatePicker.styles';
 
 // const getPopupContainer = (triggerNode) => triggerNode;
-
-const StyledPicker = styled(RCPicker)<typeof RCPicker>`
-  position: relative;
-  .kubed-picker-input {
-    display: inline-flex;
-    width: 200px;
-    border-radius: 3px;
-    height: 32px;
-    padding: 6px 12px;
-    border: 1px solid ${({ theme }) => theme.palette.accents_4};
-    line-height: 1.67;
-    color: ${({ theme }) => theme.palette.accents_7};
-    outline: none;
-    transition: all 0.3s ease-in-out;
-
-    &:hover {
-      border-color: ${({ theme }) => theme.palette.accents_5};
-    }
-
-    input {
-      font-weight: 600;
-      border: none;
-      outline: none;
-      padding: 0;
-      width: 100%;
-
-      &[disabled] {
-        cursor: not-allowed;
-        background-color: ${({ theme }) => theme.palette.accents_1};
-      }
-    }
-  }
-
-  &.kubed-picker-focused {
-    .kubed-picker-input {
-      border-color: ${({ theme }) => theme.palette.colors.green[2]};
-      box-shadow: 0 4px 8px 0 ${({ theme }) => addColorAlpha(theme.palette.colors.green[2], 0.2)};
-    }
-  }
-`;
 
 export default function generatePicker<DateType>(generateConfig: GenerateConfig<DateType>) {
   type DatePickerProps = PickerProps<DateType>;
@@ -119,7 +77,7 @@ export default function generatePicker<DateType>(generateConfig: GenerateConfig<
       return (
         <>
           <PickerDropdown />
-          <StyledPicker
+          <RCPicker
             ref={pickerRef}
             placeholder={getPlaceholder(mergedPicker, locales, placeholder)}
             suffixIcon={mergedPicker === 'time' ? <Clock size={16} /> : <Calendar size={16} />}
