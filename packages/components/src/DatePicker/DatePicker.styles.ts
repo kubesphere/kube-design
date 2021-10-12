@@ -1,7 +1,51 @@
-import styled, { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 import { addColorAlpha } from '../utils/color';
 
 export const PickerDropdown = createGlobalStyle`
+  .kubed-picker {
+    display: inline-flex;
+    min-width: 200px;
+    border-radius: 3px;
+    height: 32px;
+    padding: 6px 12px;
+    border: 1px solid ${({ theme }) => theme.palette.accents_4};
+    line-height: 1.67;
+    color: ${({ theme }) => theme.palette.accents_7};
+    outline: none;
+    transition: all 0.3s ease-in-out;
+
+    &.kubed-picker-focused {
+      border-color: ${({ theme }) => theme.palette.colors.green[2]} !importkubed;
+      box-shadow: 0 4px 8px 0 ${({ theme }) =>
+        addColorAlpha(theme.palette.colors.green[2], 0.2)} !importkubed;
+    }
+
+    &:hover {
+      border-color: ${({ theme }) => theme.palette.accents_5};
+    }
+
+    input {
+      font-weight: 600;
+      border: none;
+      outline: none;
+      padding: 0;
+      width: 100%;
+      line-height: 1;
+
+      &[disabled] {
+        cursor: not-allowed;
+        background-color: ${({ theme }) => theme.palette.accents_1};
+      }
+    }
+  }
+
+  .kubed-picker-input {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+  }
+
   .kubed-picker-dropdown {
     position: absolute;
   }
@@ -20,6 +64,13 @@ export const PickerDropdown = createGlobalStyle`
     }
   }
 
+  .kubed-picker-suffix {
+    align-self: center;
+    margin-left: 4px;
+    line-height: 1;
+    pointer-events: none;
+  }
+
   .kubed-picker-clear {
     position: absolute;
     height: 16px;
@@ -27,8 +78,14 @@ export const PickerDropdown = createGlobalStyle`
     transform: translateY(-50%);
     cursor: pointer;
     opacity: 0;
-    right: 12px;
+    right: 0;
     background-color: ${({ theme }) => theme.palette.background};
+  }
+
+  .kubed-picker-range-separator {
+    align-items: center;
+    padding: 0 8px;
+    line-height: 1;
   }
 
   .kubed-picker-panel {
@@ -72,6 +129,10 @@ export const PickerDropdown = createGlobalStyle`
       font-size: 12.5px;
       color: #abb4be;
     }
+
+    td {
+      position: relative;
+    }
   }
 
   .kubed-picker-year-panel .kubed-picker-cell-inner, .kubed-picker-quarter-panel .kubed-picker-cell-inner, .kubed-picker-month-panel .kubed-picker-cell-inner {
@@ -106,15 +167,27 @@ export const PickerDropdown = createGlobalStyle`
     padding: 0;
     border: solid 1px transparent;
     border-radius: 3px;
-    margin: 4px;
+    margin: 4px 0;
     color: #abb4be;
     line-height: 32px;
     text-align: center;
     cursor: pointer;
+    z-index: 2;
+    position: relative;
 
     &:hover {
       //border-color: #f9fbfd;
       background-color: #f9fbfd;
+    }
+  }
+
+  .kubed-picker-cell-range-hover-end,
+  .kubed-picker-cell-range-hover
+  {
+    .kubed-picker-cell-inner {
+      &:hover {
+        background-color: transparent;
+      }
     }
   }
 
@@ -130,12 +203,11 @@ export const PickerDropdown = createGlobalStyle`
     }
   }
 
-  .kubed-picker-cell-selected {
-    .kubed-picker-cell-inner {
-      background-color: ${({ theme }) => theme.palette.colors.green[2]};
-      color: ${({ theme }) => theme.palette.background};
-      border-color: transparent;
-    }
+  .kubed-picker-cell-selected .kubed-picker-cell-inner,
+  .kubed-picker-cell-in-view.kubed-picker-cell-range-start .kubed-picker-cell-inner {
+    background-color: ${({ theme }) => theme.palette.colors.green[2]};
+    color: ${({ theme }) => theme.palette.background};
+    border-color: transparent;
   }
 
   .kubed-picker-header {
@@ -280,6 +352,133 @@ export const PickerDropdown = createGlobalStyle`
     .kubed-picker-ok {
       float: right;
       margin-left: 8px;
+    }
+  }
+
+  .kubed-picker-panel-container {
+    overflow: hidden;
+    vertical-align: top;
+    border-radius: 4px;
+    background-color: ${({ theme }) => theme.palette.background};
+    box-shadow: 0 4px 16px 0 ${({ theme }) => addColorAlpha(theme.palette.accents_8, 0.25)};
+    transition: margin .3s;
+
+    .kubed-picker-panel {
+      vertical-align: top;
+      background: 0 0;
+      border-width: 0 0 1px;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .kubed-picker-panels {
+      display: inline-flex;
+      flex-wrap: nowrap;
+    }
+  }
+
+  // range
+  .kubed-picker-range {
+    position: relative;
+
+    .kubed-picker-clear {
+      right: 12px;
+    }
+
+    &:hover {
+      .kubed-picker-clear {
+        opacity: 1;
+      }
+    }
+  }
+
+  .kubed-picker-cell {
+    &:before {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      left: 0;
+      z-index: 1;
+      height: 32px;
+      transform: translateY(-50%);
+      content: '';
+      transition: all .3s;
+    }
+  }
+
+  .kubed-picker-cell-in-view.kubed-picker-cell-range-start:before {
+    left: 50%;
+  }
+
+  .kubed-picker-cell-in-view.kubed-picker-cell-range-end:before {
+    right: 50%;
+  }
+
+  .kubed-picker-cell-in-view.kubed-picker-cell-in-range {
+    position: relative
+  }
+
+  .kubed-picker-cell-in-view.kubed-picker-cell-range-start:not(.kubed-picker-cell-range-start-single):before,
+  .kubed-picker-cell-in-view.kubed-picker-cell-range-end:not(.kubed-picker-cell-range-end-single):before,
+  .kubed-picker-cell-in-view.kubed-picker-cell-in-range:before {
+    background: ${({ theme }) => theme.palette.colors.green[0]};
+  }
+
+  .kubed-picker-cell-in-view.kubed-picker-cell-range-hover-start:not(.kubed-picker-cell-in-range):not(.kubed-picker-cell-range-start):not(.kubed-picker-cell-range-end),
+  .kubed-picker-cell-in-view.kubed-picker-cell-range-hover-end:not(.kubed-picker-cell-in-range):not(.kubed-picker-cell-range-start):not(.kubed-picker-cell-range-end),
+  .kubed-picker-cell-in-view.kubed-picker-cell-range-hover-start.kubed-picker-cell-range-start-single,
+  .kubed-picker-cell-in-view.kubed-picker-cell-range-hover-start.kubed-picker-cell-range-start.kubed-picker-cell-range-end.kubed-picker-cell-range-end-near-hover,
+  .kubed-picker-cell-in-view.kubed-picker-cell-range-hover-end.kubed-picker-cell-range-start.kubed-picker-cell-range-end.kubed-picker-cell-range-start-near-hover,
+  .kubed-picker-cell-in-view.kubed-picker-cell-range-hover-end.kubed-picker-cell-range-end-single,
+  .kubed-picker-cell-in-view.kubed-picker-cell-range-hover:not(.kubed-picker-cell-in-range) {
+    &:after {
+      position: absolute;
+      top: 50%;
+      z-index: 0;
+      height: 32px;
+      border-top: 1px dashed ${({ theme }) => theme.palette.colors.green[2]};
+      border-bottom: 1px dashed ${({ theme }) => theme.palette.colors.green[2]};
+      transform: translateY(-50%);
+      transition: all .3s;
+      content: ""
+    }
+  }
+
+  tr>.kubed-picker-cell-in-view.kubed-picker-cell-range-hover:first-child:after,
+  tr>.kubed-picker-cell-in-view.kubed-picker-cell-range-hover-end:first-child:after,
+  .kubed-picker-cell-in-view.kubed-picker-cell-start.kubed-picker-cell-range-hover-edge-start.kubed-picker-cell-range-hover-edge-start-near-range:after,
+  .kubed-picker-cell-in-view.kubed-picker-cell-range-hover-edge-start:not(.kubed-picker-cell-range-hover-edge-start-near-range):after,
+  .kubed-picker-cell-in-view.kubed-picker-cell-range-hover-start:after {
+    left: 6px;
+    border-left: 1px dashed ${({ theme }) => theme.palette.colors.green[2]};
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px
+  }
+
+  tr>.kubed-picker-cell-in-view.kubed-picker-cell-range-hover:last-child:after,
+  tr>.kubed-picker-cell-in-view.kubed-picker-cell-range-hover-start:last-child:after,
+  .kubed-picker-cell-in-view.kubed-picker-cell-end.kubed-picker-cell-range-hover-edge-end.kubed-picker-cell-range-hover-edge-end-near-range:after,
+  .kubed-picker-cell-in-view.kubed-picker-cell-range-hover-edge-end:not(.kubed-picker-cell-range-hover-edge-end-near-range):after,
+  .kubed-picker-cell-in-view.kubed-picker-cell-range-hover-end:after {
+    right: 6px;
+    border-right: 1px dashed ${({ theme }) => theme.palette.colors.green[2]};
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px
+  }
+
+  .kubed-picker-cell-range-hover-start:after,
+  .kubed-picker-cell-range-hover-end:after,
+  .kubed-picker-cell-range-hover:after {
+    right: 0;
+    left: 2px
+  }
+
+  .kubed-picker-cell-disabled {
+    pointer-events: none;
+    color: ${({ theme }) => theme.palette.accents_4};
+
+    &:before {
+      background-color: rgba(0, 0, 0, .04);
     }
   }
 `;
