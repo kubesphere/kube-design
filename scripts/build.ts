@@ -38,7 +38,7 @@ const { argv }: { argv: any } = yargs(hideBin(process.argv))
   })
   .example([
     ['$0 all --formats umd cjs', 'Building only umd and cjs packages.'],
-    ['$0 mantine-core --analyze', 'Building mantine-core package and generating analyzing file.'],
+    ['$0 components --analyze', 'Building components package and generating analyzing file.'],
   ]);
 
 (async () => {

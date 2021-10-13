@@ -11,10 +11,12 @@
   "repository": "https://github.com/kubesphere/kube-design",
   "license": "MIT",
   "scripts": {
+    "postinstall": "npm run docs:docgen && npm run build:icons",
     "syncpack": "syncpack list-mismatches",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src --ext .ts,.tsx",
     "build": "esno scripts/build",
+    "build:icons": "cd packages/icons && npm run build",
     "jest": "jest",
     "clean": "rimraf packages/*/{esm,cjs,lib,dist} packages/**/*.tsbuildinfo",
     "storybook": "esno scripts/storybook-start",

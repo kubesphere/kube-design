@@ -44,6 +44,7 @@ async function generateDts(packagePath: string) {
 export async function buildPackage(packageName: string, options?: BuildOptions) {
   if (packageName === '@kubed/icons') {
     console.log(packageName);
+    return;
   }
 
   const packagePath = await locatePackage(packageName || '');
