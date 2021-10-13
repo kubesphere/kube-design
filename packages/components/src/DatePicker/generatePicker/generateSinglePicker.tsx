@@ -1,8 +1,6 @@
 import React, { FunctionComponent, useImperativeHandle, useRef } from 'react';
 import classNames from 'classnames';
-import Calendar from '@kubed/icons/dist/calendar';
-import Clock from '@kubed/icons/dist/clock';
-import Close from '@kubed/icons/dist/close';
+import { Close, Clock, Calendar } from '@kubed/icons';
 import RCPicker from 'rc-picker';
 import { PickerMode } from 'rc-picker/lib/interface';
 import { GenerateConfig } from 'rc-picker/lib/generate';

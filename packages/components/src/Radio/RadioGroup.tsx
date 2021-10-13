@@ -1,6 +1,6 @@
 import React, { useMemo, useEffect } from 'react';
 import { useUncontrolled } from '@kubed/hooks';
-import isUndefined from 'lodash/isUndefined';
+import { isUndefined } from 'lodash';
 import { Group } from '../Group/Group';
 import { RadioContext } from './RadioContext';
 

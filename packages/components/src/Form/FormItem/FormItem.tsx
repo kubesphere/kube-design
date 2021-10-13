@@ -3,7 +3,7 @@ import { Field } from 'rc-field-form';
 import { FieldProps } from 'rc-field-form/lib/Field';
 import styled from 'styled-components';
 import { Meta } from 'rc-field-form/lib/interface';
-import Question from '@kubed/icons/dist/question';
+import { Question } from '@kubed/icons';
 import { Row, Col, ColProps } from '../../Grid/Row';
 import { Tooltip } from '../../Tooltip/Tooltip';
 import forwardRef from '../../utils/forwardRef';

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styled, { css } from 'styled-components';
-import isUndefined from 'lodash/isUndefined';
+import { isUndefined } from 'lodash';
 import { useId, useUncontrolled } from '@kubed/hooks';
 import { DefaultProps, KubedTheme } from '../theme';
 import forwardRef from '../utils/forwardRef';
