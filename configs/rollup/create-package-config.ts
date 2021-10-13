@@ -35,7 +35,9 @@ export default async function createPackageConfig(config: PkgConfigInput): Promi
 
   const plugins = [
     commonjs(),
-    nodeExternals(),
+    nodeExternals({
+      include: [/^rc-picker/, /^rc-select/, /^rc-field-form/],
+    }),
     nodeResolve({ extensions: ['.ts', '.tsx', '.js', '.jsx'] }),
     esbuild({
       minify: config.format === 'umd',
@@ -95,7 +97,7 @@ export default async function createPackageConfig(config: PkgConfigInput): Promi
       react: 'React',
       dayjs: 'dayjs',
       'react-dom': 'ReactDOM',
-      // 'react-jss': 'reactJss',
+      'react-is': 'reactIS',
     };
   }
 
