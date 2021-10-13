@@ -6,6 +6,7 @@ import Close from '@kubed/icons/dist/close';
 import RCPicker from 'rc-picker';
 import { PickerMode } from 'rc-picker/lib/interface';
 import { GenerateConfig } from 'rc-picker/lib/generate';
+// eslint-disable-next-line import/no-cycle
 import { getPlaceholder } from '../util';
 // eslint-disable-next-line import/no-cycle
 import { useLocales } from '../../ConfigProvider/LocaleProvider/LocaleContext';
@@ -53,7 +54,7 @@ export default function generatePicker<DateType>(generateConfig: GenerateConfig<
         ...additionalOverrideProps,
         ...(showTime ? getTimeProps({ format, picker: mergedPicker, ...showTime }) : {}),
         ...(mergedPicker === 'time'
-          ? getTimeProps({ format, ...this.props, picker: mergedPicker })
+          ? getTimeProps({ format, ...props, picker: mergedPicker })
           : {}),
       };
 
