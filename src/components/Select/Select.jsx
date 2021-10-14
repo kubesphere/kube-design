@@ -44,6 +44,7 @@ export default class Select extends React.Component {
     onChange: PropTypes.func,
     optionRenderer: PropTypes.func,
     valueRenderer: PropTypes.func,
+    dorpdownRender: PropTypes.func,
   };
 
   static defaultProps = {
@@ -437,7 +438,7 @@ export default class Select extends React.Component {
       >
         {options.length === 0 && !isLoading
           ? this.renderEmpty()
-          : this.renderOption(options)}
+          : this.renderDorpdownRender(options)}
         {isLoading && (
           <div className="select-options-loading">
             <Loading size={20} />
@@ -453,6 +454,16 @@ export default class Select extends React.Component {
         {locale.get("KUBE_NO_AVAILABLE_DATA")}
       </div>
     );
+  };
+
+  renderDorpdownRender = (options) => {
+    const { dorpdownRender } = this.props;
+    const optionNode = this.renderOption(options);
+
+    if (dorpdownRender) {
+      return dorpdownRender(optionNode);
+    }
+    return optionNode;
   };
 
   renderOption = (options) => {

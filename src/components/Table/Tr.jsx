@@ -87,8 +87,16 @@ export default class Tr extends Component {
         <th rowSpan={checkboxRowSpan}>
           <Checkbox
             checked={
-              selectedRowKeys.length === records.length &&
-              selectedRowKeys.length > 0
+              selectedRowKeys.length ===
+                records.filter((item) => {
+                  if (getCheckboxProps) {
+                    const result = getCheckboxProps(item);
+                    if (result && result.disabled) {
+                      return false;
+                    }
+                  }
+                  return true;
+                }).length && selectedRowKeys.length > 0
             }
             indeterminate={
               selectedRowKeys.length < records.length &&
