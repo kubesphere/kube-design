@@ -93,7 +93,7 @@ export default class Select extends React.Component {
     }
 
     if (!isUndefined(value) && value !== prevState.value) {
-      if (isEmpty(value)) {
+      if (value === "" || value === null) {
         this.setState({
           value,
           inputValue: value,
