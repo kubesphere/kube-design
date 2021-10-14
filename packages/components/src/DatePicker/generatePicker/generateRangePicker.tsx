@@ -1,9 +1,6 @@
 import React, { FC, useImperativeHandle, useRef } from 'react';
 import classNames from 'classnames';
-import Calendar from '@kubed/icons/dist/calendar';
-import Clock from '@kubed/icons/dist/clock';
-import Close from '@kubed/icons/dist/close';
-import Next from '@kubed/icons/dist/next';
+import { Calendar, Clock, Close, Next } from '@kubed/icons';
 import { RangePicker as RCRangePicker } from 'rc-picker';
 import { GenerateConfig } from 'rc-picker/lib/generate';
 // eslint-disable-next-line import/no-cycle

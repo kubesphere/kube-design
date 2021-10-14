@@ -42,11 +42,6 @@ async function generateDts(packagePath: string) {
 }
 
 export async function buildPackage(packageName: string, options?: BuildOptions) {
-  if (packageName === '@kubed/icons') {
-    console.log(packageName);
-    return;
-  }
-
   const packagePath = await locatePackage(packageName || '');
 
   if (!packagePath) {
@@ -58,17 +53,22 @@ export async function buildPackage(packageName: string, options?: BuildOptions) 
 
   try {
     const startTime = Date.now();
-    await generateDts(packagePath);
 
-    for (const format of options?.formats) {
-      const config = await createPackageConfig({
-        ...options,
-        basePath: packagePath,
-        format,
-      });
+    if (packageName === '@kubed/icons') {
+      await execa('yarn', ['build:icons']);
+    } else {
+      await generateDts(packagePath);
 
-      logger.info(`Building to ${chalk.cyan(format)} format...`);
-      await compile(config);
+      for (const format of options?.formats) {
+        const config = await createPackageConfig({
+          ...options,
+          basePath: packagePath,
+          format,
+        });
+
+        logger.info(`Building to ${chalk.cyan(format)} format...`);
+        await compile(config);
+      }
     }
 
     logger.info(

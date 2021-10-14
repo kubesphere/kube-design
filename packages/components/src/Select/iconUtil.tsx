@@ -1,9 +1,5 @@
 import React from 'react';
-import Close from '@kubed/icons/dist/close';
-import Magnifier from '@kubed/icons/dist/magnifier';
-import ChevronDown from '@kubed/icons/dist/chevronDown';
-import ChevronUp from '@kubed/icons/dist/chevronUp';
-import Check from '@kubed/icons/dist/check';
+import { Close, Magnifier, ChevronDown, ChevronUp, Check } from '@kubed/icons';
 import { Loading } from '../Loading/Loading';
 
 interface IconProps {

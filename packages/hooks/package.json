@@ -8,6 +8,11 @@
   "license": "MIT",
   "sideEffects": false,
   "homepage": "https://github.com/kubesphere/kube-design",
+  "files": [
+    "cjs",
+    "esm",
+    "lib"
+  ],
   "repository": {
     "url": "https://github.com/kubesphere/kube-design.git",
     "type": "git",

@@ -1,8 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import toast, { Toaster, ToastBar, ToastOptions } from 'react-hot-toast';
-import Close from '@kubed/icons/dist/close';
-import Information from '@kubed/icons/dist/information';
+import { Close, Information } from '@kubed/icons';
 // import { Loading } from '../Loading/Loading';
 import { addColorAlpha } from '../utils/color';
 import { useTheme } from '../theme';

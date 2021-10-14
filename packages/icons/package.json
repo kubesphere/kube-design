@@ -10,6 +10,9 @@
   "author": {
     "name": "chenz24"
   },
+  "files": [
+    "dist"
+  ],
   "repository": {
     "url": "https://github.com/kubesphere/kube-design.git",
     "type": "git",

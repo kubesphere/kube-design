@@ -1,8 +1,7 @@
 import React from 'react';
 import RcInputNumber, { InputNumberProps as RcInputNumberProps } from 'rc-input-number';
 import styled from 'styled-components';
-import ChevronUp from '@kubed/icons/dist/chevronUp';
-import ChevronDown from '@kubed/icons/dist/chevronDown';
+import { ChevronUp, ChevronDown } from '@kubed/icons';
 import { DefaultProps } from '../theme';
 import forwardRef from '../utils/forwardRef';
 import { addColorAlpha } from '../utils/color';
