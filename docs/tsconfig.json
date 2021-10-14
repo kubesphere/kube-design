@@ -3,15 +3,9 @@
 //  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "../packages/**/*.tsx"],
   "compilerOptions": {
     "paths": {
-      "@docs/demos": [
-        "./docs/src/demos"
-      ],
-      "@kubed/*": [
-        "packages/*/src"
-      ],
-      "@demos/*": [
-        "packages/*/src/demos"
-      ]
+      "@docs/demos": ["./docs/src/demos"],
+      "@kubed/*": ["packages/*/src"],
+//      "@demos/*": ["packages/*/src/demos"]
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
