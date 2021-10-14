@@ -99,6 +99,7 @@ export default function MetadataCard({
       <List>
         <dl>
           <dt>Import</dt>
+          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions */}
           <dd className="import-code" onClick={() => clipboard.copy(importStr)}>
             <Prism withLineNumbers={false} withPre={false} language="tsx" className="prism">
               {importStr}

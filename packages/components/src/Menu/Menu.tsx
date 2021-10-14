@@ -12,7 +12,7 @@ export { MenuItem, MenuLabel };
 export interface MenuProps extends DefaultProps, React.ComponentPropsWithoutRef<'div'> {
   width?: number;
 
-  children?: React.ReactElement;
+  children?: React.ReactNode;
 }
 
 export function Menu({ children }: MenuProps) {

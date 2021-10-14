@@ -79,8 +79,8 @@ function getActiveElement(rects: DOMRect[]) {
   return closest.index;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function TOC({ headings, withTabs }: TableOfContentsProps) {
-  console.log(withTabs);
   const [active, setActive] = useState(0);
 
   const slugs = useRef<HTMLDivElement[]>([]);
@@ -109,7 +109,7 @@ export default function TOC({ headings, withTabs }: TableOfContentsProps) {
   const items = filteredHeadings.map((heading, index) => {
     const slug = heading.properties.id;
     return (
-      <Text<'a', HTMLAnchorElement>
+      <Text
         key={slug}
         component="a"
         size="sm"
