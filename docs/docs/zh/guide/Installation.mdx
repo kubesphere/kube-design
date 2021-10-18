@@ -1,0 +1,48 @@
+---
+group: 'guide'
+title: Installation
+description: installation of kubed library
+order: 2
+---
+
+## 安装
+
+### 前置条件
+
+Ensure your have the latest version of NodeJS, and a package manager: NPM or Yarn.
+请确认你已经安装了最新的 NodeJS 以及包管理器：npm 或 yarn
+
+- Node.js 12.18+ ([installation with nvm](https://github.com/creationix/nvm#usage))
+- Yarn 1.22.4+ [Yarn Site](https://yarnpkg.com)
+
+### 安装
+
+```sh
+$ yarn add @kubed/components @kubed/hooks @kubed/icons
+# or
+$ npm i @kubed/components @kubed/hooks @kubed/icons
+```
+
+### 使用
+
+1. 用 `KubedConfigProvider` 包裹你的项目根组件:
+
+```jsx
+import { CssBaseline, KubedConfigProvider } from '@kubed/components';
+
+const Application = () => (
+  <KubedConfigProvider>
+    <CssBaseline /> // ---> Normalize styles
+    <AppComponent /> // ---> Root of your application
+  </KubedConfigProvider>
+)
+```
+
+2. 像如下代码引入组件去使用即可:
+
+```jsx
+import { Button } from "@kubed/components"
+
+const MyComponent = () => <Button>Click Me</Button>
+```
+
