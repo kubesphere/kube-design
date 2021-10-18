@@ -1,0 +1,121 @@
+---
+group: 'components'
+category: 'state'
+title: Grid 栅格
+description: '基于Flexbox的12栅格系统'
+order: 1
+---
+
+## 基础用法
+
+布局的栅格化系统，基于行（row）和列（col）来定义信息区块的外部框架，以保证也没的每个区域能够稳健地排布起来。
+
+```js live=true
+ <Row>
+     <Col span={4}>
+         <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>col-4</div>
+     </Col>
+     <Col span={4}>
+         <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>col-4</div>
+     </Col>
+     <Col span={4}>
+         <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>col-4</div>
+     </Col>
+ </Row>
+```
+
+## 设置栅格间距
+
+Gutter设置栅格间距，使用数组形式同时设置[水平间距，垂直间距]
+
+```js live=true
+<Row gutter={[50, 20]}>
+    <Col span={4}>
+         <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>1</div>
+    </Col>
+    <Col span={4}>
+         <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>2</div>
+    </Col>
+    <Col span={4}>
+         <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>3</div>
+    </Col>
+  </Row>
+```
+
+## 多行
+
+多行排列，栅格系统默认当栅格数是十二，当没有自定义栅格数且一行当栅格超过了十二，那么剩余当栅格将会换行排列。
+
+```js live=true
+<Row gutter={[20, 50]}>
+    <Col span={4}>
+      <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>1</div>
+    </Col>
+    <Col span={4}>
+      <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>2</div>
+    </Col>
+    <Col span={4}>
+      <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>3</div>
+    </Col>
+    <Col span={4}>
+       <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>4</div>
+    </Col>
+  </Row>
+```
+
+## Grow自适应
+
+栅格自适应宽度，在一行中，栅格数超过12时，剩余栅格占满一行。
+
+```js live=true
+<Row grow>
+    <Col span={4}>
+       <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>col-4</div>
+    </Col>
+    <Col span={4}>
+       <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>col-4</div>
+    </Col>
+    <Col span={4}>
+       <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>col-4</div>
+    </Col>
+    <Col span={4}>
+        <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>col-4</div>
+    </Col>
+</Row>
+```
+
+## Offset偏移
+
+通过给col组件设置offset，可以控制栅格偏移的距离。
+
+```js live=true
+<Row>
+    <Col span={3}>
+         <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>col-3</div>
+    </Col>
+    <Col span={3}>
+         <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>col-3</div>
+    </Col>
+    <Col span={3} offset={3}>
+         <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>col-3</div>
+    </Col>
+</Row>
+```
+
+## Column大小
+
+默认是十二栅格，通过给Row组件设置columns，可以自定义栅格数。
+
+```js live=true
+<Row columns={24}>
+    <Col span={12}>
+        <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>col-12</div>
+    </Col>
+    <Col span={6}>
+        <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>col-6</div>
+    </Col>
+    <Col span={6}>
+        <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>col-6</div>
+    </Col>
+</Row>
+```

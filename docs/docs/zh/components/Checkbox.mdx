@@ -1,0 +1,125 @@
+---
+group: 'components'
+category: 'state'
+title: Checkbox
+description: '多选框'
+order: 1
+---
+
+## 基础用法
+
+用于在一组备选项中进行多选
+
+```js live=true
+() => {
+  const onChange = (e) => {
+    console.log(e);
+  };
+  return (
+    <Group>
+      <Checkbox label="Test1" defaultChecked onChange={onChange} />
+      <Checkbox label="Indeterminate" indeterminate />
+    </Group>
+  );
+}
+```
+
+## 禁用状态
+
+多选框不可用状态
+
+```js live=true
+() => {
+  const [disabled, setDisabled] = React.useState(false);
+  const toggle = () => {
+    setDisabled(!disabled);
+  };
+  return (
+    <>
+      <div>
+        <Checkbox label="Test1" disabled={disabled} />
+      </div>
+      <div>
+        <Button onClick={toggle}>Switch</Button>
+      </div>
+    </>
+  );
+}
+```
+
+## Indeterminate状态
+
+indeterminate 属性用以表示 checkbox 的不确定状态，一般用于实现全选的效果
+
+```js live=true
+() => {
+  const [indeterminate, setIndeterminate] = React.useState(false);
+  const toggle = () => {
+    setIndeterminate(!indeterminate);
+  };
+  return (
+    <>
+      <div>
+        <Checkbox label="Test1" indeterminate={indeterminate} />
+      </div>
+      <div>
+        <Button onClick={toggle}>Switch</Button>
+      </div>
+    </>
+  );
+}
+```
+
+## 勾选控制
+
+可以通过外部按钮控制勾选框的两种状态直接的切换。
+
+```js live=true
+() => {
+  const [checked, setChecked] = React.useState(false);
+  const toggle = () => {
+    setChecked(!checked);
+  };
+  return (
+    <>
+      <div>
+        <Checkbox label="Test1" checked={checked} />
+      </div>
+      <div>
+        <Button onClick={toggle}>Switch</Button>
+      </div>
+    </>
+  );
+}
+```
+
+## 多选框组
+
+适用于多个勾选框绑定到同一个数组的情景，通过是否勾选来表示这一组选项中选中的项
+
+```js live=true
+() => {
+  const [value, setValue] = React.useState(['China']);
+  const toggle = () => {
+    if (value.length > 1) {
+      setValue(['China']);
+    } else {
+      setValue(['USA', 'China']);
+    }
+  };
+  const onChange = (val) => {
+    console.log(val);
+  };
+  return (
+    <>
+      <CheckboxGroup value={value} onChange={onChange}>
+        <Checkbox label="China" value="China" />
+        <Checkbox label="USA" value="USA" />
+      </CheckboxGroup>
+      <div>
+        <Button onClick={toggle}>Switch</Button>
+      </div>
+    </>
+  );
+}
+```

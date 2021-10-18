@@ -1,0 +1,50 @@
+---
+group: 'components'
+category: 'state'
+title: Select
+description: '选择器'
+order: 1
+---
+
+## 基础用法
+
+下拉选择器，弹出一个下拉菜单给用户进行操作。
+
+```js live=true
+() => (
+  <Select style={{ width: '180px' }} placeholder="请选择" allowClear>
+    <Option value="China">按 CPU 平均负载排行</Option>
+    <Option value="USA">按内存用量排行</Option>
+    <Option value="Russian">按磁盘用量排行</Option>
+    <Option value="France">按磁盘用量排行2</Option>
+  </Select>
+)
+```
+
+## 带搜索框
+
+展开后可对选项进行搜索。
+
+```js live=true
+() => (
+  <Select allowClear style={{ width: '120px' }} placeholder="请选择" showSearch>
+    <Option value="China">China</Option>
+    <Option value="USA">USA</Option>
+    <Option value="Russian">Russian</Option>
+  </Select>
+)
+```
+
+## 多选
+
+多选，从已有条目中选择。
+
+```js live=true
+() => (
+  <Select style={{ width: '300px' }} placeholder="请选择" allowClear mode="multiple" showArrow>
+    <Option value="China">按 CPU 平均负载排行</Option>
+    <Option value="USA">按内存用量排行</Option>
+    <Option value="Russian">按磁盘用量排行</Option>
+  </Select>
+)
+```

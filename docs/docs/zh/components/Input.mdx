@@ -1,0 +1,48 @@
+---
+group: 'components'
+category: 'state'
+title: Input
+description: '文本输入框'
+order: 1
+---
+
+## 基础用法
+
+通过鼠标或键盘输入字符
+
+```js live=true
+() => <Input placeholder="请输入...t" width={360} />
+```
+
+## 搜索框
+
+```js live=true
+() => {
+const { Magnifier, Appcenter } = KubeIcon;
+return (
+  <Group direction="column">
+    <Input prefix={<Magnifier size={16} />} suffix={<Loading size={16} />} />
+    <Input prefix="https://" suffix={<Appcenter size={16} />} />
+  </Group>
+)
+}
+```
+
+## 输入框禁用状态
+
+```js live=true
+() => <Input placeholder="please input some text" disabled />
+```
+
+## 前置/后置标签
+```js live=true
+() => {
+  const { Appcenter } = KubeIcon;
+  return (
+    <Group>
+      <Input addonBefore="https://" width={350} />
+      <Input addonAfter=".com" width={350} prefix={<Appcenter size={16} />} />
+    </Group>
+  )
+}
+```
