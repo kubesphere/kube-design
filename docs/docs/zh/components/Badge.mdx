@@ -1,0 +1,60 @@
+---
+group: 'components'
+category: 'state'
+title: Badge
+description: 'Badge图标右上角的圆形徽标数字'
+order: 1
+---
+
+## 基础用法
+
+状态提示，单纯的 count 值
+
+```js live=true
+<Group>
+    <Badge>3</Badge>
+    <Badge color="warning">12</Badge>
+</Group>
+```
+
+## 不同颜色标记
+
+徽标内容可以是文本，也可以是数字，通过设置 color 属性可以设置组件的颜色
+
+```js live=true
+<Group>
+    <Badge color="warning">KubeSphere</Badge>
+    <Badge color="error">#12</Badge>
+    <Badge color="secondary">KubeSphere</Badge>
+    <Badge color="success">KubeSphere</Badge>
+    <Badge color="blue">9</Badge>
+</Group>
+```
+
+## 带阴影标记
+
+可以设置 shadow，给徽标增加阴影效果。
+
+```js live=true
+<Group>
+    <Badge color="warning" shadow>
+      KubeSphere
+    </Badge>
+    <Badge color="error" shadow>
+      #12
+    </Badge>
+    <Badge color="secondary" shadow>
+      KubeSphere
+    </Badge>
+    <Badge color="success" shadow>
+      KubeSphere
+    </Badge>
+    <Badge color="blue" shadow>
+      9
+    </Badge>
+</Group>
+```
+
+
+
+

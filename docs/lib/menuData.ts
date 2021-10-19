@@ -16,28 +16,53 @@ export default {
     },
     {
       title: 'General',
-      menu: ['Button', 'Text', 'Icon'],
+      menu: [
+        'Button',
+        'Text',
+        // 'Icon'
+      ],
     },
     {
       title: 'Data Entry',
       menu: [
-        'AutoComplete',
         'Checkbox',
         'DatePicker',
         'Input',
+        'InputNumber',
         'Radio',
         'Select',
-        'Slider',
+        // 'Slider',
         'Switch',
       ],
     },
     {
       title: 'Data Display',
-      menu: ['Avatar', 'Badge', 'Card', 'Collapse', 'Popover', 'Tabs', 'Tag', 'Tooltip'],
+      menu: [
+        'Badge',
+        'Card',
+        'Popover',
+        'Tabs',
+        'Tag',
+        'Tooltip',
+        'menu',
+        'Navs',
+        'Notify',
+        'Banner',
+        'Descriptions',
+        'Entity',
+        'Form',
+        'Dropdown'
+      ],
     },
     {
       title: 'Feedback',
-      menu: ['Alert', 'Drawer', 'Loading', 'LoadingOverlay', 'Modal', 'Progress'],
+      menu: [
+        'Alert',
+        'Loading',
+        'LoadingOverlay',
+        'Modal',
+        'StatusDot',
+      ],
     },
   ],
   hooks: [
