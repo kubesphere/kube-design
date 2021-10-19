@@ -1,0 +1,47 @@
+---
+group: 'guide'
+title: Installation
+description: installation of kubed library
+order: 2
+---
+
+## Installation
+
+### Requirement
+
+Ensure your have the latest version of NodeJS, and a package manager: NPM or Yarn.
+
+- Node.js 12.18+ ([installation with nvm](https://github.com/creationix/nvm#usage))
+- Yarn 1.22.4+ [Yarn Site](https://yarnpkg.com)
+
+### Install
+
+```sh
+$ yarn add @kubed/components @kubed/hooks @kubed/icons
+# or
+$ npm i @kubed/components @kubed/hooks @kubed/icons
+```
+
+### Usage
+
+1. Wrap your application with the `KubedConfigProvider`:
+
+```jsx
+import { CssBaseline, KubedConfigProvider } from '@kubed/components';
+
+const Application = () => (
+  <KubedConfigProvider>
+    <CssBaseline /> // ---> Normalize styles
+    <AppComponent /> // ---> Root of your application
+  </KubedConfigProvider>
+)
+```
+
+2. Use components like so:
+
+```jsx
+import { Button } from "@kubed/components"
+
+const MyComponent = () => <Button>Click Me</Button>
+```
+

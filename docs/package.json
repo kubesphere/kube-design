@@ -1,17 +1,17 @@
 {
   "name": "kubed-documents",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "cd ../packages/icons && npm run build && cd ../../docs && next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
-    "@kubed/components": "^0.0.1",
+    "@kubed/components": "^0.0.3",
     "@kubed/icons": "^0.0.1",
-    "@kubed/hooks": "^0.0.1",
+    "@kubed/hooks": "^0.0.2",
     "@mdx-js/react": "^1.6.22",
     "fs-extra": "^10.0.0",
     "gray-matter": "^4.0.3",

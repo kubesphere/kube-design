@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import TopBar from '../TopBar';
 import SideMenu from '../../components/SideMenu';
 import menuData from '../../menuData';
-import Footer from '../Footer';
 
 const BodyWrapper = styled.main``;
 

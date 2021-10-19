@@ -1,20 +1,25 @@
 {
   "name": "@kubed/components",
   "description": "React components library for KubeSphere console.",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "browser": "lib/index.umd.js",
   "types": "lib/src/index.d.ts",
   "license": "MIT",
   "sideEffects": false,
+  "files": [
+    "cjs",
+    "esm",
+    "lib"
+  ],
   "repository": {
     "url": "https://github.com/kubesphere/kube-design.git",
     "type": "git",
     "directory": "packages/components"
   },
   "peerDependencies": {
-    "@kubed/hooks": "0.0.1",
+    "@kubed/hooks": "0.0.2",
     "@kubed/icons": "0.0.1",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0",
@@ -24,16 +29,20 @@
     "@tippyjs/react": "^4.2.5",
     "classnames": "^2.3.1",
     "clsx": "^1.1.1",
+    "dayjs": "^1.10.7",
+    "lodash": "^4.17.21",
     "rc-dialog": "^8.6.0",
     "rc-field-form": "^1.21.2",
     "rc-input-number": "^7.3.0",
     "rc-motion": "^2.4.4",
+    "rc-picker": "^2.5.18",
     "rc-select": "^12.1.13",
     "react-hot-toast": "^2.1.1",
     "react-textarea-autosize": "^8.3.2",
     "react-transition-group": "^4.4.2",
     "react-feather": "^2.0.9",
-    "scroll-into-view-if-needed": "^2.2.28"
+    "scroll-into-view-if-needed": "^2.2.28",
+    "styled-components": "^5.3.0"
   },
   "devDependencies": {
     "@kubed/tests": "0.0.1"

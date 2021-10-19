@@ -95,11 +95,11 @@ const CssBaseline = createGlobalStyle`
     line-height: 1.625em;
   }
   ul li:before {
-    content: '–';
-    display: inline-block;
-    color: ${(p) => p.theme.palette.accents_4};
-    position: absolute;
-    margin-left: -15px;
+    // content: '–';
+    // display: inline-block;
+    // color: ${(p) => p.theme.palette.accents_4};
+    // position: absolute;
+    // margin-left: -15px;
   }
 
   h1,

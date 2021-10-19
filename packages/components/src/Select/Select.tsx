@@ -14,6 +14,7 @@ import {
 
 type RawValue = string | number;
 
+// @ts-ignore
 export { OptionProps };
 
 export type OptionType = typeof SelectOption;

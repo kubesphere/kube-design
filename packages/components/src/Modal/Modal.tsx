@@ -1,6 +1,6 @@
 import React, { RefObject, useEffect, useImperativeHandle, useState } from 'react';
 import cx from 'classnames';
-import Close from '@kubed/icons/dist/close';
+import { Close } from '@kubed/icons';
 import { StyledDialog } from './Modal.styles';
 import { ButtonProps, Button } from '../Button/Button';
 import { useLocales } from '../ConfigProvider/LocaleProvider/LocaleContext';

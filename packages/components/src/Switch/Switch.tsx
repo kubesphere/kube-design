@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import { useId, useUncontrolled } from '@kubed/hooks';
-import isUndefined from 'lodash/isUndefined';
+import { isUndefined } from 'lodash';
 import { DefaultProps } from '../theme';
 import forwardRef from '../utils/forwardRef';
 import {
