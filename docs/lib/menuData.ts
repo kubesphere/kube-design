@@ -51,18 +51,12 @@ export default {
         'Descriptions',
         'Entity',
         'Form',
-        'Dropdown'
+        'Dropdown',
       ],
     },
     {
       title: 'Feedback',
-      menu: [
-        'Alert',
-        'Loading',
-        'LoadingOverlay',
-        'Modal',
-        'StatusDot',
-      ],
+      menu: ['Alert', 'Loading', 'LoadingOverlay', 'Modal', 'StatusDot'],
     },
   ],
   hooks: [
