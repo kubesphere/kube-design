@@ -1,0 +1,143 @@
+---
+group: 'components'
+category: 'state'
+title: Radio
+description: '选项卡切换组件'
+order: 1
+---
+
+## 基础用法
+
+提供平级的区域将大块内容进行收纳和展现，保持界面整洁。
+
+## 代码演示
+
+```js live=true
+() => (
+  <Tabs>
+    <Tab label="One" key="one">
+      one
+    </Tab>
+    <Tab label="Two" key="two">
+      Two
+    </Tab>
+    <Tab label="Three" key="three">
+      Three
+    </Tab>
+  </Tabs>
+)
+```
+
+## 卡片式页签
+
+```js live=true
+() => (
+  <>
+    <Tabs variant="line">
+      <Tab label="One" key="one">
+        one
+      </Tab>
+      <Tab label="Two" key="two">
+        Two
+      </Tab>
+      <Tab label="Three" key="three">
+        Three
+      </Tab>
+    </Tabs>
+
+    <Tabs variant="outline" style={{ marginTop: '50px' }}>
+      <Tab label="One" key="one">
+        one
+      </Tab>
+      <Tab label="Two" key="two">
+        Two
+      </Tab>
+      <Tab label="Three" key="three">
+        Three
+      </Tab>
+    </Tabs>
+  </>
+)
+```
+
+## 竖形页签
+
+```js live=true
+() => (
+  <>
+    <Tabs variant="line" direction="vertical">
+      <Tab label="One" key="one">
+        one
+      </Tab>
+      <Tab label="Two" key="two">
+        Two
+      </Tab>
+      <Tab label="Three" key="three">
+        Three
+      </Tab>
+    </Tabs>
+
+    <Tabs variant="outline" direction="vertical" style={{ marginTop: '50px' }}>
+      <Tab label="One" key="one">
+        one
+      </Tab>
+      <Tab label="Two" key="two">
+        Two
+      </Tab>
+      <Tab label="Three" key="three">
+        Three
+      </Tab>
+    </Tabs>
+  </>
+)
+```
+
+## 页签标题位置变换
+
+```js live=true
+() => (
+  <>
+    <Tabs variant="line" position="center">
+      <Tab label="One" key="one">
+        one
+      </Tab>
+      <Tab label="Two" key="two">
+        Two
+      </Tab>
+      <Tab label="Three" key="three">
+        Three
+      </Tab>
+    </Tabs>
+
+    <Tabs variant="outline" position="right" style={{ marginTop: '50px' }}>
+      <Tab label="One" key="one">
+        one
+      </Tab>
+      <Tab label="Two" key="two">
+        Two
+      </Tab>
+      <Tab label="Three" key="three">
+        Three
+      </Tab>
+    </Tabs>
+  </>
+)
+```
+
+## 放大页签
+
+```js live=true
+() => (
+  <Tabs grow variant="line">
+    <Tab label="One" key="one">
+      one
+    </Tab>
+    <Tab label="Two" key="two">
+      Two
+    </Tab>
+    <Tab label="Three" key="three">
+      Three
+    </Tab>
+  </Tabs>
+)
+```
