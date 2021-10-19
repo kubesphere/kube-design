@@ -6,9 +6,14 @@ description: '多选框'
 order: 1
 ---
 
+## 何时使用
+
+单独使用可以表示两种状态之间的切换，checkbox 一般用于状态标记，需要和提交的操作配合;
+用于在一组可选项中进行多项选择时。
+
 ## 基础用法
 
-用于在一组备选项中进行多选
+通过 defaultChecked 属性来设置默认勾选。
 
 ```js live=true
 () => {
@@ -49,7 +54,7 @@ order: 1
 
 ## Indeterminate状态
 
-indeterminate 属性用以表示 checkbox 的不确定状态，一般用于实现全选的效果
+indeterminate 属性用来表示 checkbox 的不确定状态，一般用于实现全选的效果
 
 ```js live=true
 () => {
