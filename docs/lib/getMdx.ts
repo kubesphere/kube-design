@@ -50,12 +50,16 @@ export async function getMdxData(cate: string, lang: string, filename: string) {
       scope: data,
     });
   } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(e);
     error = true;
   }
 
   try {
     metaData = fs.readJSONSync(metaDataPath);
   } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(e);
     error = true;
   }
 

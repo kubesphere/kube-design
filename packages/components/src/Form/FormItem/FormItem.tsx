@@ -91,7 +91,8 @@ export interface FormItemProps extends FieldProps {
 }
 
 export const FormItem = forwardRef<FormItemProps, 'div'>(
-  ({ name, label, help, tooltip, rules, validateStatus, children, ...rest }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  ({ name, label, help, tooltip, rules, validateStatus, children, ...rest }, ref) => {
     const formContext = React.useContext(FormContext);
     const { labelCol, wrapperCol, labelAlign, layout, size } = formContext;
 
