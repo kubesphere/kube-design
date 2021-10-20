@@ -8,12 +8,11 @@ order: 1
 
 ## 何时使用
 
-单独使用可以表示两种状态之间的切换，checkbox 一般用于状态标记，需要和提交的操作配合;
-用于在一组可选项中进行多项选择时。
+单独使用可以表示两种状态之间的切换，checkbox 一般用于状态标记，需要和提交的操作配合，或者用于在一组可选项中进行多项选择时。
 
 ## 基础用法
 
-通过 defaultChecked 属性来设置默认勾选。
+通过 defaultChecked 属性来设置默认勾选，通过 onChange 可以添加事件回调函数
 
 ```js live=true
 () => {
@@ -31,7 +30,7 @@ order: 1
 
 ## 禁用状态
 
-多选框不可用状态
+添加disabled 属性即可让按钮处于不可用状态，同时按钮样式也会发生改变。
 
 ```js live=true
 () => {
@@ -54,7 +53,7 @@ order: 1
 
 ## Indeterminate状态
 
-indeterminate 属性用来表示 checkbox 的不确定状态，一般用于实现全选的效果
+indeterminate 属性用来表示 checkbox 的不确定状态，一般用于实现全选的效果。
 
 ```js live=true
 () => {
