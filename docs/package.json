@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "cd ../packages/icons && npm run build && cd ../../docs && next build",
+    "build": "cd .. && npm run docs:docgen && cd packages/icons && npm run build && cd ../../docs && next build",
     "start": "next start",
     "lint": "next lint"
   },
