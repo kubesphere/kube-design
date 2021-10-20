@@ -1,0 +1,44 @@
+group: 'components'
+category: 'state'
+title: Entity
+description: '实体'
+order: 1
+---
+
+## 基础用法
+
+实体，可以用来表示一种资源的多种特征。
+
+## 代码演示
+
+实体的一种特征的显示区域。
+
+```js live=true
+() => <Field avatar={Avatar} label="存储类型: rocksdb" value="rocksdbpvc" />
+```
+
+## 实体的多种特征显示区域
+
+```js live=true
+() => (
+<Entity>
+    <Field avatar={Avatar} label="存储类型: rocksdb" value="rocksdbpvc" />
+    <Field label="存储卷" value="rocksdbpvc" />
+    <Field label="容量" value="1Gi" width={100} />
+    <Field label="访问模式" value="ReadWriteOnce" />
+</Entity>
+)
+```
+
+## 带hover效果
+
+```js live=true
+() => (
+<Entity hoverable footer={footer}>
+    <Field avatar={Avatar} label="存储类型: rocksdb" value="rocksdbpvc" />
+    <Field label="存储卷" value="rocksdbpvc" />
+    <Field label="容量" value="1Gi" width={100} />
+    <Field label="访问模式" value="ReadWriteOnce" />
+</Entity>
+)
+```

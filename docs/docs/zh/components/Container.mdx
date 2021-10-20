@@ -1,0 +1,42 @@
+---
+group: 'components'
+category: 'state'
+title: Container
+description: '组件容器'
+order: 1
+---
+
+## 基础用法
+
+容器组件的内容从左到右排列
+
+```js live=true
+<Container  style={{ background:'#eee'}}>
+   容器
+</Container>
+```
+
+## 容器的大小和内边距
+
+使用 size 和 padding 可以设置容器的大小和内边距
+
+```js live=true
+<>
+  <Container size="xl" padding="xl" style={{ background: '#eee' }}>
+    容器
+  </Container>
+  <Container size="sm" padding="sm" style={{ marginTop:'30px',background: '#eee'}}>
+    容器
+  </Container>
+</>
+```
+
+## 流式布局
+
+使用 fluid 可以设置流式布局，从左到右排列最大宽度为 100%。
+
+```js live=true
+<Container fluid style={{ background: '#eee'}}>
+    容器
+</Container>
+```

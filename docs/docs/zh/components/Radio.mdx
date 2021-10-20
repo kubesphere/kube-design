@@ -1,0 +1,74 @@
+---
+group: 'components'
+category: 'state'
+title: Radio
+description: '单选按钮'
+order: 1
+---
+
+## 何时使用
+
+在一组备选项中进行单选
+
+## 基础用法
+
+通过value属性设置值，label属性设置按钮标签
+
+```js live=true
+() => <Radio value="China" label="China" />
+```
+
+## 默认选中
+
+设置初始值
+
+```js live=true
+() => <Radio value="China" defaultChecked label="China" />
+```
+
+## 单选组合
+
+```js live=true
+() => {
+  const onChange = (val) => {
+    console.log(val);
+  };
+  return (
+    <>
+      <RadioGroup onChange={onChange}>
+        <Radio label="China" value="China" />
+        <Radio label="USA" value="USA" />
+      </RadioGroup>
+    </>
+  );
+}
+```
+
+## 控制单选组合
+
+```js live=true
+() => {
+  const [value, setValue] = React.useState('China');
+  const toggle = () => {
+    if (value === 'USA') {
+      setValue('China');
+    } else {
+      setValue('USA');
+    }
+  };
+  const onChange = (val) => {
+    console.log(val);
+  };
+  return (
+    <>
+      <RadioGroup value={value} onChange={onChange}>
+        <Radio label="China" value="China" />
+        <Radio label="USA" value="USA" />
+      </RadioGroup>
+      <div>
+        <Button onClick={toggle}>Switch</Button>
+      </div>
+    </>
+  );
+}
+```

@@ -1,0 +1,56 @@
+---
+group: 'components'
+category: 'state'
+title: Text
+description: '文本'
+order: 1
+---
+
+## 基础用法
+
+用来设置不同状态的文本。
+
+```js live=true
+<Text>text normal</Text>
+```
+
+## 带颜色的文本
+
+使用 color 可以设置不同颜色的文本，参数值有 warning，error, success。
+
+```js live=true
+<Group>
+   <Text color="warning">text warning</Text>
+   <Text color="error">text error</Text>
+   <Text color="success">text success</Text>
+</Group>
+```
+
+## 不同样式的文本
+
+可以给 text 文本设置样式。
+
+```js live=true
+<Group>
+   <Text underline>text underline</Text>
+   <Text delete>text delete</Text>
+   <Text italic>text italic</Text>
+   <Text weight={600}>text weight</Text>
+   <Text size="lg">text weight</Text>
+</Group>
+```
+
+## 不同大小字体的文本
+
+可以使用 variant 设置文本的字体大小。
+
+```js live=true
+<Group direction="column">
+    <Text variant="h1">h1 title</Text>
+    <Text variant="h2">h2 title</Text>
+    <Text variant="h3">h3 title</Text>
+    <Text variant="h4">h4 title</Text>
+    <Text variant="h5">h5 title</Text>
+    <Text variant="h6">h6 title</Text>
+</Group>
+```

@@ -1,0 +1,91 @@
+---
+group: 'components'
+category: 'state'
+title: Button
+description: '常用操作按钮'
+order: 1
+---
+
+## 基础用法
+
+标记一组操作命令，响应用户的点击行为，触发相应的业务逻辑。
+
+```js live=true
+<Group spacing="xl">
+  <Button variant="filled" color="secondary" shadow radius="xl">
+    KubeSphere111
+  </Button>
+  <Button variant="filled" color="default" radius="xl">
+    KubeSphere
+  </Button>
+  <Button variant="text" radius="xl">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="default" radius="xl" disabled>
+    KubeSphere
+  </Button>
+</Group>
+```
+
+## 按钮样式
+
+可以设置 Variant 来改变 button 的视觉效果。您可以设置值为 filled，text，outline, 或者 link。
+
+```js live=true
+<Group spacing="xl">
+  <Button variant="filled" color="secondary">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="default" radius="xl">
+    KubeSphere
+  </Button>
+  <Button variant="text" radius="xl">
+    KubeSphere
+  </Button>
+  <Button variant="link" color="default">
+    KubeSphere
+  </Button>
+</Group>
+```
+
+## 按钮颜色
+
+通过 color 设置按钮的颜色，默认有四种按钮颜色，default，success，error，warning
+
+```js live=true
+<Group spacing="xl">
+  <Button variant="filled" color="default">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="success">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="error">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="warning">
+    KubeSphere
+  </Button>
+</Group>
+```
+
+## 按钮尺寸
+
+可以使用 size 和 radius 属性可以改变按钮的大小以及圆角。你可以设置值为 xs，sm，md，lg，xl.
+
+```js live=true
+<Group spacing="xl">
+  <Button variant="filled" color="default" radius="sm" size="sm">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="success" radius="md" size="md">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="error" radius="lg" size="sm">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="warning" radius="xl" size="lg">
+    KubeSphere
+  </Button>
+</Group>
+```

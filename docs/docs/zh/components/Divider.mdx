@@ -1,0 +1,59 @@
+---
+group: 'components'
+category: 'state'
+title: Divider
+description: '间隔内容的分割线'
+order: 1
+---
+
+## 基础用法
+
+对不同章节对文本段落进行分割
+
+对行内文字/链接进行分割
+
+
+```js live=true
+<Group spacing="xl">
+  <Divider style={{ width:'100%' }}/>
+</Group>
+```
+
+## 分割线的样式
+使用variant可以设置分割线的显示形式，默认为 solid (实线)，dotted (点线)，dashed (虚线)
+当分割线为垂直方向时，使用margins设置分割线左右的外边距
+当分割线为水平方向时，使用margins设置分割线上下左右的外边距
+
+```js live=true
+<Group spacing="xl">
+  <Divider style={{ width:'100%'}}/>
+  <Divider variant="dotted" margins={20} style={{ width:'100%' }} />
+  <Divider variant="dashed" margins={20} style={{ width:'100%' }} />
+</Group>
+```
+
+## 分割线的方向
+
+direction 设置分割线的方向，vertical 为垂直方向，horizontal 为水平方向
+
+```js live=true
+<Group spacing="xl">
+  <Button>1</Button>
+  <Divider direction="vertical" margins="sm" />
+  <Button>2</Button>
+  <Divider direction="vertical" margins="sm" />
+  <Button>3</Button>
+</Group>
+```
+
+## 分割线的标签
+
+label 设置分割线的标签名称，labelPosition 设置标签的位置，默认为左侧。
+
+```js live=true
+<Group spacing="xl">
+   <Divider style={{ width:'100%' }}/>
+   <Divider variant="dotted" margins={20} label="label name" style={{ width:'100%' }}/>
+   <Divider margins={20} label="label name" labelPosition="right" style={{ width:'100%' }}/>
+</Group>
+```

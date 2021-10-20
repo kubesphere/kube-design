@@ -1,0 +1,85 @@
+---
+group: 'components'
+category: 'state'
+title: Group
+description: '垂直居中的弹性盒子'
+order: 1
+---
+
+## 基础用法
+
+基于 flexbox 的弹性盒布局，默认垂直方向居中，水平方向可以自定义对齐方式。
+
+```js live=true
+<Group>
+    <Button>1</Button>
+    <Button>2</Button>
+    <Button>3</Button>
+</Group>
+```
+
+## 设置水平方向对齐方式
+
+使用 Position 设置水平方向上对齐方式，可以设置为 center，right，left，apart 四种参数。
+
+```js live=true
+<>
+<Group position="center">
+   <Button>1</Button>
+   <Button>2</Button>
+   <Button>3</Button>
+</Group>
+<Group position="right">
+   <Button>1</Button>
+   <Button>2</Button>
+   <Button>3</Button>
+</Group>
+</>
+```
+
+## 设置元素间隔
+
+使用 spacing 设置水平方向的元素之间的间隔, spacing参数可以设置为 "number"， "xs" ， "sm" ， "md" ， "lg" ， "xl"
+
+```js live=true
+<>
+    <Group position="center" spacing="xl">
+      <Button>1</Button>
+      <Button>2</Button>
+      <Button>3</Button>
+    </Group>
+    <Group position="center" spacing={100} style={{ marginTop: '40px' }}>
+      <Button>1</Button>
+      <Button>2</Button>
+      <Button>3</Button>
+    </Group>
+</>
+```
+
+## 设置元素排列方向
+
+使用 direction 设置元素的排列方向，同flex-direction属性参数一致。
+- row(默认值)：主轴为水平方向，起点在左端
+- column：主轴为垂直方向，起点在上方
+- row-reverse:主轴为水平方向，起点在上方
+- column-reverse: 主轴为垂直方向，起点在下方
+
+```js live=true
+<Group direction="row-reverse">
+    <Button>1</Button>
+    <Button>2</Button>
+    <Button>3</Button>
+</Group>
+```
+
+## Grow自适应宽度
+
+grow设置元素占满整个行。
+
+```js live=true
+<Group grow>
+    <Button>1</Button>
+    <Button>2</Button>
+    <Button>3</Button>
+</Group>
+```
