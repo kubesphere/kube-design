@@ -1,0 +1,89 @@
+---
+group: 'components'
+category: 'state'
+title: Modal
+description: '对话框'
+order: 1
+---
+
+## 基础用法
+
+模态对话框，需要用户处理事务，又不希望跳转页面以致打断工作流程时，可以使用 Modal 在当前页面打开一个浮层，承载相应的操作。
+
+```js live=true
+() => {
+  const [visible, setVisible] = React.useState(false);
+  const { Cluster } = KubeIcon;
+  const ref = React.createRef();
+
+  const openModal = () => {
+    setVisible(true);
+  };
+
+  const closeModal = () => {
+    console.log(ref.current);
+    setVisible(false);
+  };
+
+  return (
+    <>
+      <Button onClick={openModal}>Open Modal</Button>
+      <Modal
+        ref={ref}
+        visible={visible}
+        title="Modal demo"
+        description="Modal description"
+        titleIcon={<Cluster size={40} />}
+        onCancel={closeModal}
+      >
+        Modal content
+      </Modal>
+    </>
+  );
+}
+```
+
+## 重要模态框
+
+```js live=true
+() => {
+  const modal = useModal();
+
+  const openChildModal = () => {
+    modal.open({
+      title: 'Imperative Modal',
+      description: 'description text',
+      content: 'modal content',
+    });
+  };
+
+  const content = <Button onClick={openChildModal}>Nest Imperative Modal</Button>;
+
+  const openModal = () => {
+    modal.open({
+      title: 'Imperative Modal',
+      description: 'description text',
+      content,
+    });
+  };
+
+  return <Button onClick={openModal}>Imperative Modal</Button>;
+}
+```
+
+## 确认模态框
+
+```js live=true
+() => {
+  const modal = useModal();
+  return (
+    <Button
+      onClick={() => {
+        modal.confirm({ title: 'confirm modal', content: 'confirm content' });
+      }}
+    >
+      Imperative Modal
+    </Button>
+  );
+}
+```
