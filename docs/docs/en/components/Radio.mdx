@@ -2,28 +2,28 @@
 group: 'components'
 category: 'state'
 title: Radio
-description: '在一组备选项中进行单选'
+description: 'Single selection among multiple options.'
 order: 1
 ---
 
 
-## 基础用法
+## Basic Usage
 
-通过value属性设置值，label属性设置按钮标签。
+Set value and label of Radio.
 
 ```js live=true
 () => <Radio value="China" label="China" />
 ```
 
-## 默认选中
+## defaultChecked
 
-通过 defaultChecked 设置默认选中。
+Set defaultChecked of Radio.
 
 ```js live=true
 () => <Radio value="China" defaultChecked label="China" />
 ```
 
-## 单选组合
+## Radio Group
 
 ```js live=true
 () => {
@@ -41,7 +41,7 @@ order: 1
 }
 ```
 
-## 控制单选组合
+## Radio Group Control
 
 ```js live=true
 () => {

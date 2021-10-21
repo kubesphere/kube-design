@@ -1,0 +1,66 @@
+---
+group: 'components'
+category: 'state'
+title: Badge
+description: 'Small numerical value or status descriptor for UI elements.'
+order: 1
+---
+
+## Basic Usage
+
+Simplest Usage. Badge can be numbers or text.
+
+```js live=true
+() => (
+  <Group>
+    <Badge>KubeSphere</Badge>
+    <Badge color="warning">12</Badge>
+  </Group>
+)
+```
+
+## colors
+
+Set color of Badge.
+
+```js live=true
+() => (
+  <Group>
+    <Badge color="warning">KubeSphere</Badge>
+    <Badge color="error">#12</Badge>
+    <Badge color="secondary">KubeSphere</Badge>
+    <Badge color="success">KubeSphere</Badge>
+    <Badge color="blue">9</Badge>
+  </Group>
+)
+```
+
+## Shadow
+
+set Shadow of Badge.
+
+```js live=true
+() => (
+  <Group>
+    <Badge color="warning" shadow>
+      KubeSphere
+    </Badge>
+    <Badge color="error" shadow>
+      #12
+    </Badge>
+    <Badge color="secondary" shadow>
+      KubeSphere
+    </Badge>
+    <Badge color="success" shadow>
+      KubeSphere
+    </Badge>
+    <Badge color="blue" shadow>
+      9
+    </Badge>
+  </Group>
+)
+```
+
+
+
+
