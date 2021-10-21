@@ -7,6 +7,8 @@ import forwardRef from '../utils/forwardRef';
 import { addColorAlpha } from '../utils/color';
 import { BannerTip } from './BannerTip';
 
+export { BannerTip };
+
 const BannerTitle = styled.div`
   padding: 24px 20px 21px;
   display: flex;
