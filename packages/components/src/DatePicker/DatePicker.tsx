@@ -1,6 +1,6 @@
 // https://github.com/ant-design/ant-design/blob/master/components/date-picker/index.tsx
 import { Dayjs } from 'dayjs';
-import dayjsGenerateConfig from 'rc-picker/es/generate/dayjs';
+import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs';
 // eslint-disable-next-line import/no-cycle
 import generatePicker, {
   PickerProps,
