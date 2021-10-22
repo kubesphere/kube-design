@@ -1,0 +1,52 @@
+---
+group: 'components'
+category: 'state'
+title: Select
+description: 'Select component to select value from options.'
+order: 1
+---
+
+## When To Use
+
+A dropdown menu for displaying choices - an elegant alternative to the native <select> element.
+
+## Basic Usage
+
+```js live=true
+() => (
+  <Select style={{ width: '180px' }} placeholder="请选择" allowClear>
+    <Option value="China">按 CPU 平均负载排行</Option>
+    <Option value="USA">按内存用量排行</Option>
+    <Option value="Russian">按磁盘用量排行</Option>
+    <Option value="France">按磁盘用量排行2</Option>
+  </Select>
+)
+```
+
+## Select with search field
+
+Search the options while expanded.
+
+```js live=true
+() => (
+  <Select allowClear style={{ width: '120px' }} placeholder="请选择" showSearch>
+    <Option value="China">China</Option>
+    <Option value="USA">USA</Option>
+    <Option value="Russian">Russian</Option>
+  </Select>
+)
+```
+
+## Multiple selection
+
+Multiple selection, selecting from existing items.
+
+```js live=true
+() => (
+  <Select style={{ width: '300px' }} placeholder="请选择" allowClear mode="multiple" showArrow>
+    <Option value="China">按 CPU 平均负载排行</Option>
+    <Option value="USA">按内存用量排行</Option>
+    <Option value="Russian">按磁盘用量排行</Option>
+  </Select>
+)
+```
