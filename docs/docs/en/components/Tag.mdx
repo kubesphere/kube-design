@@ -1,0 +1,51 @@
+---
+group: 'components'
+category: 'state'
+title: Tag
+description: 'Used for marking and selection.'
+order: 1
+---
+
+## Basic Usage
+
+```js live=true
+() => (
+  <Group>
+    <Tag>KubeSphere</Tag>
+    <Tag title="job-name">KubeSphere</Tag>
+  </Group>
+)
+```
+
+## colors
+
+```js live=true
+() => (
+  <Group>
+    <Tag color="warning">KubeSphere</Tag>
+    <Tag color="error">KubeSphere</Tag>
+    <Tag color="secondary">KubeSphere</Tag>
+    <Tag color="success">KubeSphere</Tag>
+    <Tag title="job-name" color="success">
+      KubeSphere
+    </Tag>
+  </Group>
+)
+```
+
+## Tag with icon
+
+```js live=true
+() => {
+  const { Add } = KubeIcon;
+  return (
+    <Tag
+      color="success"
+      title={<Add variant="light" size={14} />}
+      titleStyle={{ backgroundColor: 'transparent', margin: '0', padding: '0 3px' }}
+    >
+     Add
+    </Tag>
+  )
+}
+```

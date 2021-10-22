@@ -2,13 +2,13 @@
 group: 'components'
 category: 'state'
 title: Group
-description: '垂直居中的弹性盒子'
+description: 'Vertically centered flex box.'
 order: 1
 ---
 
-## 基础用法
+## Basic Usage
 
-基于 flexbox 的弹性盒布局，默认垂直方向居中，水平方向可以自定义对齐方式。
+Based on the flexbox layout, the default vertical direction is centered, and the horizontal direction can be customized.
 
 ```js live=true
 <Group>
@@ -18,9 +18,9 @@ order: 1
 </Group>
 ```
 
-## 设置水平方向对齐方式
+## Position
 
-使用 Position 设置水平方向上对齐方式，可以设置为 center，right，left，apart 四种参数。
+Use Position to set the horizontal alignment.
 
 ```js live=true
 <>
@@ -37,9 +37,9 @@ order: 1
 </>
 ```
 
-## 设置元素间隔
+## Spacing
 
-使用 spacing 设置水平方向的元素之间的间隔, spacing 参数可以设置为 "number"， "xs" ， "sm" ， "md" ， "lg" ， "xl"
+Use spacing to set the spacing between elements in the horizontal direction
 
 ```js live=true
 <>
@@ -56,13 +56,9 @@ order: 1
 </>
 ```
 
-## 设置元素排列方向
+## Direction
 
-使用 direction 设置元素的排列方向，同 flex-direction 属性参数一致。
-- row(默认值)：主轴为水平方向，起点在左端
-- column：主轴为垂直方向，起点在上方
-- row-reverse:主轴为水平方向，起点在上方
-- column-reverse: 主轴为垂直方向，起点在下方
+Use direction to set the arrangement direction of the elements, consistent with the flex-direction attribute parameter.
 
 ```js live=true
 <Group direction="row-reverse">
@@ -72,9 +68,9 @@ order: 1
 </Group>
 ```
 
-## Grow自适应宽度
+## Grow
 
-grow 设置元素占满整个行。
+The grow setting element occupies the entire row.
 
 ```js live=true
 <Group grow>

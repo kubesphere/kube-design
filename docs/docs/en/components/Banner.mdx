@@ -1,0 +1,53 @@
+---
+group: 'components'
+category: 'state'
+title: Banner
+description: 'Banner'
+order: 1
+---
+
+## When To Use
+
+Banners are an important part of displaying the entire page, generally introducing the name and introduction of product.
+
+## Basic Usage
+
+```js live=true
+() => {
+  const data = [
+  {
+    label: 'KubeSphere',
+    value: 'KubeSphere',
+  },
+  {
+    label: 'Jenkins',
+    value: 'Jenkins',
+  },
+  {
+    label: 'Kubernetes',
+    value: 'Kubernetes',
+  },
+ ];
+ const { Cluster } = KubeIcon;
+ return (
+    <div style={{ height: '300px', width: '100%', backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Banner
+        icon={<Cluster />}
+        title="集群节点"
+        description="集群节点提供了当前集群下节点的运行状态，以及可以编辑删除节点"
+        navs={data}
+      >
+        <Navs data={data} />
+        <BannerTip title="集群节点的类型?" key="node-type">
+          节点分为主控 (Master) 节点和工作 (Worker) 节点
+        </BannerTip>
+        <BannerTip title="什么是节点污点?" key="node-dirty">
+          节点污点 (Taints) 可以阻止某些容器组 (Pod) 副本部署至该节点中, 与容忍度 (Tolerations)
+          一起工作确保容器组不会被调度到不合适的节点上
+        </BannerTip>
+      </Banner>
+    </div>
+  )
+}
+```
+

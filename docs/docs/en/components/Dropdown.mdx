@@ -2,17 +2,17 @@
 group: 'components'
 category: 'state'
 title: Dropdown
-description: '下拉菜单'
+description: 'A dropdown list'
 order: 1
 ---
 
-## 何时使用
+## Usage
 
-当页面上的操作命令过多时，用此组件可以收纳操作元素。点击或移入触点，会出现一个下拉菜单。可在列表中进行选择，并执行相应的命令。
+When there are more than a few options to choose from, you can wrap them in a Dropdown. By hovering or clicking on the trigger, a dropdown menu will appear, which allows you to choose an option and execute the relevant action.
 
-## 基础用法
+## Basic Usage
 
-通过 content 属性设置下拉菜单，通过 trigger 属性设置触发方式，默认为 click
+Set content and trigger method of dropdown, the default trigger method is click.
 
 ```js live=true
 () => {
@@ -20,8 +20,8 @@ const { Add, Stop, Pen, Trash, More } = KubeIcon;
 const MenuComponent = (
   <Menu>
     <MenuLabel>menu label</MenuLabel>
-    <MenuItem icon={<Add />}>创建</MenuItem>
-    <MenuItem icon={<Stop />}>停止调度</MenuItem>
+    <MenuItem icon={<Add />}>Add</MenuItem>
+    <MenuItem icon={<Stop />}>Stop</MenuItem>
     <MenuItem icon={<Pen />}>Edit</MenuItem>
     <MenuItem icon={<Trash />}>Delete</MenuItem>
   </Menu>

@@ -1,0 +1,59 @@
+---
+group: 'components'
+category: 'state'
+title: Descriptions
+description: 'Descriptions'
+order: 1
+---
+
+## Basic Usage
+
+```js live=true
+() => (
+  <Description label="cni.projectcalico.org/podIP">10.233.74.19/32</Description>
+)
+```
+
+## Variant
+
+Styles and label can be set through the variant and label attribute for Descriptions.
+
+```js live=true
+() => (
+  <div style={{ backgroundColor: '#eff4f9', padding: '50px' }}>
+    <Card style={{ width: '300px' }}>
+      <Description label="project" variant="unstyled">
+        KubeSphere
+      </Description>
+      <Description label="cluster" variant="unstyled">
+        default
+      </Description>
+    </Card>
+  </div>
+)
+```
+
+## Batch Descriptions
+
+By passing an array to the data attribute, the description list can be displayed in batches.
+
+```js live=true
+() => {
+  const data = [
+    { label: 'Cluster', value: 'default' },
+    { label: 'Project', value: 'ifcloud' },
+    { label: 'Instance Name', value: 'dev-node1' },
+    { label: 'Instance IP', value: '10.233.74.19' },
+  ];
+  return (
+  <div style={{ backgroundColor: '#eff4f9', padding: '50px' }}>
+    <Card style={{ width: '300px' }}>
+      <Descriptions data={data} variant="unstyled" />
+    </Card>
+    <Card style={{ marginTop: '50px' }}>
+      <Descriptions data={data} variant="default" />
+    </Card>
+  </div>
+  )
+}
+```

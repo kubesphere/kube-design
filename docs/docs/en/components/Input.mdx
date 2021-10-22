@@ -2,19 +2,19 @@
 group: 'components'
 category: 'state'
 title: Input
-description: '文本输入框'
+description: 'input'
 order: 1
 ---
 
-## 基础用法
+## Basic Usage
 
-通过鼠标或键盘输入内容，是最基础的表单域的包装。
+A basic widget for getting the user input is a text field. Keyboard and mouse can be used for providing or changing data.
 
 ```js live=true
-() => <Input placeholder="请输入..." width={360} />
+() => <Input placeholder="input here..." width={360} />
 ```
 
-## 搜索框
+## Search box
 
 ```js live=true
 () => {
@@ -28,13 +28,13 @@ return (
 }
 ```
 
-## 输入框禁用状态
+## Disabled Status
 
 ```js live=true
-() => <Input placeholder="请输入..." disabled />
+() => <Input placeholder="input here..." disabled />
 ```
 
-## 前置/后置标签
+## prefix and suffix
 
 ```js live=true
 () => {

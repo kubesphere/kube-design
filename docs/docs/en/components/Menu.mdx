@@ -1,0 +1,33 @@
+---
+group: 'components'
+category: 'state'
+title: Menu
+description: 'A versatile menu for navigation.'
+order: 1
+---
+
+## Usage
+
+The menu provides categories and functions, and uses a multi-level structure to organize and arrange the site structure.
+
+## Basic Usage
+
+Nest the MenuItem component in the Menu component.
+
+```js live=true
+() => {
+  const { Add, Stop, Pen, Trash } = KubeIcon;
+  return (
+    <Card style={{ width: '230px' }}>
+      <Menu>
+        <MenuLabel>menu label</MenuLabel>
+        <MenuItem icon={<Add />}>Add</MenuItem>
+        <MenuItem icon={<Stop />}>Stop</MenuItem>
+        <MenuItem icon={<Pen />}>Edit</MenuItem>
+        <Divider />
+        <MenuItem icon={<Trash />}>Delete</MenuItem>
+      </Menu>
+    </Card>
+  )
+}
+```

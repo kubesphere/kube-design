@@ -2,17 +2,17 @@
 group: 'components'
 category: 'state'
 title: Checkbox
-description: '多选框'
+description: 'A group of options for multiple choices.'
 order: 1
 ---
 
-## 何时使用
+## Usage
 
-单独使用可以表示两种状态之间的切换，checkbox 一般用于状态标记，需要和提交的操作配合，或者用于在一组可选项中进行多项选择时。
+Checkbox can be used alone to switch between two states.
 
-## 基础用法
+## Basic Usage
 
-通过 defaultChecked 属性来设置默认勾选，通过 onChange 可以添加事件回调函数
+Set the default check through the defaultCheck attribute, and add event functions through onChange
 
 ```js live=true
 () => {
@@ -28,9 +28,9 @@ order: 1
 }
 ```
 
-## 禁用状态
+## Disabled State
 
-添加 disabled 属性即可让按钮处于不可用状态，同时按钮样式也会发生改变。
+Disabled state for Checkbox.
 
 ```js live=true
 () => {
@@ -51,9 +51,9 @@ order: 1
 }
 ```
 
-## Indeterminate状态
+## Indeterminate
 
-indeterminate 属性用来表示 checkbox 的不确定状态，一般用于实现全选的效果。
+The indeterminate property can help you to achieve a 'check all' effect.
 
 ```js live=true
 () => {
@@ -74,9 +74,7 @@ indeterminate 属性用来表示 checkbox 的不确定状态，一般用于实�
 }
 ```
 
-## 勾选控制
-
-可以通过外部按钮控制勾选框的两种状态直接的切换。
+## Checked Controlled
 
 ```js live=true
 () => {
@@ -97,9 +95,7 @@ indeterminate 属性用来表示 checkbox 的不确定状态，一般用于实�
 }
 ```
 
-## 多选框组
-
-适用于多个勾选框绑定到同一个数组的情景，通过是否勾选来表示这一组选项中选中的项
+## Checkbox Group
 
 ```js live=true
 () => {
