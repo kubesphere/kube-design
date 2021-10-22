@@ -1,0 +1,23 @@
+---
+group: 'components'
+category: 'state'
+title: Popover
+description: 'The floating card popped by clicking or hovering.'
+order: 1
+---
+
+## Basic Usage
+
+A simple popup menu to provide extra information or operations.
+Comparing with Tooltip, besides information Popover card can also provide action elements like links and buttons.
+
+```js live=true
+() => (
+  <div style={{ marginTop: '70px', marginLeft: '100px' }}>
+    <Popover title="popover title" content="Display additional, floating content on click">
+      <Button radius="xl">KubeSphere</Button>
+    </Popover>
+  </div>
+)
+```
+

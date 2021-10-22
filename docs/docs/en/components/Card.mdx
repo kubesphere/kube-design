@@ -1,0 +1,54 @@
+---
+group: 'components'
+category: 'state'
+title: Card
+description: 'Card'
+order: 1
+---
+
+## Basic Usage
+
+Aggregate information in a card container for display.
+
+```js live=true
+() => (
+  <div style={{ backgroundColor: '#eff4f9', padding: '50px' }}>
+    <Card>
+      Kubesphere.io is an upstream project of the KubeSphere container management platform.
+    </Card>
+  </div>
+)
+```
+
+## SectionTitle
+
+```js live=true
+() => (
+  <div style={{ backgroundColor: '#eff4f9', padding: '50px' }}>
+    <Card sectionTitle="section title">
+      Introduced in HTTP/1.0, HTTP headers make this protocol easy to extend and experiment with.
+      <br />
+      New functionality can even be introduced by a simple agreement between a client and a server
+      <br />
+      about a new header's semantics.
+    </Card>
+  </div>
+)
+```
+
+
+## Hover status
+
+```js live=true
+() => (
+  <div style={{ backgroundColor: '#eff4f9', padding: '50px' }}>
+    <Card sectionTitle="section title" hoverable>
+      Introduced in HTTP/1.0, HTTP headers make this protocol easy to extend and experiment with.
+      <br />
+      New functionality can even be introduced by a simple agreement between a client and a server
+      <br />
+      about a new header's semantics.
+    </Card>
+  </div>
+)
+```

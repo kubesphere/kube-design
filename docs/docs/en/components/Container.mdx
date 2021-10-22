@@ -1,0 +1,38 @@
+---
+group: 'components'
+category: 'state'
+title: Container
+description: 'Component Container'
+order: 1
+---
+
+## Basic Usage
+
+The contents of the container components are arranged from left to right.
+
+```js live=true
+<Container  style={{ background:'#eee'}}>
+
+</Container>
+```
+
+## Size and Padding
+
+```js live=true
+<>
+  <Container size="xl" padding="xl" style={{ background: '#eee' }}>
+    container
+  </Container>
+  <Container size="sm" padding="sm" style={{ marginTop:'30px',background: '#eee'}}>
+    container
+  </Container>
+</>
+```
+
+## Fluid
+
+```js live=true
+<Container fluid style={{ background: '#eee'}}>
+    container
+</Container>
+```

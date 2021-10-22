@@ -1,0 +1,55 @@
+---
+group: 'components'
+category: 'state'
+title: StatusDot
+description: 'Status Dot'
+order: 1
+---
+
+## Basic Usage
+
+Status dot, which indicates the status of the task.
+
+```js live=true
+() => (
+  <Group>
+    <StatusDot color="success">Ready</StatusDot>
+    <StatusDot color="warning">Warning</StatusDot>
+    <Tooltip content="Warning tips">
+      <StatusDot color="error" />
+    </Tooltip>
+  </Group>
+)
+```
+
+## Colors
+
+Set color of Status Dot.
+
+```js live=true
+() => (
+  <Group>
+    <StatusDot />
+    <StatusDot color="warning" />
+    <StatusDot color="success" />
+    <StatusDot color="error" />
+  </Group>
+)
+```
+
+## motion
+
+```js live=true
+() => (
+  <Group spacing={30}>
+    <StatusDot motion />
+    <StatusDot motion color="warning" />
+    <StatusDot motion color="success">
+      starting
+    </StatusDot>
+    <StatusDot motion color="error">
+      restarting
+    </StatusDot>
+  </Group>
+)
+```
