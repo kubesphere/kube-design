@@ -24,6 +24,7 @@ export { Dropdown } from './Dropdown/Dropdown';
 export { Loading } from './Loading/Loading';
 export { LoadingOverlay } from './LoadingOverlay/LoadingOverlay';
 export { Input } from './Input/Input';
+export { InputPassword } from './InputPassword/InputPassword';
 export { Form, FormItem, FormList, useForm } from './Form/Form';
 export { default as Select } from './Select/Select';
 export { Modal, useModal } from './Modal';
