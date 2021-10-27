@@ -27,6 +27,7 @@ export default {
       menu: [
         'Checkbox',
         'DatePicker',
+        'AutoComplete',
         'Input',
         'InputNumber',
         'Radio',

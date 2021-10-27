@@ -15,7 +15,7 @@ import {
 type RawValue = string | number;
 
 // @ts-ignore
-export { OptionProps };
+export { OptionProps, InternalSelectProps };
 
 export type OptionType = typeof SelectOption;
 
@@ -107,11 +107,14 @@ const InternalSelect = forwardRef<SelectProps<any>, 'div'>(
 type InternalSelectType = typeof InternalSelect;
 
 interface SelectInterface extends InternalSelectType {
+  SECRET_COMBOBOX_MODE_DO_NOT_USE: string;
   Option: typeof SelectOption;
   OptGroup: typeof SelectOptGroup;
 }
 
 const Select = InternalSelect as SelectInterface;
+
+Select.SECRET_COMBOBOX_MODE_DO_NOT_USE = SECRET_COMBOBOX_MODE_DO_NOT_USE;
 
 Select.Option = SelectOption;
 
