@@ -3,7 +3,6 @@
   "version": "0.0.2",
   "main": "cjs/index.js",
   "module": "esm/index.js",
-  "browser": "lib/index.umd.js",
   "types": "lib/index.d.ts",
   "license": "MIT",
   "sideEffects": false,
