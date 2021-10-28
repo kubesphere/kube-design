@@ -5,7 +5,6 @@
   "description": "Testing utilities for Kubed components",
   "main": "cjs/index.js",
   "module": "esm/index.js",
-  "browser": "lib/index.umd.js",
   "types": "lib/index.d.ts",
   "license": "MIT",
   "peerDependencies": {

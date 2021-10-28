@@ -1,7 +1,6 @@
 // https://github.dev/ant-design/ant-design/blob/756dc8f130547277a28548c5b46658ff46f131f9/components/select/index.tsx
 import React from 'react';
 import { Option as SelectOption, OptGroup as SelectOptGroup } from 'rc-select';
-import { OptionProps } from 'rc-select/lib/Option';
 import forwardRef from '../utils/forwardRef';
 import getIcons from './iconUtil';
 import {
@@ -13,9 +12,6 @@ import {
 } from './Select.styles';
 
 type RawValue = string | number;
-
-// @ts-ignore
-export { OptionProps };
 
 export type OptionType = typeof SelectOption;
 
