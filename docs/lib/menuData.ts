@@ -32,7 +32,7 @@ export default {
         'InputNumber',
         'Radio',
         'Select',
-        // 'Slider',
+        'Slider',
         'Switch',
       ],
     },

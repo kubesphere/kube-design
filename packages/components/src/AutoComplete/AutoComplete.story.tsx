@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { AutoComplete } from './AutoComplete';
 
 export default {
-  title: 'Complete/AutoComplete',
+  title: 'Components/AutoComplete',
   component: AutoComplete,
 };
 
@@ -11,7 +11,7 @@ const mockVal = (str: string, repeat: number = 1) => ({
   value: str.repeat(repeat),
 });
 
-export const basic: React.FC = () => {
+export const basic = () => {
   const [value, setValue] = useState('');
   const [options, setOptions] = useState<{ value: string }[]>([]);
   const onSearch = (searchText: string) => {
