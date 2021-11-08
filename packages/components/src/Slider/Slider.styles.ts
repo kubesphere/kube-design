@@ -51,7 +51,7 @@ export const SliderTrack = styled.div`
   top: 5px;
   height: 10px;
   border-radius: 5px;
-  background-color: #55bc8a;
+  background-color: ${({ theme }) => theme.palette.colors.green[2]};
 `;
 
 export const SliderHandler = styled.div`
@@ -62,7 +62,7 @@ export const SliderHandler = styled.div`
   border-radius: 50%;
   border: 1px solid ${({ theme }) => theme.palette.accents_4};
   background-color: #fff;
-  box-shadow: 0 4px 8px 0 rgba(85, 188, 138, 0.36);
+  box-shadow: 0 4px 8px 0 ${({ theme }) => theme.palette.colors.green[2]};
   transition: box-shadow $trans-speed ease-in-out;
   cursor: pointer;
   outline: none;
@@ -81,7 +81,7 @@ export const SliderHandler = styled.div`
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    background-color: #55bc8a;
+    background-color: ${({ theme }) => theme.palette.colors.green[2]};
     transition: transform $trans-speed ease-in-out;
   }
 

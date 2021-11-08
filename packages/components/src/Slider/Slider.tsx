@@ -25,15 +25,15 @@ export function Slider(props: SliderBaseProps) {
   const sliderRef = useRef<HTMLDivElement>(null);
   const totalWeight = marks.reduce((prev, cur) => prev + (cur.weight || 1), 0) - 1;
   const endPercent = (totalWeight * 100) / (totalWeight + 1);
-  const [leftState, setLeftState] = useState(0);
-  const [rightState, setRightState] = useState(0);
+  const [leftState, setLeftState] = useState<number>(0);
+  const [rightState, setRightState] = useState<number>(0);
   let rightData = 0;
   let leftData = 0;
 
   let rect = {} as DOMRect;
   let typeSlider;
 
-  const getValuePercent = (mark: Array<SliderMark>, valueData: number) => {
+  const getValuePercent = (mark: Array<SliderMark>, valueData: number): number => {
     let ret = 0;
     for (let i = 0; i < marks.length - 1; i++) {
       const markWeight = marks[i].weight || 1;
@@ -47,8 +47,8 @@ export function Slider(props: SliderBaseProps) {
     return ret;
   };
 
-  const getValueFromPercent = (mark: Array<SliderMark>, percent: number) => {
-    const weight = (totalWeight * percent) / 100; //计算权重占整体的百分比
+  const getValueFromPercent = (mark: Array<SliderMark>, percent: number): number => {
+    const weight = (totalWeight * percent) / 100;
     let currentValue = 0;
     let usedWeight = 0;
     for (let i = 0; i < mark.length - 1; i++) {
@@ -71,7 +71,7 @@ export function Slider(props: SliderBaseProps) {
     return { left, right };
   };
 
-  const triggerChange = ({ left, right }) => {
+  const triggerChange = ({ left, right }): void => {
     leftData = left;
     rightData = right;
     onChange([getValueFromPercent(marks, left), getValueFromPercent(marks, right)]);
@@ -138,14 +138,6 @@ export function Slider(props: SliderBaseProps) {
   const handleResize = (): void => {
     rect = sliderRef.current.getBoundingClientRect();
   };
-
-  useEffect(() => {
-    const { left, right } = getStateFromProps(marks, value);
-    setRightState(right);
-    setLeftState(left);
-    rightData = right;
-    leftData = left;
-  }, []);
 
   useEffect(() => {
     const { left, right } = getStateFromProps(marks, value);
