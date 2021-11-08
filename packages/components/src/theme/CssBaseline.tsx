@@ -3,7 +3,7 @@ import { createGlobalStyle } from 'styled-components';
 const CssBaseline = createGlobalStyle`
   html,
   body {
-    background-color: ${({ theme }) => theme.palette.background};
+    //background-color: ${({ theme }) => theme.palette.background};
     color: ${(p) => p.theme.palette.foreground};
   }
   html {

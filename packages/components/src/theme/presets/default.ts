@@ -19,6 +19,7 @@ export const palette: KubedThemePalette = {
   foreground: '#000',
   selection: '#79ffe1',
   primary: 'green',
+  secondary: 'dark',
   code: '#f81ce5',
   border: '#ccd3db',
   error: colors.red[2],
