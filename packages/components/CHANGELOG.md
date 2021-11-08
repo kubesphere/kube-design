@@ -1,5 +1,12 @@
 # @kubed/components
 
+## 0.0.6
+
+### Patch Changes
+
+- [`fd4296e`](https://github.com/kubesphere/kube-design/commit/fd4296ec231c097bbdfdadb9ba975c29308822df) Thanks [@chenz24](https://github.com/chenz24)! - 1. Fix contentClassName and contentStyle cannot be applied to Card.
+  2. Refine styles of input component.
+
 ## 0.0.5
 
 ### Patch Changes
