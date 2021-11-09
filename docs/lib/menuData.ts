@@ -50,6 +50,7 @@ export default {
         'Banner',
         'Descriptions',
         'Entity',
+        'Empty',
         'Form',
         'Dropdown',
       ],
