@@ -11,6 +11,13 @@ import {
   InputGroup,
 } from './Input.styles';
 
+export function fixControlledValue<T>(value: T) {
+  if (typeof value === 'undefined' || value === null) {
+    return '';
+  }
+  return value;
+}
+
 export interface InputProps extends DefaultProps {
   /** Left section of input */
   addonBefore?: React.ReactNode;
@@ -37,11 +44,27 @@ export interface InputProps extends DefaultProps {
   size?: KubedSizes;
 }
 
-export const Input = forwardRef<InputProps, 'div'>(
+export const Input = forwardRef<InputProps, 'input'>(
   (
-    { className, width, size = 'sm', prefix, suffix, disabled, addonAfter, addonBefore, ...rest },
+    {
+      className,
+      width,
+      value,
+      defaultValue,
+      size = 'sm',
+      prefix,
+      suffix,
+      disabled,
+      readOnly,
+      onChange,
+      addonAfter,
+      addonBefore,
+      ...rest
+    },
     ref
   ) => {
+    const _value = typeof value === 'undefined' ? defaultValue : value;
+    const [selfValue, setSelfValue] = useState<string | number | readonly string[]>(_value);
     const [focused, setFocused] = useState(false);
     const onFocus = () => {
       setFocused(true);
@@ -49,6 +72,12 @@ export const Input = forwardRef<InputProps, 'div'>(
 
     const onBlur = () => {
       setFocused(false);
+    };
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (disabled || readOnly) return;
+      setSelfValue(event.target.value);
+      onChange && onChange(event);
     };
 
     const wrapperProps = { focused, disabled, width: undefined, size };
@@ -70,7 +99,10 @@ export const Input = forwardRef<InputProps, 'div'>(
           <input
             className="kubed-input"
             disabled={disabled}
+            readOnly={readOnly}
             {...rest}
+            value={fixControlledValue(selfValue)}
+            onChange={handleChange}
             onFocus={onFocus}
             onBlur={onBlur}
           />
