@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.7
+
+### Patch Changes
+
+- [`52dd8ff`](https://github.com/kubesphere/kube-design/commit/52dd8ff4d8127da7dcbf87fa882c4a2c9771e6e9) Thanks [@chenz24](https://github.com/chenz24)! - 1. Refine theme system.
+
 ## 0.0.6
 
 ### Patch Changes
