@@ -1,4 +1,4 @@
-export { useTheme, themeUtils, CssBaseline } from './theme';
+export * from './theme';
 export { KubedConfigProvider } from './ConfigProvider';
 export { Button } from './Button/Button';
 export { Group } from './Group/Group';
