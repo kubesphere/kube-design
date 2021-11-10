@@ -17,6 +17,10 @@ export const getSizeValue = (
 
 export const getColor = (color: string, theme: KubedTheme, defaultColor?: string) => {
   const { palette } = theme;
+  if (color === 'primary' || color === 'secondary') {
+    return palette.colors[palette[color]][2];
+  }
+
   if (palette[color]) {
     return palette[color];
   }
