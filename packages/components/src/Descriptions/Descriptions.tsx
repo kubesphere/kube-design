@@ -20,9 +20,13 @@ export interface DescriptionsProps extends DefaultProps {
 export function Descriptions({ variant = 'default', data = [] }: DescriptionsProps) {
   return (
     <>
-      {data.map((item) => {
+      {data.map((item, index) => {
         return (
-          <Description variant={variant} label={item.label}>
+          <Description
+            variant={variant}
+            label={item.label}
+            key={String(item.value) || `key-${index}`}
+          >
             {item.value}
           </Description>
         );
