@@ -32,12 +32,12 @@ const { argv }: { argv: any } = yargs(hideBin(process.argv))
   .option('formats', {
     type: 'string',
     array: true,
-    choices: ['es', 'cjs', 'umd'],
-    default: ['es', 'cjs', 'umd'],
+    choices: ['es', 'cjs'],
+    default: ['es', 'cjs'],
     description: "Specify module code generation: 'es', 'cjs', 'umd'.",
   })
   .example([
-    ['$0 all --formats umd cjs', 'Building only umd and cjs packages.'],
+    ['$0 all --formats es cjs', 'Building only es and cjs packages.'],
     ['$0 components --analyze', 'Building components package and generating analyzing file.'],
   ]);
 

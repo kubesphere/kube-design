@@ -40,11 +40,15 @@ export const ErrorList = ({ errors = [], warnings = [], help }: ErrorListProps) 
 
   return (
     <ErrorWrapper>
-      {errors.map((error) => (
-        <li className="error-state">{error}</li>
+      {errors.map((error, index) => (
+        <li className="error-state" key={`error-${index}`}>
+          {error}
+        </li>
       ))}
-      {warnings.map((warning) => (
-        <li className="error-state">{warning}</li>
+      {warnings.map((warning, index) => (
+        <li className="error-state" key={`warn-${index}`}>
+          {warning}
+        </li>
       ))}
     </ErrorWrapper>
   );

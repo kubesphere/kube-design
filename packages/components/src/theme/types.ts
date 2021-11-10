@@ -18,6 +18,7 @@ export interface KubedThemePalette {
   foreground: string;
   selection: string;
   primary: string;
+  secondary: string;
   code: string;
   border: string;
   success: string;

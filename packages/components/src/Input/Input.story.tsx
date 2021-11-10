@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Magnifier, Appcenter } from '@kubed/icons';
-import { Group, Loading, Tooltip } from '../index';
+import { Group, Loading, Tooltip, InputPassword } from '../index';
 import { Input } from './Input';
 
 export default {
@@ -31,3 +31,5 @@ export const Addon = () => (
     <Input addonAfter=".com" width={350} prefix={<Appcenter size={16} />} />
   </Group>
 );
+
+export const PasswordInput = () => <InputPassword width={360} />;
