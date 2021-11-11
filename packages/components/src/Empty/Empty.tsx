@@ -1,9 +1,13 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { Exclamation } from '@kubed/icons';
+import forwardRef from '../utils/forwardRef';
+import { DefaultProps } from '../theme/types';
 
-export interface EmptyProps {
+export interface EmptyProps extends DefaultProps {
   desc?: string;
+  imageStyle?: React.CSSProperties;
+  icon?: React.ReactNode;
 }
 
 const EmptyWrapper = styled.div`
@@ -27,19 +31,21 @@ const ImageStyle = styled.div`
   display: inline-block;
   line-height: 50px;
   margin-bottom: 20px;
+  > * {
+    width: 48px;
+    height: 48px;
+  }
 `;
 
-export function Empty(props: EmptyProps) {
-  const { desc = 'No Data' } = props;
+export const Empty = forwardRef<EmptyProps, 'div'>((props, ref) => {
+  const { desc = 'No Data', imageStyle, icon } = props;
   return (
     <EmptyWrapper>
-      <ImageStyle>
-        <Exclamation style={{ width: '48px', height: '48px' }} />
-      </ImageStyle>
+      <ImageStyle style={imageStyle}>{icon ? <div>{icon}</div> : <Exclamation />}</ImageStyle>
       <ContentStyle>{desc}</ContentStyle>
     </EmptyWrapper>
   );
-}
+});
 
 Empty.displayName = 'Empty';
 

@@ -16,3 +16,13 @@ When there is no data provided, display for friendly tips.
   return <Empty desc={'No_Data'} />
 };
 ```
+
+## Icon and ImageStyle
+
+You can choose another style of image by setting icon and imageStyle.
+
+```js live=true
+() => {
+  return <Empty desc="No_Data" icon={<Add />} imageStyle={{ width: '48px', height: '48px' }} />;
+};
+```

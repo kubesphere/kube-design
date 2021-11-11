@@ -16,3 +16,13 @@ order: 1
   return <Empty desc={'No_Data'} />
 };
 ```
+
+## 更换图标样式
+
+你可以通过设置icon和imageStyle来设置占位图。
+
+```js live=true
+() => {
+  return <Empty desc="No_Data" icon={<Add />} imageStyle={{ width: '48px', height: '48px' }} />;
+};
+```
