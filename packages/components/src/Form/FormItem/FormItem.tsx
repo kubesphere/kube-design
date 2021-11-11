@@ -38,26 +38,17 @@ const FieldLabel = styled('label')<FieldLabelProps>`
   display: inline-flex;
   align-items: center;
   color: ${({ theme }) => theme.palette.accents_8};
-  &:before {
+  &:after {
     color: ${({ theme }) => theme.palette.error};
   }
-  ${({ isRequired, layout }) => `
+  ${({ isRequired }) => `
     ${
       isRequired
         ? `
-      &:before {
-        content: '*';
-        margin-right: 2px;
-      }
-    `
-        : null
-    };
-    ${
-      layout !== 'vertical'
-        ? `
       &:after {
-        content: ':';
-        margin-left: 2px;
+        font-weight: 400;
+        content: '*';
+        margin-left: 3px;
       }
     `
         : null

@@ -13,7 +13,7 @@ export const InputWrapper = styled('div')<InputProps>`
   display: inline-flex;
   width: ${({ width }) => (width ? `${width}px` : '100%')};
   border-radius: 3px;
-  padding: 0px 12px;
+  padding: 0 12px;
   border: 1px solid ${({ theme }) => theme.palette.accents_4};
   outline: none;
   transition: all 0.3s ease-in-out;
@@ -39,7 +39,7 @@ export const InputWrapper = styled('div')<InputProps>`
     outline: none;
     border-radius: 3px;
     height: ${({ size, theme }) => theme.layout.inputSizes[size]};
-    padding: 6px 0px;
+    padding: 6px 0;
     border: none;
     line-height: 1.67;
     color: ${({ theme }) => theme.palette.accents_7};
