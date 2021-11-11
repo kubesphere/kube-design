@@ -70,11 +70,11 @@ export const Button = forwardRef<ButtonProps, 'button'>(
         as={as}
         size={size}
         disabled={disabled}
-        loading={loading}
+        $loading={loading}
         shadow={shadow}
         variant={variant}
-        color={color}
-        radius={radius}
+        $color={color}
+        $radius={radius}
         className={className}
         ref={ref}
       >

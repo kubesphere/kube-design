@@ -35,7 +35,7 @@
     "rc-input-number": "^7.3.0",
     "rc-motion": "^2.4.4",
     "rc-picker": "^2.5.19",
-    "rc-select": "^12.1.13",
+    "rc-select": "^13.1.0",
     "react-hot-toast": "^2.1.1",
     "react-textarea-autosize": "^8.3.2",
     "react-transition-group": "^4.4.2",

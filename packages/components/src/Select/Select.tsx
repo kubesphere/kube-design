@@ -1,6 +1,6 @@
 // https://github.dev/ant-design/ant-design/blob/756dc8f130547277a28548c5b46658ff46f131f9/components/select/index.tsx
 import React from 'react';
-import { Option as SelectOption, OptGroup as SelectOptGroup } from 'rc-select';
+import { Option, OptGroup } from 'rc-select';
 import forwardRef from '../utils/forwardRef';
 import getIcons from './iconUtil';
 import {
@@ -13,7 +13,7 @@ import {
 
 type RawValue = string | number;
 
-export type OptionType = typeof SelectOption;
+export type OptionType = typeof Option;
 
 export interface LabeledValue {
   key?: string;
@@ -93,7 +93,7 @@ const InternalSelect = forwardRef<SelectProps<any>, 'div'>(
           notFoundContent={mergedNotFound}
           getPopupContainer={getPopupContainer}
           prefixCls="kubed-select"
-          bordered={bordered}
+          $bordered={bordered}
         />
       </>
     );
@@ -103,15 +103,16 @@ const InternalSelect = forwardRef<SelectProps<any>, 'div'>(
 type InternalSelectType = typeof InternalSelect;
 
 interface SelectInterface extends InternalSelectType {
-  Option: typeof SelectOption;
-  OptGroup: typeof SelectOptGroup;
+  SECRET_COMBOBOX_MODE_DO_NOT_USE: string;
+  Option: typeof Option;
+  OptGroup: typeof OptGroup;
 }
 
 const Select = InternalSelect as SelectInterface;
 
-Select.Option = SelectOption;
-
-Select.OptGroup = SelectOptGroup;
+Select.SECRET_COMBOBOX_MODE_DO_NOT_USE = SECRET_COMBOBOX_MODE_DO_NOT_USE;
+Select.Option = Option;
+Select.OptGroup = OptGroup;
 
 Select.displayName = '@kubed/components/Select';
 

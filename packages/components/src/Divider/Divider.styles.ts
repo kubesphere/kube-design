@@ -22,7 +22,7 @@ export const DividerWrapper = styled('div')<React.ComponentPropsWithoutRef<any>>
     border-top-style: ${({ variant }) => variant};
     border-top-width: ${({ size }) => getSizeValue(size, sizes)};
     border-top-color: ${({ theme }) => theme.palette.border};
-    margin: ${({ margins, theme }) => getSizeValue(margins, theme.layout.spacing)} 0;
+    margin: ${({ $margins, theme }) => getSizeValue($margins, theme.layout.spacing)} 0;
   }
 
   &.vertical {
@@ -30,8 +30,8 @@ export const DividerWrapper = styled('div')<React.ComponentPropsWithoutRef<any>>
     border-left-style: ${({ variant }) => variant};
     border-left-color: ${({ theme }) => theme.palette.border};
     border-left-width: ${({ size }) => getSizeValue(size, sizes)};
-    margin-left: ${({ margins, theme }) => getSizeValue(margins, theme.layout.spacing)};
-    margin-right: ${({ margins, theme }) => getSizeValue(margins, theme.layout.spacing)};
+    margin-left: ${({ $margins, theme }) => getSizeValue($margins, theme.layout.spacing)};
+    margin-right: ${({ $margins, theme }) => getSizeValue($margins, theme.layout.spacing)};
   }
 `;
 
@@ -58,7 +58,7 @@ export const Label = styled(Text)<React.ComponentPropsWithoutRef<any>>`
     flex: 1;
     height: 1px;
     margin-right: ${({ theme }) => theme.layout.spacing.xs};
-    border-top: 1px ${({ theme, variant }) => `${variant} ${theme.palette.border}`};
+    border-top: 1px ${({ theme, $variant }) => `${$variant} ${theme.palette.border}`};
   }
 
   &:after {
@@ -66,6 +66,6 @@ export const Label = styled(Text)<React.ComponentPropsWithoutRef<any>>`
     flex: 1;
     height: 1px;
     margin-left: ${({ theme }) => theme.layout.spacing.xs};
-    border-top: 1px ${({ theme, variant }) => `${variant} ${theme.palette.border}`};
+    border-top: 1px ${({ theme, $variant }) => `${$variant} ${theme.palette.border}`};
   }
 `;
