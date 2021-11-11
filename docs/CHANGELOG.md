@@ -1,5 +1,14 @@
 # kubed-documents
 
+## 0.0.9
+
+### Patch Changes
+
+- [`023eb18`](https://github.com/kubesphere/kube-design/commit/023eb1828edaf053bae599f55d9d46b94b4d2b20) Thanks [@chenz24](https://github.com/chenz24)! - 1. transient props caused by styled-component.
+
+- Updated dependencies [[`023eb18`](https://github.com/kubesphere/kube-design/commit/023eb1828edaf053bae599f55d9d46b94b4d2b20)]:
+  - @kubed/components@0.0.9
+
 ## 0.0.8
 
 ### Patch Changes
