@@ -8,9 +8,15 @@ export default {
 };
 
 export const Basic = () => {
-  return <Empty desc="No_Data" />;
+  return <Empty />;
 };
 
 export const Icon = () => {
-  return <Empty desc="No_Data" icon={<Add />} imageStyle={{ width: '48px', height: '48px' }} />;
+  return (
+    <Empty
+      desc={<span>No_Data</span>}
+      icon={<Add />}
+      imageStyle={{ width: '48px', height: '48px' }}
+    />
+  );
 };

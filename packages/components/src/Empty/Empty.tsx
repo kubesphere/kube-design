@@ -5,7 +5,7 @@ import forwardRef from '../utils/forwardRef';
 import { DefaultProps } from '../theme/types';
 
 export interface EmptyProps extends DefaultProps {
-  desc?: string;
+  desc?: React.ReactNode;
   imageStyle?: React.CSSProperties;
   icon?: React.ReactNode;
 }
@@ -38,15 +38,13 @@ const ImageStyle = styled.div`
 `;
 
 export const Empty = forwardRef<EmptyProps, 'div'>((props, ref) => {
-  const { desc = 'No Data', imageStyle, icon } = props;
+  const { desc, imageStyle, icon } = props;
   return (
     <EmptyWrapper>
       <ImageStyle style={imageStyle}>{icon ? <div>{icon}</div> : <Exclamation />}</ImageStyle>
-      <ContentStyle>{desc}</ContentStyle>
+      {desc ? <ContentStyle>{desc}</ContentStyle> : <ContentStyle>暂无数据</ContentStyle>}
     </EmptyWrapper>
   );
 });
 
-Empty.displayName = 'Empty';
-
-export default Empty;
+Empty.displayName = '@kubed/components/Empty';
