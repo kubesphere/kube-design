@@ -27,11 +27,12 @@ export default {
       menu: [
         'Checkbox',
         'DatePicker',
+        'AutoComplete',
         'Input',
         'InputNumber',
         'Radio',
         'Select',
-        // 'Slider',
+        'Slider',
         'Switch',
       ],
     },

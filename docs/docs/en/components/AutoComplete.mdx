@@ -1,0 +1,42 @@
+---
+group: 'components'
+category: 'state'
+title: AutoComplete
+description: 'Autocomplete function of input field.'
+order: 1
+---
+
+## Basic Usage
+
+Set data source of autocomplete with options property.
+
+```js live=true
+() => {
+  const [value, setValue] = React.useState('');
+  const [options, setOptions] = React.useState([]);
+  const mockVal = (str, repeat = 1) => ({
+     value: str.repeat(repeat),
+  });
+  const onSearch = (searchText) => {
+     setOptions(
+       !searchText ? [] : [mockVal(searchText), mockVal(searchText, 2), mockVal(searchText, 3)]
+     );
+  };
+  const onSelect = (data) => {
+     console.log('onSelect', data);
+  };
+  const onChange = (data) => {
+    setValue(data);
+  };
+  return (
+     <AutoComplete
+        value={value}
+        options={options}
+        style={{ width: 200 }}
+        onSelect={onSelect}
+        onSearch={onSearch}
+        onChange={onChange}
+     />
+  )
+}
+```
