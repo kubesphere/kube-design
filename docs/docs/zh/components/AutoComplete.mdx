@@ -1,0 +1,42 @@
+---
+group: 'components'
+category: 'state'
+title: AutoComplete
+description: '输入框自动完成功能'
+order: 1
+---
+
+## 基本用法
+
+通过 options 设置自动完成的数据源
+
+```js live=true
+() => {
+  const [value, setValue] = React.useState('');
+  const [options, setOptions] = React.useState([]);
+  const mockVal = (str, repeat = 1) => ({
+    value: str.repeat(repeat),
+  });
+  const onSearch = (searchText) => {
+    setOptions(
+      !searchText ? [] : [mockVal(searchText), mockVal(searchText, 2), mockVal(searchText, 3)]
+    );
+  };
+  const onSelect = (data) => {
+    console.log('onSelect', data);
+  };
+  const onChange = (data) => {
+    setValue(data);
+  };
+  return (
+     <AutoComplete
+        value={value}
+        options={options}
+        style={{ width: 200 }}
+        onSelect={onSelect}
+        onSearch={onSearch}
+        onChange={onChange}
+     />
+  )
+}
+```
