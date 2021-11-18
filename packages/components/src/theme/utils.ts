@@ -17,6 +17,10 @@ export const getSizeValue = (
 
 export const getColor = (color: string, theme: KubedTheme, defaultColor?: string) => {
   const { palette } = theme;
+  if (color === 'primary' || color === 'secondary') {
+    return palette.colors[palette[color]][2];
+  }
+
   if (palette[color]) {
     return palette[color];
   }
@@ -63,6 +67,18 @@ const getPresetStaticTheme = (): KubedTheme => {
   return lightTheme;
 };
 
+const getPrimaryColor = (theme: KubedTheme, main: boolean = true): string | Array<string> => {
+  const { colors, primary } = theme.palette;
+  if (main) return colors[primary][2];
+  return colors[primary];
+};
+
+const getSecondaryColor = (theme: KubedTheme, main: boolean = true): string | Array<string> => {
+  const { colors, secondary } = theme.palette;
+  if (main) return colors[secondary][2];
+  return colors[secondary];
+};
+
 const isAvailableThemeType = (type?: string): boolean => {
   if (!type) return false;
   const presetThemes = getPresets();
@@ -105,6 +121,8 @@ const Utils = {
   createFromLight,
   getSizeValue,
   getColor,
+  getPrimaryColor,
+  getSecondaryColor,
 };
 
 export default Utils;

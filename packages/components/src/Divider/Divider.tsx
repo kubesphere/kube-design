@@ -57,12 +57,12 @@ export const Divider = forwardRef<DividerProps, 'hr'>(
         className={cx({ 'with-label': withLabel, vertical, horizontal }, className)}
         direction={direction}
         variant={variant}
-        margins={margins}
+        $margins={margins}
         size={size}
         {...rest}
       >
         {!!label && horizontal && (
-          <Label className={labelPosition} variant={variant}>
+          <Label as="label" className={labelPosition} $variant={variant}>
             {label}
           </Label>
         )}

@@ -13,11 +13,8 @@ export const InputWrapper = styled('div')<InputProps>`
   display: inline-flex;
   width: ${({ width }) => (width ? `${width}px` : '100%')};
   border-radius: 3px;
-  height: ${({ size, theme }) => theme.layout.inputSizes[size]};
-  padding: 6px 12px;
+  padding: 0 12px;
   border: 1px solid ${({ theme }) => theme.palette.accents_4};
-  line-height: 1.67;
-  color: ${({ theme }) => theme.palette.accents_7};
   outline: none;
   transition: all 0.3s ease-in-out;
 
@@ -37,15 +34,25 @@ export const InputWrapper = styled('div')<InputProps>`
   }
 
   input {
-    font-weight: 600;
-    border: none;
-    outline: none;
-    padding: 0;
     width: 100%;
+    font-weight: 600;
+    outline: none;
+    border-radius: 3px;
+    height: ${({ size, theme }) => theme.layout.inputSizes[size]};
+    padding: 6px 0;
+    border: none;
+    line-height: 1.67;
+    color: ${({ theme }) => theme.palette.accents_7};
+    transition: all 0.3s ease-in-out;
 
     &[disabled] {
       cursor: not-allowed;
       background-color: ${({ theme }) => theme.palette.accents_1};
+    }
+
+    &:-webkit-autofill {
+      background-color: #fff;
+      -webkit-box-shadow: 0 0 0 1000px #fff inset;
     }
   }
 `;

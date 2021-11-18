@@ -37,9 +37,10 @@ const MenuList = styled.ul`
       }
 
       &:before {
+        position: absolute;
         border-top: 1px solid ${({ theme }) => theme.palette.primary};
         top: 16px;
-        left: -5px;
+        left: -20px;
         width: 12px;
       }
     }

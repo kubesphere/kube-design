@@ -9,7 +9,7 @@ const withTM = require('next-transpile-modules')([
 const { i18n } = require('./next-i18next.config');
 
 module.exports = withPlugins([withTM], {
-  reactStrictMode: true,
+  reactStrictMode: false,
   i18n,
   async redirects() {
     return [
