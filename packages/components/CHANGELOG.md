@@ -1,5 +1,17 @@
 # @kubed/components
 
+## 0.0.12
+
+### Patch Changes
+
+- [`0cff4d4`](https://github.com/kubesphere/kube-design/commit/0cff4d4ea509b874b0a746b8a4dbaa24f7955c62) Thanks [@chenz24](https://github.com/chenz24)! - - fix: build error cause by Select export.
+
+## 0.0.11
+
+### Patch Changes
+
+- [`c8be7d3`](https://github.com/kubesphere/kube-design/commit/c8be7d31582ee31fa7c33ee89df5d36dd659ab36) Thanks [@chenz24](https://github.com/chenz24)! - - Remove Slider and AutoComplete for their wrong export.
+
 ## 0.0.10
 
 ### Patch Changes
