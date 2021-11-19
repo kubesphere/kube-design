@@ -226,6 +226,6 @@ export function Slider(props: SliderBaseProps) {
   );
 }
 
-Slider.displayName = 'Slider';
+Slider.displayName = '@kubed/components/Slider';
 
 export default Slider;
