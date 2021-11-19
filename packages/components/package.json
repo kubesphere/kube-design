@@ -1,7 +1,7 @@
 {
   "name": "@kubed/components",
   "description": "React components library for KubeSphere console.",
-  "version": "0.0.9",
+  "version": "0.0.12",
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "types": "lib/src/index.d.ts",
@@ -44,6 +44,6 @@
     "styled-components": "^5.3.0"
   },
   "devDependencies": {
-    "@kubed/tests": "0.0.1"
+    "@kubed/tests": "0.0.2"
   }
 }

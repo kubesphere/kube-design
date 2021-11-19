@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import toast, { Toaster, ToastBar, ToastOptions } from 'react-hot-toast';
 import { Close, Information } from '@kubed/icons';
 // import { Loading } from '../Loading/Loading';
@@ -10,31 +10,25 @@ export { toast as notify };
 
 export interface NotifyProps extends ToastOptions {
   duration?: number;
+  title?: React.ReactNode;
 }
 
 interface WrapType {
   type?: string;
 }
 
-const getTypeStyles = (type, theme) => {
+const getTypeColors = (type, theme) => {
+  const { palette } = theme;
   if (type === 'error') {
-    return css`
-      background-color: ${theme.palette.error};
-    `;
+    return palette.error;
   }
   if (type === 'success') {
-    return css`
-      background-color: ${theme.palette.colors.green[2]};
-    `;
+    return palette.colors.green[2];
   }
   if (type === 'loading') {
-    return css`
-      background-color: ${theme.palette.colors.blue[2]};
-    `;
+    return palette.colors.blue[2];
   }
-  return css`
-    background-color: ${theme.palette.colors.blue[2]};
-  `;
+  return palette.colors.blue[2];
 };
 
 const IconWrap = styled('div')<WrapType>`
@@ -44,10 +38,10 @@ const IconWrap = styled('div')<WrapType>`
   width: 50px;
   min-width: 50px;
   height: 100%;
-  ${({ type, theme }) => getTypeStyles(type, theme)};
+  ${({ type, theme }) => `background-color: ${getTypeColors(type, theme)};`}
 `;
 
-const MessageWrap = styled('div')`
+const MessageWrap = styled('div')<WrapType>`
   padding: 7px 16px 7px 3px;
   justify-content: left;
   font-weight: 500;
@@ -55,6 +49,12 @@ const MessageWrap = styled('div')`
 
   div[role='status'] {
     justify-content: left;
+    flex-direction: column;
+  }
+
+  .title-wrap {
+    margin-bottom: 4px;
+    ${({ type, theme }) => `color: ${getTypeColors(type, theme)};`}
   }
 `;
 
@@ -72,7 +72,16 @@ const CloseButton = styled('div')`
   }
 `;
 
-export const Notify = ({ duration, ...restProps }: NotifyProps) => {
+const WithTitle = ({ title, message }: { title: React.ReactNode; message: React.ReactNode }) => {
+  return (
+    <>
+      <div className="title-wrap">{title}</div>
+      <div>{message}</div>
+    </>
+  );
+};
+
+export const Notify = ({ duration, title, ...restProps }: NotifyProps) => {
   const theme = useTheme();
   const { colors, error } = theme.palette;
 
@@ -118,7 +127,7 @@ export const Notify = ({ duration, ...restProps }: NotifyProps) => {
             return (
               <>
                 <IconWrap type={t.type}>{icon}</IconWrap>
-                <MessageWrap>{message}</MessageWrap>
+                <MessageWrap type={t.type}>{message}</MessageWrap>
                 {t.type !== 'loading' && (
                   <CloseButton onClick={() => toast.dismiss(t.id)}>
                     <Close size={20} />
@@ -132,5 +141,7 @@ export const Notify = ({ duration, ...restProps }: NotifyProps) => {
     </Toaster>
   );
 };
+
+Notify.WithTitle = WithTitle;
 
 Notify.dispalyName = '@kubed/components/Notify';
