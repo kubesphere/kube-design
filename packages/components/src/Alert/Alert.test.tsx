@@ -12,6 +12,8 @@ import { Text } from '../Text/Text';
 import { Alert } from './Alert';
 import { ThemeProvider } from 'styled-components';
 import { themeUtils } from '@kubed/components';
+import { shallowWithTheme, mountWithTheme } from "@kubed/tests";
+
 
 const defaultProps = {
   title: 'test-title',
@@ -30,39 +32,24 @@ describe('@kubed/components/Alert', () => {
   itSupportsRef(Alert, {}, HTMLDivElement);
 
   checkAccessibility([
-    mount(
-      <ThemeProvider theme={themeUtils.getPresets()[0]}>
-        <Alert title="Error happened" type="error">
-          <Text>Something bad happened</Text>
-        </Alert>
-      </ThemeProvider>
+    mountWithTheme(
+      <Alert title="Error happened" type="error">
+        <Text>Something bad happened</Text>
+      </Alert>
     ),
-    mount(
-      <ThemeProvider theme={themeUtils.getPresets()[0]}>
-        <Alert type="error">
-          <Text>Something bad happened</Text>
-        </Alert>
-      </ThemeProvider>
+    mountWithTheme(
+      <Alert type="error">
+        <Text>Something bad happened</Text>
+      </Alert>
     ),
   ]);
 
-  // it('renders given title', () => {
-  //   const element = shallow(
-  //     <ThemeProvider theme={themeUtils.getPresets()[0]}>
-  //       <Alert titleClassName="alert-title">test-alert</Alert>
-  //     </ThemeProvider>
-  //   );
-  //   expect(element.render().find('.alert-title').text()).toEqual('test-title');
-  // });
-
-  // it('does not render title if title prop was not passed', () => {
-  //   const element = shallow(
-  //     <ThemeProvider theme={themeUtils.getPresets()[0]}>
-  //       <Alert className="alert-title">test-alert</Alert>
-  //     </ThemeProvider>
-  //   );
-  //   expect(element.render().find('.alert-title')).toHaveLength(0);
-  // });
+  it('does not render title if title prop was not passed', () => {
+    const element = shallowWithTheme(
+      <Alert className="alert-title">test-alert</Alert>
+    );
+    expect(element.render().find('.alert-title')).toHaveLength(0);
+  });
 
   it('has correct displayName', () => {
     expect(Alert.displayName).toEqual('@kubed/components/Alert');

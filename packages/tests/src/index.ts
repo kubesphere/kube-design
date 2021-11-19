@@ -5,3 +5,5 @@ export { itSupportsOthers } from './itSupportsOthers';
 export { itSupportsRef } from './itSupportsRef';
 export { itSupportsStyle } from './itSupportsStyle';
 export { mockResizeObserver } from './mock-resize-observer';
+// @ts-ignore
+export { shallowWithTheme, mountWithTheme } from './itSupportsTheme';
