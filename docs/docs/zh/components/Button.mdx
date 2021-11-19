@@ -101,3 +101,23 @@ order: 1
   </Button>
 </Group>
 ```
+
+## 带图标按钮
+
+通过leftIcon和rightIcon可以给Button设置图标。
+
+```js live=true
+() => {
+  const { Add } = KubeIcon;
+  return (
+    <Group>
+      <Button variant="filled" color="default" radius="xl" leftIcon={<Add size={16} />}>
+        KubeSphere
+      </Button>
+      <Button variant="filled" color="default" radius="xl" rightIcon={<Add size={16} />}>
+        KubeSphere
+      </Button>
+    </Group>
+  )
+}
+```
