@@ -44,6 +44,7 @@ export const InputWrapper = styled('div')<InputProps>`
     line-height: 1.67;
     color: ${({ theme }) => theme.palette.accents_7};
     transition: all 0.3s ease-in-out;
+    background-color: transparent;
 
     &[disabled] {
       cursor: not-allowed;
