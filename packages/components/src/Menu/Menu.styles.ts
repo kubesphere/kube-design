@@ -5,7 +5,7 @@ export const MenuWrapper = styled('div')`
   padding: 8px;
   min-width: 210px;
   border-radius: 4px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.palette.background};
 
   .menu-label {
     padding: 8px 22px;

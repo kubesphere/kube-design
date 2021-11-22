@@ -27,6 +27,7 @@ export function Slider(props: SliderBaseProps) {
   const endPercent = (totalWeight * 100) / (totalWeight + 1);
   const [leftState, setLeftState] = useState<number>(0);
   const [rightState, setRightState] = useState<number>(0);
+  const [tooltipVisible, setTooltipVisible] = useState<boolean>(false);
   let rightData = 0;
   let leftData = 0;
 
@@ -117,6 +118,7 @@ export function Slider(props: SliderBaseProps) {
 
   const handleMouseUp = (): void => {
     document.removeEventListener('mousemove', handleMouseMove);
+    setTooltipVisible(false);
   };
 
   const handleMouseDown = (e): void => {
@@ -133,6 +135,7 @@ export function Slider(props: SliderBaseProps) {
       const middle = (leftData + rightData) / 2;
       triggerChange(dx < middle ? { left: dx, right: rightData } : { left: leftData, right: dx });
     }
+    setTooltipVisible(true);
   };
 
   const handleResize = (): void => {
@@ -173,7 +176,7 @@ export function Slider(props: SliderBaseProps) {
       return slider;
     }
     const tip = `${type === 'left' ? value[0] : value[1]} ${unit}`;
-    return <Tooltip content={tip}>{slider}</Tooltip>;
+    return <Tooltip content={tip} visible={tooltipVisible}>{slider}</Tooltip>;
   };
 
   const renderMarks = () => {
@@ -223,6 +226,6 @@ export function Slider(props: SliderBaseProps) {
   );
 }
 
-Slider.displayName = 'Slider';
+Slider.displayName = '@kubed/components/Slider';
 
 export default Slider;

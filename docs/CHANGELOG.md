@@ -1,5 +1,23 @@
 # kubed-documents
 
+## 0.0.14
+
+### Patch Changes
+
+- [`81610f7`](https://github.com/kubesphere/kube-design/commit/81610f7b72e85c675dfd129bd5c676ad09c6f702) Thanks [@chenz24](https://github.com/chenz24)! - 1. Fix ModalContext default value.
+  2. Fix MenuItem error cause by 'as' props.
+  3. Fix background of doc page in dark mode.
+- Updated dependencies [[`81610f7`](https://github.com/kubesphere/kube-design/commit/81610f7b72e85c675dfd129bd5c676ad09c6f702)]:
+  - @kubed/components@0.0.14
+
+## 0.0.13
+
+### Patch Changes
+
+- Updated dependencies [[`e1fe306`](https://github.com/kubesphere/kube-design/commit/e1fe30612f48839ae6eb40522ba28dd893ccbf9f)]:
+  - @kubed/components@0.0.13
+  - @kubed/icons@0.0.2
+
 ## 0.0.12
 
 ### Patch Changes
