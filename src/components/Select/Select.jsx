@@ -348,7 +348,9 @@ export default class Select extends React.Component {
 
     let { value } = this.state;
     value.splice(i, 1);
-    this.setState({ value });
+    this.setState({ value }, () => {
+      this.props.onChange(value);
+    });
 
     if (isEmpty(value)) {
       if (this.props.searchable) {
