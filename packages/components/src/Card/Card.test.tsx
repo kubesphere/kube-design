@@ -7,9 +7,9 @@ import {
   itRendersChildren,
   itSupportsStyle,
 } from '@kubed/tests';
+import { ThemeProvider } from 'styled-components';
+import { themeUtils } from '@kubed/components';
 import { Card } from './Card';
-import {ThemeProvider} from "styled-components";
-import {themeUtils} from "@kubed/components";
 
 describe('@kubed/components/Card', () => {
   itSupportsOthers(Card, {});
@@ -30,14 +30,15 @@ describe('@kubed/components/Card', () => {
     expect(element.find(Card).prop('radius')).toBe('xl');
   });
 
-  it('passes hoverable to Card component',()=>{
+  it('passes hoverable to Card component', () => {
     const element = shallow(
       <ThemeProvider theme={themeUtils.getPresets()[0]}>
         <Card sectionTitle="section title" hoverable>
           test
         </Card>
-      </ThemeProvider>);
-    expect(element.find(Card).prop('hoverable')).toBe(true)
+      </ThemeProvider>
+    );
+    expect(element.find(Card).prop('hoverable')).toBe(true);
   });
 
   it('has correct displayName', () => {

@@ -1,8 +1,4 @@
-import {
-  itSupportsClassName,
-  itSupportsOthers,
-  itSupportsStyle,
-} from '@kubed/tests';
+import { itSupportsClassName, itSupportsOthers, itSupportsStyle } from '@kubed/tests';
 import { Row } from './Row';
 
 describe('@kubed/components/Row', () => {

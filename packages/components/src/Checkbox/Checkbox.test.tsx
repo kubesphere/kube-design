@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  checkAccessibility,
-  itSupportsRef,
-  mountWithTheme, shallowWithTheme,
-} from '@kubed/tests';
+import { checkAccessibility, itSupportsRef, mountWithTheme, shallowWithTheme } from '@kubed/tests';
 import { Checkbox } from './Checkbox';
 
 const defaultProps = {
@@ -54,7 +50,9 @@ describe('@kubed/components/Checkbox', () => {
   });
 
   it('sets checked state based on indeterminate prop', () => {
-    const element = shallowWithTheme(<Checkbox indeterminate checked={false} onChange={() => {}} />);
+    const element = shallowWithTheme(
+      <Checkbox indeterminate checked={false} onChange={() => {}} />
+    );
     expect(element.render().find('input').attr('checked')).toBe('checked');
   });
 

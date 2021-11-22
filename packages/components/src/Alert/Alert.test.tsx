@@ -1,5 +1,4 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
 import {
   checkAccessibility,
   itSupportsStyle,
@@ -7,13 +6,11 @@ import {
   itSupportsClassName,
   itRendersChildren,
   itSupportsRef,
+  shallowWithTheme,
+  mountWithTheme,
 } from '@kubed/tests';
 import { Text } from '../Text/Text';
 import { Alert } from './Alert';
-import { ThemeProvider } from 'styled-components';
-import { themeUtils } from '@kubed/components';
-import { shallowWithTheme, mountWithTheme } from "@kubed/tests";
-
 
 const defaultProps = {
   title: 'test-title',
@@ -21,7 +18,7 @@ const defaultProps = {
   icon: '$',
   type: 'default',
   showIcon: true,
-  closable: true
+  closable: true,
 };
 
 describe('@kubed/components/Alert', () => {
@@ -45,14 +42,11 @@ describe('@kubed/components/Alert', () => {
   ]);
 
   it('does not render title if title prop was not passed', () => {
-    const element = shallowWithTheme(
-      <Alert className="alert-title">test-alert</Alert>
-    );
+    const element = shallowWithTheme(<Alert className="alert-title">test-alert</Alert>);
     expect(element.render().find('.alert-title')).toHaveLength(0);
   });
 
   it('has correct displayName', () => {
     expect(Alert.displayName).toEqual('@kubed/components/Alert');
   });
-
 });

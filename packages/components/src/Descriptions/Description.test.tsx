@@ -1,17 +1,14 @@
-import {
-  itSupportsClassName,
-  itRendersChildren, itSupportsStyle,
-} from '@kubed/tests';
+import { itSupportsClassName, itRendersChildren, itSupportsStyle } from '@kubed/tests';
+import React from 'react';
+import { shallow } from 'enzyme';
+import { ThemeProvider } from 'styled-components';
+import { themeUtils } from '@kubed/components';
 import { Description } from './Description';
-import React from "react";
-import {shallow} from "enzyme";
-import {ThemeProvider} from "styled-components";
-import {themeUtils} from "@kubed/components";
 
 const defaultProps = {
   variant: 'default',
   label: 'test',
-  children: 'test'
+  children: 'test',
 };
 
 describe('@kubed/components/Description', () => {
@@ -19,7 +16,7 @@ describe('@kubed/components/Description', () => {
   itRendersChildren(Description, defaultProps);
   itSupportsStyle(Description, defaultProps);
 
-  it('passes label and variant to description component',()=>{
+  it('passes label and variant to description component', () => {
     const wrapper = shallow(
       <ThemeProvider theme={themeUtils.getPresets()[0]}>
         <Description label="project" variant="unstyled">
@@ -34,5 +31,4 @@ describe('@kubed/components/Description', () => {
   it('has correct displayName', () => {
     expect(Description.displayName).toEqual('@kubed/components/Description');
   });
-
 });

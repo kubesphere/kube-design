@@ -1,10 +1,4 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import {
-  itSupportsClassName,
-  itSupportsRef,
-  itSupportsStyle,
-} from '@kubed/tests';
+import { itSupportsClassName, itSupportsStyle } from '@kubed/tests';
 import DatePicker from './DatePicker';
 
 describe('@kubed/components/DatePicker', () => {

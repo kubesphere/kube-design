@@ -6,9 +6,9 @@ import {
   itSupportsStyle,
   itSupportsRef,
 } from '@kubed/tests';
-import { Divider } from './Divider';
 import { ThemeProvider } from 'styled-components';
 import { themeUtils } from '@kubed/components';
+import { Divider } from './Divider';
 
 describe('@kubed/components/Divider', () => {
   itSupportsClassName(Divider, {});
@@ -21,7 +21,7 @@ describe('@kubed/components/Divider', () => {
       <ThemeProvider theme={themeUtils.getPresets()[0]}>
         <Divider label="test-label" />
       </ThemeProvider>
-  );
+    );
     expect(withSubheader.find(Divider).dive().text()).toBe('test-label');
   });
 

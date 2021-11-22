@@ -8,16 +8,18 @@ import {
   itSupportsStyle,
   itSupportsOthers,
 } from '@kubed/tests';
-import { Button } from './Button';
 import { ThemeProvider } from 'styled-components';
 import { themeUtils } from '@kubed/components';
+import { Button } from './Button';
 
 describe('@kubed/components/Button', () => {
-  checkAccessibility([mount(
-    <ThemeProvider theme={themeUtils.getPresets()[0]}>
-      <Button>Kubed button</Button>
-    </ThemeProvider>
-  )]);
+  checkAccessibility([
+    mount(
+      <ThemeProvider theme={themeUtils.getPresets()[0]}>
+        <Button>Kubed button</Button>
+      </ThemeProvider>
+    ),
+  ]);
   itSupportsOthers(Button, {});
   itRendersChildren(Button, {});
   itSupportsStyle(Button, {});
@@ -33,8 +35,7 @@ describe('@kubed/components/Button', () => {
       <ThemeProvider theme={themeUtils.getPresets()[0]}>
         <Button type="submit" />
       </ThemeProvider>
-
-      );
+    );
     expect(element.render().attr('type')).toBe('submit');
   });
 
@@ -43,7 +44,7 @@ describe('@kubed/components/Button', () => {
       <ThemeProvider theme={themeUtils.getPresets()[0]}>
         <Button disabled />
       </ThemeProvider>
-      );
+    );
     const notDisabled = shallow(
       <ThemeProvider theme={themeUtils.getPresets()[0]}>
         <Button />
