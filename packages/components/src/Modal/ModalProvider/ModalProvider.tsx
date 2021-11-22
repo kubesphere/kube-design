@@ -52,9 +52,13 @@ export function ModalProvider({ children }: PropsWithChildren<Props>) {
       {children}
       {modalState.map((modal) => {
         if (!modal.type) {
-          return <Modal {...modal}>{modal.content}</Modal>;
+          return (
+            <Modal {...modal} key={modal.id}>
+              {modal.content}
+            </Modal>
+          );
         }
-        return <ConfirmDialog {...modal} />;
+        return <ConfirmDialog {...modal} key={modal.id} />;
       })}
     </ModalContext.Provider>
   );
