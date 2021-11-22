@@ -48,7 +48,7 @@ export default (async () => {
       const optimizedSvgString = data.replace(new RegExp(`${primaryColor}`, 'g'), 'currentColor');
 
       const component = `import React, {forwardRef} from 'react';
-const ${componentName} = forwardRef(({ variant = 'dark' ,size = 24, className = '', ...props }, ref) => {
+const ${componentName} = forwardRef(({ variant = 'dark' ,size = 16, className = '', ...props }, ref) => {
   const classNames = \`kubed-icon kubed-icon__\${variant} \${className}\`;
   return ${parseSvg(optimizedSvgString)};
 });
