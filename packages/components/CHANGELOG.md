@@ -1,5 +1,14 @@
 # @kubed/components
 
+## 0.0.15
+
+### Patch Changes
+
+- [`c619355`](https://github.com/kubesphere/kube-design/commit/c6193554484524736c95bf263a1af1a6fdd394e8) Thanks [@chenz24](https://github.com/chenz24)! - 1. Divider support height and color.
+  2. Fix modal cannot hide header and footer.
+  3. Fix react key warning when open imperative modal.
+  4. Popover support set width and contentClassName.
+
 ## 0.0.14
 
 ### Patch Changes
