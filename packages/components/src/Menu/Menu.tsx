@@ -58,4 +58,4 @@ export function Menu({ children }: MenuProps) {
   return <MenuWrapper>{buttons}</MenuWrapper>;
 }
 
-Menu.displayName = '@kubed/component/Menu';
+Menu.displayName = '@kubed/components/Menu';
