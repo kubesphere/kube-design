@@ -8,7 +8,12 @@ export default {
 
 export const Basic = () => (
   <div style={{ marginTop: '70px', marginLeft: '100px' }}>
-    <Popover title="popover title" content="Display additional, floating content on click">
+    <Popover
+      title="popover title"
+      content="Display additional, floating content on click"
+      width={240}
+      contentClassName="test-classname"
+    >
       <Button radius="xl">KubeSphere</Button>
     </Popover>
   </div>
