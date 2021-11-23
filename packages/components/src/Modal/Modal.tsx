@@ -200,6 +200,6 @@ const Modal = forwardRef<ModalProps, any>((props, ref) => {
   );
 });
 
-Modal.displayName = 'kubed/components/Modal';
+Modal.displayName = '@kubed/components/Modal';
 
 export default Modal;
