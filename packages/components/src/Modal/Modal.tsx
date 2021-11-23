@@ -1,5 +1,6 @@
 import React, { RefObject, useEffect, useImperativeHandle, useState } from 'react';
 import cx from 'classnames';
+import { isNull } from 'lodash';
 import { Close } from '@kubed/icons';
 import { StyledDialog } from './Modal.styles';
 import { ButtonProps, Button } from '../Button/Button';
@@ -101,8 +102,7 @@ interface ModalRef {
 
 export type ModalType = 'info' | 'success' | 'error' | 'warn' | 'warning' | 'confirm' | 'open';
 
-export interface ModalFuncProps
-  extends Omit<ModalProps, 'footer' | 'forceRender' | 'destroyOnClose'> {
+export interface ModalFuncProps extends Omit<ModalProps, 'forceRender' | 'destroyOnClose'> {
   content?: React.ReactNode;
   icon?: React.ReactNode;
   type?: ModalType;
@@ -126,8 +126,17 @@ const Modal = forwardRef<ModalProps, any>((props, ref) => {
     onOk?.(e);
   };
 
+  const renderHeader = () => {
+    const { header, title, description, titleIcon } = props;
+    if (header || isNull(header)) return header;
+
+    return <Field value={title} label={description} avatar={titleIcon} />;
+  };
+
   const renderFooter = () => {
-    const { okText, cancelText, confirmLoading, cancelButtonProps, okButtonProps } = props;
+    const { footer, okText, cancelText, confirmLoading, cancelButtonProps, okButtonProps } = props;
+    if (footer || isNull(footer)) return footer;
+
     return (
       <>
         <Button onClick={handleCancel} radius="xl" {...cancelButtonProps}>
@@ -148,7 +157,6 @@ const Modal = forwardRef<ModalProps, any>((props, ref) => {
   };
 
   const {
-    footer,
     visible,
     centered = true,
     getContainer,
@@ -156,10 +164,6 @@ const Modal = forwardRef<ModalProps, any>((props, ref) => {
     focusTriggerAfterClose = true,
     width = 600,
     wrapClassName,
-    header,
-    title,
-    description,
-    titleIcon,
     ...restProps
   } = props;
   const [internalVisible, setInternalVisible] = useState(visible);
@@ -178,8 +182,6 @@ const Modal = forwardRef<ModalProps, any>((props, ref) => {
 
   const renderCloseIcon = <>{closeIcon || <Close size={24} />}</>;
 
-  const renderHeader = header || <Field value={title} label={description} avatar={titleIcon} />;
-
   return (
     <StyledDialog
       {...restProps}
@@ -190,8 +192,8 @@ const Modal = forwardRef<ModalProps, any>((props, ref) => {
       width={width}
       closeIcon={renderCloseIcon}
       onClose={handleCancel}
-      title={renderHeader}
-      footer={footer || renderFooter()}
+      title={renderHeader()}
+      footer={renderFooter()}
       transitionName={getTransitionName('kubed', 'zoom', props.transitionName)}
       maskTransitionName={getTransitionName('kubed', 'fade', props.maskTransitionName)}
     />
