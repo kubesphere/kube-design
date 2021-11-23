@@ -20,16 +20,16 @@ export const DividerWrapper = styled('div')<React.ComponentPropsWithoutRef<any>>
 
   &.horizontal {
     border-top-style: ${({ variant }) => variant};
-    border-top-width: ${({ size }) => getSizeValue(size, sizes)};
-    border-top-color: ${({ theme }) => theme.palette.border};
+    border-top-width: ${({ $size }) => getSizeValue($size, sizes)};
+    border-top-color: ${({ theme, $color }) => $color || theme.palette.border};
     margin: ${({ $margins, theme }) => getSizeValue($margins, theme.layout.spacing)} 0;
   }
 
   &.vertical {
-    align-self: stretch;
+    ${({ $height }) => ($height ? `height: ${$height}px;` : 'align-self: stretch;')};
     border-left-style: ${({ variant }) => variant};
-    border-left-color: ${({ theme }) => theme.palette.border};
-    border-left-width: ${({ size }) => getSizeValue(size, sizes)};
+    border-left-color: ${({ theme, $color }) => $color || theme.palette.border};
+    border-left-width: ${({ $size }) => getSizeValue($size, sizes)};
     margin-left: ${({ $margins, theme }) => getSizeValue($margins, theme.layout.spacing)};
     margin-right: ${({ $margins, theme }) => getSizeValue($margins, theme.layout.spacing)};
   }
