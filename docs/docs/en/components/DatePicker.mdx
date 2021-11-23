@@ -8,11 +8,15 @@ order: 1
 
 ## Basic Usage
 
+DatePicker
+
 ```js live=true
 <DatePicker />
 ```
 
 ## Range Picker
+
+Use time range picker with `DatePicker.RangePicker`.
 
 ```js live
 () => {
@@ -25,7 +29,22 @@ order: 1
 
 ## Time Picker
 
+Click `TimePicker`, and then we could select or input a time in panel.
+
 ```js live
 <TimePicker />
 ```
 
+## Under Control
+
+`value` and `onChange` should be used together.
+
+```js live=true
+() => {
+  const [value,setValue] = React.useState(null);
+  const onChange = time => {
+    setValue(time)
+  }
+  return <TimePicker value={value} onChange={onChange} />;
+}
+```
