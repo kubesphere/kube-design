@@ -18,6 +18,7 @@ export const MenuButtonElement = styled('button')`
 
   &:hover {
     background-color: ${({ theme }) => theme.palette.accents_2};
+    color: ${({ theme }) => theme.palette.accents_7};
   }
 
   .item-inner {
