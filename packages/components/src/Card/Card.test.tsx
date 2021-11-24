@@ -39,6 +39,7 @@ describe('@kubed/components/Card', () => {
       </ThemeProvider>
     );
     expect(element.find(Card).prop('hoverable')).toBe(true);
+    expect(element.find(Card).prop('sectionTitle')).toBe('section title');
   });
 
   it('has correct displayName', () => {

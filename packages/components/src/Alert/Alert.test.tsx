@@ -41,9 +41,15 @@ describe('@kubed/components/Alert', () => {
     ),
   ]);
 
-  it('does not render title if title prop was not passed', () => {
-    const element = shallowWithTheme(<Alert className="alert-title">test-alert</Alert>);
-    expect(element.render().find('.alert-title')).toHaveLength(0);
+  it('renders given hasTitle, closable and showIcon',() => {
+    const wrapper = shallowWithTheme(
+      <Alert title="KubeSphere" type="info" closable>
+        Kubesphere.io is an upstream project of the KubeSphere container management platform.
+      </Alert>
+    );
+    expect(wrapper.find(Alert).prop('title')).toBe('KubeSphere');
+    expect(wrapper.find(Alert).prop('type')).toBe('info');
+    expect(wrapper.find(Alert).prop('closable')).toBe(true);
   });
 
   it('has correct displayName', () => {

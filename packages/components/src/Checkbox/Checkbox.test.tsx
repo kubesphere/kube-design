@@ -53,7 +53,8 @@ describe('@kubed/components/Checkbox', () => {
     const element = shallowWithTheme(
       <Checkbox indeterminate checked={false} onChange={() => {}} />
     );
-    expect(element.render().find('input').attr('checked')).toBe('checked');
+    expect(element.find(Checkbox).prop('checked')).toBe(false);
+    expect(element.find(Checkbox).prop('indeterminate')).toBe(true);
   });
 
   it('spreads ...others to input element', () => {
