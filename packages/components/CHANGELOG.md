@@ -1,5 +1,13 @@
 # @kubed/components
 
+## 0.0.16
+
+### Patch Changes
+
+- [`0f4d178`](https://github.com/kubesphere/kube-design/commit/0f4d17860c1ae0c5ebcfdcd61b3b2288df7fb877) Thanks [@chenz24](https://github.com/chenz24)! - 1. feat: Add Progress component.
+  2. fix: Set hover color for menu item.
+  3. feat: Add ActionConfirm component
+
 ## 0.0.15
 
 ### Patch Changes
