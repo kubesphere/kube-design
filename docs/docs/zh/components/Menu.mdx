@@ -17,11 +17,14 @@ order: 1
 ```js live=true
 () => {
   const { Add, Stop, Pen, Trash } = KubeIcon;
+  const clickCallback = () => {
+     console.log('you click me')
+  }
   return (
     <Card style={{ width: '230px' }}>
       <Menu>
         <MenuLabel>menu label</MenuLabel>
-        <MenuItem icon={<Add />}>创建</MenuItem>
+        <MenuItem icon={<Add />} onClick={clickCallback}>创建</MenuItem>
         <MenuItem icon={<Stop />}>停止调度</MenuItem>
         <MenuItem icon={<Pen />}>Edit</MenuItem>
         <Divider />
@@ -31,3 +34,24 @@ order: 1
   )
 }
 ```
+
+## 禁用子菜单
+
+```js live=true
+() => {
+  const { Add, Stop, Pen, Trash } = KubeIcon;
+  return (
+     <Card style={{ width: '230px' }}>
+        <Menu>
+          <MenuLabel>menu label</MenuLabel>
+          <MenuItem disabled icon={<Add />}>Add</MenuItem>
+          <MenuItem icon={<Stop />}>Stop</MenuItem>
+          <MenuItem icon={<Pen />}>Edit</MenuItem>
+          <Divider />
+          <MenuItem icon={<Trash />}>Delete</MenuItem>
+        </Menu>
+      </Card>
+  )
+}
+```
+

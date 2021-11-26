@@ -15,13 +15,13 @@ export const Basic = () => (
   <Card style={{ width: '230px' }}>
     <Menu>
       <MenuLabel>menu label</MenuLabel>
-      <MenuItem icon={<Add />} as="a" href="/logout">
+      <MenuItem disabled icon={<Add />} as="a" href="/logout">
         创建
       </MenuItem>
       <MenuItem icon={<Stop />} onClick={clickCallback}>
         停止调度
       </MenuItem>
-      <MenuItem icon={<Pen />}>Edit</MenuItem>
+      <MenuItem disabled icon={<Pen />}>Edit</MenuItem>
       <Divider />
       <MenuItem icon={<Trash />}>Delete</MenuItem>
     </Menu>
