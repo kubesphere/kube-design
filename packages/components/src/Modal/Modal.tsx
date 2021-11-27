@@ -113,8 +113,7 @@ export interface ModalFuncProps extends Omit<ModalProps, 'forceRender' | 'destro
 }
 
 const Modal = forwardRef<ModalProps, any>((props, ref) => {
-  const locale = useLocales();
-  const { Modal: locales } = locale;
+  const { Modal: locales } = useLocales();
 
   const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
     const { onCancel } = props;
