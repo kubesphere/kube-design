@@ -1,21 +1,26 @@
 import React, { useState, useEffect, PropsWithChildren } from 'react';
-import { ILocale } from './types';
+import { merge } from 'lodash';
+import { ILocale, Locale } from './types';
 import { LocaleContext } from './LocaleContext';
-import defaultLocale from '../locales/default';
+import locales from '../locales';
 
 export interface Props {
-  locale?: ILocale;
+  locale?: Locale;
+  extendLocales?: Record<Locale, ILocale>;
 }
 
-function LocaleProvider({ children, locale }: PropsWithChildren<Props>) {
-  const [currentLocale, setCurrentLocale] = useState<ILocale>(defaultLocale);
+function LocaleProvider({ children, locale, extendLocales }: PropsWithChildren<Props>) {
+  const [currentLocale, setCurrentLocale] = useState<Locale>('en');
+  const mergedLocales = merge(locales, extendLocales);
 
   useEffect(() => {
     if (!locale) return;
     setCurrentLocale(locale);
   }, [locale]);
 
-  return <LocaleContext.Provider value={currentLocale}>{children}</LocaleContext.Provider>;
+  return (
+    <LocaleContext.Provider value={mergedLocales[currentLocale]}>{children}</LocaleContext.Provider>
+  );
 }
 
 export default LocaleProvider;
