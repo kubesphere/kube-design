@@ -1,5 +1,15 @@
 # @kubed/components
 
+## 0.0.17
+
+### Patch Changes
+
+- [`6fc0e96`](https://github.com/kubesphere/kube-design/commit/6fc0e96fb62e75eb9f1eb5c79347896f8c971cc1) Thanks [@chenz24](https://github.com/chenz24)! - 1. Fix import wrong 'visible' from chalk.
+  2. Improve i18n.
+
+* [`eb0b852`](https://github.com/kubesphere/kube-design/commit/eb0b8520f105ebd91d25a0b9a7b8ab3c6a86b7fc) Thanks [@chenz24](https://github.com/chenz24)! - 1. Fix import wrong 'visible' from chalk.
+  2. Improve i18n.
+
 ## 0.0.16
 
 ### Patch Changes
