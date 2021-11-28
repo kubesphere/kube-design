@@ -113,7 +113,8 @@ export interface ModalFuncProps extends Omit<ModalProps, 'forceRender' | 'destro
 }
 
 const Modal = forwardRef<ModalProps, any>((props, ref) => {
-  const { Modal: locales } = useLocales();
+  const { locales } = useLocales();
+  const { Modal: modalLocales } = locales;
 
   const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
     const { onCancel } = props;
@@ -139,7 +140,7 @@ const Modal = forwardRef<ModalProps, any>((props, ref) => {
     return (
       <>
         <Button onClick={handleCancel} radius="xl" {...cancelButtonProps}>
-          {cancelText || locales.cancelText}
+          {cancelText || modalLocales.cancelText}
         </Button>
         <Button
           loading={confirmLoading}
@@ -149,7 +150,7 @@ const Modal = forwardRef<ModalProps, any>((props, ref) => {
           color="secondary"
           {...okButtonProps}
         >
-          {okText || locales.okText}
+          {okText || modalLocales.okText}
         </Button>
       </>
     );
