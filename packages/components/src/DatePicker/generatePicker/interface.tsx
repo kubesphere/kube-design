@@ -1,4 +1,4 @@
-import { ComponentClass, FunctionComponent } from 'react';
+import { ComponentClass } from 'react';
 
 export interface CommonPickerMethods {
   focus: () => void;
