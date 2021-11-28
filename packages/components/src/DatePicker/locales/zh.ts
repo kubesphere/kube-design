@@ -1,5 +1,5 @@
 import CalendarLocale from 'rc-picker/lib/locale/zh_CN';
-import TimePickerLocale from '../../TimePicker/locales/zh_CN';
+import TimePickerLocale from '../../TimePicker/locales/zh';
 import { PickerLocale } from '../generatePicker';
 
 const locale: PickerLocale = {
