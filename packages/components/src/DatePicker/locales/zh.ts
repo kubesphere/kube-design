@@ -1,18 +1,18 @@
-import CalendarLocale from 'rc-picker/lib/locale/zh_TW';
-import TimePickerLocale from '../../TimePicker/locales/zh-tw';
+import CalendarLocale from 'rc-picker/lib/locale/zh_CN';
+import TimePickerLocale from '../../TimePicker/locales/zh';
 import { PickerLocale } from '../generatePicker';
 
 const locale: PickerLocale = {
   lang: {
-    placeholder: '請選擇日期',
-    yearPlaceholder: '請選擇年份',
-    quarterPlaceholder: '請選擇季度',
-    monthPlaceholder: '請選擇月份',
-    weekPlaceholder: '請選擇周',
-    rangePlaceholder: ['開始日期', '結束日期'],
-    rangeYearPlaceholder: ['開始年份', '結束年份'],
-    rangeMonthPlaceholder: ['開始月份', '結束月份'],
-    rangeWeekPlaceholder: ['開始周', '結束周'],
+    placeholder: '请选择日期',
+    yearPlaceholder: '请选择年份',
+    quarterPlaceholder: '请选择季度',
+    monthPlaceholder: '请选择月份',
+    weekPlaceholder: '请选择周',
+    rangePlaceholder: ['开始日期', '结束日期'],
+    rangeYearPlaceholder: ['开始年份', '结束年份'],
+    rangeMonthPlaceholder: ['开始月份', '结束月份'],
+    rangeWeekPlaceholder: ['开始周', '结束周'],
     ...CalendarLocale,
   },
   timePickerLocale: {
