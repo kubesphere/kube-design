@@ -17,7 +17,7 @@ export function KubedConfigProvider({
   children,
   themes,
   themeType,
-  locale = 'zh',
+  locale = 'zh-tw',
   extendLocales,
 }: Props) {
   return (
