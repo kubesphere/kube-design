@@ -1,11 +1,11 @@
 import { ILocale } from '../LocaleProvider/types';
-import PickerLocale from '../../DatePicker/locales/en_US';
+import PickerLocale from '../../DatePicker/locales/zh';
 
 const localeValues: ILocale = {
   Modal: {
-    okText: 'OK',
-    cancelText: 'Cancel',
-    justOkText: 'OK',
+    okText: '確定',
+    cancelText: '取消',
+    justOkText: '知道了',
   },
   DatePicker: PickerLocale,
 };

@@ -18,9 +18,12 @@ function LocaleProvider({ children, locale, extendLocales }: PropsWithChildren<P
     setCurrentLocale(locale);
   }, [locale]);
 
-  return (
-    <LocaleContext.Provider value={mergedLocales[currentLocale]}>{children}</LocaleContext.Provider>
-  );
+  const localeValue = {
+    locale: currentLocale,
+    locales: mergedLocales[currentLocale],
+  };
+
+  return <LocaleContext.Provider value={localeValue}>{children}</LocaleContext.Provider>;
 }
 
 export default LocaleProvider;

@@ -11,14 +11,11 @@ import {
   RangePickerTimeProps as RCRangePickerTimeProps,
 } from 'rc-picker/lib/RangePicker';
 import { PickerMode, Locale as RcPickerLocale } from 'rc-picker/lib/interface';
-// eslint-disable-next-line import/no-cycle
 import { TimePickerLocale } from '../../TimePicker/TimePicker';
 import PickerButton from '../PickerButton';
 import PickerTag from '../PickerTag';
 import { KubedSizes } from '../../theme';
-// eslint-disable-next-line import/no-cycle
 import generateSinglePicker from './generateSinglePicker';
-// eslint-disable-next-line import/no-cycle
 import generateRangePicker from './generateRangePicker';
 
 export const Components = { button: PickerButton, rangeItem: PickerTag };

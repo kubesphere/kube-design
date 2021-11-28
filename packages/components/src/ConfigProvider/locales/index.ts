@@ -1,7 +1,11 @@
-import en_US from './en_US';
-import zh_CN from './zh_CN';
+import en from './en';
+import zh from './zh';
+import es from './es';
+import tw from './zh-tw';
 
 export default {
-  en: en_US,
-  zh: zh_CN,
+  en,
+  zh,
+  es,
+  'zh-tw': tw,
 };

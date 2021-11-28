@@ -6,4 +6,4 @@ export interface ILocale {
   DatePicker?: PickerLocale;
 }
 
-export type Locale = 'en' | 'zh' | 'tc' | 'es';
+export type Locale = 'en' | 'zh' | 'zh-tw' | 'es';
