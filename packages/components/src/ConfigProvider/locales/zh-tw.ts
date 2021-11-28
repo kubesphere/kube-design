@@ -1,5 +1,5 @@
 import { ILocale } from '../LocaleProvider/types';
-import PickerLocale from '../../DatePicker/locales/zh';
+import PickerLocale from '../../DatePicker/locales/zh-tw';
 
 const localeValues: ILocale = {
   Modal: {
