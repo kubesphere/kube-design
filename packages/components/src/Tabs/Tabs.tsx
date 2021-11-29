@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import cx from 'clsx';
+import cx from 'classnames';
 import { useId, useUncontrolled, useReducedMotion } from '@kubed/hooks';
 import { KubedNumberSize, KubedSizes } from '../theme';
 import { Group, GroupPosition, GroupDirection } from '../Group/Group';

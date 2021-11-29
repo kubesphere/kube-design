@@ -1,5 +1,5 @@
 export * from './theme';
-export { KubedConfigProvider } from './ConfigProvider';
+export * from './ConfigProvider';
 export * from './Button/Button';
 export { Group } from './Group/Group';
 export { Container } from './Container/Container';
