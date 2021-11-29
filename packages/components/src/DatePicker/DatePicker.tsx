@@ -1,12 +1,15 @@
 // https://github.com/ant-design/ant-design/blob/master/components/date-picker/index.tsx
 import { Dayjs } from 'dayjs';
 import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs';
-// eslint-disable-next-line import/no-cycle
 import generatePicker, {
   PickerProps,
   PickerDateProps,
   RangePickerProps as BaseRangePickerProps,
 } from './generatePicker';
+
+import 'dayjs/locale/zh';
+import 'dayjs/locale/zh-tw';
+import 'dayjs/locale/es';
 
 export type DatePickerProps = PickerProps<Dayjs>;
 export type MonthPickerProps = Omit<PickerDateProps<Dayjs>, 'picker'>;

@@ -16,6 +16,8 @@ import { addColorAlpha } from '../utils/color';
 
 export { FormList, FormItem, useForm };
 
+export type { FormInstance };
+
 export type FormLayout = 'horizontal' | 'inline' | 'vertical';
 
 const StyledFieldForm = styled(FieldForm)`
