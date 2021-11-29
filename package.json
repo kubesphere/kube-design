@@ -90,7 +90,6 @@
     "yargs": "^17.0.1"
   },
   "dependencies": {
-    "clsx": "^1.1.1",
     "dayjs": "^1.10.7",
     "prism-react-renderer": "^1.2.1",
     "lodash": "^4.17.21",

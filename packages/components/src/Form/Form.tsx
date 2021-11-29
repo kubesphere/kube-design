@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import cx from 'clsx';
+import cx from 'classnames';
 import styled from 'styled-components';
 import FieldForm, { List as FormList } from 'rc-field-form';
 import { FormProps as RcFormProps } from 'rc-field-form/lib/Form';

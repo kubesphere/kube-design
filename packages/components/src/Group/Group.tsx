@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, CSSProperties, Children, cloneElement } from 'react';
 import styled, { css } from 'styled-components';
-import cx from 'clsx';
+import cx from 'classnames';
 import { DefaultProps, KubedNumberSize, themeUtils } from '../theme';
 
 const { getSizeValue } = themeUtils;
