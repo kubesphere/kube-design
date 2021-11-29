@@ -1,5 +1,14 @@
 # kubed-documents
 
+## 0.0.18
+
+### Patch Changes
+
+- [`a7f7e6a`](https://github.com/kubesphere/kube-design/commit/a7f7e6aa089002b1c24ab650aef124a7ecc3157d) Thanks [@chenz24](https://github.com/chenz24)! - 1. Use classnames instead of clsx.
+  2. Fix package bug cause by importing dayjs locales
+- Updated dependencies [[`a7f7e6a`](https://github.com/kubesphere/kube-design/commit/a7f7e6aa089002b1c24ab650aef124a7ecc3157d)]:
+  - @kubed/components@0.0.18
+
 ## 0.0.17
 
 ### Patch Changes
