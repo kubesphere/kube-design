@@ -7,9 +7,9 @@ import generatePicker, {
   RangePickerProps as BaseRangePickerProps,
 } from './generatePicker';
 
-import 'dayjs/locale/zh';
-import 'dayjs/locale/zh-tw';
-import 'dayjs/locale/es';
+// import 'dayjs/locale/zh';
+// import 'dayjs/locale/zh-tw';
+// import 'dayjs/locale/es';
 
 export type DatePickerProps = PickerProps<Dayjs>;
 export type MonthPickerProps = Omit<PickerDateProps<Dayjs>, 'picker'>;

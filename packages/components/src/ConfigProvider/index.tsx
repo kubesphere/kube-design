@@ -5,6 +5,8 @@ import ThemeProvider from '../theme/ThemeProvider';
 import { Locale, ILocale } from './LocaleProvider/types';
 import { ModalProvider } from '../Modal/ModalProvider/ModalProvider';
 
+export type { Locale, ILocale };
+
 export interface Props {
   children: React.ReactNode;
   themes?: Array<KubedTheme>;
