@@ -1,5 +1,12 @@
 # @kubed/components
 
+## 0.0.19
+
+### Patch Changes
+
+- [`dc41c69`](https://github.com/kubesphere/kube-design/commit/dc41c69b266e08345d7c43222bee5d1fabe10087) Thanks [@chenz24](https://github.com/chenz24)! - 1. Export Progress component.
+  2. Omit trigger if visible is set.
+
 ## 0.0.18
 
 ### Patch Changes
