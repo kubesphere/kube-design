@@ -6,7 +6,7 @@ export default {
   component: Progress,
 };
 
-export const Basic = () => <Progress value={50} color="success" striped />;
+export const Basic = () => <Progress value={50} color="#ca2621" striped />;
 
 export const segments = () => (
   <Progress
