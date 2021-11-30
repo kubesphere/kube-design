@@ -38,3 +38,4 @@ export { default as TimePicker } from './TimePicker/TimePicker';
 export { Banner, BannerTip } from './Banner/Banner';
 export { Notify, notify } from './Notify/Notify';
 export * from './ActionConfirm/ActionConfirm';
+export * from './Progress/Progress';
