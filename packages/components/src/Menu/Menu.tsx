@@ -6,6 +6,7 @@ import { MenuLabel } from './MenuLabel/MenuLabel';
 import { MenuButton } from './MenuButton/MenuButton';
 import { Text } from '../Text/Text';
 import { MenuWrapper } from './Menu.styles';
+import forwardRef from '../utils/forwardRef';
 
 export { MenuItem, MenuLabel };
 
@@ -15,7 +16,7 @@ export interface MenuProps extends DefaultProps, React.ComponentPropsWithoutRef<
   children?: React.ReactNode;
 }
 
-export function Menu({ children }: MenuProps) {
+export const Menu = forwardRef<MenuProps, 'div'>(({ children }, ref) => {
   const items = React.Children.toArray(children).filter(
     (item: MenuItemType) =>
       item.type === MenuItem || item.type === Divider || item.type === MenuLabel
@@ -55,7 +56,7 @@ export function Menu({ children }: MenuProps) {
     return null;
   });
 
-  return <MenuWrapper>{buttons}</MenuWrapper>;
-}
+  return <MenuWrapper ref={ref}>{buttons}</MenuWrapper>;
+});
 
 Menu.displayName = '@kubed/component/Menu';

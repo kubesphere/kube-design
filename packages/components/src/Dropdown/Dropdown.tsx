@@ -66,6 +66,7 @@ export function Dropdown({
       placement={placement}
       arrow={arrow}
       interactive={interactive}
+      hideOnClick={hideOnClick}
       maxWidth={maxWidth}
       animation={animation}
       onMount={onMount}
