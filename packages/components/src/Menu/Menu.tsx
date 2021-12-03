@@ -16,7 +16,7 @@ export interface MenuProps extends DefaultProps, React.ComponentPropsWithoutRef<
   children?: React.ReactNode;
 }
 
-export const Menu = forwardRef<MenuProps, 'div'>(({ children }, ref) => {
+export const Menu = forwardRef<MenuProps, 'div'>(({ children, ...rest }, ref) => {
   const items = React.Children.toArray(children).filter(
     (item: MenuItemType) =>
       item.type === MenuItem || item.type === Divider || item.type === MenuLabel
@@ -56,7 +56,11 @@ export const Menu = forwardRef<MenuProps, 'div'>(({ children }, ref) => {
     return null;
   });
 
-  return <MenuWrapper ref={ref}>{buttons}</MenuWrapper>;
+  return (
+    <MenuWrapper {...rest} ref={ref}>
+      {buttons}
+    </MenuWrapper>
+  );
 });
 
 Menu.displayName = '@kubed/component/Menu';
