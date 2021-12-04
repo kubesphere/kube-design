@@ -39,3 +39,5 @@ export { Banner, BannerTip } from './Banner/Banner';
 export { Notify, notify } from './Notify/Notify';
 export * from './ActionConfirm/ActionConfirm';
 export * from './Progress/Progress';
+export * from './utils/color';
+export { default as forwardRef } from './utils/forwardRef';
