@@ -58,7 +58,7 @@ export function Dropdown({
   };
 
   const popContent = <DropdownWrapper onClick={onDropdownClick}>{content}</DropdownWrapper>;
-  const triggerProps = isUndefined(visible) ? { trigger } : { visible };
+  const triggerProps = isUndefined(visible) ? { trigger, hideOnClick } : { visible };
 
   return (
     // @ts-ignore
@@ -66,7 +66,6 @@ export function Dropdown({
       placement={placement}
       arrow={arrow}
       interactive={interactive}
-      hideOnClick={hideOnClick}
       maxWidth={maxWidth}
       animation={animation}
       onMount={onMount}
