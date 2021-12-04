@@ -1,5 +1,12 @@
 # kubed-documents
 
+## 0.0.20
+
+### Patch Changes
+
+- Updated dependencies [[`e3b1a57`](https://github.com/kubesphere/kube-design/commit/e3b1a57e6adb6480963399e30151978511d89350)]:
+  - @kubed/components@0.0.20
+
 ## 0.0.19
 
 ### Patch Changes
