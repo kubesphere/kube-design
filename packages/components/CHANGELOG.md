@@ -1,5 +1,14 @@
 # @kubed/components
 
+## 0.0.20
+
+### Patch Changes
+
+- [`e3b1a57`](https://github.com/kubesphere/kube-design/commit/e3b1a57e6adb6480963399e30151978511d89350) Thanks [@chenz24](https://github.com/chenz24)! - 1. Add useClickOutside hook
+  2. Add FilterInput component.
+  3. Tag support append element.
+  4. Some other bugs fix.
+
 ## 0.0.19
 
 ### Patch Changes
