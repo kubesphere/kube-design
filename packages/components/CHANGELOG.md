@@ -1,5 +1,13 @@
 # @kubed/components
 
+## 0.0.21
+
+### Patch Changes
+
+- [`7c7e066`](https://github.com/kubesphere/kube-design/commit/7c7e066d5a612344865f8279d39582e65c71919a) Thanks [@chenz24](https://github.com/chenz24)! - 1. fix: Omit hideOnClick if Dropdown component is control component.
+  2. feat: Add useMove hook.
+  3. Fix MenuItem cannot be render if place in react fragment
+
 ## 0.0.20
 
 ### Patch Changes
