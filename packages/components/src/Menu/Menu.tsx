@@ -7,6 +7,7 @@ import { MenuButton } from './MenuButton/MenuButton';
 import { Text } from '../Text/Text';
 import { MenuWrapper } from './Menu.styles';
 import forwardRef from '../utils/forwardRef';
+import toArray from '../utils/toArray';
 
 export { MenuItem, MenuLabel };
 
@@ -17,7 +18,7 @@ export interface MenuProps extends DefaultProps, React.ComponentPropsWithoutRef<
 }
 
 export const Menu = forwardRef<MenuProps, 'div'>(({ children, ...rest }, ref) => {
-  const items = React.Children.toArray(children).filter(
+  const items = toArray(children).filter(
     (item: MenuItemType) =>
       item.type === MenuItem || item.type === Divider || item.type === MenuLabel
   ) as MenuItemType[];

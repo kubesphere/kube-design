@@ -14,10 +14,12 @@ const clickCallback = () => {
 export const Basic = () => (
   <Card style={{ width: '230px' }}>
     <Menu>
-      <MenuLabel>menu label</MenuLabel>
-      <MenuItem icon={<Add />} as="a" href="/logout">
-        创建
-      </MenuItem>
+      <>
+        <MenuLabel>menu label</MenuLabel>
+        <MenuItem icon={<Add />} as="a" href="/logout">
+          创建
+        </MenuItem>
+      </>
       <MenuItem icon={<Stop />} onClick={clickCallback}>
         停止调度
       </MenuItem>
