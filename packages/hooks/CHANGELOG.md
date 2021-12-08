@@ -1,5 +1,12 @@
 # @kubed/hooks
 
+## 0.0.4
+
+### Patch Changes
+
+- [`bf37ccc`](https://github.com/kubesphere/kube-design/commit/bf37cccbf64598b67b6e599b61c9d4ed33ec8504) Thanks [@chenz24](https://github.com/chenz24)! - 1. Add hotkey hook.
+  2. Fix Banner cannot set className
+
 ## 0.0.3
 
 ### Patch Changes
