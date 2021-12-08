@@ -1,3 +1,6 @@
-export function randomId() {
-  return `kubed-${Math.random().toString(36).substr(2, 9)}`;
-}
+// @ts-ignore
+export { assignRef } from './assignRef/assignRef';
+// @ts-ignore
+export { clamp } from './clamp/clamp';
+// @ts-ignore
+export { randomId } from './randomId/randomId';

@@ -9,3 +9,9 @@ export { useLocalStorage } from './useLocalStorage';
 export { useForceUpdate } from './useForceUpdate';
 export { useClipboard } from './useClipboard';
 export { useQueue } from './useQueue';
+// @ts-ignore
+export { useDidUpdate } from './useDidUpdate';
+// @ts-ignore
+export { useMergedRef, mergeRefs } from './useMergedRef';
+// @ts-ignore
+export { useMove } from './useMove';

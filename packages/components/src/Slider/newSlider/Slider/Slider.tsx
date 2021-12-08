@@ -1,0 +1,240 @@
+import React, { useRef, useState, useEffect, useCallback } from 'react';
+import { useUncontrolled } from '@kubed/hooks';
+import { DefaultProps, KubedNumberSize, KubedTheme } from '../../../theme';
+import { getClientPosition } from '../utils/get-client-position';
+import { getPosition } from '../utils/get-position';
+import { getChangeValue } from '../utils/get-change-value';
+import { getDragEventsAssigner } from '../utils/get-drag-events-assigner';
+import { Thumb } from '../Thumb/Thumb';
+import { Track } from '../Track/Track';
+import { SliderRoot } from '../SliderRoot/SliderRoot';
+import { KubedTransition } from '../../../Transition';
+
+// @ts-ignore
+export interface SliderProps
+  extends DefaultProps,
+    Omit<React.ComponentPropsWithoutRef<'div'>, 'value' | 'onChange'> {
+  /** Color from theme.colors */
+  color?: KubedTheme;
+
+  /** Track border-radius from theme or number to set border-radius in px */
+  radius?: KubedNumberSize;
+
+  /** Predefined track and thumb size, number to set sizes in px */
+  size?: KubedNumberSize;
+
+  /** Minimal possible value */
+  min?: number;
+
+  /** Maximum possible value */
+  max?: number;
+
+  /** Number by which value will be incremented/decremented with thumb drag and arrows */
+  step?: number;
+
+  /** Current value for controlled slider */
+  value?: number;
+
+  /** Default value for uncontrolled slider */
+  defaultValue?: number;
+
+  /** Called each time value changes */
+  onChange?(value: number): void;
+
+  /** Hidden input name, use with uncontrolled variant */
+  name?: string;
+
+  /** Marks which will be placed on the track */
+  marks?: { value: number; label?: React.ReactNode }[];
+
+  /** Function to generate label or any react node to render instead, set to null to disable label */
+  label?: React.ReactNode | ((value: number) => React.ReactNode);
+
+  /** Label appear/disappear transition */
+  labelTransition?: KubedTransition;
+
+  /** Label appear/disappear transition duration in ms */
+  labelTransitionDuration?: number;
+
+  /** Label appear/disappear transition timing function, defaults to theme.transitionRimingFunction */
+  labelTransitionTimingFunction?: string;
+
+  /** If true label will be not be hidden when user stops dragging */
+  labelAlwaysOn?: boolean;
+
+  /** Thumb aria-label */
+  thumbLabel?: string;
+}
+
+export function Slider({
+                         classNames,
+                         styles,
+                         color,
+                         value,
+                         onChange,
+                         size = 'md',
+                         radius = 'xl',
+                         min = 0,
+                         max = 100,
+                         step = 1,
+                         defaultValue,
+                         name,
+                         marks = [],
+                         label = (f) => f,
+                         labelTransition = 'skew-down',
+                         labelTransitionDuration = 150,
+                         labelTransitionTimingFunction,
+                         labelAlwaysOn = false,
+                         thumbLabel = '',
+                         ...others
+                       }: SliderProps) {
+  const [dragging, setDragging] = useState(false);
+  const [_value, setValue] = useUncontrolled({
+    value,
+    defaultValue,
+    finalValue: 0,
+    rule: (val) => typeof val === 'number',
+    onChange,
+  });
+  const container = useRef<HTMLDivElement>();
+  const thumb = useRef<HTMLDivElement>();
+  const start = useRef<number>();
+  const offset = useRef<number>();
+  const position = getPosition({ value: _value, min, max });
+  const _label = typeof label === 'function' ? label(_value) : label;
+
+  const handleChange = (val: number) => {
+    if (container.current) {
+      const containerWidth = container.current.getBoundingClientRect().width;
+      const nextValue = getChangeValue({ value: val, containerWidth, min, max, step });
+      setValue(nextValue);
+    }
+  };
+
+  const onDrag = useCallback((event: any) => {
+    container.current && container.current.focus();
+    handleChange(getClientPosition(event) + start.current - offset.current);
+  }, []);
+
+  const onDragEnd = useCallback(() => {
+    setDragging(false);
+  }, []);
+
+  const { assignEvents, removeEvents } = getDragEventsAssigner({
+    onDrag,
+    onDragEnd,
+  });
+
+  useEffect(() => removeEvents, []);
+
+  function handleThumbMouseDown(
+    event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
+  ) {
+    if (event.cancelable) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    start.current = thumb.current.offsetLeft;
+    offset.current = getClientPosition(event as any);
+
+    assignEvents();
+  }
+
+  const handleTrackMouseDown = (
+    event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
+  ) => {
+    if (event.cancelable) {
+      event.preventDefault();
+    }
+
+    const changePosition = getClientPosition(event.nativeEvent);
+    const rect = container.current.getBoundingClientRect();
+
+    start.current = changePosition - rect.left;
+    offset.current = changePosition;
+
+    assignEvents();
+    handleChange(changePosition - rect.left);
+  };
+
+  const handleTrackKeydownCapture = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    switch (event.nativeEvent.code) {
+      case 'ArrowUp':
+      case 'ArrowRight': {
+        event.preventDefault();
+        thumb.current.focus();
+        setValue(Math.min(Math.max(_value + step, min), max));
+        break;
+      }
+
+      case 'ArrowDown':
+      case 'ArrowLeft': {
+        event.preventDefault();
+        thumb.current.focus();
+        setValue(Math.min(Math.max(_value - step, min), max));
+        break;
+      }
+
+      default: {
+        break;
+      }
+    }
+  };
+
+  return (
+    <SliderRoot
+      {...others}
+      size={size}
+      ref={container}
+      onTouchStart={handleTrackMouseDown}
+      onMouseDown={handleTrackMouseDown}
+      onTouchStartCapture={() => setDragging(true)}
+      onTouchEndCapture={() => setDragging(false)}
+      onMouseDownCapture={() => setDragging(true)}
+      onMouseUpCapture={() => setDragging(false)}
+      onKeyDownCapture={handleTrackKeydownCapture}
+      classNames={classNames}
+      styles={styles}
+    >
+      <Track
+        offset={0}
+        filled={position}
+        marks={marks}
+        size={size}
+        radius={radius}
+        color={color}
+        min={min}
+        max={max}
+        value={_value}
+        onChange={setValue}
+        styles={styles}
+        classNames={classNames}
+      >
+        <Thumb
+          max={max}
+          min={min}
+          value={_value}
+          position={position}
+          dragging={dragging}
+          color={color}
+          size={size}
+          label={_label}
+          ref={thumb}
+          onMouseDown={handleThumbMouseDown}
+          labelTransition={labelTransition}
+          labelTransitionDuration={labelTransitionDuration}
+          labelTransitionTimingFunction={labelTransitionTimingFunction}
+          labelAlwaysOn={labelAlwaysOn}
+          classNames={classNames}
+          styles={styles}
+          thumbLabel={thumbLabel}
+         />
+      </Track>
+
+      <input type="hidden" name={name} value={_value} />
+    </SliderRoot>
+  );
+}
+
+Slider.displayName = '@kubed/components/Slider';
