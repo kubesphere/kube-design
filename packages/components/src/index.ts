@@ -25,6 +25,7 @@ export { Loading } from './Loading/Loading';
 export { LoadingOverlay } from './LoadingOverlay/LoadingOverlay';
 export { Input } from './Input/Input';
 export { InputPassword } from './InputPassword/InputPassword';
+export { FilterInput } from './FilterInput/FilterInput';
 export { Empty } from './Empty/Empty';
 export * from './Form/Form';
 export { default as Select } from './Select/Select';

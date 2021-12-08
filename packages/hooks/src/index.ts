@@ -10,3 +10,5 @@ export { useForceUpdate } from './useForceUpdate';
 export { useClipboard } from './useClipboard';
 export { useQueue } from './useQueue';
 export { useClickOutside } from './useClickOutside';
+export { useMove } from './useMove';
+export { useHotkeys } from './useHotkeys';
