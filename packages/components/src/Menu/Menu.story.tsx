@@ -12,7 +12,7 @@ const clickCallback = () => {
 };
 
 export const Basic = () => (
-  <Card style={{ width: '230px' }}>
+  <Card style={{ width: '220px' }}>
     <Menu>
       <>
         <MenuLabel>menu label</MenuLabel>

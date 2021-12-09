@@ -119,6 +119,9 @@ export function Navs({
         transitionTimingFunction={transitionTimingFunction}
         transitionDuration={transitionDuration}
         className={cx('nav-item', { 'nav-item__active': isActive })}
+        ref={(node) => {
+          refs.current[item.value] = node;
+        }}
       >
         <input
           className="nav-input"
@@ -129,13 +132,7 @@ export function Navs({
           checked={isActive}
           onChange={() => handleValueChange(item.value)}
         />
-        <NavItemLabel
-          active={isActive}
-          htmlFor={`${uuid}-${item.value}`}
-          ref={(node) => {
-            refs.current[item.value] = node;
-          }}
-        >
+        <NavItemLabel active={isActive} htmlFor={`${uuid}-${item.value}`}>
           {item.label}
         </NavItemLabel>
       </NavItemDiv>

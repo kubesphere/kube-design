@@ -17,7 +17,7 @@ export interface MenuProps extends DefaultProps, React.ComponentPropsWithoutRef<
   children?: React.ReactNode;
 }
 
-export const Menu = forwardRef<MenuProps, 'div'>(({ children, ...rest }, ref) => {
+export const Menu = forwardRef<MenuProps, 'div'>(({ children, width = 210, ...rest }, ref) => {
   const items = toArray(children).filter(
     (item: MenuItemType) =>
       item.type === MenuItem || item.type === Divider || item.type === MenuLabel
@@ -58,7 +58,7 @@ export const Menu = forwardRef<MenuProps, 'div'>(({ children, ...rest }, ref) =>
   });
 
   return (
-    <MenuWrapper {...rest} ref={ref}>
+    <MenuWrapper $width={width} {...rest} ref={ref}>
       {buttons}
     </MenuWrapper>
   );
