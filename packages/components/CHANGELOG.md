@@ -1,5 +1,13 @@
 # @kubed/components
 
+## 0.0.23
+
+### Patch Changes
+
+- [`5358eca`](https://github.com/kubesphere/kube-design/commit/5358eca08e547b35870d15258e3644e4bee0ed92) Thanks [@chenz24](https://github.com/chenz24)! - 1. feat: FilterInput support simple mode.
+  2. fix: Improve nav to support more flexible style setting.
+  3. fix: Fix width setting didn't take effect in Menu.
+
 ## 0.0.22
 
 ### Patch Changes
