@@ -52,3 +52,18 @@ export const Basic = () => {
     />
   );
 };
+
+export const SimpleMode = () => {
+  const handleChange = (data) => {
+    console.log(data);
+  };
+  return (
+    <FilterInput
+      placeholder="Search.."
+      onInputChange={handleChange}
+      onChange={handleChange}
+      simpleMode
+      initialKeyword="test"
+    />
+  );
+};

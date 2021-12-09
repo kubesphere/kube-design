@@ -46,17 +46,20 @@ export interface FilterInputProps extends DefaultProps {
   suggestions?: any[];
   placeholder?: string;
   filters?: Filter;
-  filter?: () => void;
+  // filter?: () => void;
   onChange?: (params?: any) => void;
   onClear?: () => void;
-  onInputChange?: () => void;
+  onInputChange?: (params?: any) => void;
   isMultiKeyword?: boolean;
-  defaultKeywordLabel?: string;
-  renderMenuItem?: () => void;
+  // defaultKeywordLabel?: string;
+  // renderMenuItem?: () => void;
+  initialKeyword?: string;
+  simpleMode?: boolean;
 }
 
 export const FilterInput = forwardRef<FilterInputProps, null>((props, ref) => {
-  const [value, setValue] = useState<string>();
+  const initialValue = props.simpleMode ? props.initialKeyword : '';
+  const [value, setValue] = useState<string>(initialValue);
   const [optionVisible, setOptionVisible] = useState(false);
   const [activeSuggestion, setActiveSuggestion] = useState<Suggestion>(null);
   const [tags, setTags] = useState([]);
@@ -67,19 +70,22 @@ export const FilterInput = forwardRef<FilterInputProps, null>((props, ref) => {
   const inputRef = useRef<HTMLInputElement>();
 
   useEffect(() => {
-    const newTags = getTags(props.suggestions, props.filters);
-    setTags(newTags);
-    setActiveSuggestion(null);
-    setOptionVisible(false);
-    setValue('');
+    if (!props.simpleMode) {
+      const newTags = getTags(props.suggestions, props.filters);
+      setTags(newTags);
+      setActiveSuggestion(null);
+      setOptionVisible(false);
+      setValue('');
+    }
   }, [props.filters]);
 
   const handleClear = (e) => {
     e.nativeEvent.stopImmediatePropagation();
-    const { onChange = () => {} } = props;
+    const { onChange = () => {}, simpleMode } = props;
     setValue('');
     setActiveSuggestion(null);
-    onChange({});
+    const returnValue = simpleMode ? '' : {};
+    onChange(returnValue);
   };
 
   const handleTagDelete = (tag) => {
@@ -88,6 +94,7 @@ export const FilterInput = forwardRef<FilterInputProps, null>((props, ref) => {
   };
 
   const renderTags = () => {
+    if (props.simpleMode) return null;
     return tags.map((tag) => (
       <Tag
         className="filter-tag"
@@ -113,21 +120,28 @@ export const FilterInput = forwardRef<FilterInputProps, null>((props, ref) => {
   };
 
   const handleChange = (e) => {
+    const { onInputChange = () => {}, simpleMode } = props;
     const { value: _value } = e.target;
     setValue(_value);
-    if (isEmpty(_value)) {
+    if (simpleMode) {
+      onInputChange(_value);
+    } else if (isEmpty(_value)) {
       setActiveSuggestion(null);
     }
   };
 
   const handleKeyUp = (e) => {
     if (e.keyCode === 13 && !isEmpty(value)) {
-      const { onChange = () => {}, filters, suggestions } = props;
-      const sg = activeSuggestion || suggestions[0];
-      onChange({
-        ...filters,
-        [sg.key]: trim(value.replace(`${sg.label}:`, '')),
-      });
+      const { onChange = () => {}, filters, suggestions, simpleMode } = props;
+      if (simpleMode) {
+        onChange(value);
+      } else {
+        const sg = activeSuggestion || suggestions[0];
+        onChange({
+          ...filters,
+          [sg.key]: trim(value.replace(`${sg.label}:`, '')),
+        });
+      }
     }
   };
 
