@@ -28,7 +28,7 @@ export const Label = () => (
 export const Vertical = () => (
   <Group>
     <Button>1</Button>
-    <Divider direction="vertical" margins="sm" />
+    <Divider direction="vertical" height={20} margins="sm" />
     <Button>2</Button>
     <Divider direction="vertical" margins="sm" />
     <Button>3</Button>

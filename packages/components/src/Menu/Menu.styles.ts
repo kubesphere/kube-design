@@ -1,11 +1,15 @@
 import styled from 'styled-components';
 
-export const MenuWrapper = styled('div')`
+interface MenuWrapperProps {
+  $width: number;
+}
+
+export const MenuWrapper = styled('div')<MenuWrapperProps>`
   margin: 0;
   padding: 8px;
-  min-width: 210px;
+  width: ${({ $width }) => $width}px;
   border-radius: 4px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.palette.background};
 
   .menu-label {
     padding: 8px 22px;

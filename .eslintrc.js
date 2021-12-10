@@ -56,6 +56,8 @@ module.exports = {
     // backend developers like _, no need to transform data all the time
     camelcase: 'off',
 
+    'import/no-cycle': 'off',
+
     // just the formatting issues, prettier does all the job
     'react/jsx-indent': 'off',
     'react/jsx-wrap-multilines': 'off',

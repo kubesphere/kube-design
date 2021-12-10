@@ -4,13 +4,13 @@ import { colorToRgbValues } from '../utils/color';
 
 interface ButtonStylesProps {
   $loading?: boolean;
-  size?: KubedSizes;
+  $size?: KubedSizes;
   $radius?: KubedNumberSize;
   theme?: KubedTheme;
   block?: boolean;
   disabled?: boolean;
-  shadow?: boolean;
-  variant?: 'filled' | 'outline' | 'text' | 'link';
+  $shadow?: boolean;
+  $variant?: 'filled' | 'outline' | 'text' | 'link';
   $color?: string | 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'error';
 }
 
@@ -232,9 +232,9 @@ export const ButtonContainer = styled('div')<ButtonStylesProps>`
   border-radius: ${({ $radius, theme }) => theme.layout.radius[$radius]};
   display: ${(props) => (props.block ? 'block' : 'inline-block')};
   ${({ $loading, disabled }) => getButtonCursor($loading, disabled)};
-  ${({ size, block }) => getButtonSize(size, block)};
-  ${({ theme, $color, variant, shadow, disabled, $loading }) =>
-    getButtonStyles(theme, $color, variant, shadow, disabled, $loading)};
+  ${({ $size, block }) => getButtonSize($size, block)};
+  ${({ theme, $color, $variant, $shadow, disabled, $loading }) =>
+    getButtonStyles(theme, $color, $variant, $shadow, disabled, $loading)};
   ${({ $loading }) => ($loading ? 'opacity: 0.6;' : null)};
 `;
 

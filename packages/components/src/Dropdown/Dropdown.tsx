@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { isUndefined } from 'lodash';
 import { Tooltip, TooltipProps } from '../Tooltip/Tooltip';
 
 const StyledTooltip = styled(Tooltip)<TooltipProps>`
@@ -37,11 +38,12 @@ export function Dropdown({
   maxWidth = 210,
   animation = 'shift-away',
   content,
+  visible,
   ...rest
 }: DropdownProps) {
   const [instance, setInstance] = useState(false);
   const onDropdownClick = () => {
-    if (hideOnClick && instance) {
+    if (hideOnClick && instance && !visible) {
       // @ts-ignore
       instance.hide();
     }
@@ -56,18 +58,19 @@ export function Dropdown({
   };
 
   const popContent = <DropdownWrapper onClick={onDropdownClick}>{content}</DropdownWrapper>;
+  const triggerProps = isUndefined(visible) ? { trigger, hideOnClick } : { visible };
 
   return (
     // @ts-ignore
     <StyledTooltip
       placement={placement}
-      trigger={trigger}
       arrow={arrow}
       interactive={interactive}
       maxWidth={maxWidth}
       animation={animation}
       onMount={onMount}
       onDestroy={onDestroy}
+      {...triggerProps}
       {...rest}
       content={popContent}
     >

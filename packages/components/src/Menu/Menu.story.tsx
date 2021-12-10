@@ -7,12 +7,22 @@ export default {
   component: Menu,
 };
 
+const clickCallback = () => {
+  console.log('you click me');
+};
+
 export const Basic = () => (
-  <Card style={{ width: '230px' }}>
+  <Card style={{ width: '220px' }}>
     <Menu>
-      <MenuLabel>menu label</MenuLabel>
-      <MenuItem icon={<Add />}>创建</MenuItem>
-      <MenuItem icon={<Stop />}>停止调度</MenuItem>
+      <>
+        <MenuLabel>menu label</MenuLabel>
+        <MenuItem icon={<Add />} as="a" href="/logout">
+          创建
+        </MenuItem>
+      </>
+      <MenuItem icon={<Stop />} onClick={clickCallback}>
+        停止调度
+      </MenuItem>
       <MenuItem icon={<Pen />}>Edit</MenuItem>
       <Divider />
       <MenuItem icon={<Trash />}>Delete</MenuItem>
