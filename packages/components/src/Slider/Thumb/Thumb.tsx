@@ -12,13 +12,8 @@ interface ThumbProps extends DefaultProps {
   value: number;
   position: number;
   dragging: boolean;
-  color: KubedTheme;
-  size: KubedNumberSize;
   label: React.ReactNode;
   onMouseDown(event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>): void;
-  labelTransition?: string;
-  labelTransitionDuration?: number;
-  labelTransitionTimingFunction?: string;
   labelAlwaysOn: boolean;
   thumbLabel: string;
   onFocus?(): void;
@@ -37,13 +32,7 @@ export const Thumb = forwardRef<HTMLDivElement, ThumbProps>(
       label,
       dragging,
       onMouseDown,
-      color,
       classNames,
-      styles,
-      size,
-      labelTransition,
-      labelTransitionDuration,
-      labelTransitionTimingFunction,
       labelAlwaysOn,
       thumbLabel,
       onFocus,

@@ -1,8 +1,4 @@
 import styled from 'styled-components';
-import { KubedNumberSize, KubedTheme } from '../../theme/types';
-import { themeUtils } from '../../theme/index';
-
-const { getSizeValue } = themeUtils;
 
 export const sizes = {
   xs: 4,

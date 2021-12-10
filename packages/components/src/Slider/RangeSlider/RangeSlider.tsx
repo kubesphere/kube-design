@@ -93,7 +93,7 @@ export const RangeSlider = forwardRef<HTMLDivElement, RangeSliderProps>(
       radius = 'xl',
       min = 0,
       max = 100,
-      decimals = 2,
+      decimals = 0,
       minRange = 10,
       step = 1,
       defaultValue,
@@ -132,7 +132,6 @@ export const RangeSlider = forwardRef<HTMLDivElement, RangeSliderProps>(
     const _setValue = (val: Value) => {
       setValue(val);
       _valueRef.current = val;
-      console.log('val', val);
     };
 
     const setRangedValue = (val: number, index: number) => {
@@ -162,14 +161,12 @@ export const RangeSlider = forwardRef<HTMLDivElement, RangeSliderProps>(
     };
 
     const handleChange = (val: number) => {
-      console.log('handleChnage', val);
       const nextValue = getUnevenChangeValue({ value: val, marks, decimals });
       setRangedValue(nextValue, thumbIndex.current);
     };
 
     const { ref: container, active } = useMove(({ x }) => {
       handleChange(x);
-      console.log('x', x);
     });
 
     function handleThumbMouseDown(

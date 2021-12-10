@@ -20,7 +20,6 @@ export function getUnevenPosition({ value, marks, min, max }: GetUnevenPosition)
         position += (markWeight * percent) / totalWeight;
       }
     }
-    console.log('position', position);
     return Math.min(Math.max(position * 100, 0), 100);
   }
   position = ((value - min) / (max - min)) * 100;

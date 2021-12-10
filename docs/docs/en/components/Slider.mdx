@@ -45,6 +45,8 @@ To input a value in a range.
 
 ## Uneven Slider
 
+MinRange can set minimal range interval of Slider，if it less than 1, decimals is required to set when move the Slider。
+
 ```js live=true
 () => {
   return (
@@ -58,7 +60,10 @@ To input a value in a range.
         { value: 3, label: 3, weight: 1 },
         { value: 4, label: 4 },
         { value: 100, label: 100, weight: 1 },
-     ]}
+      ]}
+      defaultValue={[2, 3]}
+      minRange={0.01}
+      decimals={2}
     />
   )
 };

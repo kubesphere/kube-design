@@ -44,10 +44,10 @@ export const Uneven = () => {
         { value: 2, label: 2, weight: 2 },
         { value: 3, label: 3, weight: 1 },
         { value: 4, label: 4 },
-        { value: 100, label: 100, weight: 1 },
       ]}
-      // defaultValue={[2,3]}
-      // min={0}
+      defaultValue={[2, 3]}
+      minRange={0.01}
+      decimals={2}
     />
   );
 };
@@ -61,7 +61,7 @@ export const Controlled = () => {
     { value: 80, label: '80%' },
     { value: 100, label: '100%' },
   ];
-  return <RangeSlider decimals={0} defaultValue={[20, 80]} marks={marks} />;
+  return <RangeSlider defaultValue={[20, 80]} marks={marks} />;
 };
 
 export const ControlLabel = () => {
