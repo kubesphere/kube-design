@@ -1,10 +1,10 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { useUncontrolled } from '@kubed/hooks';
 import { DefaultProps, KubedNumberSize, KubedTheme } from '../../theme/index';
-import { getClientPosition } from '../utils/get-client-position';
-import { getUnevenPosition } from '../utils/get-position';
-import { getUnevenChangeValue } from '../utils/get-change-value';
-import { getDragEventsAssigner } from '../utils/get-drag-events-assigner';
+import { getClientPosition } from '../utils/getClientPosition';
+import { getUnevenPosition } from '../utils/getPosition';
+import { getUnevenChangeValue } from '../utils/getChangeValue';
+import { getDragEventsAssigner } from '../utils/getDragEventsAssigner';
 import { Thumb } from '../Thumb/Thumb';
 import { Track } from '../Track/Track';
 import { SliderRoot } from '../SliderRoot/SliderRoot';
@@ -80,8 +80,6 @@ export function Slider({
   name,
   marks = [],
   label = (f) => f,
-  labelTransition = 'skew-down',
-  labelTransitionDuration = 150,
   labelTransitionTimingFunction,
   labelAlwaysOn = false,
   thumbLabel = '',
@@ -216,14 +214,9 @@ export function Slider({
           value={_value}
           position={position}
           dragging={dragging}
-          color={color}
-          size={size}
           label={_label}
           ref={thumb}
           onMouseDown={handleThumbMouseDown}
-          labelTransition={labelTransition}
-          labelTransitionDuration={labelTransitionDuration}
-          labelTransitionTimingFunction={labelTransitionTimingFunction}
           labelAlwaysOn={labelAlwaysOn}
           classNames={classNames}
           styles={styles}

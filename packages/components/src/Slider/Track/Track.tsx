@@ -39,9 +39,7 @@ export function Track({
         className="track-bar"
         style={{ left: `${offset}%`, width: `${filled}%`, position: 'absolute' }}
       />
-
       {children}
-
       <Marks
         {...others}
         size={size}

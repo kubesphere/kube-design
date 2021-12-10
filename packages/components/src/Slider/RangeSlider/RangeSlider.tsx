@@ -1,9 +1,9 @@
 import React, { useRef, useState, forwardRef } from 'react';
 import { useMove, useUncontrolled, useMergedRef } from '@kubed/hooks';
 import { DefaultProps, KubedNumberSize, KubedTheme } from '../../theme/index';
-import { getClientPosition } from '../utils/get-client-position';
-import { getUnevenPosition } from '../utils/get-position';
-import { getUnevenChangeValue } from '../utils/get-change-value';
+import { getClientPosition } from '../utils/getClientPosition';
+import { getUnevenPosition } from '../utils/getPosition';
+import { getUnevenChangeValue } from '../utils/getChangeValue';
 import { Thumb } from '../Thumb/Thumb';
 import { Track } from '../Track/Track';
 import { SliderRoot } from '../SliderRoot/SliderRoot';
