@@ -10,46 +10,58 @@ order: 1
 
 当用户需要在数值区间/自定义区间内进行选择时，可为连续或离散值。
 
-## 基本用法
+## 单滑块
 
 ```js live=true
 () => {
-  const [request, setRequest] = React.useState(2);
-  const [limit, setLimit] = React.useState(3);
-  const cpuFormatter = (value) => {
-    if (value > 0 && value < 1) {
-      return value.toFixed(2);
-    }
-    if (value > 1 && value !== Infinity) {
-      return value.toFixed(1);
-    }
-    return value;
-  };
-
-  const handleChange = (value) => {
-    setRequest(value[0]);
-    setLimit(value[1]);
-  };
-
   return (
-    <Slider
-      onChange={handleChange}
-      valueFormatter={cpuFormatter}
+     <Slider
+        marks={[
+           { value: 0, label: '0' },
+           { value: 20, label: '20%' },
+           { value: 50, label: '50%' },
+           { value: 80, label: '80%' },
+           { value: 100, label: '100%' },
+        ]}
+     />
+  )
+}
+```
+
+## 双滑块
+
+```js live=true
+() => {
+  const marks = [
+    { value: 0, label: '0' },
+    { value: 20, label: '20%' },
+    { value: 50, label: '50%' },
+    { value: 80, label: '80%' },
+    { value: 100, label: '100%' },
+  ];
+  return <RangeSlider decimals={0} defaultValue={[20, 80]} marks={marks} />;
+};
+```
+
+## 不均匀刻度
+
+```js live=true
+() => {
+  return (
+    <RangeSlider
       marks={[
         { value: 0, label: '无限制', weight: 2 },
         { value: 0.2, label: 0.2, weight: 2 },
         { value: 0.5, label: 0.5, weight: 2 },
         { value: 1, label: 1, weight: 1 },
-        { value: 2, label: 2, weight: 1 },
-        { value: 3, label: 3 },
-        { value: 4, label: 4, weight: 2 },
-        { value: Infinity, label: '无限制' },
-      ]}
-      value={[request || 0, limit || Infinity]}
-      defaultValue={10}
-      unit="MiB"
-      hasTooltip
+        { value: 2, label: 2, weight: 2 },
+        { value: 3, label: 3, weight: 1 },
+        { value: 4, label: 4 },
+        { value: 100, label: 100, weight: 1 },
+     ]}
     />
-  );
+  )
 };
 ```
+
+

@@ -37,4 +37,4 @@ export { default as TimePicker } from './TimePicker/TimePicker';
 export { Banner, BannerTip } from './Banner/Banner';
 export { Notify, notify } from './Notify/Notify';
 export { AutoComplete } from './AutoComplete/AutoComplete';
-export { Slider } from './Slider/Slider';
+export { Slider, RangeSlider } from './Slider/index';
