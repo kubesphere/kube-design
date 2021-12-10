@@ -1,7 +1,5 @@
-import styled from "styled-components";
-import { KubedNumberSize, themeUtils } from "../../../theme";
-
-const { getSizeValue } = themeUtils;
+import styled from 'styled-components';
+import { KubedNumberSize } from '../../theme/index';
 
 interface SliderRootStyles {
   size?: KubedNumberSize;

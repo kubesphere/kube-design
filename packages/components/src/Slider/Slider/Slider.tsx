@@ -1,14 +1,13 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { useUncontrolled } from '@kubed/hooks';
-import { DefaultProps, KubedNumberSize, KubedTheme } from '../../../theme';
+import { DefaultProps, KubedNumberSize, KubedTheme } from '../../theme/index';
 import { getClientPosition } from '../utils/get-client-position';
-import { getPosition } from '../utils/get-position';
-import { getChangeValue } from '../utils/get-change-value';
+import { getUnevenPosition } from '../utils/get-position';
+import { getUnevenChangeValue } from '../utils/get-change-value';
 import { getDragEventsAssigner } from '../utils/get-drag-events-assigner';
 import { Thumb } from '../Thumb/Thumb';
 import { Track } from '../Track/Track';
 import { SliderRoot } from '../SliderRoot/SliderRoot';
-import { KubedTransition } from '../../../Transition';
 
 // @ts-ignore
 export interface SliderProps
@@ -51,7 +50,7 @@ export interface SliderProps
   label?: React.ReactNode | ((value: number) => React.ReactNode);
 
   /** Label appear/disappear transition */
-  labelTransition?: KubedTransition;
+  labelTransition?: string;
 
   /** Label appear/disappear transition duration in ms */
   labelTransitionDuration?: number;
@@ -67,27 +66,27 @@ export interface SliderProps
 }
 
 export function Slider({
-                         classNames,
-                         styles,
-                         color,
-                         value,
-                         onChange,
-                         size = 'md',
-                         radius = 'xl',
-                         min = 0,
-                         max = 100,
-                         step = 1,
-                         defaultValue,
-                         name,
-                         marks = [],
-                         label = (f) => f,
-                         labelTransition = 'skew-down',
-                         labelTransitionDuration = 150,
-                         labelTransitionTimingFunction,
-                         labelAlwaysOn = false,
-                         thumbLabel = '',
-                         ...others
-                       }: SliderProps) {
+  classNames,
+  styles,
+  color,
+  value,
+  onChange,
+  size = 'md',
+  radius = 'xl',
+  min = 0,
+  max = 100,
+  step = 1,
+  defaultValue,
+  name,
+  marks = [],
+  label = (f) => f,
+  labelTransition = 'skew-down',
+  labelTransitionDuration = 150,
+  labelTransitionTimingFunction,
+  labelAlwaysOn = false,
+  thumbLabel = '',
+  ...others
+}: SliderProps) {
   const [dragging, setDragging] = useState(false);
   const [_value, setValue] = useUncontrolled({
     value,
@@ -100,13 +99,13 @@ export function Slider({
   const thumb = useRef<HTMLDivElement>();
   const start = useRef<number>();
   const offset = useRef<number>();
-  const position = getPosition({ value: _value, min, max });
+  const position = getUnevenPosition({ value: _value, min, max, marks });
   const _label = typeof label === 'function' ? label(_value) : label;
 
   const handleChange = (val: number) => {
     if (container.current) {
       const containerWidth = container.current.getBoundingClientRect().width;
-      const nextValue = getChangeValue({ value: val, containerWidth, min, max, step });
+      const nextValue = getUnevenChangeValue({ value: val, containerWidth, min, max, step });
       setValue(nextValue);
     }
   };
@@ -229,7 +228,7 @@ export function Slider({
           classNames={classNames}
           styles={styles}
           thumbLabel={thumbLabel}
-         />
+        />
       </Track>
 
       <input type="hidden" name={name} value={_value} />

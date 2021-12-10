@@ -1,7 +1,5 @@
-import {KubedNumberSize, KubedTheme} from "../../../theme/types";
 import styled from 'styled-components';
-import { themeUtils } from '../../../theme';
-const { getSizeValue } = themeUtils;
+import { KubedNumberSize, KubedTheme } from '../../theme/types';
 
 export const sizes = {
   xs: 4,
@@ -18,11 +16,11 @@ interface TrackStyles {
 }
 
 export const TrackWrapper = styled('div')<TrackStyles>`
-   position: relative;
-   height: 8px;
-   width: 100%;
-   background-color: #eff4f9;
-   border-radius: 4px;
+  position: relative;
+  height: 8px;
+  width: 100%;
+  background-color: ${({ theme }) => theme.palette.colors.white[1]};
+  border-radius: 4px;
 `;
 
 export const BarWrapper = styled('div')<TrackStyles>`
@@ -31,6 +29,6 @@ export const BarWrapper = styled('div')<TrackStyles>`
   left: 0,
   border-radius: 4px;
   height: 8px;
-  background-color: #55bc8a;
+  background-color: ${({ theme }) => theme.palette.colors.green[1]};
   position: absolute,
 `;

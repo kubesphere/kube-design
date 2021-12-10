@@ -1,7 +1,7 @@
+import styled from 'styled-components';
+import { KubedNumberSize, KubedTheme } from '../../theme/types';
+import { themeUtils } from '../../theme/index';
 
-import {KubedNumberSize, KubedTheme} from "../../../theme/types";
-import styled from "styled-components";
-import { themeUtils } from '../../../theme';
 const { getSizeValue } = themeUtils;
 
 export const sizes = {
@@ -10,14 +10,6 @@ export const sizes = {
   md: 8,
   lg: 10,
   xl: 12,
-};
-
-const fontSizes = {
-  xs: '10px',
-  sm: '12px',
-  md: '14px',
-  lg: '16px',
-  xl: '18px',
 };
 
 interface MarkStylesProps {
@@ -31,7 +23,7 @@ export const MarkWrapper = styled.div`
 
 export const Mark = styled.div<MarkStylesProps>`
   box-sizing: border-box;
-  border: 2px solid #a2d8bb;
+  border: 2px solid ${({ theme }) => theme.palette.colors.green[1]};
   z-index: 1;
   height: 8px;
   width: 8px;
@@ -40,11 +32,10 @@ export const Mark = styled.div<MarkStylesProps>`
   -moz-transform: translateX(-4px);
   -ms-transform: translateX(-4px);
   transform: translateX(-4px);
-  // background-color: #fff;
 
-  &.mark-filled{
+  &.mark-filled {
     box-sizing: border-box;
-    border: 2px solid #a2d8bb !important;
+    border: 2px solid ${({ theme }) => theme.palette.colors.green[1]} !important;
     z-index: 1;
     height: 8px;
     width: 8px;
@@ -60,7 +51,7 @@ export const Mark = styled.div<MarkStylesProps>`
 
 export const MarkLabel = styled.div<MarkStylesProps>`
   transform: translate(-50%, 0);
-  fontSize: 14px;
+  fontsize: 14px;
   color: #868e96;
-  marginTop: 5px,
+  margintop: 5px;
 `;

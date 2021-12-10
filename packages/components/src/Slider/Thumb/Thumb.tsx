@@ -1,11 +1,10 @@
 import React, { useState, forwardRef } from 'react';
-import { KubedNumberSize, DefaultProps } from '../../../theme';
 import cx from 'classnames';
-import { KubedTheme } from '../../../theme/types';
-import { KubedTransition } from '../../../Transition';
+import { KubedNumberSize, DefaultProps } from '../../theme/index';
+import { KubedTheme } from '../../theme/types';
 
 import { ThumbWrapper } from './Thumb.styles';
-import {Tooltip} from "../../../Tooltip/Tooltip";
+import { Tooltip } from '../../Tooltip/Tooltip';
 
 interface ThumbProps extends DefaultProps {
   max: number;
@@ -17,7 +16,7 @@ interface ThumbProps extends DefaultProps {
   size: KubedNumberSize;
   label: React.ReactNode;
   onMouseDown(event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>): void;
-  labelTransition?: KubedTransition;
+  labelTransition?: string;
   labelTransitionDuration?: number;
   labelTransitionTimingFunction?: string;
   labelAlwaysOn: boolean;
@@ -54,9 +53,6 @@ export const Thumb = forwardRef<HTMLDivElement, ThumbProps>(
     }: ThumbProps,
     ref
   ) => {
-    // const theme = useMantineTheme();
-    // const { classes, cx } = useStyles({ color, size }, classNames, 'slider');
-    // const _styles = mergeStyles(classes, styles);
     const [focused, setFocused] = useState(false);
     const isVisible = labelAlwaysOn || dragging || focused || showLabelOnHover;
     return (
@@ -70,7 +66,8 @@ export const Thumb = forwardRef<HTMLDivElement, ThumbProps>(
           aria-valuenow={value}
           ref={ref}
           className={cx(classNames, {
-            'dragging': dragging })}
+            dragging,
+          })}
           onFocus={() => {
             setFocused(true);
             typeof onFocus === 'function' && onFocus();
@@ -87,7 +84,6 @@ export const Thumb = forwardRef<HTMLDivElement, ThumbProps>(
           {children}
         </ThumbWrapper>
       </Tooltip>
-
     );
   }
 );

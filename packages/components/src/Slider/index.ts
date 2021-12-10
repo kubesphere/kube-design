@@ -1,4 +1,2 @@
-export { Slider } from './newSlider/Slider/Slider';
-export { RangeSlider } from './newSlider/RangeSlider/RangeSlider';
-
-
+export { Slider } from './Slider/Slider';
+export { RangeSlider } from './RangeSlider/RangeSlider';

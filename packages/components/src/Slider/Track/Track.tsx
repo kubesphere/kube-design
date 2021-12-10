@@ -1,11 +1,8 @@
 import React from 'react';
-import { DefaultProps, KubedNumberSize, KubedTheme } from '../../../theme';
-import { Marks} from '../Marks/Mark';
+import { DefaultProps, KubedNumberSize, KubedTheme } from '../../theme/index';
+import { Marks } from '../Marks/Mark';
 
-import {
-  TrackWrapper,
-  BarWrapper
-} from "./Track.styles";
+import { TrackWrapper, BarWrapper } from './Track.styles';
 
 interface TrackProps extends DefaultProps {
   filled: number;
@@ -24,25 +21,20 @@ interface TrackProps extends DefaultProps {
 }
 
 export function Track({
-                        filled,
-                        size,
-                        color,
-                        classNames,
-                        styles,
-                        radius,
-                        children,
-                        offset,
-                        onMouseLeave,
-                        onMouseEnter,
-                        ...others
-                      }: TrackProps) {
-
+  filled,
+  size,
+  color,
+  classNames,
+  styles,
+  radius,
+  children,
+  offset,
+  onMouseLeave,
+  onMouseEnter,
+  ...others
+}: TrackProps) {
   return (
-    <TrackWrapper
-      className="track-demo"
-      onMouseLeave={onMouseLeave}
-      onMouseEnter={onMouseEnter}
-    >
+    <TrackWrapper className="track-demo" onMouseLeave={onMouseLeave} onMouseEnter={onMouseEnter}>
       <BarWrapper
         className="track-bar"
         style={{ left: `${offset}%`, width: `${filled}%`, position: 'absolute' }}

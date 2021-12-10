@@ -1,13 +1,12 @@
 import React, { useRef, useState, forwardRef } from 'react';
 import { useMove, useUncontrolled, useMergedRef } from '@kubed/hooks';
-import { DefaultProps, KubedNumberSize, KubedTheme } from '../../../theme';
+import { DefaultProps, KubedNumberSize, KubedTheme } from '../../theme/index';
 import { getClientPosition } from '../utils/get-client-position';
-import { getPosition } from '../utils/get-position';
-import { getChangeValue } from '../utils/get-change-value';
+import { getUnevenPosition } from '../utils/get-position';
+import { getUnevenChangeValue } from '../utils/get-change-value';
 import { Thumb } from '../Thumb/Thumb';
-import { Track} from '../Track/Track';
-import { SliderRoot} from '../SliderRoot/SliderRoot';
-import { KubedTransition } from '../../../Transition';
+import { Track } from '../Track/Track';
+import { SliderRoot } from '../SliderRoot/SliderRoot';
 
 type Value = [number, number];
 
@@ -30,6 +29,9 @@ export interface RangeSliderProps
   /** Maximum possible value */
   max?: number;
 
+  /** keep decimals **/
+  decimals?: number;
+
   /** Minimal range interval */
   minRange?: number;
 
@@ -49,13 +51,13 @@ export interface RangeSliderProps
   name?: string;
 
   /** Marks which will be placed on the track */
-  marks?: { value: number; label?: React.ReactNode }[];
+  marks?: { value: number; label?: React.ReactNode; weight?: number }[];
 
   /** Function to generate label or any react node to render instead, set to null to disable label */
   label?: React.ReactNode | ((value: number) => React.ReactNode);
 
   /** Label appear/disappear transition */
-  labelTransition?: KubedTransition;
+  labelTransition?: string;
 
   /** Label appear/disappear transition duration in ms */
   labelTransitionDuration?: number;
@@ -91,6 +93,7 @@ export const RangeSlider = forwardRef<HTMLDivElement, RangeSliderProps>(
       radius = 'xl',
       min = 0,
       max = 100,
+      decimals = 2,
       minRange = 10,
       step = 1,
       defaultValue,
@@ -122,13 +125,14 @@ export const RangeSlider = forwardRef<HTMLDivElement, RangeSliderProps>(
     const thumbs = useRef<HTMLDivElement[]>([]);
     const thumbIndex = useRef<number>(undefined);
     const positions = [
-      getPosition({ value: _value[0], min, max }),
-      getPosition({ value: _value[1], min, max }),
+      getUnevenPosition({ value: _value[0], marks }),
+      getUnevenPosition({ value: _value[1], marks }),
     ];
 
     const _setValue = (val: Value) => {
       setValue(val);
       _valueRef.current = val;
+      console.log('val', val);
     };
 
     const setRangedValue = (val: number, index: number) => {
@@ -158,11 +162,15 @@ export const RangeSlider = forwardRef<HTMLDivElement, RangeSliderProps>(
     };
 
     const handleChange = (val: number) => {
-      const nextValue = getChangeValue({ value: val, min, max, step });
+      console.log('handleChnage', val);
+      const nextValue = getUnevenChangeValue({ value: val, marks, decimals });
       setRangedValue(nextValue, thumbIndex.current);
     };
 
-    const { ref: container, active } = useMove(({ x }) => handleChange(x));
+    const { ref: container, active } = useMove(({ x }) => {
+      handleChange(x);
+      console.log('x', x);
+    });
 
     function handleThumbMouseDown(
       event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>,
@@ -186,12 +194,9 @@ export const RangeSlider = forwardRef<HTMLDivElement, RangeSliderProps>(
       container.current.focus();
       const rect = container.current.getBoundingClientRect();
       const changePosition = getClientPosition(event.nativeEvent);
-      const changeValue = getChangeValue({
+      const changeValue = getUnevenChangeValue({
         value: changePosition - rect.left,
-        max,
-        min,
-        step,
-        containerWidth: rect.width,
+        marks,
       });
 
       const nearestHandle =
@@ -257,6 +262,7 @@ export const RangeSlider = forwardRef<HTMLDivElement, RangeSliderProps>(
 
     const hasArrayThumbChildren = Array.isArray(thumbChildren);
 
+    // @ts-ignore
     return (
       <SliderRoot
         {...others}
