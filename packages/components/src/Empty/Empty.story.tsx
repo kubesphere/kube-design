@@ -8,15 +8,9 @@ export default {
 };
 
 export const Basic = () => {
-  return <Empty />;
+  return <Empty title="未发现匹配的结果" description="您可以尝试刷新数据或清空搜索结果" />;
 };
 
 export const Icon = () => {
-  return (
-    <Empty
-      desc={<span>No_Data</span>}
-      icon={<Add />}
-      imageStyle={{ width: '48px', height: '48px' }}
-    />
-  );
+  return <Empty description={<span>No_Data</span>} icon={<Add />} />;
 };
