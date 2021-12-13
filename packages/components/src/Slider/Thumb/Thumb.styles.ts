@@ -32,7 +32,6 @@ export const ThumbWrapper = styled('div')<ThumbStyles>`
   z-index: 2;
 
   &.dragging {
-    transform: translate(-50%, -50%) scale(1.1);
     box-shadow: 0 4px 8px ${({ theme }) => addColorAlpha(theme.palette.accents_8, 0.2)};
   }
 `;

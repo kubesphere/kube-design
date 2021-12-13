@@ -1,6 +1,6 @@
 import React, { useRef, useState, forwardRef } from 'react';
 import { useMove, useUncontrolled, useMergedRef } from '@kubed/hooks';
-import { DefaultProps, KubedNumberSize, KubedTheme } from '../../theme/index';
+import { DefaultProps, KubedNumberSize } from '../../theme/index';
 import { getClientPosition } from '../utils/getClientPosition';
 import { getUnevenPosition } from '../utils/getPosition';
 import { getUnevenChangeValue } from '../utils/getChangeValue';
