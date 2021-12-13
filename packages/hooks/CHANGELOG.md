@@ -1,5 +1,13 @@
 # @kubed/hooks
 
+## 0.0.5
+
+### Patch Changes
+
+- [`f39c7e8`](https://github.com/kubesphere/kube-design/commit/f39c7e8d9550ddd329dc057bf6a737835b738d33) Thanks [@chenz24](https://github.com/chenz24)! - 1. Completely Refactor Empty component.
+  2. Add useDebouncedValue hook.
+  3. Reset default props for LoadingOverlay.
+
 ## 0.0.4
 
 ### Patch Changes

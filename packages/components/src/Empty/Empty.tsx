@@ -1,50 +1,92 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import { isNull } from 'lodash';
 import { Exclamation } from '@kubed/icons';
 import forwardRef from '../utils/forwardRef';
-import { DefaultProps } from '../theme/types';
-
-export interface EmptyProps extends DefaultProps {
-  desc?: React.ReactNode;
-  imageStyle?: React.CSSProperties;
-  icon?: React.ReactNode;
-}
+import { DefaultProps } from '../theme';
+import { useLocales } from '../ConfigProvider/LocaleProvider/LocaleContext';
 
 const EmptyWrapper = styled.div`
-  margin-top: 12px;
-  padding: 32px;
-  border-radius: 4px;
-  box-shadow: 0 4px 8px 0 rgba(36, 46, 66, 0.06);
-  background-color: #ffffff;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 `;
 
-const ContentStyle = styled.div`
-  margin-top: 30px; ;
-`;
-
-const ImageStyle = styled.div`
+const Image = styled.div`
   width: 60px;
   height: 60px;
   border-radius: 50% 0 50% 50%;
-  background: #eff4f9;
-  display: inline-block;
-  line-height: 50px;
+  background: ${({ theme }) => theme.palette.accents_1};
   margin-bottom: 20px;
-  > * {
-    width: 48px;
-    height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  .kubed-icon {
+    margin-bottom: 8px;
   }
 `;
 
-export const Empty = forwardRef<EmptyProps, 'div'>((props, ref) => {
-  const { desc, imageStyle, icon } = props;
-  return (
-    <EmptyWrapper>
-      <ImageStyle style={imageStyle}>{icon ? <div>{icon}</div> : <Exclamation />}</ImageStyle>
-      {desc ? <ContentStyle>{desc}</ContentStyle> : <ContentStyle>暂无数据</ContentStyle>}
-    </EmptyWrapper>
-  );
-});
+const Title = styled.div`
+  font-size: 14px;
+  font-weight: 700;
+  color: ${({ theme }) => theme.palette.accents_7};
+`;
+
+const Description = styled.div`
+  margin-top: 4px;
+  line-height: 1.67;
+  color: ${({ theme }) => theme.palette.accents_5};
+`;
+
+const Footer = styled.div``;
+
+export interface EmptyProps extends DefaultProps {
+  /** title of Empty */
+  title?: React.ReactNode | string;
+
+  /** description of Empty */
+  description?: React.ReactNode | string;
+
+  /** icon element of Empty */
+  image?: React.ReactNode;
+
+  /** className of image */
+  imageClassName?: string;
+
+  /** style of image */
+  imageStyle?: React.CSSProperties;
+}
+
+export const Empty = forwardRef<EmptyProps, 'div'>(
+  (
+    {
+      title,
+      description,
+      image = <Exclamation size={48} />,
+      imageClassName,
+      imageStyle,
+      children,
+      ...rest
+    },
+    ref
+  ) => {
+    const { locales } = useLocales();
+    const defaultTitle = title || locales.Empty.noData;
+    return (
+      <EmptyWrapper ref={ref} {...rest}>
+        {image && (
+          <Image className={imageClassName} style={imageStyle}>
+            {image}
+          </Image>
+        )}
+        {!isNull(title) && <Title className="empty-title">{defaultTitle}</Title>}
+        {description && <Description className="empty-desc">{description}</Description>}
+        {children && <Footer>{children}</Footer>}
+      </EmptyWrapper>
+    );
+  }
+);
 
 Empty.displayName = '@kubed/components/Empty';

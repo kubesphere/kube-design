@@ -2,6 +2,7 @@ import { ModalLocale } from '../../Modal/locale';
 import { PickerLocale } from '../../DatePicker/generatePicker';
 
 export interface ILocale {
+  Empty?: { noData: string };
   Modal?: ModalLocale;
   DatePicker?: PickerLocale;
 }

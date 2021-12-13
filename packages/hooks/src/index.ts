@@ -12,7 +12,6 @@ export { useQueue } from './useQueue';
 export { useClickOutside } from './useClickOutside';
 export { useMove } from './useMove';
 export { useHotkeys } from './useHotkeys';
-// @ts-ignore
 export { useDidUpdate } from './useDidUpdate';
-// @ts-ignore
 export { useMergedRef, mergeRefs } from './useMergedRef';
+export { useDebouncedValue } from './useDebouncedValue';
