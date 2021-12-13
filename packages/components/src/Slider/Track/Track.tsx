@@ -1,5 +1,5 @@
 import React from 'react';
-import { DefaultProps, KubedNumberSize, KubedTheme } from '../../theme/index';
+import { DefaultProps, KubedNumberSize } from '../../theme/index';
 import { Marks } from '../Marks/Mark';
 
 import { TrackWrapper, BarWrapper } from './Track.styles';
@@ -10,7 +10,6 @@ interface TrackProps extends DefaultProps {
   marks: { value: number; label?: React.ReactNode }[];
   size: KubedNumberSize;
   radius: KubedNumberSize;
-  color: KubedTheme;
   min: number;
   max: number;
   value: number;
@@ -23,7 +22,6 @@ interface TrackProps extends DefaultProps {
 export function Track({
   filled,
   size,
-  color,
   classNames,
   styles,
   radius,
@@ -43,7 +41,6 @@ export function Track({
       <Marks
         {...others}
         size={size}
-        color={color}
         offset={offset}
         classNames={classNames}
         styles={styles}

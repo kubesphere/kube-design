@@ -9,13 +9,9 @@ import { Thumb } from '../Thumb/Thumb';
 import { Track } from '../Track/Track';
 import { SliderRoot } from '../SliderRoot/SliderRoot';
 
-// @ts-ignore
 export interface SliderProps
   extends DefaultProps,
     Omit<React.ComponentPropsWithoutRef<'div'>, 'value' | 'onChange'> {
-  /** Color from theme.colors */
-  color?: KubedTheme;
-
   /** Track border-radius from theme or number to set border-radius in px */
   radius?: KubedNumberSize;
 
@@ -200,7 +196,6 @@ export function Slider({
         marks={marks}
         size={size}
         radius={radius}
-        color={color}
         min={min}
         max={max}
         value={_value}

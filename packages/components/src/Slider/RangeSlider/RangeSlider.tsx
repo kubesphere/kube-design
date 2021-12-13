@@ -10,13 +10,9 @@ import { SliderRoot } from '../SliderRoot/SliderRoot';
 
 type Value = [number, number];
 
-// @ts-ignore
 export interface RangeSliderProps
   extends DefaultProps,
     Omit<React.ComponentPropsWithoutRef<'div'>, 'value' | 'onChange' | 'defaultValue'> {
-  /** Color from theme.colors */
-  color?: KubedTheme;
-
   /** Track border-radius from theme or number to set border-radius in px */
   radius?: KubedNumberSize;
 
@@ -86,7 +82,6 @@ export const RangeSlider = forwardRef<HTMLDivElement, RangeSliderProps>(
     {
       classNames,
       styles,
-      color,
       value,
       onChange,
       size = 'md',
@@ -125,8 +120,8 @@ export const RangeSlider = forwardRef<HTMLDivElement, RangeSliderProps>(
     const thumbs = useRef<HTMLDivElement[]>([]);
     const thumbIndex = useRef<number>(undefined);
     const positions = [
-      getUnevenPosition({ value: _value[0], marks }),
-      getUnevenPosition({ value: _value[1], marks }),
+      getUnevenPosition({ value: _value[0], marks, min, max }),
+      getUnevenPosition({ value: _value[1], marks, min, max }),
     ];
 
     const _setValue = (val: Value) => {
@@ -246,7 +241,6 @@ export const RangeSlider = forwardRef<HTMLDivElement, RangeSliderProps>(
     const sharedThumbProps = {
       max,
       min,
-      color,
       size,
       labelTransition,
       labelTransitionDuration,
@@ -283,7 +277,6 @@ export const RangeSlider = forwardRef<HTMLDivElement, RangeSliderProps>(
           marks={marks}
           size={size}
           radius={radius}
-          color={color}
           min={min}
           max={max}
           value={_value[1]}

@@ -1,14 +1,13 @@
 import React from 'react';
 import cx from 'classnames';
 import { KubedNumberSize, KubedTheme, DefaultProps } from '../../theme/index';
-import { isMarkFilled } from '../utils/is-mark-filled';
+import { isMarkFilled } from '../utils/isMarkFilled';
 
 import { MarkWrapper, MarkLabel, Mark } from './Marks.style';
 
 export interface MarksProps extends DefaultProps {
   marks: { value: number; label?: React.ReactNode; weight?: number }[];
   size: KubedNumberSize;
-  color: KubedTheme;
   min: number;
   max: number;
   value: number;
@@ -18,7 +17,6 @@ export interface MarksProps extends DefaultProps {
 
 export function Marks({
   marks,
-  color,
   size,
   min,
   max,
