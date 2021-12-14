@@ -14,12 +14,18 @@ order: 1
 
 ## 基本滑动块
 
+基本滑动块。通过size参数可以设置滑动块的尺寸。
+
 ```js live=true
 () => {
   return (
      <>
-       <Slider defaultValue={60} size="xs" styles={{ marginTop: 25 }} />
-       <RangeSlider defaultValue={[20, 80]} max={100} min={0} styles={{ marginTop: 25 }}/>
+        <Slider defaultValue={60} size="xs" styles={{ marginTop: 25 }} />
+        <Slider defaultValue={60} size="sm" styles={{ marginTop: 25 }} />
+        <Slider defaultValue={60} size="md" styles={{ marginTop: 25 }} />
+        <Slider defaultValue={60} size="lg" styles={{ marginTop: 25 }} />
+        <Slider defaultValue={60} size="xl" styles={{ marginTop: 25 }} />
+        <RangeSlider defaultValue={[20, 80]} max={100} min={0} styles={{ marginTop: 25 }}/>
      </>
   )
 }

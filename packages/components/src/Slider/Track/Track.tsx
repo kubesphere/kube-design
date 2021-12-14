@@ -32,19 +32,19 @@ export function Track({
   ...others
 }: TrackProps) {
   return (
-    <TrackWrapper className="track-demo" onMouseLeave={onMouseLeave} onMouseEnter={onMouseEnter}>
+    <TrackWrapper
+      size={size}
+      className="track-demo"
+      onMouseLeave={onMouseLeave}
+      onMouseEnter={onMouseEnter}
+    >
       <BarWrapper
+        size={size}
         className="track-bar"
         style={{ left: `${offset}%`, width: `${filled}%`, position: 'absolute' }}
       />
       {children}
-      <Marks
-        {...others}
-        size={size}
-        offset={offset}
-        classNames={classNames}
-        styles={styles}
-      />
+      <Marks {...others} size={size} offset={offset} classNames={classNames} styles={styles} />
     </TrackWrapper>
   );
 }
