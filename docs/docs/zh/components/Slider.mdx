@@ -10,12 +10,28 @@ order: 1
 
 当用户需要在数值区间/自定义区间内进行选择时，可为连续或离散值。
 
+## 代码演示
+
+## 基本滑动块
+
+```js live=true
+() => {
+  return (
+     <>
+       <Slider defaultValue={60} size="xs" styles={{ marginTop: 25 }} />
+       <RangeSlider defaultValue={[20, 80]} max={100} min={0} styles={{ marginTop: 25 }}/>
+     </>
+  )
+}
+```
+
 ## 单滑块
 
 ```js live=true
 () => {
   return (
      <Slider
+        label={(value) => `${value} %`}
         marks={[
            { value: 0, label: '0' },
            { value: 20, label: '20%' },
@@ -39,7 +55,7 @@ order: 1
     { value: 80, label: '80%' },
     { value: 100, label: '100%' },
   ];
-  return <RangeSlider decimals={0} defaultValue={[20, 80]} marks={marks} />;
+  return <RangeSlider defaultValue={[20, 80]} marks={marks} />;
 };
 ```
 
@@ -68,4 +84,20 @@ minRange可以设置滑动的最小距离，若最小距离小于1，需要用de
 };
 ```
 
+## 可控制的滑动块
+
+默认单滑块和双滑块都是不可控制单，添加onChange和value入参可以使其变成可控制的。
+
+```js live=true
+() => {
+  const [value, setValue] = React.useState(40);
+  const [rangeValue, setRangeValue] = React.useState([20, 80]);
+  return (
+    <>
+      <Slider value={value} onChange={setValue} styles={{ marginTop: 25 }}/>
+      <RangeSlider value={rangeValue} onChange={setRangeValue} styles={{ marginTop: 25 }}/>
+    </>
+  )
+}
+```
 

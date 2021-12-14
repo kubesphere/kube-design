@@ -15,6 +15,19 @@ To input a value in a range.
 ```js live=true
 () => {
   return (
+     <>
+        <Slider defaultValue={60} size="xs" styles={{ marginTop: 25 }} />
+        <RangeSlider defaultValue={[20, 80]} max={100} min={0} styles={{ marginTop: 25 }}/>
+      </>
+  )
+}
+```
+
+## Single Slider
+
+```js live=true
+() => {
+  return (
      <Slider
         marks={[
            { value: 0, label: '0' },
@@ -68,3 +81,22 @@ MinRange can set minimal range interval of Slider，if it less than 1, decimals 
   )
 };
 ```
+
+## Controlled
+
+By default, both Slider and RangeSlider are uncontrolled, add onChange and value props to make them controlled:
+
+```js live=true
+() => {
+  const [value, setValue] = React.useState(40);
+  const [rangeValue, setRangeValue] = React.useState([20, 80]);
+  return (
+    <>
+      <Slider value={value} onChange={setValue} styles={{ marginTop: 25 }}/>
+      <RangeSlider value={rangeValue} onChange={setRangeValue} styles={{ marginTop: 25 }}/>
+    </>
+  )
+}
+```
+
+

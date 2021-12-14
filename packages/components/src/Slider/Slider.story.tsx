@@ -11,10 +11,7 @@ export const Basic = () => {
   return (
     <div style={{ padding: 100 }}>
       <Slider defaultValue={60} size="xs" styles={{ marginTop: 25 }} />
-      <Slider defaultValue={60} size="sm" styles={{ marginTop: 25 }} />
-      <Slider defaultValue={60} size="md" styles={{ marginTop: 25 }} />
-      <Slider defaultValue={60} size="lg" styles={{ marginTop: 25 }} />
-      <Slider defaultValue={60} size="xl" styles={{ marginTop: 25 }} />
+      <RangeSlider defaultValue={[20, 80]} styles={{ marginTop: 25 }} />
     </div>
   );
 };
