@@ -1,5 +1,65 @@
 # kubed-documents
 
+## 0.0.24
+
+### Patch Changes
+
+- Updated dependencies [[`f39c7e8`](https://github.com/kubesphere/kube-design/commit/f39c7e8d9550ddd329dc057bf6a737835b738d33)]:
+  - @kubed/components@0.0.24
+  - @kubed/hooks@0.0.5
+
+## 0.0.23
+
+### Patch Changes
+
+- Updated dependencies [[`5358eca`](https://github.com/kubesphere/kube-design/commit/5358eca08e547b35870d15258e3644e4bee0ed92)]:
+  - @kubed/components@0.0.23
+
+## 0.0.22
+
+### Patch Changes
+
+- Updated dependencies [[`bf37ccc`](https://github.com/kubesphere/kube-design/commit/bf37cccbf64598b67b6e599b61c9d4ed33ec8504)]:
+  - @kubed/components@0.0.22
+  - @kubed/hooks@0.0.4
+
+## 0.0.21
+
+### Patch Changes
+
+- Updated dependencies [[`7c7e066`](https://github.com/kubesphere/kube-design/commit/7c7e066d5a612344865f8279d39582e65c71919a)]:
+  - @kubed/components@0.0.21
+
+## 0.0.20
+
+### Patch Changes
+
+- Updated dependencies [[`e3b1a57`](https://github.com/kubesphere/kube-design/commit/e3b1a57e6adb6480963399e30151978511d89350)]:
+  - @kubed/components@0.0.20
+
+## 0.0.19
+
+### Patch Changes
+
+- Updated dependencies [[`dc41c69`](https://github.com/kubesphere/kube-design/commit/dc41c69b266e08345d7c43222bee5d1fabe10087)]:
+  - @kubed/components@0.0.19
+
+## 0.0.18
+
+### Patch Changes
+
+- [`a7f7e6a`](https://github.com/kubesphere/kube-design/commit/a7f7e6aa089002b1c24ab650aef124a7ecc3157d) Thanks [@chenz24](https://github.com/chenz24)! - 1. Use classnames instead of clsx.
+  2. Fix package bug cause by importing dayjs locales
+- Updated dependencies [[`a7f7e6a`](https://github.com/kubesphere/kube-design/commit/a7f7e6aa089002b1c24ab650aef124a7ecc3157d)]:
+  - @kubed/components@0.0.18
+
+## 0.0.17
+
+### Patch Changes
+
+- Updated dependencies [[`6fc0e96`](https://github.com/kubesphere/kube-design/commit/6fc0e96fb62e75eb9f1eb5c79347896f8c971cc1), [`eb0b852`](https://github.com/kubesphere/kube-design/commit/eb0b8520f105ebd91d25a0b9a7b8ab3c6a86b7fc)]:
+  - @kubed/components@0.0.17
+
 ## 0.0.16
 
 ### Patch Changes

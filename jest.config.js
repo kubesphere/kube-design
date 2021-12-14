@@ -9,6 +9,7 @@ module.exports = {
     './configs/jest/jsdom.mocks.js',
   ],
   moduleNameMapper: {
+    '@kubed/icons':'<rootDir>/packages/icons/dist',
     '@kubed/(.*)': '<rootDir>/packages/$1/src',
   },
 };

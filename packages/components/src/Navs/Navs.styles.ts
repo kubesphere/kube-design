@@ -90,7 +90,7 @@ interface NavsStyles extends React.ComponentPropsWithoutRef<any> {
 export const NavItemDiv = styled('div')<NavsStyles>`
   position: relative;
   box-sizing: border-box;
-  flex: 1;
+  //flex: 1;
   z-index: 2;
   //min-width: 117px;
   //padding: 0 20px;

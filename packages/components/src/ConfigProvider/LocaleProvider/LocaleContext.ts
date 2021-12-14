@@ -1,7 +1,16 @@
 import { Context, createContext, useContext } from 'react';
-import { ILocale } from './types';
-import defaultLocale from '../locales/default';
+import { ILocale, Locale } from './types';
+import locales from '../locales';
 
-export const LocaleContext: Context<ILocale> = createContext<ILocale>(defaultLocale);
+export type LocaleType = {
+  locale?: Locale;
+  locales?: ILocale;
+};
 
-export const useLocales = (): ILocale => useContext<ILocale>(LocaleContext);
+const defaultLocale: LocaleType = {
+  locale: 'en',
+  locales: locales.en,
+};
+export const LocaleContext: Context<LocaleType> = createContext<LocaleType>(defaultLocale);
+
+export const useLocales = (): LocaleType => useContext<LocaleType>(LocaleContext);
