@@ -156,7 +156,7 @@ export const RangeSlider = forwardRef<HTMLDivElement, RangeSliderProps>(
     };
 
     const handleChange = (val: number) => {
-      const nextValue = getUnevenChangeValue({ value: val, marks, decimals });
+      const nextValue = getUnevenChangeValue({ value: val, marks, decimals, min, max, step });
       setRangedValue(nextValue, thumbIndex.current);
     };
 
