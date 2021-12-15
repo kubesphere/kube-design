@@ -92,21 +92,28 @@ Use the size, radius prop to change the size or radius of the button. You can se
 
 ## With Icon
 
-Use leftIcon ang rightIcon can set the button with icon.
+Button components can contain an Icon. This is done by setting the icon property or placing an Icon component within the Button.
 
 ```js live=true
 () => {
   const { Add } = KubeIcon;
   return (
-    <Group>
-      <Button variant="filled" color="default" radius="xl" leftIcon={<Add size={16} />}>
-        KubeSphere
-      </Button>
-      <Button variant="filled" color="default" radius="xl" rightIcon={<Add size={16} />}>
-        KubeSphere
-      </Button>
+    <Group spacing="xl">
+      <Button variant="filled" radius="xl" leftIcon={<Add size={16}/> }>KubeSphere</Button>
+      <Button variant="filled" radius="xl">{<Add />}</Button>
+      <Button variant="filled" radius="xl" color="success">{<Add />}</Button>
+      <Button variant="filled" radius="xl" color="success" rightIcon={<Add size={16}/> }>KubeSphere</Button>
     </Group>
   )
 }
+```
+
+
+## as
+
+```js live=true
+<Group>
+  <Button as="a" href="/login">KubeSphere</Button>
+</Group>
 ```
 

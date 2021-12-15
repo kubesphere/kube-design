@@ -102,22 +102,30 @@ order: 1
 </Group>
 ```
 
-## 带图标按钮
+## 图标按钮
 
-通过leftIcon和rightIcon可以给Button设置图标。
+当需要在button内嵌入Icon时，可以设置leftIcon或者rightIcon属性，或者直接包裹Icon组件。
 
 ```js live=true
 () => {
   const { Add } = KubeIcon;
   return (
-    <Group>
-      <Button variant="filled" color="default" radius="xl" leftIcon={<Add size={16} />}>
-        KubeSphere
-      </Button>
-      <Button variant="filled" color="default" radius="xl" rightIcon={<Add size={16} />}>
-        KubeSphere
-      </Button>
+    <Group spacing="xl">
+      <Button variant="filled" radius="xl" leftIcon={<Add size={16}/> }>KubeSphere</Button>
+      <Button variant="filled" radius="xl">{<Add />}</Button>
+      <Button variant="filled" radius="xl" color="success">{<Add />}</Button>
+      <Button variant="filled" radius="xl" color="success" rightIcon={<Add size={16}/> }>KubeSphere</Button>
     </Group>
   )
 }
+```
+
+## as属性
+
+as属性可以改变组件所使用的标签或基于的组件。
+
+```js live=true
+<Group>
+  <Button as="a" href="/login">KubeSphere</Button>
+</Group>
 ```
