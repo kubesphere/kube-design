@@ -11,13 +11,75 @@ order: 1
 通过鼠标或键盘输入范围内的数值。
 
 ```js live=true
-() => <InputNumber min={-2} />
+<InputNumber min={-2} max={10} step={3}/>
 ```
 
-## 禁用数字输入框
-
-禁用后输入框不能再输入数值。
+## 禁用状态
 
 ```js live=true
-() => <InputNumber disabled placeholder="请输入.." />
+<InputNumber disabled placeholder="请输入.." />
 ```
+
+##  只读状态
+
+```js live=true
+<InputNumber defaultValue={5} readOnly/>
+```
+
+
+## 小数数字
+
+precision 可以设置小数点位数，decimalSeparator 可以设置小数分隔符。
+
+```js live=true
+<InputNumber
+  precision={5}
+  decimalSeparator=","
+  step={0.00001}
+/>
+```
+
+## 高精度小数
+
+通过 stringMode 开启高精度小数支持，onChange 事件将返回 string 类型。
+
+```js live=true
+() => {
+  function onChange(value){
+    console.log('changed',value)
+  }
+  return (
+    <InputNumber
+      min={0}
+      max={10}
+      step={0.0000000000000000001}
+      stringMode
+      width={300}
+      onChange={onChange}
+     />
+  )
+}
+```
+
+## 显示化展示
+
+通过 formatter 格式化数字，以展示具有具体含义的数据，往往需要配合 parser 一起使用。
+
+```js live=true
+() => {
+  function onChange(value){
+    console.log('changed',value)
+  }
+  return (
+    <InputNumber
+      defaultValue={100}
+      min={0}
+      max={100}
+      formatter={value => `${value}%`}
+      parser={value => value.replace('%', '')}
+      onChange={onChange}
+    />
+  )
+}
+```
+

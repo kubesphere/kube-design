@@ -11,11 +11,71 @@ order: 1
 Use the mouse or keyboard to enter a value within a customizable range.
 
 ```js live=true
-() => <InputNumber min={-2} />
+<InputNumber min={-2} max={10} step={3}/>
 ```
 
-## Disabled State
+## Disabled Status
 
 ```js live=true
-() => <InputNumber disabled placeholder="请输入.." />
+<InputNumber disabled placeholder="请输入.." />
+```
+
+## ReadOnly status
+
+```js live=true
+<InputNumber defaultValue={5} readOnly/>
+```
+
+## Decimal Number
+
+```js live=true
+<InputNumber
+  precision={5}
+  decimalSeparator=","
+  step={0.00001}
+/>
+```
+
+## High precision decimals
+
+Use stringMode to support high precision decimals support. onChange will return string value instead.
+
+```js live=true
+() => {
+  function onChange(value){
+    console.log('changed',value)
+  }
+  return (
+    <InputNumber
+      min={0}
+      max={10}
+      step={0.0000000000000000001}
+      stringMode
+      width={300}
+      onChange={onChange}
+    />
+  )
+}
+```
+
+## Formatter
+
+Display value within it's situation with formatter, and we usually use parser at the same time.
+
+```js live=true
+() => {
+  function onChange(value){
+    console.log('changed',value)
+  }
+  return (
+    <InputNumber
+      defaultValue={100}
+      min={0}
+      max={100}
+      formatter={value => `${value}%`}
+      parser={value => value.replace('%', '')}
+      onChange={onChange}
+    />
+  )
+}
 ```

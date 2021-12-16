@@ -8,7 +8,7 @@ import { addColorAlpha } from '../utils/color';
 
 const StyledInputNumber = styled(RcInputNumber)<RcInputNumberProps>`
   display: inline-flex;
-  width: 90px;
+  width: ${({ width }) => (width ? `${width}px` : '90px')};
   position: relative;
   border-radius: 3px;
   height: 32px;
@@ -90,6 +90,9 @@ export interface InputNumberProps extends DefaultProps {
 
   /** Input value for controlled variant */
   value?: ValueType;
+
+  /** width of input */
+  width?: number;
 
   /** Minimal possible value */
   min?: ValueType;
