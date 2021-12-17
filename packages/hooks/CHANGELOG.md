@@ -1,5 +1,11 @@
 # @kubed/hooks
 
+## 0.0.6
+
+### Patch Changes
+
+- [`db858ee`](https://github.com/kubesphere/kube-design/commit/db858ee70bc841176d9dd8cf3d52ce6a3927fc2c) Thanks [@chenz24](https://github.com/chenz24)! - 1. add useDidUpdate hook.
+
 ## 0.0.5
 
 ### Patch Changes
