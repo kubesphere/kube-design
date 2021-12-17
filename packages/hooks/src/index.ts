@@ -15,3 +15,4 @@ export { useHotkeys } from './useHotkeys';
 export { useDebouncedValue } from './useDebouncedValue';
 export { useDidMount } from './useDidMount';
 export { useDidUpdate } from './useDidUpdate';
+export { useUnmount } from './useUnmount';
