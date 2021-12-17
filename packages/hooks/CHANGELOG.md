@@ -1,5 +1,11 @@
 # @kubed/hooks
 
+## 0.0.7
+
+### Patch Changes
+
+- [`f5ed279`](https://github.com/kubesphere/kube-design/commit/f5ed279be5140890fd91e762c02593988576ca46) Thanks [@chenz24](https://github.com/chenz24)! - 1. Add useUnmount hook.
+
 ## 0.0.6
 
 ### Patch Changes
