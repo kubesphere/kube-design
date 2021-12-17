@@ -6,18 +6,42 @@ description: 'The floating card popped by clicking or hovering.'
 order: 1
 ---
 
-## Basic Usage
+## When To Use
 
 A simple popup menu to provide extra information or operations.
 Comparing with Tooltip, besides information Popover card can also provide action elements like links and buttons.
 
+## Basic Usage
+
+```js live=true
+() => {
+  const content = (
+    <div>
+      <p>Content</p>
+      <p>Content</p>
+    </div>
+  )
+  return (
+    <Popover content={content} title="title">
+      <Button type="primary">Hover me</Button>
+    </Popover>
+  )
+}
+```
+
+## Style
+
 ```js live=true
 () => (
-  <div style={{ marginTop: '70px', marginLeft: '100px' }}>
-    <Popover title="popover title" content="Display additional, floating content on click">
+  <div>
+    <Popover
+      title="popover title"
+      content="Display additional, floating content on click"
+      maxWidth={200}
+      width={150}
+    >
       <Button radius="xl">KubeSphere</Button>
     </Popover>
   </div>
 )
 ```
-
