@@ -1,8 +1,5 @@
-import { itSupportsClassName, itSupportsStyle } from '@kubed/tests';
-import { shallow } from 'enzyme';
+import { itSupportsClassName, itSupportsStyle, shallowWithTheme } from '@kubed/tests';
 import * as React from 'react';
-import { ThemeProvider } from 'styled-components';
-import { themeUtils } from '@kubed/components';
 import { Tag } from './Tag';
 
 const defaultProps = {
@@ -16,20 +13,12 @@ describe('@kubed/components/Tag', () => {
   itSupportsClassName(Tag, defaultProps);
 
   it('set color to Tag component', () => {
-    const wrapper = shallow(
-      <ThemeProvider theme={themeUtils.getPresets()[0]}>
-        <Tag color="warning">KubeSphere</Tag>
-      </ThemeProvider>
-    );
+    const wrapper = shallowWithTheme(<Tag color="warning">KubeSphere</Tag>);
     expect(wrapper.render().attr('color')).toBe('warning');
   });
 
   it('set title to Tag component', () => {
-    const wrapper = shallow(
-      <ThemeProvider theme={themeUtils.getPresets()[0]}>
-        <Tag title="job-name">KubeSphere</Tag>
-      </ThemeProvider>
-    );
+    const wrapper = shallowWithTheme(<Tag title="job-name">KubeSphere</Tag>);
     expect(wrapper.render().attr('title')).toBe('job-name');
   });
 

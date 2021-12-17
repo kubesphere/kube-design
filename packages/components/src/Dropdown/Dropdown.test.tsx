@@ -1,7 +1,6 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import { Dropdown, themeUtils } from '@kubed/components';
-import { ThemeProvider } from 'styled-components';
+import { Dropdown } from '@kubed/components';
+import { shallowWithTheme } from '@kubed/tests';
 
 const defaultProps = {
   title: 'test',
@@ -18,11 +17,7 @@ const defaultProps = {
 
 describe('@kubed/components/Dropdown', () => {
   it('passes animation, arrow, trigger and placement props to Dropdown component', () => {
-    const props = shallow(
-      <ThemeProvider theme={themeUtils.getPresets()[0]}>
-        <Dropdown {...defaultProps} />
-      </ThemeProvider>
-    ).find(Dropdown);
+    const props = shallowWithTheme(<Dropdown {...defaultProps} />).find(Dropdown);
     expect(props.prop('animation')).toBe('shift-away');
     expect(props.prop('trigger')).toBe('click');
     expect(props.prop('placement')).toBe('bottom');

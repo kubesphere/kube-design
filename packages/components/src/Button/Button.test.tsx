@@ -1,23 +1,18 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
 import {
   checkAccessibility,
   itSupportsClassName,
   itRendersChildren,
   itSupportsRef,
   itSupportsStyle,
-  itSupportsOthers,
+  itSupportsOthers, shallowWithTheme, mountWithTheme,
 } from '@kubed/tests';
-import { ThemeProvider } from 'styled-components';
-import { themeUtils } from '@kubed/components';
 import { Button } from './Button';
 
 describe('@kubed/components/Button', () => {
   checkAccessibility([
-    mount(
-      <ThemeProvider theme={themeUtils.getPresets()[0]}>
-        <Button>Kubed button</Button>
-      </ThemeProvider>
+    mountWithTheme(
+      <Button>Kubed button</Button>
     ),
   ]);
   itSupportsOthers(Button, {});
@@ -31,24 +26,18 @@ describe('@kubed/components/Button', () => {
   });
 
   it('passes type to button component', () => {
-    const element = shallow(
-      <ThemeProvider theme={themeUtils.getPresets()[0]}>
-        <Button type="submit" />
-      </ThemeProvider>
+    const element = shallowWithTheme(
+      <Button type="submit" />
     );
     expect(element.render().attr('type')).toBe('submit');
   });
 
   it('sets disabled attribute based on prop', () => {
-    const disabled = shallow(
-      <ThemeProvider theme={themeUtils.getPresets()[0]}>
-        <Button disabled />
-      </ThemeProvider>
+    const disabled = shallowWithTheme(
+      <Button disabled />
     );
-    const notDisabled = shallow(
-      <ThemeProvider theme={themeUtils.getPresets()[0]}>
-        <Button />
-      </ThemeProvider>
+    const notDisabled = shallowWithTheme(
+      <Button />
     );
 
     expect(disabled.render().attr('disabled')).toBe('disabled');

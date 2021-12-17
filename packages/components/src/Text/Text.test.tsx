@@ -1,15 +1,15 @@
 import React from 'react';
-import { shallow } from 'enzyme';
 import {
   itRendersChildren,
   itSupportsStyle,
   itSupportsClassName,
   itSupportsOthers,
   itSupportsRef,
+  shallowWithTheme,
 } from '@kubed/tests';
+import { ThemeProvider } from 'styled-components';
+import { themeUtils } from '@kubed/components';
 import { Text } from './Text';
-import {ThemeProvider} from "styled-components";
-import {themeUtils} from "@kubed/components";
 
 describe('@kubed/components/Text', () => {
   itRendersChildren(Text, {});
@@ -23,17 +23,17 @@ describe('@kubed/components/Text', () => {
   });
 
   it('sets font-weight, test-transform and text-align based on props', () => {
-    const withWeight = shallow(
+    const withWeight = shallowWithTheme(
       <ThemeProvider theme={themeUtils.getPresets()[0]}>
         <Text weight={600} />
       </ThemeProvider>
-      );
-    const withTransform = shallow(
+    );
+    const withTransform = shallowWithTheme(
       <ThemeProvider theme={themeUtils.getPresets()[0]}>
         <Text transform="uppercase" />
       </ThemeProvider>
-      );
-    const withAlign = shallow(
+    );
+    const withAlign = shallowWithTheme(
       <ThemeProvider theme={themeUtils.getPresets()[0]}>
         <Text align="right" />
       </ThemeProvider>
@@ -43,5 +43,4 @@ describe('@kubed/components/Text', () => {
     expect(withTransform.render().css('text-transform')).toBe('uppercase');
     expect(withAlign.render().css('text-align')).toBe('right');
   });
-
 });
