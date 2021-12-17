@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Meta } from '@storybook/react';
-import { Add } from '@kubed/icons';
+import { Add, Close } from '@kubed/icons';
 import { Tag, Group } from '../index';
 
 export default {
@@ -31,6 +31,16 @@ export const WithIcon = () => (
   <Tag
     color="success"
     title={<Add variant="light" size={14} />}
+    titleStyle={{ backgroundColor: 'transparent', margin: '0', padding: '0 3px' }}
+  >
+    Add
+  </Tag>
+);
+
+export const Append = () => (
+  <Tag
+    color="success"
+    append={<Close variant="light" size={14} />}
     titleStyle={{ backgroundColor: 'transparent', margin: '0', padding: '0 3px' }}
   >
     Add

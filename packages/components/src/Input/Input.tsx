@@ -59,6 +59,8 @@ export const Input = forwardRef<InputProps, 'input'>(
       onChange,
       addonAfter,
       addonBefore,
+      onFocus,
+      onBlur,
       ...rest
     },
     ref
@@ -66,12 +68,18 @@ export const Input = forwardRef<InputProps, 'input'>(
     const _value = typeof value === 'undefined' ? defaultValue : value;
     const [selfValue, setSelfValue] = useState<string | number | readonly string[]>(_value);
     const [focused, setFocused] = useState(false);
-    const onFocus = () => {
+    const handleFocus = (e) => {
       setFocused(true);
+      if (onFocus) {
+        onFocus(e);
+      }
     };
 
-    const onBlur = () => {
+    const handleBlur = (e) => {
       setFocused(false);
+      if (onBlur) {
+        onBlur(e);
+      }
     };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,8 +111,8 @@ export const Input = forwardRef<InputProps, 'input'>(
             {...rest}
             value={fixControlledValue(selfValue)}
             onChange={handleChange}
-            onFocus={onFocus}
-            onBlur={onBlur}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
           />
           {suffix && <SuffixWrapper>{suffix}</SuffixWrapper>}
         </InputWrapper>

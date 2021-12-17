@@ -52,10 +52,10 @@ export interface FieldProps extends DefaultProps {
 export const Field = forwardRef<FieldProps, 'div'>(({ label, value, avatar, ...rest }, ref) => {
   return (
     <FieldWrapper ref={ref} {...rest}>
-      {avatar && <FieldAvatar>{avatar}</FieldAvatar>}
-      <FieldContent>
-        <FieldValue>{value}</FieldValue>
-        <FieldLabel>{label}</FieldLabel>
+      {avatar && <FieldAvatar className="field-avatar">{avatar}</FieldAvatar>}
+      <FieldContent className="field-content">
+        {value && <FieldValue className="field-value">{value}</FieldValue>}
+        {label && <FieldLabel className="field-label">{label}</FieldLabel>}
       </FieldContent>
     </FieldWrapper>
   );

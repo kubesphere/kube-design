@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import cx from 'clsx';
+import cx from 'classnames';
 import styled from 'styled-components';
 import { Text } from '@kubed/components';
 

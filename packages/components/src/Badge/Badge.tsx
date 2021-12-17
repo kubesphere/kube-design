@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import cx from 'clsx';
+import cx from 'classnames';
 import forwardRef from '../utils/forwardRef';
 import { DefaultProps, KubedSizes, KubedTheme, themeUtils } from '../theme';
 import { colorToRgbValues } from '../utils/color';

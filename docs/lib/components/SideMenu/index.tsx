@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
-import cx from 'clsx';
+import cx from 'classnames';
 import { kebabCase } from '../../utils';
 
 const SideMenuWrapper = styled.div`
