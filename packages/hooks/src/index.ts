@@ -13,3 +13,5 @@ export { useClickOutside } from './useClickOutside';
 export { useMove } from './useMove';
 export { useHotkeys } from './useHotkeys';
 export { useDebouncedValue } from './useDebouncedValue';
+export { useDidMount } from './useDidMount';
+export { useDidUpdate } from './useDidUpdate';
