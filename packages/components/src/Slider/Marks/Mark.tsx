@@ -1,9 +1,9 @@
 import React from 'react';
 import cx from 'classnames';
-import { KubedNumberSize, KubedTheme, DefaultProps } from '../../theme/index';
+import { KubedNumberSize, DefaultProps } from '../../theme/index';
 import { isMarkFilled } from '../utils/isMarkFilled';
 
-import { MarkWrapper, MarkLabel, Mark } from './Marks.style';
+import { MarkLabel, Mark } from './Marks.style';
 
 export interface MarksProps extends DefaultProps {
   marks: { value: number; label?: React.ReactNode; weight?: number }[];
@@ -15,17 +15,7 @@ export interface MarksProps extends DefaultProps {
   offset?: number;
 }
 
-export function Marks({
-  marks,
-  size,
-  min,
-  max,
-  value,
-  classNames,
-  styles,
-  offset,
-  onChange,
-}: MarksProps) {
+export function Marks({ marks, value, classNames, offset, onChange }: MarksProps) {
   let usedWeight = 0;
   const totalWeight = marks.reduce((prev, cur) => prev + (cur.weight || 1), 0) - 1;
   const items = marks.map((mark, index) => {
@@ -33,7 +23,7 @@ export function Marks({
     usedWeight += weight;
     const percent = ((usedWeight - weight) * 100) / totalWeight;
     return (
-      <MarkWrapper style={{ left: `${percent}%`, position: 'absolute', top: 0 }} key={index}>
+      <div style={{ left: `${percent}%`, position: 'absolute', top: 0 }} key={index}>
         <Mark
           className={cx(classNames, {
             'mark-filled': isMarkFilled({ mark, value, offset }),
@@ -53,7 +43,7 @@ export function Marks({
             {mark.label}
           </MarkLabel>
         )}
-      </MarkWrapper>
+      </div>
     );
   });
 

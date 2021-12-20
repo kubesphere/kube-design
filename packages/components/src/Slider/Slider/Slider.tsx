@@ -1,10 +1,8 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
-import { useUncontrolled } from '@kubed/hooks';
+import React, { useRef, useState, forwardRef } from 'react';
+import { useUncontrolled, useMove, useMergedRef } from '@kubed/hooks';
 import { DefaultProps, KubedNumberSize } from '../../theme/index';
-import { getClientPosition } from '../utils/getClientPosition';
 import { getUnevenPosition } from '../utils/getPosition';
 import { getUnevenChangeValue } from '../utils/getChangeValue';
-import { getDragEventsAssigner } from '../utils/getDragEventsAssigner';
 import { Thumb } from '../Thumb/Thumb';
 import { Track } from '../Track/Track';
 import { SliderRoot } from '../SliderRoot/SliderRoot';
@@ -59,169 +57,143 @@ export interface SliderProps
 
   /** Thumb aria-label */
   thumbLabel?: string;
+
+  /** If true slider label will appear on hover */
+  showLabelOnHover?: boolean;
+
+  /** Thumb children, can be used to add icon */
+  thumbChildren?: React.ReactNode;
 }
 
-export function Slider({
-  classNames,
-  styles,
-  color,
-  value,
-  onChange,
-  size = 'md',
-  radius = 'xl',
-  min = 0,
-  max = 100,
-  step = 1,
-  defaultValue,
-  name,
-  marks = [],
-  label = (f) => f,
-  labelTransitionTimingFunction,
-  labelAlwaysOn = false,
-  thumbLabel = '',
-  ...others
-}: SliderProps) {
-  const [dragging, setDragging] = useState(false);
-  const [_value, setValue] = useUncontrolled({
-    value,
-    defaultValue,
-    finalValue: 0,
-    rule: (val) => typeof val === 'number',
-    onChange,
-  });
-  const container = useRef<HTMLDivElement>();
-  const thumb = useRef<HTMLDivElement>();
-  const start = useRef<number>();
-  const offset = useRef<number>();
-  const position = getUnevenPosition({ value: _value, min, max, marks });
-  const _label = typeof label === 'function' ? label(_value) : label;
-
-  const handleChange = (val: number) => {
-    if (container.current) {
-      const containerWidth = container.current.getBoundingClientRect().width;
-      const nextValue = getUnevenChangeValue({ value: val, containerWidth, min, max, step });
-      setValue(nextValue);
-    }
-  };
-
-  const onDrag = useCallback((event: any) => {
-    container.current && container.current.focus();
-    handleChange(getClientPosition(event) + start.current - offset.current);
-  }, []);
-
-  const onDragEnd = useCallback(() => {
-    setDragging(false);
-  }, []);
-
-  const { assignEvents, removeEvents } = getDragEventsAssigner({
-    onDrag,
-    onDragEnd,
-  });
-
-  useEffect(() => removeEvents, []);
-
-  function handleThumbMouseDown(
-    event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
-  ) {
-    if (event.cancelable) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-
-    start.current = thumb.current.offsetLeft;
-    offset.current = getClientPosition(event as any);
-
-    assignEvents();
-  }
-
-  const handleTrackMouseDown = (
-    event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
+export const Slider = forwardRef<HTMLDivElement, SliderProps>(
+  (
+    {
+      classNames,
+      styles,
+      color,
+      value,
+      onChange,
+      size = 'md',
+      radius = 'xl',
+      min = 0,
+      max = 100,
+      step = 1,
+      defaultValue,
+      name,
+      marks = [],
+      label = (f) => f,
+      labelTransitionTimingFunction,
+      labelAlwaysOn = false,
+      thumbLabel = '',
+      showLabelOnHover = true,
+      thumbChildren,
+      ...others
+    }: SliderProps,
+    ref
   ) => {
-    if (event.cancelable) {
-      event.preventDefault();
+    const [hovered, setHovered] = useState(false);
+    const [_value, setValue] = useUncontrolled({
+      value,
+      defaultValue,
+      finalValue: 0,
+      rule: (val) => typeof val === 'number',
+      onChange,
+    });
+    // const container = useRef<HTMLDivElement>();
+    const thumb = useRef<HTMLDivElement>();
+    // const start = useRef<number>();
+    // const offset = useRef<number>();
+    const position = getUnevenPosition({ value: _value, min, max, marks });
+    const _label = typeof label === 'function' ? label(_value) : label;
+
+    const handleChange = (val: number) => {
+      const nextValue = getUnevenChangeValue({ value: val, min, max, step });
+      setValue(nextValue);
+    };
+
+    const { ref: container, active } = useMove(({ x }) => handleChange(x));
+
+    function handleThumbMouseDown(
+      event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
+    ) {
+      if (event.cancelable) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
     }
 
-    const changePosition = getClientPosition(event.nativeEvent);
-    const rect = container.current.getBoundingClientRect();
+    const handleTrackKeydownCapture = (event: React.KeyboardEvent<HTMLDivElement>) => {
+      switch (event.nativeEvent.code) {
+        case 'ArrowUp':
+        case 'ArrowRight': {
+          event.preventDefault();
+          thumb.current.focus();
+          setValue(Math.min(Math.max(_value + step, min), max));
+          break;
+        }
 
-    start.current = changePosition - rect.left;
-    offset.current = changePosition;
+        case 'ArrowDown':
+        case 'ArrowLeft': {
+          event.preventDefault();
+          thumb.current.focus();
+          setValue(Math.min(Math.max(_value - step, min), max));
+          break;
+        }
 
-    assignEvents();
-    handleChange(changePosition - rect.left);
-  };
-
-  const handleTrackKeydownCapture = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    switch (event.nativeEvent.code) {
-      case 'ArrowUp':
-      case 'ArrowRight': {
-        event.preventDefault();
-        thumb.current.focus();
-        setValue(Math.min(Math.max(_value + step, min), max));
-        break;
+        default: {
+          break;
+        }
       }
+    };
 
-      case 'ArrowDown':
-      case 'ArrowLeft': {
-        event.preventDefault();
-        thumb.current.focus();
-        setValue(Math.min(Math.max(_value - step, min), max));
-        break;
-      }
-
-      default: {
-        break;
-      }
-    }
-  };
-
-  return (
-    <SliderRoot
-      {...others}
-      size={size}
-      ref={container}
-      onTouchStart={handleTrackMouseDown}
-      onMouseDown={handleTrackMouseDown}
-      onTouchStartCapture={() => setDragging(true)}
-      onTouchEndCapture={() => setDragging(false)}
-      onMouseDownCapture={() => setDragging(true)}
-      onMouseUpCapture={() => setDragging(false)}
-      onKeyDownCapture={handleTrackKeydownCapture}
-      classNames={classNames}
-      styles={styles}
-    >
-      <Track
-        offset={0}
-        filled={position}
-        marks={marks}
+    return (
+      <SliderRoot
+        {...others}
         size={size}
-        radius={radius}
-        min={min}
-        max={max}
-        value={_value}
-        onChange={setValue}
-        styles={styles}
+        ref={useMergedRef(container, ref)}
+        onMouseDownCapture={() => container.current?.focus()}
+        onKeyDownCapture={handleTrackKeydownCapture}
         classNames={classNames}
+        styles={styles}
       >
-        <Thumb
-          max={max}
+        <Track
+          offset={0}
+          filled={position}
+          marks={marks}
+          size={size}
+          radius={radius}
           min={min}
+          max={max}
           value={_value}
-          position={position}
-          dragging={dragging}
-          label={_label}
-          ref={thumb}
-          onMouseDown={handleThumbMouseDown}
-          labelAlwaysOn={labelAlwaysOn}
-          classNames={classNames}
+          onChange={setValue}
+          onMouseEnter={showLabelOnHover ? () => setHovered(true) : undefined}
+          onMouseLeave={showLabelOnHover ? () => setHovered(false) : undefined}
           styles={styles}
-          thumbLabel={thumbLabel}
-        />
-      </Track>
+          classNames={classNames}
+        >
+          <Thumb
+            max={max}
+            min={min}
+            value={_value}
+            position={position}
+            dragging={active}
+            label={_label}
+            ref={thumb}
+            onMouseDown={handleThumbMouseDown}
+            labelAlwaysOn={labelAlwaysOn}
+            classNames={classNames}
+            styles={styles}
+            thumbLabel={thumbLabel}
+            showLabelOnHover={showLabelOnHover && hovered}
+          >
+            {thumbChildren}
+          </Thumb>
+        </Track>
 
-      <input type="hidden" name={name} value={_value} />
-    </SliderRoot>
-  );
-}
+        <input type="hidden" name={name} value={_value} />
+      </SliderRoot>
+    );
+  }
+);
 
 Slider.displayName = '@kubed/components/Slider';
