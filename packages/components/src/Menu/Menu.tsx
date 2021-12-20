@@ -64,4 +64,4 @@ export const Menu = forwardRef<MenuProps, 'div'>(({ children, width = 210, ...re
   );
 });
 
-Menu.displayName = '@kubed/component/Menu';
+Menu.displayName = '@kubed/components/Menu';

@@ -100,4 +100,4 @@ type RefAutoCompleteWithOption = typeof RefAutoComplete & {
 
 (RefAutoComplete as RefAutoCompleteWithOption).Option = Option;
 
-export default RefAutoComplete as RefAutoCompleteWithOption;
+AutoComplete.displayName = '@kubed/components/AutoComplete';

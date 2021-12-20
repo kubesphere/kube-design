@@ -36,4 +36,4 @@ export function Container({ className, size, padding = 'md', ...others }: Contai
   return <ContainerDiv className={className} size={size} padding={padding} {...others} />;
 }
 
-Container.displayName = '@kubed/core/Container';
+Container.displayName = '@kubed/components/Container';
