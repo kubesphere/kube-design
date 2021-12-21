@@ -17,7 +17,6 @@ export const Basic = () => {
   };
 
   const closeModal = () => {
-    console.log(ref.current);
     setVisible(false);
   };
 

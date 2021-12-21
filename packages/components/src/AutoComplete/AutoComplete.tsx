@@ -2,7 +2,7 @@ import * as React from 'react';
 import omit from 'rc-util/lib/omit';
 import toArray from '../utils/toArray';
 
-import Select, { InternalSelectProps, OptionType, RefSelectProps } from '../Select/Select';
+import { Select, InternalSelectProps, OptionType, RefSelectProps } from '../Select/Select';
 
 const { Option } = Select;
 
@@ -26,7 +26,7 @@ function isSelectOptionOrSelectOptGroup(child: any): Boolean {
 }
 
 export const AutoComplete: React.ForwardRefRenderFunction<RefSelectProps, AutoCompleteProps> = (
-  props///<reference path=""/>
+  props
 ) => {
   // eslint-disable-next-line react/prop-types
   const { prefixCls, children, options } = props;
@@ -99,4 +99,4 @@ type RefAutoCompleteWithOption = typeof RefAutoComplete & {
 
 (RefAutoComplete as RefAutoCompleteWithOption).Option = Option;
 
-export default RefAutoComplete as RefAutoCompleteWithOption;
+AutoComplete.displayName = '@kubed/components/AutoComplete';

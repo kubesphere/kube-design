@@ -13,6 +13,8 @@ export type MonthPickerProps = Omit<PickerDateProps<Dayjs>, 'picker'>;
 export type WeekPickerProps = Omit<PickerDateProps<Dayjs>, 'picker'>;
 export type RangePickerProps = BaseRangePickerProps<Dayjs>;
 
-const DatePicker = generatePicker<Dayjs>(dayjsGenerateConfig);
+export const DatePicker = generatePicker<Dayjs>(dayjsGenerateConfig);
 
-export default DatePicker;
+// export default DatePicker;
+
+DatePicker.displayName = '@kubed/components/DatePicker';

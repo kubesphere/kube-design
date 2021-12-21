@@ -112,7 +112,7 @@ export interface ModalFuncProps
   ref?: RefObject<ModalRef>;
 }
 
-const Modal = forwardRef<ModalProps, any>((props, ref) => {
+export const Modal = forwardRef<ModalProps, any>((props, ref) => {
   const locale = useLocales();
   const { Modal: locales } = locale;
 
@@ -199,5 +199,3 @@ const Modal = forwardRef<ModalProps, any>((props, ref) => {
 });
 
 Modal.displayName = 'kubed/components/Modal';
-
-export default Modal;
