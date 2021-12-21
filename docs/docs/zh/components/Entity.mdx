@@ -13,10 +13,8 @@ order: 1
 ```js live=true
 () => {
   const { Avatar } = KubeIcon;
-  return (
-    <Field avatar={Avatar} label="存储类型: rocksdb" value="rocksdbpvc" />
-  )
-}
+  return <Field avatar={Avatar} label="存储类型: rocksdb" value="rocksdbpvc" />;
+};
 ```
 
 ## 实体的多种特征显示区域
@@ -31,11 +29,11 @@ order: 1
       <Field label="容量" value="1Gi" width={100} />
       <Field label="访问模式" value="ReadWriteOnce" />
     </Entity>
-  )
-}
+  );
+};
 ```
 
-## 带hover效果
+## 带 hover 效果
 
 ```js live=true
 () => {
@@ -60,6 +58,6 @@ order: 1
       <Field label="容量" value="1Gi" width={100} />
       <Field label="访问模式" value="ReadWriteOnce" />
     </Entity>
-  )
-}
+  );
+};
 ```
