@@ -35,6 +35,9 @@ export function getUnevenChangeValue({
         currentValue = (marks[i + 1].value - marks[i].value) * _percent + marks[i].value;
       }
     }
+    if (!decimals) {
+      return Math.round(currentValue / step) * step;
+    }
     return Number(currentValue.toFixed(decimals));
   }
   const dx = left * (max - min);

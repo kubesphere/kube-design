@@ -19,6 +19,9 @@ export interface SliderProps
   /** Minimal possible value */
   min?: number;
 
+  /** keep decimals **/
+  decimals?: number;
+
   /** Maximum possible value */
   max?: number;
 
@@ -77,6 +80,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(
       radius = 'xl',
       min = 0,
       max = 100,
+      decimals = 0,
       step = 1,
       defaultValue,
       name,
@@ -107,7 +111,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(
     const _label = typeof label === 'function' ? label(_value) : label;
 
     const handleChange = (val: number) => {
-      const nextValue = getUnevenChangeValue({ value: val, min, max, step });
+      const nextValue = getUnevenChangeValue({ value: val, marks, decimals, min, max, step });
       setValue(nextValue);
     };
 
