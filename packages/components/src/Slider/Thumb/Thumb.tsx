@@ -45,7 +45,7 @@ export const Thumb = forwardRef<HTMLDivElement, ThumbProps>(
     const [focused, setFocused] = useState(false);
     const isVisible = labelAlwaysOn || dragging || focused || showLabelOnHover;
     return (
-      <Tooltip content={label} visible={isVisible}>
+      <Tooltip content={label || '0'} visible={isVisible}>
         <ThumbWrapper
           tabIndex={0}
           role="slider"
