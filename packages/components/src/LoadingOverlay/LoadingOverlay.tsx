@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { visible } from 'chalk';
 import { DefaultProps, KubedNumberSize } from '../theme';
 import { Loading } from '../Loading/Loading';
 
@@ -34,9 +33,10 @@ export interface LoadingOverlayProps extends DefaultProps {
 }
 
 export function LoadingOverlay({
-  size = 'sm',
-  overlayColor = '#fff',
-  overlayOpacity = 0.3,
+  size = 'md',
+  overlayColor = '#eff4f9',
+  overlayOpacity = 0.7,
+  visible,
 }: LoadingOverlayProps) {
   if (!visible) return null;
 

@@ -32,4 +32,14 @@ export const Addon = () => (
   </Group>
 );
 
-export const PasswordInput = () => <InputPassword width={360} />;
+export const PasswordInput = () => (
+  <InputPassword
+    width={360}
+    onChange={(v) => {
+      console.log('focus', v.target.value);
+    }}
+    onBlur={() => {
+      console.log('onBlur');
+    }}
+  />
+);

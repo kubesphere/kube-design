@@ -1,9 +1,8 @@
-// eslint-disable-next-line import/no-cycle
 import { ILocale } from '../LocaleProvider/types';
-// eslint-disable-next-line import/no-cycle
-import PickerLocale from '../../DatePicker/locales/en_US';
+import PickerLocale from '../../DatePicker/locales/en';
 
 const localeValues: ILocale = {
+  Empty: { noData: 'No Data' },
   Modal: {
     okText: 'OK',
     cancelText: 'Cancel',

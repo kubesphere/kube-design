@@ -1,5 +1,5 @@
 import React from 'react';
-import cx from 'clsx';
+import cx from 'classnames';
 import forwardRef from '../utils/forwardRef';
 import { DefaultProps, KubedNumberSize } from '../theme';
 import { DividerWrapper, Label } from './Divider.styles';
@@ -28,6 +28,9 @@ export interface DividerProps extends DefaultProps {
 
   /** Top and bottom margins for horizontal variant, left and right for vertical, xs, sm, md, lg, xl for value from theme.spacing, number for margins in px */
   margins?: KubedNumberSize;
+
+  /** Divider height, only available if direction is vertical */
+  height?: number;
 }
 
 export const Divider = forwardRef<DividerProps, 'hr'>(
@@ -43,6 +46,7 @@ export const Divider = forwardRef<DividerProps, 'hr'>(
       themeOverride,
       variant = 'solid',
       margins = 0,
+      height,
       ...rest
     },
     ref
@@ -58,7 +62,9 @@ export const Divider = forwardRef<DividerProps, 'hr'>(
         direction={direction}
         variant={variant}
         $margins={margins}
-        size={size}
+        $size={size}
+        $height={height}
+        $color={color}
         {...rest}
       >
         {!!label && horizontal && (

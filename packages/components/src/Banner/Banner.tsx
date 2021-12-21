@@ -63,7 +63,7 @@ export interface BannerProps extends DefaultProps {
 }
 
 export const Banner = forwardRef<BannerProps, 'div'>(
-  ({ icon, title, description, children }, ref) => {
+  ({ icon, title, description, children, className }, ref) => {
     const [activeKey, setActiveKey] = useState<string>();
     const onTipClick = (key) => {
       if (key === activeKey) {
@@ -84,8 +84,8 @@ export const Banner = forwardRef<BannerProps, 'div'>(
     });
 
     return (
-      <Card ref={ref} padding={0}>
-        <BannerTitle>
+      <Card ref={ref} padding={0} className={className}>
+        <BannerTitle className="banner-title">
           <BannerIcon>{icon}</BannerIcon>
           <BannerText>
             <Text variant="h3" size={24} color="accents_8">
@@ -94,7 +94,7 @@ export const Banner = forwardRef<BannerProps, 'div'>(
             <Text color="accents_5">{description}</Text>
           </BannerText>
         </BannerTitle>
-        <BannerExtra>
+        <BannerExtra className="banner-extra">
           {others.length > 0 && <BannerNavs>{others}</BannerNavs>}
           {tips.map((tip) => {
             const { key, title: tipTitle } = tip;

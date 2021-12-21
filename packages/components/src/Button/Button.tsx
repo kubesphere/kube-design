@@ -52,7 +52,7 @@ export const Button = forwardRef<ButtonProps, 'button'>(
       disabled = false,
       shadow = false,
       size = 'sm',
-      radius = 'sm',
+      radius = 'xl',
       as = 'button',
       leftIcon,
       rightIcon,
@@ -68,11 +68,11 @@ export const Button = forwardRef<ButtonProps, 'button'>(
       <ButtonContainer
         {...others}
         as={as}
-        size={size}
+        $size={size}
         disabled={disabled}
         $loading={loading}
-        shadow={shadow}
-        variant={variant}
+        $shadow={shadow}
+        $variant={variant}
         $color={color}
         $radius={radius}
         className={className}

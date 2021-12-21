@@ -50,14 +50,18 @@ export interface TagProps extends DefaultProps {
 
   /** Tag color from theme  */
   color?: string | 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'error';
+
+  /** Append element of the tag  */
+  append?: React.ReactNode;
 }
 
 export const Tag = forwardRef<TagProps, 'div'>(
-  ({ title, titleStyle, color, children, ...rest }, ref) => {
+  ({ title, titleStyle, color, children, append, ...rest }, ref) => {
     return (
       <TagWrapper ref={ref} title={title} color={color} {...rest}>
         {title && <TagTitle style={titleStyle}>{title}</TagTitle>}
         {children}
+        {append}
       </TagWrapper>
     );
   }
