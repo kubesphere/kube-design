@@ -1,3 +1,4 @@
+---
 group: 'components'
 category: 'state'
 title: Entity
@@ -10,31 +11,55 @@ order: 1
 实体，可以用来表示一种资源的多种特征。
 
 ```js live=true
-() => <Field avatar={Avatar} label="存储类型: rocksdb" value="rocksdbpvc" />
+() => {
+  const { Avatar } = KubeIcon;
+  return (
+    <Field avatar={Avatar} label="存储类型: rocksdb" value="rocksdbpvc" />
+  )
+}
 ```
 
 ## 实体的多种特征显示区域
 
 ```js live=true
-() => (
-  <Entity>
-    <Field avatar={Avatar} label="存储类型: rocksdb" value="rocksdbpvc" />
-    <Field label="存储卷" value="rocksdbpvc" />
-    <Field label="容量" value="1Gi" width={100} />
-    <Field label="访问模式" value="ReadWriteOnce" />
-  </Entity>
-)
+() => {
+  const { Avatar } = KubeIcon;
+  return (
+    <Entity>
+      <Field avatar={Avatar} label="存储类型: rocksdb" value="rocksdbpvc" />
+      <Field label="存储卷" value="rocksdbpvc" />
+      <Field label="容量" value="1Gi" width={100} />
+      <Field label="访问模式" value="ReadWriteOnce" />
+    </Entity>
+  )
+}
 ```
 
 ## 带hover效果
 
 ```js live=true
-() => (
-  <Entity hoverable footer={footer}>
-    <Field avatar={Avatar} label="存储类型: rocksdb" value="rocksdbpvc" />
-    <Field label="存储卷" value="rocksdbpvc" />
-    <Field label="容量" value="1Gi" width={100} />
-    <Field label="访问模式" value="ReadWriteOnce" />
-  </Entity>
-)
+() => {
+  const { Docker, Pod, Avatar} = KubeIcon;
+  const footer = (
+    <>
+      <div style={{ display: 'inline-flex', minWidth: '200px', alignItems: 'center' }}>
+        <Docker size={20} style={{ marginRight: '8px' }} />
+        <Text weight={500}>moqlus-runtime</Text>
+      </div>
+      <div style={{ display: 'inline-flex', minWidth: '200px', alignItems: 'center' }}>
+        <Pod size={20} style={{ marginRight: '8px' }} />
+        <Text weight={500}>moqlus-runtime</Text>
+      </div>
+    </>
+  );
+
+  return (
+    <Entity hoverable footer={footer}>
+      <Field avatar={Avatar} label="存储类型: rocksdb" value="rocksdbpvc" />
+      <Field label="存储卷" value="rocksdbpvc" />
+      <Field label="容量" value="1Gi" width={100} />
+      <Field label="访问模式" value="ReadWriteOnce" />
+    </Entity>
+  )
+}
 ```
