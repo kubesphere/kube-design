@@ -23,16 +23,16 @@ order: 1
 ```js live=true
 () => {
   return (
-     <>
-        <Slider defaultValue={60} size="xs" styles={{ marginTop: 25 }} />
-        <Slider defaultValue={60} size="sm" styles={{ marginTop: 25 }} />
-        <Slider defaultValue={60} size="md" styles={{ marginTop: 25 }} />
-        <Slider defaultValue={60} size="lg" styles={{ marginTop: 25 }} />
-        <Slider defaultValue={60} size="xl" styles={{ marginTop: 25 }} />
-        <RangeSlider defaultValue={[20, 80]} max={100} min={0} styles={{ marginTop: 25 }}/>
-     </>
-  )
-}
+    <>
+      <Slider defaultValue={60} size="xs" styles={{ marginTop: 25 }} />
+      <Slider defaultValue={60} size="sm" styles={{ marginTop: 25 }} />
+      <Slider defaultValue={60} size="md" styles={{ marginTop: 25 }} />
+      <Slider defaultValue={60} size="lg" styles={{ marginTop: 25 }} />
+      <Slider defaultValue={60} size="xl" styles={{ marginTop: 25 }} />
+      <RangeSlider defaultValue={[20, 80]} max={100} min={0} styles={{ marginTop: 25 }} />
+    </>
+  );
+};
 ```
 
 ## 单滑块
@@ -48,19 +48,19 @@ order: 1
 ```js live=true
 () => {
   return (
-     <Slider
-        label={(value) => `${value} %`}
-        step={10}
-        marks={[
-           { value: 0, label: '0' },
-           { value: 20, label: '20%' },
-           { value: 50, label: '50%' },
-           { value: 80, label: '80%' },
-           { value: 100, label: '100%' },
-        ]}
-     />
-  )
-}
+    <Slider
+      label={(value) => `${value} %`}
+      step={10}
+      marks={[
+        { value: 0, label: '0' },
+        { value: 20, label: '20%' },
+        { value: 50, label: '50%' },
+        { value: 80, label: '80%' },
+        { value: 100, label: '100%' },
+      ]}
+    />
+  );
+};
 ```
 
 ## 双滑块
@@ -84,7 +84,7 @@ order: 1
 
 通过 marks 中传 weight 权重可以配置不均匀刻度。
 
-通过 minRange 属性可以设置滑动的最小距离，若最小距离小于1，需要用 decimals 设置滑动时显示的小数位。
+通过 minRange 属性可以设置滑动的最小距离，若最小距离小于 1，需要用 decimals 设置滑动时显示的小数位。
 
 ```js live=true
 () => {
@@ -98,12 +98,12 @@ order: 1
         { value: 2, label: 2, weight: 2 },
         { value: 3, label: 3, weight: 1 },
         { value: 4, label: 4 },
-     ]}
+      ]}
       defaultValue={[2, 3]}
       minRange={0.01}
       decimals={2}
     />
-  )
+  );
 };
 ```
 
@@ -117,10 +117,9 @@ order: 1
   const [rangeValue, setRangeValue] = React.useState([20, 80]);
   return (
     <>
-      <Slider value={value} onChange={setValue} styles={{ marginTop: 25 }}/>
-      <RangeSlider value={rangeValue} onChange={setRangeValue} styles={{ marginTop: 25 }}/>
+      <Slider value={value} onChange={setValue} styles={{ marginTop: 25 }} />
+      <RangeSlider value={rangeValue} onChange={setRangeValue} styles={{ marginTop: 25 }} />
     </>
-  )
-}
+  );
+};
 ```
-
