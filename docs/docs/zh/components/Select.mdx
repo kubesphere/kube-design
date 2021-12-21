@@ -12,6 +12,12 @@ order: 1
 
 ## 基础用法
 
+通过 `option` 属性来设置 Select 组件的选项。
+通过 `defaultValue` 属性设置 Select 组件的默认值。
+通过 `disabled` 属性来禁用 Select 组件。
+通过 `loading` 属性设置 Select 组件的加载中状态。
+通过 `allowClear` 属性设置选中内容是否可清除。
+
 ```js live=true
 () => {
   const { Option } = Select;
@@ -40,13 +46,14 @@ order: 1
 ## 带搜索框
 
 展开后可对选项进行搜索。
+通过 `showSearch` 设置显示搜索按钮。
 
 ```js live=true
 () => (
   <Select allowClear style={{ width: '120px' }} placeholder="请选择" showSearch>
-    <Select.Option value="China">China</Select.Option>
-    <Select.Option value="USA">USA</Select.Option>
-    <Select.Option value="Russian">Russian</Select.Option>
+    <Select.Option value="CentOs-5.8">CentOs 5.8 32bit</Select.Option>
+    <Select.Option value="CentOs-6.6">CentOs 6.6 64bit</Select.Option>
+    <Select.Option value="CentOs-7">CentOs 7 64bit</Select.Option>
   </Select>
 )
 ```
@@ -54,20 +61,22 @@ order: 1
 ## 多选
 
 多选，从已有条目中选择。
+通过 `mode` 属性设置为 multiple 可以将 Select 组件变为多选。
 
 ```js live=true
 () => (
   <Select style={{ width: '300px' }} placeholder="请选择" allowClear mode="multiple" showArrow>
-    <Select.Option value="China">按 CPU 平均负载排行</Select.Option>
-    <Select.Option value="USA">按内存用量排行</Select.Option>
-    <Select.Option value="Russian">按磁盘用量排行</Select.Option>
+    <Select.Option value="CPU">按 CPU 平均负载排行</Select.Option>
+    <Select.Option value="RAM">按内存用量排行</Select.Option>
+    <Select.Option value="DISK">按磁盘用量排行</Select.Option>
   </Select>
 )
 ```
 
 ## 标签
 
-tag select， 随意输入的内容
+tag select， 随意输入的内容。
+通过将 `mode` 属性设置为 tags 可以使 Select 组件变为标签选择。
 
 ```js live=true
 () => {
@@ -89,24 +98,24 @@ tag select， 随意输入的内容
 
 ## 分组
 
-用 OptGroup 进行选项分组。
+通过 OptGroup 组件进行选项分组。
 
 ```js live=true
 () => {
-const { OptGroup } = Select;
-function handleChange(value){
-  console.log(`selected ${value}`);
-}
-return (
-<Select defaultValue="lucy" style={{ width: 200 }} onChange={handleChange}>
-    <OptGroup label="Manager">
-      <Option value="jack">Jack</Option>
-      <Option value="lucy">Lucy</Option>
-    </OptGroup>
-    <OptGroup label="Engineer">
-      <Option value="Yiminghe">yiminghe</Option>
-    </OptGroup>
-  </Select>
+  const { OptGroup } = Select;
+  function handleChange(value){
+    console.log(`selected ${value}`);
+  }
+  return (
+     <Select defaultValue="JS" style={{ width: 200 }} onChange={handleChange}>
+      <OptGroup label="JavaScript">
+        <Option value="React">React</Option>
+        <Option value="Vue">Vue</Option>
+      </OptGroup>
+      <OptGroup label="node">
+        <Option value="koa">koa</Option>
+      </OptGroup>
+    </Select>
   )
 }
 ```
@@ -114,6 +123,7 @@ return (
 ## 自动分词
 
 只在 tags 和 multiple 模式下可用。
+通过 `tokenSeparator` 设置分词分隔符。
 
 ```js live=true
 () => {
@@ -206,7 +216,7 @@ return (
 
 ## 定制回填内容
 
-使用 optionLabelProp 指定回填到选择框的 Option 属性。
+通过 optionLabelProp 属性指定回填到选择框的 Option 属性。
 
 ```js live=true
 () => {
