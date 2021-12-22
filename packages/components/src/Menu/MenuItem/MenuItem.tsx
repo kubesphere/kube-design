@@ -3,6 +3,9 @@ import { DefaultProps } from '../../theme';
 import forwardRef from '../../utils/forwardRef';
 
 export interface MenuItemProps extends DefaultProps {
+  /** Item ClassName*/
+  className?: string;
+
   /** Item label */
   children: React.ReactNode;
 
@@ -11,6 +14,9 @@ export interface MenuItemProps extends DefaultProps {
 
   /** Any color from theme.colors */
   color?: string;
+
+  /** disabled for menuItem */
+  disabled?: boolean;
 
   /** Any react node to render on the right side of item, for example, keyboard shortcut or badge */
   rightSection?: React.ReactNode;

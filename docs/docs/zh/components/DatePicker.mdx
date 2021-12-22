@@ -8,11 +8,16 @@ order: 1
 
 ## 基础用法
 
+日期选择器
+
 ```js live=true
 <DatePicker />
 ```
 
 ## 范围选择器
+
+通过 `DatePicker.RangePicker` 使用时间范围选择器
+
 ```js live
 () => {
   const { RangePicker } = DatePicker;
@@ -23,7 +28,24 @@ order: 1
 ```
 
 ## 时间选择器
+
+点击TimePicker，然后可以在浮层中选择或者输入某一时间。
+
 ```js live
 <TimePicker />
+```
+
+## 受控组件
+
+value 和 onChange 需要配合使用。
+
+```js live=true
+() => {
+  const [value,setValue] = React.useState(null);
+  const onChange = time => {
+    setValue(time)
+  }
+  return <TimePicker value={value} onChange={onChange} />;
+}
 ```
 

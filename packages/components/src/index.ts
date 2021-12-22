@@ -43,3 +43,5 @@ export * from './Progress/Progress';
 export * from './utils/color';
 export { default as forwardRef } from './utils/forwardRef';
 export { default as toArray } from './utils/toArray';
+export { AutoComplete } from './AutoComplete/AutoComplete';
+export { Slider } from './Slider/Slider';

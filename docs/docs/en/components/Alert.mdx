@@ -16,9 +16,9 @@ Alert components are non-overlay elements in the page that does not disappear au
 </Alert>
 ```
 
-## Types
+## More Types
 
-Set type of Alert.
+There are 4 types of Alert: success, info, warning, error.
 
 ```js live=true
 <Group direction="row" grow>
@@ -31,8 +31,29 @@ Set type of Alert.
   <Alert title="KubeSphere" type="error">
     Kubesphere.io is an upstream project of the KubeSphere container management platform.
   </Alert>
-  <Alert title="KubeSphere" type="info" closable>
+  <Alert title="KubeSphere" type="info">
     Kubesphere.io is an upstream project of the KubeSphere container management platform.
   </Alert>
 </Group>
 ```
+
+## Icon
+
+A relevant icon will make information clearer and more friendly.
+
+```js live=true
+<Alert showIcon>
+    Kubesphere.io is an upstream project of the KubeSphere container management platform.
+  </Alert>
+```
+
+## Closable
+
+To show close button.
+
+```js live=true
+<Alert title="KubeSphere" type="info" closable>
+  Kubesphere.io is an upstream project of the KubeSphere container management platform.
+</Alert>
+```
+

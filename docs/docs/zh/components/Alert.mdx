@@ -36,3 +36,23 @@ order: 1
   </Alert>
 </Group>
 ```
+
+## 图标
+
+可口的图标让信息类型更加醒目。如果type有类型，则显示对应的图标，没有的话，显示默认的图标。
+
+```js live=true
+<Alert showIcon>
+    Kubesphere.io is an upstream project of the KubeSphere container management platform.
+  </Alert>
+```
+
+## 平滑地卸载
+
+平滑，自然地卸载提示。
+
+```js live=true
+<Alert title="KubeSphere" type="info" closable>
+  Kubesphere.io is an upstream project of the KubeSphere container management platform.
+</Alert>
+```
