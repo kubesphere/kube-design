@@ -12,6 +12,7 @@ export { useQueue } from './useQueue';
 export { useClickOutside } from './useClickOutside';
 export { useMove } from './useMove';
 export { useHotkeys } from './useHotkeys';
+export { useMergedRef, mergeRefs } from './useMergedRef';
 export { useDebouncedValue } from './useDebouncedValue';
 export { useDidMount } from './useDidMount';
 export { useDidUpdate } from './useDidUpdate';

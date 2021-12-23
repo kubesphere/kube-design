@@ -10,46 +10,131 @@ order: 1
 
 当用户需要在数值区间/自定义区间内进行选择时，可为连续或离散值。
 
-## 基本用法
+## 基础用法
+
+基础的滑动块输入条用法
+
+通过 size 参数可以设置滑动块的尺寸。
+
+通过 max/min 属性设置滚动条上的最大值/最小值，默认为 100/0。
+
+通过 defaultValue 属性设置默认值。
 
 ```js live=true
 () => {
-  const [request, setRequest] = React.useState(2);
-  const [limit, setLimit] = React.useState(3);
-  const cpuFormatter = (value) => {
-    if (value > 0 && value < 1) {
-      return value.toFixed(2);
-    }
-    if (value > 1 && value !== Infinity) {
-      return value.toFixed(1);
-    }
-    return value;
-  };
+  return (
+    <>
+      <Slider defaultValue={60} size="xs" styles={{ marginTop: 25 }} />
+      <Slider defaultValue={60} size="sm" styles={{ marginTop: 25 }} />
+      <Slider defaultValue={60} size="md" styles={{ marginTop: 25 }} />
+      <Slider defaultValue={60} size="lg" styles={{ marginTop: 25 }} />
+      <Slider defaultValue={60} size="xl" styles={{ marginTop: 25 }} />
+      <RangeSlider defaultValue={[20, 80]} max={100} min={0} styles={{ marginTop: 25 }} />
+    </>
+  );
+};
+```
 
-  const handleChange = (value) => {
-    setRequest(value[0]);
-    setLimit(value[1]);
-  };
+## 禁用状态
 
+通过 disabled 属性设置是否禁用滑动输入条。
+
+```js live=true
+() => {
+  return (
+    <>
+     <Slider defaultValue={60} styles={{ marginTop: 25 }} disabled />
+     <RangeSlider defaultValue={[20, 80]} max={100} min={0} styles={{ marginTop: 25 }} disabled />
+    </>
+  )
+}
+```
+
+## 单滑块
+
+单滑块可以设置均匀刻度和不均匀刻度，marks 中没有传 weight 权重时默认为均匀刻度。
+
+通过 step 属性设置滑动输入条的步进值。
+
+通过 label 属性设置提示标签。
+
+通过 marks 属性设置滑动条上的标尺。
+
+```js live=true
+() => {
   return (
     <Slider
-      onChange={handleChange}
-      valueFormatter={cpuFormatter}
+      label={(value) => `${value} %`}
+      step={10}
+      marks={[
+        { value: 0, label: '0' },
+        { value: 20, label: '20%' },
+        { value: 50, label: '50%' },
+        { value: 80, label: '80%' },
+        { value: 100, label: '100%' },
+      ]}
+    />
+  );
+};
+```
+
+## 区间滑块
+
+使用 RangeSlider 组件可以配置双滑块，使用方法和单滑块一致。
+
+```js live=true
+() => {
+  const marks = [
+    { value: 0, label: '0' },
+    { value: 20, label: '20%' },
+    { value: 50, label: '50%' },
+    { value: 80, label: '80%' },
+    { value: 100, label: '100%' },
+  ];
+  return <RangeSlider defaultValue={[20, 80]} marks={marks} />;
+};
+```
+
+## 不均匀刻度
+
+通过 marks 中传 weight 权重可以配置不均匀刻度。
+
+通过 minRange 属性可以设置滑动的最小距离，若最小距离小于 1，需要用 decimals 设置滑动时显示的小数位。
+
+```js live=true
+() => {
+  return (
+    <RangeSlider
       marks={[
         { value: 0, label: '无限制', weight: 2 },
         { value: 0.2, label: 0.2, weight: 2 },
         { value: 0.5, label: 0.5, weight: 2 },
         { value: 1, label: 1, weight: 1 },
-        { value: 2, label: 2, weight: 1 },
-        { value: 3, label: 3 },
-        { value: 4, label: 4, weight: 2 },
-        { value: Infinity, label: '无限制' },
+        { value: 2, label: 2, weight: 2 },
+        { value: 3, label: 3, weight: 1 },
+        { value: 4, label: 4 },
       ]}
-      value={[request || 0, limit || Infinity]}
-      defaultValue={10}
-      unit="MiB"
-      hasTooltip
+      defaultValue={[2, 3]}
+      minRange={0.01}
+      decimals={2}
     />
+  );
+};
+```
+
+## 受控的滑动块
+
+默认单滑块和双滑块都是非受控的，添加 onChange 和 value 入参可以使其变成受控的滑动块组件。
+
+```js live=true
+() => {
+  const [value, setValue] = React.useState(40);
+  const [rangeValue, setRangeValue] = React.useState([20, 80]);
+  return (
+    <>
+      <Slider value={value} onChange={setValue} styles={{ marginTop: 25 }} />
+      <RangeSlider value={rangeValue} onChange={setRangeValue} styles={{ marginTop: 25 }} />
+    </>
   );
 };
 ```

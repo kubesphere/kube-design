@@ -38,10 +38,11 @@ export { default as DatePicker } from './DatePicker/DatePicker';
 export { default as TimePicker } from './TimePicker/TimePicker';
 export { Banner, BannerTip } from './Banner/Banner';
 export { Notify, notify } from './Notify/Notify';
+export { AutoComplete } from './AutoComplete/AutoComplete';
+export { Slider, RangeSlider } from './Slider/index';
 export * from './ActionConfirm/ActionConfirm';
 export * from './Progress/Progress';
 export * from './utils/color';
 export { default as forwardRef } from './utils/forwardRef';
 export { default as toArray } from './utils/toArray';
-export { AutoComplete } from './AutoComplete/AutoComplete';
-export { Slider } from './Slider/Slider';
+

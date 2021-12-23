@@ -10,46 +10,116 @@ order: 1
 
 To input a value in a range.
 
-## Basic Usage
+## Basic Slider
+
+Basic Slider. The size of the Slider can be set by the prop of size.
 
 ```js live=true
 () => {
-  const [request, setRequest] = React.useState(2);
-  const [limit, setLimit] = React.useState(3);
-  const cpuFormatter = (value) => {
-    if (value > 0 && value < 1) {
-      return value.toFixed(2);
-    }
-    if (value > 1 && value !== Infinity) {
-      return value.toFixed(1);
-    }
-    return value;
-  };
-
-  const handleChange = (value) => {
-    setRequest(value[0]);
-    setLimit(value[1]);
-  };
-
   return (
-    <Slider
-      onChange={handleChange}
-      valueFormatter={cpuFormatter}
+     <>
+        <Slider defaultValue={60} size="xs" styles={{ marginTop: 25 }} />
+        <Slider defaultValue={60} size="sm" styles={{ marginTop: 25 }} />
+        <Slider defaultValue={60} size="md" styles={{ marginTop: 25 }} />
+        <Slider defaultValue={60} size="lg" styles={{ marginTop: 25 }} />
+        <Slider defaultValue={60} size="xl" styles={{ marginTop: 25 }} />
+        <RangeSlider defaultValue={[20, 80]} max={100} min={0} styles={{ marginTop: 25 }}/>
+      </>
+  )
+}
+```
+
+## Disabled Status
+
+```js live=true
+() => {
+  return (
+    <>
+     <Slider defaultValue={60} styles={{ marginTop: 25 }} disabled />
+     <RangeSlider defaultValue={[20, 80]} max={100} min={0} styles={{ marginTop: 25 }} disabled />
+    </>
+  )
+}
+```
+
+## Single Slider
+
+Single slider can set uniform scale and uneven scale. If the weight is not passed in marks, the default is uniform scale.
+
+```js live=true
+() => {
+  return (
+     <Slider
+        marks={[
+           { value: 0, label: '0' },
+           { value: 20, label: '20%' },
+           { value: 50, label: '50%' },
+           { value: 80, label: '80%' },
+           { value: 100, label: '100%' },
+        ]}
+     />
+  )
+}
+```
+
+## Range Slider
+
+```js live=true
+() => {
+  const marks = [
+    { value: 0, label: '0' },
+    { value: 20, label: '20%' },
+    { value: 50, label: '50%' },
+    { value: 80, label: '80%' },
+    { value: 100, label: '100%' },
+  ];
+  return <RangeSlider decimals={0} defaultValue={[20, 80]} marks={marks} />;
+};
+```
+
+## Uneven Slider
+
+The Uneven scale can be set by passing the weight prop in marks.
+
+MinRange can set minimal range interval of Slider，if it less than 1, decimals is required to set when move the Slider。
+
+```js live=true
+() => {
+  return (
+    <RangeSlider
       marks={[
         { value: 0, label: '无限制', weight: 2 },
         { value: 0.2, label: 0.2, weight: 2 },
         { value: 0.5, label: 0.5, weight: 2 },
         { value: 1, label: 1, weight: 1 },
         { value: 2, label: 2, weight: 2 },
-        { value: 3, label: 3, weight: 2 },
+        { value: 3, label: 3, weight: 1 },
         { value: 4, label: 4 },
-        { value: Infinity, label: '无限制' },
+        { value: 100, label: 100, weight: 1 },
       ]}
-      value={[request || 0, limit || Infinity]}
-      defaultValue={10}
-      unit="MiB"
-      hasTooltip
+      defaultValue={[2, 3]}
+      minRange={0.01}
+      decimals={2}
     />
-  );
+  )
 };
 ```
+
+## Controlled
+
+By default, both Slider and RangeSlider are uncontrolled, add onChange and value props to make them controlled:
+
+```js live=true
+() => {
+  const [value, setValue] = React.useState(40);
+  const [rangeValue, setRangeValue] = React.useState([20, 80]);
+  return (
+    <>
+      <Slider value={value} onChange={setValue} styles={{ marginTop: 25 }}/>
+      <RangeSlider value={rangeValue} onChange={setRangeValue} styles={{ marginTop: 25 }}/>
+    </>
+  )
+}
+```
+
+
