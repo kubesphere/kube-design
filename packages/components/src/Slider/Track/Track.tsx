@@ -13,6 +13,7 @@ interface TrackProps extends DefaultProps {
   min: number;
   max: number;
   value: number;
+  disabled: boolean;
   children: React.ReactNode;
   onChange(value: number): void;
   onMouseEnter?(event?: React.MouseEvent<HTMLDivElement>): void;
@@ -24,6 +25,7 @@ export function Track({
   size,
   classNames,
   styles,
+  disabled,
   radius,
   children,
   offset,
@@ -34,12 +36,14 @@ export function Track({
   return (
     <TrackWrapper
       size={size}
+      disabled={disabled}
       className="track-demo"
       onMouseLeave={onMouseLeave}
       onMouseEnter={onMouseEnter}
     >
       <BarWrapper
         size={size}
+        disabled={disabled}
         className="track-bar"
         style={{ left: `${offset}%`, width: `${filled}%`, position: 'absolute' }}
       />

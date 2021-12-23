@@ -1,7 +1,6 @@
 import React, { useState, forwardRef } from 'react';
 import cx from 'classnames';
-import { KubedNumberSize, DefaultProps } from '../../theme/index';
-import { KubedTheme } from '../../theme/types';
+import { DefaultProps } from '../../theme/index';
 
 import { ThumbWrapper } from './Thumb.styles';
 import { Tooltip } from '../../Tooltip/Tooltip';
@@ -10,6 +9,7 @@ interface ThumbProps extends DefaultProps {
   max: number;
   min: number;
   value: number;
+  disabled?: boolean;
   position: number;
   dragging: boolean;
   label: React.ReactNode;
@@ -29,6 +29,7 @@ export const Thumb = forwardRef<HTMLDivElement, ThumbProps>(
       min,
       value,
       position,
+      disabled,
       label,
       dragging,
       onMouseDown,
@@ -47,6 +48,7 @@ export const Thumb = forwardRef<HTMLDivElement, ThumbProps>(
     return (
       <Tooltip content={label || '0'} visible={isVisible}>
         <ThumbWrapper
+          disabled={disabled}
           tabIndex={0}
           role="slider"
           aria-label={thumbLabel}

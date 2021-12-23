@@ -10,9 +10,9 @@ order: 1
 
 当用户需要在数值区间/自定义区间内进行选择时，可为连续或离散值。
 
-## 代码演示
+## 基础用法
 
-## 基本滑动块
+基础的滑动块输入条用法
 
 通过 size 参数可以设置滑动块的尺寸。
 
@@ -33,6 +33,21 @@ order: 1
     </>
   );
 };
+```
+
+## 禁用状态
+
+通过 disabled 属性设置是否禁用滑动输入条。
+
+```js live=true
+() => {
+  return (
+    <>
+     <Slider defaultValue={60} styles={{ marginTop: 25 }} disabled />
+     <RangeSlider defaultValue={[20, 80]} max={100} min={0} styles={{ marginTop: 25 }} disabled />
+    </>
+  )
+}
 ```
 
 ## 单滑块
@@ -63,7 +78,7 @@ order: 1
 };
 ```
 
-## 双滑块
+## 区间滑块
 
 使用 RangeSlider 组件可以配置双滑块，使用方法和单滑块一致。
 

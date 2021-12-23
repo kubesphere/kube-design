@@ -31,6 +31,9 @@ export interface RangeSliderProps
   /** Minimal range interval */
   minRange?: number;
 
+  /** Disable RangeSlider */
+  disabled?: boolean;
+
   /** Number by which value will be incremented/decremented with thumb drag and arrows */
   step?: number;
 
@@ -85,6 +88,7 @@ export const RangeSlider = forwardRef<HTMLDivElement, RangeSliderProps>(
       value,
       onChange,
       size = 'md',
+      disabled = false,
       radius = 'xl',
       min = 0,
       max = 100,
@@ -156,6 +160,7 @@ export const RangeSlider = forwardRef<HTMLDivElement, RangeSliderProps>(
     };
 
     const handleChange = (val: number) => {
+      if (disabled) return;
       const nextValue = getUnevenChangeValue({ value: val, marks, decimals, min, max, step });
       setRangedValue(nextValue, thumbIndex.current);
     };
@@ -276,6 +281,7 @@ export const RangeSlider = forwardRef<HTMLDivElement, RangeSliderProps>(
           filled={positions[1] - positions[0]}
           marks={marks}
           size={size}
+          disabled={disabled}
           radius={radius}
           min={min}
           max={max}
@@ -294,6 +300,7 @@ export const RangeSlider = forwardRef<HTMLDivElement, RangeSliderProps>(
           <Thumb
             {...sharedThumbProps}
             value={_value[0]}
+            disabled={disabled}
             position={positions[0]}
             dragging={active}
             label={typeof label === 'function' ? label(_value[0]) : label}
@@ -312,6 +319,7 @@ export const RangeSlider = forwardRef<HTMLDivElement, RangeSliderProps>(
             {...sharedThumbProps}
             thumbLabel={thumbToLabel}
             value={_value[1]}
+            disabled={disabled}
             position={positions[1]}
             dragging={active}
             label={typeof label === 'function' ? label(_value[1]) : label}

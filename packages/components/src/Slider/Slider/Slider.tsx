@@ -40,6 +40,9 @@ export interface SliderProps
   /** Hidden input name, use with uncontrolled variant */
   name?: string;
 
+  /** Disable Slider */
+  disabled?: boolean;
+
   /** Marks which will be placed on the track */
   marks?: { value: number; label?: React.ReactNode }[];
 
@@ -73,6 +76,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(
     {
       classNames,
       styles,
+      disabled,
       color,
       value,
       onChange,
@@ -111,6 +115,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(
     const _label = typeof label === 'function' ? label(_value) : label;
 
     const handleChange = (val: number) => {
+      if (disabled) return;
       const nextValue = getUnevenChangeValue({ value: val, marks, decimals, min, max, step });
       setValue(nextValue);
     };
@@ -163,6 +168,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(
         <Track
           offset={0}
           filled={position}
+          disabled={disabled}
           marks={marks}
           size={size}
           radius={radius}
@@ -179,6 +185,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(
             max={max}
             min={min}
             value={_value}
+            disabled={disabled}
             position={position}
             dragging={active}
             label={_label}

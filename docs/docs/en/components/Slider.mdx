@@ -29,6 +29,19 @@ Basic Slider. The size of the Slider can be set by the prop of size.
 }
 ```
 
+## Disabled Status
+
+```js live=true
+() => {
+  return (
+    <>
+     <Slider defaultValue={60} styles={{ marginTop: 25 }} disabled />
+     <RangeSlider defaultValue={[20, 80]} max={100} min={0} styles={{ marginTop: 25 }} disabled />
+    </>
+  )
+}
+```
+
 ## Single Slider
 
 Single slider can set uniform scale and uneven scale. If the weight is not passed in marks, the default is uniform scale.

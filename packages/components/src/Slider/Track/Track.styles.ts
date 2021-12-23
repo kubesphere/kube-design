@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { KubedNumberSize, KubedTheme } from '../../theme/types';
 import { getSizeValue } from '../../theme/utils';
 
@@ -14,14 +14,16 @@ interface TrackStyles {
   radius?: KubedNumberSize;
   size?: KubedNumberSize;
   color?: KubedTheme;
+  disabled?: boolean;
 }
 
 export const TrackWrapper = styled('div')<TrackStyles>`
   position: relative;
-  height: ${({ size = 'md' }) => getSizeValue(size, sizes)}px;
+  height: ${({ size = 'md' }) => sizes[size]}px;
   width: 100%;
   background-color: ${({ theme }) => theme.palette.colors.white[1]};
-  border-radius: 4px;
+  border-radius: ${({ size }) => sizes[size]}px;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 `;
 
 export const BarWrapper = styled('div')<TrackStyles>`
@@ -31,5 +33,6 @@ export const BarWrapper = styled('div')<TrackStyles>`
   left: 0,
   border-radius: ${({ radius, theme }) => theme.layout.radius[radius]};
   height: ${({ size = 'md' }) => getSizeValue(size, sizes)}px;
-  background-color: ${({ theme }) => theme.palette.colors.green[1]};
+  background-color: ${({ theme, disabled }) =>
+    disabled ? theme.palette.colors.white[2] : theme.palette.colors.green[2]};
 `;
