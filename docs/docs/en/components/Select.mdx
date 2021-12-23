@@ -12,20 +12,41 @@ A dropdown menu for displaying choices - an elegant alternative to the native <s
 
 ## Basic Usage
 
+Using `option` to set the option of Select component.
+Using `defaultValue` to set default Value of Select component.
+Using `disabled` to disable the Select component.
+Using `loading` to set loading status of Select component.
+Using `allowClear` to set whether the selected content can be cleared.
+
 ```js live=true
-() => (
-  <Select style={{ width: '180px' }} placeholder="请选择" allowClear>
-    <Option value="China">按 CPU 平均负载排行</Option>
-    <Option value="USA">按内存用量排行</Option>
-    <Option value="Russian">按磁盘用量排行</Option>
-    <Option value="France">按磁盘用量排行2</Option>
-  </Select>
-)
+() => {
+  const { Option } = Select;
+  return (
+  <>
+     <Select style={{ width: '180px' }} placeholder="请选择" allowClear>
+       <Option value="China">按 CPU 平均负载排行</Option>
+       <Option value="USA">按内存用量排行</Option>
+       <Option value="Russian">按磁盘用量排行</Option>
+       <Option value="France">按磁盘用量排行2</Option>
+     </Select>
+     <Select defaultValue="China" style={{ width: '120px', marginLeft:'20px'}} disabled>
+       <Option value="China">China</Option>
+     </Select>
+     <Select defaultValue="China" style={{ width: '120px',marginLeft:'20px'}} loading>
+       <Option value="china">China</Option>
+     </Select>
+     <Select defaultValue="China" style={{ width: '120px', marginLeft:'20px'}} allowClear>
+        <Option value="china">China</Option>
+     </Select>
+   </>
+  )
+}
 ```
 
 ## Select with search field
 
 Search the options while expanded.
+Using `showSearch` to display search icon.
 
 ```js live=true
 () => (
@@ -50,3 +71,199 @@ Multiple selection, selecting from existing items.
   </Select>
 )
 ```
+
+## Tags
+
+Select with tags, transform input to tag (scroll the menu).
+
+```js live=true
+() => {
+ const children = [];
+ for (let i = 10; i < 36; i++) {
+   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
+ }
+
+ function handleChange(value) {
+   console.log(`selected ${value}`);
+ }
+ return (
+    <Select mode="tags" style={{ width: '100%'}} placeholder="Tags mode" onChange={handleChange}>
+      {children}
+    </Select>
+  )
+}
+```
+
+## Option Group
+
+Using OptGroup to group the options
+
+```js live=true
+() => {
+const { OptGroup } = Select;
+function handleChange(value){
+  console.log(`selected ${value}`);
+}
+return (
+  <Select defaultValue="JS" style={{ width: 200 }} onChange={handleChange}>
+    <OptGroup label="JavaScript">
+      <Option value="React">React</Option>
+      <Option value="Vue">Vue</Option>
+    </OptGroup>
+    <OptGroup label="node">
+      <Option value="koa">koa</Option>
+    </OptGroup>
+  </Select>
+  )
+}
+```
+
+## Automatic tokenization
+
+Only available in tags and multiple mode.
+
+```js live=true
+() => {
+  const children = [];
+  for (let i = 10; i < 36; i++) {
+    children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
+  }
+  function handleChange(value){
+    console.log(`selected ${value}`);
+  }
+  return (
+    <Select
+      mode="tags"
+      style={{ width: 200 }}
+      onChange={handleChange}
+      tokenSeparator={[',']}>
+      {children}
+    </Select>
+  )
+}
+```
+
+## Custom Tag Render
+
+Allows for custom rendering of tags.
+
+```js live=true
+() => {
+  const options=[{value:'gold'},{value:'lime'},{value:'green'}]
+  function tagRender(props){
+     const {label,value,closable,onClose} = props;
+     const onPreventMouseDown = event => {
+        event.preventDefault();
+        event.stopPropagation();
+      };
+     return (
+        <Tag
+          color={value}
+          onMouseDown={onPreventMouseDown}
+          closable={closable}
+          onClose={onClose}
+          style={{ marginRight: 3 }}
+        >
+          {label}
+        </Tag>
+     );
+  }
+  return (
+    <Select
+      mode="multiple"
+      showArrow
+      tagRender={tagRender}
+      defaultValue={['gold','cyan']}
+      style={{ width: '100%'}}
+      options={options}
+    />
+  )
+}
+```
+
+## Hide Already Selected
+
+Hide already selected options in the dropdown.
+
+```js live=true
+() => {
+  const OPTIONS = ['Apples', 'Nails', 'Bananas', 'Helicopters'];
+  const [selectedItems, setSelectedItems] = React.useState([]);
+  function handleChange(selectedItems){
+    setSelectedItems(selectedItems)
+  }
+  const filteredOptions = OPTIONS.filter(o => !selectedItems.includes(o));
+  return (
+    <Select
+      mode="multiple"
+      placeholder="Insert are removed"
+      value={selectedItems}
+      onChange={handleChange}
+      style={{width:'100%'}}
+    >
+    {filteredOptions.map(item => (
+              <Select.Option key={item} value={item}>
+                {item}
+              </Select.Option>
+            ))}
+    </Select>
+  )
+}
+```
+
+## Custom selection render
+
+Specify the prop name of Option which will be rendered in select box.
+
+```js live=true
+() => {
+  function handleChange(value){
+    console.log(`selected ${value}`);
+  }
+  return (
+    <Select
+      mode="multiple"
+      style={{ width:'100%'}}
+      placeholder="select one country"
+      defaultValue={['china']}
+      onChange={handleChange}
+      optionLabelProp="label"
+    >
+       <Option value="china" label="China">
+         <div className="demo-option-label-item">
+            <span role="img" aria-label="China">
+                🇨🇳
+              </span>
+              China (中国)
+            </div>
+       </Option>
+       <Option value="usa" label="USA">
+          <div className="demo-option-label-item">
+            <span role="img" aria-label="USA">
+               🇺🇸
+            </span>
+            USA (美国)
+          </div>
+       </Option>
+       <Option value="japan" label="Japan">
+          <div className="demo-option-label-item">
+             <span role="img" aria-label="Japan">
+                🇯🇵
+             </span>
+                Japan (日本)
+             </div>
+       </Option>
+       <Option value="korea" label="Korea">
+          <div className="demo-option-label-item">
+             <span role="img" aria-label="Korea">
+                🇰🇷
+             </span>
+             Korea (韩国)
+          </div>
+       </Option>
+    </Select>
+  )
+}
+```
+
+

@@ -17,11 +17,14 @@ Nest the MenuItem component in the Menu component.
 ```js live=true
 () => {
   const { Add, Stop, Pen, Trash } = KubeIcon;
+  const clickCallback = () => {
+    console.log('you click me')
+  }
   return (
     <Card style={{ width: '230px' }}>
       <Menu>
         <MenuLabel>menu label</MenuLabel>
-        <MenuItem icon={<Add />}>Add</MenuItem>
+        <MenuItem icon={<Add />} onClick={clickCallback}>Add</MenuItem>
         <MenuItem icon={<Stop />}>Stop</MenuItem>
         <MenuItem icon={<Pen />}>Edit</MenuItem>
         <Divider />
@@ -29,5 +32,24 @@ Nest the MenuItem component in the Menu component.
       </Menu>
     </Card>
   )
+}
+```
+
+## Disabled
+
+```js live=true
+() => {
+  const { Add, Stop, Pen, Trash } = KubeIcon;
+  return (
+     <Card style={{ width: '230px' }}>
+        <Menu>
+          <MenuLabel>menu label</MenuLabel>
+          <MenuItem disabled icon={<Add />}>Add</MenuItem>
+          <MenuItem icon={<Stop />}>Stop</MenuItem>
+          <MenuItem icon={<Pen />}>Edit</MenuItem>
+          <Divider />
+          <MenuItem icon={<Trash />}>Delete</MenuItem>
+        </Menu>
+      </Card>
 }
 ```

@@ -1,6 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
+import { themeUtils } from '@kubed/components';
+import { ThemeProvider } from 'styled-components';
 
 const waitForComponentToPaint = async (wrapper: any) => {
   await act(async () => {
@@ -17,7 +19,11 @@ export function itSupportsRef(
 ) {
   it('supports ref', async () => {
     const ref = React.createRef<typeof refType>();
-    const element = mount(<Component {...requiredProps} {...{ [refProp]: ref }} />);
+    const element = mount(
+      <ThemeProvider theme={themeUtils.getPresets()[0]}>
+        <Component {...requiredProps} {...{ [refProp]: ref }} />
+      </ThemeProvider>
+    );
     await waitForComponentToPaint(element);
     expect(ref.current instanceof refType).toBe(true);
   });

@@ -6,37 +6,32 @@ description: 'Used to trigger an operation'
 order: 1
 ---
 
-## Usage
+## When To Use
+A button means an operation (or a series of operations). Clicking a button will trigger corresponding business logic.
 
-Basic usage of button.
+In Kube Design we provide 4 types of button.
 
-```js live=true
-<Group spacing="xl">
-  <Button variant="filled" color="secondary" shadow radius="xl">
-    KubeSphere
-  </Button>
-  <Button variant="filled" color="default" radius="xl">
-    KubeSphere
-  </Button>
-  <Button variant="text" radius="xl">
-    KubeSphere
-  </Button>
-  <Button variant="filled" color="default" radius="xl" disabled>
-    KubeSphere
-  </Button>
-</Group>
-```
+Primary button: indicate the main action, one primary button at most in one section.
+
+Default button: indicate a series of actions without priority.
+
+Text button: used for the most secondary action.
+
+Link button: used for external links.
+
+
+## Basic Usage
 
 ## Variant
 
-Use the variant prop to change the visual style of the Button. You can set the value to filled, text, outline, or link.
+There are filled button, outline button, text button and link button in kube.
 
 ```js live=true
 <Group spacing="xl">
   <Button variant="filled" color="secondary">
     KubeSphere
   </Button>
-  <Button variant="filled" color="default" radius="xl">
+  <Button variant="outline" color="default" radius="xl">
     KubeSphere
   </Button>
   <Button variant="text" radius="xl">
@@ -50,22 +45,64 @@ Use the variant prop to change the visual style of the Button. You can set the v
 
 ## Colors
 
-Set color of button
+There are six colors of Button.The color property can be set to default, primary, secondary, success, warning and error.
 
 ```js live=true
 <Group spacing="xl">
   <Button variant="filled" color="default">
     KubeSphere
   </Button>
+  <Button variant="filled" color="primary">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="secondary">
+    KubeSphere
+  </Button>
   <Button variant="filled" color="success">
     KubeSphere
   </Button>
+  <Button variant="filled" color="warning">
+      KubeSphere
+    </Button>
   <Button variant="filled" color="error">
     KubeSphere
   </Button>
-  <Button variant="filled" color="warning">
+</Group>
+```
+
+## Disabled
+
+To mark a button as disabled, add the disabled property to the Button.
+
+```js live=true
+<Group spacing="xl">
+  <Button disabled>
     KubeSphere
   </Button>
+</Group>
+```
+
+## Block Button
+
+Block property will make the button fit to its parent width.
+
+```js live=true
+<Group>
+  <Button variant="filled" color="primary" block>KubeSphere</Button>
+  <Button variant="outline" color="default" block>KubeSphere</Button>
+</Group>
+```
+
+## Shadow Button
+
+Shadow property will make the button have a shadow effect.
+
+```js live=true
+<Group>
+  <Button variant="filled" color="primary" shadow>KubeSphere</Button>
+  <Button variant="outline" color="secondary" shadow>KubeSphere</Button>
+  <Button variant="outline" color="success" shadow>KubeSphere</Button>
+  <Button variant="outline" color="warning" shadow>KubeSphere</Button>
 </Group>
 ```
 
@@ -89,3 +126,47 @@ Use the size, radius prop to change the size or radius of the button. You can se
   </Button>
 </Group>
 ```
+
+## Loading
+
+A loading indicator can be added to a button by setting the loading property on the Button.
+
+```js live=true
+<Group spacing="xl">
+  <Button variant="filled" color="primary" size="md" loading>
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="primary" size="lg" loading>
+    KubeSphere
+  </Button>
+</Group>
+```
+
+## With Icon
+
+Button components can contain an Icon. This is done by setting the icon property or placing an Icon component within the Button.
+
+```js live=true
+() => {
+  const { Add } = KubeIcon;
+  return (
+    <Group spacing="xl">
+      <Button variant="filled" radius="xl" leftIcon={<Add size={16}/> }>KubeSphere</Button>
+      <Button variant="filled" radius="xl">{<Add />}</Button>
+      <Button variant="filled" radius="xl" color="success">{<Add />}</Button>
+      <Button variant="filled" radius="xl" color="success" rightIcon={<Add size={16}/> }>KubeSphere</Button>
+    </Group>
+  )
+}
+```
+
+## As
+
+The as attribute can change the label used by the component or the component based on it.
+
+```js live=true
+<Group>
+  <Button as="a" href="/login">KubeSphere</Button>
+</Group>
+```
+

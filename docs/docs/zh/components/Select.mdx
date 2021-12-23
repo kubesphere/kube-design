@@ -12,18 +12,33 @@ order: 1
 
 ## 基础用法
 
-下拉选择器，弹出一个下拉菜单给用户进行操作。
+通过 `option` 属性来设置 Select 组件的选项。
+通过 `defaultValue` 属性设置 Select 组件的默认值。
+通过 `disabled` 属性来禁用 Select 组件。
+通过 `loading` 属性设置 Select 组件的加载中状态。
+通过 `allowClear` 属性设置选中内容是否可清除。
 
 ```js live=true
 () => {
   const { Option } = Select;
   return (
-    <Select style={{ width: '180px' }} placeholder="请选择" allowClear>
-      <Option value="China">按 CPU 平均负载排行</Option>
-      <Option value="USA">按内存用量排行</Option>
-      <Option value="Russian">按磁盘用量排行</Option>
-      <Option value="France">按磁盘用量排行2</Option>
-    </Select>
+  <>
+     <Select style={{ width: '180px' }} placeholder="请选择" allowClear>
+       <Option value="China">按 CPU 平均负载排行</Option>
+       <Option value="USA">按内存用量排行</Option>
+       <Option value="Russian">按磁盘用量排行</Option>
+       <Option value="France">按磁盘用量排行2</Option>
+     </Select>
+     <Select defaultValue="China" style={{ width: '120px', marginLeft:'20px'}} disabled>
+       <Option value="China">China</Option>
+     </Select>
+     <Select defaultValue="China" style={{ width: '120px',marginLeft:'20px'}} loading>
+       <Option value="china">China</Option>
+     </Select>
+     <Select defaultValue="China" style={{ width: '120px', marginLeft:'20px'}} allowClear>
+        <Option value="china">China</Option>
+     </Select>
+   </>
   )
 }
 ```
@@ -31,13 +46,14 @@ order: 1
 ## 带搜索框
 
 展开后可对选项进行搜索。
+通过 `showSearch` 设置显示搜索按钮。
 
 ```js live=true
 () => (
   <Select allowClear style={{ width: '120px' }} placeholder="请选择" showSearch>
-    <Select.Option value="China">China</Select.Option>
-    <Select.Option value="USA">USA</Select.Option>
-    <Select.Option value="Russian">Russian</Select.Option>
+    <Select.Option value="CentOs-5.8">CentOs 5.8 32bit</Select.Option>
+    <Select.Option value="CentOs-6.6">CentOs 6.6 64bit</Select.Option>
+    <Select.Option value="CentOs-7">CentOs 7 64bit</Select.Option>
   </Select>
 )
 ```
@@ -45,13 +61,210 @@ order: 1
 ## 多选
 
 多选，从已有条目中选择。
+通过 `mode` 属性设置为 multiple 可以将 Select 组件变为多选。
 
 ```js live=true
 () => (
   <Select style={{ width: '300px' }} placeholder="请选择" allowClear mode="multiple" showArrow>
-    <Select.Option value="China">按 CPU 平均负载排行</Select.Option>
-    <Select.Option value="USA">按内存用量排行</Select.Option>
-    <Select.Option value="Russian">按磁盘用量排行</Select.Option>
+    <Select.Option value="CPU">按 CPU 平均负载排行</Select.Option>
+    <Select.Option value="RAM">按内存用量排行</Select.Option>
+    <Select.Option value="DISK">按磁盘用量排行</Select.Option>
   </Select>
 )
+```
+
+## 标签
+
+tag select， 随意输入的内容。
+通过将 `mode` 属性设置为 tags 可以使 Select 组件变为标签选择。
+
+```js live=true
+() => {
+ const children = [];
+ for (let i = 10; i < 36; i++) {
+   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
+ }
+
+ function handleChange(value) {
+   console.log(`selected ${value}`);
+ }
+ return (
+    <Select mode="tags" style={{ width: '100%'}} placeholder="Tags mode" onChange={handleChange}>
+      {children}
+    </Select>
+  )
+}
+```
+
+## 分组
+
+通过 OptGroup 组件进行选项分组。
+
+```js live=true
+() => {
+  const { OptGroup } = Select;
+  function handleChange(value){
+    console.log(`selected ${value}`);
+  }
+  return (
+     <Select defaultValue="JS" style={{ width: 200 }} onChange={handleChange}>
+      <OptGroup label="JavaScript">
+        <Option value="React">React</Option>
+        <Option value="Vue">Vue</Option>
+      </OptGroup>
+      <OptGroup label="node">
+        <Option value="koa">koa</Option>
+      </OptGroup>
+    </Select>
+  )
+}
+```
+
+## 自动分词
+
+只在 tags 和 multiple 模式下可用。
+通过 `tokenSeparator` 设置分词分隔符。
+
+```js live=true
+() => {
+  const children = [];
+  for (let i = 10; i < 36; i++) {
+    children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
+  }
+  function handleChange(value){
+    console.log(`selected ${value}`);
+  }
+  return (
+    <Select
+      mode="tags"
+      style={{ width: 200 }}
+      onChange={handleChange}
+      tokenSeparator={[',']}>
+      {children}
+    </Select>
+  )
+}
+```
+
+## 自定义选择标签
+
+允许自定义选择标签的样式。
+
+```js live=true
+() => {
+  const options=[{value:'gold'},{value:'lime'},{value:'green'}]
+  function tagRender(props){
+     const {label,value,closable,onClose} = props;
+     const onPreventMouseDown = event => {
+        event.preventDefault();
+        event.stopPropagation();
+      };
+     return (
+        <Tag
+          color={value}
+          onMouseDown={onPreventMouseDown}
+          closable={closable}
+          onClose={onClose}
+          style={{ marginRight: 3 }}
+        >
+          {label}
+        </Tag>
+     );
+  }
+  return (
+    <Select
+      mode="multiple"
+      showArrow
+      tagRender={tagRender}
+      defaultValue={['gold','cyan']}
+      style={{ width: '100%'}}
+      options={options}
+    />
+  )
+}
+```
+
+## 隐藏以选择选项
+
+隐藏下拉列表中已选择的选项。
+
+```js live=true
+() => {
+  const OPTIONS = ['Apples', 'Nails', 'Bananas', 'Helicopters'];
+  const [selectedItems, setSelectedItems] = React.useState([]);
+  function handleChange(selectedItems){
+    setSelectedItems(selectedItems)
+  }
+  const filteredOptions = OPTIONS.filter(o => !selectedItems.includes(o));
+  return (
+    <Select
+      mode="multiple"
+      placeholder="Insert are removed"
+      value={selectedItems}
+      onChange={handleChange}
+      style={{width:'100%'}}
+    >
+    {filteredOptions.map(item => (
+              <Select.Option key={item} value={item}>
+                {item}
+              </Select.Option>
+            ))}
+    </Select>
+  )
+}
+```
+
+## 定制回填内容
+
+通过 optionLabelProp 属性指定回填到选择框的 Option 属性。
+
+```js live=true
+() => {
+  function handleChange(value){
+    console.log(`selected ${value}`);
+  }
+  return (
+    <Select
+      mode="multiple"
+      style={{ width:'100%'}}
+      placeholder="select one country"
+      defaultValue={['china']}
+      onChange={handleChange}
+      optionLabelProp="label"
+    >
+       <Option value="china" label="China">
+         <div className="demo-option-label-item">
+            <span role="img" aria-label="China">
+                🇨🇳
+              </span>
+              China (中国)
+            </div>
+       </Option>
+       <Option value="usa" label="USA">
+          <div className="demo-option-label-item">
+            <span role="img" aria-label="USA">
+               🇺🇸
+            </span>
+            USA (美国)
+          </div>
+       </Option>
+       <Option value="japan" label="Japan">
+          <div className="demo-option-label-item">
+             <span role="img" aria-label="Japan">
+                🇯🇵
+             </span>
+                Japan (日本)
+             </div>
+       </Option>
+       <Option value="korea" label="Korea">
+          <div className="demo-option-label-item">
+             <span role="img" aria-label="Korea">
+                🇰🇷
+             </span>
+             Korea (韩国)
+          </div>
+       </Option>
+    </Select>
+  )
+}
 ```
