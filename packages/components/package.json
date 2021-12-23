@@ -1,7 +1,7 @@
 {
   "name": "@kubed/components",
   "description": "React components library for KubeSphere console.",
-  "version": "0.0.28",
+  "version": "0.0.29",
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "types": "lib/src/index.d.ts",
@@ -18,7 +18,7 @@
     "directory": "packages/components"
   },
   "peerDependencies": {
-    "@kubed/hooks": "0.0.8",
+    "@kubed/hooks": "0.0.9",
     "@kubed/icons": "0.0.2",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0",
