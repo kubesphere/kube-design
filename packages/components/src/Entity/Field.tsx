@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { isNumber } from 'lodash';
 import { DefaultProps } from '../theme';
 import forwardRef from '../utils/forwardRef';
 
@@ -12,7 +13,10 @@ const FieldWrapper = styled('div')<FieldProps>`
   align-items: center;
   flex-grow: 1;
   flex-shrink: 1;
-  ${({ width }) => (width ? `flex-basis: ${width}px;flex-grow:0;flex-shrink:0;` : null)};
+  ${({ width }) =>
+    width
+      ? `flex-basis: ${isNumber(width) ? `${width}px` : width};flex-grow:0;flex-shrink:0;`
+      : null};
 `;
 
 const FieldAvatar = styled('div')`
@@ -46,7 +50,7 @@ export interface FieldProps extends DefaultProps {
   avatar?: React.ReactNode;
 
   /** Width of Field  */
-  width?: number;
+  width?: number | string;
 }
 
 export const Field = forwardRef<FieldProps, 'div'>(({ label, value, avatar, ...rest }, ref) => {

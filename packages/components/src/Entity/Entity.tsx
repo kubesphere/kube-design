@@ -24,7 +24,7 @@ const EntityWrapper = styled('div')<EntityProps>`
   flex-direction: column;
   padding: 12px;
   background-color: ${({ theme }) => theme.palette.background};
-  border: 1px solid ${({ theme }) => theme.palette.border};
+  border: ${({ bordered, theme }) => (bordered ? `1px solid ${theme.palette.border}` : null)};
   border-radius: 4px;
   transition: all 0.3s ease-in-out;
 
@@ -51,17 +51,22 @@ export interface EntityProps extends DefaultProps {
   /** Add effect on hover	 */
   hoverable?: boolean;
 
+  /** Whether Entity has border	 */
+  bordered?: boolean;
+
   /** Add effect on hover	 */
   footer?: React.ReactNode;
 }
 
-export const Entity = forwardRef<EntityProps, 'div'>(({ children, footer, ...rest }, ref) => {
-  return (
-    <EntityWrapper ref={ref} {...rest}>
-      <EntityContainer>{children}</EntityContainer>
-      {footer && <EntityFooter>{footer}</EntityFooter>}
-    </EntityWrapper>
-  );
-});
+export const Entity = forwardRef<EntityProps, 'div'>(
+  ({ children, footer, bordered = true, ...rest }, ref) => {
+    return (
+      <EntityWrapper ref={ref} bordered={bordered} {...rest}>
+        <EntityContainer>{children}</EntityContainer>
+        {footer && <EntityFooter>{footer}</EntityFooter>}
+      </EntityWrapper>
+    );
+  }
+);
 
 Entity.displayName = '@kubed/components/Entity';
