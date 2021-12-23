@@ -1,5 +1,13 @@
 # @kubed/components
 
+## 0.0.28
+
+### Patch Changes
+
+- [`c0bc991`](https://github.com/kubesphere/kube-design/commit/c0bc99120b1c597599383d360eef0add10d054c9) Thanks [@chenz24](https://github.com/chenz24)! - 1. fix: Fix changeset/action version warning.
+  2. refactor: Field support percentage width.
+  3. refactor: Entity support setting border.
+
 ## 0.0.27
 
 ### Patch Changes
