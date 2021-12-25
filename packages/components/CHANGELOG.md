@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.31
+
+### Patch Changes
+
+- [`1ae7420`](https://github.com/kubesphere/kube-design/commit/1ae7420ebe570f269a27eca3bd3b367d5c7aae99) Thanks [@chenz24](https://github.com/chenz24)! - 1. Fix getColor function error when set hex color.
+
 ## 0.0.30
 
 ### Patch Changes
