@@ -75,7 +75,7 @@ export interface TagProps extends DefaultProps {
   titleStyle?: React.CSSProperties;
 
   /** Tag color from theme  */
-  color?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
+  color?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info' | string;
 
   /** Append element of the tag  */
   append?: React.ReactNode;
