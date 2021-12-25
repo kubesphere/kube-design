@@ -24,10 +24,14 @@ export const getColor = (color: string, theme: KubedTheme, defaultColor?: string
   if (palette[color]) {
     return palette[color];
   }
-  if (palette.colors[color]) {
-    return palette.colors[color][2];
+
+  const colorName = color.replace(/[^a-zA-Z]/g, '');
+  const colorNumber = color.replace(/[^0-9]/g, '') || 2;
+
+  if (palette.colors[colorName]) {
+    return palette.colors[colorName][colorNumber];
   }
-  return color || palette[defaultColor] || palette.accents_5;
+  return colorName || palette[defaultColor] || palette.accents_5;
 };
 
 export type UserTheme = DeepPartial<KubedTheme> & { type: string };

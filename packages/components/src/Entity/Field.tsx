@@ -13,10 +13,7 @@ const FieldWrapper = styled('div')<FieldProps>`
   align-items: center;
   flex-grow: 1;
   flex-shrink: 1;
-  ${({ width }) =>
-    width
-      ? `flex-basis: ${isNumber(width) ? `${width}px` : width};flex-grow:0;flex-shrink:0;`
-      : null};
+  ${({ width }) => (width ? `width: ${isNumber(width) ? `${width}px` : width};` : null)};
 `;
 
 const FieldAvatar = styled('div')`
@@ -24,7 +21,9 @@ const FieldAvatar = styled('div')`
   margin-right: 12px;
 `;
 
-const FieldContent = styled('div')``;
+const FieldContent = styled('div')`
+  overflow: hidden;
+`;
 
 const FieldLabel = styled('div')`
   text-overflow: ellipsis;

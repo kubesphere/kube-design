@@ -20,10 +20,15 @@ export const Basic = () => <Field avatar={Avatar} label="存储类型: rocksdb" 
 
 export const EntityDemo = () => (
   <Entity>
-    <Field avatar={Avatar} label="存储类型: rocksdb" value="rocksdbpvc" width="30%" />
-    <Field label="存储卷" value="rocksdbpvc" />
-    <Field label="容量" value="1Gi" width={100} />
-    <Field label="访问模式" value="ReadWriteOnce" />
+    <Field
+      avatar={Avatar}
+      label="存储类型: rocksdb 存储类型: rocksdb存储类型: rocksdb存储类型: rocksdb"
+      value="rocksdbpvc"
+      width="30%"
+    />
+    <Field label="存储卷" value="rocksdbpvc" width="20%" />
+    <Field label="容量" value="1Gi" width="30%" />
+    <Field label="访问模式" value="ReadWriteOnce" width="20%" />
   </Entity>
 );
 

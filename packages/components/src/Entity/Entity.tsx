@@ -33,10 +33,11 @@ const EntityWrapper = styled('div')<EntityProps>`
   }
 `;
 
-const EntityContainer = styled('div')`
+const EntityContainer = styled('div')<{ $gap: number }>`
   display: flex;
   flex-grow: 1;
   flex-shrink: 1;
+  ${({ $gap }) => ($gap ? `gap: ${$gap}px` : null)};
 `;
 
 const EntityFooter = styled('div')`
@@ -56,13 +57,16 @@ export interface EntityProps extends DefaultProps {
 
   /** Add effect on hover	 */
   footer?: React.ReactNode;
+
+  /** Gap between children */
+  gap?: number;
 }
 
 export const Entity = forwardRef<EntityProps, 'div'>(
-  ({ children, footer, bordered = true, ...rest }, ref) => {
+  ({ children, footer, gap = 20, bordered = true, ...rest }, ref) => {
     return (
       <EntityWrapper ref={ref} bordered={bordered} {...rest}>
-        <EntityContainer>{children}</EntityContainer>
+        <EntityContainer $gap={gap}>{children}</EntityContainer>
         {footer && <EntityFooter>{footer}</EntityFooter>}
       </EntityWrapper>
     );
