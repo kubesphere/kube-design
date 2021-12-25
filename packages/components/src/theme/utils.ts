@@ -31,7 +31,7 @@ export const getColor = (color: string, theme: KubedTheme, defaultColor?: string
   if (palette.colors[colorName]) {
     return palette.colors[colorName][colorNumber];
   }
-  return colorName || palette[defaultColor] || palette.accents_5;
+  return color || palette[defaultColor] || palette.accents_5;
 };
 
 export type UserTheme = DeepPartial<KubedTheme> & { type: string };

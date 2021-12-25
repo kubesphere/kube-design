@@ -42,6 +42,9 @@ export const Shadow = () => (
     <Badge color="blue" shadow>
       9
     </Badge>
+    <Badge color="#abb4be" shadow>
+      9
+    </Badge>
   </Group>
 );
 
