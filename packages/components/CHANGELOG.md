@@ -1,5 +1,13 @@
 # @kubed/components
 
+## 0.0.30
+
+### Patch Changes
+
+- [`651cad4`](https://github.com/kubesphere/kube-design/commit/651cad498c8d482ef5d7b3e7ed580bdf4027570c) Thanks [@chenz24](https://github.com/chenz24)! - 1. refactor: Entity support gap and use css width instead of flex-basis to set width of Field.
+  2. refactor: Improve getColor function. (like getColor('blue2', theme)) .
+  3. refactor: Reset colors of Tag.
+
 ## 0.0.29
 
 ### Patch Changes
