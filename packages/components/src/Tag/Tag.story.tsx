@@ -11,7 +11,9 @@ export default {
 export const basic = () => (
   <Group>
     <Tag>KubeSphere</Tag>
-    <Tag title="job-name">KubeSphere</Tag>
+    <Tag title="job-name" color="secondary">
+      KubeSphere
+    </Tag>
   </Group>
 );
 
@@ -21,6 +23,7 @@ export const Colors = () => (
     <Tag color="error">KubeSphere</Tag>
     <Tag color="secondary">KubeSphere</Tag>
     <Tag color="success">KubeSphere</Tag>
+    <Tag color="info">KubeSphere</Tag>
     <Tag title="job-name" color="success">
       KubeSphere
     </Tag>
