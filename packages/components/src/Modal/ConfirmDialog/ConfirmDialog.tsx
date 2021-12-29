@@ -1,7 +1,6 @@
 import React from 'react';
-import cx from 'classnames';
 import styled from 'styled-components';
-import Modal, { ModalFuncProps } from '../Modal';
+import { Modal, ModalFuncProps } from '../Modal';
 import forwardRef from '../../utils/forwardRef';
 
 const ConfirmWrap = styled.div`
