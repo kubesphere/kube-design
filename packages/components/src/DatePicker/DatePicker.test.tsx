@@ -1,5 +1,5 @@
 import { itSupportsClassName, itSupportsStyle } from '@kubed/tests';
-import DatePicker from './DatePicker';
+import { DatePicker } from './DatePicker';
 
 describe('@kubed/components/DatePicker', () => {
   itSupportsClassName(DatePicker, {});
