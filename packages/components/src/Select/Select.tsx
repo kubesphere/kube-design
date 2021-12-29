@@ -108,12 +108,10 @@ interface SelectInterface extends InternalSelectType {
   OptGroup: typeof OptGroup;
 }
 
-const Select = InternalSelect as SelectInterface;
+export const Select = InternalSelect as SelectInterface;
 
 Select.SECRET_COMBOBOX_MODE_DO_NOT_USE = SECRET_COMBOBOX_MODE_DO_NOT_USE;
 Select.Option = Option;
 Select.OptGroup = OptGroup;
 
 Select.displayName = '@kubed/components/Select';
-
-export default Select;

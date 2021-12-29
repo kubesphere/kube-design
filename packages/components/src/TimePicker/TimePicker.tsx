@@ -2,7 +2,7 @@
 import React from 'react';
 import { Dayjs } from 'dayjs';
 // eslint-disable-next-line import/no-cycle
-import DatePicker from '../DatePicker/DatePicker';
+import { DatePicker } from '../DatePicker/DatePicker';
 // eslint-disable-next-line import/no-cycle
 import { PickerTimeProps, RangePickerTimeProps } from '../DatePicker/generatePicker';
 

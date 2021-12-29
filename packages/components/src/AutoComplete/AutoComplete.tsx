@@ -2,7 +2,7 @@ import * as React from 'react';
 import { omit } from 'lodash';
 import toArray from '../utils/toArray';
 
-import Select, { OptionType, RefSelectProps } from '../Select/Select';
+import { Select, OptionType, RefSelectProps } from '../Select/Select';
 import { InternalSelectProps } from '../Select/Select.styles';
 
 const { Option } = Select;

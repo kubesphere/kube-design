@@ -1,7 +1,7 @@
 import React, { createRef, PropsWithChildren } from 'react';
 import { useQueue, randomId } from '@kubed/hooks';
 import { ModalContext } from './ModalContext';
-import Modal, { ModalFuncProps, ModalType } from '../Modal';
+import { Modal, ModalFuncProps, ModalType } from '../Modal';
 import ConfirmDialog from '../ConfirmDialog/ConfirmDialog';
 
 interface Props {}
