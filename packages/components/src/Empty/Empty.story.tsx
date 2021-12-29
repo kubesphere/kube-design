@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Add } from '@kubed/icons';
+import { Cluster } from '@kubed/icons';
 import { Empty } from './Empty';
 
 export default {
@@ -12,5 +12,5 @@ export const Basic = () => {
 };
 
 export const Icon = () => {
-  return <Empty description={<span>No_Data</span>} icon={<Add />} />;
+  return <Empty description={<span>No_Data</span>} image={<Cluster size={48} />} />;
 };

@@ -23,7 +23,7 @@ export const Basic = () => (
       <MenuItem icon={<Stop />} onClick={clickCallback}>
         停止调度
       </MenuItem>
-      <MenuItem icon={<Pen />}>Edit</MenuItem>
+      <MenuItem disabled icon={<Pen />}>Edit</MenuItem>
       <Divider />
       <MenuItem icon={<Trash />}>Delete</MenuItem>
     </Menu>

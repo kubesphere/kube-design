@@ -24,7 +24,7 @@ const EntityWrapper = styled('div')<EntityProps>`
   flex-direction: column;
   padding: 12px;
   background-color: ${({ theme }) => theme.palette.background};
-  border: 1px solid ${({ theme }) => theme.palette.border};
+  border: ${({ bordered, theme }) => (bordered ? `1px solid ${theme.palette.border}` : null)};
   border-radius: 4px;
   transition: all 0.3s ease-in-out;
 
@@ -33,10 +33,11 @@ const EntityWrapper = styled('div')<EntityProps>`
   }
 `;
 
-const EntityContainer = styled('div')`
+const EntityContainer = styled('div')<{ $gap: number }>`
   display: flex;
   flex-grow: 1;
   flex-shrink: 1;
+  ${({ $gap }) => ($gap ? `gap: ${$gap}px` : null)};
 `;
 
 const EntityFooter = styled('div')`
@@ -51,17 +52,25 @@ export interface EntityProps extends DefaultProps {
   /** Add effect on hover	 */
   hoverable?: boolean;
 
+  /** Whether Entity has border	 */
+  bordered?: boolean;
+
   /** Add effect on hover	 */
   footer?: React.ReactNode;
+
+  /** Gap between children */
+  gap?: number;
 }
 
-export const Entity = forwardRef<EntityProps, 'div'>(({ children, footer, ...rest }, ref) => {
-  return (
-    <EntityWrapper ref={ref} {...rest}>
-      <EntityContainer>{children}</EntityContainer>
-      {footer && <EntityFooter>{footer}</EntityFooter>}
-    </EntityWrapper>
-  );
-});
+export const Entity = forwardRef<EntityProps, 'div'>(
+  ({ children, footer, gap = 20, bordered = true, ...rest }, ref) => {
+    return (
+      <EntityWrapper ref={ref} bordered={bordered} {...rest}>
+        <EntityContainer $gap={gap}>{children}</EntityContainer>
+        {footer && <EntityFooter>{footer}</EntityFooter>}
+      </EntityWrapper>
+    );
+  }
+);
 
 Entity.displayName = '@kubed/components/Entity';

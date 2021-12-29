@@ -1,5 +1,5 @@
 import * as React from 'react';
-import omit from 'rc-util/lib/omit';
+import { omit } from 'lodash';
 import toArray from '../utils/toArray';
 
 import { Select, OptionType, RefSelectProps } from '../Select/Select';

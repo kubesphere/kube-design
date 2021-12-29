@@ -1,5 +1,18 @@
 # @kubed/hooks
 
+## 0.0.9
+
+### Patch Changes
+
+- [`d589bc9`](https://github.com/kubesphere/kube-design/commit/d589bc9b5a8d42390fc1a2f494ccb4b5bda34bd9) Thanks [@chenz24](https://github.com/chenz24)! - 1. fix: Fix AutoComplete 'omit' import bug.
+  2. refactor: Improve Slider.
+
+## 0.0.8
+
+### Patch Changes
+
+- [`7f2e134`](https://github.com/kubesphere/kube-design/commit/7f2e134aaff15b0552889f02ca0ae929848877d4) Thanks [@chenz24](https://github.com/chenz24)! - 1. feat: Add usePrevious hook.
+
 ## 0.0.7
 
 ### Patch Changes

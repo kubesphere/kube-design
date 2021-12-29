@@ -119,19 +119,22 @@ order: 1
 )
 ```
 
-## 触发事件
+## 触发行为
 
-点击菜单项后会触发事件，用户可以通过相应的菜单项 key 进行不同的操作。
+可以设置 hover, focus, click 等多个行为，默认是 hover
 
 ```js live=true
 () => (
   <Group>
-    <Tooltip content="Tooltip content" trigger="click">
-      <Button>Click</Button>
-    </Tooltip>
-    <Tooltip content="Tooltip content" trigger="focus">
-      <Button>focusin</Button>
-    </Tooltip>
+     <Tooltip content="Tooltip content" trigger="click">
+        <Button>Click</Button>
+     </Tooltip>
+     <Tooltip content="Tooltip content" trigger="focus">
+        <Button>Click</Button>
+     </Tooltip>
+     <Tooltip content="Tooltip content">
+        <Button>hover</Button>
+     </Tooltip>
   </Group>
 )
 ```
@@ -147,3 +150,59 @@ order: 1
   </Tooltip>
 )
 ```
+
+## 禁用状态
+
+```js live=true
+() => {
+  return (
+    <Tooltip content="Tooltip" disabled>
+      <Button>Reference</Button>
+    </Tooltip>
+  )
+}
+```
+
+## 延迟展示
+
+鼠标移入后延时多少才显示 Tooltip，鼠标移出后延时多少才隐藏 Tooltip，单位毫秒 ms
+
+```js live=true
+() => {
+  return (
+    <Tooltip content="tooltip" delay={1000}>
+      <Button>Reference</Button>
+    </Tooltip>
+  )
+}
+```
+
+## 受控模式
+
+```js live=true
+() => {
+  const [visible, setVisible] = React.useState(true);
+  const show = () => setVisible(true);
+  const hide = () => setVisible(false);
+  return (
+    <Tooltip content="tooltip">
+      <Button onClick={visible ? hide : show}>Reference</Button>
+    </Tooltip>
+  )
+}
+```
+
+## 交互模式
+
+当 tooltip 展示的内容中存在交互内容时，鼠标可以停留在 tooltip 上，点击内容也不会隐藏
+
+```js live=true
+() => {
+  return (
+    <Tooltip content="tooltip" interactive>
+      <Button>interactive</Button>
+    </Tooltip>
+  )
+}
+```
+

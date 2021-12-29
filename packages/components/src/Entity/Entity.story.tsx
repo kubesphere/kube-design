@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Error, Pod, Docker } from '@kubed/icons';
-import { BadgeAnchor, Entity, Field, Tooltip, Text } from '../index';
+import { BadgeAnchor, Entity, Field, Tooltip, Text, Card } from '../index';
 
 export default {
   title: 'Components/Entity',
@@ -20,10 +20,15 @@ export const Basic = () => <Field avatar={Avatar} label="存储类型: rocksdb" 
 
 export const EntityDemo = () => (
   <Entity>
-    <Field avatar={Avatar} label="存储类型: rocksdb" value="rocksdbpvc" />
-    <Field label="存储卷" value="rocksdbpvc" />
-    <Field label="容量" value="1Gi" width={100} />
-    <Field label="访问模式" value="ReadWriteOnce" />
+    <Field
+      avatar={Avatar}
+      label="存储类型: rocksdb 存储类型: rocksdb存储类型: rocksdb存储类型: rocksdb"
+      value="rocksdbpvc"
+      width="30%"
+    />
+    <Field label="存储卷" value="rocksdbpvc" width="20%" />
+    <Field label="容量" value="1Gi" width="30%" />
+    <Field label="访问模式" value="ReadWriteOnce" width="20%" />
   </Entity>
 );
 
@@ -47,4 +52,15 @@ export const EntityHover = () => (
     <Field label="容量" value="1Gi" width={100} />
     <Field label="访问模式" value="ReadWriteOnce" />
   </Entity>
+);
+
+export const WithCard = () => (
+  <Card hoverable>
+    <Entity bordered={false}>
+      <Field avatar={Avatar} label="存储类型: rocksdb" value="rocksdbpvc" />
+      <Field label="存储卷" value="rocksdbpvc" />
+      <Field label="容量" value="1Gi" width={100} />
+      <Field label="访问模式" value="ReadWriteOnce" />
+    </Entity>
+  </Card>
 );

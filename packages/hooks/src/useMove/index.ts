@@ -1,4 +1,3 @@
-// https://github.com/mantinedev/mantine/blob/master/src/mantine-hooks/src/use-move/use-move.ts
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { useEffect, useState, useRef } from 'react';
 import { clamp } from '../utils';
