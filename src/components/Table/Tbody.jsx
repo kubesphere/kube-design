@@ -15,6 +15,7 @@ export default class Tbody extends Component {
           rowSelection,
           expandedRowRender,
           defaultExpandAllRows,
+          rowExpandable,
         }) => (
           <tbody>
             {dataSource.map((item) => (
@@ -27,6 +28,7 @@ export default class Tbody extends Component {
                 rowSelection={rowSelection}
                 expandedRowRender={expandedRowRender}
                 defaultExpandAllRows={defaultExpandAllRows}
+                rowExpandable={rowExpandable}
               >
                 {(column) => (
                   <Td

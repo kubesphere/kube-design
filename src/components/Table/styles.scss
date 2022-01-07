@@ -5,15 +5,18 @@
   width: 100%;
   text-align: left;
 
+  a {
+    color: $dark-color01;
+    &:hover {
+      color: $primary;
+    }
+  }
+
   & > thead {
     & > tr > th {
       padding: 16px 12px;
       @include TypographySymbolText;
       color: $dark-color01;
-
-      a {
-        color: $dark-color01;
-      }
 
       &[colspan] {
         padding: 8px 12px;
@@ -68,10 +71,6 @@
       &:hover {
         & > td {
           background-color: $bg-color;
-
-          a {
-            color: $primary;
-          }
         }
       }
 
@@ -96,6 +95,10 @@
         &:last-child {
           border-right: 1px solid $primary;
         }
+      }
+
+      &.table-row-expand > td {
+        background-color: $light-color02;
       }
     }
 

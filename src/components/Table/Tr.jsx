@@ -126,8 +126,9 @@ export default class Tr extends Component {
   }
 
   renderExpandToggle() {
-    const { expandedRowRender } = this.props;
+    const { record, expandedRowRender, rowExpandable } = this.props;
     const { showExpand } = this.state;
+    const disabled = rowExpandable && !rowExpandable(record);
 
     if (!expandedRowRender) {
       return null;
@@ -138,7 +139,8 @@ export default class Tr extends Component {
         <Icon
           name={showExpand ? "minus-square" : "plus-square"}
           onClick={this.toggleExpand}
-          clickable
+          clickable={!disabled}
+          disabled={disabled}
         />
       </td>
     );
@@ -152,14 +154,15 @@ export default class Tr extends Component {
       return null;
     }
 
+    const colSpan = rowSelection ? columns.length + 2 : columns.length + 1;
+
     return (
       <tr
         className={classNames("table-row table-row-expand", {
           "table-row-selected": this.isChecked,
         })}
       >
-        {rowSelection && <td></td>}
-        <td colSpan={columns.length}>{expandedRowRender(record)}</td>
+        <td colSpan={colSpan}>{expandedRowRender(record)}</td>
       </tr>
     );
   }
