@@ -15,9 +15,9 @@ export const PickerDropdown = createGlobalStyle`
     transition: all 0.3s ease-in-out;
 
     &.kubed-picker-focused {
-      border-color: ${({ theme }) => theme.palette.colors.green[2]} !importkubed;
+      border-color: ${({ theme }) => theme.palette.colors.green[2]} !important;
       box-shadow: 0 4px 8px 0 ${({ theme }) =>
-        addColorAlpha(theme.palette.colors.green[2], 0.2)} !importkubed;
+        addColorAlpha(theme.palette.colors.green[2], 0.2)} !important;
     }
 
     &:hover {

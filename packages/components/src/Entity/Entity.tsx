@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-
+import cx from 'classnames';
+import { useToggle } from '@kubed/hooks';
 import { Field } from './Field';
 import { DefaultProps, KubedTheme } from '../theme';
 import forwardRef from '../utils/forwardRef';
@@ -22,11 +23,13 @@ const getHoverStyle = (hoverable, theme: KubedTheme) => {
 const EntityWrapper = styled('div')<EntityProps>`
   display: flex;
   flex-direction: column;
+  position: relative;
   padding: 12px;
   background-color: ${({ theme }) => theme.palette.background};
   border: ${({ bordered, theme }) => (bordered ? `1px solid ${theme.palette.border}` : null)};
   border-radius: 4px;
   transition: all 0.3s ease-in-out;
+  cursor: ${({ expandable }) => (expandable ? 'pointer' : null)};
 
   &:hover {
     ${({ hoverable, theme }) => getHoverStyle(hoverable, theme)};
@@ -48,11 +51,31 @@ const EntityFooter = styled('div')`
   background-color: ${({ theme }) => theme.palette.accents_1};
 `;
 
+const ExpandContainer = styled('div')`
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  transform: translate3d(0, 100%, 0);
+  padding: 12px;
+  z-index: 1;
+  border: 1px solid ${({ theme }) => theme.palette.accents_5};
+  border-top: 0;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 4px 8px 0 ${({ theme }) => addColorAlpha(theme.palette.accents_8, 0.2)};
+`;
+
 export interface EntityProps extends DefaultProps {
   /** Add effect on hover	 */
   hoverable?: boolean;
 
-  /** Whether Entity has border	 */
+  /** Whether Entity can expand */
+  expandable?: boolean;
+
+  /** Render function of expand */
+  expandContent?: React.ReactNode;
+
+  /** Whether Entity has border	*/
   bordered?: boolean;
 
   /** Add effect on hover	 */
@@ -63,11 +86,33 @@ export interface EntityProps extends DefaultProps {
 }
 
 export const Entity = forwardRef<EntityProps, 'div'>(
-  ({ children, footer, gap = 20, bordered = true, ...rest }, ref) => {
+  (
+    { children, footer, gap = 20, bordered = true, expandable = false, expandContent, ...rest },
+    ref
+  ) => {
+    const [expand, setExpand] = useToggle(false, [true, false]);
+
+    const handleExpand = (e) => {
+      e.stopPropagation();
+      if (expandable) {
+        setExpand(!expand);
+      }
+    };
+
     return (
-      <EntityWrapper ref={ref} bordered={bordered} {...rest}>
-        <EntityContainer $gap={gap}>{children}</EntityContainer>
-        {footer && <EntityFooter>{footer}</EntityFooter>}
+      <EntityWrapper
+        ref={ref}
+        bordered={bordered}
+        expandable={expandable}
+        onClick={handleExpand}
+        className={cx({ 'is-expand': expandable && expand })}
+        {...rest}
+      >
+        <EntityContainer $gap={gap} className="entity-main">
+          {children}
+        </EntityContainer>
+        {footer && <EntityFooter className="entity-footer">{footer}</EntityFooter>}
+        {expand && <ExpandContainer className="expand-container">{expandContent}</ExpandContainer>}
       </EntityWrapper>
     );
   }
