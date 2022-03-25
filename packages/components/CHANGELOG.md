@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.32
+
+### Patch Changes
+
+- [`a1bf7dc`](https://github.com/kubesphere/kube-design/commit/a1bf7dc700a1011a6f4827e00ab6a606e0a0fe97) Thanks [@chenz24](https://github.com/chenz24)! - 1. Add Drawer component
+
 ## 0.0.31
 
 ### Patch Changes
