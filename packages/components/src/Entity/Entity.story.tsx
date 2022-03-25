@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Error, Pod, Docker } from '@kubed/icons';
+import styled from 'styled-components';
 import { BadgeAnchor, Entity, Field, Tooltip, Text, Card } from '../index';
 
 export default {
@@ -53,6 +54,33 @@ export const EntityHover = () => (
     <Field label="访问模式" value="ReadWriteOnce" />
   </Entity>
 );
+
+export const EntityExpand = () => {
+  const Wrapper = styled.div`
+    width: 100%;
+    height: 300px;
+  `;
+  const expandContent = (
+    <Card sectionTitle="容器" className="entity-card" padding={0}>
+      <Entity>
+        <Field avatar={Avatar} label="镜像: rocksdb" value="kubespheredev/ks-console:master" />
+        <Field label="存储卷" value="rocksdbpvc" />
+        <Field label="容量" value="1Gi" />
+        <Field label="访问模式" value="ReadWriteOnce" />
+      </Entity>
+    </Card>
+  );
+  return (
+    <Wrapper>
+      <Entity expandable expandContent={expandContent}>
+        <Field avatar={Avatar} label="存储类型: rocksdb" value={<a href="/">rocksdbpvc</a>} />
+        <Field label="存储卷" value="rocksdbpvc" />
+        <Field label="容量" value="1Gi" width={100} />
+        <Field label="访问模式" value="ReadWriteOnce" />
+      </Entity>
+    </Wrapper>
+  );
+};
 
 export const WithCard = () => (
   <Card hoverable>

@@ -30,6 +30,7 @@
     "dayjs": "^1.10.7",
     "lodash": "^4.17.21",
     "rc-dialog": "^8.6.0",
+    "rc-drawer": "^4.4.3",
     "rc-field-form": "^1.21.2",
     "rc-input-number": "^7.3.0",
     "rc-motion": "^2.4.4",
