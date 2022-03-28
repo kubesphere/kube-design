@@ -87,16 +87,19 @@ export interface StatusDotProps {
   /** Dot color from theme  */
   color?: string | 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'error';
 
-  /** Disable animation status or not   */
+  /** Disable animation status or not  */
   motion?: boolean;
+
+  /** className of label  */
+  labelClassName?: string;
 }
 
 export const StatusDot = forwardRef<StatusDotProps, 'div'>(
-  ({ color, motion = false, children, ...rest }, ref) => {
+  ({ color, motion = false, labelClassName, children, ...rest }, ref) => {
     return (
       <DotWrapper ref={ref} {...rest}>
         <Dot color={color} motion={motion} />
-        {children && <Label>{children}</Label>}
+        {children && <Label className={labelClassName}>{children}</Label>}
       </DotWrapper>
     );
   }
