@@ -72,7 +72,7 @@ export const EntityExpand = () => {
   );
   return (
     <Wrapper>
-      <Entity expandable expandContent={expandContent}>
+      <Entity expandable hoverable expandContent={expandContent} className="test-classname">
         <Field avatar={Avatar} label="存储类型: rocksdb" value={<a href="/">rocksdbpvc</a>} />
         <Field label="存储卷" value="rocksdbpvc" />
         <Field label="容量" value="1Gi" width={100} />

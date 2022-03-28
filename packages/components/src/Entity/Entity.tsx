@@ -2,6 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import cx from 'classnames';
 import { useToggle } from '@kubed/hooks';
+import { Dropdown } from '../Dropdown/Dropdown';
 import { Field } from './Field';
 import { DefaultProps, KubedTheme } from '../theme';
 import forwardRef from '../utils/forwardRef';
@@ -20,6 +21,14 @@ const getHoverStyle = (hoverable, theme: KubedTheme) => {
   return null;
 };
 
+const Wrapper = styled.div`
+  position: relative;
+
+  & > div:nth-child(2) {
+    width: 100%;
+  }
+`;
+
 const EntityWrapper = styled('div')<EntityProps>`
   display: flex;
   flex-direction: column;
@@ -31,7 +40,8 @@ const EntityWrapper = styled('div')<EntityProps>`
   transition: all 0.3s ease-in-out;
   cursor: ${({ expandable }) => (expandable ? 'pointer' : null)};
 
-  &:hover {
+  &:hover,
+  &.is-expand {
     ${({ hoverable, theme }) => getHoverStyle(hoverable, theme)};
   }
 `;
@@ -52,17 +62,11 @@ const EntityFooter = styled('div')`
 `;
 
 const ExpandContainer = styled('div')`
-  position: absolute;
-  width: 100%;
-  left: 0;
-  bottom: 0;
-  transform: translate3d(0, 100%, 0);
   padding: 12px;
   z-index: 1;
   border: 1px solid ${({ theme }) => theme.palette.accents_5};
   border-top: 0;
   border-radius: 0 0 4px 4px;
-  box-shadow: 0 4px 8px 0 ${({ theme }) => addColorAlpha(theme.palette.accents_8, 0.2)};
 `;
 
 export interface EntityProps extends DefaultProps {
@@ -87,7 +91,16 @@ export interface EntityProps extends DefaultProps {
 
 export const Entity = forwardRef<EntityProps, 'div'>(
   (
-    { children, footer, gap = 20, bordered = true, expandable = false, expandContent, ...rest },
+    {
+      children,
+      className,
+      footer,
+      gap = 20,
+      bordered = true,
+      expandable = false,
+      expandContent,
+      ...rest
+    },
     ref
   ) => {
     const [expand, setExpand] = useToggle(false, [true, false]);
@@ -99,20 +112,49 @@ export const Entity = forwardRef<EntityProps, 'div'>(
       }
     };
 
+    if (expandable) {
+      return (
+        <Wrapper>
+          <Dropdown
+            content={
+              <ExpandContainer className="expand-container">{expandContent}</ExpandContainer>
+            }
+            appendTo="parent"
+            className="entity-dropdown"
+            maxWidth="100%"
+            offset={[0, -3]}
+          >
+            <EntityWrapper
+              ref={ref}
+              bordered={bordered}
+              expandable={expandable}
+              onClick={handleExpand}
+              className={cx({ 'is-expand': expandable && expand }, className)}
+              {...rest}
+            >
+              <EntityContainer $gap={gap} className="entity-main">
+                {children}
+              </EntityContainer>
+              {footer && <EntityFooter className="entity-footer">{footer}</EntityFooter>}
+            </EntityWrapper>
+          </Dropdown>
+        </Wrapper>
+      );
+    }
+
     return (
       <EntityWrapper
         ref={ref}
         bordered={bordered}
         expandable={expandable}
         onClick={handleExpand}
-        className={cx({ 'is-expand': expandable && expand })}
+        className={cx({ 'is-expand': expandable && expand }, className)}
         {...rest}
       >
         <EntityContainer $gap={gap} className="entity-main">
           {children}
         </EntityContainer>
         {footer && <EntityFooter className="entity-footer">{footer}</EntityFooter>}
-        {expand && <ExpandContainer className="expand-container">{expandContent}</ExpandContainer>}
       </EntityWrapper>
     );
   }
