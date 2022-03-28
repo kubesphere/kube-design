@@ -1,5 +1,12 @@
 # @kubed/components
 
+## 0.0.33
+
+### Patch Changes
+
+- [`60f37cd`](https://github.com/kubesphere/kube-design/commit/60f37cd8bc8e209d7cee0c46f40262fded80fea9) Thanks [@chenz24](https://github.com/chenz24)! - 1. refactor: Improve expand feature of Entity.
+  2. feat: StatusDot support set className for label.
+
 ## 0.0.32
 
 ### Patch Changes
