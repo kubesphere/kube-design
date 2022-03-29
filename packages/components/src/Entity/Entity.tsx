@@ -1,8 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import cx from 'classnames';
-import { useToggle } from '@kubed/hooks';
-import { Dropdown } from '../Dropdown/Dropdown';
+import { Dropdown, DropdownProps } from '../Dropdown/Dropdown';
 import { Field } from './Field';
 import { DefaultProps, KubedTheme } from '../theme';
 import forwardRef from '../utils/forwardRef';
@@ -41,7 +39,7 @@ const EntityWrapper = styled('div')<EntityProps>`
   cursor: ${({ expandable }) => (expandable ? 'pointer' : null)};
 
   &:hover,
-  &.is-expand {
+  &[aria-expanded='true'] {
     ${({ hoverable, theme }) => getHoverStyle(hoverable, theme)};
   }
 `;
@@ -87,6 +85,9 @@ export interface EntityProps extends DefaultProps {
 
   /** Gap between children */
   gap?: number;
+
+  /** Props of expand */
+  expandProps?: Omit<DropdownProps, 'children'>;
 }
 
 export const Entity = forwardRef<EntityProps, 'div'>(
@@ -99,19 +100,11 @@ export const Entity = forwardRef<EntityProps, 'div'>(
       bordered = true,
       expandable = false,
       expandContent,
+      expandProps,
       ...rest
     },
     ref
   ) => {
-    const [expand, setExpand] = useToggle(false, [true, false]);
-
-    const handleExpand = (e) => {
-      e.stopPropagation();
-      if (expandable) {
-        setExpand(!expand);
-      }
-    };
-
     if (expandable) {
       return (
         <Wrapper>
@@ -123,15 +116,10 @@ export const Entity = forwardRef<EntityProps, 'div'>(
             className="entity-dropdown"
             maxWidth="100%"
             offset={[0, -3]}
+            placement="bottom"
+            {...expandProps}
           >
-            <EntityWrapper
-              ref={ref}
-              bordered={bordered}
-              expandable={expandable}
-              onClick={handleExpand}
-              className={cx({ 'is-expand': expandable && expand }, className)}
-              {...rest}
-            >
+            <EntityWrapper ref={ref} bordered={bordered} expandable={expandable} {...rest}>
               <EntityContainer $gap={gap} className="entity-main">
                 {children}
               </EntityContainer>
@@ -143,14 +131,7 @@ export const Entity = forwardRef<EntityProps, 'div'>(
     }
 
     return (
-      <EntityWrapper
-        ref={ref}
-        bordered={bordered}
-        expandable={expandable}
-        onClick={handleExpand}
-        className={cx({ 'is-expand': expandable && expand }, className)}
-        {...rest}
-      >
+      <EntityWrapper ref={ref} bordered={bordered} expandable={expandable} {...rest}>
         <EntityContainer $gap={gap} className="entity-main">
           {children}
         </EntityContainer>

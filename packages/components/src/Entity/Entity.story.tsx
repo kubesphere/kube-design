@@ -60,8 +60,13 @@ export const EntityExpand = () => {
     width: 100%;
     height: 300px;
   `;
+
+  const onCardClick = (e) => {
+    e.stopPropagation();
+  };
+
   const expandContent = (
-    <Card sectionTitle="容器" className="entity-card" padding={0}>
+    <Card sectionTitle="容器" className="entity-card" padding={0} onClick={onCardClick}>
       <Entity>
         <Field avatar={Avatar} label="镜像: rocksdb" value="kubespheredev/ks-console:master" />
         <Field label="存储卷" value="rocksdbpvc" />
@@ -72,6 +77,12 @@ export const EntityExpand = () => {
   );
   return (
     <Wrapper>
+      <Entity expandable hoverable expandContent={expandContent} className="test-classname">
+        <Field avatar={Avatar} label="存储类型: rocksdb" value={<a href="/">rocksdbpvc</a>} />
+        <Field label="存储卷" value="rocksdbpvc" />
+        <Field label="容量" value="1Gi" width={100} />
+        <Field label="访问模式" value="ReadWriteOnce" />
+      </Entity>
       <Entity expandable hoverable expandContent={expandContent} className="test-classname">
         <Field avatar={Avatar} label="存储类型: rocksdb" value={<a href="/">rocksdbpvc</a>} />
         <Field label="存储卷" value="rocksdbpvc" />
