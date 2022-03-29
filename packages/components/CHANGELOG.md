@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.34
+
+### Patch Changes
+
+- [`dcdc5dc`](https://github.com/kubesphere/kube-design/commit/dcdc5dc6647dad0af10ca0c1a23aa933b8837c41) Thanks [@chenz24](https://github.com/chenz24)! - 1. fix: improve entity expand feature.
+
 ## 0.0.33
 
 ### Patch Changes
