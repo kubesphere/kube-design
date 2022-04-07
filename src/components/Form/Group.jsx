@@ -8,10 +8,12 @@ import { get, unset, isUndefined } from "lodash";
 export default class Group extends React.Component {
   static propTypes = {
     keepDataWhenUnCheck: PropTypes.bool,
+    onChange: PropTypes.func,
   };
 
   static defaultProps = {
     keepDataWhenUnCheck: false,
+    onChange: () => {},
   };
 
   static contextTypes = {
@@ -59,7 +61,7 @@ export default class Group extends React.Component {
   };
 
   handleCheck = (check) => {
-    const { keepDataWhenUnCheck } = this.props;
+    const { keepDataWhenUnCheck, onChange } = this.props;
     this.setState({ isCheck: check }, () => {
       if (!keepDataWhenUnCheck && !check) {
         const { formData } = this.context;
@@ -67,13 +69,20 @@ export default class Group extends React.Component {
           this.items.forEach((item) => unset(formData, item));
         }
       }
+      onChange(check);
     });
   };
 
   handleTitleClick = () => {
-    this.setState(({ isCheck }) => ({
-      isCheck: !isCheck,
-    }));
+    const { onChange } = this.props;
+    this.setState(
+      ({ isCheck }) => ({
+        isCheck: !isCheck,
+      }),
+      () => {
+        onChange(this.state.isCheck);
+      }
+    );
   };
 
   renderTitle() {
