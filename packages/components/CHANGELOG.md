@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.35
+
+### Patch Changes
+
+- [`c68da39`](https://github.com/kubesphere/kube-design/commit/c68da393d3458c2f34a16bd82cdfffe5484f92f4) Thanks [@chenz24](https://github.com/chenz24)! - 1. Add Collapse Component
+
 ## 0.0.34
 
 ### Patch Changes
