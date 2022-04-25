@@ -10,7 +10,8 @@ export const Basic = () => <Progress value={50} color="#ca2621" striped />;
 
 export const segments = () => (
   <Progress
-    size="lg"
+    size="xl"
+    total={80}
     sections={[
       { value: 30, color: 'success' },
       { value: 40, color: 'warning' },

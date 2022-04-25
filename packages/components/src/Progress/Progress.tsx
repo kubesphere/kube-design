@@ -45,6 +45,7 @@ export const Progress = forwardRef<ProgressProps, 'div'>(
           <ProgressBar
             key={index}
             $color={section.color}
+            $radius={radius}
             style={{
               width: `${section.value}%`,
               left: `${section.accumulated}%`,
