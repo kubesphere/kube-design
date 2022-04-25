@@ -94,7 +94,6 @@ export const Entity = forwardRef<EntityProps, 'div'>(
   (
     {
       children,
-      className,
       footer,
       gap = 20,
       bordered = true,
