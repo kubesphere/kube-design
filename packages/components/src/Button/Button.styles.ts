@@ -3,25 +3,25 @@ import { KubedNumberSize, KubedSizes, KubedTheme } from '../theme';
 import { colorToRgbValues } from '../utils/color';
 
 interface ButtonStylesProps {
-  loading?: boolean;
-  size?: KubedSizes;
-  radius?: KubedNumberSize;
+  $loading?: boolean;
+  $size?: KubedSizes;
+  $radius?: KubedNumberSize;
   theme?: KubedTheme;
   block?: boolean;
   disabled?: boolean;
-  shadow?: boolean;
-  variant?: 'filled' | 'outline' | 'text' | 'link';
-  color?: string | 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'error';
+  $shadow?: boolean;
+  $variant?: 'filled' | 'outline' | 'text' | 'link';
+  $color?: string | 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'error';
 }
 
-const getButtonCursor = (loading: boolean, disabled: boolean) => {
+const getButtonCursor = ($loading: boolean, disabled: boolean) => {
   if (disabled) {
     return css`
       cursor: not-allowed;
       pointer-events: auto;
     `;
   }
-  if (loading) {
+  if ($loading) {
     return css`
       cursor: default;
       pointer-events: none;
@@ -62,7 +62,7 @@ const getButtonSize = (size, block) => css`
   height: ${({ theme }) => theme.layout.inputSizes[size]};
 `;
 
-const getButtonColor = (variant = 'filled', colorSchema, disabled, loading, theme: KubedTheme) => {
+const getButtonColor = (variant = 'filled', colorSchema, disabled, $loading, theme: KubedTheme) => {
   const { palette } = theme;
   if (disabled) {
     return css`
@@ -105,7 +105,7 @@ const getButtonHoverColor = (
   variant = 'filled',
   colorSchema,
   disabled,
-  loading,
+  $loading,
   shadow,
   theme: KubedTheme
 ) => {
@@ -160,7 +160,7 @@ const getButtonStyles = (
   variant,
   shadow,
   disabled,
-  loading
+  $loading
 ) => {
   const { palette } = theme;
   const { background, border, accents_1, accents_2, accents_7, accents_8, accents_9, primary } =
@@ -212,10 +212,10 @@ const getButtonStyles = (
 
   return css`
     box-shadow: ${getShadow(shadow, colorSchema, theme)};
-    ${getButtonColor(variant, colorSchema, disabled, loading, theme)};
+    ${getButtonColor(variant, colorSchema, disabled, $loading, theme)};
 
     &:hover {
-      ${getButtonHoverColor(variant, colorSchema, disabled, loading, shadow, theme)};
+      ${getButtonHoverColor(variant, colorSchema, disabled, $loading, shadow, theme)};
     }
   `;
 };
@@ -229,13 +229,13 @@ export const ButtonContainer = styled('div')<ButtonStylesProps>`
   font-weight: 600;
   border: 1px solid;
   transition: all 0.3s ease-in-out;
-  border-radius: ${({ radius, theme }) => theme.layout.radius[radius!]};
+  border-radius: ${({ $radius, theme }) => theme.layout.radius[$radius]};
   display: ${(props) => (props.block ? 'block' : 'inline-block')};
-  ${({ loading, disabled }) => getButtonCursor(loading, disabled)};
-  ${({ size, block }) => getButtonSize(size, block)};
-  ${({ theme, color, variant, shadow, disabled, loading }) =>
-    getButtonStyles(theme, color, variant, shadow, disabled, loading)};
-  ${({ loading }) => (loading ? 'opacity: 0.6;' : null)};
+  ${({ $loading, disabled }) => getButtonCursor($loading, disabled)};
+  ${({ $size, block }) => getButtonSize($size, block)};
+  ${({ theme, $color, $variant, $shadow, disabled, $loading }) =>
+    getButtonStyles(theme, $color, $variant, $shadow, disabled, $loading)};
+  ${({ $loading }) => ($loading ? 'opacity: 0.6;' : null)};
 `;
 
 export const ButtonInner = styled('div')<ButtonStylesProps>`

@@ -1,0 +1,166 @@
+---
+group: 'components'
+category: 'state'
+title: Button
+description: '常用操作按钮'
+order: 1
+---
+
+## 何时使用
+
+标记一组操作命令，响应用户的点击行为，触发相应的业务逻辑。
+在 Kube Design 中提供了四种按钮。
+- 主按钮：用于主行动点，一个操作区域只能有一个主按钮。
+- 默认按钮：用于没有主次之分点一组行动点。
+- 文本按钮：用于最次级的行动点。
+- 链接按钮：一般用于链接，即导航至某位置。
+
+## 代码演示
+
+## 按钮类型
+
+可以设置 Variant 来改变 button 的视觉效果。您可以设置值为 filled，text，outline, 或者 link。若不设置则默认为 filled。
+
+```js live=true
+<Group spacing="xl">
+  <Button variant="filled" color="secondary">
+    KubeSphere
+  </Button>
+  <Button variant="outline" color="default" radius="xl">
+    KubeSphere
+  </Button>
+  <Button variant="text" radius="xl">
+    KubeSphere
+  </Button>
+  <Button variant="link" color="default">
+    KubeSphere
+  </Button>
+</Group>
+```
+
+## 按钮颜色
+
+通过 color 设置按钮的颜色，默认有六种按钮颜色，default，primary, secondary, success，error，warning。若不设置则默认为 default.
+
+```js live=true
+<Group spacing="xl">
+  <Button variant="filled" color="default">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="primary">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="secondary">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="success">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="warning">
+      KubeSphere
+    </Button>
+  <Button variant="filled" color="error">
+    KubeSphere
+  </Button>
+</Group>
+```
+
+## 不可用状态
+
+添加 disabled 属性即可让按钮处于不可用状态
+
+```js live=true
+<Group spacing="xl">
+  <Button disabled>
+    KubeSphere
+  </Button>
+</Group>
+```
+
+## Block 按钮
+
+block 属性将使按钮适合其父宽度。
+
+```js live=true
+<Group>
+  <Button variant="filled" color="primary" block>KubeSphere</Button>
+  <Button variant="outline" color="default" block>KubeSphere</Button>
+</Group>
+```
+
+## shadow 阴影
+
+shadow 属性将使按钮有阴影效果。
+
+```js live=true
+<Group>
+  <Button variant="filled" color="primary" shadow>KubeSphere</Button>
+  <Button variant="outline" color="secondary" shadow>KubeSphere</Button>
+  <Button variant="outline" color="success" shadow>KubeSphere</Button>
+  <Button variant="outline" color="warning" shadow>KubeSphere</Button>
+</Group>
+```
+
+## 按钮尺寸
+
+可以使用 size 和 radius 属性可以改变按钮的大小以及圆角。你可以设置值为 xs，sm，md，lg，xl.
+
+```js live=true
+<Group spacing="xl">
+  <Button variant="filled" color="default" radius="sm" size="sm">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="success" radius="md" size="md">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="error" radius="lg" size="sm">
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="warning" radius="xl" size="lg">
+    KubeSphere
+  </Button>
+</Group>
+```
+
+## Loading 状态
+
+添加 loading 属性即可让按钮处于加载状态，最后两个按钮演示点击后进入加载状态。
+
+```js live=true
+<Group spacing="xl">
+  <Button variant="filled" color="primary" size="md" loading>
+    KubeSphere
+  </Button>
+  <Button variant="filled" color="primary" size="lg" loading>
+    KubeSphere
+  </Button>
+</Group>
+```
+
+## 图标按钮
+
+当需要在 button 内嵌入 Icon 时，可以设置 leftIcon 或者 rightIcon 属性，或者直接包裹 Icon 组件。
+
+```js live=true
+() => {
+  const { Add } = KubeIcon;
+  return (
+    <Group spacing="xl">
+      <Button variant="filled" radius="xl" leftIcon={<Add size={16}/> }>KubeSphere</Button>
+      <Button variant="filled" radius="xl">{<Add />}</Button>
+      <Button variant="filled" radius="xl" color="success">{<Add />}</Button>
+      <Button variant="filled" radius="xl" color="success" rightIcon={<Add size={16}/> }>KubeSphere</Button>
+    </Group>
+  )
+}
+```
+
+## as属性
+
+as 属性可以改变组件所使用的标签或基于的组件。
+
+```js live=true
+<Group>
+  <Button as="a" href="/login">KubeSphere</Button>
+</Group>
+```

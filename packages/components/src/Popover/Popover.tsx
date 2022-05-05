@@ -3,9 +3,14 @@ import styled from 'styled-components';
 import { Tooltip, TooltipProps } from '../Tooltip/Tooltip';
 import { addColorAlpha } from '../utils/color';
 
-const PopoverWrapper = styled.div`
+interface WrapperProps {
+  $width?: number;
+}
+
+const PopoverWrapper = styled('div')<WrapperProps>`
   display: flex;
   flex-direction: column;
+  ${({ $width }) => ($width ? `width: ${$width}px` : null)};
 `;
 
 const PopoverTitle = styled.div`
@@ -19,18 +24,22 @@ const PopoverContent = styled.div`
 
 export interface PopoverProps extends TooltipProps {
   title?: string;
+  width?: number;
+  contentClassName?: string;
 }
 
 export function Popover({
   title,
   children,
   maxWidth = '264px',
+  width,
   interactive = true,
   content,
+  contentClassName,
   ...rest
 }: PopoverProps) {
   const popContent = (
-    <PopoverWrapper>
+    <PopoverWrapper $width={width} className={contentClassName}>
       {title && <PopoverTitle>{title}</PopoverTitle>}
       <PopoverContent>{content}</PopoverContent>
     </PopoverWrapper>

@@ -1,11 +1,10 @@
 {
   "name": "@kubed/tests",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Testing utilities for Kubed components",
   "main": "cjs/index.js",
   "module": "esm/index.js",
-  "browser": "lib/index.umd.js",
   "types": "lib/index.d.ts",
   "license": "MIT",
   "peerDependencies": {

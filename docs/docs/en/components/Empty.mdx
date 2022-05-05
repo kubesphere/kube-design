@@ -1,0 +1,30 @@
+---
+group: 'components'
+category: 'state'
+title: Empty
+description: 'Empty state placeholder.'
+order: 1
+---
+
+## When To Use
+
+When there is no data provided, display for friendly tips.
+
+## Basic Usage
+
+```js live=true
+() => {
+  return <Empty desc={'No_Data'} />
+};
+```
+
+## Icon and ImageStyle
+
+You can choose another style of image by setting icon and imageStyle.
+
+```js live=true
+() => {
+  const { Add } = KubeIcon;
+  return <Empty desc="No_Data" icon={<Add />} imageStyle={{ width: '48px', height: '48px' }} />;
+};
+```

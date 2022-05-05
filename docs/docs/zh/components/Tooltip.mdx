@@ -1,0 +1,208 @@
+---
+group: 'components'
+category: 'state'
+title: Tooltip
+description: '文字提示'
+order: 1
+---
+
+
+## 何时使用
+
+鼠标移入则显示提示，移出消失，气泡浮层不承载复杂文本和操作。可用来代替系统默认的 title 提示，提供一个按钮/文字/操作的文案解释。
+
+## 基础用法
+
+```js live=true
+() => (
+  <Tooltip content="Tooltip content">
+    <Button>Tooltip</Button>
+  </Tooltip>
+)
+```
+
+## 位置
+
+```js live=true
+() => (
+  <>
+    <Row style={{ width: '500px' }}>
+      <Col span={4}>
+        <Tooltip content="Tooltip content Tooltip content" placement="top">
+          <Button style={{ minWidth: '100px' }}>top</Button>
+        </Tooltip>
+      </Col>
+      <Col span={4}>
+        <Tooltip content="Tooltip content Tooltip content" placement="top-start">
+          <Button style={{ minWidth: '100px' }}>top-start</Button>
+        </Tooltip>
+      </Col>
+      <Col span={4}>
+        <Tooltip content="Tooltip content Tooltip content" placement="top-end">
+          <Button style={{ minWidth: '100px' }}>top-end</Button>
+        </Tooltip>
+      </Col>
+      <Col span={4}>
+        <Tooltip
+          content="Tooltip content Tooltip content Tooltip content Tooltip content"
+          placement="right"
+        >
+          <Button style={{ minWidth: '100px' }}>right</Button>
+        </Tooltip>
+      </Col>
+      <Col span={4}>
+        <Tooltip
+          content="Tooltip content Tooltip content Tooltip content Tooltip content"
+          placement="right-start"
+        >
+          <Button style={{ minWidth: '100px' }}>right-start</Button>
+        </Tooltip>
+      </Col>
+      <Col span={4}>
+        <Tooltip
+          content="Tooltip content Tooltip content Tooltip content Tooltip content"
+          placement="right-end"
+        >
+          <Button style={{ minWidth: '100px' }}>right-end</Button>
+        </Tooltip>
+      </Col>
+      <Col span={4}>
+        <Tooltip
+          content="Tooltip content Tooltip content Tooltip content Tooltip content"
+          placement="left"
+        >
+          <Button style={{ minWidth: '100px' }}>left</Button>
+        </Tooltip>
+      </Col>
+      <Col span={4}>
+        <Tooltip
+          content="Tooltip content Tooltip content Tooltip content Tooltip content"
+          placement="left-start"
+        >
+          <Button style={{ minWidth: '100px' }}>left-start</Button>
+        </Tooltip>
+      </Col>
+      <Col span={4}>
+        <Tooltip
+          content="Tooltip content Tooltip content Tooltip content Tooltip content"
+          placement="left-end"
+        >
+          <Button style={{ minWidth: '100px' }}>left-end</Button>
+        </Tooltip>
+      </Col>
+      <Col span={4}>
+        <Tooltip
+          content="Tooltip content Tooltip content Tooltip content Tooltip content"
+          placement="bottom"
+        >
+          <Button style={{ minWidth: '100px' }}>bottom</Button>
+        </Tooltip>
+      </Col>
+      <Col span={4}>
+        <Tooltip
+          content="Tooltip content Tooltip content Tooltip content Tooltip content"
+          placement="bottom-start"
+        >
+          <Button style={{ minWidth: '100px' }}>bottom-start</Button>
+        </Tooltip>
+      </Col>
+      <Col span={4}>
+        <Tooltip
+          content="Tooltip content Tooltip content Tooltip content Tooltip content"
+          placement="bottom-end"
+        >
+          <Button style={{ minWidth: '100px' }}>bottom-end</Button>
+        </Tooltip>
+      </Col>
+    </Row>
+  </>
+)
+```
+
+## 触发行为
+
+可以设置 hover, focus, click 等多个行为，默认是 hover
+
+```js live=true
+() => (
+  <Group>
+     <Tooltip content="Tooltip content" trigger="click">
+        <Button>Click</Button>
+     </Tooltip>
+     <Tooltip content="Tooltip content" trigger="focus">
+        <Button>Click</Button>
+     </Tooltip>
+     <Tooltip content="Tooltip content">
+        <Button>hover</Button>
+     </Tooltip>
+  </Group>
+)
+```
+
+## 箭头
+
+可以设置是否显示一个箭头
+
+```js live=true
+() => (
+  <Tooltip content="Tooltip content" arrow={false}>
+    <Button>Arrow</Button>
+  </Tooltip>
+)
+```
+
+## 禁用状态
+
+```js live=true
+() => {
+  return (
+    <Tooltip content="Tooltip" disabled>
+      <Button>Reference</Button>
+    </Tooltip>
+  )
+}
+```
+
+## 延迟展示
+
+鼠标移入后延时多少才显示 Tooltip，鼠标移出后延时多少才隐藏 Tooltip，单位毫秒 ms
+
+```js live=true
+() => {
+  return (
+    <Tooltip content="tooltip" delay={1000}>
+      <Button>Reference</Button>
+    </Tooltip>
+  )
+}
+```
+
+## 受控模式
+
+```js live=true
+() => {
+  const [visible, setVisible] = React.useState(true);
+  const show = () => setVisible(true);
+  const hide = () => setVisible(false);
+  return (
+    <Tooltip content="tooltip">
+      <Button onClick={visible ? hide : show}>Reference</Button>
+    </Tooltip>
+  )
+}
+```
+
+## 交互模式
+
+当 tooltip 展示的内容中存在交互内容时，鼠标可以停留在 tooltip 上，点击内容也不会隐藏
+
+```js live=true
+() => {
+  return (
+    <Tooltip content="tooltip" interactive>
+      <Button>interactive</Button>
+    </Tooltip>
+  )
+}
+```
+

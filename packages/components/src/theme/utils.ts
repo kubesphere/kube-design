@@ -17,13 +17,21 @@ export const getSizeValue = (
 
 export const getColor = (color: string, theme: KubedTheme, defaultColor?: string) => {
   const { palette } = theme;
+  if (color === 'primary' || color === 'secondary') {
+    return palette.colors[palette[color]][2];
+  }
+
   if (palette[color]) {
     return palette[color];
   }
-  if (palette.colors[color]) {
-    return palette.colors[color][2];
+
+  const colorName = color.replace(/[^a-zA-Z]/g, '');
+  const colorNumber = color.replace(/[^0-9]/g, '') || 2;
+
+  if (palette.colors[colorName]) {
+    return palette.colors[colorName][colorNumber];
   }
-  return palette[defaultColor] || palette.accents_5;
+  return color || palette[defaultColor] || palette.accents_5;
 };
 
 export type UserTheme = DeepPartial<KubedTheme> & { type: string };
@@ -61,6 +69,18 @@ const getPresets = (): Array<KubedTheme> => {
 
 const getPresetStaticTheme = (): KubedTheme => {
   return lightTheme;
+};
+
+const getPrimaryColor = (theme: KubedTheme, main: boolean = true): string | Array<string> => {
+  const { colors, primary } = theme.palette;
+  if (main) return colors[primary][2];
+  return colors[primary];
+};
+
+const getSecondaryColor = (theme: KubedTheme, main: boolean = true): string | Array<string> => {
+  const { colors, secondary } = theme.palette;
+  if (main) return colors[secondary][2];
+  return colors[secondary];
 };
 
 const isAvailableThemeType = (type?: string): boolean => {
@@ -105,6 +125,8 @@ const Utils = {
   createFromLight,
   getSizeValue,
   getColor,
+  getPrimaryColor,
+  getSecondaryColor,
 };
 
 export default Utils;

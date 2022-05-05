@@ -1,0 +1,59 @@
+---
+group: 'components'
+category: 'state'
+title: Alert
+description: 'Displays important alert messages.'
+order: 1
+---
+
+## Basic Usage
+
+Alert components are non-overlay elements in the page that does not disappear automatically.
+
+```js live=true
+<Alert title="KubeSphere">
+  Kubesphere.io is an upstream project of the KubeSphere container management platform.
+</Alert>
+```
+
+## More Types
+
+There are 4 types of Alert: success, info, warning, error.
+
+```js live=true
+<Group direction="row" grow>
+  <Alert title="KubeSphere">
+    Kubesphere.io is an upstream project of the KubeSphere container management platform.
+  </Alert>
+  <Alert title="KubeSphere" type="warning">
+    Kubesphere.io is an upstream project of the KubeSphere container management platform.
+  </Alert>
+  <Alert title="KubeSphere" type="error">
+    Kubesphere.io is an upstream project of the KubeSphere container management platform.
+  </Alert>
+  <Alert title="KubeSphere" type="info">
+    Kubesphere.io is an upstream project of the KubeSphere container management platform.
+  </Alert>
+</Group>
+```
+
+## Icon
+
+A relevant icon will make information clearer and more friendly.
+
+```js live=true
+<Alert showIcon>
+    Kubesphere.io is an upstream project of the KubeSphere container management platform.
+  </Alert>
+```
+
+## Closable
+
+To show close button.
+
+```js live=true
+<Alert title="KubeSphere" type="info" closable>
+  Kubesphere.io is an upstream project of the KubeSphere container management platform.
+</Alert>
+```
+

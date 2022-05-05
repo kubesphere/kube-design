@@ -1,0 +1,71 @@
+---
+group: 'components'
+category: 'state'
+title: Radio
+description: 'Single selection among multiple options.'
+order: 1
+---
+
+
+## Basic Usage
+
+Set value and label of Radio.
+
+```js live=true
+() => <Radio value="China" label="China" />
+```
+
+## defaultChecked
+
+Set defaultChecked of Radio.
+
+```js live=true
+() => <Radio value="China" defaultChecked label="China" />
+```
+
+## Radio Group
+
+```js live=true
+() => {
+  const onChange = (val) => {
+    console.log(val);
+  };
+  return (
+    <>
+      <RadioGroup onChange={onChange}>
+        <Radio label="China" value="China" />
+        <Radio label="USA" value="USA" />
+      </RadioGroup>
+    </>
+  );
+}
+```
+
+## Radio Group Control
+
+```js live=true
+() => {
+  const [value, setValue] = React.useState('China');
+  const toggle = () => {
+    if (value === 'USA') {
+      setValue('China');
+    } else {
+      setValue('USA');
+    }
+  };
+  const onChange = (val) => {
+    console.log(val);
+  };
+  return (
+    <>
+      <RadioGroup value={value} onChange={onChange}>
+        <Radio label="China" value="China" />
+        <Radio label="USA" value="USA" />
+      </RadioGroup>
+      <div>
+        <Button onClick={toggle}>Switch</Button>
+      </div>
+    </>
+  );
+}
+```

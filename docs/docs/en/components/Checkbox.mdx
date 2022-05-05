@@ -1,0 +1,125 @@
+---
+group: 'components'
+category: 'state'
+title: Checkbox
+description: 'A group of options for multiple choices.'
+order: 1
+---
+
+## Usage
+
+Checkbox can be used alone to switch between two states.
+
+## Basic Usage
+
+Set the default check through the defaultCheck attribute, and add event functions through onChange
+
+```js live=true
+() => {
+  const onChange = (e) => {
+    console.log(e);
+  };
+  return (
+    <Group>
+      <Checkbox label="Test1" defaultChecked onChange={onChange} />
+      <Checkbox label="Indeterminate" indeterminate />
+    </Group>
+  );
+}
+```
+
+## Disabled State
+
+Disabled state for Checkbox.
+
+```js live=true
+() => {
+  const [disabled, setDisabled] = React.useState(false);
+  const toggle = () => {
+    setDisabled(!disabled);
+  };
+  return (
+    <>
+      <div>
+        <Checkbox label="Test1" disabled={disabled} />
+      </div>
+      <div>
+        <Button onClick={toggle}>Switch</Button>
+      </div>
+    </>
+  );
+}
+```
+
+## Indeterminate
+
+The indeterminate property can help you to achieve a 'check all' effect.
+
+```js live=true
+() => {
+  const [indeterminate, setIndeterminate] = React.useState(false);
+  const toggle = () => {
+    setIndeterminate(!indeterminate);
+  };
+  return (
+    <>
+      <div>
+        <Checkbox label="Test1" indeterminate={indeterminate} />
+      </div>
+      <div>
+        <Button onClick={toggle}>Switch</Button>
+      </div>
+    </>
+  );
+}
+```
+
+## Checked Controlled
+
+```js live=true
+() => {
+  const [checked, setChecked] = React.useState(false);
+  const toggle = () => {
+    setChecked(!checked);
+  };
+  return (
+    <>
+      <div>
+        <Checkbox label="Test1" checked={checked} />
+      </div>
+      <div>
+        <Button onClick={toggle}>Switch</Button>
+      </div>
+    </>
+  );
+}
+```
+
+## Checkbox Group
+
+```js live=true
+() => {
+  const [value, setValue] = React.useState(['China']);
+  const toggle = () => {
+    if (value.length > 1) {
+      setValue(['China']);
+    } else {
+      setValue(['USA', 'China']);
+    }
+  };
+  const onChange = (val) => {
+    console.log(val);
+  };
+  return (
+    <>
+      <CheckboxGroup value={value} onChange={onChange}>
+        <Checkbox label="China" value="China" />
+        <Checkbox label="USA" value="USA" />
+      </CheckboxGroup>
+      <div>
+        <Button onClick={toggle}>Switch</Button>
+      </div>
+    </>
+  );
+}
+```

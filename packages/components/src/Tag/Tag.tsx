@@ -3,18 +3,44 @@ import styled, { css } from 'styled-components';
 import forwardRef from '../utils/forwardRef';
 import { DefaultProps, KubedTheme, themeUtils } from '../theme';
 
-const getColor = (color, theme: KubedTheme) => {
-  const { palette } = theme;
-  if (color) {
-    return css`
-      color: ${palette.background};
-      background-color: ${themeUtils.getColor(color, theme)};
-    `;
-  }
+const colorMap = {
+  default: {
+    color: 'background',
+    background: 'accents_8',
+  },
+  primary: {
+    color: 'green4',
+    background: 'green0',
+  },
+  success: {
+    color: 'green4',
+    background: 'green0',
+  },
+  secondary: {
+    color: 'accents_7',
+    background: 'accents_2',
+  },
+  warning: {
+    color: 'yellow4',
+    background: 'yellow0',
+  },
+  error: {
+    color: 'red4',
+    background: 'red0',
+  },
+  info: {
+    color: 'blue4',
+    background: 'blue0',
+  },
+};
+
+const getColor = (color = 'default', theme: KubedTheme) => {
+  const colorValue = themeUtils.getColor(colorMap[color].color, theme);
+  const background = themeUtils.getColor(colorMap[color].background, theme);
 
   return css`
-    background-color: ${palette.accents_1};
-    color: ${palette.accents_8};
+    background-color: ${background};
+    color: ${colorValue};
   `;
 };
 
@@ -49,15 +75,19 @@ export interface TagProps extends DefaultProps {
   titleStyle?: React.CSSProperties;
 
   /** Tag color from theme  */
-  color?: string | 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'error';
+  color?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info' | string;
+
+  /** Append element of the tag  */
+  append?: React.ReactNode;
 }
 
 export const Tag = forwardRef<TagProps, 'div'>(
-  ({ title, titleStyle, color, children, ...rest }, ref) => {
+  ({ title, titleStyle, color, children, append, ...rest }, ref) => {
     return (
       <TagWrapper ref={ref} title={title} color={color} {...rest}>
         {title && <TagTitle style={titleStyle}>{title}</TagTitle>}
         {children}
+        {append}
       </TagWrapper>
     );
   }

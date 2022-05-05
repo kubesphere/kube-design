@@ -7,7 +7,10 @@ interface DeclarationPath {
   type: 'package' | 'file';
 }
 
-const EXTRA_FILES_PATHS = [];
+const EXTRA_FILES_PATHS = [
+  '../packages/components/src/Grid/Row.tsx',
+  '../packages/components/src/Grid/Col.tsx',
+];
 
 const EXCLUDE_PROPS = ['className', 'classNames', 'styles', 'key', 'ref', 'style', 'themeOverride'];
 
@@ -54,6 +57,7 @@ function getDeclarationsList(paths: DeclarationPath[]): string[] {
 
 function prepareDeclaration(declaration: ComponentDoc) {
   const data = { ...declaration };
+  // console.log('declaration-111', declaration);
   delete data.tags;
   delete data.methods;
 
@@ -100,10 +104,11 @@ const docgenParser = withCustomConfig(path.join(__dirname, '../tsconfig.json'), 
 
 function generateDeclarations(paths: DeclarationPath[]) {
   const declarations = getDeclarationsList(paths);
-
+  console.log('declarations', declarations);
   return docgenParser.parse(declarations).reduce((acc, declaration) => {
     const componentName = declaration.displayName.replace(/@kubed\/([^\s]+)\//, '');
     acc[componentName] = prepareDeclaration(declaration);
+    console.log('acc', acc);
     return acc;
   }, {});
 }

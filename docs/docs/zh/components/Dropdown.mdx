@@ -1,0 +1,39 @@
+---
+group: 'components'
+category: 'state'
+title: Dropdown
+description: '下拉菜单'
+order: 1
+---
+
+## 何时使用
+
+当页面上的操作命令过多时，用此组件可以收纳操作元素。点击或移入触点，会出现一个下拉菜单。可在列表中进行选择，并执行相应的命令。
+
+## 基础用法
+
+通过 content 属性设置下拉菜单，通过 trigger 属性设置触发方式，默认为 click
+
+```js live=true
+() => {
+const { Add, Stop, Pen, Trash, More } = KubeIcon;
+const MenuComponent = (
+  <Menu>
+    <MenuLabel>menu label</MenuLabel>
+    <MenuItem icon={<Add />}>创建</MenuItem>
+    <MenuItem icon={<Stop />}>停止调度</MenuItem>
+    <MenuItem icon={<Pen />}>Edit</MenuItem>
+    <MenuItem icon={<Trash />}>Delete</MenuItem>
+  </Menu>
+);
+return (
+  <div style={{ height: '100px', width: '100%', backgroundColor: '#f9fbfd' }}>
+    <Dropdown content={MenuComponent}>
+      <Button variant="text" radius="lg">
+        <More size={16} />
+      </Button>
+    </Dropdown>
+  </div>
+)
+}
+```

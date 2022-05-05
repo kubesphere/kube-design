@@ -1,0 +1,57 @@
+---
+group: 'components'
+category: 'state'
+title: Menu
+description: '为页面和功能提供导航的菜单列表'
+order: 1
+---
+
+## 何时使用
+
+菜单提供类目和功能，使用多级结构来收纳和排列网站架构。
+
+## 基础用法
+
+在 Menu 组件中嵌套 MenuItem 组件。
+
+```js live=true
+() => {
+  const { Add, Stop, Pen, Trash } = KubeIcon;
+  const clickCallback = () => {
+     console.log('you click me')
+  }
+  return (
+    <Card style={{ width: '230px' }}>
+      <Menu>
+        <MenuLabel>menu label</MenuLabel>
+        <MenuItem icon={<Add />} onClick={clickCallback}>创建</MenuItem>
+        <MenuItem icon={<Stop />}>停止调度</MenuItem>
+        <MenuItem icon={<Pen />}>Edit</MenuItem>
+        <Divider />
+        <MenuItem icon={<Trash />}>Delete</MenuItem>
+      </Menu>
+    </Card>
+  )
+}
+```
+
+## 禁用子菜单
+
+```js live=true
+() => {
+  const { Add, Stop, Pen, Trash } = KubeIcon;
+  return (
+     <Card style={{ width: '230px' }}>
+        <Menu>
+          <MenuLabel>menu label</MenuLabel>
+          <MenuItem disabled icon={<Add />}>Add</MenuItem>
+          <MenuItem icon={<Stop />}>Stop</MenuItem>
+          <MenuItem icon={<Pen />}>Edit</MenuItem>
+          <Divider />
+          <MenuItem icon={<Trash />}>Delete</MenuItem>
+        </Menu>
+      </Card>
+  )
+}
+```
+

@@ -1,0 +1,79 @@
+---
+group: 'components'
+category: 'state'
+title: Input
+description: 'input'
+order: 1
+---
+
+## When To Use
+
+A user input in a form field is needed.
+
+A search input is required.
+
+## Basic Usage
+
+Basic usage example.Width can be set to input.
+
+```js live=true
+<Input placeholder="input here..." width={360} />
+```
+
+## Size
+
+Use the size prop to change the size of the button.You can set the value to xs, sm, md, lg or xl.
+
+```js live=true
+<Group>
+  <Input size="xs" width={360}></Input>
+  <Input size="sm" width={360}></Input>
+  <Input size="md" width={360}></Input>
+  <Input size="lg" width={360}></Input>
+  <Input size="xl" width={360}></Input>
+</Group>
+```
+
+## Search box
+
+Example of creating a search box by grouping a standard input with a search button.
+
+```js live=true
+() => {
+const { Magnifier, Appcenter } = KubeIcon;
+return (
+  <Group direction="column">
+    <Input prefix={<Magnifier size={16} />} suffix={<Loading size={16} />} />
+    <Input prefix="https://" suffix={<Appcenter size={16} />} />
+  </Group>
+)
+}
+```
+
+## Disabled Status
+
+```js live=true
+<Input placeholder="input here..." disabled />
+```
+
+## ReadOnly status
+
+```js live=true
+<Input placeholder="请输入..." readOnly/>
+```
+
+## prefix and suffix
+
+Using pre & post tabs example.
+
+```js live=true
+() => {
+  const { Appcenter } = KubeIcon;
+  return (
+    <Group>
+      <Input addonBefore="https://" width={350} />
+      <Input addonAfter=".com" width={350} prefix={<Appcenter size={16} />} />
+    </Group>
+  )
+}
+```

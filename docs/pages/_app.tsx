@@ -4,6 +4,7 @@ import { CssBaseline, KubedConfigProvider } from '@kubed/components';
 import { useLocalStorage } from '@kubed/hooks';
 import type { AppProps } from 'next/app';
 import { PrefersContext, themes } from '../lib/usePrefers';
+import GlobalStyles from '../lib/components/GlobalStyles';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [themeLocalValue, setThemeLocalValue] = useLocalStorage({
@@ -27,6 +28,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <KubedConfigProvider themeType={themeType}>
       <CssBaseline />
+      <GlobalStyles />
       <PrefersContext.Provider value={{ themeType, switchTheme }}>
         <Component {...pageProps} />
       </PrefersContext.Provider>

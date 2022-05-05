@@ -1,6 +1,16 @@
 import * as React from 'react';
 import { Add, Trash } from '@kubed/icons';
-import { Form, FormItem, FormList, Input, Row, Col, Button, useForm } from '../index';
+import {
+  Form,
+  FormItem,
+  FormList,
+  Input,
+  InputPassword,
+  Row,
+  Col,
+  Button,
+  useForm,
+} from '../index';
 
 export default {
   title: 'Components/Form',
@@ -12,10 +22,11 @@ const onFinish = (values) => {
 };
 
 export const Basic = () => (
-  <Form onFinish={onFinish} initialValues={{ usename: 'wayne' }}>
+  <Form onFinish={onFinish}>
     <Row gutter={[10, 40]}>
       <Col span={6}>
         <FormItem
+          className="test"
           name="usename"
           label="Username"
           help="user name must input"
@@ -26,12 +37,12 @@ export const Basic = () => (
       </Col>
       <Col span={6}>
         <FormItem
-          name="uid"
-          label="用户名"
+          name="password"
+          label="密码"
           help="help content"
           rules={[{ required: true, message: 'Please input your uid!' }]}
         >
-          <Input />
+          <InputPassword />
         </FormItem>
       </Col>
       <Col span={6}>

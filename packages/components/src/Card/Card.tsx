@@ -56,7 +56,7 @@ export const Card = forwardRef<CardProps, 'div'>(
     { sectionTitle, padding, children, contentStyle, contentClassName, hoverable, ...rest },
     ref
   ) => {
-    const contentProps = { contentStyle, contentClassName, hoverable, padding };
+    const contentProps = { style: contentStyle, className: contentClassName, hoverable, padding };
     return (
       <CardWrapper ref={ref} {...rest}>
         {sectionTitle && <SectionTitle>{sectionTitle}</SectionTitle>}

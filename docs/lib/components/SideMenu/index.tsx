@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
-import cx from 'clsx';
+import cx from 'classnames';
 import { kebabCase } from '../../utils';
 
 const SideMenuWrapper = styled.div`
@@ -37,9 +37,10 @@ const MenuList = styled.ul`
       }
 
       &:before {
+        position: absolute;
         border-top: 1px solid ${({ theme }) => theme.palette.primary};
         top: 16px;
-        left: -5px;
+        left: -20px;
         width: 12px;
       }
     }

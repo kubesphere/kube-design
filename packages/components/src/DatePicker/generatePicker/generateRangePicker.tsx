@@ -1,15 +1,12 @@
 import React, { FC, useImperativeHandle, useRef } from 'react';
-import classNames from 'classnames';
+import cx from 'classnames';
 import { Calendar, Clock, Close, Next } from '@kubed/icons';
 import { RangePicker as RCRangePicker } from 'rc-picker';
 import { GenerateConfig } from 'rc-picker/lib/generate';
-// eslint-disable-next-line import/no-cycle
+import dayjs from 'dayjs';
 import { getRangePlaceholder } from '../util';
-// eslint-disable-next-line import/no-cycle
 import { RangePickerProps, getTimeProps, Components } from '.';
-// import { CommonPickerMethods } from './interface';
 import forwardRef from '../../utils/forwardRef';
-// eslint-disable-next-line import/no-cycle
 import { useLocales } from '../../ConfigProvider/LocaleProvider/LocaleContext';
 
 export default function generateRangePicker<DateType>(
@@ -51,14 +48,15 @@ export default function generateRangePicker<DateType>(
       },
     }));
 
-    const locale = useLocales();
-    const { DatePicker: locales } = locale;
+    const { locales, locale } = useLocales();
+    const { DatePicker: datePickerLocales } = locales;
+    dayjs.locale(locale);
 
     return (
       <RCRangePicker<DateType>
         separator={<Next size={16} />}
         ref={pickerRef}
-        placeholder={getRangePlaceholder(picker, locales, placeholder)}
+        placeholder={getRangePlaceholder(picker, datePickerLocales, placeholder)}
         suffixIcon={picker === 'time' ? <Clock size={16} /> : <Calendar size={16} />}
         clearIcon={<Close size={16} />}
         prevIcon={<span className={`${prefixCls}-prev-icon`} />}
@@ -69,14 +67,14 @@ export default function generateRangePicker<DateType>(
         // transitionName={`${rootPrefixCls}-slide-up`}
         {...restProps}
         {...additionalOverrideProps}
-        className={classNames(
+        className={cx(
           {
             // [`${prefixCls}-${mergedSize}`]: mergedSize,
             [`${prefixCls}-borderless`]: !bordered,
           },
           className
         )}
-        locale={locales!.lang}
+        locale={datePickerLocales!.lang}
         prefixCls={prefixCls}
         // getPopupContainer={customGetPopupContainer || getPopupContainer}
         generateConfig={generateConfig}

@@ -1,0 +1,58 @@
+---
+group: 'components'
+category: 'state'
+title: Alert
+description: '警告提示'
+order: 1
+---
+
+## 基础用法
+
+警告提示，展现需要关注的信息。当某个页面或页面局部表单需要向用户显示警告当信息时使用，非浮层当静态展现形式，始终展现，不会自动消失，用户可以点击关闭。
+
+```js live=true
+<Alert title="KubeSphere">
+  Kubesphere.io is an upstream project of the KubeSphere container management platform.
+</Alert>
+```
+
+## 不同类型的警告
+
+通过 type 属性设置警告类型。
+
+```js live=true
+<Group direction="row" grow>
+  <Alert title="KubeSphere">
+    Kubesphere.io is an upstream project of the KubeSphere container management platform.
+  </Alert>
+  <Alert title="KubeSphere" type="warning">
+    Kubesphere.io is an upstream project of the KubeSphere container management platform.
+  </Alert>
+  <Alert title="KubeSphere" type="error">
+    Kubesphere.io is an upstream project of the KubeSphere container management platform.
+  </Alert>
+  <Alert title="KubeSphere" type="info" closable>
+    Kubesphere.io is an upstream project of the KubeSphere container management platform.
+  </Alert>
+</Group>
+```
+
+## 图标
+
+可口的图标让信息类型更加醒目。如果type有类型，则显示对应的图标，没有的话，显示默认的图标。
+
+```js live=true
+<Alert showIcon>
+    Kubesphere.io is an upstream project of the KubeSphere container management platform.
+  </Alert>
+```
+
+## 平滑地卸载
+
+平滑，自然地卸载提示。
+
+```js live=true
+<Alert title="KubeSphere" type="info" closable>
+  Kubesphere.io is an upstream project of the KubeSphere container management platform.
+</Alert>
+```

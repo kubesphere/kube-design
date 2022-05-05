@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import cx from 'clsx';
+import cx from 'classnames';
 import styled from 'styled-components';
 import FieldForm, { List as FormList } from 'rc-field-form';
 import { FormProps as RcFormProps } from 'rc-field-form/lib/Form';
@@ -15,6 +15,8 @@ import useForm, { FormInstance } from './hooks/useForm';
 import { addColorAlpha } from '../utils/color';
 
 export { FormList, FormItem, useForm };
+
+export type { FormInstance };
 
 export type FormLayout = 'horizontal' | 'inline' | 'vertical';
 

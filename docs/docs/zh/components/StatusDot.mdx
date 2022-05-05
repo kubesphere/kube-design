@@ -1,0 +1,55 @@
+---
+group: 'components'
+category: 'state'
+title: StatusDot
+description: '状态点'
+order: 1
+---
+
+## 基础用法
+
+状态点，表示任务进行状态
+
+```js live=true
+() => (
+  <Group>
+    <StatusDot color="success">Ready</StatusDot>
+    <StatusDot color="warning">Warning</StatusDot>
+    <Tooltip content="Warning tips">
+      <StatusDot color="error" />
+    </Tooltip>
+  </Group>
+)
+```
+
+## 无标签状态点
+
+以不同点颜色点状态点区分状态
+
+```js live=true
+() => (
+  <Group>
+    <StatusDot />
+    <StatusDot color="warning" />
+    <StatusDot color="success" />
+    <StatusDot color="error" />
+  </Group>
+)
+```
+
+## 运动的状态点
+
+```js live=true
+() => (
+  <Group spacing={30}>
+    <StatusDot motion />
+    <StatusDot motion color="warning" />
+    <StatusDot motion color="success">
+      启动中
+    </StatusDot>
+    <StatusDot motion color="error">
+      重启中
+    </StatusDot>
+  </Group>
+)
+```

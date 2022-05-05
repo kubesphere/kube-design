@@ -1,0 +1,39 @@
+---
+group: 'components'
+category: 'state'
+title: Dropdown
+description: 'A dropdown list'
+order: 1
+---
+
+## Usage
+
+When there are more than a few options to choose from, you can wrap them in a Dropdown. By hovering or clicking on the trigger, a dropdown menu will appear, which allows you to choose an option and execute the relevant action.
+
+## Basic Usage
+
+Set content and trigger method of dropdown, the default trigger method is click.
+
+```js live=true
+() => {
+const { Add, Stop, Pen, Trash, More } = KubeIcon;
+const MenuComponent = (
+  <Menu>
+    <MenuLabel>menu label</MenuLabel>
+    <MenuItem icon={<Add />}>Add</MenuItem>
+    <MenuItem icon={<Stop />}>Stop</MenuItem>
+    <MenuItem icon={<Pen />}>Edit</MenuItem>
+    <MenuItem icon={<Trash />}>Delete</MenuItem>
+  </Menu>
+);
+return (
+  <div style={{ height: '100px', width: '100%', backgroundColor: '#f9fbfd' }}>
+    <Dropdown content={MenuComponent}>
+      <Button variant="text" radius="lg">
+        <More size={16} />
+      </Button>
+    </Dropdown>
+  </div>
+)
+}
+```

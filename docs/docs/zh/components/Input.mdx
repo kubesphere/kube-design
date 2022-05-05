@@ -1,0 +1,80 @@
+---
+group: 'components'
+category: 'state'
+title: Input
+description: '文本输入框'
+order: 1
+---
+
+## 何时使用
+
+需要用户输入表单域内容时。
+提供组合型输入框，带搜索的输入框，还可以进行大小选择。
+
+## 代码演示
+
+## 基本用法
+
+基本使用，width 可以设置输入框的宽度。
+
+```js live=true
+<Input placeholder="请输入..." width={360} />
+```
+
+## 输入框的尺寸
+
+可以使用 size 设置输入框的尺寸，size 可以设置为 xs, sm, md, lg, xl.
+
+```js live=true
+<Group>
+  <Input size="xs" width={360}></Input>
+  <Input size="sm" width={360}></Input>
+  <Input size="md" width={360}></Input>
+  <Input size="lg" width={360}></Input>
+  <Input size="xl" width={360}></Input>
+</Group>
+```
+
+## 搜索框
+
+带有搜索按钮的输入框。
+
+```js live=true
+() => {
+const { Magnifier, Appcenter } = KubeIcon;
+return (
+  <Group direction="column">
+    <Input prefix={<Magnifier size={16} />} suffix={<Loading size={16} />} />
+    <Input prefix="https://" suffix={<Appcenter size={16} />} />
+  </Group>
+)
+}
+```
+
+## 禁用状态
+
+```js live=true
+<Input placeholder="请输入..." disabled />
+```
+
+## 只读状态
+
+```js live=true
+<Input placeholder="请输入..." readOnly/>
+```
+
+## 前置/后置标签
+
+用于配置一些固定组合。
+
+```js live=true
+() => {
+  const { Appcenter } = KubeIcon;
+  return (
+    <Group>
+      <Input addonBefore="https://" width={350} />
+      <Input addonAfter=".com" width={350} prefix={<Appcenter size={16} />} />
+    </Group>
+  )
+}
+```

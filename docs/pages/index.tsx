@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import styled from 'styled-components';
@@ -101,22 +102,27 @@ export default function Home() {
           <HeroTitle>Kube Design</HeroTitle>
           <HeroDesc>{t('LandingDesc')}</HeroDesc>
           <Group style={{ marginTop: '45px' }}>
-            <Button
-              shadow
-              radius="xl"
-              size="lg"
-              className="hero-button"
-              color="secondary"
-              rightIcon={<ArrowRight size={15} />}
-            >
-              {t('get-started')}
-            </Button>
+            <Link href="/guide">
+              <Button
+                shadow
+                radius="xl"
+                size="lg"
+                className="hero-button"
+                color="secondary"
+                rightIcon={<ArrowRight size={15} />}
+              >
+                {t('get-started')}
+              </Button>
+            </Link>
             <Button
               variant="text"
               radius="xl"
               size="lg"
               className="hero-button github-link"
               rightIcon={<ExternalLink size={15} />}
+              as="a"
+              href="https://github.com/chenz24/kube-design"
+              target="_blank"
             >
               GitHub
             </Button>

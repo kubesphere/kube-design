@@ -1,0 +1,55 @@
+---
+group: 'components'
+category: 'state'
+title: Divider
+description: 'A divider line separates different content.'
+order: 1
+---
+
+## When To Use
+
+Divide sections of article.
+
+Divide inline text and links such as the operation column of table.
+
+## Basic Usage
+
+```js live=true
+<Group spacing="xl">
+  <Divider style={{ width:'100%' }}/>
+</Group>
+```
+
+## Style
+
+Use variants to set the display form of the dividing line, the default is solid (solid line), dotted (dotted line), dashed (dotted line)
+
+```js live=true
+<Group spacing="xl">
+  <Divider style={{ width:'100%'}}/>
+  <Divider variant="dotted" margins={20} style={{ width:'100%' }} />
+  <Divider variant="dashed" margins={20} style={{ width:'100%' }} />
+</Group>
+```
+
+## Direction
+
+```js live=true
+<Group spacing="xl">
+  <Button>1</Button>
+  <Divider direction="vertical" margins="sm" />
+  <Button>2</Button>
+  <Divider direction="vertical" margins="sm" />
+  <Button>3</Button>
+</Group>
+```
+
+## Label
+
+```js live=true
+<Group spacing="xl">
+   <Divider style={{ width:'100%' }}/>
+   <Divider variant="dotted" margins={20} label="label name" style={{ width:'100%' }}/>
+   <Divider margins={20} label="label name" labelPosition="right" style={{ width:'100%' }}/>
+</Group>
+```

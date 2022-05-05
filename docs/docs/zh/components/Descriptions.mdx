@@ -1,0 +1,61 @@
+---
+group: 'components'
+category: 'state'
+title: Descriptions
+description: '描述列表'
+order: 1
+---
+
+## 基础用法
+
+列表形式展示字段
+
+```js live=true
+() => (
+  <Description label="cni.projectcalico.org/podIP">10.233.74.19/32</Description>
+)
+```
+
+## 无样式
+
+通过 variant 属性可以设置列表无样式展示，通过 label 属性可以设置描述列表的名称
+
+```js live=true
+() => (
+  <div style={{ backgroundColor: '#eff4f9', padding: '50px' }}>
+    <Card style={{ width: '300px' }}>
+      <Description label="project" variant="unstyled">
+        KubeSphere
+      </Description>
+      <Description label="cluster" variant="unstyled">
+        default
+      </Description>
+    </Card>
+  </div>
+)
+```
+
+## 批量列表展示
+
+通过给 data 属性传递数组，可以批量展示描述列表，通过给 variant 设置 default 可以显示列表的默认样式。
+
+```js live=true
+() => {
+  const data = [
+    { label: 'Cluster', value: 'default' },
+    { label: 'Project', value: 'ifcloud' },
+    { label: 'Instance Name', value: 'dev-node1' },
+    { label: 'Instance IP', value: '10.233.74.19' },
+  ];
+  return (
+  <div style={{ backgroundColor: '#eff4f9', padding: '50px' }}>
+    <Card style={{ width: '300px' }}>
+      <Descriptions data={data} variant="unstyled" />
+    </Card>
+    <Card style={{ marginTop: '50px' }}>
+      <Descriptions data={data} variant="default" />
+    </Card>
+  </div>
+  )
+}
+```

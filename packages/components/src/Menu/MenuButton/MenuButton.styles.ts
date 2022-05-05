@@ -18,12 +18,19 @@ export const MenuButtonElement = styled('button')`
 
   &:hover {
     background-color: ${({ theme }) => theme.palette.accents_2};
+    color: ${({ theme }) => theme.palette.accents_7};
   }
 
   .item-inner {
     display: flex;
     align-items: center;
     height: 20px;
+
+    &.menu-disabled {
+      cursor: not-allowed;
+      background-color: ${({ theme }) => theme.palette.accents_1};
+      border-color: ${({ theme }) => theme.palette.accents_4};
+    }
   }
 
   .item-icon {

@@ -1,0 +1,89 @@
+---
+group: 'components'
+category: 'state'
+title: Modal
+description: 'Modal dialogs'
+order: 1
+---
+
+## Basic Usage
+
+When requiring users to interact with the application, but without jumping to a new page and interrupting the user's workflow, you can use Modal to create a new floating layer over the current page to get user feedback or display information.
+
+```js live=true
+() => {
+  const [visible, setVisible] = React.useState(false);
+  const { Cluster } = KubeIcon;
+  const ref = React.createRef();
+
+  const openModal = () => {
+    setVisible(true);
+  };
+
+  const closeModal = () => {
+    console.log(ref.current);
+    setVisible(false);
+  };
+
+  return (
+    <>
+      <Button onClick={openModal}>Open Modal</Button>
+      <Modal
+        ref={ref}
+        visible={visible}
+        title="Modal demo"
+        description="Modal description"
+        titleIcon={<Cluster size={40} />}
+        onCancel={closeModal}
+      >
+        Modal content
+      </Modal>
+    </>
+  );
+}
+```
+
+## Important Modal
+
+```js live=true
+() => {
+  const modal = useModal();
+
+  const openChildModal = () => {
+    modal.open({
+      title: 'Imperative Modal',
+      description: 'description text',
+      content: 'modal content',
+    });
+  };
+
+  const content = <Button onClick={openChildModal}>Nest Imperative Modal</Button>;
+
+  const openModal = () => {
+    modal.open({
+      title: 'Imperative Modal',
+      description: 'description text',
+      content,
+    });
+  };
+
+  return <Button onClick={openModal}>Imperative Modal</Button>;
+}
+```
+
+## Confirm Modal
+
+```js live=true
+() => {
+  const modal = useModal();
+  return (
+    <Button
+      onClick={() => {
+        modal.confirm({ title: 'confirm modal', content: 'confirm content' });
+      }}
+    >
+      Imperative Modal
+    </Button>
+  );
+}
+```

@@ -1,14 +1,13 @@
+// https://github.com/ant-design/ant-design/blob/master/components/date-picker/generatePicker/generateSinglePicker.tsx
 import React, { FunctionComponent, useImperativeHandle, useRef } from 'react';
-import classNames from 'classnames';
+import cx from 'classnames';
 import { Close, Clock, Calendar } from '@kubed/icons';
 import RCPicker from 'rc-picker';
 import { PickerMode } from 'rc-picker/lib/interface';
 import { GenerateConfig } from 'rc-picker/lib/generate';
-// eslint-disable-next-line import/no-cycle
+import dayjs from 'dayjs';
 import { getPlaceholder } from '../util';
-// eslint-disable-next-line import/no-cycle
 import { useLocales } from '../../ConfigProvider/LocaleProvider/LocaleContext';
-// eslint-disable-next-line import/no-cycle
 import { PickerProps, PickerDateProps, PickerTimeProps, getTimeProps, Components } from '.';
 import { CommonPickerMethods } from './interface';
 import forwardRef from '../../utils/forwardRef';
@@ -56,8 +55,9 @@ export default function generatePicker<DateType>(generateConfig: GenerateConfig<
           : {}),
       };
 
-      const locale = useLocales();
-      const { DatePicker: locales } = locale;
+      const { locales, locale } = useLocales();
+      const { DatePicker: datePickerLocales } = locales;
+      dayjs.locale(locale);
 
       const pickerRef = useRef<CommonPickerMethods>();
       useImperativeHandle(ref, () => ({
@@ -78,7 +78,7 @@ export default function generatePicker<DateType>(generateConfig: GenerateConfig<
           <PickerDropdown />
           <RCPicker
             ref={pickerRef}
-            placeholder={getPlaceholder(mergedPicker, locales, placeholder)}
+            placeholder={getPlaceholder(mergedPicker, datePickerLocales, placeholder)}
             suffixIcon={mergedPicker === 'time' ? <Clock size={16} /> : <Calendar size={16} />}
             clearIcon={<Close size={16} />}
             prevIcon={<span className={`${prefixCls}-prev-icon`} />}
@@ -90,8 +90,8 @@ export default function generatePicker<DateType>(generateConfig: GenerateConfig<
             {...additionalProps}
             {...restProps}
             {...additionalOverrideProps}
-            locale={locales!.lang}
-            className={classNames(
+            locale={datePickerLocales!.lang}
+            className={cx(
               {
                 [`${prefixCls}-borderless`]: !bordered,
               },

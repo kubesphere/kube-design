@@ -1,0 +1,51 @@
+---
+group: 'components'
+category: 'state'
+title: Popover
+description: '点击/鼠标移入元素，弹出气泡式的卡片浮层'
+order: 1
+---
+
+## 何时使用
+
+当目标元素有进一步当描述和相关操作时，可以收纳到卡片中，根据用户到操作行为进行展现。和 Tooltip 的区别是，用户可以对浮层上对元素进行操作，因此它可以承载更复杂对内容，比如链接或按钮等。
+
+## 代码演示
+
+最简单的用法。
+
+```js live=true
+() => {
+  const content = (
+    <div>
+      <p>Content</p>
+      <p>Content</p>
+    </div>
+  )
+  return (
+    <Popover content={content} title="title">
+      <Button type="primary">Hover me</Button>
+    </Popover>
+  )
+}
+```
+
+## 设置样式
+
+可以通过 width 和 maxWidth 设置弹出窗口的文字展示。
+
+```js live=true
+() => (
+  <div>
+    <Popover
+      title="popover title"
+      content="Display additional, floating content on click"
+      maxWidth={200}
+      width={150}
+    >
+      <Button radius="xl">KubeSphere</Button>
+    </Popover>
+  </div>
+)
+```
+

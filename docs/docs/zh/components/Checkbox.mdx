@@ -1,0 +1,129 @@
+---
+group: 'components'
+category: 'state'
+title: Checkbox
+description: '多选框'
+order: 1
+---
+
+## 何时使用
+
+单独使用可以表示两种状态之间的切换，checkbox 一般用于状态标记，需要和提交的操作配合，或者用于在一组可选项中进行多项选择时。
+
+## 基础用法
+
+通过 defaultChecked 属性来设置默认勾选，通过 onChange 可以添加事件回调函数
+
+```js live=true
+() => {
+  const onChange = (e) => {
+    console.log(e);
+  };
+  return (
+    <Group>
+      <Checkbox label="Test1" defaultChecked onChange={onChange} />
+      <Checkbox label="Indeterminate" indeterminate />
+    </Group>
+  );
+}
+```
+
+## 禁用状态
+
+添加 disabled 属性即可让按钮处于不可用状态，同时按钮样式也会发生改变。
+
+```js live=true
+() => {
+  const [disabled, setDisabled] = React.useState(false);
+  const toggle = () => {
+    setDisabled(!disabled);
+  };
+  return (
+    <>
+      <div>
+        <Checkbox label="Test1" disabled={disabled} />
+      </div>
+      <div>
+        <Button onClick={toggle}>Switch</Button>
+      </div>
+    </>
+  );
+}
+```
+
+## Indeterminate状态
+
+indeterminate 属性用来表示 checkbox 的不确定状态，一般用于实现全选的效果。
+
+```js live=true
+() => {
+  const [indeterminate, setIndeterminate] = React.useState(false);
+  const toggle = () => {
+    setIndeterminate(!indeterminate);
+  };
+  return (
+    <>
+      <div>
+        <Checkbox label="Test1" indeterminate={indeterminate} />
+      </div>
+      <div>
+        <Button onClick={toggle}>Switch</Button>
+      </div>
+    </>
+  );
+}
+```
+
+## 勾选控制
+
+可以通过外部按钮控制勾选框的两种状态直接的切换。
+
+```js live=true
+() => {
+  const [checked, setChecked] = React.useState(false);
+  const toggle = () => {
+    setChecked(!checked);
+  };
+  return (
+    <>
+      <div>
+        <Checkbox label="Test1" checked={checked} />
+      </div>
+      <div>
+        <Button onClick={toggle}>Switch</Button>
+      </div>
+    </>
+  );
+}
+```
+
+## 多选框组
+
+适用于多个勾选框绑定到同一个数组的情景，通过是否勾选来表示这一组可选项中选中的选项。
+
+```js live=true
+() => {
+  const [value, setValue] = React.useState(['China']);
+  const toggle = () => {
+    if (value.length > 1) {
+      setValue(['China']);
+    } else {
+      setValue(['USA', 'China']);
+    }
+  };
+  const onChange = (val) => {
+    console.log(val);
+  };
+  return (
+    <>
+      <CheckboxGroup value={value} onChange={onChange}>
+        <Checkbox label="China" value="China" />
+        <Checkbox label="USA" value="USA" />
+      </CheckboxGroup>
+      <div>
+        <Button onClick={toggle}>Switch</Button>
+      </div>
+    </>
+  );
+}
+```

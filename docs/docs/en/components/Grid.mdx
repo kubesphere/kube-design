@@ -1,0 +1,163 @@
+---
+group: 'components'
+category: 'state'
+title: Row
+description: '12 Grids System'
+order: 1
+---
+
+## Basic Usage
+
+In the grid system, we define the frame outside the information area based on row and column, to ensure that every area can have stable arrangement.
+
+```js live=true
+() => {
+  const PlaceHolder = ({ children }) => (
+    <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>{children}</div>
+  );
+  return (
+    <Row>
+      <Col span={4}>
+          <PlaceHolder>col-4</PlaceHolder>
+      </Col>
+      <Col span={4}>
+        <PlaceHolder>col-4</PlaceHolder>
+      </Col>
+      <Col span={4}>
+        <PlaceHolder>col-4</PlaceHolder>
+      </Col>
+    </Row>
+  )
+}
+```
+
+## Grid Gutter
+
+You can use an array to set vertical spacing, [horizontal, vertical]
+
+```js live=true
+() => {
+  const PlaceHolder = ({ children }) => (
+    <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>{children}</div>
+  );
+  return (
+    <Row gutter={[50, 20]}>
+      <Col span={4}>
+        <PlaceHolder>col-4</PlaceHolder>
+      </Col>
+      <Col span={4}>
+        <PlaceHolder>col-4</PlaceHolder>
+      </Col>
+      <Col span={4}>
+        <PlaceHolder>col-4</PlaceHolder>
+      </Col>
+    </Row>
+  )
+}
+```
+
+## Multiple-line Arrangement
+
+The default grid number of the grid system is 12. When there is no custom grid number and one row exceeds 12, the remaining grids will be arranged in a new row.
+
+```js live=true
+() => {
+  const PlaceHolder = ({ children }) => (
+    <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>{children}</div>
+  );
+  return (
+    <Row gutter={[20, 50]}>
+      <Col span={4}>
+        <PlaceHolder>col-4</PlaceHolder>
+      </Col>
+      <Col span={4}>
+        <PlaceHolder>col-4</PlaceHolder>
+      </Col>
+      <Col span={4}>
+        <PlaceHolder>col-4</PlaceHolder>
+      </Col>
+      <Col span={4}>
+        <PlaceHolder>col-4</PlaceHolder>
+      </Col>
+    </Row>
+  )
+}
+```
+
+## Grow
+
+Grid adaptive width.When the number of grids in a row exceeds 12,the remaining grids occupy one row.
+
+```js live=true
+() => {
+  const PlaceHolder = ({ children }) => (
+    <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>{children}</div>
+  );
+  return (
+    <Row grow>
+      <Col span={4}>
+        <PlaceHolder>col-4</PlaceHolder>
+      </Col>
+      <Col span={4}>
+        <PlaceHolder>col-4</PlaceHolder>
+      </Col>
+      <Col span={4}>
+        <PlaceHolder>col-4</PlaceHolder>
+      </Col>
+      <Col span={4}>
+        <PlaceHolder>col-4</PlaceHolder>
+      </Col>
+    </Row>
+  )
+}
+```
+
+## Offset
+
+Set offset of Col components.
+
+```js live=true
+() => {
+  const PlaceHolder = ({ children }) => (
+    <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>{children}</div>
+  );
+  return (
+    <Row>
+      <Col span={3}>
+        <PlaceHolder>col-3</PlaceHolder>
+      </Col>
+      <Col span={3}>
+        <PlaceHolder>col-3</PlaceHolder>
+      </Col>
+      <Col span={3} offset={3}>
+        <PlaceHolder>col-3</PlaceHolder>
+      </Col>
+    </Row>
+  )
+}
+```
+
+## Columns
+
+The default is 12 grids system.You can customize the number of grids by setting columns for the Row Component.
+
+```js live=true
+() => {
+  const PlaceHolder = ({ children }) => (
+    <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>{children}</div>
+  );
+  return (
+    <Row columns={24}>
+      <Col span={12}>
+        <PlaceHolder>col-12</PlaceHolder>
+      </Col>
+      <Col span={6}>
+         <PlaceHolder>col-6</PlaceHolder>
+      </Col>
+      <Col span={6}>
+        <PlaceHolder>col-6</PlaceHolder>
+      </Col>
+    </Row>
+  )
+}
+```

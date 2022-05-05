@@ -1,10 +1,9 @@
-import React from 'react';
 import { createGlobalStyle } from 'styled-components';
 
 const CssBaseline = createGlobalStyle`
   html,
   body {
-    background-color: ${({ theme }) => theme.palette.background};
+    //background-color: ${({ theme }) => theme.palette.background};
     color: ${(p) => p.theme.palette.foreground};
   }
   html {
@@ -30,7 +29,6 @@ const CssBaseline = createGlobalStyle`
   *:before,
   *:after {
     box-sizing: border-box;
-    //text-rendering: geometricPrecision;
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -93,13 +91,6 @@ const CssBaseline = createGlobalStyle`
     margin-bottom: 0.625rem;
     font-size: 1em;
     line-height: 1.625em;
-  }
-  ul li:before {
-    // content: '–';
-    // display: inline-block;
-    // color: ${(p) => p.theme.palette.accents_4};
-    // position: absolute;
-    // margin-left: -15px;
   }
 
   h1,
@@ -227,22 +218,6 @@ const CssBaseline = createGlobalStyle`
     outline: none;
   }
 
-  summary::marker,
-  summary::before {
-    display: none;
-  }
-
-  summary::-moz-list-bullet {
-    font-size: 0;
-  }
-
-  summary:focus,
-  summary:hover,
-  summary:active {
-    outline: none;
-    list-style: none;
-  }
-
   blockquote {
     padding: calc(0.667 * ${(p) => p.theme.layout.gap}) ${(p) => p.theme.layout.gap};
     color: ${(p) => p.theme.palette.accents_5};
@@ -256,10 +231,6 @@ const CssBaseline = createGlobalStyle`
   }
   blockquote :global(*:last-child) {
     margin-bottom: 0;
-  }
-  ::selection {
-    background-color: ${(p) => p.theme.palette.selection};
-    color: ${(p) => p.theme.palette.foreground};
   }
 
   [type='search']::-webkit-search-cancel-button {
@@ -426,6 +397,6 @@ const CssBaseline = createGlobalStyle`
   }
 `;
 
-const MemoCssBaseline = React.memo(CssBaseline);
+// const MemoCssBaseline = React.memo(CssBaseline);
 
-export default MemoCssBaseline;
+export default CssBaseline;

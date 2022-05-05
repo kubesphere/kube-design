@@ -38,26 +38,17 @@ const FieldLabel = styled('label')<FieldLabelProps>`
   display: inline-flex;
   align-items: center;
   color: ${({ theme }) => theme.palette.accents_8};
-  &:before {
+  &:after {
     color: ${({ theme }) => theme.palette.error};
   }
-  ${({ isRequired, layout }) => `
+  ${({ isRequired }) => `
     ${
       isRequired
         ? `
-      &:before {
-        content: '*';
-        margin-right: 2px;
-      }
-    `
-        : null
-    };
-    ${
-      layout !== 'vertical'
-        ? `
       &:after {
-        content: ':';
-        margin-left: 2px;
+        font-weight: 400;
+        content: '*';
+        margin-left: 3px;
       }
     `
         : null
@@ -91,7 +82,8 @@ export interface FormItemProps extends FieldProps {
 }
 
 export const FormItem = forwardRef<FormItemProps, 'div'>(
-  ({ name, label, help, tooltip, rules, validateStatus, children, ...rest }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  ({ name, label, help, tooltip, rules, validateStatus, children, ...rest }, ref) => {
     const formContext = React.useContext(FormContext);
     const { labelCol, wrapperCol, labelAlign, layout, size } = formContext;
 

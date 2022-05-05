@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { isNumber } from 'lodash';
 import { DefaultProps } from '../theme';
 import forwardRef from '../utils/forwardRef';
 
@@ -12,7 +13,7 @@ const FieldWrapper = styled('div')<FieldProps>`
   align-items: center;
   flex-grow: 1;
   flex-shrink: 1;
-  ${({ width }) => (width ? `flex-basis: ${width}px;flex-grow:0;flex-shrink:0;` : null)};
+  ${({ width }) => (width ? `width: ${isNumber(width) ? `${width}px` : width};` : null)};
 `;
 
 const FieldAvatar = styled('div')`
@@ -20,7 +21,9 @@ const FieldAvatar = styled('div')`
   margin-right: 12px;
 `;
 
-const FieldContent = styled('div')``;
+const FieldContent = styled('div')`
+  overflow: hidden;
+`;
 
 const FieldLabel = styled('div')`
   text-overflow: ellipsis;
@@ -46,16 +49,16 @@ export interface FieldProps extends DefaultProps {
   avatar?: React.ReactNode;
 
   /** Width of Field  */
-  width?: number;
+  width?: number | string;
 }
 
 export const Field = forwardRef<FieldProps, 'div'>(({ label, value, avatar, ...rest }, ref) => {
   return (
     <FieldWrapper ref={ref} {...rest}>
-      {avatar && <FieldAvatar>{avatar}</FieldAvatar>}
-      <FieldContent>
-        <FieldValue>{value}</FieldValue>
-        <FieldLabel>{label}</FieldLabel>
+      {avatar && <FieldAvatar className="field-avatar">{avatar}</FieldAvatar>}
+      <FieldContent className="field-content">
+        {value && <FieldValue className="field-value">{value}</FieldValue>}
+        {label && <FieldLabel className="field-label">{label}</FieldLabel>}
       </FieldContent>
     </FieldWrapper>
   );

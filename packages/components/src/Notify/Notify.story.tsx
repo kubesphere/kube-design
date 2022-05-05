@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Button, Group } from '../index';
 import { Notify, notify } from './Notify';
 
+const { WithTitle } = Notify;
+
 export default {
   title: 'Components/Notify',
 };
@@ -9,8 +11,9 @@ export default {
 export const Basic = () => {
   const trigger = () => notify('Here is your Info.');
   const triggerSuccess = () => notify.success('Here is your success message.');
-  const triggerError = () => notify.error('Here is your error message.');
-  const triggerLoading = () => notify.loading('Here is your error message.');
+  const triggerError = () =>
+    notify.error(<WithTitle title="Kube Design" message="Here is your error message" />);
+  const triggerLoading = () => notify.loading('Here is your Info.');
   return (
     <div>
       <Group>

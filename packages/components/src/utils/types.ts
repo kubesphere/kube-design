@@ -4,6 +4,8 @@ export type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends Record<string, any> ? DeepPartial<T[P]> : T[P];
 };
 
+export const tuple = <T extends string[]>(...args: T) => args;
+
 export type ComponentPassThrough<T extends React.ElementType, Props> = Props &
   React.ComponentPropsWithoutRef<T> & {
     /** Element or component that will be used as root element */
