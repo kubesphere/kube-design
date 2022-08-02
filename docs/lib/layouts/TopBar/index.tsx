@@ -123,11 +123,11 @@ const TopBar = ({ isHome = true, isScroll = false }: TopBarProps) => {
             </Link>
             <Button
               variant="text"
-              component="a"
-              href="https://github.com"
-              target="_blank"
               color="white"
               className="nav-icon"
+              as="a"
+              href="https://github.com/kubesphere/kube-design/tree/next"
+              target="_blank"
             >
               <Github variant="light" size={22} />
             </Button>
