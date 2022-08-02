@@ -24,22 +24,21 @@ const Desc = styled.div`
 `;
 
 const List = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
   margin-top: 20px;
-  padding-right: 100px;
 
   dl {
     display: flex;
     align-items: center;
-    margin: 5px 0;
+    margin: 2px 0;
   }
+
   dt {
     width: 60px;
     height: 30px;
     line-height: 30px;
     color: ${({ theme }) => theme.palette.accents_6};
   }
+
   dd {
     height: 30px;
     line-height: 30px;
@@ -99,7 +98,11 @@ export default function MetadataCard({
       <List>
         <dl>
           <dt>Import</dt>
-          <Tooltip content={clipboard.copied ? 'Copied' : 'Copy'} hideOnClick={false}>
+          <Tooltip
+            placement="right"
+            content={clipboard.copied ? 'Copied' : 'Copy'}
+            hideOnClick={false}
+          >
             {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions */}
             <dd className="import-code" onClick={() => clipboard.copy(importStr)}>
               <Prism withLineNumbers={false} withPre={false} language="tsx" className="prism">
@@ -125,7 +128,7 @@ export default function MetadataCard({
           </dd>
         </dl>
         <dl>
-          <dt>Doc</dt>
+          <dt>Docs</dt>
           <dd>
             <Button
               variant="link"
