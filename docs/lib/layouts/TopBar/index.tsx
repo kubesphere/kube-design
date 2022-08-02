@@ -85,7 +85,7 @@ const TopMenuItem = styled.a`
 const menus = [
   { label: 'Guide', value: 'guide' },
   { label: 'Components', value: 'components' },
-  { label: 'Hooks', value: 'hooks' },
+  // { label: 'Hooks', value: 'hooks' },
 ];
 
 interface TopBarProps {
