@@ -14,13 +14,13 @@ interface ButtonOptions {
   /** Predefined button size */
   size?: KubedSizes;
 
-  /** Disable button or not	 */
+  /** Disable button or not */
   disabled?: boolean;
 
-  /** Display shadow or not	 */
+  /** Display shadow or not */
   shadow?: boolean;
 
-  /** Display shadow or not	 */
+  /** Display block or inline-block */
   block?: boolean;
 
   /** Display loading indicator	 */
