@@ -7,8 +7,6 @@ import { KubedNumberSize, themeUtils, useTheme } from '../theme';
 
 const { getSizeValue } = themeUtils;
 
-const ICON_SIZE = 18;
-
 const SnippetWrapper = styled('div')<SnippetProps>`
   position: relative;
   border: 1px solid ${(props) => props.theme.palette.border};
@@ -47,6 +45,8 @@ const SnippetIcon = styled.div`
   width: 40px;
   height: 100%;
 `;
+
+const ICON_SIZE = 18;
 
 export interface SnippetProps extends React.ComponentPropsWithoutRef<'div'> {
   /** Symbol of snippet, default value is $ */
