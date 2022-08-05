@@ -15,6 +15,11 @@ export const StepsRoot = styled.div`
       align-items: flex-start;
       padding: 12px 0 12px 12px;
     }
+
+    .steps-content {
+      padding-top: 0;
+      padding-left: 16px;
+    }
   }
 `;
 
