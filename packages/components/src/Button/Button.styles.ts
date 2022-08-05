@@ -243,6 +243,7 @@ export const ButtonInner = styled('div')<ButtonStylesProps>`
   justify-content: center;
   align-items: center;
   height: 100%;
+  line-height: 1;
 `;
 
 export const ButtonLabel = styled('span')<ButtonStylesProps>`
