@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Npm, Github, Pen } from '@kubed/icons';
-import { Button } from '@kubed/components';
+import { Button, Tooltip } from '@kubed/components';
 import { useClipboard } from '@kubed/hooks';
 import { toPascalCase, toCamelCase } from '../../utils';
 import Prism from '../CodeBox/Prism';
@@ -24,22 +24,21 @@ const Desc = styled.div`
 `;
 
 const List = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
   margin-top: 20px;
-  padding-right: 100px;
 
   dl {
     display: flex;
     align-items: center;
-    margin: 5px 0;
+    margin: 2px 0;
   }
+
   dt {
     width: 60px;
     height: 30px;
     line-height: 30px;
     color: ${({ theme }) => theme.palette.accents_6};
   }
+
   dd {
     height: 30px;
     line-height: 30px;
@@ -56,7 +55,7 @@ const List = styled.div`
   }
 `;
 
-const REPO_BASE = 'https://github.com/kubesphere/kube-design/blob/master';
+const REPO_BASE = 'https://github.com/kubesphere/kube-design/blob/next';
 const DOCS_BASE = `${REPO_BASE}/docs/docs`;
 const SOURCE_BASE = `${REPO_BASE}/packages`;
 
@@ -67,7 +66,7 @@ const getLinks = (title, group, locale) => {
   const sourceLink = `${SOURCE_BASE}/${group}/src/${sourceName}/${sourceName}.${
     isHooks ? 'ts' : 'tsx'
   }`;
-  const docLink = `${DOCS_BASE}/${locale}/${sourceName}.mdx`;
+  const docLink = `${DOCS_BASE}/${locale}/${group}/${sourceName}.mdx`;
   const npmLink = `https://www.npmjs.com/package/@kubed/${group}`;
 
   return [sourceLink, docLink, npmLink, sourceName];
@@ -90,7 +89,7 @@ export default function MetadataCard({
 }: MetadataCardProps) {
   const clipboard = useClipboard();
   const [sourceLink, docLink, npmLink, sourceName] = getLinks(title, group, locale);
-  const importStr = `import { ${imports || sourceName} } from '@kubed/${group}'`;
+  const importStr = `import { ${imports || sourceName} } from '@kubed/${group}';`;
 
   return (
     <Wrapper>
@@ -99,12 +98,18 @@ export default function MetadataCard({
       <List>
         <dl>
           <dt>Import</dt>
-          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions */}
-          <dd className="import-code" onClick={() => clipboard.copy(importStr)}>
-            <Prism withLineNumbers={false} withPre={false} language="tsx" className="prism">
-              {importStr}
-            </Prism>
-          </dd>
+          <Tooltip
+            placement="right"
+            content={clipboard.copied ? 'Copied' : 'Copy'}
+            hideOnClick={false}
+          >
+            {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions */}
+            <dd className="import-code" onClick={() => clipboard.copy(importStr)}>
+              <Prism withLineNumbers={false} withPre={false} language="tsx" className="prism">
+                {importStr}
+              </Prism>
+            </dd>
+          </Tooltip>
         </dl>
         <dl>
           <dt>Source</dt>
@@ -112,9 +117,10 @@ export default function MetadataCard({
             <Button
               variant="link"
               size="md"
-              component="a"
-              href={sourceLink}
               leftIcon={<Github size={18} />}
+              as="a"
+              href={sourceLink}
+              target="_blank"
               style={{ height: '30px' }}
             >
               View source code
@@ -122,14 +128,15 @@ export default function MetadataCard({
           </dd>
         </dl>
         <dl>
-          <dt>Doc</dt>
+          <dt>Docs</dt>
           <dd>
             <Button
               variant="link"
               size="md"
-              component="a"
-              href={docLink}
               leftIcon={<Pen size={16} />}
+              as="a"
+              href={docLink}
+              target="_blank"
               style={{ height: '30px' }}
             >
               Edit this page
@@ -137,14 +144,15 @@ export default function MetadataCard({
           </dd>
         </dl>
         <dl>
-          <dt>Npm</dt>
+          <dt>npm</dt>
           <dd>
             <Button
               variant="link"
               size="md"
-              component="a"
-              href={npmLink}
               leftIcon={<Npm color="rgb(193, 33, 39)" size={18} />}
+              as="a"
+              href={npmLink}
+              target="_blank"
               style={{ height: '30px' }}
             >
               @kubed/{group}

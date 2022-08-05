@@ -74,7 +74,12 @@ const Footer = styled.div`
   color: #e3e9ef;
 `;
 
+const installCommandPrefix = 'npm install';
+const packageScope = 'kubed';
 const packageNames = ['components', 'hooks', 'icons'];
+const installCommand = `${installCommandPrefix} ${packageNames
+  .map((packageName) => `@${packageScope}/${packageName}`)
+  .join(' ')}`;
 
 export default function Home() {
   const [index, setIndex] = useState(0);
@@ -121,14 +126,14 @@ export default function Home() {
               className="hero-button github-link"
               rightIcon={<ExternalLink size={15} />}
               as="a"
-              href="https://github.com/chenz24/kube-design"
+              href="https://github.com/kubesphere/kube-design/tree/next"
               target="_blank"
             >
               GitHub
             </Button>
           </Group>
-          <Snippet style={{ marginTop: '70px', border: 'none' }}>
-            npm install @kubed/
+          <Snippet style={{ marginTop: '70px', border: 'none' }} valueToCopy={installCommand}>
+            {installCommandPrefix} @{packageScope}/
             <TextTransition
               text={packageNames[index % packageNames.length]}
               springConfig={presets.wobbly}
