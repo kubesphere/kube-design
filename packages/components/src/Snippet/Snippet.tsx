@@ -13,7 +13,7 @@ const SnippetWrapper = styled('div')<SnippetProps>`
   position: relative;
   border: 1px solid ${(props) => props.theme.palette.border};
   background-color: ${(props) => props.theme.palette.accents_1};
-  padding: 10px 40px 10px 10px;
+  padding: 10px ${(props) => (props.valueToCopy ? '40px' : '10px')} 10px 10px;
   box-sizing: border-box;
   width: ${({ width }) => (width ? `${width}px` : 'auto')};
   border-radius: ${({ radius, theme }) => getSizeValue(radius, theme.layout.radius)};
@@ -78,17 +78,18 @@ export function Snippet({
   const { palette } = useTheme();
 
   return (
-    <SnippetWrapper radius={radius} width={width} {...others}>
+    <SnippetWrapper radius={radius} width={width} valueToCopy={valueToCopy} {...others}>
       <SnippetPre symbol={symbol}>{children}</SnippetPre>
-      {copied ? (
-        <SnippetIcon>
-          <Check size={ICON_SIZE} color={palette.success} />
-        </SnippetIcon>
-      ) : (
-        <SnippetIcon as={Button} variant="text" onClick={() => copy(valueToCopy)}>
-          <Copy size={ICON_SIZE} />
-        </SnippetIcon>
-      )}
+      {valueToCopy !== undefined &&
+        (copied ? (
+          <SnippetIcon>
+            <Check size={ICON_SIZE} color={palette.success} />
+          </SnippetIcon>
+        ) : (
+          <SnippetIcon as={Button} variant="text" onClick={() => copy(valueToCopy)}>
+            <Copy size={ICON_SIZE} />
+          </SnippetIcon>
+        ))}
     </SnippetWrapper>
   );
 }
