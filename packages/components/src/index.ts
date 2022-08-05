@@ -43,6 +43,7 @@ export { Slider, RangeSlider } from './Slider/index';
 export * from './ActionConfirm/ActionConfirm';
 export * from './Progress/Progress';
 export * from './utils/color';
+export { Steps, Step, StepCompleted, TabStep } from './Steps/Steps';
 export { default as Drawer } from './Drawer/Drawer';
 export { default as Collapse } from './Collapse/Collapse';
 export { default as forwardRef } from './utils/forwardRef';
