@@ -1,9 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Copy } from '@kubed/icons';
-import { KubedNumberSize, themeUtils } from '../theme';
+import { Copy, Check } from '@kubed/icons';
+import { useClipboard } from '@kubed/hooks';
+import { Button } from '../Button/Button';
+import { KubedNumberSize, themeUtils, useTheme } from '../theme';
 
 const { getSizeValue } = themeUtils;
+
+const ICON_SIZE = 18;
 
 const SnippetWrapper = styled('div')<SnippetProps>`
   position: relative;
@@ -41,6 +45,7 @@ const SnippetIcon = styled.div`
   align-items: center;
   justify-content: center;
   width: 40px;
+  height: 100%;
 `;
 
 export interface SnippetProps extends React.ComponentPropsWithoutRef<'div'> {
@@ -55,6 +60,9 @@ export interface SnippetProps extends React.ComponentPropsWithoutRef<'div'> {
 
   /** Border-radius from theme or number to set border-radius in px */
   radius?: KubedNumberSize;
+
+  /** The value to be written to the clipboard */
+  valueToCopy?: any;
 }
 
 export function Snippet({
@@ -62,15 +70,25 @@ export function Snippet({
   width = 300,
   content,
   radius,
+  valueToCopy,
   children,
   ...others
 }: SnippetProps) {
+  const { copy, copied } = useClipboard();
+  const { palette } = useTheme();
+
   return (
     <SnippetWrapper radius={radius} width={width} {...others}>
       <SnippetPre symbol={symbol}>{children}</SnippetPre>
-      <SnippetIcon>
-        <Copy size={18} />
-      </SnippetIcon>
+      {copied ? (
+        <SnippetIcon>
+          <Check size={ICON_SIZE} color={palette.success} />
+        </SnippetIcon>
+      ) : (
+        <SnippetIcon as={Button} variant="text" onClick={() => copy(valueToCopy)}>
+          <Copy size={ICON_SIZE} />
+        </SnippetIcon>
+      )}
     </SnippetWrapper>
   );
 }
