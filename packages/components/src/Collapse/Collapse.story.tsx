@@ -45,13 +45,13 @@ export const EntityCollapse = () => {
 
   return (
     <Collapse accordion>
-      <Panel header={header} key="1">
+      <Panel header={header} key="sda">
         <p>Panel content1 Panel content1</p>
       </Panel>
-      <Panel header="This is panel header 2" key="2">
+      <Panel header="This is panel header 2" key="fds">
         <p>Panel content2 Panel content2 Panel content2</p>
       </Panel>
-      <Panel header="This is panel header 3" key="3">
+      <Panel header="This is panel header 3" key="wrs">
         <p>Panel content3 Panel content3 Panel content3</p>
       </Panel>
     </Collapse>
