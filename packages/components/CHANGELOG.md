@@ -1,5 +1,14 @@
 # @kubed/components
 
+## 0.0.36
+
+### Patch Changes
+
+- [`c15bc73`](https://github.com/kubesphere/kube-design/commit/c15bc73b6ea45e55e74cf4a7c084c7f3d70305f0) Thanks [@chenz24](https://github.com/chenz24)! - 1. Add TypeSelect component.
+  2. Add Steps component.
+  3. Add another style of loading.
+  4. Fix some bugs.
+
 ## 0.0.35
 
 ### Patch Changes
