@@ -104,11 +104,9 @@ const docgenParser = withCustomConfig(path.join(__dirname, '../tsconfig.json'), 
 
 function generateDeclarations(paths: DeclarationPath[]) {
   const declarations = getDeclarationsList(paths);
-  console.log('declarations', declarations);
   return docgenParser.parse(declarations).reduce((acc, declaration) => {
     const componentName = declaration.displayName.replace(/@kubed\/([^\s]+)\//, '');
     acc[componentName] = prepareDeclaration(declaration);
-    console.log('acc', acc);
     return acc;
   }, {});
 }

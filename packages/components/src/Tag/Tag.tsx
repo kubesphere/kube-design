@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
+import { Close } from '@kubed/icons';
 import forwardRef from '../utils/forwardRef';
-import { DefaultProps, KubedTheme, themeUtils } from '../theme';
+import { DefaultProps, KubedTheme, KubedNumberSize, themeUtils } from '../theme';
+import { addColorAlpha } from '../utils/color';
 
 const colorMap = {
   default: {
@@ -49,11 +51,21 @@ const TagWrapper = styled('div')<TagProps>`
   align-items: center;
   padding: ${({ title }) => (title ? '0 6px 0 2px' : '0 4px')};
   line-height: 20px;
-  border-radius: ${({ title }) => (title ? '3px' : '2px')};
+  border-radius: ${({ title, radius, theme }) =>
+    radius ? themeUtils.getSizeValue(radius, theme.layout.radius) : title ? '3px' : '2px'};
   word-break: break-all;
   white-space: normal;
   font-weight: 600;
   ${({ color, theme }) => getColor(color, theme)};
+
+  .tag-close {
+    margin-left: 6px;
+    cursor: pointer;
+    border-radius: 3px;
+    &:hover {
+      background-color: ${({ theme }) => addColorAlpha(theme.palette.accents_6, 0.6)};
+    }
+  }
 `;
 
 const TagTitle = styled('span')`
@@ -79,15 +91,54 @@ export interface TagProps extends DefaultProps {
 
   /** Append element of the tag  */
   append?: React.ReactNode;
+
+  /** Prepend element of the tag  */
+  prepend?: React.ReactNode;
+
+  /** Radius of the tag  */
+  radius?: KubedNumberSize;
+
+  visible?: boolean;
+
+  closable?: boolean;
+
+  onClose?: (e: React.MouseEvent<SVGElement>) => void;
 }
 
 export const Tag = forwardRef<TagProps, 'div'>(
-  ({ title, titleStyle, color, children, append, ...rest }, ref) => {
+  (
+    { radius, title, titleStyle, color, onClose, children, prepend, append, closable, ...rest },
+    ref
+  ) => {
+    const [visible, setVisible] = useState(true);
+
+    useEffect(() => {
+      if ('visible' in rest) {
+        setVisible(rest.visible!);
+      }
+    }, [rest.visible]);
+
+    const handleClose = (e: React.MouseEvent<SVGElement>) => {
+      e.stopPropagation();
+      onClose?.(e);
+
+      if (e.defaultPrevented) {
+        return;
+      }
+      if (!('visible' in rest)) {
+        setVisible(false);
+      }
+    };
+
+    if (!visible) return null;
+
     return (
-      <TagWrapper ref={ref} title={title} color={color} {...rest}>
+      <TagWrapper ref={ref} radius={radius} title={title} color={color} {...rest}>
+        {prepend}
         {title && <TagTitle style={titleStyle}>{title}</TagTitle>}
         {children}
         {append}
+        {closable && <Close variant="light" className="tag-close" onClick={handleClose} />}
       </TagWrapper>
     );
   }
