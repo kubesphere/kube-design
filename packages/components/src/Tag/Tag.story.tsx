@@ -49,3 +49,9 @@ export const Append = () => (
     Add
   </Tag>
 );
+
+export const Closable = () => (
+  <Tag radius="lg" closable className="filter-tag">
+    Add
+  </Tag>
+);
