@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Copy } from '@kubed/icons';
-import { KubedNumberSize, themeUtils } from '../theme';
+import { Copy, Check } from '@kubed/icons';
+import { useClipboard } from '@kubed/hooks';
+import { Button } from '../Button/Button';
+import { KubedNumberSize, themeUtils, useTheme } from '../theme';
 
 const { getSizeValue } = themeUtils;
 
@@ -9,7 +11,7 @@ const SnippetWrapper = styled('div')<SnippetProps>`
   position: relative;
   border: 1px solid ${(props) => props.theme.palette.border};
   background-color: ${(props) => props.theme.palette.accents_1};
-  padding: 10px 40px 10px 10px;
+  padding: 10px ${(props) => (props.valueToCopy ? '40px' : '10px')} 10px 10px;
   box-sizing: border-box;
   width: ${({ width }) => (width ? `${width}px` : 'auto')};
   border-radius: ${({ radius, theme }) => getSizeValue(radius, theme.layout.radius)};
@@ -41,7 +43,10 @@ const SnippetIcon = styled.div`
   align-items: center;
   justify-content: center;
   width: 40px;
+  height: 100%;
 `;
+
+const ICON_SIZE = 18;
 
 export interface SnippetProps extends React.ComponentPropsWithoutRef<'div'> {
   /** Symbol of snippet, default value is $ */
@@ -55,6 +60,9 @@ export interface SnippetProps extends React.ComponentPropsWithoutRef<'div'> {
 
   /** Border-radius from theme or number to set border-radius in px */
   radius?: KubedNumberSize;
+
+  /** The value to be written to the clipboard */
+  valueToCopy?: any;
 }
 
 export function Snippet({
@@ -62,15 +70,26 @@ export function Snippet({
   width = 300,
   content,
   radius,
+  valueToCopy,
   children,
   ...others
 }: SnippetProps) {
+  const { copy, copied } = useClipboard();
+  const { palette } = useTheme();
+
   return (
-    <SnippetWrapper radius={radius} width={width} {...others}>
+    <SnippetWrapper radius={radius} width={width} valueToCopy={valueToCopy} {...others}>
       <SnippetPre symbol={symbol}>{children}</SnippetPre>
-      <SnippetIcon>
-        <Copy size={18} />
-      </SnippetIcon>
+      {valueToCopy !== undefined &&
+        (copied ? (
+          <SnippetIcon>
+            <Check size={ICON_SIZE} color={palette.success} />
+          </SnippetIcon>
+        ) : (
+          <SnippetIcon as={Button} variant="text" onClick={() => copy(valueToCopy)}>
+            <Copy size={ICON_SIZE} />
+          </SnippetIcon>
+        ))}
     </SnippetWrapper>
   );
 }
