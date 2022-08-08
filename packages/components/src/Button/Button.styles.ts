@@ -62,17 +62,16 @@ const getButtonSize = (size, block) => css`
   height: ${({ theme }) => theme.layout.inputSizes[size]};
 `;
 
-const getButtonColor = (variant = 'filled', colorSchema, disabled, $loading, theme: KubedTheme) => {
-  const { palette } = theme;
+const getDisabledStyles = (disabled) => {
   if (disabled) {
     return css`
-      background-color: ${palette.accents_1};
-      border-color: ${palette.border};
-      color: ${palette.accents_7};
-      opacity: 0.7;
+      opacity: 0.6;
     `;
   }
+  return null;
+};
 
+const getButtonColor = (variant = 'filled', colorSchema) => {
   const styles = {
     filled: css`
       background-color: ${colorSchema.bg};
@@ -212,7 +211,8 @@ const getButtonStyles = (
 
   return css`
     box-shadow: ${getShadow(shadow, colorSchema, theme)};
-    ${getButtonColor(variant, colorSchema, disabled, $loading, theme)};
+    ${getButtonColor(variant, colorSchema)};
+    ${getDisabledStyles(disabled)};
 
     &:hover {
       ${getButtonHoverColor(variant, colorSchema, disabled, $loading, shadow, theme)};
