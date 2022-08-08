@@ -60,6 +60,7 @@ export const DropdownWrapper = styled.div`
   border-top-left-radius: 0;
   border-top: 0;
   background-color: ${({ theme }) => theme.palette.background};
+  z-index: 9999;
   //box-sizing: content-box;
 `;
 
