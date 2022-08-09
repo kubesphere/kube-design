@@ -30,6 +30,7 @@ export const ControlWrapper = styled('div')<ControlWrapperProps>`
   height: 64px;
   padding: 12px 64px 12px 12px;
   transition: all 0.3s ease-in-out;
+  background-color: #fff;
 
   &:hover {
     border-color: ${({ theme }) => theme.palette.accents_5};
