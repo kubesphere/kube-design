@@ -22,7 +22,7 @@ export const Basic = () => (
 
 export const Variant = () => (
   <>
-    <Tabs variant="line">
+    <Tabs variant="line" size="md" color="primary">
       <Tab label="One" key="one">
         one
       </Tab>

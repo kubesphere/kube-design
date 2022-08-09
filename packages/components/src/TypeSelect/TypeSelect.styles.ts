@@ -30,6 +30,7 @@ export const ControlWrapper = styled('div')<ControlWrapperProps>`
   height: 64px;
   padding: 12px 64px 12px 12px;
   transition: all 0.3s ease-in-out;
+  background-color: #fff;
 
   &:hover {
     border-color: ${({ theme }) => theme.palette.accents_5};
@@ -60,6 +61,7 @@ export const DropdownWrapper = styled.div`
   border-top-left-radius: 0;
   border-top: 0;
   background-color: ${({ theme }) => theme.palette.background};
+  z-index: 9999;
   //box-sizing: content-box;
 `;
 
