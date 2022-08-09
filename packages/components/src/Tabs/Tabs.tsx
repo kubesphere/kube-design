@@ -182,6 +182,7 @@ export function Tabs({
             refs.current[key] = node;
           }}
           onClick={() => handleActiveTabChange(key)}
+          className="tab-label"
         >
           {label}
         </TabControlLabel>
@@ -198,6 +199,7 @@ export function Tabs({
         size={size}
         position={position}
         direction={direction}
+        color={color}
         ref={wrapperRef}
       >
         {!!_activeKey &&
@@ -221,6 +223,7 @@ export function Tabs({
               height={activePosition.height}
               transform={activePosition.translate}
               translateY={activePosition.translateY}
+              className="line-bg"
             />
           ))}
         <Group
