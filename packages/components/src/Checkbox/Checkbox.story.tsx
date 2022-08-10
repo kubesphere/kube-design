@@ -86,7 +86,7 @@ export const GroupDemo = () => {
   };
   return (
     <>
-      <CheckboxGroup value={value} onChange={onChange}>
+      <CheckboxGroup value={value} onChange={onChange} unstyled>
         <Checkbox label="China" value="China" />
         <Checkbox label="USA" value="USA" />
       </CheckboxGroup>
