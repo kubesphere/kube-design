@@ -9,6 +9,7 @@ interface Props {
   defaultValue?: string[];
   disabled?: boolean;
   onChange?: (values: string[]) => void;
+  unstyled?: boolean;
 }
 
 type NativeAttrs = Omit<React.HTMLAttributes<any>, keyof Props>;
@@ -20,6 +21,7 @@ export const CheckboxGroup: React.FC<React.PropsWithChildren<CheckboxGroupProps>
   value,
   defaultValue,
   children,
+  unstyled,
 }: CheckboxGroupProps) => {
   const [_value, setValue] = useUncontrolled({
     value,
@@ -53,7 +55,7 @@ export const CheckboxGroup: React.FC<React.PropsWithChildren<CheckboxGroupProps>
 
   return (
     <CheckboxContext.Provider value={providerValue}>
-      <Group>{children}</Group>
+      {unstyled ? children : <Group>{children}</Group>}
     </CheckboxContext.Provider>
   );
 };
