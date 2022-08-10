@@ -22,11 +22,7 @@ export function Descriptions({ variant = 'default', data = [] }: DescriptionsPro
     <>
       {data.map((item, index) => {
         return (
-          <Description
-            variant={variant}
-            label={item.label}
-            key={String(item.value) || `key-${index}`}
-          >
+          <Description variant={variant} label={item.label} key={`description-${index}`}>
             {item.value}
           </Description>
         );
