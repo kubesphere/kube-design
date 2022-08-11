@@ -4,7 +4,7 @@ import { KubedNumberSize, KubedSizes, KubedTheme, themeUtils } from '../theme';
 
 const { getSizeValue } = themeUtils;
 
-export const WRAPPER_PADDING = 2;
+export const WRAPPER_PADDING = 0;
 
 const sizes = {
   xs: {
@@ -127,8 +127,9 @@ const getLineControlBorder = (variant, theme: KubedTheme, direction, position) =
   `;
 };
 
-const getContainerStyles = (variant, theme: KubedTheme, radius, direction, position) => {
+const getContainerStyles = (variant, theme: KubedTheme, radius, direction, position, color) => {
   const { palette, layout } = theme;
+
   if (variant === 'pills') {
     return css`
       padding: 1px;
@@ -183,7 +184,7 @@ const getContainerStyles = (variant, theme: KubedTheme, radius, direction, posit
 
     .tab-item__active {
       label {
-        color: ${palette.accents_8};
+        color: ${color ? themeUtils.getColor(color, theme) : palette.accents_7};
       }
     }
   `;
@@ -251,8 +252,8 @@ export const TabControlList = styled('div')<TabsStyles>`
     fullWidth || variant !== 'pills' ? 'flex' : 'inline-flex'};
   font-size: ${({ size }) => sizes[size].fontSize};
   align-items: center;
-  ${({ variant, theme, radius, direction, position }) =>
-    getContainerStyles(variant, theme, radius, direction, position)};
+  ${({ variant, theme, radius, direction, position, color }) =>
+    getContainerStyles(variant, theme, radius, direction, position, color)};
 `;
 
 export const TabPanel = styled('div')<TabsStyles>`
@@ -300,7 +301,8 @@ export const LineBg = styled('span')<BgSpanStyles>`
   position: absolute;
   box-sizing: border-box;
   z-index: 1;
-  background-color: ${({ theme, color }) => getColor(color, theme)};
+  background-color: ${({ theme, color }) =>
+    color ? themeUtils.getColor(color, theme) : theme.palette.accents_7};
   transition: transform 150ms ease 0s, width 100ms linear 0s;
   ${({ width, height, direction, position, transform, translateY }) =>
     getLineBgStyles(width, height, direction, position, transform, translateY)};

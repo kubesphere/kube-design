@@ -59,7 +59,7 @@ export interface BadgeProps extends DefaultProps {
 }
 
 export const Badge = forwardRef<BadgeProps, 'div'>(({ children, dot, className, ...rest }, ref) => {
-  if (dot) {
+  if (dot || !children) {
     return <StatusDot ref={ref} className="badge" {...rest} />;
   }
   return (
