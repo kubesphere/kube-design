@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.40
+
+### Patch Changes
+
+- [`f13f2b4`](https://github.com/kubesphere/kube-design/commit/f13f2b4b3d26547e1e11e0438db8e0bba8a60662) Thanks [@chenz24](https://github.com/chenz24)! - Refine export.
+
 ## 0.0.39
 
 ### Patch Changes
