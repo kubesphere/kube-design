@@ -22,7 +22,7 @@ const ShowMoreContent = styled('div')<ShowMoreContentProps>`
 
 const ShowMoreButton = styled.div``;
 
-export interface FilterInputProps extends DefaultProps {
+export interface ShowMoreProps extends DefaultProps {
   /** Max height of visible content, when this point is reached ShowMore appears */
   maxHeight: number;
 
@@ -42,7 +42,7 @@ export interface FilterInputProps extends DefaultProps {
   transitionDuration?: number;
 }
 
-export const ShowMore = forwardRef<FilterInputProps, 'div'>(
+export const ShowMore = forwardRef<ShowMoreProps, 'div'>(
   (
     {
       expanded = false,
