@@ -114,7 +114,7 @@ export default function TOC({ headings, withTabs }: TableOfContentsProps) {
         component="a"
         size="sm"
         href={`#${slug}`}
-        style={{ paddingLeft: (heading.depth - 1) * 15 }}
+        style={{ paddingLeft: (heading.depth - 1) * 15, cursor: 'pointer' }}
         className={cx('toc-link', { 'toc-link__active': active === index })}
         onClick={(event) => {
           event.preventDefault();

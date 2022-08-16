@@ -16,11 +16,11 @@ Form controls are used to create an entity or collect information when the input
     console.log(values);
   };
   return (
-    <Form onFinish={onFinish} initialValues={{ usename: 'wayne' }}>
+    <Form onFinish={onFinish} initialValues={{ username: 'wayne' }}>
       <Row gutter={[10, 40]}>
         <Col span={6}>
           <FormItem
-            name="usename"
+            name="username"
             label="Username"
             help="user name must input"
             rules={[{ required: true, message: 'Please input your username!' }]}
@@ -46,8 +46,8 @@ Form controls are used to create an entity or collect information when the input
       </Row>
       <button type="submit">Submit</button>
     </Form>
-  )
-}
+  );
+};
 ```
 
 ## Dynamic Form
@@ -115,5 +115,5 @@ The dynamic form can add the number of form items and customize the input conten
       </button>
     </Form>
   );
-}
+};
 ```

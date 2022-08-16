@@ -20,7 +20,7 @@ interface ButtonOptions {
   /** Display shadow or not	 */
   shadow?: boolean;
 
-  /** Display shadow or not	 */
+  /** Display block or inline-block */
   block?: boolean;
 
   /** Display loading indicator	 */
