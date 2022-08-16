@@ -1,5 +1,14 @@
 # kubed-documents
 
+## 0.0.41
+
+### Patch Changes
+
+- [`e76b9e6`](https://github.com/kubesphere/kube-design/commit/e76b9e61580072d858c46645bfad821219900c2f) Thanks [@donniean](https://github.com/donniean)! - feature improvements and bug fixes
+
+- Updated dependencies [[`e76b9e6`](https://github.com/kubesphere/kube-design/commit/e76b9e61580072d858c46645bfad821219900c2f)]:
+  - @kubed/components@0.0.41
+
 ## 0.0.40
 
 ### Patch Changes
