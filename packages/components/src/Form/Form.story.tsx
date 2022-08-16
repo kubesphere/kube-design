@@ -27,7 +27,7 @@ export const Basic = () => (
       <Col span={6}>
         <FormItem
           className="test"
-          name="usename"
+          name="username"
           label="Username"
           help="user name must input"
           rules={[{ required: true, message: 'Please input your username!' }]}

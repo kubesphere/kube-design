@@ -16,11 +16,11 @@ order: 1
     console.log(values);
   };
   return (
-    <Form onFinish={onFinish} initialValues={{ usename: 'wayne' }}>
+    <Form onFinish={onFinish} initialValues={{ username: 'wayne' }}>
       <Row gutter={[10, 40]}>
         <Col span={6}>
           <FormItem
-            name="usename"
+            name="username"
             label="Username"
             help="user name must input"
             rules={[{ required: true, message: 'Please input your username!' }]}
@@ -46,8 +46,8 @@ order: 1
       </Row>
       <button type="submit">Submit</button>
     </Form>
-  )
-}
+  );
+};
 ```
 
 ## 动态表单
@@ -115,5 +115,5 @@ order: 1
       </button>
     </Form>
   );
-}
+};
 ```
