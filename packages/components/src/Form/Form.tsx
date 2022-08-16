@@ -11,12 +11,13 @@ import { FormLabelAlign } from './types';
 import forwardRef from '../utils/forwardRef';
 import { DefaultProps, KubedSizes } from '../theme';
 import { FormItem } from './FormItem/FormItem';
+import type { FormItemProps } from './FormItem/FormItem';
 import useForm, { FormInstance } from './hooks/useForm';
 import { addColorAlpha } from '../utils/color';
 
 export { FormList, FormItem, useForm };
 
-export type { FormInstance };
+export type { FormItemProps, FormInstance };
 
 export type FormLayout = 'horizontal' | 'inline' | 'vertical';
 
