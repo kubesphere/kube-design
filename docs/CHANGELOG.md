@@ -1,5 +1,50 @@
 # kubed-documents
 
+## 0.0.41
+
+### Patch Changes
+
+- [`e76b9e6`](https://github.com/kubesphere/kube-design/commit/e76b9e61580072d858c46645bfad821219900c2f) Thanks [@donniean](https://github.com/donniean)! - feature improvements and bug fixes
+
+- Updated dependencies [[`e76b9e6`](https://github.com/kubesphere/kube-design/commit/e76b9e61580072d858c46645bfad821219900c2f)]:
+  - @kubed/components@0.0.41
+
+## 0.0.40
+
+### Patch Changes
+
+- Updated dependencies [[`f13f2b4`](https://github.com/kubesphere/kube-design/commit/f13f2b4b3d26547e1e11e0438db8e0bba8a60662)]:
+  - @kubed/components@0.0.40
+
+## 0.0.39
+
+### Patch Changes
+
+- Updated dependencies [[`31ff604`](https://github.com/kubesphere/kube-design/commit/31ff6042e5b1f333941c7f5ef336ced794968143)]:
+  - @kubed/components@0.0.39
+
+## 0.0.38
+
+### Patch Changes
+
+- Updated dependencies [[`2246672`](https://github.com/kubesphere/kube-design/commit/2246672041f06277c9c90d2e9187817a460baeca), [`4620226`](https://github.com/kubesphere/kube-design/commit/462022690696387ffce187b6981f5dfe5cbf52e3)]:
+  - @kubed/components@0.0.38
+  - @kubed/icons@0.0.3
+
+## 0.0.37
+
+### Patch Changes
+
+- Updated dependencies [[`93a25cd`](https://github.com/kubesphere/kube-design/commit/93a25cd44eef2ec3076421d50f8f08a2a96e9b2c)]:
+  - @kubed/components@0.0.37
+
+## 0.0.36
+
+### Patch Changes
+
+- Updated dependencies [[`c15bc73`](https://github.com/kubesphere/kube-design/commit/c15bc73b6ea45e55e74cf4a7c084c7f3d70305f0)]:
+  - @kubed/components@0.0.36
+
 ## 0.0.35
 
 ### Patch Changes

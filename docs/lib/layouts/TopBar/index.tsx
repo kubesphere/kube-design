@@ -85,7 +85,7 @@ const TopMenuItem = styled.a`
 const menus = [
   { label: 'Guide', value: 'guide' },
   { label: 'Components', value: 'components' },
-  { label: 'Hooks', value: 'hooks' },
+  // { label: 'Hooks', value: 'hooks' },
 ];
 
 interface TopBarProps {
@@ -123,11 +123,11 @@ const TopBar = ({ isHome = true, isScroll = false }: TopBarProps) => {
             </Link>
             <Button
               variant="text"
-              component="a"
-              href="https://github.com"
-              target="_blank"
               color="white"
               className="nav-icon"
+              as="a"
+              href="https://github.com/chenz24/kube-design"
+              target="_blank"
             >
               <Github variant="light" size={22} />
             </Button>

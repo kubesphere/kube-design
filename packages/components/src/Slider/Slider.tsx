@@ -176,7 +176,11 @@ export function Slider(props: SliderBaseProps) {
       return slider;
     }
     const tip = `${type === 'left' ? value[0] : value[1]} ${unit}`;
-    return <Tooltip content={tip} visible={tooltipVisible}>{slider}</Tooltip>;
+    return (
+      <Tooltip content={tip} visible={tooltipVisible}>
+        {slider}
+      </Tooltip>
+    );
   };
 
   const renderMarks = () => {

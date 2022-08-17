@@ -17,7 +17,7 @@ storiesOf('Components/Button', module)
       <Button variant="text" radius="xl">
         KubeSphere
       </Button>
-      <Button variant="filled" color="default" radius="xl" disabled>
+      <Button variant="filled" shadow color="secondary" radius="xl" disabled>
         KubeSphere
       </Button>
     </Group>
