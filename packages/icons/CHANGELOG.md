@@ -1,5 +1,12 @@
 # @kubed/icons
 
+## 0.0.4
+
+### Patch Changes
+
+- [`bcb8a8c`](https://github.com/kubesphere/kube-design/commit/bcb8a8c3f7f6c153ec2a2699ff44f11004c5b0ea) Thanks [@chenz24](https://github.com/chenz24)! - 1. feat: Add icons of allowlist, code, dingtalk, feishu, email, rocket, slack, springcloud, webhook, wecom.
+  2. feat: formItem support layout.
+
 ## 0.0.3
 
 ### Patch Changes
