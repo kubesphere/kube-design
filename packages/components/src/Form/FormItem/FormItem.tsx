@@ -136,11 +136,13 @@ export const FormItem = forwardRef<FormItemProps, 'div'>(
           if (formItemLayout === 'horizontal' || layout === 'horizontal') {
             return (
               <FieldRow columns={24} className={cx(wrapperClassName, 'form-item-wrapper')}>
-                <FieldCol className="label-col" labelAlign={labelAlign} {...labelCol}>
-                  <FieldLabel isRequired={isRequired} layout={layout}>
-                    {label || name}
-                  </FieldLabel>
-                </FieldCol>
+                {label && (
+                  <FieldCol className="label-col" labelAlign={labelAlign} {...labelCol}>
+                    <FieldLabel isRequired={isRequired} layout={layout}>
+                      {label}
+                    </FieldLabel>
+                  </FieldCol>
+                )}
                 <Col {...wrapperCol}>
                   <div className="form-item">{childNode}</div>
                   <ErrorList errors={meta.errors} warnings={meta.warnings} help={help} />
@@ -151,16 +153,18 @@ export const FormItem = forwardRef<FormItemProps, 'div'>(
 
           return (
             <FieldWrapper className={cx(wrapperClassName, 'form-item-wrapper')}>
-              <FieldLabelWrapper>
-                <FieldLabel isRequired={isRequired} layout={layout}>
-                  {label || name}
-                  {tooltip && (
-                    <Tooltip content={tooltip}>
-                      <Question size={16} />
-                    </Tooltip>
-                  )}
-                </FieldLabel>
-              </FieldLabelWrapper>
+              {label && (
+                <FieldLabelWrapper>
+                  <FieldLabel isRequired={isRequired} layout={layout}>
+                    {label}
+                    {tooltip && (
+                      <Tooltip content={tooltip}>
+                        <Question size={16} />
+                      </Tooltip>
+                    )}
+                  </FieldLabel>
+                </FieldLabelWrapper>
+              )}
               <FieldItemWrapper>
                 <div className="form-item">{childNode}</div>
                 <ErrorList errors={meta.errors} warnings={meta.warnings} help={help} />
