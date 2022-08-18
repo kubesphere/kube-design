@@ -28,7 +28,7 @@ export * from './FilterInput/FilterInput';
 export * from './Empty/Empty';
 export * from './Form/Form';
 export * from './Select/Select';
-export { Modal, useModal } from './Modal';
+export * from './Modal';
 export * from './Checkbox/Checkbox';
 export * from './Radio/Radio';
 export * from './Switch/Switch';
