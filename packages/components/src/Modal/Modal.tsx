@@ -19,10 +19,10 @@ export interface ModalProps {
   confirmLoading?: boolean;
 
   /** Modal title, displayed in header before close button */
-  title?: React.ReactNode | string;
+  title?: React.ReactNode;
 
   /** Modal description */
-  description?: React.ReactNode | string;
+  description?: React.ReactNode;
 
   /** Modal Icon */
   titleIcon?: React.ReactNode;
