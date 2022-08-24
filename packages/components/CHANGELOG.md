@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.43
+
+### Patch Changes
+
+- [`eff1099`](https://github.com/kubesphere/kube-design/commit/eff1099e343c5e520fb98763a4b35fff1c00c63c) Thanks [@donniean](https://github.com/donniean)! - export useWatch
+
 ## 0.0.42
 
 ### Patch Changes
