@@ -376,5 +376,8 @@ const svgSprites = `
 <path d="M4.39859 4.04578L2.98438 5.45999L10.0552 12.5308L7.75735 14.8286L9.17157 16.2428L11.4694 13.945L18.5407 21.0163L19.9549 19.6021L4.39859 4.04578Z" fill="#36435C"/>
 <path d="M12.53 10.0559L13.9443 11.4701L16.2426 9.17175L14.8284 7.75754L12.53 10.0559Z" fill="#36435C"/>
 </symbol>
+<symbol id="icon-event" viewBox="0 0 20 20" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M10.8333 9.16675V1.66675L5 10.8334H9.16667V18.3334L15 9.16675H10.8333Z" fill="#36435C"/>
+</symbol>
 </svg>`;
 export default svgSprites;
