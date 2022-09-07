@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { get, isEmpty } from "lodash";
+import { get, isEmpty, isEqual } from "lodash";
 
 import ColGroup from "./ColGroup";
 import Thead from "./Thead";
@@ -43,7 +43,7 @@ export default class Table extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.columns.length !== prevProps.columns.length) {
+    if (!isEqual(this.props.columns, prevProps.columns)) {
       const [heads, columns] = this.getColumns(this.props);
       this.setState({
         heads,
