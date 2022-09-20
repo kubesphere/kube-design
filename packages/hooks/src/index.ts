@@ -18,3 +18,4 @@ export { useDidMount } from './useDidMount';
 export { useDidUpdate } from './useDidUpdate';
 export { useUnmount } from './useUnmount';
 export { usePrevious } from './usePrevious';
+export { useScrollLock } from './useScrollLock';
