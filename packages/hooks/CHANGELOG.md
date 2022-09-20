@@ -1,5 +1,11 @@
 # @kubed/hooks
 
+## 0.0.10
+
+### Patch Changes
+
+- [`7bdb130`](https://github.com/kubesphere/kube-design/commit/7bdb130dcbbe3f65870b564f811556462fd727d4) Thanks [@chenz24](https://github.com/chenz24)! - 1. export useScreenLock hook
+
 ## 0.0.9
 
 ### Patch Changes
