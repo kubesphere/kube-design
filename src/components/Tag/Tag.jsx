@@ -11,6 +11,7 @@ export default class Tag extends React.Component {
       "info",
       "warning",
       "primary",
+      "critical",
     ]),
     className: PropTypes.string,
   };
