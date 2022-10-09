@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
 import { DefaultProps, KubedNumberSize, KubedSizes } from '../theme';
 import forwardRef from '../utils/forwardRef';
@@ -131,6 +131,8 @@ export const Input = forwardRef<InputProps, 'input'>(
         </InputGroup>
       );
     }
+
+    useEffect(() => setSelfValue(_value), [_value]);
 
     return <>{inputInner(width)}</>;
   }
