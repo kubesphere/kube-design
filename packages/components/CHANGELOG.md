@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.45
+
+### Patch Changes
+
+- [`232710a`](https://github.com/kubesphere/kube-design/commit/232710a995454fb85d4c18b5f08bb1f1dce9d834) Thanks [@bunnymiao](https://github.com/bunnymiao)! - fix: set self value when value prop is changed and make input component could controlled
+
 ## 0.0.44
 
 ### Patch Changes
