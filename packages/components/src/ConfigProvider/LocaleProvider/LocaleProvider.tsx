@@ -9,12 +9,14 @@ export interface Props {
   extendLocales?: Record<Locale, ILocale>;
 }
 
+const localeKeys = ['en', 'zh', 'zh-tw', 'es'];
+
 function LocaleProvider({ children, locale, extendLocales }: PropsWithChildren<Props>) {
   const [currentLocale, setCurrentLocale] = useState<Locale>('en');
   const mergedLocales = merge(locales, extendLocales);
 
   useEffect(() => {
-    if (!locale) return;
+    if (!locale || !localeKeys.includes(locale)) return;
     setCurrentLocale(locale);
   }, [locale]);
 
