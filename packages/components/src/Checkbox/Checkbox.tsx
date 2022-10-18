@@ -167,6 +167,7 @@ export const Checkbox = forwardRef<CheckboxProps, 'input'>(
 
       if (inGroup && updateState) {
         updateState(restProps.value, e.target.checked);
+        onChange && onChange(e);
       } else {
         setChecked(e.target.checked);
         onChange && onChange(e);
