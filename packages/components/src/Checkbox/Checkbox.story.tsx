@@ -84,11 +84,14 @@ export const GroupDemo = () => {
   const onChange = (val) => {
     console.log(val);
   };
+  const onCheckChange = (e) => {
+    console.log(e.target.checked);
+  };
   return (
     <>
       <CheckboxGroup value={value} onChange={onChange} unstyled>
-        <Checkbox label="China" value="China" />
-        <Checkbox label="USA" value="USA" />
+        <Checkbox label="China" value="China" onChange={onCheckChange} />
+        <Checkbox label="USA" value="USA" onChange={onCheckChange} />
       </CheckboxGroup>
       <div>
         <Button onClick={toggle}>Switch</Button>
