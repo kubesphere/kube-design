@@ -1,5 +1,13 @@
 # @kubed/components
 
+## 0.0.46
+
+### Patch Changes
+
+- [`c88f86f`](https://github.com/kubesphere/kube-design/commit/c88f86f9426f5bd541a12730502885600f16cdef) Thanks [@chenz24](https://github.com/chenz24)! - 1. fix language not found error if wrong parameter pass to localProvider
+
+* [`ee9209c`](https://github.com/kubesphere/kube-design/commit/ee9209cb908fecb77b9d61c7d547795b2180ba1b) Thanks [@chenz24](https://github.com/chenz24)! - 1. add onchange props to checkbox in group
+
 ## 0.0.45
 
 ### Patch Changes
