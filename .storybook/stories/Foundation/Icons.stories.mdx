@@ -1,0 +1,87 @@
+import { Meta, Story, Preview, Props } from "@storybook/addon-docs/blocks";
+import ColorPellete from "./ColorPellete.jsx";
+import IconList from "./IconList.jsx";
+import Icon from "components/Icon";
+
+
+<Meta title="Foundation/Iconography" />
+
+## Iconography
+
+Basic usage
+
+Use the `name` attribute to specify the name of the icon
+
+Icon size, including three default sizes of small, medium, and large, set by the size attribute.
+You can also customize the icon size by setting the `size` property to a number
+
+<Preview>
+  <Story name="basic size">
+      <div>
+        <div className="icon-container">
+          <div className="icon-content">
+            <Icon name="github" size="small" />
+          </div>
+          <div>github</div>
+        </div>
+        <div className="icon-container">
+          <div className="icon-content">
+            <Icon name="github" size="medium" />
+          </div>
+          <div>github</div>
+        </div>
+        <div className="icon-container">
+          <div className="icon-content">
+            <Icon name="github" size="large" />
+          </div>
+          <div>github</div>
+        </div>
+        <div className="icon-container">
+          <div className="icon-content">
+            <Icon name="github" size={48} />
+          </div>
+          <div>github</div>
+        </div>
+      </div>
+  </Story>
+</Preview>
+
+Use `type` to specify the icon theme color `dark` / `light` / `coloured`
+
+<Preview>
+  <Story name="basic type">
+      <div>
+        <div className="icon-container">
+          <div className="icon-content">
+            <Icon name="github" type="dark"size="large"  />
+          </div>
+          <div>github</div>
+        </div>
+        <div className="icon-container" style={{background:'#ccc'}}>
+          <div className="icon-content">
+            <Icon name="github" type="light" size="large"  />
+          </div>
+          <div>github</div>
+        </div>
+        <div className="icon-container">
+          <div className="icon-content">
+            <Icon name="github" type="coloured" size="large"  />
+          </div>
+          <div>github</div>
+        </div>
+      </div>
+  </Story>
+</Preview>
+
+
+
+Icon collection
+
+You can search for the icon you want by entering the name
+
+<IconList title="icon-list"/>
+
+## Props
+
+<Props of={Icon} />
+
