@@ -57,7 +57,7 @@ export const TypeSelect = forwardRef<TypeSelectProps, 'div'>(
       if (isValidValue(defaultValue)) {
         return defaultValue;
       }
-      return options[0].value;
+      return options[0]?.value;
     };
 
     const [_value, setValue] = useState(getInitialValue());
