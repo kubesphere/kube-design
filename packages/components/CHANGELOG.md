@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.47
+
+### Patch Changes
+
+- [`b86303f`](https://github.com/kubesphere/kube-design/commit/b86303fe3c1c07dc70b0466b40c0a41446323502) Thanks [@donniean](https://github.com/donniean)! - fix: TypeSelect options prop cannot be an empty array
+
 ## 0.0.46
 
 ### Patch Changes
