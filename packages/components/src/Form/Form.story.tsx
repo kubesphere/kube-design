@@ -6,6 +6,7 @@ import {
   FormList,
   Input,
   InputPassword,
+  Textarea,
   Row,
   Col,
   Button,
@@ -37,6 +38,7 @@ export const Basic = () => (
       </Col>
       <Col span={6}>
         <FormItem
+          className="layout-horizontal"
           name="password"
           label="密码"
           help="help content"
@@ -48,6 +50,17 @@ export const Basic = () => (
       <Col span={6}>
         <FormItem name="group" label="Group" help="help content" tooltip="tooltip 内容 content">
           <Input />
+        </FormItem>
+      </Col>
+      <Col span={6}>
+        <FormItem
+          name="description"
+          label="Descripton"
+          help="desc content"
+          tooltip="tooltip 内容 content"
+          rules={[{ required: true, message: 'Please input desc!' }]}
+        >
+          <Textarea autosize />
         </FormItem>
       </Col>
     </Row>
