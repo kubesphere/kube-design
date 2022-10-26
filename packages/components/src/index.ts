@@ -25,6 +25,7 @@ export * from './LoadingOverlay/LoadingOverlay';
 export * from './Input/Input';
 export * from './InputPassword/InputPassword';
 export * from './FilterInput/FilterInput';
+export * from './Textarea/Textarea';
 export * from './Empty/Empty';
 export * from './Form/Form';
 export * from './Select/Select';
