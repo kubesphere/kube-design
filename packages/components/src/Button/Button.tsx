@@ -63,7 +63,11 @@ export const Button = forwardRef<ButtonProps, 'button'>(
     },
     ref
   ) => {
-    const mergedRightIcon = loading ? <Loading size={16} /> : rightIcon;
+    let mergedRightIcon = rightIcon;
+    if (loading) {
+      const loadingColor = color === 'default' || variant === 'text' ? 'dark' : 'light';
+      mergedRightIcon = <Loading size={16} color={loadingColor} />;
+    }
     return (
       <ButtonContainer
         {...others}

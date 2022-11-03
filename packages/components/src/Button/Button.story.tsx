@@ -55,5 +55,8 @@ storiesOf('Components/Button', module).add('Loading', () => (
     <Button variant="filled" color="warning" radius="xl" loading>
       KubeSphere
     </Button>
+    <Button variant="filled" color="error" radius="xl" loading>
+      KubeSphere
+    </Button>
   </Group>
 ));

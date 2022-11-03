@@ -14,6 +14,14 @@ export const Basic = () => (
   </Group>
 );
 
+export const CircleLoadingLightColor = () => (
+  <Group style={{ backgroundColor: '#000', padding: '20px' }}>
+    <Loading size="sm" color="light" />
+    <Loading size="md" color="light" />
+    <Loading size="lg" color="light" />
+  </Group>
+);
+
 export const CircleLoading2 = () => (
   <Group>
     <Loading size="xs" variant="circle2" />
