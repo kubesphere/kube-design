@@ -12,7 +12,7 @@ p {
   margin: 12px 0;
 }
 
-.button + .button {
+.button+.button {
   margin-left: 12px;
 }
 
@@ -54,13 +54,14 @@ p {
       font-weight: normal;
       padding: 12px 0;
 
-      & > p {
+      &>p {
         color: #79879c;
         font-family: PingFang SC;
         margin: 0;
         margin-bottom: 8px;
       }
-      & > div {
+
+      &>div {
         color: #242e42;
       }
     }
@@ -80,4 +81,24 @@ p {
 .is-dark {
   background-color: #3e5265;
   color: #c6d1dc !important;
+}
+
+.icon-container {
+  display: inline-block;
+  height: 84px;
+  width: 110px;
+  text-align: center;
+  .icon-content {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 10px;
+
+    svg {
+      height: 36px;
+      width: 36px;
+    }
+  }
 }
