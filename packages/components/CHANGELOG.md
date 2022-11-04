@@ -1,5 +1,15 @@
 # @kubed/components
 
+## 0.0.48
+
+### Patch Changes
+
+- [`61739b5`](https://github.com/kubesphere/kube-design/commit/61739b5f5e857f0b1e89b5b4e3cf42d943862039) Thanks [@chenz24](https://github.com/chenz24)! - 1. Add CodeEditor component
+
+* [`8ecf6e3`](https://github.com/kubesphere/kube-design/commit/8ecf6e395f022688e3cbfb963e0c219fa9d9b260) Thanks [@chenz24](https://github.com/chenz24)! - Add Textarea component.
+
+- [`79a6c27`](https://github.com/kubesphere/kube-design/commit/79a6c27fef86e359bcdd824e5a9cd00e36c9c687) Thanks [@chenz24](https://github.com/chenz24)! - Loading Circle support light color
+
 ## 0.0.47
 
 ### Patch Changes

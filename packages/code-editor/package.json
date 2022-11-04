@@ -1,6 +1,6 @@
 {
   "name": "@kubed/code-editor",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "types": "lib/index.d.ts",
@@ -32,6 +32,5 @@
     "react-file-reader": "^1.1.4",
     "styled-components": "^5.3.0"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
