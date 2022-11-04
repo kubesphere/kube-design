@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.49
+
+### Patch Changes
+
+- [`aa0f4ae`](https://github.com/kubesphere/kube-design/commit/aa0f4ae089350cc1ade07c2d1211689fb28362f4) Thanks [@chenz24](https://github.com/chenz24)! - fix build bug
+
 ## 0.0.48
 
 ### Patch Changes
