@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import AceEditor, { IAceEditorProps } from 'react-ace';
 import ReactFileReader from 'react-file-reader';
 import { Download, Upload } from '@kubed/icons';
 import { useForceUpdate } from '@kubed/hooks';
 import { saveAs } from 'file-saver';
-import { get, isEmpty, isUndefined } from 'lodash';
+import { isEmpty } from 'lodash';
 import { EditorWrapper, ActionWrapper, Divider } from './styles';
 
 import 'ace-builds/src-noconflict/mode-yaml';
