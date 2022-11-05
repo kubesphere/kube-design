@@ -2,7 +2,7 @@ import * as React from 'react';
 import { CodeEditor } from './CodeEditor';
 
 export default {
-  title: 'Components/CodeEditor',
+  title: 'Extension-Components/CodeEditor',
   component: CodeEditor,
 };
 
