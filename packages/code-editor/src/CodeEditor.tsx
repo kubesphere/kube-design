@@ -93,6 +93,10 @@ export const CodeEditor = ({
         mode={mode}
         onChange={handleChange}
         value={_value}
+        setOptions={{
+          useWorker: false,
+          ...rest.setOptions,
+        }}
         wrapEnabled
         readOnly={readOnly}
         {...rest}
