@@ -1,9 +1,10 @@
 // https://github.com/ant-design/ant-design/blob/master/components/collapse/CollapsePanel.tsx
 import React from 'react';
 import classNames from 'classnames';
-import RcCollapse from 'rc-collapse';
 
-export type CollapsibleType = 'header' | 'disabled';
+import { StyledCollapsePanel } from './CollapsePanel.styles';
+
+export type CollapsibleType = 'header' | 'icon' | 'disabled';
 
 export interface CollapsePanelProps {
   key: string | number;
@@ -29,7 +30,7 @@ const CollapsePanel: React.FC<CollapsePanelProps> = (props: CollapsePanelProps) 
     className
   );
 
-  return <RcCollapse.Panel {...props} className={collapsePanelClassName} />;
+  return <StyledCollapsePanel {...props} className={collapsePanelClassName} />;
 };
 
 export default CollapsePanel;
