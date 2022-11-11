@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.50
+
+### Patch Changes
+
+- [`b13da6f`](https://github.com/kubesphere/kube-design/commit/b13da6f95742ccace52cfe68964ba609349830c2) Thanks [@donniean](https://github.com/donniean)! - Collapse add default expand icons
+
 ## 0.0.49
 
 ### Patch Changes
