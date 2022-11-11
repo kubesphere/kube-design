@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.51
+
+### Patch Changes
+
+- [`d312bbb`](https://github.com/kubesphere/kube-design/commit/d312bbb7d956a911b56a54b5480ef071bd41c647) Thanks [@donniean](https://github.com/donniean)! - fix: Collapse cursor bug
+
 ## 0.0.50
 
 ### Patch Changes
