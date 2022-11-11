@@ -46,7 +46,7 @@ interface CollapseInterface extends React.FC<CollapseProps> {
   Panel: typeof CollapsePanel;
 }
 
-const DEFAULT_PROPS: Required<Pick<CollapseProps, 'expandIcon' | 'collapsible'>> = {
+const DEFAULT_PROPS: Required<Pick<CollapseProps, 'expandIcon'>> = {
   expandIcon: (panelProps) => {
     const size = 20;
 
@@ -56,7 +56,6 @@ const DEFAULT_PROPS: Required<Pick<CollapseProps, 'expandIcon' | 'collapsible'>>
 
     return <ChevronDown size={size} />;
   },
-  collapsible: 'header',
 };
 
 const Collapse: CollapseInterface = (props: PropsWithChildren<CollapseInterface>) => {

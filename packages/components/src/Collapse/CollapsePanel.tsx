@@ -22,7 +22,7 @@ export interface CollapsePanelProps {
 }
 
 const CollapsePanel: React.FC<CollapsePanelProps> = (props: CollapsePanelProps) => {
-  const { className = '', showArrow } = props;
+  const { className = '', showArrow = true } = props;
   const collapsePanelClassName = classNames(
     {
       'collapse-panel-no-arrow': !showArrow,

@@ -20,18 +20,25 @@ const Avatar = (
 );
 
 export const basic = () => (
-  <Collapse accordion collapsible="header">
-    <Panel key="1" header="This is panel header 1" collapsible="header">
+  <Collapse accordion>
+    <Panel key="1" header="This is panel header 1">
       <p>Panel content 1 Panel content 1 Panel content 1</p>
     </Panel>
-    <Panel key="2" header="This is panel header 2" collapsible="icon">
-      <p>Panel content 2 Panel content 2 Panel content 2</p>
+    <Panel key="2" header='This is panel header 2, collapsible is "header"' collapsible="header">
+      <p>Panel content 2 Panel content 1 Panel content 2</p>
     </Panel>
-    <Panel key="3" header="This is panel header 3" collapsible="disabled">
+    <Panel key="3" header='This is panel header 3, collapsible is "icon"' collapsible="icon">
       <p>Panel content 3 Panel content 3 Panel content 3</p>
     </Panel>
-    <Panel key="4" header="This is panel header 4" showArrow={false}>
+    <Panel
+      key="4"
+      header='This is panel header 4, collapsible is "disabled"'
+      collapsible="disabled"
+    >
       <p>Panel content 4 Panel content 4 Panel content 4</p>
+    </Panel>
+    <Panel key="5" header='This is panel header 5, showArrow is "false"' showArrow={false}>
+      <p>Panel content 5 Panel content 5 Panel content 5</p>
     </Panel>
   </Collapse>
 );
