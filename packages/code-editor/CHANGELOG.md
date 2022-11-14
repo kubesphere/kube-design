@@ -1,5 +1,11 @@
 # @kubed/code-editor
 
+## 0.0.5
+
+### Patch Changes
+
+- [`65ef517`](https://github.com/kubesphere/kube-design/commit/65ef517dbb285fba85d45290499d3477227a5cfa) Thanks [@chenz24](https://github.com/chenz24)! - 1. Improve codeeditor
+
 ## 0.0.4
 
 ### Patch Changes
