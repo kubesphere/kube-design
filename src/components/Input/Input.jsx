@@ -41,6 +41,12 @@ export default class Input extends Component {
     return null;
   }
 
+  componentDidMount() {
+    if (this.state.type === "password") {
+      this.clearPasswordValueAttribute();
+    }
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (this.state.type !== prevState.type && prevState.type === "text") {
       this.clearPasswordValueAttribute();
@@ -65,16 +71,14 @@ export default class Input extends Component {
     const { className, innerRef, ...rest } = this.props;
     const { value, type } = this.state;
 
-    const params =
-      type && type === "password"
-        ? { ...omit(rest, "onChange", "value", "defaultValue") }
-        : { ...omit(rest, "onChange", "value", "defaultValue"), value: value };
+    const params = { ...omit(rest, "onChange", "value", "defaultValue") };
 
     return (
       <input
         {...params}
         ref={innerRef || this.inputRef}
         type={type}
+        value={value}
         onChange={this.handleChange}
         className={classNames("input", className)}
       />
