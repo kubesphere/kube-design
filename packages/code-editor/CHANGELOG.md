@@ -1,5 +1,11 @@
 # @kubed/code-editor
 
+## 0.0.6
+
+### Patch Changes
+
+- [`d1e46f9`](https://github.com/kubesphere/kube-design/commit/d1e46f98bce6a9980bf4dedf76cace2fbc63a08d) Thanks [@chenz24](https://github.com/chenz24)! - 1. fix getValue return wrong value
+
 ## 0.0.5
 
 ### Patch Changes
