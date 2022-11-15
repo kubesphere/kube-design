@@ -56,7 +56,7 @@ export const CodeEditor = forwardRef(
     const _fileName = fileName || `default.${mode}`;
 
     const handleChange = (v) => {
-      // setValue(v);
+      setValue(v);
       onChange && onChange(v);
     };
 
