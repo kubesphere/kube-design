@@ -1,8 +1,14 @@
 import styled, { css } from 'styled-components';
 
-interface ControlWrapperProps {
+interface TypeSelectWrapperProps {
+  $disabled: boolean;
+}
+
+interface ControlWrapperProps extends TypeSelectWrapperProps {
   $expanded: boolean;
 }
+
+type DropdownOptionProps = TypeSelectWrapperProps;
 
 const getExpandedStyle = (expanded: boolean, theme) => {
   if (expanded) {
@@ -18,10 +24,11 @@ const getExpandedStyle = (expanded: boolean, theme) => {
   return null;
 };
 
-export const TypeSelectWrapper = styled('div')`
+export const TypeSelectWrapper = styled('div')<TypeSelectWrapperProps>`
   position: relative;
   border-radius: 4px;
-  cursor: pointer;
+  opacity: ${({ $disabled }) => ($disabled ? '0.5' : '')};
+  cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
 `;
 
 export const ControlWrapper = styled('div')<ControlWrapperProps>`
@@ -33,8 +40,9 @@ export const ControlWrapper = styled('div')<ControlWrapperProps>`
   background-color: #fff;
 
   &:hover {
-    border-color: ${({ theme }) => theme.palette.accents_5};
+    border-color: ${({ $disabled, theme }) => ($disabled ? '' : theme.palette.accents_5)};
   }
+
   ${({ $expanded, theme }) => getExpandedStyle($expanded, theme)};
 `;
 
@@ -65,10 +73,13 @@ export const DropdownWrapper = styled.div`
   //box-sizing: content-box;
 `;
 
-export const DropdownOption = styled.div`
+export const DropdownOption = styled.div<DropdownOptionProps>`
   height: 64px;
   padding: 12px 64px 12px 12px;
+  opacity: ${({ $disabled }) => ($disabled ? '0.5' : '')};
+  cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : '')};
+
   &:hover {
-    background-color: ${({ theme }) => theme.palette.accents_0};
+    background-color: ${({ $disabled, theme }) => ($disabled ? '' : theme.palette.accents_0)};
   }
 `;
