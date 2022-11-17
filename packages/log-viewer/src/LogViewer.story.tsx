@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { Button } from '@kubed/components';
-import LogViewer from './LogViewer';
+import { LogViewer } from './LogViewer';
 
 import log from './data';
 

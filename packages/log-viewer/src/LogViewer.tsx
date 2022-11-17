@@ -40,7 +40,7 @@ export interface LogViewerProps {
   }) => JSX.Element;
 }
 
-export default function FoldableLogger({
+export const LogViewer = ({
   style,
   bodyStyle,
   logStyle = {},
@@ -51,7 +51,7 @@ export default function FoldableLogger({
   autoScroll = false,
   linkify = true,
   virtual = false,
-}: LogViewerProps) {
+}: LogViewerProps) => {
   const [autoScrollFlag, setAutoScrollFlag] = useState(autoScroll);
   const bodyRef = useRef<HTMLDivElement>(null);
   const spliter = React.useMemo(() => new Spliter(matchers), [matchers]);
@@ -115,4 +115,4 @@ export default function FoldableLogger({
       {errors.size && children ? children({ hasError: !!errors.size, errors }) : null}
     </ErrorContext.Provider>
   );
-}
+};
