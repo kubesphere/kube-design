@@ -100,17 +100,17 @@ export const TypeSelect = forwardRef<TypeSelectProps, 'div'>(
     const renderDropdown = () => {
       const dropdownOptions = options.filter((option) => option.value !== _value);
       return dropdownOptions.map((option) => {
-        const { label, description, icon, value: optionValue, disabled: optionDisabled } = option;
+        const { label, description, icon, value: optionValue, disabled: disabledOption } = option;
         return (
           <DropdownOption
             // @ts-ignore
             key={optionValue}
             onClick={() => {
-              if (!disabled && !optionDisabled) {
+              if (!disabled && !disabledOption) {
                 onOptionClick(option);
               }
             }}
-            $disabled={optionDisabled}
+            $disabled={disabledOption}
           >
             <Field label={description} value={label} avatar={icon} />
           </DropdownOption>
