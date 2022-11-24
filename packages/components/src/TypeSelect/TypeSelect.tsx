@@ -25,17 +25,20 @@ interface OptionProps {
 
   /** Field avatar  */
   icon?: React.ReactNode;
+
+  disabled?: boolean;
 }
 
 export interface TypeSelectProps extends DefaultProps {
   value?: any;
   defaultValue?: any;
   options: OptionProps[];
+  disabled?: boolean;
   onChange?: (value: any, option: OptionProps) => void;
 }
 
 export const TypeSelect = forwardRef<TypeSelectProps, 'div'>(
-  ({ options, value, defaultValue, className, onChange }, ref) => {
+  ({ options, value, defaultValue, disabled, className, onChange }, ref) => {
     const [expanded, setExpanded] = useState(false);
 
     const useClickOutsideRef = useClickOutside(() => {
@@ -74,8 +77,11 @@ export const TypeSelect = forwardRef<TypeSelectProps, 'div'>(
       return (
         <ControlWrapper
           onClick={() => {
-            setExpanded(!expanded);
+            if (!disabled) {
+              setExpanded(!expanded);
+            }
           }}
+          $disabled={disabled}
           $expanded={expanded}
         >
           <Field label={description} value={label} avatar={icon} />
@@ -94,10 +100,18 @@ export const TypeSelect = forwardRef<TypeSelectProps, 'div'>(
     const renderDropdown = () => {
       const dropdownOptions = options.filter((option) => option.value !== _value);
       return dropdownOptions.map((option) => {
-        const { label, description, icon, value: optionValue } = option;
+        const { label, description, icon, value: optionValue, disabled: disabledOption } = option;
         return (
-          // @ts-ignore
-          <DropdownOption key={optionValue} onClick={() => onOptionClick(option)}>
+          <DropdownOption
+            // @ts-ignore
+            key={optionValue}
+            onClick={() => {
+              if (!disabled && !disabledOption) {
+                onOptionClick(option);
+              }
+            }}
+            $disabled={disabledOption}
+          >
             <Field label={description} value={label} avatar={icon} />
           </DropdownOption>
         );
@@ -105,7 +119,11 @@ export const TypeSelect = forwardRef<TypeSelectProps, 'div'>(
     };
 
     return (
-      <TypeSelectWrapper ref={mergedRef} className={cx(className, { 'is-expand': expanded })}>
+      <TypeSelectWrapper
+        ref={mergedRef}
+        className={cx(className, { 'is-expand': expanded })}
+        $disabled={disabled}
+      >
         {renderControl()}
         {expanded && <DropdownWrapper>{renderDropdown()}</DropdownWrapper>}
         {!expanded && (
