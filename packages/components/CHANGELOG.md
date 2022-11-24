@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.52
+
+### Patch Changes
+
+- [`325b5e4`](https://github.com/kubesphere/kube-design/commit/325b5e45da3a23cfa5fe410fc77d3ccd51903ede) Thanks [@donniean](https://github.com/donniean)! - feat: TypeSelect and TypeSelect option add disabled props
+
 ## 0.0.51
 
 ### Patch Changes
