@@ -15,7 +15,7 @@ const getDiffHtml = (oldValue, newValue, options = {}) => {
   });
 };
 
-export interface DiffViewProps {
+export interface DiffViewerProps {
   title?: string | React.ReactNode;
   description?: string | React.ReactNode;
   mode?: 'line-by-line' | 'side-by-side';
@@ -23,13 +23,13 @@ export interface DiffViewProps {
   newValue: string;
 }
 
-export const DiffView = ({
+export const DiffViewer = ({
   title,
   description,
   mode = 'line-by-line',
   oldValue,
   newValue,
-}: DiffViewProps) => {
+}: DiffViewerProps) => {
   const [_mode, setMode] = useState(mode);
   const [diffHtml, setDiffHtml] = useState(getDiffHtml(oldValue, newValue, { outputFormat: mode }));
 

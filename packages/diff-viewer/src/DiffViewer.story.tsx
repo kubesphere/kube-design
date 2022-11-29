@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { Button } from '@kubed/components';
-import { DiffView } from './DiffView';
+import { DiffViewer } from './DiffViewer';
 
 export default {
-  title: 'Extension-Components/DiffView',
-  component: DiffView,
+  title: 'Extension-Components/DiffViewer',
+  component: DiffViewer,
 };
 
 export const basic = () => {
@@ -102,7 +102,7 @@ spec:
   return (
     <>
       <Button onClick={handleChange}>Change Value</Button>
-      <DiffView
+      <DiffViewer
         title="配置文件"
         description="与上一个记录 #7 (85f76fb8d7) 对比"
         oldValue={oldValue}

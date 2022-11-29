@@ -30,6 +30,7 @@ export const Basic = () => {
         description="Modal description"
         titleIcon={<Cluster size={40} />}
         onCancel={closeModal}
+        footer={<div>footer</div>}
       >
         Modal content
       </Modal>

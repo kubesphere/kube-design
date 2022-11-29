@@ -1,5 +1,5 @@
 {
-  "name": "@kubed/diff-view",
+  "name": "@kubed/diff-viewer",
   "version": "0.0.1",
   "main": "cjs/index.js",
   "module": "esm/index.js",
@@ -15,7 +15,7 @@
   "repository": {
     "url": "https://github.com/kubesphere/kube-design.git",
     "type": "git",
-    "directory": "packages/diff-view"
+    "directory": "packages/diff-viewer"
   },
   "peerDependencies": {
     "@kubed/hooks": "0.0.10",
