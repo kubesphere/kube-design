@@ -1,5 +1,11 @@
 # @kubed/code-editor
 
+## 0.0.7
+
+### Patch Changes
+
+- [`51f5cb0`](https://github.com/kubesphere/kube-design/commit/51f5cb052b4a06a0353811ed25ce5abfe206154f) Thanks [@chenz24](https://github.com/chenz24)! - 1. Add file-saver types
+
 ## 0.0.6
 
 ### Patch Changes
