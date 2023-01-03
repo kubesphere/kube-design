@@ -5,5 +5,9 @@
   "Guide": "Guide",
   "Components": "Components",
   "Hooks": "Hooks",
-  "Widgets": "Widgets"
+  "Widgets": "Widgets",
+  "Name": "Name",
+  "Default": "Default",
+  "Type": "Type",
+  "Description": "Description"
 }
