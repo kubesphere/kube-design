@@ -1,4 +1,6 @@
 import * as React from 'react';
+
+import type { TooltipInstance } from '../index';
 import { Tooltip, Button, Col, Row, Group } from '../index';
 
 export default {
@@ -128,3 +130,23 @@ export const Interactive = () => (
     <Button style={{ marginTop: '40px' }}>Interactive</Button>
   </Tooltip>
 );
+
+export const ManualControl = () => {
+  const ref = React.useRef<TooltipInstance | null>(null);
+
+  return (
+    <div style={{ display: 'flex', gap: '20px' }}>
+      <Tooltip
+        content="Tooltip content"
+        onMount={(instance) => {
+          ref.current = instance;
+        }}
+      >
+        <Button>hover me</Button>
+      </Tooltip>
+      <Button radius="xl" onClick={() => ref.current?.show()}>
+        show Popover
+      </Button>
+    </div>
+  );
+};
