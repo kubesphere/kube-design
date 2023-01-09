@@ -1,5 +1,14 @@
 # @kubed/components
 
+## 0.0.55
+
+### Patch Changes
+
+- [`d12bdca`](https://github.com/kubesphere/kube-design/commit/d12bdcade70d7b8bac20731e4cf1f3a58c183763) Thanks [@donniean](https://github.com/donniean)! - feat: add useHover; add Instance type in Tooltip and Popover
+
+- Updated dependencies [[`d12bdca`](https://github.com/kubesphere/kube-design/commit/d12bdcade70d7b8bac20731e4cf1f3a58c183763)]:
+  - @kubed/hooks@0.0.11
+
 ## 0.0.54
 
 ### Patch Changes
