@@ -1,5 +1,13 @@
 # @kubed/components
 
+## 0.0.56
+
+### Patch Changes
+
+- [`dcefa97`](https://github.com/kubesphere/kube-design/commit/dcefa97af67af1fc84bebb7f1628ebf625ce1555) Thanks [@chenz24](https://github.com/chenz24)! - 1. Add Dropzone component.
+
+* [`144f3bd`](https://github.com/kubesphere/kube-design/commit/144f3bd5039a5e737f93ca3ff44f0fd673c2e5f5) Thanks [@chenz24](https://github.com/chenz24)! - feat: Add Dropzone component
+
 ## 0.0.55
 
 ### Patch Changes
