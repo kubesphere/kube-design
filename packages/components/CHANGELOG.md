@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.57
+
+### Patch Changes
+
+- [`91371ab`](https://github.com/kubesphere/kube-design/commit/91371ab27f04cc75c1663cca38264392256a2f39) Thanks [@chenz24](https://github.com/chenz24)! - 1. Banner support customing operation.
+
 ## 0.0.56
 
 ### Patch Changes
