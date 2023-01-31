@@ -45,6 +45,7 @@ export * from './utils/color';
 export * from './Steps/Steps';
 export * from './TypeSelect/TypeSelect';
 export * from './ShowMore/ShowMore';
+export * from './Dropzone/Dropzone';
 export { Loading } from './Loading/Loading';
 export { default as TimePicker } from './TimePicker/TimePicker';
 export { default as Drawer } from './Drawer/Drawer';

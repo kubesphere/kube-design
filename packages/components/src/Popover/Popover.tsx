@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Tooltip, TooltipProps } from '../Tooltip/Tooltip';
+import type { Props } from 'tippy.js';
+import type { TooltipProps, TooltipInstance } from '../Tooltip/Tooltip';
+import { Tooltip } from '../Tooltip/Tooltip';
 import { addColorAlpha } from '../utils/color';
 
 interface WrapperProps {
@@ -27,6 +29,8 @@ export interface PopoverProps extends TooltipProps {
   width?: number;
   contentClassName?: string;
 }
+
+export type PopoverInstance<T = Props> = TooltipInstance<T>;
 
 export function Popover({
   title,

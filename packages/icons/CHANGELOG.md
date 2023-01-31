@@ -1,5 +1,17 @@
 # @kubed/icons
 
+## 0.0.6
+
+### Patch Changes
+
+- [`c1b0f7c`](https://github.com/kubesphere/kube-design/commit/c1b0f7cad122a41c7c284a67ffccfc2ab607153c) Thanks [@donniean](https://github.com/donniean)! - feat: modify warning.svg colors
+
+## 0.0.5
+
+### Patch Changes
+
+- [`382db59`](https://github.com/kubesphere/kube-design/commit/382db5997b4d93e02c56687ce6f8aa7686b05953) Thanks [@donniean](https://github.com/donniean)! - feat: add warning icon in @kubed/icons
+
 ## 0.0.4
 
 ### Patch Changes

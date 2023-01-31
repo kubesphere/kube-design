@@ -5,7 +5,7 @@ import { Text } from '../Text/Text';
 import { DefaultProps } from '../theme';
 import forwardRef from '../utils/forwardRef';
 import { addColorAlpha } from '../utils/color';
-import { BannerTip } from './BannerTip';
+import { BannerTip, BannerTipProps } from './BannerTip';
 
 export { BannerTip };
 
@@ -65,6 +65,7 @@ export interface BannerProps extends DefaultProps {
 export const Banner = forwardRef<BannerProps, 'div'>(
   ({ icon, title, description, children, className }, ref) => {
     const [activeKey, setActiveKey] = useState<string>();
+    const [removedTipKeys, setRemovedTipKeys] = useState<Array<string | number>>([]);
     const onTipClick = (key) => {
       if (key === activeKey) {
         setActiveKey('');
@@ -72,12 +73,20 @@ export const Banner = forwardRef<BannerProps, 'div'>(
         setActiveKey(key);
       }
     };
-    const tips = [];
+
+    const onTipRemove = (key) => {
+      removedTipKeys.push(key);
+      setRemovedTipKeys([...removedTipKeys, key]);
+    };
+
+    const tips: BannerTipProps[] = [];
     const others = [];
 
     React.Children.forEach(children, (child: React.ReactElement) => {
       if (child.type === BannerTip) {
-        tips.push({ key: child.key, ...child.props });
+        if (child.key && removedTipKeys.indexOf(child.key) < 0) {
+          tips.push({ key: child.key, ...child.props });
+        }
       } else {
         others.push(child);
       }
@@ -97,10 +106,19 @@ export const Banner = forwardRef<BannerProps, 'div'>(
         <BannerExtra className="banner-extra">
           {others.length > 0 && <BannerNavs>{others}</BannerNavs>}
           {tips.map((tip) => {
-            const { key, title: tipTitle } = tip;
+            const { key, title: tipTitle, removable, operations } = tip;
             const isOpen = key === activeKey;
             return (
-              <BannerTip key={key} open={isOpen} title={tipTitle} onClick={() => onTipClick(key)}>
+              <BannerTip
+                key={key}
+                tipKey={key}
+                open={isOpen}
+                title={tipTitle}
+                removable={removable}
+                onClick={() => onTipClick(key)}
+                operations={operations}
+                onRemove={onTipRemove}
+              >
                 {tip.children}
               </BannerTip>
             );

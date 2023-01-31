@@ -1,7 +1,7 @@
 {
   "name": "@kubed/components",
   "description": "React components library for KubeSphere console.",
-  "version": "0.0.52",
+  "version": "0.0.57",
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "types": "lib/src/index.d.ts",
@@ -18,8 +18,8 @@
     "directory": "packages/components"
   },
   "peerDependencies": {
-    "@kubed/hooks": "0.0.10",
-    "@kubed/icons": "0.0.4",
+    "@kubed/hooks": "0.0.11",
+    "@kubed/icons": "0.0.6",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0",
     "react-is": "^17.0.2"
@@ -37,11 +37,13 @@
     "rc-motion": "^2.4.4",
     "rc-picker": "^2.5.19",
     "rc-select": "^13.1.0",
+    "react-dropzone": "^14.2.3",
     "react-hot-toast": "^2.1.1",
     "react-textarea-autosize": "^8.3.2",
     "react-transition-group": "^4.4.2",
     "scroll-into-view-if-needed": "^2.2.28",
-    "styled-components": "^5.3.0"
+    "styled-components": "^5.3.0",
+    "tippy.js": "^6.3.7"
   },
   "devDependencies": {
     "@kubed/tests": "0.0.2"

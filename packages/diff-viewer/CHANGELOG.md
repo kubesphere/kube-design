@@ -1,5 +1,26 @@
 # @kubed/diff-view
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [[`d12bdca`](https://github.com/kubesphere/kube-design/commit/d12bdcade70d7b8bac20731e4cf1f3a58c183763)]:
+  - @kubed/hooks@0.0.11
+
+## 0.0.4
+
+### Patch Changes
+
+- Updated dependencies [[`c1b0f7c`](https://github.com/kubesphere/kube-design/commit/c1b0f7cad122a41c7c284a67ffccfc2ab607153c)]:
+  - @kubed/icons@0.0.6
+
+## 0.0.3
+
+### Patch Changes
+
+- Updated dependencies [[`382db59`](https://github.com/kubesphere/kube-design/commit/382db5997b4d93e02c56687ce6f8aa7686b05953)]:
+  - @kubed/icons@0.0.5
+
 ## 0.0.2
 
 ### Patch Changes
