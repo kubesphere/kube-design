@@ -55,17 +55,43 @@ export interface BannerTipProps {
   /** children of banner tip */
   children?: React.ReactNode;
 
+  /** operations element of banner tip */
+  operations?: React.ReactNode;
+
   /** Tip's key */
-  key?: string;
+  key: string;
+
+  /** Tip's key */
+  tipKey?: string;
 
   /** Tip open or not */
   open?: boolean;
 
   /** Callback of click event */
   onClick?: () => void;
+
+  /** Callback of click event */
+  onRemove?: (key) => void;
+
+  /** Whether Tip can be removed */
+  removable?: boolean;
 }
 
-export function BannerTip({ title, children, onClick, open }: BannerTipProps) {
+export function BannerTip({
+  title,
+  children,
+  onClick,
+  open,
+  removable = true,
+  operations,
+  onRemove = () => {},
+  tipKey,
+}: BannerTipProps) {
+  const handleRemove = (e: React.MouseEvent<SVGElement>) => {
+    e.stopPropagation();
+    onRemove(tipKey);
+  };
+
   return (
     <TipWrapper onClick={onClick}>
       <TipIcon>{open ? <ChevronDown /> : <ChevronRight />}</TipIcon>
@@ -74,7 +100,8 @@ export function BannerTip({ title, children, onClick, open }: BannerTipProps) {
         {open && <Text color="accents_5">{children}</Text>}
       </TipContent>
       <TipOperations>
-        <Close size={20} />
+        {operations}
+        {removable && <Close size={20} onClick={handleRemove} />}
       </TipOperations>
     </TipWrapper>
   );

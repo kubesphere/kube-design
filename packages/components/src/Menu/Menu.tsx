@@ -9,6 +9,7 @@ import { MenuWrapper } from './Menu.styles';
 import forwardRef from '../utils/forwardRef';
 import toArray from '../utils/toArray';
 
+export type { MenuItemProps } from './MenuItem/MenuItem';
 export { MenuItem, MenuLabel };
 
 export interface MenuProps extends DefaultProps, React.ComponentPropsWithoutRef<'div'> {

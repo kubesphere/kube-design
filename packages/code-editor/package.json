@@ -1,0 +1,38 @@
+{
+  "name": "@kubed/code-editor",
+  "version": "0.0.10",
+  "main": "cjs/index.js",
+  "module": "esm/index.js",
+  "types": "lib/index.d.ts",
+  "license": "MIT",
+  "sideEffects": false,
+  "homepage": "https://github.com/kubesphere/kube-design",
+  "files": [
+    "cjs",
+    "esm",
+    "lib"
+  ],
+  "repository": {
+    "url": "https://github.com/kubesphere/kube-design.git",
+    "type": "git",
+    "directory": "packages/code-editor"
+  },
+  "peerDependencies": {
+    "@kubed/hooks": "0.0.11",
+    "@kubed/icons": "0.0.6",
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0",
+    "react-is": "^17.0.2"
+  },
+  "dependencies": {
+    "ace-builds": "^1.12.5",
+    "file-saver": "^2.0.5",
+    "lodash": "^4.17.21",
+    "react-ace": "^10.1.0",
+    "react-file-reader": "^1.1.4",
+    "styled-components": "^5.3.0"
+  },
+  "devDependencies": {
+    "@types/file-saver": "^2.0.5"
+  }
+}

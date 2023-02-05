@@ -50,8 +50,19 @@ export const Append = () => (
   </Tag>
 );
 
-export const Closable = () => (
-  <Tag radius="lg" closable className="filter-tag">
-    Add
-  </Tag>
-);
+export const Closable = () => {
+  const tags = ['apple', 'banana'];
+
+  return tags.map((tag) => (
+    <Tag
+      radius="lg"
+      closable
+      className="filter-tag"
+      onClose={() => {
+        console.log(tag);
+      }}
+    >
+      {tag}
+    </Tag>
+  ));
+};

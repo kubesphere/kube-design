@@ -1,5 +1,122 @@
 # kubed-documents
 
+## 0.0.57
+
+### Patch Changes
+
+- Updated dependencies [[`91371ab`](https://github.com/kubesphere/kube-design/commit/91371ab27f04cc75c1663cca38264392256a2f39)]:
+  - @kubed/components@0.0.57
+
+## 0.0.56
+
+### Patch Changes
+
+- Updated dependencies [[`dcefa97`](https://github.com/kubesphere/kube-design/commit/dcefa97af67af1fc84bebb7f1628ebf625ce1555), [`144f3bd`](https://github.com/kubesphere/kube-design/commit/144f3bd5039a5e737f93ca3ff44f0fd673c2e5f5)]:
+  - @kubed/components@0.0.56
+
+## 0.0.55
+
+### Patch Changes
+
+- Updated dependencies [[`d12bdca`](https://github.com/kubesphere/kube-design/commit/d12bdcade70d7b8bac20731e4cf1f3a58c183763)]:
+  - @kubed/components@0.0.55
+  - @kubed/hooks@0.0.11
+
+## 0.0.54
+
+### Patch Changes
+
+- Updated dependencies [[`c1b0f7c`](https://github.com/kubesphere/kube-design/commit/c1b0f7cad122a41c7c284a67ffccfc2ab607153c)]:
+  - @kubed/icons@0.0.6
+  - @kubed/components@0.0.54
+
+## 0.0.53
+
+### Patch Changes
+
+- Updated dependencies [[`382db59`](https://github.com/kubesphere/kube-design/commit/382db5997b4d93e02c56687ce6f8aa7686b05953)]:
+  - @kubed/icons@0.0.5
+  - @kubed/components@0.0.53
+
+## 0.0.52
+
+### Patch Changes
+
+- Updated dependencies [[`325b5e4`](https://github.com/kubesphere/kube-design/commit/325b5e45da3a23cfa5fe410fc77d3ccd51903ede)]:
+  - @kubed/components@0.0.52
+
+## 0.0.51
+
+### Patch Changes
+
+- Updated dependencies [[`d312bbb`](https://github.com/kubesphere/kube-design/commit/d312bbb7d956a911b56a54b5480ef071bd41c647)]:
+  - @kubed/components@0.0.51
+
+## 0.0.50
+
+### Patch Changes
+
+- Updated dependencies [[`b13da6f`](https://github.com/kubesphere/kube-design/commit/b13da6f95742ccace52cfe68964ba609349830c2)]:
+  - @kubed/components@0.0.50
+
+## 0.0.49
+
+### Patch Changes
+
+- Updated dependencies [[`aa0f4ae`](https://github.com/kubesphere/kube-design/commit/aa0f4ae089350cc1ade07c2d1211689fb28362f4)]:
+  - @kubed/components@0.0.49
+
+## 0.0.48
+
+### Patch Changes
+
+- Updated dependencies [[`61739b5`](https://github.com/kubesphere/kube-design/commit/61739b5f5e857f0b1e89b5b4e3cf42d943862039), [`8ecf6e3`](https://github.com/kubesphere/kube-design/commit/8ecf6e395f022688e3cbfb963e0c219fa9d9b260), [`79a6c27`](https://github.com/kubesphere/kube-design/commit/79a6c27fef86e359bcdd824e5a9cd00e36c9c687)]:
+  - @kubed/components@0.0.48
+
+## 0.0.47
+
+### Patch Changes
+
+- Updated dependencies [[`b86303f`](https://github.com/kubesphere/kube-design/commit/b86303fe3c1c07dc70b0466b40c0a41446323502)]:
+  - @kubed/components@0.0.47
+
+## 0.0.46
+
+### Patch Changes
+
+- Updated dependencies [[`c88f86f`](https://github.com/kubesphere/kube-design/commit/c88f86f9426f5bd541a12730502885600f16cdef), [`ee9209c`](https://github.com/kubesphere/kube-design/commit/ee9209cb908fecb77b9d61c7d547795b2180ba1b)]:
+  - @kubed/components@0.0.46
+
+## 0.0.45
+
+### Patch Changes
+
+- Updated dependencies [[`232710a`](https://github.com/kubesphere/kube-design/commit/232710a995454fb85d4c18b5f08bb1f1dce9d834)]:
+  - @kubed/components@0.0.45
+
+## 0.0.44
+
+### Patch Changes
+
+- Updated dependencies [[`7bdb130`](https://github.com/kubesphere/kube-design/commit/7bdb130dcbbe3f65870b564f811556462fd727d4), [`cb96218`](https://github.com/kubesphere/kube-design/commit/cb96218ce4e037ef0bb3baafbcf3d7667a2458c8)]:
+  - @kubed/hooks@0.0.10
+  - @kubed/components@0.0.44
+
+## 0.0.43
+
+### Patch Changes
+
+- Updated dependencies [[`eff1099`](https://github.com/kubesphere/kube-design/commit/eff1099e343c5e520fb98763a4b35fff1c00c63c)]:
+  - @kubed/components@0.0.43
+
+## 0.0.42
+
+### Patch Changes
+
+- Updated dependencies [[`bcb8a8c`](https://github.com/kubesphere/kube-design/commit/bcb8a8c3f7f6c153ec2a2699ff44f11004c5b0ea), [`436e2f5`](https://github.com/kubesphere/kube-design/commit/436e2f57002a4d5bf0de1b72952f987426733b2f), [`a806e8a`](https://github.com/kubesphere/kube-design/commit/a806e8a412d4b7e9e8fc954a1f8df5ae6a574c2f)]:
+  - @kubed/icons@0.0.4
+  - @kubed/components@0.0.42
+
 ## 0.0.41
 
 ### Patch Changes

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Error, Pod } from '@kubed/icons';
 import Collapse from './Collapse';
-import { BadgeAnchor, Entity, Field, Tooltip, Text, Card } from '../index';
+import { BadgeAnchor, Entity, Field, Tooltip } from '../index';
 
 export default {
   title: 'Components/Collapse',
@@ -21,14 +21,24 @@ const Avatar = (
 
 export const basic = () => (
   <Collapse accordion>
-    <Panel header="This is panel header 1" key="1">
-      <p>Panel content Panel content Panel content</p>
+    <Panel key="1" header="This is panel header 1">
+      <p>Panel content 1 Panel content 1 Panel content 1</p>
     </Panel>
-    <Panel header="This is panel header 2" key="2">
-      <p>Panel content 2 Panel content 2 Panel content 2</p>
+    <Panel key="2" header='This is panel header 2, collapsible is "header"' collapsible="header">
+      <p>Panel content 2 Panel content 1 Panel content 2</p>
     </Panel>
-    <Panel header="This is panel header 3" key="3">
-      <p>Panel content3 Panel content3 Panel content3</p>
+    <Panel key="3" header='This is panel header 3, collapsible is "icon"' collapsible="icon">
+      <p>Panel content 3 Panel content 3 Panel content 3</p>
+    </Panel>
+    <Panel
+      key="4"
+      header='This is panel header 4, collapsible is "disabled"'
+      collapsible="disabled"
+    >
+      <p>Panel content 4 Panel content 4 Panel content 4</p>
+    </Panel>
+    <Panel key="5" header='This is panel header 5, showArrow is "false"' showArrow={false}>
+      <p>Panel content 5 Panel content 5 Panel content 5</p>
     </Panel>
   </Collapse>
 );

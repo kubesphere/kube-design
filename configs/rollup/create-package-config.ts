@@ -36,7 +36,7 @@ export default async function createPackageConfig(config: PkgConfigInput): Promi
   const plugins = [
     commonjs(),
     nodeExternals({
-      include: [/^rc-picker/, /^rc-select/, /^rc-field-form/],
+      include: [/^rc-picker/, /^rc-select/, /^rc-field-form/, /^ace-builds/],
     }),
     nodeResolve({ extensions: ['.ts', '.tsx', '.js', '.jsx'] }),
     esbuild({

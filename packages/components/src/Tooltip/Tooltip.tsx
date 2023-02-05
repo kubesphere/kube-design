@@ -1,5 +1,6 @@
 import React from 'react';
-import { TippyProps } from '@tippyjs/react';
+import type { Instance, Props } from 'tippy.js';
+import type { TippyProps } from '@tippyjs/react';
 import { StyledTippy } from './Tooltip.styles';
 
 export type BasePlacement = 'top' | 'left' | 'right' | 'bottom';
@@ -57,6 +58,8 @@ export interface TooltipProps extends TippyProps {
   /** Determines the events that cause the tooltip to show. Multiple event names are separated by spaces */
   trigger?: string;
 }
+
+export type TooltipInstance<T = Props> = Instance<T>;
 
 export function Tooltip({
   children,

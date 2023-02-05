@@ -4,14 +4,14 @@ import React, { PropsWithChildren } from 'react';
 import { CSSMotionProps } from 'rc-motion';
 import { omit } from 'lodash';
 
-// import { CaretRight } from '@kubed/icons';
+import { ChevronDown, ChevronUp } from '@kubed/icons';
 import CollapsePanel, { CollapsibleType } from './CollapsePanel';
 import collapseMotion from '../utils/motion';
 import toArray from '../utils/toArray';
 import { cloneElement } from '../utils/reactNode';
 import { StyledCollapse } from './Collapse.styles';
 
-export type ExpandIconPosition = 'left' | 'right' | undefined;
+// export type ExpandIconPosition = 'left' | 'right' | undefined;
 
 export interface CollapseProps {
   activeKey?: Array<string | number> | string | number;
@@ -21,11 +21,10 @@ export interface CollapseProps {
   onChange?: (key: string | string[]) => void;
   style?: React.CSSProperties;
   className?: string;
-  bordered?: boolean;
-  prefixCls?: string;
+  // bordered?: boolean;
   expandIcon?: (panelProps: PanelProps) => React.ReactNode;
-  expandIconPosition?: ExpandIconPosition;
-  ghost?: boolean;
+  // expandIconPosition?: ExpandIconPosition;
+  // ghost?: boolean;
   collapsible?: CollapsibleType;
   children?: React.ReactNode;
 }
@@ -46,6 +45,18 @@ interface PanelProps {
 interface CollapseInterface extends React.FC<CollapseProps> {
   Panel: typeof CollapsePanel;
 }
+
+const DEFAULT_PROPS: Required<Pick<CollapseProps, 'expandIcon'>> = {
+  expandIcon: (panelProps) => {
+    const size = 20;
+
+    if (panelProps.isActive) {
+      return <ChevronUp size={size} />;
+    }
+
+    return <ChevronDown size={size} />;
+  },
+};
 
 const Collapse: CollapseInterface = (props: PropsWithChildren<CollapseInterface>) => {
   const openMotion: CSSMotionProps = {
@@ -72,7 +83,12 @@ const Collapse: CollapseInterface = (props: PropsWithChildren<CollapseInterface>
   };
 
   return (
-    <StyledCollapse openMotion={openMotion} prefixCls="kubed-collapse" {...props}>
+    <StyledCollapse
+      prefixCls="kubed-collapse"
+      openMotion={openMotion}
+      {...DEFAULT_PROPS}
+      {...props}
+    >
       {getItems()}
     </StyledCollapse>
   );

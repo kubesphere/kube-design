@@ -1,5 +1,24 @@
 # @kubed/icons
 
+## 0.0.6
+
+### Patch Changes
+
+- [`c1b0f7c`](https://github.com/kubesphere/kube-design/commit/c1b0f7cad122a41c7c284a67ffccfc2ab607153c) Thanks [@donniean](https://github.com/donniean)! - feat: modify warning.svg colors
+
+## 0.0.5
+
+### Patch Changes
+
+- [`382db59`](https://github.com/kubesphere/kube-design/commit/382db5997b4d93e02c56687ce6f8aa7686b05953) Thanks [@donniean](https://github.com/donniean)! - feat: add warning icon in @kubed/icons
+
+## 0.0.4
+
+### Patch Changes
+
+- [`bcb8a8c`](https://github.com/kubesphere/kube-design/commit/bcb8a8c3f7f6c153ec2a2699ff44f11004c5b0ea) Thanks [@chenz24](https://github.com/chenz24)! - 1. feat: Add icons of allowlist, code, dingtalk, feishu, email, rocket, slack, springcloud, webhook, wecom.
+  2. feat: formItem support layout.
+
 ## 0.0.3
 
 ### Patch Changes
