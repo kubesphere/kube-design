@@ -1,6 +1,6 @@
 {
   "name": "kubed-documents",
-  "version": "0.0.57",
+  "version": "0.0.58",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,9 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@kubed/components": "^0.0.57",
+    "@kubed/components": "^0.0.58",
     "@kubed/icons": "^0.0.6",
-    "@kubed/hooks": "^0.0.11",
+    "@kubed/hooks": "^0.0.12",
     "@mdx-js/react": "^1.6.22",
     "classnames": "^2.3.1",
     "fs-extra": "^10.0.0",

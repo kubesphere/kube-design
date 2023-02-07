@@ -1,6 +1,6 @@
 {
   "name": "@kubed/diff-viewer",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "types": "lib/index.d.ts",
@@ -18,7 +18,7 @@
     "directory": "packages/diff-viewer"
   },
   "peerDependencies": {
-    "@kubed/hooks": "0.0.11",
+    "@kubed/hooks": "0.0.12",
     "@kubed/icons": "0.0.6",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0",
