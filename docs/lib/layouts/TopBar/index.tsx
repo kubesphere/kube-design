@@ -116,7 +116,7 @@ const TopBar = ({ isHome = true, isScroll = false }: TopBarProps) => {
             ))}
           </Group>
           <Group spacing={8}>
-            <Link href="/" locale={router.locale === 'en' ? 'zh' : 'en'}>
+            <Link href={router.asPath} locale={router.locale === 'en' ? 'zh' : 'en'}>
               <TopMenuItem className="nav-link">
                 {router.locale === 'en' ? '中文' : 'English'}
               </TopMenuItem>

@@ -150,7 +150,7 @@ export async function getServerSideProps({ params, locale }: Params) {
       toc,
       locale,
       metaData,
-      ...(await serverSideTranslations(locale, ['common'])),
+      ...(await serverSideTranslations(locale, ['common', 'menu'])),
     },
   };
 }
