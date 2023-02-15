@@ -1,5 +1,11 @@
 # @kubed/hooks
 
+## 0.0.13
+
+### Patch Changes
+
+- [`cc0f605`](https://github.com/kubesphere/kube-design/commit/cc0f6050d1755b883b9649897e80922c90ff108e) Thanks [@chenz24](https://github.com/chenz24)! - add pie chart
+
 ## 0.0.12
 
 ### Patch Changes
