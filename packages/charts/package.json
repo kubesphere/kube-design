@@ -1,6 +1,6 @@
 {
   "name": "@kubed/charts",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "types": "lib/index.d.ts",
@@ -18,7 +18,7 @@
     "directory": "packages/charts"
   },
   "peerDependencies": {
-    "@kubed/hooks": "0.0.12",
+    "@kubed/hooks": "0.0.13",
     "@kubed/icons": "0.0.6",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0",
