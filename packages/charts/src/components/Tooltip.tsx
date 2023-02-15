@@ -59,7 +59,7 @@ const TooltipItem = styled.div`
 export interface TooltipProps {
   className?: string;
   payload: any[];
-  label: string;
+  label: string | React.ReactNode;
   active?: boolean;
   valueFormatter: ValueFormatter;
   legendFormatter?: LegendFormatter;
@@ -78,8 +78,9 @@ export function Tooltip({
       <ItemWrapper>
         {payload.map((item) => {
           const legend = legendFormatter ? legendFormatter(item) : item.name;
+          const color = item.color || item.payload?.fill;
           return (
-            <TooltipItem color={item.color}>
+            <TooltipItem color={color}>
               {legend}: {valueFormatter(item.value)}
             </TooltipItem>
           );
