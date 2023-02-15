@@ -51,7 +51,7 @@ export function Legend({
   payload = [],
   append,
   prepend,
-  onClick,
+  onClick = () => {},
   formatter,
 }: LegendProps) {
   return (
