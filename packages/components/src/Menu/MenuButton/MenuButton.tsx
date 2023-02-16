@@ -17,8 +17,13 @@ export const MenuButton = forwardRef<MenuButtonProps, 'button'>(
     ref
   ) => {
     return (
-      <MenuButtonElement as={Element} ref={ref} {...rest}>
-        <div className={cx(className, 'item-inner', { 'menu-disabled': disabled })}>
+      <MenuButtonElement
+        as={Element}
+        ref={ref}
+        {...rest}
+        className={cx(className, { 'menu-disabled': disabled })}
+      >
+        <div className="item-inner">
           {icon && <div className="item-icon">{icon}</div>}
           <div className="item-body">
             <div className="item-label">{children}</div>

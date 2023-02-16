@@ -200,8 +200,19 @@ export const FilterInput = forwardRef<FilterInputProps, null>((props, ref) => {
     );
   };
 
-  const renderInput = () => {
+  const getDropdownContent = () => {
+    if (props.simpleMode) return null;
+
     let content;
+    if (activeSuggestion && activeSuggestion.options) {
+      content = renderSuggestionOptions();
+    } else {
+      content = renderMenu();
+    }
+    return content;
+  };
+
+  const renderInput = () => {
     const input = (
       <input
         ref={inputRef}
@@ -217,12 +228,7 @@ export const FilterInput = forwardRef<FilterInputProps, null>((props, ref) => {
       />
     );
 
-    if (activeSuggestion && activeSuggestion.options) {
-      content = renderSuggestionOptions();
-    } else {
-      content = renderMenu();
-    }
-
+    const content = getDropdownContent();
     if (content) {
       return (
         <Dropdown

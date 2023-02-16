@@ -21,16 +21,16 @@ export const MenuButtonElement = styled('button')`
     color: ${({ theme }) => theme.palette.accents_7};
   }
 
+  &.menu-disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    background-color: inherit;
+  }
+
   .item-inner {
     display: flex;
     align-items: center;
     height: 20px;
-
-    &.menu-disabled {
-      cursor: not-allowed;
-      background-color: ${({ theme }) => theme.palette.accents_1};
-      border-color: ${({ theme }) => theme.palette.accents_4};
-    }
   }
 
   .item-icon {
