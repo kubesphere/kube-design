@@ -79,6 +79,12 @@ export const FilterInput = forwardRef<FilterInputProps, null>((props, ref) => {
     }
   }, [props.filters]);
 
+  useEffect(() => {
+    if (props.simpleMode) {
+      setValue(props.initialKeyword);
+    }
+  }, [props.initialKeyword]);
+
   const handleClear = (e) => {
     e.nativeEvent.stopImmediatePropagation();
     const { onChange = () => {}, simpleMode } = props;
