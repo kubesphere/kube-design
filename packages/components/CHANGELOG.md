@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.60
+
+### Patch Changes
+
+- [`b696821`](https://github.com/kubesphere/kube-design/commit/b69682150f1eec13d113b40cf5d685f5d58886a7) Thanks [@chenz24](https://github.com/chenz24)! - improve FilterInput
+
 ## 0.0.59
 
 ### Patch Changes
