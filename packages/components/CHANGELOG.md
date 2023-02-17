@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.62
+
+### Patch Changes
+
+- [`c96dc39`](https://github.com/kubesphere/kube-design/commit/c96dc3964f3a714e628deaecc171858c4c26bca8) Thanks [@chenz24](https://github.com/chenz24)! - Add Skeleton component.
+
 ## 0.0.61
 
 ### Patch Changes
