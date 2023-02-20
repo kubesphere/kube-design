@@ -21,3 +21,4 @@ export { usePrevious } from './usePrevious';
 export { useScrollLock } from './useScrollLock';
 export { useHover } from './useHover';
 export { useWindowResize } from './useWindowResize';
+export { useDisclosure } from './useDisclosure';
