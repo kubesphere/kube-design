@@ -52,10 +52,37 @@ export const ImperativeModal = () => {
   const content = <Button onClick={openChildModal}>Nest Imperative Modal</Button>;
 
   const openModal = () => {
-    modal.open({
+    const modalId = modal.open({
       title: 'Imperative Modal',
       description: 'description text',
       content,
+      onOk: () => {
+        modal.close(modalId);
+      },
+    });
+  };
+
+  return <Button onClick={openModal}>Imperative Modal</Button>;
+};
+
+export const AsyncModal = () => {
+  const modal = useModal();
+
+  const content = <div>modal content</div>;
+
+  const openModal = () => {
+    const modalId = modal.open({
+      title: 'AsyncOk Modal',
+      description: 'description text',
+      content,
+      onAsyncOk: () => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            modal.close(modalId);
+            resolve(1);
+          }, 300);
+        });
+      },
     });
   };
 

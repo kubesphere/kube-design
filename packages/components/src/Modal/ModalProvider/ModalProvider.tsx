@@ -12,7 +12,16 @@ export function ModalProvider({ children }: PropsWithChildren<Props>) {
     limit: 5,
   });
 
-  const close = (id: string, ref: React.RefObject<any>) => {
+  const close = (id: string) => {
+    update((modals) => {
+      return modals.filter((modal) => {
+        return modal.id !== id;
+      });
+    });
+  };
+
+  // with better ui effect than close.
+  const cancel = (id: string, ref: React.RefObject<any>) => {
     ref.current.close();
     setTimeout(() => {
       update((modals) => {
@@ -34,7 +43,7 @@ export function ModalProvider({ children }: PropsWithChildren<Props>) {
       const ref = createRef();
 
       const onCancel = () => {
-        close(id, ref);
+        cancel(id, ref);
       };
 
       return [...modals, { onCancel, ref, type, ...modal, id, visible: true }];
@@ -48,7 +57,7 @@ export function ModalProvider({ children }: PropsWithChildren<Props>) {
   };
 
   return (
-    <ModalContext.Provider value={{ open, confirm }}>
+    <ModalContext.Provider value={{ open, confirm, close }}>
       {children}
       {modalState.map((modal) => {
         if (!modal.type) {
