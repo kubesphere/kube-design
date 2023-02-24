@@ -1,5 +1,11 @@
 # @kubed/icons
 
+## 0.0.7
+
+### Patch Changes
+
+- [`4cda5c3`](https://github.com/kubesphere/kube-design/commit/4cda5c3e11dfd2b763049a0b8bcfb61c44273f47) Thanks [@bunnymiao](https://github.com/bunnymiao)! - feat: Add accessmodes icon
+
 ## 0.0.6
 
 ### Patch Changes

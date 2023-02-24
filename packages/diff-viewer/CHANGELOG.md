@@ -1,5 +1,12 @@
 # @kubed/diff-view
 
+## 0.0.9
+
+### Patch Changes
+
+- Updated dependencies [[`4cda5c3`](https://github.com/kubesphere/kube-design/commit/4cda5c3e11dfd2b763049a0b8bcfb61c44273f47)]:
+  - @kubed/icons@0.0.7
+
 ## 0.0.8
 
 ### Patch Changes
