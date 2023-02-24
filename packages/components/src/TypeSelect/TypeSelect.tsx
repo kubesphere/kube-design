@@ -60,7 +60,7 @@ export const TypeSelect = forwardRef<TypeSelectProps, 'div'>(
       if (isValidValue(defaultValue)) {
         return defaultValue;
       }
-      return options.[0]?.value;
+      return options[0]?.value;
     };
 
     const [_value, setValue] = useState(getInitialValue());
@@ -75,10 +75,10 @@ export const TypeSelect = forwardRef<TypeSelectProps, 'div'>(
       const currentOption = options.find((option) => option.value === _value);
 
       if (!currentOption) {
-        return <ControlWrapper $disabled $expanded={false}/>;
+        return <ControlWrapper $disabled $expanded={false} />;
       }
 
-      const {label, description, icon} = currentOption;
+      const { label, description, icon } = currentOption;
 
       return (
         <ControlWrapper
