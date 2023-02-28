@@ -1,5 +1,14 @@
 # @kubed/charts
 
+## 0.0.6
+
+### Patch Changes
+
+- [`8abb4c9`](https://github.com/kubesphere/kube-design/commit/8abb4c9a3945f3d0dfa46dd5814c64ccbfce731c) Thanks [@chenz24](https://github.com/chenz24)! - pass recharts props
+
+- Updated dependencies [[`4e7f7b0`](https://github.com/kubesphere/kube-design/commit/4e7f7b00754f8b7d83d89a081b8108c26c0fd74c)]:
+  - @kubed/icons@0.0.8
+
 ## 0.0.5
 
 ### Patch Changes
