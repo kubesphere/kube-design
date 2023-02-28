@@ -1,9 +1,10 @@
-export interface ChartBaseProps {
-  data: any[];
+import { CategoricalChartProps } from 'recharts/types/chart/generateCategoricalChart';
+
+export interface ChartBaseProps extends CategoricalChartProps {
   categories: string[];
   colors?: string[];
-  height?: number | string;
-  width?: number | string;
+  // height?: number | string;
+  // width?: number | string;
   dataKey: string;
   showXAxis?: boolean;
   showYAxis?: boolean;

@@ -76,11 +76,11 @@ export function Tooltip({
     <TooltipWrapper className={className}>
       <TooltipLabel>{label}</TooltipLabel>
       <ItemWrapper>
-        {payload.map((item) => {
+        {payload.map((item, index) => {
           const legend = legendFormatter ? legendFormatter(item) : item.name;
           const color = item.color || item.payload?.fill;
           return (
-            <TooltipItem color={color}>
+            <TooltipItem color={color} key={`tooltip-${item.name}-${index}`}>
               {legend}: {valueFormatter(item.value)}
             </TooltipItem>
           );

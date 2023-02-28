@@ -54,13 +54,14 @@ export const PieChart = ({
   legendVerticalAlign = 'top',
   legendAlign = 'right',
   legendFormatter,
-  maxActiveCategories = 50,
+  // maxActiveCategories = 50,
+  ...rest
 }: PieChartProps) => {
   const isDonut = variant === 'donut';
 
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <ReChartsDonutChart>
+      <ReChartsDonutChart {...rest}>
         <Pie
           data={parseData(data, colors)}
           cx="50%"

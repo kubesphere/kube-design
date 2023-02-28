@@ -46,6 +46,7 @@ export const AreaChart = ({
   legendAlign = 'right',
   legendFormatter,
   maxActiveCategories = 50,
+  ...rest
 }: AreaChartProps) => {
   const initialActiveCats = categories.slice(0, maxActiveCategories);
   const [activeCategories, setActiveCategories] = useState(initialActiveCats);
@@ -66,7 +67,7 @@ export const AreaChart = ({
 
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <ReChartsAreaChart data={data}>
+      <ReChartsAreaChart data={data} {...rest}>
         {showGridLines ? (
           <CartesianGrid stroke="#d8dee5" strokeDasharray="2 2" horizontal vertical={false} />
         ) : null}

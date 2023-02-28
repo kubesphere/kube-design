@@ -50,6 +50,7 @@ export const BarChart = ({
   legendAlign = 'right',
   legendFormatter,
   maxActiveCategories = 50,
+  ...rest
 }: BarChartProps) => {
   const initialActiveCats = categories.slice(0, maxActiveCategories);
   const [activeCategories, setActiveCategories] = useState(initialActiveCats);
@@ -74,6 +75,7 @@ export const BarChart = ({
         data={data}
         stackOffset={relative ? 'expand' : 'none'}
         layout={layout === 'vertical' ? 'vertical' : 'horizontal'}
+        {...rest}
       >
         {showGridLines ? (
           <CartesianGrid
