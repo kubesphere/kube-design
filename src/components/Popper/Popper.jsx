@@ -1,7 +1,7 @@
 import React, { Component, Fragment, cloneElement } from "react";
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
-import { noop, isFunction, setWith } from "lodash";
+import { noop, isFunction } from "lodash";
 import PopperJS from "popper.js";
 import classNames from "classnames";
 import { fireEvent } from "../../utils";
@@ -45,6 +45,7 @@ class Popper extends Component {
     onOpen: PropTypes.func,
     onClose: PropTypes.func,
     onClick: PropTypes.func,
+    positionFixed: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -61,6 +62,7 @@ class Popper extends Component {
     onOpen: noop,
     onClose: noop,
     onClick: noop,
+    positionFixed: false,
   };
 
   constructor(props) {
@@ -170,7 +172,7 @@ class Popper extends Component {
       placement: placementMapper[placement]
         ? placementMapper[placement]
         : "bottom",
-      positionFixed: true,
+      positionFixed: this.props.positionFixed,
       modifiers: this.props.modifiers,
     };
     this.popperInstance = new PopperJS(this.reference, this.popper, options);
