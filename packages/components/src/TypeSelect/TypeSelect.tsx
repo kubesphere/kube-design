@@ -73,7 +73,13 @@ export const TypeSelect = forwardRef<TypeSelectProps, 'div'>(
 
     const renderControl = () => {
       const currentOption = options.find((option) => option.value === _value);
+
+      if (!currentOption) {
+        return <ControlWrapper $disabled $expanded={false} />;
+      }
+
       const { label, description, icon } = currentOption;
+
       return (
         <ControlWrapper
           onClick={() => {
