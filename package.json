@@ -67,7 +67,7 @@
     "husky": "^4.2.5",
     "jest": "^26.4.2",
     "jest-enzyme": "^7.1.2",
-    "jsdom": "^16.4.0",
+    "jsdom": "^16.5.0",
     "lint-staged": "^10.2.13",
     "mockjs": "^1.1.0",
     "node-sass": "^4.14.1",
