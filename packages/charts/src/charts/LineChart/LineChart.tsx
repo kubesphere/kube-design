@@ -42,6 +42,7 @@ export const LineChart = ({
   legendAlign = 'right',
   legendFormatter,
   maxActiveCategories = 50,
+  ...rest
 }: LineChartProps) => {
   const initialActiveCats = categories.slice(0, maxActiveCategories);
   const [activeCategories, setActiveCategories] = useState(initialActiveCats);
@@ -62,7 +63,7 @@ export const LineChart = ({
 
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <ReChartsLineChart data={data}>
+      <ReChartsLineChart data={data} {...rest}>
         {showGridLines ? (
           <CartesianGrid stroke="#d8dee5" strokeDasharray="2 2" horizontal vertical={false} />
         ) : null}
