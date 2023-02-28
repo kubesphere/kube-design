@@ -1,5 +1,16 @@
 # @kubed/components
 
+## 0.0.65
+
+### Patch Changes
+
+- [`3c1f523`](https://github.com/kubesphere/kube-design/commit/3c1f523998f1b09732ecf1accbcc1565afafc9aa) Thanks [@donniean](https://github.com/donniean)! - fix: TypeSelect throws an error when options is an empty array
+
+* [`580e470`](https://github.com/kubesphere/kube-design/commit/580e470f2e194d00a5dc2a25f28098f9bd332082) Thanks [@donniean](https://github.com/donniean)! - fix: an error occurred when options prop is an empty array
+
+* Updated dependencies [[`4e7f7b0`](https://github.com/kubesphere/kube-design/commit/4e7f7b00754f8b7d83d89a081b8108c26c0fd74c)]:
+  - @kubed/icons@0.0.8
+
 ## 0.0.64
 
 ### Patch Changes

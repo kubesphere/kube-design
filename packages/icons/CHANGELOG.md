@@ -1,5 +1,11 @@
 # @kubed/icons
 
+## 0.0.8
+
+### Patch Changes
+
+- [`4e7f7b0`](https://github.com/kubesphere/kube-design/commit/4e7f7b00754f8b7d83d89a081b8108c26c0fd74c) Thanks [@bunnymiao](https://github.com/bunnymiao)! - fix: Fix the inner content of accessmodes svg
+
 ## 0.0.7
 
 ### Patch Changes
