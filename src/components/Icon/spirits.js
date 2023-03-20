@@ -709,8 +709,8 @@ const svgSprites = `
 </symbol>
 
 <symbol id="icon-forbid-right-duotone" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M8.00004 14.6667C11.6819 14.6667 14.6667 11.6819 14.6667 8.00004C14.6667 4.31814 11.6819 1.33337 8.00004 1.33337C4.31814 1.33337 1.33337 4.31814 1.33337 8.00004C1.33337 11.6819 4.31814 14.6667 8.00004 14.6667ZM5.47146 4.52861L11.4715 10.5286L10.5286 11.4714L4.52865 5.47141L5.47146 4.52861Z" fill="currentColor" fill-opacity="0.4"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M11.4714 10.5286L5.47137 4.52856L4.52856 5.47137L10.5286 11.4714L11.4714 10.5286Z" fill="currentColor" fill-opacity="0.9"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM8.20712 6.79285L17.2071 15.7928L15.7929 17.2071L6.79291 8.20706L8.20712 6.79285Z" fill="#CCD3DB"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M17.2072 15.7928L8.20718 6.79285L6.79297 8.20706L15.793 17.2071L17.2072 15.7928Z" fill="currentColor"/>
 </symbol>
 
 </svg>`;
