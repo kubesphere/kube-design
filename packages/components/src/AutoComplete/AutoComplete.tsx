@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { omit } from 'lodash';
 import toArray from '../utils/toArray';
+import forwardRef from '../utils/forwardRef';
 
-import { Select, OptionType, RefSelectProps } from '../Select/Select';
+import { Select } from '../Select/Select';
 import { InternalSelectProps } from '../Select/Select.styles';
 
 const { Option } = Select;
@@ -26,9 +27,7 @@ function isSelectOptionOrSelectOptGroup(child: any): Boolean {
   return child && child.type && (child.type.isSelectOption || child.type.isSelectOption);
 }
 
-export const AutoComplete: React.ForwardRefRenderFunction<RefSelectProps, AutoCompleteProps> = (
-  props
-) => {
+export const AutoComplete = forwardRef<AutoCompleteProps, 'div'>((props, ref) => {
   // eslint-disable-next-line react/prop-types
   const { prefixCls, children, options } = props;
   const childNodes: React.ReactElement[] = toArray(children);
@@ -80,6 +79,7 @@ export const AutoComplete: React.ForwardRefRenderFunction<RefSelectProps, AutoCo
 
   return (
     <Select
+      ref={ref}
       {...omit(props, ['dataSource'])}
       prefixCls={prefixCls}
       mode={Select.SECRET_COMBOBOX_MODE_DO_NOT_USE as any}
@@ -90,14 +90,6 @@ export const AutoComplete: React.ForwardRefRenderFunction<RefSelectProps, AutoCo
       {optionChildren}
     </Select>
   );
-};
-
-const RefAutoComplete = React.forwardRef<RefSelectProps, AutoCompleteProps>(AutoComplete);
-
-type RefAutoCompleteWithOption = typeof RefAutoComplete & {
-  Option: OptionType;
-};
-
-(RefAutoComplete as RefAutoCompleteWithOption).Option = Option;
+});
 
 AutoComplete.displayName = '@kubed/components/AutoComplete';
