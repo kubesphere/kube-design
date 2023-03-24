@@ -42,13 +42,16 @@ export default class Input extends Component {
   }
 
   componentDidMount() {
-    if (this.state.type === "password") {
+    if (this.props.originType === "password") {
       this.clearPasswordValueAttribute();
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.type !== prevState.type && prevState.type === "text") {
+    if (
+      (this.state.type !== prevState.type && prevState.type === "text") ||
+      this.props.originType === "password"
+    ) {
       this.clearPasswordValueAttribute();
     }
   }
@@ -69,9 +72,11 @@ export default class Input extends Component {
 
   render() {
     const { className, innerRef, ...rest } = this.props;
-    const { value, type } = this.state;
+    const { type, value } = this.state;
 
-    const params = { ...omit(rest, "onChange", "value", "defaultValue") };
+    const params = {
+      ...omit(rest, "onChange", "value", "defaultValue", "originType"),
+    };
 
     return (
       <input

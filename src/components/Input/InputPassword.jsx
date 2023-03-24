@@ -3,7 +3,6 @@ import propTypes from "prop-types";
 import { noop } from "lodash";
 
 import Icon from "../Icon";
-
 import Input from "./Input";
 
 class InputPassword extends PureComponent {
@@ -58,8 +57,12 @@ class InputPassword extends PureComponent {
         <Input
           {...rest}
           type={type}
+          originType="password"
           value={value}
           onChange={this.handleInputChange}
+          onCopy={(e) => e.preventDefault()}
+          onCut={(e) => e.preventDefault()}
+          onContextMenu={(e) => e.preventDefault()}
         />
         <Icon
           className="is-right"
