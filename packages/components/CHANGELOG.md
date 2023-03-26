@@ -1,5 +1,13 @@
 # @kubed/components
 
+## 0.0.67
+
+### Patch Changes
+
+- [`a1a82b6`](https://github.com/kubesphere/kube-design/commit/a1a82b60a10c5a23b9c22498a1ddf637267396cc) Thanks [@chenz24](https://github.com/chenz24)! - 1. feat: Menu support dark theme
+  2. feat: set destroyOnClose props of Modal to true
+  3. feat: export BannerTip props
+
 ## 0.0.66
 
 ### Patch Changes
