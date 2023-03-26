@@ -13,13 +13,24 @@ export interface MenuButtonProps extends MenuItemProps {
 
 export const MenuButton = forwardRef<MenuButtonProps, 'button'>(
   (
-    { className, children, icon, color, disabled, rightSection, as: Element = 'button', ...rest },
+    {
+      className,
+      children,
+      icon,
+      color,
+      disabled,
+      rightSection,
+      as: Element = 'button',
+      themeType,
+      ...rest
+    },
     ref
   ) => {
     return (
       <MenuButtonElement
         as={Element}
         ref={ref}
+        $themeType={themeType}
         {...rest}
         className={cx(className, { 'menu-disabled': disabled })}
       >

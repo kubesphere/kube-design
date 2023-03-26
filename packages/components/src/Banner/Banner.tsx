@@ -8,6 +8,7 @@ import { addColorAlpha } from '../utils/color';
 import { BannerTip, BannerTipProps } from './BannerTip';
 
 export { BannerTip };
+export type { BannerTipProps };
 
 const BannerTitle = styled.div`
   padding: 24px 20px 21px;
@@ -83,6 +84,7 @@ export const Banner = forwardRef<BannerProps, 'div'>(
     const others = [];
 
     React.Children.forEach(children, (child: React.ReactElement) => {
+      if (!child) return;
       if (child.type === BannerTip) {
         if (child.key && removedTipKeys.indexOf(child.key) < 0) {
           tips.push({ key: child.key, ...child.props });

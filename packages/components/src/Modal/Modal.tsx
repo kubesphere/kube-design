@@ -126,6 +126,7 @@ export const Modal = forwardRef<ModalProps, any>((props, ref) => {
     width = 600,
     wrapClassName,
     confirmLoading,
+    destroyOnClose = true,
     ...restProps
   } = props;
   const [internalVisible, setInternalVisible] = useState(visible);
@@ -201,6 +202,7 @@ export const Modal = forwardRef<ModalProps, any>((props, ref) => {
       visible={internalVisible}
       width={width}
       closeIcon={renderCloseIcon}
+      destroyOnClose={destroyOnClose}
       onClose={handleCancel}
       title={renderHeader()}
       footer={renderFooter()}
