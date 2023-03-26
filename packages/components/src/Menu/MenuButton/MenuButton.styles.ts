@@ -1,6 +1,10 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const MenuButtonElement = styled('button')`
+interface MenuButtonElementProps {
+  $themeType?: string;
+}
+
+export const MenuButtonElement = styled('button')<MenuButtonElementProps>`
   -webkit-tap-highlight-color: transparent;
   border: 0;
   border-radius: 4px;
@@ -14,11 +18,12 @@ export const MenuButtonElement = styled('button')`
   padding: 8px 22px; // todo improve
   line-height: 20px;
   font-weight: 600;
-  color: ${({ theme }) => theme.palette.accents_7};
+  color: ${({ theme, $themeType }) => ($themeType === 'dark' ? '#fff' : theme.palette.accents_7)};
 
   &:hover {
-    background-color: ${({ theme }) => theme.palette.accents_2};
-    color: ${({ theme }) => theme.palette.accents_7};
+    background-color: ${({ theme, $themeType }) =>
+      $themeType === 'dark' ? theme.palette.accents_7 : theme.palette.accents_2};
+    color: ${({ theme, $themeType }) => ($themeType === 'dark' ? '#fff' : theme.palette.accents_7)};
   }
 
   &.menu-disabled {
@@ -40,6 +45,13 @@ export const MenuButtonElement = styled('button')`
     .kubed-icon {
       width: 16px;
       height: 16px;
+      ${({ $themeType }) =>
+        $themeType === 'dark'
+          ? css`
+              color: hsla(0, 0%, 100%, 0.9);
+              fill: hsla(0, 0%, 100%, 0.4);
+            `
+          : null}
     }
   }
 `;
