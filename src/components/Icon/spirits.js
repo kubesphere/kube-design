@@ -722,6 +722,12 @@ const svgSprites = `
 <path fill-rule="evenodd" clip-rule="evenodd" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM8.20712 6.79285L17.2071 15.7928L15.7929 17.2071L6.79291 8.20706L8.20712 6.79285Z" fill="#CCD3DB"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M17.2072 15.7928L8.20718 6.79285L6.79297 8.20706L15.793 17.2071L17.2072 15.7928Z" fill="currentColor"/>
 </symbol>
+<symbol id="icon-upload-duotone" viewBox="0 0 40 40">
+<path d="M27.5 19.167H12.5V25.8337H27.5V19.167Z" fill="#CCD3DB"/>
+<path d="M12.5 28.3337H27.5V31.667H12.5V28.3337Z" fill="#CCD3DB"/>
+<path d="M12.5 34.167H27.5V37.5003H12.5V34.167Z" fill="#CCD3DB"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M19.4103 3.0888C19.7358 2.76337 20.2634 2.76337 20.5888 3.0888L35.2437 17.7436C35.7686 18.2686 35.3968 19.1662 34.6544 19.1662H5.34477C4.60235 19.1662 4.23054 18.2686 4.75551 17.7436L19.4103 3.0888Z" fill="#36435C"/>
+</symbol>
 
 </svg>`;
 export default svgSprites;
