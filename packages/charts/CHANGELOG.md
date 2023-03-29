@@ -1,5 +1,11 @@
 # @kubed/charts
 
+## 0.0.7
+
+### Patch Changes
+
+- [`a207461`](https://github.com/kubesphere/kube-design/commit/a2074619c592b482f013129b3fddb9f9b9ccb234) Thanks [@EliChen95](https://github.com/EliChen95)! - feat: Support radar chart
+
 ## 0.0.6
 
 ### Patch Changes
