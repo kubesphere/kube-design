@@ -8,6 +8,8 @@ import {
   Tooltip,
   XAxis,
   YAxis,
+  XAxisProps,
+  YAxisProps,
 } from 'recharts';
 import { AxisDomain } from 'recharts/types/util/types';
 import { remove } from 'lodash';
@@ -19,6 +21,8 @@ import { Tooltip as TooltipContent } from '../../components/Tooltip';
 
 export interface AreaChartProps extends ChartBaseProps {
   stack?: boolean;
+  xAxisProps?: XAxisProps;
+  yAxisProps?: YAxisProps;
 }
 
 export const AreaChart = ({
@@ -46,6 +50,8 @@ export const AreaChart = ({
   legendAlign = 'right',
   legendFormatter,
   maxActiveCategories = 50,
+  xAxisProps = {},
+  yAxisProps = {},
   ...rest
 }: AreaChartProps) => {
   const initialActiveCats = categories.slice(0, maxActiveCategories);
@@ -84,6 +90,7 @@ export const AreaChart = ({
           tickLine={false}
           axisLine={false}
           minTickGap={5}
+          {...xAxisProps}
         />
         <YAxis
           width={yAxisWidth}
@@ -98,6 +105,7 @@ export const AreaChart = ({
             fontFamily: 'Inter; Helvetica',
           }}
           tickFormatter={valueFormatter}
+          {...yAxisProps}
         />
         {showLegend ? (
           <Legend
