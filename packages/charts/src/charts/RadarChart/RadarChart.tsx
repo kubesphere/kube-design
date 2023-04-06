@@ -74,6 +74,7 @@ export const RadarChart = ({
           return (
             <Radar
               {...color}
+              key={category}
               dataKey={category}
               isAnimationActive={showAnimation}
               animationDuration={1000}
