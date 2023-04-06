@@ -1,5 +1,13 @@
 # @kubed/charts
 
+## 0.0.8
+
+### Patch Changes
+
+- [`ebf0dc3`](https://github.com/kubesphere/kube-design/commit/ebf0dc384d6216c92f00de3e650a23f71f5857fc) Thanks [@EliChen95](https://github.com/EliChen95)! - 1. feat: Support Area chart override axis props
+  2. feat: Support Pie chart set empty color
+  3. fix: Fix loop node without key
+
 ## 0.0.7
 
 ### Patch Changes

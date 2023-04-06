@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.68
+
+### Patch Changes
+
+- [`8015262`](https://github.com/kubesphere/kube-design/commit/8015262588fecc1584e5f6c272f980e8f2165e82) Thanks [@chenz24](https://github.com/chenz24)! - 1. Fix styles bug of Tag and Steps
+
 ## 0.0.67
 
 ### Patch Changes
