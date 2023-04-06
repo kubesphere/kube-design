@@ -6,6 +6,8 @@ interface MenuWrapperProps {
 }
 
 export const MenuWrapper = styled('div')<MenuWrapperProps>`
+  display: flex;
+  flex-direction: column;
   margin: 0;
   padding: 8px;
   width: ${({ $width }) => $width}px;

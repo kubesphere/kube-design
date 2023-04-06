@@ -131,7 +131,7 @@ export const Steps = forwardRef<StepsProps, 'div'>(
     return (
       <StepsRoot
         ref={ref}
-        className={cx('steps-root', classNames, { 'steps-vertical': orientation === 'vertical' })}
+        className={cx('steps-root', className, { 'steps-vertical': orientation === 'vertical' })}
         {...rest}
       >
         <StepsWrapper className={cx('steps-wrapper', { 'steps-tab': variant === 'tab' })}>
