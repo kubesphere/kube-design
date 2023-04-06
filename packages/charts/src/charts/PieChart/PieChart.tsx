@@ -26,6 +26,9 @@ export interface PieChartProps extends Omit<ChartBaseProps, 'dataKey' | 'categor
   valueFormatter?: ValueFormatter;
   innerRadius?: number;
   outerRadius?: number;
+  stroke?: string;
+  fill?: string;
+  fillOpacity?: string | number;
   customTooltip?: (payload: any[]) => React.ReactNode;
 }
 
@@ -44,6 +47,9 @@ export const PieChart = ({
   colors = getDefaultHexColors(),
   variant = 'donut',
   valueFormatter = defaultValueFormatter,
+  fill,
+  fillOpacity,
+  stroke,
   label,
   showAnimation = true,
   showTooltip = true,
@@ -75,6 +81,9 @@ export const PieChart = ({
           nameKey={dataKey}
           isAnimationActive={showAnimation}
           animationDuration={1000}
+          stroke={stroke}
+          fill={fill}
+          fillOpacity={fillOpacity}
         />
         {showLegend ? (
           <Legend
