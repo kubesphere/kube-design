@@ -115,14 +115,14 @@ export const Step = forwardRef<StepProps, 'div'>(
         {...rest}
       >
         {withIcon && (
-          <StepIconWrapper>
-            <StepIcon {...dataAttributes}>
+          <StepIconWrapper className="stepicon-wrapper">
+            <StepIcon {...dataAttributes} className="step-icon">
               {state === 'stepCompleted' ? (
-                <StepCompletedIcon>
+                <StepCompletedIcon className="step-completed-icon">
                   {loading ? (
                     <Loading color="#fff" size={_iconSize} className="stepLoader" />
                   ) : (
-                    completedIcon || <Check size={24} color="#fff" />
+                    completedIcon || <Check size={_iconSize} color="#fff" />
                   )}
                 </StepCompletedIcon>
               ) : null}
@@ -139,9 +139,13 @@ export const Step = forwardRef<StepProps, 'div'>(
         )}
 
         {(label || description) && (
-          <StepBody>
-            {label && <StepLabel>{label}</StepLabel>}
-            {description && <StepDescription color="dimmed">{description}</StepDescription>}
+          <StepBody className="step-body">
+            {label && <StepLabel className="step-label">{label}</StepLabel>}
+            {description && (
+              <StepDescription className="step-desc" color="dimmed">
+                {description}
+              </StepDescription>
+            )}
           </StepBody>
         )}
       </StepWrapper>

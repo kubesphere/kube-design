@@ -70,4 +70,9 @@ export const StyledDialog = styled(Dialog)`
   }
 `;
 
+export const HeaderWrapper = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
 export const CloseIcon = styled.span``;

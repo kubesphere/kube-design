@@ -114,6 +114,7 @@ export const Steps = forwardRef<StepsProps, 'div'>(
       if (index !== _children.length - 1 && variant === 'default') {
         acc.push(
           <StepsSeparator
+            className={cx('step-separator', { 'is-active': index < active })}
             $active={index < active}
             $vertical={orientation === 'vertical'}
             key={`separator-${index}`}

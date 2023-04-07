@@ -2,7 +2,8 @@ import React, { RefObject, useEffect, useImperativeHandle, useState } from 'reac
 import cx from 'classnames';
 import { isNull } from 'lodash';
 import { Close } from '@kubed/icons';
-import { StyledDialog } from './Modal.styles';
+
+import { StyledDialog, HeaderWrapper } from './Modal.styles';
 import { ButtonProps, Button } from '../Button/Button';
 import { useLocales } from '../ConfigProvider/LocaleProvider/LocaleContext';
 import { getTransitionName } from '../utils/motion';
@@ -47,6 +48,9 @@ export interface ModalProps {
 
   /** Custom header content */
   header?: React.ReactNode;
+
+  /** Custom header extra content */
+  headerExtra?: React.ReactNode;
 
   /** Custom footer content */
   footer?: React.ReactNode;
@@ -150,8 +154,17 @@ export const Modal = forwardRef<ModalProps, any>((props, ref) => {
   };
 
   const renderHeader = () => {
-    const { header, title, description, titleIcon } = props;
+    const { header, title, description, titleIcon, headerExtra } = props;
     if (header || isNull(header)) return header;
+
+    if (headerExtra) {
+      return (
+        <HeaderWrapper>
+          <Field value={title} label={description} avatar={titleIcon} />
+          {headerExtra}
+        </HeaderWrapper>
+      );
+    }
 
     return <Field value={title} label={description} avatar={titleIcon} />;
   };
