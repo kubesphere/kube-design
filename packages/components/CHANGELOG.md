@@ -1,5 +1,12 @@
 # @kubed/components
 
+## 0.0.69
+
+### Patch Changes
+
+- [`bd28247`](https://github.com/kubesphere/kube-design/commit/bd28247c4082cb05c0e3385f01f52e5b6805960e) Thanks [@chenz24](https://github.com/chenz24)! - 1. feat: Modal header support custom extra elements.
+  2. refactor: Add className to Step component.
+
 ## 0.0.68
 
 ### Patch Changes
