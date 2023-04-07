@@ -1,12 +1,19 @@
 import * as React from 'react';
 import { createRef, useState } from 'react';
 import { Cluster } from '@kubed/icons';
+import styled from 'styled-components';
 import { Modal, Button, useModal } from '../index';
 
 export default {
   title: 'Components/Modal',
   component: Modal,
 };
+
+const HeaderExtra = styled.div`
+  position: absolute;
+  right: 30px;
+  top: 10px;
+`;
 
 export const Basic = () => {
   const [visible, setVisible] = useState(false);
@@ -31,8 +38,10 @@ export const Basic = () => {
         titleIcon={<Cluster size={40} />}
         onCancel={closeModal}
         footer={<div>footer</div>}
+        width="100%"
+        headerExtra={<HeaderExtra>headerExtra</HeaderExtra>}
       >
-        Modal content
+        <div style={{ height: '90vh' }} />
       </Modal>
     </>
   );
@@ -94,7 +103,13 @@ export const Confirm = () => {
   return (
     <Button
       onClick={() => {
-        modal.confirm({ title: 'confirm modal', content: 'confirm content' });
+        const modalId = modal.confirm({
+          title: 'confirm modal',
+          content: 'confirm content',
+          onOk: () => {
+            modal.close(modalId);
+          },
+        });
       }}
     >
       Imperative Modal
