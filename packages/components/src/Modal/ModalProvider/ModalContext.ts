@@ -4,7 +4,7 @@ import { ModalFuncProps } from '../Modal';
 export interface IModalContext {
   open(config: ModalFuncProps, type?: string): string;
   close(id: string): void;
-  confirm(config: ModalFuncProps): void;
+  confirm(config: ModalFuncProps): string;
 }
 
 export const ModalContext = createContext<IModalContext>({
