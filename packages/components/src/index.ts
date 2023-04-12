@@ -47,6 +47,7 @@ export * from './TypeSelect/TypeSelect';
 export * from './ShowMore/ShowMore';
 export * from './Dropzone/Dropzone';
 export * from './Skeleton/Skeleton';
+export * from './SliderConfirm/SliderConfirm';
 export { Loading } from './Loading/Loading';
 export { default as TimePicker } from './TimePicker/TimePicker';
 export { default as Drawer } from './Drawer/Drawer';
