@@ -1,5 +1,15 @@
 # @kubed/components
 
+## 0.0.70
+
+### Patch Changes
+
+- [`a546557`](https://github.com/kubesphere/kube-design/commit/a546557f0decc871d10bc88956125a3e56398698) Thanks [@chenz24](https://github.com/chenz24)! - 1. Add SliderConfirm component
+
+* [`60c3d7d`](https://github.com/kubesphere/kube-design/commit/60c3d7da7d9361b5308cb16f3983cf8f40f4c04b) Thanks [@EliChen95](https://github.com/EliChen95)! - feat: Support FilterInput customLabel and customDropdown
+
+- [`59a8cbb`](https://github.com/kubesphere/kube-design/commit/59a8cbb9d7c9c28a23cba939d7c9d304859051b8) Thanks [@chenz24](https://github.com/chenz24)! - 1. Add Pagination component
+
 ## 0.0.69
 
 ### Patch Changes
