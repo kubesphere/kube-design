@@ -10,6 +10,7 @@ interface InputProps {
 }
 
 export const InputWrapper = styled('div')<InputProps>`
+  background-color: ${({ theme }) => theme.palette.background};
   display: inline-flex;
   width: ${({ width }) => (width ? `${width}px` : '100%')};
   border-radius: 3px;
