@@ -4,6 +4,7 @@ import { PickerLocale } from '../../DatePicker/generatePicker';
 export interface ILocale {
   Empty?: { noData: string };
   Modal?: ModalLocale;
+  Pagination?: { totalItems: string };
   DatePicker?: PickerLocale;
 }
 
