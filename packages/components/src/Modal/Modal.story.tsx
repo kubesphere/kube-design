@@ -80,22 +80,25 @@ export const AsyncModal = () => {
   const content = <div>modal content</div>;
 
   const openModal = () => {
-    const modalId = modal.open({
+    modal.open({
       title: 'AsyncOk Modal',
       description: 'description text',
       content,
-      onAsyncOk: () => {
-        return new Promise((resolve) => {
+      onAsyncOk: async () => {
+        await new Promise((resolve) => {
           setTimeout(() => {
-            modal.close(modalId);
+            console.log('run function...');
             resolve(1);
-          }, 300);
+          }, 1000);
+        }).then(() => {
+          console.log('run promise then');
         });
+        return true;
       },
     });
   };
 
-  return <Button onClick={openModal}>Imperative Modal</Button>;
+  return <Button onClick={openModal}>Async Modal</Button>;
 };
 
 export const Confirm = () => {

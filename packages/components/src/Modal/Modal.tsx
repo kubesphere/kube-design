@@ -141,13 +141,15 @@ export const Modal = forwardRef<ModalProps, any>((props, ref) => {
     onCancel?.(e);
   };
 
-  const handleOk = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleOk = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const { onOk, onAsyncOk } = props;
     if (onAsyncOk) {
       setConfirmLoading(true);
-      onAsyncOk().finally(() => {
-        setConfirmLoading(false);
-      });
+      const ret = await onAsyncOk();
+      setConfirmLoading(false);
+      if (ret) {
+        handleCancel(e);
+      }
     } else {
       onOk?.(e);
     }

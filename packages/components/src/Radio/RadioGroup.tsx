@@ -30,7 +30,6 @@ export const RadioGroup: React.FC<React.PropsWithChildren<RadioGroupProps>> = ({
   });
 
   const updateState = (val) => {
-    if (!isUndefined(value)) return;
     setValue(val);
   };
 
