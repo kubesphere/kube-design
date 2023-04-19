@@ -156,10 +156,11 @@ export const Checkbox = forwardRef<CheckboxProps, 'input'>(
     }
 
     if (inGroup) {
+      const deps = Array.isArray(values) ? values.join(',') : values;
       useEffect(() => {
-        const isChecked = values.includes(restProps.value);
+        const isChecked = Array.isArray(values) && values.includes(restProps.value);
         setChecked(isChecked);
-      }, [values.join(',')]);
+      }, [deps]);
     }
 
     const onCheckboxChange = (e) => {

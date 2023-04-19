@@ -32,11 +32,12 @@ export const CheckboxGroup: React.FC<React.PropsWithChildren<CheckboxGroupProps>
   });
 
   const updateState = (val, checked) => {
-    if (!isUndefined(value)) return;
-    const removed = _value.filter((v) => v !== val);
+    const removed = Array.isArray(_value) ? _value.filter((v) => v !== val) : [];
     const next = checked ? [...removed, val] : removed;
     setValue(next);
   };
+
+  const providerValueDeps = Array.isArray(_value) ? _value.join(',') : _value;
 
   const providerValue = useMemo(() => {
     return {
@@ -45,13 +46,12 @@ export const CheckboxGroup: React.FC<React.PropsWithChildren<CheckboxGroupProps>
       inGroup: true,
       values: _value,
     };
-  }, [disabled, _value.join(',')]);
+  }, [disabled, providerValueDeps]);
 
-  if (value) {
-    useEffect(() => {
-      setValue(value);
-    }, [value.join(',')]);
-  }
+  const deps = Array.isArray(value) ? value.join(',') : value;
+  useEffect(() => {
+    setValue(value);
+  }, [deps]);
 
   return (
     <CheckboxContext.Provider value={providerValue}>

@@ -43,6 +43,22 @@ order: 1
             <Input />
           </FormItem>
         </Col>
+        <Col span={6}>
+          <FormItem label="BACKUP_DATE" name="cycle">
+            <CheckboxGroup>
+              <Checkbox label="China" value="China" />
+              <Checkbox label="USA" value="USA" />
+            </CheckboxGroup>
+          </FormItem>
+        </Col>
+        <Col span={6}>
+          <FormItem label="Radio" name="radio">
+            <RadioGroup>
+              <Radio label="China" value="China" />
+              <Radio label="USA" value="USA" />
+            </RadioGroup>
+          </FormItem>
+        </Col>
       </Row>
       <button type="submit">Submit</button>
     </Form>
