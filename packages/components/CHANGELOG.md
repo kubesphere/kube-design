@@ -1,5 +1,12 @@
 # @kubed/components
 
+## 0.0.72
+
+### Patch Changes
+
+- [`749c17b`](https://github.com/kubesphere/kube-design/commit/749c17b2c23ef8d75042080165abf3fc67a2701f) Thanks [@chenz24](https://github.com/chenz24)! - 1. refactor: Refine async ok logic
+  2. fix: checkbox cannot be set value in FormItem.
+
 ## 0.0.71
 
 ### Patch Changes
