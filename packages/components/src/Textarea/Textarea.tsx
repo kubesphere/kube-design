@@ -14,6 +14,7 @@ const Wrapper = styled('div')<TextareaProps>`
   border: 1px solid ${({ theme }) => theme.palette.accents_4};
   outline: none;
   transition: all 0.3s ease-in-out;
+  background-color: ${({ theme }) => theme.palette.background};
 
   &:hover {
     border-color: ${({ theme }) => theme.palette.accents_5};
