@@ -172,6 +172,10 @@ export const Modal = forwardRef<ModalProps, any>((props, ref) => {
   };
 
   useEffect(() => {
+    setConfirmLoading(confirmLoading);
+  }, [confirmLoading]);
+
+  useEffect(() => {
     setInternalVisible(visible);
   }, [visible]);
 

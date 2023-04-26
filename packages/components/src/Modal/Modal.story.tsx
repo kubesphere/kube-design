@@ -37,11 +37,10 @@ export const Basic = () => {
         description="Modal description"
         titleIcon={<Cluster size={40} />}
         onCancel={closeModal}
-        footer={<div>footer</div>}
-        width="100%"
+        confirmLoading
         headerExtra={<HeaderExtra>headerExtra</HeaderExtra>}
       >
-        <div style={{ height: '90vh' }} />
+        <div style={{ height: '300px' }} />
       </Modal>
     </>
   );

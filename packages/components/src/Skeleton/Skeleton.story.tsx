@@ -74,48 +74,24 @@ export const tableSkeleton = () => {
       <TableHead>
         <Skeleton height={30} width="100%" radius="sm" />
       </TableHead>
-      <TableRow>
-        <Title>
-          <Skeleton height={20} width={160} radius="sm" className="left" />
-          <div className="right">
-            <Skeleton height={15} width={180} radius="sm" style={{ marginBottom: '10px' }} />
-            <Skeleton height={15} width={120} radius="sm" />
-          </div>
-        </Title>
-        <Skeleton height={20} width={80} radius="sm" />
-        <Skeleton height={20} width={80} radius="sm" />
-        <Skeleton height={20} width={100} radius="sm" />
-        <Skeleton height={20} width={80} radius="sm" />
-        <Skeleton height={20} width={80} radius="sm" />
-      </TableRow>
-      <TableRow>
-        <Title>
-          <Skeleton height={20} width={160} radius="sm" className="left" />
-          <div className="right">
-            <Skeleton height={15} width={180} radius="sm" style={{ marginBottom: '10px' }} />
-            <Skeleton height={15} width={120} radius="sm" />
-          </div>
-        </Title>
-        <Skeleton height={20} width={80} radius="sm" />
-        <Skeleton height={20} width={80} radius="sm" />
-        <Skeleton height={20} width={100} radius="sm" />
-        <Skeleton height={20} width={80} radius="sm" />
-        <Skeleton height={20} width={80} radius="sm" />
-      </TableRow>
-      <TableRow>
-        <Title>
-          <Skeleton height={20} width={160} radius="sm" className="left" />
-          <div className="right">
-            <Skeleton height={15} width={180} radius="sm" style={{ marginBottom: '10px' }} />
-            <Skeleton height={15} width={120} radius="sm" />
-          </div>
-        </Title>
-        <Skeleton height={20} width={80} radius="sm" />
-        <Skeleton height={20} width={80} radius="sm" />
-        <Skeleton height={20} width={100} radius="sm" />
-        <Skeleton height={20} width={80} radius="sm" />
-        <Skeleton height={20} width={80} radius="sm" />
-      </TableRow>
+      {[...Array(3)].map((item, i) => {
+        return (
+          <TableRow key={i}>
+            <Title>
+              <Skeleton height={20} width={160} radius="sm" className="left" />
+              <div className="right">
+                <Skeleton height={15} width={180} radius="sm" style={{ marginBottom: '10px' }} />
+                <Skeleton height={15} width={120} radius="sm" />
+              </div>
+            </Title>
+            <Skeleton height={20} width={80} radius="sm" />
+            <Skeleton height={20} width={80} radius="sm" />
+            <Skeleton height={20} width={100} radius="sm" />
+            <Skeleton height={20} width={80} radius="sm" />
+            <Skeleton height={20} width={80} radius="sm" />
+          </TableRow>
+        );
+      })}
     </Wrapper>
   );
 };
