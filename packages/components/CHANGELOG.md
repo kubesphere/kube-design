@@ -1,5 +1,14 @@
 # @kubed/components
 
+## 0.0.73
+
+### Patch Changes
+
+- [`a54f891`](https://github.com/kubesphere/kube-design/commit/a54f8918053e2bc6955de8e9fc6f7e2b23eafbb8) Thanks [@chenz24](https://github.com/chenz24)! - 1. add eck opensearch icon
+
+- Updated dependencies [[`a54f891`](https://github.com/kubesphere/kube-design/commit/a54f8918053e2bc6955de8e9fc6f7e2b23eafbb8)]:
+  - @kubed/icons@0.0.9
+
 ## 0.0.72
 
 ### Patch Changes
