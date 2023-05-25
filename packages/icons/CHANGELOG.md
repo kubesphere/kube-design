@@ -1,5 +1,11 @@
 # @kubed/icons
 
+## 0.0.10
+
+### Patch Changes
+
+- [`60c9c09`](https://github.com/kubesphere/kube-design/commit/60c9c098dc55da11d5d4d02f5fbee7c53864aaf2) Thanks [@donniean](https://github.com/donniean)! - add scan icon
+
 ## 0.0.9
 
 ### Patch Changes
