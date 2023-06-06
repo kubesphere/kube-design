@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.76
+
+### Patch Changes
+
+- [`e570ce2`](https://github.com/kubesphere/kube-design/commit/e570ce22f9660df21d85f4703a7a81a610be3f42) Thanks [@chenz24](https://github.com/chenz24)! - 1. fix tooltip error when data is empty in AreaChart
+
 ## 0.0.75
 
 ### Patch Changes
