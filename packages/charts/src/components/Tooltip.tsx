@@ -72,6 +72,7 @@ export function Tooltip({
   valueFormatter,
   legendFormatter,
 }: TooltipProps) {
+  if (!payload) return null;
   return (
     <TooltipWrapper className={className}>
       <TooltipLabel>{label}</TooltipLabel>
