@@ -801,5 +801,12 @@ const svgSprites = `
 <path d="M5.5 17.5C5.5 18.6046 4.60457 19.5 3.5 19.5C2.39543 19.5 1.5 18.6046 1.5 17.5C1.5 16.3954 2.39543 15.5 3.5 15.5C4.60457 15.5 5.5 16.3954 5.5 17.5Z" fill="currentColor"/>
 <path d="M20.5 19.5C21.6046 19.5 22.5 18.6046 22.5 17.5C22.5 16.3954 21.6046 15.5 20.5 15.5C19.3954 15.5 18.5 16.3954 18.5 17.5C18.5 18.6046 19.3954 19.5 20.5 19.5Z" fill="currentColor"/>
 <symbol>
+
+<symbol id="icon-node-group" viewBox="0 0 24 24">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.05425 3C5.70946 3 5.38899 3.17762 5.20625 3.47L3 7V20C3 20.5523 3.44772 21 4 21H20C20.5523 21 21 20.5523 21 20V7L18.7938 3.47C18.611 3.17762 18.2905 3 17.9458 3H6.05425ZM19 9H5V13H19V9ZM19 15H5V19H19V15Z" fill="#CCD3DB"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M5 9H19V13H5V9ZM6 10H8V12H6V10ZM9 10H11V12H9V10Z" fill="#324558"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M5 15H19V19H5V15ZM6 16H8V18H6V16ZM9 16H11V18H9V16Z" fill="#324558"/>
+</symbol>
+
 </svg>`;
 export default svgSprites;
