@@ -1,5 +1,11 @@
 # @kubed/icons
 
+## 0.0.12
+
+### Patch Changes
+
+- [`e706678`](https://github.com/kubesphere/kube-design/commit/e70667829e232d147722766577a48447c49de38a) Thanks [@donniean](https://github.com/donniean)! - feat: add download-box.svg
+
 ## 0.0.11
 
 ### Patch Changes
