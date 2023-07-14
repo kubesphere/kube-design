@@ -1,5 +1,11 @@
 # @kubed/icons
 
+## 0.0.13
+
+### Patch Changes
+
+- [`5186c76`](https://github.com/kubesphere/kube-design/commit/5186c76081ed7132e47dc257b8db3e8edeb43f6d) Thanks [@donniean](https://github.com/donniean)! - add human-refresh icon
+
 ## 0.0.12
 
 ### Patch Changes
