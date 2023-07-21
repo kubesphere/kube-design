@@ -1,5 +1,47 @@
 # @kubed/icons
 
+## 0.0.13
+
+### Patch Changes
+
+- [`5186c76`](https://github.com/kubesphere/kube-design/commit/5186c76081ed7132e47dc257b8db3e8edeb43f6d) Thanks [@donniean](https://github.com/donniean)! - add human-refresh icon
+
+## 0.0.12
+
+### Patch Changes
+
+- [`e706678`](https://github.com/kubesphere/kube-design/commit/e70667829e232d147722766577a48447c49de38a) Thanks [@donniean](https://github.com/donniean)! - feat: add download-box.svg
+
+## 0.0.11
+
+### Patch Changes
+
+- [`76f2dda`](https://github.com/kubesphere/kube-design/commit/76f2ddaffd0fdaec22ccee34c6bb0c0a4b6e56ec) Thanks [@donniean](https://github.com/donniean)! - add a filebox icon
+
+## 0.0.10
+
+### Patch Changes
+
+- [`60c9c09`](https://github.com/kubesphere/kube-design/commit/60c9c098dc55da11d5d4d02f5fbee7c53864aaf2) Thanks [@donniean](https://github.com/donniean)! - add scan icon
+
+## 0.0.9
+
+### Patch Changes
+
+- [`a54f891`](https://github.com/kubesphere/kube-design/commit/a54f8918053e2bc6955de8e9fc6f7e2b23eafbb8) Thanks [@chenz24](https://github.com/chenz24)! - 1. add eck opensearch icon
+
+## 0.0.8
+
+### Patch Changes
+
+- [`4e7f7b0`](https://github.com/kubesphere/kube-design/commit/4e7f7b00754f8b7d83d89a081b8108c26c0fd74c) Thanks [@bunnymiao](https://github.com/bunnymiao)! - fix: Fix the inner content of accessmodes svg
+
+## 0.0.7
+
+### Patch Changes
+
+- [`4cda5c3`](https://github.com/kubesphere/kube-design/commit/4cda5c3e11dfd2b763049a0b8bcfb61c44273f47) Thanks [@bunnymiao](https://github.com/bunnymiao)! - feat: Add accessmodes icon
+
 ## 0.0.6
 
 ### Patch Changes

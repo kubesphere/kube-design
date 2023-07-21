@@ -1,12 +1,19 @@
 import * as React from 'react';
 import { createRef, useState } from 'react';
 import { Cluster } from '@kubed/icons';
+import styled from 'styled-components';
 import { Modal, Button, useModal } from '../index';
 
 export default {
   title: 'Components/Modal',
   component: Modal,
 };
+
+const HeaderExtra = styled.div`
+  position: absolute;
+  right: 30px;
+  top: 10px;
+`;
 
 export const Basic = () => {
   const [visible, setVisible] = useState(false);
@@ -30,9 +37,10 @@ export const Basic = () => {
         description="Modal description"
         titleIcon={<Cluster size={40} />}
         onCancel={closeModal}
-        footer={<div>footer</div>}
+        confirmLoading
+        headerExtra={<HeaderExtra>headerExtra</HeaderExtra>}
       >
-        Modal content
+        <div style={{ height: '300px' }} />
       </Modal>
     </>
   );
@@ -52,14 +60,44 @@ export const ImperativeModal = () => {
   const content = <Button onClick={openChildModal}>Nest Imperative Modal</Button>;
 
   const openModal = () => {
-    modal.open({
+    const modalId = modal.open({
       title: 'Imperative Modal',
       description: 'description text',
       content,
+      onOk: () => {
+        modal.close(modalId);
+      },
     });
   };
 
   return <Button onClick={openModal}>Imperative Modal</Button>;
+};
+
+export const AsyncModal = () => {
+  const modal = useModal();
+
+  const content = <div>modal content</div>;
+
+  const openModal = () => {
+    modal.open({
+      title: 'AsyncOk Modal',
+      description: 'description text',
+      content,
+      onAsyncOk: async () => {
+        await new Promise((resolve) => {
+          setTimeout(() => {
+            console.log('run function...');
+            resolve(1);
+          }, 1000);
+        }).then(() => {
+          console.log('run promise then');
+        });
+        return true;
+      },
+    });
+  };
+
+  return <Button onClick={openModal}>Async Modal</Button>;
 };
 
 export const Confirm = () => {
@@ -67,7 +105,13 @@ export const Confirm = () => {
   return (
     <Button
       onClick={() => {
-        modal.confirm({ title: 'confirm modal', content: 'confirm content' });
+        const modalId = modal.confirm({
+          title: 'confirm modal',
+          content: 'confirm content',
+          onOk: () => {
+            modal.close(modalId);
+          },
+        });
       }}
     >
       Imperative Modal

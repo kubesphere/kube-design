@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
 import cx from 'classnames';
 import { kebabCase } from '../../utils';
@@ -67,16 +68,18 @@ interface SideMenuProps {
 }
 
 export default function SideMenu({ title, category, menu, slug }: SideMenuProps) {
+  const { t } = useTranslation('menu');
+
   return (
     <SideMenuWrapper>
-      <CateTitle>{title}</CateTitle>
+      <CateTitle>{t(title)}</CateTitle>
       <MenuList>
         {menu.map((item) => {
           const kebabMenu = kebabCase(item);
           return (
             <li key={item} className={cx({ active: slug === kebabMenu })}>
               <Link href={`/${category}/${kebabMenu}`}>
-                <a>{item}</a>
+                <a>{t(item)}</a>
               </Link>
             </li>
           );

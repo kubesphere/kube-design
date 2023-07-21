@@ -11,6 +11,8 @@ import {
   Col,
   Button,
   useForm,
+  CheckboxGroup,
+  Checkbox,
 } from '../index';
 
 export default {
@@ -61,6 +63,14 @@ export const Basic = () => (
           rules={[{ required: true, message: 'Please input desc!' }]}
         >
           <Textarea autosize />
+        </FormItem>
+      </Col>
+      <Col span={6}>
+        <FormItem label="Country" name="country">
+          <CheckboxGroup>
+            <Checkbox label="China" value="China" />
+            <Checkbox label="USA" value="USA" />
+          </CheckboxGroup>
         </FormItem>
       </Col>
     </Row>

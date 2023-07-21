@@ -20,7 +20,7 @@ const SideBar = styled.div`
   top: 50px;
   bottom: 0;
   width: 200px;
-  padding-right: 40px;
+  padding-right: 20px;
   padding-left: 20px;
   margin-left: -20px;
   border-right: 1px solid ${({ theme }) => theme.palette.accents_2};

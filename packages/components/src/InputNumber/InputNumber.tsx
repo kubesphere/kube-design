@@ -17,6 +17,7 @@ const StyledInputNumber = styled(RcInputNumber)<RcInputNumberProps>`
   border: 1px solid ${({ theme }) => theme.palette.accents_4};
   color: ${({ theme }) => theme.palette.accents_7};
   transition: all 0.3s ease-in-out;
+  background-color: ${({ theme }) => theme.palette.background};
 
   &:hover {
     border-color: ${({ theme }) => theme.palette.accents_5};

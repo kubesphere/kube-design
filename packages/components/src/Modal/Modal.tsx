@@ -2,7 +2,8 @@ import React, { RefObject, useEffect, useImperativeHandle, useState } from 'reac
 import cx from 'classnames';
 import { isNull } from 'lodash';
 import { Close } from '@kubed/icons';
-import { StyledDialog } from './Modal.styles';
+
+import { StyledDialog, HeaderWrapper } from './Modal.styles';
 import { ButtonProps, Button } from '../Button/Button';
 import { useLocales } from '../ConfigProvider/LocaleProvider/LocaleContext';
 import { getTransitionName } from '../utils/motion';
@@ -47,6 +48,9 @@ export interface ModalProps {
 
   /** Custom header content */
   header?: React.ReactNode;
+
+  /** Custom header extra content */
+  headerExtra?: React.ReactNode;
 
   /** Custom footer content */
   footer?: React.ReactNode;
@@ -110,51 +114,12 @@ export interface ModalFuncProps extends Omit<ModalProps, 'forceRender' | 'destro
   okCancel?: boolean;
   id?: string;
   ref?: RefObject<ModalRef>;
+  onAsyncOk?: () => Promise<any>;
 }
 
 export const Modal = forwardRef<ModalProps, any>((props, ref) => {
   const { locales } = useLocales();
   const { Modal: modalLocales } = locales;
-
-  const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const { onCancel } = props;
-    onCancel?.(e);
-  };
-
-  const handleOk = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const { onOk } = props;
-    onOk?.(e);
-  };
-
-  const renderHeader = () => {
-    const { header, title, description, titleIcon } = props;
-    if (header || isNull(header)) return header;
-
-    return <Field value={title} label={description} avatar={titleIcon} />;
-  };
-
-  const renderFooter = () => {
-    const { footer, okText, cancelText, confirmLoading, cancelButtonProps, okButtonProps } = props;
-    if (footer || isNull(footer)) return footer;
-
-    return (
-      <>
-        <Button onClick={handleCancel} radius="xl" {...cancelButtonProps}>
-          {cancelText || modalLocales.cancelText}
-        </Button>
-        <Button
-          loading={confirmLoading}
-          onClick={handleOk}
-          radius="xl"
-          shadow
-          color="secondary"
-          {...okButtonProps}
-        >
-          {okText || modalLocales.okText}
-        </Button>
-      </>
-    );
-  };
 
   const {
     visible,
@@ -164,9 +129,51 @@ export const Modal = forwardRef<ModalProps, any>((props, ref) => {
     focusTriggerAfterClose = true,
     width = 600,
     wrapClassName,
+    confirmLoading,
+    destroyOnClose = true,
     ...restProps
   } = props;
   const [internalVisible, setInternalVisible] = useState(visible);
+  const [_confirmLoading, setConfirmLoading] = useState(confirmLoading);
+
+  const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const { onCancel } = props;
+    onCancel?.(e);
+  };
+
+  const handleOk = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const { onOk, onAsyncOk } = props;
+    if (onAsyncOk) {
+      setConfirmLoading(true);
+      const ret = await onAsyncOk();
+      setConfirmLoading(false);
+      if (ret) {
+        handleCancel(e);
+      }
+    } else {
+      onOk?.(e);
+    }
+  };
+
+  const renderHeader = () => {
+    const { header, title, description, titleIcon, headerExtra } = props;
+    if (header || isNull(header)) return header;
+
+    if (headerExtra) {
+      return (
+        <HeaderWrapper>
+          <Field value={title} label={description} avatar={titleIcon} />
+          {headerExtra}
+        </HeaderWrapper>
+      );
+    }
+
+    return <Field value={title} label={description} avatar={titleIcon} />;
+  };
+
+  useEffect(() => {
+    setConfirmLoading(confirmLoading);
+  }, [confirmLoading]);
 
   useEffect(() => {
     setInternalVisible(visible);
@@ -180,6 +187,29 @@ export const Modal = forwardRef<ModalProps, any>((props, ref) => {
     },
   }));
 
+  const renderFooter = () => {
+    const { footer, okText, cancelText, cancelButtonProps, okButtonProps } = props;
+    if (footer || isNull(footer)) return footer;
+
+    return (
+      <>
+        <Button onClick={handleCancel} radius="xl" {...cancelButtonProps}>
+          {cancelText || modalLocales.cancelText}
+        </Button>
+        <Button
+          loading={_confirmLoading}
+          onClick={handleOk}
+          radius="xl"
+          shadow
+          color="secondary"
+          {...okButtonProps}
+        >
+          {okText || modalLocales.okText}
+        </Button>
+      </>
+    );
+  };
+
   const renderCloseIcon = <>{closeIcon || <Close size={24} />}</>;
 
   return (
@@ -191,6 +221,7 @@ export const Modal = forwardRef<ModalProps, any>((props, ref) => {
       visible={internalVisible}
       width={width}
       closeIcon={renderCloseIcon}
+      destroyOnClose={destroyOnClose}
       onClose={handleCancel}
       title={renderHeader()}
       footer={renderFooter()}

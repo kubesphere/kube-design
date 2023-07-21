@@ -5,5 +5,9 @@
   "Guide": "上手指南",
   "Components": "组件",
   "Hooks": "Hooks",
-  "Widgets": "Widgets"
+  "Widgets": "Widgets",
+  "Name":"参数",
+  "Default":"默认值",
+  "Type":"类型",
+  "Description":"描述"
 }

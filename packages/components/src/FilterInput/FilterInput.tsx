@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, ReactNode } from 'react';
 import cx from 'classnames';
 import { find, isEmpty, trim, omit } from 'lodash';
 import { Magnifier, Close } from '@kubed/icons';
@@ -37,9 +37,11 @@ type Option = {
 type Filter = Record<string, any>;
 
 type Suggestion = {
-  label: string;
   key: string;
+  label: string;
   options?: Option[];
+  customLabel?: ReactNode;
+  customDropdown?: ReactNode;
 };
 
 export interface FilterInputProps extends DefaultProps {
@@ -78,6 +80,12 @@ export const FilterInput = forwardRef<FilterInputProps, null>((props, ref) => {
       setValue('');
     }
   }, [props.filters]);
+
+  useEffect(() => {
+    if (props.simpleMode) {
+      setValue(props.initialKeyword);
+    }
+  }, [props.initialKeyword]);
 
   const handleClear = (e) => {
     e.nativeEvent.stopImmediatePropagation();
@@ -148,7 +156,7 @@ export const FilterInput = forwardRef<FilterInputProps, null>((props, ref) => {
   const handleMenuClick = (suggestion: Suggestion) => {
     setActiveSuggestion(suggestion);
     setValue(`${suggestion.label}:`);
-    if (!suggestion.options) {
+    if (!suggestion.options && !suggestion.customDropdown) {
       inputRef.current.focus();
       setOptionVisible(false);
     }
@@ -193,15 +201,28 @@ export const FilterInput = forwardRef<FilterInputProps, null>((props, ref) => {
       <StyledMenu ref={optionRef} className="suggestion-menu">
         {sgs.map((sg) => (
           <MenuItem key={sg.key} onClick={() => handleMenuClick(sg)} className="menu-item">
-            {sg.label}
+            {sg.customLabel || sg.label}
           </MenuItem>
         ))}
       </StyledMenu>
     );
   };
 
-  const renderInput = () => {
+  const getDropdownContent = () => {
+    if (props.simpleMode) return null;
+
     let content;
+    if (activeSuggestion && activeSuggestion.customDropdown) {
+      content = activeSuggestion.customDropdown;
+    } else if (activeSuggestion && activeSuggestion.options) {
+      content = renderSuggestionOptions();
+    } else {
+      content = renderMenu();
+    }
+    return content;
+  };
+
+  const renderInput = () => {
     const input = (
       <input
         ref={inputRef}
@@ -217,12 +238,7 @@ export const FilterInput = forwardRef<FilterInputProps, null>((props, ref) => {
       />
     );
 
-    if (activeSuggestion && activeSuggestion.options) {
-      content = renderSuggestionOptions();
-    } else {
-      content = renderMenu();
-    }
-
+    const content = getDropdownContent();
     if (content) {
       return (
         <Dropdown

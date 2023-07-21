@@ -51,12 +51,20 @@ const TagWrapper = styled('div')<TagProps>`
   align-items: center;
   padding: ${({ title }) => (title ? '0 6px 0 2px' : '0 4px')};
   line-height: 20px;
+  height: 20px;
   border-radius: ${({ title, radius, theme }) =>
     radius ? themeUtils.getSizeValue(radius, theme.layout.radius) : title ? '3px' : '2px'};
   word-break: break-all;
-  white-space: normal;
+  white-space: nowrap;
   font-weight: 600;
   ${({ color, theme }) => getColor(color, theme)};
+
+  .tag-content {
+    white-space: nowrap;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
   .tag-close {
     margin-left: 6px;
@@ -136,7 +144,7 @@ export const Tag = forwardRef<TagProps, 'div'>(
       <TagWrapper ref={ref} radius={radius} title={title} color={color} {...rest}>
         {prepend}
         {title && <TagTitle style={titleStyle}>{title}</TagTitle>}
-        {children}
+        <span className="tag-content">{children}</span>
         {append}
         {closable && <Close variant="light" className="tag-close" onClick={handleClose} />}
       </TagWrapper>

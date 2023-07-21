@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'next-i18next';
 import { Text } from '@kubed/components';
 
 const Table = styled.table`
@@ -32,6 +33,11 @@ const Table = styled.table`
       border-bottom-right-radius: 4px;
     }
   }
+  thead {
+    tr {
+      text-align: left;
+    }
+  }
 
   tbody {
     tr {
@@ -54,15 +60,16 @@ interface TableProps {
 }
 
 export default function PropsTable({ component, data }: TableProps) {
+  const { t } = useTranslation('common');
   const listData = data[component];
   return (
     <Table>
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Default</th>
-          <th>Type</th>
-          <th>Description</th>
+          <th>{t('Name')}</th>
+          <th>{t('Default')}</th>
+          <th>{t('Type')}</th>
+          <th>{t('Description')}</th>
         </tr>
       </thead>
       <tbody>

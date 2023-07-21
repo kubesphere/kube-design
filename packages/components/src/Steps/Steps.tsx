@@ -114,6 +114,7 @@ export const Steps = forwardRef<StepsProps, 'div'>(
       if (index !== _children.length - 1 && variant === 'default') {
         acc.push(
           <StepsSeparator
+            className={cx('step-separator', { 'is-active': index < active })}
             $active={index < active}
             $vertical={orientation === 'vertical'}
             key={`separator-${index}`}
@@ -131,7 +132,7 @@ export const Steps = forwardRef<StepsProps, 'div'>(
     return (
       <StepsRoot
         ref={ref}
-        className={cx('steps-root', classNames, { 'steps-vertical': orientation === 'vertical' })}
+        className={cx('steps-root', className, { 'steps-vertical': orientation === 'vertical' })}
         {...rest}
       >
         <StepsWrapper className={cx('steps-wrapper', { 'steps-tab': variant === 'tab' })}>

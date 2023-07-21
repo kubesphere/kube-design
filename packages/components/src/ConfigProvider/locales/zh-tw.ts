@@ -8,6 +8,9 @@ const localeValues: ILocale = {
     cancelText: '取消',
     justOkText: '知道了',
   },
+  Pagination: {
+    totalItems: '總數:',
+  },
   DatePicker: PickerLocale,
 };
 
