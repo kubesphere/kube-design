@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.79
+
+### Patch Changes
+
+- [#168](https://github.com/kubesphere/kube-design/pull/168) [`9ca5129`](https://github.com/kubesphere/kube-design/commit/9ca512904adaab43bb770f3a91f54348158ac970) Thanks [@donniean](https://github.com/donniean)! - fix: resolved FilterInput bugs
+
 ## 0.0.78
 
 ### Patch Changes
