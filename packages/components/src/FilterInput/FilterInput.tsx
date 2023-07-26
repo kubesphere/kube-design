@@ -139,11 +139,11 @@ export const FilterInput = forwardRef<FilterInputProps, null>((props, ref) => {
   };
 
   const handleKeyUp = (e) => {
-    if (e.keyCode === 13 && !isEmpty(value)) {
+    if (e.keyCode === 13) {
       const { onChange = () => {}, filters, suggestions, simpleMode } = props;
       if (simpleMode) {
         onChange(value);
-      } else {
+      } else if (!isEmpty(value)) {
         const sg = activeSuggestion || suggestions[0];
         onChange({
           ...filters,
