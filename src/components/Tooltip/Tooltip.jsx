@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import Popper from "../Popper";
+import "./styles.scss";
+
 class Tooltip extends Component {
   static propTypes = {
     always: PropTypes.bool,
@@ -16,10 +18,17 @@ class Tooltip extends Component {
     always: false,
     trigger: "hover",
     placement: "top",
+    closeAfterClick: false,
   };
 
   render() {
-    const { children, className, content, ...restProps } = this.props;
+    const {
+      children,
+      className,
+      content,
+      hideOnClick,
+      ...restProps
+    } = this.props;
 
     if ([undefined, null, ""].includes(content)) return children;
 
@@ -29,6 +38,9 @@ class Tooltip extends Component {
         content={content}
         className={classNames("tooltip", className)}
         type="tooltip"
+        hideOnClick={
+          hideOnClick ?? this.props.trigger === "click" ? true : false
+        }
       >
         {children}
       </Popper>
