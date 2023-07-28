@@ -19,13 +19,13 @@ Basic usages for ``Tooltip`` component.
 <Preview>
   <Story name="basic tooltip">
     <div style={{ textAlign: "center", padding: 40 }}>
-      <Tooltip content="Kube Design" placement="left">
+      <Tooltip content="Kube Design" placement="left" always>
         <Button>Left</Button>
       </Tooltip>
-      <Tooltip content="Kube Design">
+      <Tooltip content="Kube Design" trigger="click">
         <Button>Top</Button>
       </Tooltip>
-      <Tooltip content="Kube Design" placement="bottom">
+      <Tooltip content="Kube Design" placement="bottom" trigger='hover'>
         <Button>Bottom</Button>
       </Tooltip>
       <Tooltip content="Kube Design" placement="right">

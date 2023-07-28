@@ -1,74 +1,20 @@
 @import "../../styles/variables";
-
-$popper-z-index: 100;
+@import "../../styles/mixins";
 
 .popper {
-  position: fixed;
-  border-radius: $border-radius;
-  background-clip: padding-box;
-  background-color: $popper-background;
-  box-shadow: $box-shadow;
-  opacity: 0;
-  white-space: normal;
-  text-align: left;
-  pointer-events: none;
-  z-index: $popper-z-index;
-  &.is-active {
+  &.tippy-box {
+    position: relative;
+    background-color: $popper-background;
+    color: #fff;
+    border-radius: $border-radius;
+    font-size: 14px;
+    line-height: 1.4;
+    white-space: normal;
+    outline: 0;
+    box-shadow: $box-shadow;
     opacity: 1;
+  }
+  &[data-state='visible'] {
     pointer-events: auto;
-    &[x-out-of-boundaries] {
-      opacity: 0;
-      pointer-events: none;
-    }
-  }
-}
-
-.popper-content {
-  padding: 9px 14px;
-}
-
-.popper-arrow {
-  position: absolute;
-  display: block;
-  width: $arrow-border-width;
-  height: $arrow-border-width;
-  background-color: $popper-background;
-  transform: rotate(45deg);
-  z-index: -1;
-}
-
-.popper[x-placement^="bottom"] {
-  margin-top: $arrow-margin;
-  .popper-arrow {
-    top: $arrow-border-width / -2;
-    border-top-left-radius: $border-radius / 2;
-    clip-path: polygon(0 0, 0 100%, 100% 0);
-  }
-}
-
-.popper[x-placement^="top"] {
-  margin-bottom: $arrow-margin;
-  .popper-arrow {
-    bottom: $arrow-border-width / -2;
-    border-bottom-right-radius: $border-radius / 2;
-    clip-path: polygon(100% 0, 0% 100%, 100% 100%);
-  }
-}
-
-.popper[x-placement^="left"] {
-  margin-right: $arrow-margin;
-  .popper-arrow {
-    right: $arrow-border-width / -2;
-    border-top-right-radius: $border-radius / 2;
-    clip-path: polygon(100% 0, 0 0, 100% 100%);
-  }
-}
-
-.popper[x-placement^="right"] {
-  margin-left: $arrow-margin;
-  .popper-arrow {
-    left: $arrow-border-width / -2;
-    border-bottom-left-radius: $border-radius / 2;
-    clip-path: polygon(0 100%, 0 0, 100% 100%);
   }
 }
