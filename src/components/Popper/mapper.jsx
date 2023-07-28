@@ -137,7 +137,6 @@ const mapperDefault = (props) => {
   if (!props.type) {
     return props;
   }
-  console.log(3333, defaultProps[props.type]);
   return {
     ...defaultProps.default,
     ...(defaultProps[props.type] ?? {}),
