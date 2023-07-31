@@ -5,136 +5,59 @@
   transition-property: opacity, margin-top;
   transition-duration: $trans-speed;
   transition-timing-function: cubic-bezier(0.175, 0.35, 0.32, 1);
-}
-.popper.dropdown.tippy-box {
-  .tippy-content {
-    padding: 0;
-    margin: 0;
-    border-radius: $border-radius;
+
+  &[x-placement^="bottom"] {
+    margin-top: 0;
   }
 
-  &.dropdown-dark {
-    .tippy-content {
-      background-color: $dropdown-dark-bg;
+  &[x-placement^="top"] {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  &.is-active {
+    opacity: 1;
+
+    &[x-placement^="bottom"] {
+      margin-top: $arrow-margin - 4px;
     }
 
-    .menu {
-      padding: 8px;
-      min-width: 208px;
-      border-radius: $border-radius;
-      background-color: $dropdown-dark-bg;
-      box-shadow: $dropdown-menu-shadow;
+    &[x-placement^="top"] {
+      margin-top: -($arrow-margin - 4px);
+    }
+  }
+}
 
-      &-item {
-        height: auto;
-        border-radius: 3px;
-        line-height: 20px;
-        padding: 6px 19px 6px 12px;
-        color: $dropdown-dark-text;
-        font-size: $size-small;
-        background-color: transparent;
+.dropdown-content {
+  padding: 0;
+  margin: 0;
+  border-radius: $border-radius;
+}
 
-        &:hover {
-          background-color: $dropdown-menu-item-hover;
-        }
+.dropdown-dark {
+  .dropdown-content {
+    background-color: $dropdown-dark-bg;
+  }
+
+  .menu {
+    padding: 8px;
+    min-width: 208px;
+    border-radius: $border-radius;
+    background-color: $dropdown-dark-bg;
+    box-shadow: $dropdown-menu-shadow;
+
+    &-item {
+      height: auto;
+      border-radius: 3px;
+      line-height: 20px;
+      padding: 6px 19px 6px 12px;
+      color: $dropdown-dark-text;
+      font-size: $size-small;
+      background-color: transparent;
+
+      &:hover {
+        background-color: $dropdown-menu-item-hover;
       }
     }
-  }
-
-  &[data-animation='fade'][data-state='hidden'] {
-    opacity: 0;
-  }
-  [data-tippy-root] {
-    max-width: calc(100vw - 10px);
-  }
-
-  &[data-inertia][data-state='visible'] {
-    transition-timing-function: cubic-bezier(0.54, 1.5, 0.38, 1.11);
-  }
-
-  &[data-placement^='top'] > .tippy-arrow {
-    bottom: 0;
-    &:before {
-      bottom: -7px;
-      left: 0;
-      border-width: 8px 8px 0;
-      border-top-color: initial;
-      transform-origin: center top;
-    }
-  }
-
-  &[data-placement^='bottom'] > .tippy-arrow {
-    top: 0;
-    &:before {
-      top: -7px;
-      left: 0;
-      border-width: 0 8px 8px;
-      border-bottom-color: initial;
-      transform-origin: center bottom;
-    }
-  }
-
-  &[data-placement^='left'] > .tippy-arrow {
-    right: 0;
-    &:before {
-      border-width: 8px 0 8px 8px;
-      border-left-color: initial;
-      right: -7px;
-      transform-origin: center left;
-    }
-  }
-
-  &[data-placement^='right'] > .tippy-arrow {
-    left: 0;
-    &:before {
-      left: -7px;
-      border-width: 8px 8px 8px 0;
-      border-right-color: initial;
-      transform-origin: center right;
-    }
-  }
-
-  .tippy-arrow {
-    width: 14px;
-    height: 14px;
-    &:before {
-      content: '';
-      position: absolute;
-      border-color: transparent;
-      border-style: solid;
-    }
-  }
-
-  // animation
-  &[data-animation='shift-toward-subtle'][data-state='hidden'] {
-    opacity: 0;
-  }
-  &[data-animation='shift-toward-subtle'][data-state='hidden'][data-placement^='top'][data-state='hidden'] {
-    transform: translateY(-5px);
-  }
-  &[data-animation='shift-toward-subtle'][data-state='hidden'][data-placement^='bottom'][data-state='hidden'] {
-    transform: translateY(5px);
-  }
-  &[data-animation='shift-toward-subtle'][data-state='hidden'][data-placement^='left'][data-state='hidden'] {
-    transform: translateX(-5px);
-  }
-  &[data-animation='shift-toward-subtle'][data-state='hidden'][data-placement^='right'][data-state='hidden'] {
-    transform: translateX(5px);
-  }
-
-  &[data-animation='shift-away'][data-state='hidden'] {
-    opacity: 0;
-  }
-  &[data-animation='shift-away'][data-state='hidden'][data-placement^='top'][data-state='hidden'] {
-    transform: translateY(10px);
-  }
-  &[data-animation='shift-away'][data-state='hidden'][data-placement^='bottom'][data-state='hidden'] {
-    transform: translateY(-15px);
-  }
-  &[data-animation='shift-away'][data-state='hidden'][data-placement^='left'][data-state='hidden'] {
-    transform: translateX(10px);
-  }
-  &[data-animation='shift-away'][data-state='hidden'][data-placement^='right'][data-state='hidden'] {
-    transform: translateX(-10px);
   }
 }
