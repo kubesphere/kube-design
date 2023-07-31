@@ -1,5 +1,5 @@
 {
-  "name": "@kube-design/components",
+  "name": "@kubed/design-components",
   "version": "0.0.0-development",
   "license": "MIT",
   "main": "lib/index.js",
