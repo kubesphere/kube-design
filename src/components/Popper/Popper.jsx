@@ -172,7 +172,7 @@ class Popper extends Component {
       placement: placementMapper[placement]
         ? placementMapper[placement]
         : "bottom",
-      positionFixed: this.props.positionFixed,
+      positionFixed: false,
       modifiers: this.props.modifiers,
     };
     this.popperInstance = new PopperJS(this.reference, this.popper, options);
