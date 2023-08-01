@@ -207,7 +207,7 @@ class Popper extends Component {
     if (visible) {
       this.hidePopper(e);
     } else {
-      fireEvent(document, "click");
+      fireEvent(e?.target?.parentNode ?? document, "click");
       this.runPopper(e);
     }
   };
