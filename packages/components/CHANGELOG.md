@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.80
+
+### Patch Changes
+
+- [#177](https://github.com/kubesphere/kube-design/pull/177) [`21e6b27`](https://github.com/kubesphere/kube-design/commit/21e6b27548b805241b1b688d500be49ac923c0c4) Thanks [@51wangping](https://github.com/51wangping)! - fix: English translation of DatePicker
+
 ## 0.0.79
 
 ### Patch Changes
