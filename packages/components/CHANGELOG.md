@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.81
+
+### Patch Changes
+
+- [#179](https://github.com/kubesphere/kube-design/pull/179) [`13d76ae`](https://github.com/kubesphere/kube-design/commit/13d76ae9d50712b81481d8903defc16085a3c91c) Thanks [@51wangping](https://github.com/51wangping)! - fix: DatePicker import dayjs
+
 ## 0.0.80
 
 ### Patch Changes
