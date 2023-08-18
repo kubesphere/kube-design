@@ -1,4 +1,5 @@
 import CalendarLocale from 'rc-picker/lib/locale/en_US';
+import dayjs from 'dayjs';
 import { PickerLocale } from '../generatePicker';
 import TimePickerLocale from '../../TimePicker/locales/en';
 
