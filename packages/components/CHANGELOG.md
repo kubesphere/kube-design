@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.82
+
+### Patch Changes
+
+- [#182](https://github.com/kubesphere/kube-design/pull/182) [`9aaafe8`](https://github.com/kubesphere/kube-design/commit/9aaafe8e4db406b3d73d3f71a7d0daaaa788c522) Thanks [@yazhouio](https://github.com/yazhouio)! - feat: TypeSelect add searchable props
+
 ## 0.0.81
 
 ### Patch Changes
