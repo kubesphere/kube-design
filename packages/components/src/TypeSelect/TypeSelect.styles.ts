@@ -2,10 +2,12 @@ import styled, { css } from 'styled-components';
 
 interface TypeSelectWrapperProps {
   $disabled: boolean;
+  $searchable: boolean;
 }
 
 interface ControlWrapperProps extends TypeSelectWrapperProps {
   $expanded: boolean;
+  $searchable: boolean;
 }
 
 type DropdownOptionProps = TypeSelectWrapperProps;
@@ -34,8 +36,7 @@ export const TypeSelectWrapper = styled('div')<TypeSelectWrapperProps>`
 export const ControlWrapper = styled('div')<ControlWrapperProps>`
   border-radius: 4px;
   border: 1px solid ${({ theme }) => theme.palette.border};
-  height: 64px;
-  padding: 12px 64px 12px 12px;
+  height: ${({ $searchable, $expanded }) => ($expanded && $searchable ? '110px' : '64px')};
   transition: all 0.3s ease-in-out;
   background-color: #fff;
 
@@ -58,9 +59,11 @@ export const DropdownArrow = styled.div`
   z-index: 999;
 `;
 
-export const DropdownWrapper = styled.div`
+export const DropdownWrapper = styled.div<{
+  $searchable: boolean;
+}>`
   position: absolute;
-  top: 63px;
+  top: ${({ $searchable }) => ($searchable ? '109px' : '63px')};
   left: 0px;
   width: 100%;
   border: 1px solid ${({ theme }) => theme.palette.accents_5};
@@ -82,4 +85,14 @@ export const DropdownOption = styled.div<DropdownOptionProps>`
   &:hover {
     background-color: ${({ $disabled, theme }) => ($disabled ? '' : theme.palette.accents_0)};
   }
+`;
+
+export const InputWrapper = styled.div`
+  padding: 6px;
+  background: #fff;
+  border-radius: 4px 4px 0 0;
+`;
+
+export const FieldWrapper = styled.div`
+  padding: 12px 64px 12px 12px;
 `;

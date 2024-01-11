@@ -12,7 +12,10 @@ import {
   DropdownWrapper,
   DropdownOption,
   DropdownArrow,
+  InputWrapper,
+  FieldWrapper,
 } from './TypeSelect.styles';
+import { Input } from '../Input/Input';
 
 interface OptionProps {
   /** Field label  */
@@ -35,11 +38,13 @@ export interface TypeSelectProps extends DefaultProps {
   options: OptionProps[];
   disabled?: boolean;
   onChange?: (value: any, option: OptionProps) => void;
+  searchable?: boolean;
 }
 
 export const TypeSelect = forwardRef<TypeSelectProps, 'div'>(
-  ({ options, value, defaultValue, disabled, className, onChange }, ref) => {
+  ({ options, value, defaultValue, disabled, className, onChange, searchable = false }, ref) => {
     const [expanded, setExpanded] = useState(false);
+    const [keyword, setKeyword] = useState('');
 
     const useClickOutsideRef = useClickOutside(() => {
       setExpanded(false);
@@ -71,27 +76,47 @@ export const TypeSelect = forwardRef<TypeSelectProps, 'div'>(
       }
     }, [value]);
 
+    const renderSearch = () => {
+      if (!expanded || !searchable) {
+        return null;
+      }
+      return (
+        <InputWrapper>
+          <Input
+            allowClear
+            value={keyword}
+            onChange={(e) => {
+              setKeyword(e.target.value);
+            }}
+          />
+        </InputWrapper>
+      );
+    };
+
     const renderControl = () => {
       const currentOption = options.find((option) => option.value === _value);
 
       if (!currentOption) {
-        return <ControlWrapper $disabled $expanded={false} />;
+        return <ControlWrapper $searchable={searchable} $disabled $expanded={false} />;
       }
 
       const { label, description, icon } = currentOption;
 
       return (
-        <ControlWrapper
-          onClick={() => {
-            if (!disabled) {
-              setExpanded(!expanded);
-            }
-          }}
-          $disabled={disabled}
-          $expanded={expanded}
-        >
-          <Field label={description} value={label} avatar={icon} />
-        </ControlWrapper>
+        <>
+          <ControlWrapper $searchable={searchable} $disabled={disabled} $expanded={expanded}>
+            {renderSearch()}
+            <FieldWrapper
+              onClick={() => {
+                if (!disabled) {
+                  setExpanded(!expanded);
+                }
+              }}
+            >
+              <Field label={description} value={label} avatar={icon} />
+            </FieldWrapper>
+          </ControlWrapper>
+        </>
       );
     };
 
@@ -104,7 +129,16 @@ export const TypeSelect = forwardRef<TypeSelectProps, 'div'>(
     };
 
     const renderDropdown = () => {
-      const dropdownOptions = options.filter((option) => option.value !== _value);
+      const dropdownOptions = options
+        .filter((option) => {
+          if (!searchable || !keyword) {
+            return true;
+          }
+          return [option.label, option.description, option.value].some(
+            (item) => typeof item === 'string' && item?.includes(keyword)
+          );
+        })
+        .filter((option) => option.value !== _value);
       return dropdownOptions.map((option) => {
         const { label, description, icon, value: optionValue, disabled: disabledOption } = option;
         return (
@@ -129,9 +163,10 @@ export const TypeSelect = forwardRef<TypeSelectProps, 'div'>(
         ref={mergedRef}
         className={cx(className, { 'is-expand': expanded })}
         $disabled={disabled}
+        $searchable={searchable}
       >
         {renderControl()}
-        {expanded && <DropdownWrapper>{renderDropdown()}</DropdownWrapper>}
+        {expanded && <DropdownWrapper $searchable={searchable}>{renderDropdown()}</DropdownWrapper>}
         {!expanded && (
           <DropdownArrow>
             <ChevronDown />
