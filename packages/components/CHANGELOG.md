@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.83
+
+### Patch Changes
+
+- [#184](https://github.com/kubesphere/kube-design/pull/184) [`44954c7`](https://github.com/kubesphere/kube-design/commit/44954c7fc98e6b853e197ee7237b0d59368ee4fc) Thanks [@yazhouio](https://github.com/yazhouio)! - fix: Fixed input controlled value
+
 ## 0.0.82
 
 ### Patch Changes
