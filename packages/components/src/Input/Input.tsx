@@ -109,7 +109,7 @@ export const Input = forwardRef<InputProps, 'input'>(
             disabled={disabled}
             readOnly={readOnly}
             {...rest}
-            value={fixControlledValue(selfValue)}
+            value={typeof value !== 'undefined' ? value : fixControlledValue(selfValue)}
             onChange={handleChange}
             onFocus={handleFocus}
             onBlur={handleBlur}

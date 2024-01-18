@@ -8,7 +8,36 @@ export default {
   component: Input,
 };
 
-export const Basic = () => <Input placeholder="please input some text" width={360} />;
+export const Basic = () => {
+  return <Input placeholder="please input some text" width={360} onChange={console.log} />;
+};
+
+export const Controlled = () => {
+  const [value, setValue] = React.useState<undefined | string>('');
+
+  return (
+    <div>
+      <Input
+        placeholder="please input some text"
+        width={360}
+        value={value}
+        onChange={(e) => {
+          setValue(e.target.value.slice(0, 6));
+        }}
+      />
+      <p>
+        <button
+          type="button"
+          onClick={() => {
+            setValue(undefined);
+          }}
+        >
+          clean
+        </button>
+      </p>
+    </div>
+  );
+};
 
 const suffix = (
   <Tooltip content="点击选择容器镜像">
