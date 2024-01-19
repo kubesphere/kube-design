@@ -1,5 +1,12 @@
 # @kubed/code-editor
 
+## 0.0.21
+
+### Patch Changes
+
+- Updated dependencies [[`28204d0`](https://github.com/kubesphere/kube-design/commit/28204d0adff3bb783051ce3a57d430857688f74f)]:
+  - @kubed/icons@0.0.14
+
 ## 0.0.20
 
 ### Patch Changes
