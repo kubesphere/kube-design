@@ -1,5 +1,13 @@
 # @kubed/icons
 
+## 0.0.15
+
+### Patch Changes
+
+- [#188](https://github.com/kubesphere/kube-design/pull/188) [`4984093`](https://github.com/kubesphere/kube-design/commit/4984093460b0360e3bcd0c50635a538c72f5b747) Thanks [@Leioy](https://github.com/Leioy)! - add message-read.svg
+
+* [#188](https://github.com/kubesphere/kube-design/pull/188) [`4984093`](https://github.com/kubesphere/kube-design/commit/4984093460b0360e3bcd0c50635a538c72f5b747) Thanks [@Leioy](https://github.com/Leioy)! - add three icons
+
 ## 0.0.14
 
 ### Patch Changes
