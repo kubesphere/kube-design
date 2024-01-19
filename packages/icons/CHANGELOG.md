@@ -1,5 +1,11 @@
 # @kubed/icons
 
+## 0.0.14
+
+### Patch Changes
+
+- [#186](https://github.com/kubesphere/kube-design/pull/186) [`28204d0`](https://github.com/kubesphere/kube-design/commit/28204d0adff3bb783051ce3a57d430857688f74f) Thanks [@Leioy](https://github.com/Leioy)! - add three icons
+
 ## 0.0.13
 
 ### Patch Changes
