@@ -1,5 +1,11 @@
 # @kubed/icons
 
+## 0.0.16
+
+### Patch Changes
+
+- [#190](https://github.com/kubesphere/kube-design/pull/190) [`f5d3e3d`](https://github.com/kubesphere/kube-design/commit/f5d3e3d5b5cb3e72911f93c7e11748ac2ee77674) Thanks [@donniean](https://github.com/donniean)! - add workspace and clock-subtract to icons
+
 ## 0.0.15
 
 ### Patch Changes
