@@ -38,3 +38,12 @@ export const Motion = () => (
     </StatusDot>
   </Group>
 );
+
+export const withoutShadow = () => (
+  <Group>
+    <StatusDot shadow={false} />
+    <StatusDot color="warning" shadow={false} />
+    <StatusDot color="success" shadow={false} />
+    <StatusDot color="error" shadow={false} />
+  </Group>
+);

@@ -39,12 +39,12 @@ const getColor = (color, theme: KubedTheme) => {
   return palette.accents_5;
 };
 
-const getDotColor = (color, theme) => {
+const getDotColor = (color, theme, shadow) => {
   const colorHex = getColor(color, theme);
   const colorRgb = colorToRgbValues(colorHex).join(' ');
   return css`
     background-color: ${addColorAlpha(colorHex, 0.1)};
-    box-shadow: 0 8px 16px 0 rgb(${colorRgb} / 36%);
+    ${shadow ? `box-shadow: 0 8px 16px 0 rgb(${colorRgb} / 36%);` : ''}
   `;
 };
 
@@ -59,7 +59,7 @@ const Dot = styled.span<StatusDotProps>`
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  ${({ color, theme }) => getDotColor(color, theme)};
+  ${({ color, theme, shadow }) => getDotColor(color, theme, shadow)};
   animation: ${({ motion }) => getAnimation(motion)};
 
   &:before {
@@ -90,15 +90,18 @@ export interface StatusDotProps {
   /** Disable animation status or not  */
   motion?: boolean;
 
+  /** Disable shadow or not  */
+  shadow?: boolean;
+
   /** className of label  */
   labelClassName?: string;
 }
 
 export const StatusDot = forwardRef<StatusDotProps, 'div'>(
-  ({ color, motion = false, labelClassName, children, ...rest }, ref) => {
+  ({ color, motion = false, shadow = true, labelClassName, children, ...rest }, ref) => {
     return (
       <DotWrapper ref={ref} {...rest}>
-        <Dot color={color} motion={motion} />
+        <Dot color={color} motion={motion} shadow={shadow} />
         {children && <Label className={labelClassName}>{children}</Label>}
       </DotWrapper>
     );
