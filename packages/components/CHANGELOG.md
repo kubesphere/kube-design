@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.0.87
+
+### Patch Changes
+
+- [#192](https://github.com/kubesphere/kube-design/pull/192) [`c51e0de`](https://github.com/kubesphere/kube-design/commit/c51e0de0919b643ab1fc80df25826926a5f30a77) Thanks [@donniean](https://github.com/donniean)! - add shadow prop in StatusDot
+
 ## 0.0.86
 
 ### Patch Changes
