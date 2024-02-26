@@ -23,6 +23,7 @@ export interface ChartBaseProps extends CategoricalChartProps {
   legendAlign?: 'left' | 'center' | 'right';
   legendFormatter?: LegendFormatter;
   maxActiveCategories?: number;
+  customTooltip?: (payload: any[]) => React.ReactNode;
 }
 
 export type ValueFormatter = {

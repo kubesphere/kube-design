@@ -38,6 +38,7 @@ export const LineChart = ({
   minValue,
   maxValue,
   colors,
+  customTooltip,
   legendVerticalAlign = 'top',
   legendAlign = 'right',
   legendFormatter,
@@ -118,15 +119,17 @@ export const LineChart = ({
         {showTooltip ? (
           <Tooltip
             wrapperStyle={{ outline: 'none' }}
-            content={({ active, payload, label }) => (
-              <TooltipContent
-                active={active}
-                payload={payload}
-                label={label}
-                valueFormatter={valueFormatter}
-                legendFormatter={legendFormatter}
-              />
-            )}
+            content={({ active, payload, label }) =>
+              (customTooltip && customTooltip(payload)) || (
+                <TooltipContent
+                  active={active}
+                  payload={payload}
+                  label={label}
+                  valueFormatter={valueFormatter}
+                  legendFormatter={legendFormatter}
+                />
+              )
+            }
           />
         ) : null}
         {categories.map((category) => (

@@ -46,6 +46,7 @@ export const AreaChart = ({
   minValue,
   maxValue,
   colors,
+  customTooltip,
   legendVerticalAlign = 'top',
   legendAlign = 'right',
   legendFormatter,
@@ -131,6 +132,7 @@ export const AreaChart = ({
           <Tooltip
             wrapperStyle={{ outline: 'none' }}
             content={({ active, payload, label }) => (
+              customTooltip && customTooltip(payload)) || (
               <TooltipContent
                 active={active}
                 payload={payload}
