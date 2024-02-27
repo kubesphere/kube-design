@@ -54,3 +54,4 @@ export { default as Drawer } from './Drawer/Drawer';
 export { default as Collapse } from './Collapse/Collapse';
 export { default as forwardRef } from './utils/forwardRef';
 export { default as toArray } from './utils/toArray';
+export * from './Table';
