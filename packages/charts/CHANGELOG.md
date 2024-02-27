@@ -1,5 +1,11 @@
 # @kubed/charts
 
+## 0.0.18
+
+### Patch Changes
+
+- [#195](https://github.com/kubesphere/kube-design/pull/195) [`041561e`](https://github.com/kubesphere/kube-design/commit/041561e5a2a37bc615a72d8713644f3ba7e26da5) Thanks [@fuchunlan](https://github.com/fuchunlan)! - Support customTooltip on Some charts
+
 ## 0.0.17
 
 ### Patch Changes
