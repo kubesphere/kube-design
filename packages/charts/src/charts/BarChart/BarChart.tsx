@@ -46,6 +46,7 @@ export const BarChart = ({
   minValue,
   maxValue,
   colors,
+  customTooltip,
   legendVerticalAlign = 'top',
   legendAlign = 'right',
   legendFormatter,
@@ -174,7 +175,8 @@ export const BarChart = ({
         {showTooltip ? (
           <Tooltip
             wrapperStyle={{ outline: 'none' }}
-            content={({ active, payload, label }) => (
+            content={({ active, payload, label }) =>  (
+              customTooltip && customTooltip(payload)) || (
               <TooltipContent
                 active={active}
                 payload={payload}
