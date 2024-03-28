@@ -71,6 +71,7 @@ export default class Group extends React.Component {
       }
       onChange(check);
     });
+    this.props.hanldeCheck(check)
   };
 
   handleTitleClick = () => {
