@@ -294,7 +294,7 @@ export default class Select extends React.Component {
     const { onFetch, pagination = {} } = this.props;
     const { page = 1 } = pagination;
     const { scrollTop, scrollHeight, clientHeight } = e.target;
-    if (scrollTop + clientHeight - scrollHeight >= 0) {
+    if (Math.abs(scrollTop + clientHeight - scrollHeight) <= 1) {
       this.reachBottom = true;
       onFetch({ page: page + 1, more: true });
     }
