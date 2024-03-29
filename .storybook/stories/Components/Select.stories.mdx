@@ -93,24 +93,10 @@ Basic usages for `Select` component.
 <Preview>
   <Story name="select-search">
     {() => {
-      const data = [
-        { value: "CentOS", label: "CentOS 5.8 32bit" },
-        { value: "Debian", label: "Debian Jessie 8.1 64bit" },
-        { value: "Ubuntu", label: "Ubuntu Server 14.04.3 LTS 64bit" },
-        { value: "Windows", label: "Windows Server 2003 R2" },
-        { value: "CentOS1", label: "CentOS 5.8 32bit" },
-        { value: "Debian1", label: "Debian Jessie 8.1 64bit" },
-        { value: "Ubuntu1", label: "Ubuntu Server 14.04.3 LTS 64bit" },
-        { value: "Windows1", label: "Windows Server 2003 R2" },
-        { value: "CentOS2", label: "CentOS 5.8 32bit" },
-        { value: "Debian2", label: "Debian Jessie 8.1 64bit" },
-        { value: "Ubuntu2", label: "Ubuntu Server 14.04.3 LTS 64bit" },
-        { value: "Windows2", label: "Windows Server 2003 R2" },
-        { value: "CentOS3", label: "CentOS 5.8 32bit" },
-        { value: "Debian3", label: "Debian Jessie 8.1 64bit" },
-        { value: "Ubuntu3", label: "Ubuntu Server 14.04.3 LTS 64bit" },
-        { value: "Windows3", label: "Windows Server 2003 R2" },
-      ];
+      const data = Array.from({ length: 60 }, (_, index) => ({
+        value: index.toString(),
+        label: `Option ${index + 1}`,
+      }));
       const [pagination, setPagination] = useState({
         page: 1,
         total: data.length,
