@@ -3,9 +3,12 @@ import * as React from 'react';
 import cx from 'classnames';
 import { TableLvContext } from './context';
 
-const TableBodyRoot = styled('tbody').attrs(({ className }) => cx(className, 'kube-table-body'))({
-  display: 'table-row-group',
-});
+const TableBodyRoot = styled('tbody').attrs(({ className }) => cx(className, 'kube-table-body'))(
+  ({ theme }) => ({
+    display: 'table-row-group',
+    borderBottom: `1px solid ${theme.palette.accents_1}`,
+  })
+);
 
 interface TableBodyProps {
   className?: string;
