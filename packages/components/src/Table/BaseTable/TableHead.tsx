@@ -15,6 +15,7 @@ interface TableHeadProps {
 
 const TableHeadRoot = styled.thead`
   display: table-header-group;
+  border: ${({ theme }) => `1px solid ${theme.palette.accents_1}`};
 `;
 
 export const TableHead = React.forwardRef<

@@ -28,6 +28,8 @@ interface TableInnerProps {
   style?: React.CSSProperties;
 }
 
+export type { TableInnerProps as TableProps };
+
 export const Table = React.forwardRef<HTMLTableElement, React.PropsWithChildren<TableInnerProps>>(
   (props, ref) => {
     const {

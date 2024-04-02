@@ -8,7 +8,42 @@ const TableRowRoot = styled('tr')(({ theme }) => ({
   display: 'table-row',
   verticalAlign: 'middle',
   outline: 0,
+
+  '&:not(.selected) > td': {
+    borderTop: `1px solid ${theme.palette.accents_1}`,
+  },
+  '& + &.selected > td': {
+    borderBottom: 'transparent',
+  },
+  '&.selected + & > td': {
+    borderTop: `1px solid ${theme.palette.colors.green[2]}`,
+  },
+  '&.selected': {
+    backgroundColor: theme.palette.accents_1,
+    '& > td': {
+      borderTop: `1px solid ${theme.palette.colors.green[2]}`,
+      borderBottom: 'transparent',
+      '&:first-child': {
+        borderLeft: `1px solid ${theme.palette.colors.green[2]}`,
+      },
+      '&:last-child': {
+        borderRight: `1px solid ${theme.palette.colors.green[2]}`,
+      },
+    },
+    '& + & > td': {
+      borderTop: `1px solid transparent`,
+    },
+    '&:last-child > td': {
+      borderBottom: `1px solid ${theme.palette.colors.green[2]}`,
+    },
+  },
   '&.hover:hover': {
+    backgroundColor: theme.palette.accents_1,
+  },
+  '&.selected > td': {
+    backgroundColor: theme.palette.accents_1,
+  },
+  '&.hover:hover > td': {
     backgroundColor: theme.palette.accents_1,
   },
 }));

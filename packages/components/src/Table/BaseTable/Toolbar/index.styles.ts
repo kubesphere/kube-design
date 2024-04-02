@@ -14,6 +14,7 @@ export const ToolbarWrapper = styled.div`
   .toolbar-right {
     display: flex;
     align-items: center;
+    gap: 12px;
     flex-basis: auto;
     flex-grow: 0;
     flex-shrink: 0;
@@ -37,11 +38,11 @@ export const ToolbarInner = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  .btn-refresh,
+  gap: 12px;
+  /* .btn-refresh,
   .btn-setting {
     margin-left: 12px;
-  }
+  } */
 
   .menu-setting {
     padding: 4px 0;

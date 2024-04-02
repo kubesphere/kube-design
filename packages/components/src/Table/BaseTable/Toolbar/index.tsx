@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Refresh } from '@kubed/icons';
+import { Cogwheel, Refresh } from '@kubed/icons';
 
-import { Button, FilterInput } from '../../../index';
+import { Button, Dropdown, FilterInput } from '../../../index';
 import { useLocales } from '../../../ConfigProvider/LocaleProvider/LocaleContext';
 
 import { ToolbarWrapper, ToolbarInner, BatchActions } from './index.styles';
@@ -14,17 +14,18 @@ export type Suggestions = {
 
 export interface ToolbarProps {
   enableBatchActions: boolean;
-  handleEnableBatchActions?: (bool: boolean) => void;
+  enableSettingMenu?: boolean;
+  onDisableBatchActions?: () => void;
   enableFilters?: boolean;
   settingMenu?: React.ReactNode;
+  settingMenuText?: string;
   toolbarLeft?: React.ReactNode;
   toolbarRight?: React.ReactNode;
   batchActions?: React.ReactNode;
   filterProps: {
-    filters;
-    simpleSearch?: boolean;
+    filters?: any;
     placeholder?: string;
-    suggestions?: Suggestions;
+    suggestions: Suggestions;
     simpleMode?: boolean;
     onChange?: (value: any) => void;
     initialKeyword?: string;
@@ -40,13 +41,14 @@ export const Toolbar = (props: ToolbarProps) => {
   const {
     enableBatchActions,
     batchActions,
-    handleEnableBatchActions,
+    onDisableBatchActions,
     toolbarLeft,
     enableFilters,
     filterProps,
     toolbarRight,
     settingMenu,
     refetch,
+    enableSettingMenu = true,
   } = props;
   return (
     <ToolbarWrapper>
@@ -57,7 +59,7 @@ export const Toolbar = (props: ToolbarProps) => {
             <Button
               variant="text"
               className="cancel-select"
-              onClick={() => handleEnableBatchActions(false)}
+              onClick={() => onDisableBatchActions()}
             >
               {batchCancel}
             </Button>
@@ -71,7 +73,13 @@ export const Toolbar = (props: ToolbarProps) => {
           <Button variant="text" className="btn-refresh" onClick={refetch}>
             <Refresh />
           </Button>
-          {settingMenu}
+          {enableSettingMenu && (
+            <Dropdown content={settingMenu} placement="bottom-end" maxWidth={160}>
+              <Button variant="text" className="btn-setting">
+                <Cogwheel />
+              </Button>
+            </Dropdown>
+          )}
           {toolbarRight}
         </div>
       </ToolbarInner>

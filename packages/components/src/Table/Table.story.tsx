@@ -1,6 +1,26 @@
 import React from 'react';
-import { BaseTable } from './index';
+import { BaseTable, DataTable } from './index';
 import { Checkbox } from '../Checkbox/Checkbox';
+
+import {
+  ColumnDef,
+  PaginationState,
+  PaginationTableState,
+  RowSelectionState,
+  Updater,
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
+import { set } from 'lodash';
+import { Button } from '../Button/Button';
+import { Select } from '../Select/Select';
+import { Dropdown } from '../Dropdown/Dropdown';
+import { More, Pen } from '@kubed/icons';
+import { Menu, MenuItem } from '../Menu/Menu';
+import { useTable } from './DataTable';
 
 const { Table, TableBody, TableCell, TableHead, TableRow, Pagination, Toolbar } = BaseTable;
 export default {
@@ -171,7 +191,9 @@ export const basicTableWithFixedColumn = () => {
             <TableCell>Header 3</TableCell>
             <TableCell>Header 3</TableCell>
             <TableCell>Header 3</TableCell>
-            <TableCell>Header 3</TableCell>
+            <TableCell fixed="right" fixedLastRight fixedWidth={0}>
+              Header 3
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -188,7 +210,9 @@ export const basicTableWithFixedColumn = () => {
               </TableCell>
               <TableCell>{row.col3}</TableCell>
               <TableCell>{row.col3}</TableCell>
-              <TableCell>{row.col3}</TableCell>
+              <TableCell fixed="right" fixedLastRight fixedWidth={0}>
+                {row.col3}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -264,20 +288,18 @@ export const TableWithPaginationAndToolbar = () => {
   };
 
   const enableBatchActions = selectedIds.length > 0;
-  const setEnableBatchActions = (enable: boolean) => {
-    if (!enable) {
-      setSelectedIds([]);
-    }
+  const setEnableBatchActions = () => {
+    setSelectedIds([]);
   };
 
   return (
     <>
       <Toolbar
         enableBatchActions={enableBatchActions}
-        handleEnableBatchActions={setEnableBatchActions}
+        onDisableBatchActions={setEnableBatchActions}
         enableFilters={false}
         filterProps={{
-          filters: [],
+          suggestions: [],
           onChange: () => {},
         }}
         toolbarRight={<div>Toolbar Right</div>}
@@ -353,4 +375,314 @@ export const TableWithPaginationAndToolbar = () => {
       />
     </>
   );
+};
+
+type Person = {
+  firstName: string;
+  lastName: string;
+  age: number;
+  visits: number;
+  status: string;
+  progress: number;
+};
+
+const defaultData: Person[] = Array.from({ length: 100 }, (_, i) => ({
+  firstName: `firstName-${i}`,
+  lastName: `lastName-${i}`,
+  age: i,
+  visits: i,
+  status: `status-${i}`,
+  progress: i,
+}));
+
+const defaultColumns: ColumnDef<Person>[] = [
+  {
+    header: 'Name',
+    footer: (props) => props.column.id,
+    columns: [
+      {
+        accessorKey: 'firstName',
+        cell: (info) => info.getValue(),
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorFn: (row) => row.lastName,
+        id: 'lastName',
+        cell: (info) => info.getValue(),
+        header: () => <span>Last Name</span>,
+        footer: (props) => props.column.id,
+        enableHiding: true,
+      },
+    ],
+  },
+  {
+    header: 'Info',
+    footer: (props) => props.column.id,
+    columns: [
+      {
+        accessorKey: 'age',
+        header: () => 'Age',
+        footer: (props) => props.column.id,
+      },
+      {
+        header: 'More Info',
+        columns: [
+          {
+            accessorKey: 'visits',
+            header: () => <span>Visits</span>,
+            footer: (props) => props.column.id,
+          },
+          {
+            accessorKey: 'status',
+            header: 'Status',
+            footer: (props) => props.column.id,
+          },
+          {
+            accessorKey: 'progress',
+            header: 'Profile Progress',
+            footer: (props) => props.column.id,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'actions',
+    cell: () => (
+      <Dropdown
+        content={
+          <Menu>
+            <MenuItem icon={<Pen />}>Edit</MenuItem>
+          </Menu>
+        }
+      >
+        <Button variant="text" radius="lg">
+          <More size={16} />
+        </Button>
+      </Dropdown>
+    ),
+  },
+];
+
+export const BaseDataTable = () => {
+  const [data, setData] = React.useState(() => [...defaultData]);
+  const [columns] = React.useState<typeof defaultColumns>(() => [...defaultColumns]);
+  const [columnVisibility, setColumnVisibility] = React.useState({});
+
+  // const rerender = React.useReducer(() => ({}), {})[1];
+  const table = useReactTable({
+    data,
+    columns,
+    state: {
+      columnVisibility,
+    },
+    onColumnVisibilityChange: setColumnVisibility,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    debugTable: true,
+    debugHeaders: true,
+    debugColumns: true,
+    meta: {
+      enableToolbar: true,
+      enablePagination: true,
+      paginationProps: {
+        config: {
+          autoResetPageIndex: true,
+        },
+      },
+    },
+  });
+  return <DataTable.DataTable table={table} />;
+};
+
+export const DataTableWithRemoteData = () => {
+  const [pagination, setPagination] = React.useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const [loading, setLoading] = React.useState(false);
+  const [columns] = React.useState<typeof defaultColumns>(() => [...defaultColumns]);
+  const total = 100;
+  const data = React.useMemo(() => {
+    if (loading) {
+      return [];
+    }
+    return [...Array(pagination.pageSize)].map((_, i) => ({
+      firstName: `page-${pagination.pageIndex}-firstName-${i}`,
+      lastName: `lastName-${i}`,
+      age: i,
+      visits: i,
+      status: `status-${i}`,
+      progress: i,
+    }));
+  }, [pagination, loading]);
+  const [columnVisibility, setColumnVisibility] = React.useState({});
+
+  React.useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, [pagination]);
+
+  const table = useReactTable({
+    data,
+    columns,
+    state: {
+      columnVisibility,
+      pagination,
+    },
+    autoResetPageIndex: false,
+    pageCount: Math.ceil(total / pagination.pageSize),
+    onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: setPagination,
+    getCoreRowModel: getCoreRowModel(),
+    manualPagination: true,
+    debugTable: true,
+    debugHeaders: true,
+    debugColumns: true,
+    debugAll: true,
+    meta: {
+      manual: true,
+      enableToolbar: true,
+      enablePagination: true,
+      paginationProps: {
+        total,
+        config: {
+          autoResetPageIndex: true,
+        },
+      },
+    },
+  });
+
+  return <DataTable.DataTable table={table} />;
+};
+
+export const DataTableWithSelected = () => {
+  const [pagination, setPagination] = React.useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({}); //manage your own row selection state
+
+  console.log(3333, pagination);
+  const handlePagination = (p: Updater<PaginationState>) => {
+    console.log(p(pagination));
+    setRowSelection({});
+    setPagination(p);
+  };
+  const [loading, setLoading] = React.useState(false);
+  const [columns] = React.useState<typeof defaultColumns>(() => [
+    {
+      id: 'selection',
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllRowsSelected()}
+          indeterminate={table.getIsSomeRowsSelected()}
+          onChange={table.getToggleAllRowsSelectedHandler()} //or getToggleAllPageRowsSelectedHandler
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          disabled={!row.getCanSelect()}
+          onChange={row.getToggleSelectedHandler()}
+        />
+      ),
+    },
+    ...defaultColumns,
+  ]);
+  const total = 100;
+  const data = React.useMemo(() => {
+    if (loading) {
+      return [];
+    }
+    return [...Array(pagination.pageSize)].map((_, i) => ({
+      firstName: `page-${pagination.pageIndex}-firstName-${i}`,
+      lastName: `lastName-${i}`,
+      age: i,
+      visits: i,
+      status: `status-${i}`,
+      progress: i,
+    }));
+  }, [pagination, loading]);
+
+  React.useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, [pagination]);
+
+  const table = useTable<Person>({
+    tableName: 'xxx',
+    data,
+    columns,
+    enableStateToStorage: true,
+    enablePagination: true,
+    enableVisible: true,
+    enableParamsToUrl: true,
+    storageStateKeys: ['columnVisibility'],
+    state: {
+      // columnVisibility,
+      pagination,
+      rowSelection, //pass the row selection state back to the table instance
+    },
+    autoResetPageIndex: false,
+    getRowId: (row) => row.firstName,
+    pageCount: Math.ceil(total / pagination.pageSize),
+    onRowSelectionChange: setRowSelection, //hoist up the row selection state to your own scope
+    onPaginationChange: handlePagination,
+    getCoreRowModel: getCoreRowModel(),
+    manualPagination: true,
+    debugTable: true,
+    debugHeaders: true,
+    debugColumns: true,
+    debugAll: true,
+    meta: {
+      manual: true,
+      enableToolbar: true,
+      enableFilters: true,
+      paginationProps: {
+        total,
+        config: {
+          autoResetPageIndex: true,
+        },
+      },
+      getToolbarProps: () => {
+        return {
+          batchActions: <Button> Delete </Button>,
+          toolbarLeft: <Select />,
+          toolbarRight: (
+            <Button variant="filled" color="secondary" shadow radius="xl">
+              Create
+            </Button>
+          ),
+        };
+      },
+      getFiltersProps: () => {
+        return {
+          simpleMode: false,
+          suggestions: [
+            {
+              key: 'age',
+              label: 'Age',
+              options: [
+                {
+                  key: '0',
+                  label: '0',
+                },
+                {
+                  key: '1',
+                  label: '1',
+                },
+              ],
+            },
+          ],
+        };
+      },
+    },
+  });
+
+  return <DataTable.DataTable table={table} />;
 };

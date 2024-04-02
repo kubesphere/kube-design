@@ -3,7 +3,7 @@ import * as React from 'react';
 import cx from 'classnames';
 import { useTableContext, useTableLvContext } from './context';
 
-interface TableCellProps {
+export type TableCellProps = {
   padding?: 'none' | 'normal';
   align?: 'left' | 'center' | 'right' | 'justify';
   className?: string;
@@ -16,7 +16,8 @@ interface TableCellProps {
   fixedLastLeft?: boolean;
   fixedLastRight?: boolean;
   style?: React.CSSProperties;
-}
+  hasBorder?: boolean;
+} & React.HTMLProps<HTMLTableCellElement>;
 
 type OwnerState = Pick<
   TableCellProps & { stickyHeader?: boolean },
@@ -30,6 +31,7 @@ type OwnerState = Pick<
   | 'fixedWidth'
   | 'fixedLastLeft'
   | 'fixedLastRight'
+  | 'hasBorder'
 >;
 const TableCellRoot = styled.td<{
   $ownerState: OwnerState;
@@ -47,6 +49,7 @@ const TableCellRoot = styled.td<{
       fixedWidth,
       fixedLastLeft,
       fixedLastRight,
+      hasBorder = false,
     },
   }) => {
     const paddingV =
@@ -67,7 +70,10 @@ const TableCellRoot = styled.td<{
     return {
       display: 'table-cell',
       verticalAlign: 'inherit',
-      borderBottom: `1px solid ${theme.palette.accents_1}`,
+      ...(hasBorder && {
+        border: `1px solid ${theme.palette.accents_1}`,
+        borderBottom: 'transparent',
+      }),
       ...(ariaSort && {
         ariaSort: ariaSort === 'asc' ? 'ascending' : 'descending',
       }),
@@ -98,11 +104,27 @@ const TableCellRoot = styled.td<{
       }),
       ...(fixedLastLeft && {
         '&:after': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          width: 30,
+          transform: 'translateX(100%)',
+          pointerEvents: 'none',
           boxShadow: 'inset 10px 0 8px -8px #0505050f',
         },
       }),
       ...(fixedLastRight && {
-        '&:after': {
+        '&:before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          bottom: 0,
+          width: 30,
+          transform: 'translateX(-100%)',
+          pointerEvents: 'none',
           boxShadow: 'inset -10px 0 8px -8px #0505050f',
         },
       }),
@@ -127,16 +149,16 @@ export const TableCell = React.forwardRef<
       fixedWidth,
       fixedLastLeft,
       fixedLastRight,
+      hasBorder = false,
       ...other
     },
     ref
   ) => {
     const table = useTableContext();
     const tableLv = useTableLvContext();
-    const variant = variantProp || (tableLv && tableLv.variant);
+    const variant = variantProp || ((tableLv && tableLv.variant) as 'head' | 'body');
 
     const cellProps = {
-      ref,
       ariaSort,
       variant,
       padding: padding || (table && table.padding ? table.padding : 'normal'),
@@ -147,13 +169,13 @@ export const TableCell = React.forwardRef<
       fixedWidth,
       fixedLastLeft,
       fixedLastRight,
+      hasBorder,
     };
     const isHeadCell = tableLv && tableLv.variant === 'head';
     const component = isHeadCell ? 'th' : 'td';
-    console.log(cellProps.stickyHeader);
     return (
       <TableCellRoot
-        as={component}
+        as={component as any}
         className={cx('table-cell', className)}
         $ownerState={cellProps}
         ref={ref}
