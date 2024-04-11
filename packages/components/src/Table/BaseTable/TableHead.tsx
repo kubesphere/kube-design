@@ -19,8 +19,10 @@ const TableHeadRoot = styled.thead<{
   $ownerState: {
     stickyHeader?: boolean;
   };
-}>(({ $ownerState: { stickyHeader } }) => ({
+}>(({ $ownerState: { stickyHeader }, theme }) => ({
   display: 'table-header-group',
+  backgroundColor: theme.palette.background,
+
   ...(stickyHeader && {
     position: 'sticky',
     top: 0,

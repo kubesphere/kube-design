@@ -70,8 +70,7 @@ const TableCellRoot = styled.td<{
     return {
       display: 'table-cell',
       verticalAlign: 'inherit',
-      boxShadow: `inset 0 -1px 0 0 ${theme.palette.accents_1}`,
-
+      // boxShadow: `inset 0 -1px 0 0 ${theme.palette.accents_1}`,
       ...(hasBorder && {
         borderLeft: `1px solid ${theme.palette.accents_1}`,
         '&:last-child': {
@@ -104,7 +103,6 @@ const TableCellRoot = styled.td<{
         position: 'sticky',
         top: 0,
         zIndex: fixed ? 3 : 2,
-        backgroundColor: theme.palette.background,
       }),
       ...(fixedLastLeft && {
         '&:after': {

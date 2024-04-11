@@ -8,36 +8,39 @@ const TableRowRoot = styled('tr')`
   display: table-row;
   vertical-align: middle;
   outline: 0;
-  &.selected {
-    background-color: ${({ theme }) => theme.palette.accents_1};
-    box-shadow: inset 0 0 0 1px ${({ theme }) => theme.palette.colors.green[2]};
-    & + & {
-      box-shadow: none;
-    }
-    & > td {
-      border: transparent;
-      &:first-child {
-        border-left: 1px solid ${({ theme }) => theme.palette.colors.green[2]};
-      }
-      &:last-child {
-        border-right: 1px solid ${({ theme }) => theme.palette.colors.green[2]};
-      }
-    }
-    &.selected:last-child {
-      & > td {
-        border-bottom: 1px solid ${({ theme }) => theme.palette.colors.green[2]};
-      }
-    }
+  &:first-child > th {
+    border-top: 1px solid ${({ theme }) => theme.palette.accents_1};
+  }
+  & > td {
+    box-shadow: ${({ theme }) => `inset 0 -1px 0 0 ${theme.palette.accents_1}`};
+  }
+  & > th {
+    box-shadow: ${({ theme }) => `inset 0 -1px 0 0 ${theme.palette.accents_1}`};
   }
 
-  &.selected + & {
-    box-shadow: inset 0px 1px 0px 0px ${({ theme }) => theme.palette.colors.green[2]};
-  }
-  &.hover:hover {
+  &.selected > td {
     background-color: ${({ theme }) => theme.palette.accents_1};
-    /* & > td {
-      background-color: ${({ theme }) => theme.palette.accents_1};
-    } */
+    &:first-child {
+      border-left: 1px solid ${({ theme }) => theme.palette.colors.green[2]};
+    }
+    &:last-child {
+      border-right: 1px solid ${({ theme }) => theme.palette.colors.green[2]};
+    }
+  }
+  &:not(.selected) + &.selected,
+  &.selected:first-child,
+  &.selected + &:not(.selected) {
+    > td {
+      box-shadow: inset 0px 1px 0px 0px ${({ theme }) => theme.palette.colors.green[2]};
+    }
+  }
+  &.selected:last-child {
+    > td {
+      border-bottom: 1px solid ${({ theme }) => theme.palette.colors.green[2]};
+    }
+  }
+  &.hover:hover > td {
+    background-color: ${({ theme }) => theme.palette.accents_1};
   }
 `;
 

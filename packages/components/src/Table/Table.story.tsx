@@ -139,7 +139,7 @@ export const basicTableWithFixedHeader = () => {
             <TableCell>Header 3</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody hasBorder>
           {data.map((row) => (
             <TableRow key={row.col1}>
               <TableCell>{row.col1}</TableCell>
@@ -184,7 +184,7 @@ export const basicTableWithFixedColumn = () => {
           <col width="100" />
           <col width="100" />
         </colgroup>
-        <TableHead>
+        <TableHead hasBorder>
           <TableRow>
             <TableCell fixed="left" fixedWidth={0}>
               Header 1
@@ -200,7 +200,7 @@ export const basicTableWithFixedColumn = () => {
             </TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody hasBorder>
           {data.map((row) => (
             <TableRow key={row.col1}>
               <TableCell fixed="left" fixedWidth={0}>
