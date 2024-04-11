@@ -4,27 +4,29 @@ import cx from 'classnames';
 import { TableLvContext } from './context';
 
 const TableBodyRoot = styled('tbody').attrs(({ className }) => cx(className, 'kube-table-body'))(
-  ({ theme }) => ({
+  () => ({
     display: 'table-row-group',
-    borderBottom: `1px solid ${theme.palette.accents_1}`,
   })
 );
 
 interface TableBodyProps {
   className?: string;
   style?: React.CSSProperties;
+  hasBorder?: boolean;
 }
 
 const tableLv = {
   variant: 'body',
+  hasBorder: false,
 } as const;
 
 export const TableBody = React.forwardRef<
   HTMLTableSectionElement,
   React.PropsWithChildren<TableBodyProps>
->(({ className, ...other }, ref) => {
+>(({ className, hasBorder = tableLv.hasBorder, ...other }, ref) => {
+  const lv = React.useMemo(() => ({ ...tableLv, hasBorder }), [hasBorder]);
   return (
-    <TableLvContext.Provider value={tableLv}>
+    <TableLvContext.Provider value={lv}>
       <TableBodyRoot ref={ref} {...other} />
     </TableLvContext.Provider>
   );

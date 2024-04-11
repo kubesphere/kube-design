@@ -1,8 +1,8 @@
 import { Table, flexRender } from '@tanstack/react-table';
 import * as React from 'react';
-import * as BaseTable from '../BaseTable';
-import { getDefaultTdProps, getDefaultThProps } from './utils';
 import styled from 'styled-components';
+import * as BaseTable from '../BaseTable';
+import { getDefaultThProps } from './utils';
 
 interface BaseDataTableProps<T> {
   table: Table<T>;
@@ -18,7 +18,7 @@ export function BaseDataTable<T>({ table }: BaseDataTableProps<T>) {
 
   return (
     <TableContainer>
-      <BaseTable.Table>
+      <BaseTable.Table stickyHeader>
         <BaseTable.TableHead>
           {table.getHeaderGroups().map((headerGroup) => (
             <BaseTable.TableRow>

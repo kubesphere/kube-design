@@ -128,7 +128,11 @@ export const basicTableWithFixedHeader = () => {
       }}
     >
       <Table stickyHeader>
-        <TableHead>
+        <TableHead hasBorder>
+          <TableRow>
+            <TableCell colSpan={2}>Header 1</TableCell>
+            <TableCell colSpan={1}>Header 2</TableCell>
+          </TableRow>
           <TableRow>
             <TableCell>Header 1</TableCell>
             <TableCell>Header 2</TableCell>
@@ -565,9 +569,7 @@ export const DataTableWithSelected = () => {
   });
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({}); //manage your own row selection state
 
-  console.log(3333, pagination);
   const handlePagination = (p: Updater<PaginationState>) => {
-    console.log(p(pagination));
     setRowSelection({});
     setPagination(p);
   };

@@ -10,6 +10,7 @@ export const useTableContext = () => React.useContext(TableContext);
 
 export const TableLvContext = React.createContext<{
   variant?: 'body' | 'head';
+  hasBorder?: boolean;
 }>({});
 
 export const useTableLvContext = () => React.useContext(TableLvContext);

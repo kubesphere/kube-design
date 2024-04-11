@@ -70,9 +70,13 @@ const TableCellRoot = styled.td<{
     return {
       display: 'table-cell',
       verticalAlign: 'inherit',
+      boxShadow: `inset 0 -1px 0 0 ${theme.palette.accents_1}`,
+
       ...(hasBorder && {
-        border: `1px solid ${theme.palette.accents_1}`,
-        borderBottom: 'transparent',
+        borderLeft: `1px solid ${theme.palette.accents_1}`,
+        '&:last-child': {
+          borderRight: `1px solid ${theme.palette.accents_1}`,
+        },
       }),
       ...(ariaSort && {
         ariaSort: ariaSort === 'asc' ? 'ascending' : 'descending',
@@ -149,7 +153,7 @@ export const TableCell = React.forwardRef<
       fixedWidth,
       fixedLastLeft,
       fixedLastRight,
-      hasBorder = false,
+      hasBorder,
       ...other
     },
     ref
@@ -169,7 +173,7 @@ export const TableCell = React.forwardRef<
       fixedWidth,
       fixedLastLeft,
       fixedLastRight,
-      hasBorder,
+      hasBorder: hasBorder ?? (tableLv && tableLv.hasBorder),
     };
     const isHeadCell = tableLv && tableLv.variant === 'head';
     const component = isHeadCell ? 'th' : 'td';
