@@ -1,24 +1,20 @@
 import React from 'react';
+import {
+  ColumnDef,
+  getCoreRowModel,
+  getPaginationRowModel,
+  PaginationState,
+  RowSelectionState,
+  Updater,
+  useReactTable,
+} from '@tanstack/react-table';
+import { More, Pen } from '@kubed/icons';
 import { BaseTable, DataTable } from './index';
 import { Checkbox } from '../Checkbox/Checkbox';
 
-import {
-  ColumnDef,
-  PaginationState,
-  PaginationTableState,
-  RowSelectionState,
-  Updater,
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from '@tanstack/react-table';
-import { set } from 'lodash';
 import { Button } from '../Button/Button';
 import { Select } from '../Select/Select';
 import { Dropdown } from '../Dropdown/Dropdown';
-import { More, Pen } from '@kubed/icons';
 import { Menu, MenuItem } from '../Menu/Menu';
 import { useTable } from './DataTable';
 
@@ -178,15 +174,15 @@ export const basicTableWithFixedColumn = () => {
       >
         <colgroup>
           <col width="100" />
-          <col width="100" />
-          <col width="100" />
+          <col width="200" />
           <col />
-          <col width="100" />
+          <col />
+          <col />
           <col width="100" />
         </colgroup>
         <TableHead hasBorder>
           <TableRow>
-            <TableCell fixed="left" fixedWidth={0}>
+            <TableCell fixed="left" fixedWidth={0} width={100}>
               Header 1
             </TableCell>
             <TableCell fixed="left" fixedWidth={100} fixedLastLeft>
@@ -240,40 +236,40 @@ export const TableWithPaginationAndToolbar = () => {
     setSelectedIds([]);
   };
 
-  const columns = React.useMemo(() => {
-    return [
-      {
-        key: 'col1',
-        title: 'col1',
-        width: 100,
-        minWidth: 100,
-        maxWidth: 100,
-        render: (value: any) => {
-          return <div>{value}</div>;
-        },
-      },
-      {
-        key: 'col2',
-        title: 'col2',
-        width: 100,
-        minWidth: 100,
-        maxWidth: 100,
-        render: (value: any) => {
-          return <div>{value}</div>;
-        },
-      },
-      {
-        key: 'col3',
-        title: 'col3',
-        width: 100,
-        minWidth: 100,
-        maxWidth: 100,
-        render: (value: any) => {
-          return <div>{value}</div>;
-        },
-      },
-    ];
-  }, []);
+  // const columns = React.useMemo(() => {
+  //   return [
+  //     {
+  //       key: 'col1',
+  //       title: 'col1',
+  //       width: 100,
+  //       minWidth: 100,
+  //       maxWidth: 100,
+  //       render: (value: any) => {
+  //         return <div>{value}</div>;
+  //       },
+  //     },
+  //     {
+  //       key: 'col2',
+  //       title: 'col2',
+  //       width: 100,
+  //       minWidth: 100,
+  //       maxWidth: 100,
+  //       render: (value: any) => {
+  //         return <div>{value}</div>;
+  //       },
+  //     },
+  //     {
+  //       key: 'col3',
+  //       title: 'col3',
+  //       width: 100,
+  //       minWidth: 100,
+  //       maxWidth: 100,
+  //       render: (value: any) => {
+  //         return <div>{value}</div>;
+  //       },
+  //     },
+  //   ];
+  // }, []);
   const data = React.useMemo(() => {
     return [...Array(10)].map((_, i) => ({
       col1: `page-${page}-col1-${i}`,
@@ -469,7 +465,7 @@ const defaultColumns: ColumnDef<Person>[] = [
 ];
 
 export const BaseDataTable = () => {
-  const [data, setData] = React.useState(() => [...defaultData]);
+  const [data] = React.useState(() => [...defaultData]);
   const [columns] = React.useState<typeof defaultColumns>(() => [...defaultColumns]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
 
