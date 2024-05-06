@@ -42,6 +42,8 @@ declare module '@tanstack/react-table' {
   }
 
   interface TableMeta<TData extends RowData> {
+    tableName: string;
+    storageStateKeys?: (keyof TableState)[];
     manual?: boolean;
     enable?: {
       pagination?: boolean;
@@ -94,10 +96,9 @@ interface TableInstance<T> extends Table<T>, TableInnerProps {}
 export interface DataTableProps<T> {
   className?: string;
   table: TableInstance<T>;
-  tableProps?: BaseTable.TableProps;
 }
 
-export function DataTable<T>({ className, table }: DataTableProps<T>) {
+export function TableRoot<T>({ className, table }: DataTableProps<T>) {
   const { options: { meta: { enable: { pagination, toolbar } } = {} } = {} } = table;
   return (
     <div className={cx('table-container', className)}>
