@@ -26,6 +26,7 @@ interface TableInnerProps {
   stickyHeader?: boolean;
   className?: string;
   style?: React.CSSProperties;
+  tableWrapperClassName?: string;
 }
 
 export type { TableInnerProps as TableProps };
@@ -37,6 +38,7 @@ export const Table = React.forwardRef<HTMLTableElement, React.PropsWithChildren<
       size = 'medium',
       stickyHeader = false,
       className,
+      tableWrapperClassName,
       ...other
     } = props;
 
@@ -50,12 +52,14 @@ export const Table = React.forwardRef<HTMLTableElement, React.PropsWithChildren<
     );
     return (
       <TableContext.Provider value={table}>
-        <TableRoot
-          {...other}
-          $stickyHeader={stickyHeader}
-          ref={ref}
-          className={cx(className, 'kube-table')}
-        />
+        <div className={cx(tableWrapperClassName, 'kube-table-wrapper')}>
+          <TableRoot
+            {...other}
+            $stickyHeader={stickyHeader}
+            ref={ref}
+            className={cx(className, 'kube-table')}
+          />
+        </div>
       </TableContext.Provider>
     );
   }

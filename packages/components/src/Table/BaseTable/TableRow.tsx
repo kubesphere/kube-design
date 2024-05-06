@@ -44,7 +44,7 @@ const TableRowRoot = styled('tr')`
   }
 `;
 
-interface TableRowProps {
+export interface TableRowProps {
   className?: string;
   hover?: boolean;
   selected?: boolean;

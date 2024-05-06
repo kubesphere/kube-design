@@ -36,11 +36,11 @@ const filedMapper = (params: Record<string, string>) => {
 export const changeEventMiddleware =
   <TData>(next: Next<TData>) =>
   (options: TableOptions<TData>) => {
-    const { meta: { registerEvents = [] } = {} } = options;
+    const { meta: { __registerEvents = [] } = {} } = options;
     Object.entries(eventDefaultConfig).forEach(([key, value]) => {
       const event = options[key];
       if (event) {
-        registerEvents.push({
+        __registerEvents.push({
           eventNames: value as unknown as 'state',
           callback: event,
           stopPropagation: true,
@@ -73,14 +73,14 @@ export const initStateByStorageMiddleware =
 export const visibleMiddleware =
   <TData>(next: Next<TData>) =>
   (options: TableOptions<TData>): TableOptions<TData> => {
-    const { enableVisible, initialState, state, meta: { registerEvents = [] } = {} } = options;
+    const { enableVisible, initialState, state, meta: { __registerEvents = [] } = {} } = options;
     const initState = initialState?.columnVisibility ?? {};
     const [visibility, setVisibility] = React.useState(initState);
     if (!enableVisible) {
       return next(options);
     }
 
-    registerEvents.push({
+    __registerEvents.push({
       eventNames: 'columnVisibility',
       callback: setVisibility,
       stopPropagation: false,
@@ -131,14 +131,14 @@ export const filtersMiddleware =
       manual,
       state,
       initialState,
-      meta: { registerEvents = [] },
+      meta: { __registerEvents = [], enable = {} },
     } = options;
     const [columnFilters, setColumnFilters] = React.useState([]);
     if (!enableFilters) {
       return next(options);
     }
 
-    registerEvents.push({
+    __registerEvents.push({
       eventNames: 'columnFilters',
       callback: setColumnFilters,
       stopPropagation: false,
@@ -161,7 +161,10 @@ export const filtersMiddleware =
     return {
       ...base,
       meta: {
-        enableFilters: true,
+        enable: {
+          ...enable,
+          filters: true,
+        },
       },
     };
   };
@@ -176,7 +179,7 @@ export const paginationMiddleware =
       state,
       initialState: { pagination: defaultPagination } = {},
       meta,
-      meta: { registerEvents = [] } = {},
+      meta: { __registerEvents = [] } = {},
     } = options;
     const [pagination, setPagination] = React.useState({
       pageSize: defaultPagination?.pageSize ?? 10,
@@ -187,10 +190,9 @@ export const paginationMiddleware =
     }
 
     const handleChange = (newPagination) => {
-      console.log(1111);
       setPagination(newPagination);
     };
-    registerEvents.push({
+    __registerEvents.push({
       eventNames: 'pagination',
       callback: handleChange,
       stopPropagation: false,
@@ -206,7 +208,7 @@ export const paginationMiddleware =
       onPaginationChange: handleChange,
       meta: {
         ...meta,
-        registerEvents,
+        __registerEvents,
         enablePagination,
       },
     };
@@ -226,22 +228,22 @@ export const initEventBusMiddleware =
   <TData>(next: Next<TData>) =>
   (options: TableOptions<TData>) => {
     const eventBusRef = React.useRef(new EventBus());
-    const { meta, meta: { registerEvents: _events = [] } = {} } = options;
+    const { meta, meta: { __registerEvents: _events = [] } = {} } = options;
 
     const config = next({
       ...options,
       meta: {
         ...meta,
-        registerEvents: _events,
+        __registerEvents: _events,
       },
     });
-    const { state, meta: { registerEvents = [] } = {} } = config;
+    const { state, meta: { __registerEvents = [] } = {} } = config;
 
     const events = useMemo(() => {
       let eventKeys = [];
       // TODO: event just need register one time
       eventBusRef.current.clear();
-      registerEvents.forEach((event) => {
+      __registerEvents.forEach((event) => {
         eventKeys = eventKeys.concat(event.eventNames);
         if (typeof event.eventNames === 'string' || event.eventNames.length === 1) {
           const eventName =
@@ -281,7 +283,7 @@ export const initEventBusMiddleware =
         };
       });
       return events1;
-    }, [registerEvents]);
+    }, [__registerEvents]);
 
     return {
       ...config,

@@ -1,6 +1,7 @@
 import { Table, useReactTable } from '@tanstack/react-table';
-import { TableOptions } from '../Table';
+import { useMemo } from 'react';
 
+import { TableOptions } from '../Table';
 import {
   changeEventMiddleware,
   filtersMiddleware,
@@ -11,7 +12,6 @@ import {
   paginationMiddleware,
   visibleMiddleware,
 } from '../utils/middleware';
-import { useMemo } from 'react';
 
 const defaultMiddlewares = [
   initEventBusMiddleware,
@@ -28,17 +28,17 @@ export function useTable<TData>(options: TableOptions<TData>): Table<TData> {
     const {
       enableDefaultMiddlewares = true,
       meta,
-      meta: { middlewares = [], registerEvents = [] } = {},
+      meta: { __middlewares = [], __registerEvents = [] } = {},
     } = options;
     const useMiddleware = middleware(
       ...((enableDefaultMiddlewares ? defaultMiddlewares : []) as any[]),
-      ...middlewares
+      ...__middlewares
     );
     return useMiddleware({
       ...options,
       meta: {
         ...meta,
-        registerEvents,
+        __registerEvents,
       },
     });
   }, [options]);

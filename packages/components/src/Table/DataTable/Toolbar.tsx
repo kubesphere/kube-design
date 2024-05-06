@@ -10,20 +10,24 @@ interface ToolbarProps<T> {
 }
 
 export function Toolbar<T>({ table }: ToolbarProps<T>) {
-  const { options } = table;
-  const { meta = {} } = options;
-  const { enableToolbar, getToolbarProps } = meta;
+  const {
+    options: {
+      meta: {
+        enableDefault: { toolbar: enableDefault = true } = {},
+        getProps: { toolbar: getToolbarProps } = {},
+      } = {},
+    } = {},
+  } = table;
   const { locales } = useLocales();
 
-  if (!enableToolbar) {
-    return null;
-  }
   const props = (getToolbarProps ? getToolbarProps(table) : {}) as BaseTable.ToolbarProps;
   const { filterProps, ...rest } = props;
-  const defaultToolbarProps = getDefaultToolbarProps(table, {
-    ...props,
-    settingMenuText: props?.settingMenuText || locales.Table.settingMenuText,
-  });
+  const defaultToolbarProps = enableDefault
+    ? getDefaultToolbarProps(table, {
+        ...props,
+        settingMenuText: props?.settingMenuText || locales.Table.settingMenuText,
+      })
+    : ({ filterProps } as BaseTable.ToolbarProps);
 
   return <BaseTable.Toolbar {...defaultToolbarProps} {...rest} />;
 }

@@ -6,6 +6,7 @@ import type {
   Header,
   TableOptions as ReactTableOptions,
   TableState,
+  Row,
 } from '@tanstack/react-table';
 import { Pagination } from './Pagination';
 import * as BaseTable from '../BaseTable';
@@ -42,25 +43,43 @@ declare module '@tanstack/react-table' {
 
   interface TableMeta<TData extends RowData> {
     manual?: boolean;
-    pagination?: React.ReactNode;
-    enableToolbar?: boolean;
-    enablePagination?: boolean;
-    enableVisible?: boolean;
-    enableFilters?: boolean;
-    getFiltersProps?: (table: Table<TData>) => BaseTable.ToolbarProps['filterProps'];
-    getToolbarProps?: (
-      table: Table<TData>
-    ) => Partial<Omit<BaseTable.ToolbarProps, 'filtersProps' | 'enableFilters'>>;
-    getTableProps?: (table: Table<TData>) => Partial<BaseTable.TableProps>;
-    paginationProps?: Partial<BaseTable.BaseTablePaginationProps> & {
-      total?: number;
+    enable?: {
+      pagination?: boolean;
+      toolbar?: boolean;
+      visible?: boolean;
+      filters?: boolean;
     };
-    middlewares?: ((next: Next<TData>) => (options: TableOptions<TData>) => TableOptions<TData>)[];
-    getThProps?: (
-      table: Table<TData>,
-      header: Header<TData, unknown>
-    ) => Omit<BaseTable.TableCellProps, 'ref'>;
-    registerEvents?: {
+    enableDefault?: {
+      toolbar?: boolean;
+      th?: boolean;
+      td?: boolean;
+      tr?: boolean;
+    };
+    getProps?: {
+      filters?: (table: Table<TData>) => BaseTable.ToolbarProps['filterProps'];
+      toolbar?: (
+        table: Table<TData>
+      ) => Partial<Omit<BaseTable.ToolbarProps, 'filtersProps' | 'enableFilters'>>;
+      table?: (table: Table<TData>) => Partial<BaseTable.TableProps>;
+      th?: (
+        table: Table<TData>,
+        header: Header<TData, unknown>
+      ) => Omit<BaseTable.TableCellProps, 'ref'>;
+      pagination?: (table: Table<TData>) => Partial<BaseTable.BaseTablePaginationProps> & {
+        total?: number;
+      };
+      tr?: (table: Table<TData>, row: Row<TData>) => Partial<BaseTable.TableRowProps>;
+      td?: (
+        table: Table<TData>,
+        props: Record<string, any>
+      ) => Omit<BaseTable.TableCellProps, 'ref'>;
+    };
+
+    // Remove middlewares because it's difficult
+    __middlewares?: ((
+      next: Next<TData>
+    ) => (options: TableOptions<TData>) => TableOptions<TData>)[];
+    __registerEvents?: {
       eventNames: (keyof TableState | 'state')[] | (keyof TableState | 'state');
       stopPropagation?: boolean;
       callback: (args: Record<string, any>) => void;
@@ -79,11 +98,12 @@ export interface DataTableProps<T> {
 }
 
 export function DataTable<T>({ className, table }: DataTableProps<T>) {
+  const { options: { meta: { enable: { pagination, toolbar } } = {} } = {} } = table;
   return (
     <div className={cx('table-container', className)}>
-      <Toolbar table={table} />
+      {!!toolbar && <Toolbar table={table} />}
       <BaseDataTable table={table} />
-      <Pagination table={table} />
+      {!!pagination && <Pagination table={table} />}
     </div>
   );
 }

@@ -483,12 +483,16 @@ export const BaseDataTable = () => {
     debugHeaders: true,
     debugColumns: true,
     meta: {
-      enableToolbar: true,
-      enablePagination: true,
-      paginationProps: {
-        config: {
-          autoResetPageIndex: true,
-        },
+      enable: {
+        toolbar: true,
+        pagination: true,
+      },
+      getProps: {
+        pagination: () => ({
+          config: {
+            autoResetPageIndex: true,
+          },
+        }),
       },
     },
   });
@@ -544,13 +548,17 @@ export const DataTableWithRemoteData = () => {
     debugAll: true,
     meta: {
       manual: true,
-      enableToolbar: true,
-      enablePagination: true,
-      paginationProps: {
-        total,
-        config: {
-          autoResetPageIndex: true,
-        },
+      enable: {
+        toolbar: true,
+        pagination: true,
+      },
+      getProps: {
+        pagination: () => ({
+          total,
+          config: {
+            autoResetPageIndex: true,
+          },
+        }),
       },
     },
   });
@@ -639,45 +647,49 @@ export const DataTableWithSelected = () => {
     debugAll: true,
     meta: {
       manual: true,
-      enableToolbar: true,
-      enableFilters: true,
-      paginationProps: {
-        total,
-        config: {
-          autoResetPageIndex: true,
+      enable: {
+        toolbar: true,
+        pagination: true,
+      },
+      getProps: {
+        pagination: () => ({
+          total,
+          config: {
+            autoResetPageIndex: true,
+          },
+        }),
+        toolbar: () => {
+          return {
+            batchActions: <Button> Delete </Button>,
+            toolbarLeft: <Select />,
+            toolbarRight: (
+              <Button variant="filled" color="secondary" shadow radius="xl">
+                Create
+              </Button>
+            ),
+          };
         },
-      },
-      getToolbarProps: () => {
-        return {
-          batchActions: <Button> Delete </Button>,
-          toolbarLeft: <Select />,
-          toolbarRight: (
-            <Button variant="filled" color="secondary" shadow radius="xl">
-              Create
-            </Button>
-          ),
-        };
-      },
-      getFiltersProps: () => {
-        return {
-          simpleMode: false,
-          suggestions: [
-            {
-              key: 'age',
-              label: 'Age',
-              options: [
-                {
-                  key: '0',
-                  label: '0',
-                },
-                {
-                  key: '1',
-                  label: '1',
-                },
-              ],
-            },
-          ],
-        };
+        filters: () => {
+          return {
+            simpleMode: false,
+            suggestions: [
+              {
+                key: 'age',
+                label: 'Age',
+                options: [
+                  {
+                    key: '0',
+                    label: '0',
+                  },
+                  {
+                    key: '1',
+                    label: '1',
+                  },
+                ],
+              },
+            ],
+          };
+        },
       },
     },
   });

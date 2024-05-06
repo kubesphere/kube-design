@@ -18,16 +18,14 @@ const TableFooter = styled.div`
 `;
 export type { PaginationProps };
 export const Pagination = <T extends {}>({ table }: PaginationProps<T>) => {
-  const { options, getPrePaginationRowModel } = table;
-  const { meta = {} } = options;
-  const { enablePagination, paginationProps, manual } = meta;
+  const {
+    options: { meta: { manual, getProps: { pagination: getPaginationProps } = {} } = {} } = {},
+    getPrePaginationRowModel,
+  } = table;
 
-  const props = paginationProps || ({} as typeof paginationProps);
+  const props = getPaginationProps ? getPaginationProps(table) : {};
   if (!manual) {
     props.total = getPrePaginationRowModel().rows.length;
-  }
-  if (!enablePagination || isEmpty(props)) {
-    return null;
   }
 
   const instance: BaseTable.PaginationInstance = React.useMemo(() => {

@@ -1,5 +1,5 @@
 import { Eye, EyeClosed } from '@kubed/icons';
-import { Table } from '@tanstack/react-table';
+import { Row, Table } from '@tanstack/react-table';
 import { pick } from 'lodash';
 import * as React from 'react';
 import { Menu, MenuItem, MenuLabel } from '../../../index';
@@ -54,7 +54,12 @@ export function getDefaultToolbarProps<T>(
   props: Partial<ToolbarProps>
 ): Partial<ToolbarProps> & Pick<ToolbarProps, 'filterProps'> {
   const {
-    options: { meta: { enableFilters, getFiltersProps } = {} },
+    options: {
+      meta: {
+        enable: { filters: enableFilters } = {},
+        getProps: { filters: getFiltersProps } = {},
+      } = {},
+    },
   } = table;
   const { settingMenuText } = props;
   let { enableSettingMenu } = props;
@@ -132,10 +137,8 @@ export function getDefaultThProps<T>(table: Table<T>) {
   };
 }
 
-export function getDefaultTdProps<T>(table: Table<T>) {
-  const { options } = table;
-  const { enableRowSelection } = options;
+export function getDefaultTrProps<T>(table: Table<T>, row: Row<T>) {
   return {
-    selected: enableRowSelection,
+    selected: row.getIsSelected(),
   };
 }
