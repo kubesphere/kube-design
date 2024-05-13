@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Header, RowData, Table, flexRender } from '@tanstack/react-table';
 import { BaseTable, Dropdown, Menu, MenuItem, MenuLabel, Popover } from '../../index';
 import { getDefaultThProps } from './utils';
+import { useLocales } from '../../ConfigProvider/LocaleProvider/LocaleContext';
 
 const TWrapper = styled.div`
   display: inline-flex;
@@ -52,6 +53,8 @@ function TableHead<T>({ header, table }: PropsWithChildren<TableHeadProps<T>>) {
     selectType,
     sortable: _sortable,
   } = header.column.columnDef.meta ?? {};
+
+  const { locales } = useLocales();
 
   const {
     options: {
@@ -115,14 +118,14 @@ function TableHead<T>({ header, table }: PropsWithChildren<TableHeadProps<T>>) {
         <Menu className="filter-menu">
           {sortable && (
             <>
-              <MenuLabel>{'KUBE_OPERATE'}</MenuLabel>
+              <MenuLabel>{locales.Table.operate}</MenuLabel>
               <MenuItem
                 icon={<SortAscending />}
                 onClick={() => {
                   handleSort('ascending');
                 }}
               >
-                {'KUBE_ASCENDING_ORDER'}
+                {locales.Table.ascendingOrder}
               </MenuItem>
               <MenuItem
                 icon={<SortDescending />}
@@ -130,7 +133,7 @@ function TableHead<T>({ header, table }: PropsWithChildren<TableHeadProps<T>>) {
                   handleSort('descending');
                 }}
               >
-                {'KUBE_DESCENDING_ORDER'}
+                {locales.Table.descendingOrder}
               </MenuItem>
             </>
           )}

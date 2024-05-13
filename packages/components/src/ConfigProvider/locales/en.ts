@@ -23,6 +23,10 @@ const localeValues: ILocale = {
     refresh: 'Refresh',
     clearSearch: 'clear search conditions',
     settingMenuText: 'Customize Content',
+    operate: 'Operate',
+    ascendingOrder: 'Ascending Order',
+    descendingOrder: 'Descending Order',
+    Filter: 'Filter',
   },
 };
 

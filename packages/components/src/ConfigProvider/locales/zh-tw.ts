@@ -23,6 +23,10 @@ const localeValues: ILocale = {
     refresh: '刷新',
     clearSearch: '清除搜索條件',
     settingMenuText: '定制內容',
+    operate: '操作',
+    ascendingOrder: '升序',
+    descendingOrder: '降序',
+    Filter: '篩選',
   },
 };
 

@@ -914,11 +914,11 @@ export const DataTableWithDefault = () => {
 
   return (
     <>
-      <div>
+      {/* <div>
         <button onClick={() => forceUpdate()} type="button">
           forceUpdate
         </button>
-      </div>
+      </div> */}
       <DataTable.TableRoot table={table} />
     </>
   );

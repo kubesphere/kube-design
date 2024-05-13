@@ -16,6 +16,10 @@ export interface ILocale {
     refresh: string;
     clearSearch: string;
     settingMenuText: string;
+    operate: string;
+    ascendingOrder: string;
+    descendingOrder: string;
+    Filter: string;
   };
 }
 
