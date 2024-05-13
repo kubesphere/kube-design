@@ -1,24 +1,26 @@
-import { TableOptionsResolved, getFilteredRowModel } from '@tanstack/react-table';
+import { TableFeature, TableOptionsResolved, getFilteredRowModel } from '@tanstack/react-table';
 
-const getSortOptions = <TData>(options: TableOptionsResolved<TData>) => {
+const getFilterOptions = <TData>(options: TableOptionsResolved<TData>) => {
   const {
     meta: { manual },
   } = options;
   if (!manual) {
     return {
       enableSorting: true,
-      getSortedRowModel: getFilteredRowModel(),
+      getFilteredRowModel: getFilteredRowModel(),
       ...options,
     };
   }
   return {
     enableGlobalFilter: false,
-    enableSorting: true,
-    manualSorting: true,
+    enableColumnFilter: true,
+    manualFiltering: true,
     ...options,
   };
 };
 
-export const InitSortFeature = <TData>(options: TableOptionsResolved<TData>) => {
-  return getSortOptions(options);
+export const InitFilterFeature: TableFeature<any> = {
+  getDefaultOptionsResolved: (options) => {
+    return getFilterOptions(options);
+  },
 };

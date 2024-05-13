@@ -62,6 +62,7 @@ declare module '@tanstack/react-table' {
     filterOptions?: { key: string; label: React.ReactNode }[];
     selectType?: 'single' | 'multiple';
     sortable?: boolean;
+    searchKey?: string;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

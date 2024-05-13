@@ -58,7 +58,6 @@ export const Status2StorageFeature: TableFeature<any> = {
     if (tableName) {
       const key = `kube-table-${tableName}-state`;
       let storageParams = storage2State(key);
-      console.log(key, storageParams);
 
       if (storageStateKeys !== '*') {
         storageParams = pick(storageParams, storageStateKeys);

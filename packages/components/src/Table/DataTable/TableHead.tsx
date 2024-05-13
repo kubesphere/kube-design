@@ -50,15 +50,17 @@ function TableHead<T>({ header, table }: PropsWithChildren<TableHeadProps<T>>) {
   const {
     description,
     // filterOptions = [],
+    searchKey: _searchKey,
     selectType,
     sortable: _sortable,
   } = header.column.columnDef.meta ?? {};
 
   const { locales } = useLocales();
-
+  const { id } = header.column;
   const {
     options: {
       manualSorting,
+      manualFiltering,
       meta: {
         enableDefault: { th: enableTh = true } = {},
         getProps: { th: getThProps, filters: getFiltersProps } = {},
@@ -66,12 +68,16 @@ function TableHead<T>({ header, table }: PropsWithChildren<TableHeadProps<T>>) {
     } = {},
   } = table;
 
+  const searchKey = manualFiltering ? _searchKey ?? id : id;
+
   const suggestions = getFiltersProps?.(table)?.suggestions ?? [];
   const filterOptions =
-    suggestions.find((suggestion) => suggestion.key === header.column.id)?.options ?? [];
+    suggestions.find((suggestion) => suggestion.key === searchKey)?.options ?? [];
+
   const sortable = !manualSorting ? header.column.getCanSort() : _sortable;
 
   const { enableMultiSort = false } = table.options;
+
   const handleMultiSort = (direction: 'ascending' | 'descending') => {
     const { sorting } = table.getState();
     const currentSort = sorting.findIndex((sort) => sort.id === header.column.id);
@@ -100,15 +106,14 @@ function TableHead<T>({ header, table }: PropsWithChildren<TableHeadProps<T>>) {
   };
 
   const handleFilter = (value: any) => {
-    const { id } = header.column;
     const { columnFilters } = table.getState();
-    const currentFilter = columnFilters.findIndex((filter) => filter.id === id);
+    const currentFilter = columnFilters.findIndex((filter) => filter.id === searchKey);
     const isFiltered = currentFilter > -1;
     const newFilters = [...columnFilters];
     if (isFiltered) {
       newFilters.splice(currentFilter, 1);
     }
-    newFilters.push({ id, value });
+    newFilters.push({ id: searchKey, value });
     table.setColumnFilters(newFilters);
   };
 
@@ -139,7 +144,7 @@ function TableHead<T>({ header, table }: PropsWithChildren<TableHeadProps<T>>) {
           )}
           {filterOptions.length && (
             <>
-              <MenuLabel>{'KUBE_FILTER'}</MenuLabel>
+              <MenuLabel>{locales.Table.Filter}</MenuLabel>
               {filterOptions.map((option: any) => (
                 <MenuItem
                   key={option.key}

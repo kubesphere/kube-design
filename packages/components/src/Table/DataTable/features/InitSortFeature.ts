@@ -1,4 +1,4 @@
-import { TableFeature, TableOptionsResolved, getFilteredRowModel } from '@tanstack/react-table';
+import { TableFeature, TableOptionsResolved, getSortedRowModel } from '@tanstack/react-table';
 
 const getSortOptions = <TData>(options: TableOptionsResolved<TData>) => {
   const {
@@ -7,7 +7,7 @@ const getSortOptions = <TData>(options: TableOptionsResolved<TData>) => {
   if (!manual) {
     return {
       enableSorting: true,
-      getSortedRowModel: getFilteredRowModel(),
+      getSortedRowModel: getSortedRowModel(),
       ...options,
     };
   }
@@ -18,7 +18,7 @@ const getSortOptions = <TData>(options: TableOptionsResolved<TData>) => {
   };
 };
 
-export const InitFilterFeature: TableFeature<any> = {
+export const InitSortFeature: TableFeature<any> = {
   getDefaultOptionsResolved: (options) => {
     return getSortOptions(options);
   },

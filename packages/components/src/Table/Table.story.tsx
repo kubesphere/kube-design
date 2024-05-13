@@ -449,6 +449,7 @@ const defaultColumns: ColumnDef<Person>[] = [
             header: 'Status',
             footer: (props) => props.column.id,
             meta: {
+              searchKey: 'status1',
               filterOptions: [
                 {
                   key: 'status-0',
@@ -745,7 +746,7 @@ export const DataTableWithSelected = () => {
                 ],
               },
               {
-                key: 'status',
+                key: 'status1',
                 label: 'Status',
                 options: [
                   {
@@ -789,6 +790,7 @@ export const DataTableWithDefault = () => {
   const handleParams = (p: Updater<any>, key: string) => {
     setRowSelection({});
     const { pagination: page } = p;
+    console.log('change params', p);
     if (key === 'pagination') {
       setParams(p);
     } else {
@@ -892,7 +894,7 @@ export const DataTableWithDefault = () => {
                 ],
               },
               {
-                key: 'status',
+                key: 'status1',
                 label: 'Status',
                 options: [
                   {
@@ -998,7 +1000,7 @@ export const DataTableSimple = () => {
                 ],
               },
               {
-                key: 'status',
+                key: 'status1',
                 label: 'Status',
                 options: [
                   {
