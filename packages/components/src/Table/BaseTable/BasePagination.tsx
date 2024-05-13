@@ -89,7 +89,8 @@ interface PaginationInstance {
   getCanNextPage: () => boolean;
   getCanPreviousPage: () => boolean;
   getState: () => PaginationState;
-  getTotal: () => number;
+  getRowCount: () => number;
+  getPageCount: () => number;
   nextPage: () => void;
   previousPage: () => void;
   setPageIndex: (updater: Updater<number>) => void;
@@ -130,15 +131,16 @@ export const BasePagination = ({
     getCanNextPage,
     getCanPreviousPage,
     getState,
-    getTotal,
+    getRowCount,
+    getPageCount,
     nextPage,
     previousPage,
     setPageSize,
     setPageIndex,
   } = instance;
   const { pageIndex, pageSize } = getState();
-  const total = getTotal();
-  const pageCount = Math.ceil(total / pageSize);
+  const total = getRowCount();
+  const pageCount = getPageCount();
   const { locales } = useLocales();
   const { Pagination: pageLocales } = locales;
 
@@ -208,7 +210,9 @@ export const BasePagination = ({
           <Button
             variant="text"
             radius="sm"
-            onClick={() => nextPage()}
+            onClick={() => {
+              nextPage();
+            }}
             disabled={!getCanNextPage()}
           >
             <Next size={20} />

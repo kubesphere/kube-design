@@ -1,22 +1,22 @@
-import React from 'react';
+import { More, Pen } from '@kubed/icons';
 import {
   ColumnDef,
   getCoreRowModel,
   getPaginationRowModel,
-  PaginationState,
   RowSelectionState,
   Updater,
   useReactTable,
 } from '@tanstack/react-table';
-import { More, Pen } from '@kubed/icons';
-import { BaseTable, DataTable } from './index';
+import React, { useMemo } from 'react';
 import { Checkbox } from '../Checkbox/Checkbox';
+import { BaseTable, DataTable } from './index';
 
 import { Button } from '../Button/Button';
-import { Select } from '../Select/Select';
 import { Dropdown } from '../Dropdown/Dropdown';
 import { Menu, MenuItem } from '../Menu/Menu';
-import { useTable } from './DataTable';
+import { Select } from '../Select/Select';
+import { StateHandler, Status2StorageFeature, getDefaultTableOptions, useTable } from './DataTable';
+import { isFunction, set } from 'lodash';
 
 const { Table, TableBody, TableCell, TableHead, TableRow, Pagination, Toolbar } = BaseTable;
 export default {
@@ -423,6 +423,19 @@ const defaultColumns: ColumnDef<Person>[] = [
         accessorKey: 'age',
         header: () => 'Age',
         footer: (props) => props.column.id,
+        meta: {
+          sortable: true,
+          filterOptions: [
+            {
+              key: '0',
+              label: '0',
+            },
+            {
+              key: '1',
+              label: '1',
+            },
+          ],
+        },
       },
       {
         header: 'More Info',
@@ -436,6 +449,18 @@ const defaultColumns: ColumnDef<Person>[] = [
             accessorKey: 'status',
             header: 'Status',
             footer: (props) => props.column.id,
+            meta: {
+              filterOptions: [
+                {
+                  key: 'status-0',
+                  label: 'status-0',
+                },
+                {
+                  key: 'status-1',
+                  label: 'status-1',
+                },
+              ],
+            },
           },
           {
             accessorKey: 'progress',
@@ -483,6 +508,7 @@ export const BaseDataTable = () => {
     debugHeaders: true,
     debugColumns: true,
     meta: {
+      tableName: 'xxxx',
       enable: {
         toolbar: true,
         pagination: true,
@@ -496,7 +522,7 @@ export const BaseDataTable = () => {
       },
     },
   });
-  return <DataTable.DataTable table={table} />;
+  return <DataTable.TableRoot table={table} />;
 };
 
 export const DataTableWithRemoteData = () => {
@@ -547,6 +573,7 @@ export const DataTableWithRemoteData = () => {
     debugColumns: true,
     debugAll: true,
     meta: {
+      tableName: 'adadfssv',
       manual: true,
       enable: {
         toolbar: true,
@@ -563,19 +590,27 @@ export const DataTableWithRemoteData = () => {
     },
   });
 
-  return <DataTable.DataTable table={table} />;
+  return <DataTable.TableRoot table={table} />;
 };
 
 export const DataTableWithSelected = () => {
-  const [pagination, setPagination] = React.useState({
-    pageIndex: 0,
-    pageSize: 10,
+  // const [pagination, setPagination] = React.useState({
+  //   pageIndex: 0,
+  //   pageSize: 10,
+  // });
+  const [params, setParams] = React.useState({
+    pagination: {
+      pageIndex: 0,
+      pageSize: 10,
+    },
   });
+  const { pagination = {} } = params;
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({}); //manage your own row selection state
 
-  const handlePagination = (p: Updater<PaginationState>) => {
+  const handleParams = (p: Updater<any>) => {
+    console.log('handleParams', p);
     setRowSelection({});
-    setPagination(p);
+    setParams(p);
   };
   const [loading, setLoading] = React.useState(false);
   const [columns] = React.useState<typeof defaultColumns>(() => [
@@ -611,41 +646,60 @@ export const DataTableWithSelected = () => {
       status: `status-${i}`,
       progress: i,
     }));
-  }, [pagination, loading]);
+  }, [params, loading]);
 
   React.useEffect(() => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
     }, 2000);
-  }, [pagination]);
+  }, [params]);
 
+  const state = useMemo(() => {
+    return {
+      ...params,
+      rowSelection,
+    };
+  }, [params, rowSelection]);
+  const registerHandlers = React.useMemo(() => {
+    return [
+      {
+        handlerName: 'onParamsChange',
+        stateKeys: ['pagination', 'columnFilters', 'sorting'],
+      },
+      {
+        handlerName: 'onStateChange1',
+        stateKeys: '*',
+      },
+      {
+        handlerName: 'onRowSelectionChange1',
+        stateKeys: ['rowSelection'],
+      },
+    ] as StateHandler[];
+  }, []);
   const table = useTable<Person>({
-    tableName: 'xxx',
+    _features: [Status2StorageFeature],
     data,
     columns,
-    enableStateToStorage: true,
-    enablePagination: true,
-    enableVisible: true,
-    enableParamsToUrl: true,
-    storageStateKeys: ['columnVisibility'],
-    state: {
-      // columnVisibility,
-      pagination,
-      rowSelection, //pass the row selection state back to the table instance
-    },
+    state,
     autoResetPageIndex: false,
     getRowId: (row) => row.firstName,
-    pageCount: Math.ceil(total / pagination.pageSize),
+    rowCount: total,
     onRowSelectionChange: setRowSelection, //hoist up the row selection state to your own scope
-    onPaginationChange: handlePagination,
+    // onPaginationChange: handlePagination,
     getCoreRowModel: getCoreRowModel(),
+    onParamsChange: handleParams,
+    onStateChange1: (state) => {
+      console.log('onStateChange1', state);
+    },
     manualPagination: true,
     debugTable: true,
     debugHeaders: true,
     debugColumns: true,
     debugAll: true,
     meta: {
+      storageStateKeys: ['columnVisibility'],
+      tableName: 'adsv',
       manual: true,
       enable: {
         toolbar: true,
@@ -663,9 +717,14 @@ export const DataTableWithSelected = () => {
             batchActions: <Button> Delete </Button>,
             toolbarLeft: <Select />,
             toolbarRight: (
-              <Button variant="filled" color="secondary" shadow radius="xl">
-                Create
-              </Button>
+              <>
+                <Button variant="filled" color="secondary" shadow radius="xl">
+                  Create
+                </Button>
+                <Button variant="filled" color="secondary" shadow radius="xl">
+                  Create
+                </Button>
+              </>
             ),
           };
         },
@@ -687,6 +746,165 @@ export const DataTableWithSelected = () => {
                   },
                 ],
               },
+              {
+                key: 'status',
+                label: 'Status',
+                options: [
+                  {
+                    key: 'status-0',
+                    label: 'status-0',
+                  },
+                  {
+                    key: 'status-1',
+                    label: 'status-1',
+                  },
+                ],
+              },
+            ],
+          };
+        },
+      },
+      registerHandlers,
+    },
+  });
+  const forceUpdate = React.useReducer(() => ({}), {})[1];
+
+  return (
+    <>
+      <div>
+        <button onClick={() => forceUpdate()} type="button">
+          forceUpdate
+        </button>
+      </div>
+      <DataTable.TableRoot table={table} />
+    </>
+  );
+};
+
+export const DataTableWithDefault = () => {
+  const [params, setParams] = React.useState({
+    pagination: {
+      pageIndex: 0,
+      pageSize: 10,
+    },
+    columnFilters: [],
+    sorting: [],
+  } as any);
+  const { pagination = {} } = params;
+  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({}); //manage your own row selection state
+
+  const handleParams = (p: Updater<any>, key: string) => {
+    setRowSelection({});
+    const { pagination: page } = p;
+    if (key === 'pagination') {
+      setParams(p);
+    } else {
+      setParams({
+        ...p,
+        pagination: {
+          ...page,
+          pageIndex: 0,
+        },
+      });
+    }
+  };
+  const [loading, setLoading] = React.useState(false);
+  const [columns] = React.useState<typeof defaultColumns>(() => [
+    {
+      id: 'selection',
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllRowsSelected()}
+          indeterminate={table.getIsSomeRowsSelected()}
+          onChange={table.getToggleAllRowsSelectedHandler()} //or getToggleAllPageRowsSelectedHandler
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          disabled={!row.getCanSelect()}
+          onChange={row.getToggleSelectedHandler()}
+        />
+      ),
+    },
+    ...defaultColumns,
+  ]);
+  const total = 100;
+  const data = React.useMemo(() => {
+    if (loading) {
+      return [];
+    }
+    return [...Array(pagination.pageSize)].map((_, i) => ({
+      firstName: `page-${pagination.pageIndex}-firstName-${i}`,
+      lastName: `lastName-${i}`,
+      age: i,
+      visits: i,
+      status: `status-${i}`,
+      progress: i,
+    }));
+  }, [params, loading]);
+
+  const state = useMemo(() => {
+    return {
+      ...params,
+      rowSelection,
+    };
+  }, [params, rowSelection]);
+
+  const forceUpdate = React.useReducer(() => ({}), {})[1];
+
+  const defaultOption = React.useState(
+    getDefaultTableOptions<Person>('table1', true, {
+      enableSelection: true,
+      enableMultiSelection: true,
+    })
+  )[0];
+
+  const table = useTable<Person>({
+    ...defaultOption,
+    data,
+    columns,
+    onRowSelectionChange: setRowSelection,
+    onParamsChange: handleParams,
+    rowCount: total,
+    getRowId: (row) => row.firstName,
+    state,
+    meta: {
+      ...defaultOption.meta,
+      tableName: defaultOption.meta.tableName,
+      getProps: {
+        filters: () => {
+          return {
+            simpleMode: false,
+            suggestions: [
+              {
+                key: 'age',
+                label: 'Age',
+                options: [
+                  {
+                    key: '0',
+                    label: '0',
+                  },
+                  {
+                    key: '1',
+                    label: '1',
+                  },
+                ],
+              },
+              {
+                key: 'status',
+                label: 'Status',
+                options: [
+                  {
+                    key: 'status-0',
+                    label: 'status-0',
+                  },
+                  {
+                    key: 'status-1',
+                    label: 'status-1',
+                  },
+                ],
+              },
             ],
           };
         },
@@ -694,5 +912,120 @@ export const DataTableWithSelected = () => {
     },
   });
 
-  return <DataTable.DataTable table={table} />;
+  return (
+    <>
+      <div>
+        <button onClick={() => forceUpdate()} type="button">
+          forceUpdate
+        </button>
+      </div>
+      <DataTable.TableRoot table={table} />
+    </>
+  );
+};
+
+export const DataTableSimple = () => {
+  const [loading, setLoading] = React.useState(false);
+  const [columns] = React.useState<typeof defaultColumns>(() => [
+    {
+      id: 'selection',
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllRowsSelected()}
+          indeterminate={table.getIsSomeRowsSelected()}
+          onChange={table.getToggleAllRowsSelectedHandler()} //or getToggleAllPageRowsSelectedHandler
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          disabled={!row.getCanSelect()}
+          onChange={row.getToggleSelectedHandler()}
+        />
+      ),
+    },
+    ...defaultColumns,
+  ]);
+  const total = 100;
+  const data = React.useMemo(() => {
+    if (loading) {
+      return [];
+    }
+    return [...Array(100)].map((_, i) => ({
+      firstName: `firstName-${i}`,
+      lastName: `lastName-${i}`,
+      age: i,
+      visits: i,
+      status: `status-${i}`,
+      progress: i,
+    }));
+  }, [loading]);
+
+  const forceUpdate = React.useReducer(() => ({}), {})[1];
+
+  const defaultOption = React.useState(
+    getDefaultTableOptions<Person>('table1', false, {
+      enableSelection: true,
+      enableMultiSelection: false,
+    })
+  )[0];
+
+  const table = useTable<Person>({
+    ...defaultOption,
+    data,
+    columns,
+    getRowId: (row) => row.firstName,
+    meta: {
+      ...defaultOption.meta,
+      tableName: defaultOption.meta.tableName,
+      getProps: {
+        filters: () => {
+          return {
+            simpleMode: false,
+            suggestions: [
+              {
+                key: 'age',
+                label: 'Age',
+                options: [
+                  {
+                    key: '0',
+                    label: '0',
+                  },
+                  {
+                    key: '1',
+                    label: '1',
+                  },
+                ],
+              },
+              {
+                key: 'status',
+                label: 'Status',
+                options: [
+                  {
+                    key: 'status-0',
+                    label: 'status-0',
+                  },
+                  {
+                    key: 'status-1',
+                    label: 'status-1',
+                  },
+                ],
+              },
+            ],
+          };
+        },
+      },
+    },
+  });
+
+  return (
+    <>
+      <div>
+        <button onClick={() => forceUpdate()} type="button">
+          forceUpdate
+        </button>
+      </div>
+      <DataTable.TableRoot table={table} />
+    </>
+  );
 };

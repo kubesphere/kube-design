@@ -1,8 +1,7 @@
 import { Table } from '@tanstack/react-table';
-import { isEmpty } from 'lodash';
 import * as React from 'react';
-import { BaseTable } from '../index';
 import styled from 'styled-components';
+import { BaseTable } from '../index';
 
 interface PaginationProps<T> {
   table: Table<T>;
@@ -18,15 +17,10 @@ const TableFooter = styled.div`
 `;
 export type { PaginationProps };
 export const Pagination = <T extends {}>({ table }: PaginationProps<T>) => {
-  const {
-    options: { meta: { manual, getProps: { pagination: getPaginationProps } = {} } = {} } = {},
-    getPrePaginationRowModel,
-  } = table;
+  const { options: { meta: { getProps: { pagination: getPaginationProps } = {} } = {} } = {} } =
+    table;
 
   const props = getPaginationProps ? getPaginationProps(table) : {};
-  if (!manual) {
-    props.total = getPrePaginationRowModel().rows.length;
-  }
 
   const instance: BaseTable.PaginationInstance = React.useMemo(() => {
     return {
@@ -41,7 +35,8 @@ export const Pagination = <T extends {}>({ table }: PaginationProps<T>) => {
           table.setPageSize(pageSize);
         }
       },
-      getTotal: () => props.total,
+      getRowCount: () => table.getRowCount(),
+      getPageCount: () => table.getPageCount(),
       getState: () => table.getState().pagination,
     };
   }, [table, props.total]);

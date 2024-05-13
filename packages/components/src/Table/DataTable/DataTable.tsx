@@ -1,32 +1,68 @@
 import {
   ColumnDef,
+  RowData,
+  Table,
   TableMeta,
   TableOptions,
   getCoreRowModel,
-  useReactTable,
 } from '@tanstack/react-table';
 import * as React from 'react';
-import { TableRoot } from './Table';
+import { EnableConfig, TableRoot } from './Table';
 
-export const getDefaultTableOptions = <TData,>(
+import {
+  InitFilterFeature,
+  InitPaginationFeature,
+  InitSortFeature,
+  Status2StorageFeature,
+} from './features';
+import { useTable } from './hooks';
+
+export function getDefaultTableOptions<TData extends RowData>(
   tableName: string,
-  manual: boolean
-): Partial<TableOptions<TData>> => {
+  manual: boolean = true,
+  enableConfig: EnableConfig = {}
+): Partial<TableOptions<TData>> & { getCoreRowModel: (table: Table<TData>) => any } {
+  const {
+    enableFilters = true,
+    enablePagination = true,
+    enableToolbar = true,
+    enableVisible = true,
+    // enableParamsToUrl = true,
+    enableSelection = false,
+    enableMultiSelection = true,
+    enableStateToStorage = true,
+    enableSort = true,
+  } = enableConfig;
+
   return {
-    enableColumnFilters: true,
-    enableGlobalFilter: false,
-    enableRowSelection: false,
+    _features: [
+      enablePagination && InitPaginationFeature,
+      enableFilters && InitFilterFeature,
+      // enableSelection && InitRowSelectionFeature,
+      enableSort && InitSortFeature,
+      enableStateToStorage && Status2StorageFeature,
+    ].filter(Boolean) as TableOptions<TData>['_features'],
+
+    enableMultiRowSelection: enableMultiSelection,
+    enableRowSelection: enableSelection,
     getCoreRowModel: getCoreRowModel(),
     meta: {
       tableName,
       manual,
-      __registerEvents: [],
-      __middlewares: [],
+      storageStateKeys: ['columnVisibility'],
+      registerHandlers: manual
+        ? [
+            {
+              handlerName: 'onParamsChange',
+              stateKeys: ['pagination', 'columnFilters', 'sorting'],
+            },
+          ]
+        : [],
       enable: {
-        filters: false,
-        pagination: false,
-        toolbar: false,
-        visible: false,
+        filters: enableFilters,
+        pagination: enablePagination,
+        toolbar: enableToolbar,
+        visible: enableVisible,
       },
       enableDefault: {
         td: true,
@@ -36,20 +72,25 @@ export const getDefaultTableOptions = <TData,>(
       },
     } as TableMeta<TData>,
   };
-};
+}
 
 export interface DataTableProps<TData> {
   columns: ColumnDef<TData, any>[];
   data: TData[];
   manual?: boolean;
   tableName: string;
-  onFetchData?: (state: any) => void;
+  onParamsChange?: (state: any) => void;
 }
 
 export const DataTable = <TData,>(props: DataTableProps<TData>) => {
-  const { columns, data, manual = false, tableName, onFetchData } = props;
+  const { columns, data, manual = false, tableName, onParamsChange } = props;
   const options = getDefaultTableOptions<TData>(tableName, manual);
-  const table = useReactTable<TData>({ ...options, columns, data } as TableOptions<TData>);
+  const table = useTable<TData>({
+    ...options,
+    onParamsChange,
+    columns,
+    data,
+  } as TableOptions<TData>);
 
   return <TableRoot table={table} />;
 };

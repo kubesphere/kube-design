@@ -13,16 +13,12 @@ export function getDefaultToolbarFiltersProps<T>(
     suggestions?: Suggestions;
   }
 ): ToolbarProps['filterProps'] {
-  const filters = React.useMemo(
-    () =>
-      table.getState().columnFilters.reduce(
-        (acc, cur) => ({
-          ...acc,
-          [cur.id]: cur.value,
-        }),
-        {}
-      ),
-    [table.getState().columnFilters]
+  const filters = (table.getState().columnFilters ?? []).reduce(
+    (acc, cur) => ({
+      ...acc,
+      [cur.id]: cur.value,
+    }),
+    {}
   );
   const { simpleMode = true, suggestions = [] } = config;
 
@@ -38,7 +34,7 @@ export function getDefaultToolbarFiltersProps<T>(
     },
     [table, simpleMode, suggestions]
   );
-  const keyword = simpleMode ? table.getState().columnFilters[0]?.value || '' : '';
+  const keyword = simpleMode ? (table.getState().columnFilters ?? [])[0]?.value || '' : '';
 
   return {
     filters,
@@ -83,16 +79,12 @@ export function getDefaultToolbarProps<T>(
     );
   }
 
-  const filterPropsWithDefault = React.useMemo(
-    () =>
-      enableFilters
-        ? {
-            ...defaultFilterProps,
-            ...filterProps,
-          }
-        : undefined,
-    [enableFilters, defaultFilterProps, filterProps]
-  );
+  const filterPropsWithDefault = enableFilters
+    ? {
+        ...defaultFilterProps,
+        ...filterProps,
+      }
+    : undefined;
 
   const handleDisableBatchActions = () => {
     table.resetRowSelection(true);

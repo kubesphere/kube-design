@@ -1,9 +1,16 @@
-import { getFilteredRowModel, getPaginationRowModel } from '@tanstack/react-table';
-import { isEqual, pick, set } from 'lodash';
-import React, { useEffect, useMemo } from 'react';
-import { TableOptions } from '../Table';
-import EventBus, { eventDefaultConfig, eventKv } from './eventBus';
+import {
+  TableOptions as ReactTableOptions,
+  RowSelectionState,
+  TableState,
+  getFilteredRowModel,
+  getPaginationRowModel,
+} from '@tanstack/react-table';
+import { pick, set } from 'lodash';
+import React, { useMemo } from 'react';
+import EventBus, { eventKv } from './eventBus';
 import { safeJSON } from './utils';
+
+type TableOptions<TData> = Partial<ReactTableOptions<TData>>;
 
 export type Next<TData> = (options: TableOptions<TData>) => TableOptions<TData>;
 
@@ -33,39 +40,38 @@ const filedMapper = (params: Record<string, string>) => {
   };
 };
 
-export const changeEventMiddleware =
-  <TData>(next: Next<TData>) =>
-  (options: TableOptions<TData>) => {
-    const { meta: { __registerEvents = [] } = {} } = options;
-    Object.entries(eventDefaultConfig).forEach(([key, value]) => {
-      const event = options[key];
-      if (event) {
-        __registerEvents.push({
-          eventNames: value as unknown as 'state',
-          callback: event,
-          stopPropagation: true,
-        });
-      }
-    });
-    return next(options);
-  };
+// export const changeEventMiddleware =
+//   <TData>(next: Next<TData>) =>
+//   (options: TableOptions<TData>) => {
+//     const { meta: { __registerEvents = [] } = {} } = options;
+//     Object.entries(eventDefaultConfig).forEach(([key, value]) => {
+//       const event = options[key];
+//       if (event) {
+//         __registerEvents.push({
+//           eventNames: value as unknown as 'state',
+//           callback: event,
+//           stopPropagation: true,
+//         });
+//       }
+//     });
+//     return next(options);
+//   };
 
 export const initStateByStorageMiddleware =
   <TData>(next: Next<TData>) =>
   (options: TableOptions<TData>) => {
-    const { tableName, initialState, enableStateToStorage, storageStateKeys = [] } = options;
+    const {
+      initialState,
+      meta: { tableName, storageStateKeys = [] },
+    } = options;
     const key = `kube-table-${tableName}-state`;
-    const params = !enableStateToStorage
-      ? {}
-      : pick(safeJSON.parse(localStorage.getItem(key)) ?? {}, storageStateKeys);
+    const params = pick(safeJSON.parse(localStorage.getItem(key)) ?? {}, storageStateKeys);
     const newOptions = next({
       ...options,
       initialState: { ...params, ...initialState },
     });
     React.useEffect(() => {
-      if (enableStateToStorage) {
-        localStorage.setItem(key, safeJSON.stringify(pick(newOptions.state, storageStateKeys)));
-      }
+      localStorage.setItem(key, safeJSON.stringify(pick(newOptions.state, storageStateKeys)));
     }, [newOptions.state]);
     return newOptions;
   };
@@ -73,13 +79,19 @@ export const initStateByStorageMiddleware =
 export const visibleMiddleware =
   <TData>(next: Next<TData>) =>
   (options: TableOptions<TData>): TableOptions<TData> => {
-    const { enableVisible, initialState, state, meta: { __registerEvents = [] } = {} } = options;
+    const {
+      initialState,
+      onColumnVisibilityChange,
+      state,
+      meta: { __registerEvents = [] } = {},
+    } = options;
+
     const initState = initialState?.columnVisibility ?? {};
     const [visibility, setVisibility] = React.useState(initState);
-    if (!enableVisible) {
+
+    if (onColumnVisibilityChange) {
       return next(options);
     }
-
     __registerEvents.push({
       eventNames: 'columnVisibility',
       callback: setVisibility,
@@ -101,10 +113,7 @@ export const visibleMiddleware =
 export const initParamsByUrlMiddleware =
   <TData>(next: Next<TData>) =>
   (options: TableOptions<TData>): TableOptions<TData> => {
-    const { columns, initialState, enableParamsToUrl } = options;
-    if (!enableParamsToUrl) {
-      return next(options);
-    }
+    const { columns, initialState } = options;
     const fields = ['page', 'limit', 'sortBy', 'ascending'];
     columns.forEach((column) => {
       const def = column.meta?._columnDefV7.field;
@@ -127,16 +136,12 @@ export const filtersMiddleware =
   <TData>(next: Next<TData>) =>
   (options: TableOptions<TData>): TableOptions<TData> => {
     const {
-      enableFilters,
-      manual,
       state,
       initialState,
-      meta: { __registerEvents = [], enable = {} },
+      meta: { manual, __registerEvents = [], enable = {} },
+      meta,
     } = options;
     const [columnFilters, setColumnFilters] = React.useState([]);
-    if (!enableFilters) {
-      return next(options);
-    }
 
     __registerEvents.push({
       eventNames: 'columnFilters',
@@ -158,43 +163,36 @@ export const filtersMiddleware =
         getFilteredRowModel: getFilteredRowModel(),
       };
     }
-    return {
+    return next({
       ...base,
       meta: {
+        ...meta,
         enable: {
           ...enable,
           filters: true,
         },
       },
-    };
+    });
   };
 
 export const paginationMiddleware =
   <TData>(next: Next<TData>) =>
   (options: TableOptions<TData>): TableOptions<TData> => {
     const {
-      enablePagination,
-      manual,
       initialState,
       state,
       initialState: { pagination: defaultPagination } = {},
       meta,
-      meta: { __registerEvents = [] } = {},
+      meta: { manual, __registerEvents = [] } = {},
     } = options;
     const [pagination, setPagination] = React.useState({
       pageSize: defaultPagination?.pageSize ?? 10,
       pageIndex: defaultPagination?.pageIndex ?? 0,
     });
-    if (!enablePagination) {
-      return next(options);
-    }
 
-    const handleChange = (newPagination) => {
-      setPagination(newPagination);
-    };
     __registerEvents.push({
       eventNames: 'pagination',
-      callback: handleChange,
+      callback: setPagination,
       stopPropagation: false,
     });
 
@@ -205,11 +203,9 @@ export const paginationMiddleware =
         pagination,
         ...state,
       },
-      onPaginationChange: handleChange,
       meta: {
         ...meta,
         __registerEvents,
-        enablePagination,
       },
     };
     if (manual) {
@@ -221,6 +217,24 @@ export const paginationMiddleware =
     return next({
       ...base,
       getPaginationRowModel: getPaginationRowModel(),
+    });
+  };
+
+export const rowSelectionMiddleware =
+  <TData>(next: Next<TData>) =>
+  (options: TableOptions<TData>) => {
+    const [rowSelection, setRowSelection] = React.useState({} as RowSelectionState);
+    const { meta: { __registerEvents = [] } = {} } = options;
+    __registerEvents.push({
+      eventNames: 'rowSelection',
+      callback: setRowSelection,
+    });
+    return next({
+      ...options,
+      state: {
+        ...options.state,
+        rowSelection,
+      },
     });
   };
 
@@ -239,48 +253,72 @@ export const initEventBusMiddleware =
     });
     const { state, meta: { __registerEvents = [] } = {} } = config;
 
-    const events = useMemo(() => {
-      let eventKeys = [];
-      // TODO: event just need register one time
-      eventBusRef.current.clear();
+    React.useEffect(() => {
+      const list = [];
       __registerEvents.forEach((event) => {
-        eventKeys = eventKeys.concat(event.eventNames);
         if (typeof event.eventNames === 'string' || event.eventNames.length === 1) {
           const eventName =
             typeof event.eventNames === 'string' ? event.eventNames : event.eventNames[0];
-          eventBusRef.current.on(eventName, {
-            key: eventName,
-            stopPropagation: event.stopPropagation,
-            callback: (_, args) => {
-              event.callback(args);
+          list.push([
+            eventName,
+            {
+              key: eventName,
+              stopPropagation: event.stopPropagation || !!options[eventKv[eventName]],
+              callback: (_, args) => {
+                event.callback(args);
+              },
             },
-          });
+          ]);
         } else if (Array.isArray(event.eventNames)) {
           event.eventNames.forEach((eventName) => {
             const others = (event.eventNames as string[]).filter((name) => name !== eventName);
-            eventBusRef.current.on(eventName, {
-              key: eventName,
-              stopPropagation: event.stopPropagation,
-              callback: (_, args) => {
-                if (eventName === 'state') {
-                  event.callback(args);
-                } else {
-                  event.callback({
-                    [eventName]: args,
-                    ...pick(state, others),
-                  });
-                }
+            list.push([
+              eventName,
+              {
+                key: eventName,
+                stopPropagation: event.stopPropagation,
+                callback: (_, args) => {
+                  if (eventName === 'state') {
+                    event.callback(args);
+                  } else {
+                    event.callback({
+                      [eventName]: args,
+                      ...pick(state, others),
+                    });
+                  }
+                },
               },
-            });
+            ]);
           });
         }
       });
-
-      const events1 = {};
-      eventKeys.forEach((key) => {
-        events1[eventKv[key]] = (args) => {
-          eventBusRef.current.emit(key, args);
+      if (list.length > 0) {
+        list.forEach(([eventName, handler]) => {
+          eventBusRef.current.on(eventName, handler);
+        });
+        return () => {
+          list.forEach(([eventName, handler]) => {
+            eventBusRef.current.off(eventName, handler);
+          });
         };
+      }
+      return () => {};
+    }, [__registerEvents]);
+
+    const events = useMemo(() => {
+      let eventKeys = [];
+      const events1 = {};
+      __registerEvents.forEach((event) => {
+        eventKeys = eventKeys.concat(event.eventNames);
+        eventKeys.forEach((key) => {
+          events1[eventKv[key]] = (args) => {
+            if (options[eventKv[key]]) {
+              options[eventKv[key]](args);
+            } else {
+              eventBusRef.current.emit(key, args);
+            }
+          };
+        });
       });
       return events1;
     }, [__registerEvents]);
@@ -295,3 +333,75 @@ export const middleware = <TData>(...hooks: MapperOptionMiddlewareHook<TData>[])
   hooks.reduce((acc: MapperOptionMiddlewareHook<TData>, cur: MapperOptionMiddlewareHook<TData>) => {
     return (next) => acc(cur(next));
   })((d: TableOptions<TData>) => d);
+
+export const getFilterOptions =
+  <TData>(next: Next<TData>) =>
+  (options: TableOptions<TData>) => {
+    const {
+      meta: { manual },
+    } = options;
+    if (!manual) {
+      return next({
+        enableFilters: true,
+        enableColumnFilters: true,
+        getFilteredRowModel: getFilteredRowModel(),
+        ...options,
+      });
+    }
+    return next({
+      enableFilters: false,
+      enableColumnFilters: false,
+      manualFiltering: true,
+      ...options,
+    });
+  };
+
+export const getSortOptions =
+  <TData>(next: Next<TData>) =>
+  (options: TableOptions<TData>) => {
+    const {
+      meta: { manual },
+    } = options;
+    if (!manual) {
+      return next({
+        enableSorting: true,
+        getSortedRowModel: getFilteredRowModel(),
+        ...options,
+      });
+    }
+    return next({
+      enableSorting: true,
+      manualSorting: true,
+      ...options,
+    });
+  };
+
+export const getPaginationOptions =
+  <TData>(next: Next<TData>) =>
+  (options: TableOptions<TData>) => {
+    const {
+      meta: { manual },
+    } = options;
+    if (!manual) {
+      return next({
+        getPaginationRowModel: getPaginationRowModel(),
+        autoResetPageIndex: false,
+        ...options,
+      });
+    }
+    return next({
+      manualPagination: true,
+      rowCount: 0,
+      autoResetPageIndex: true,
+      ...options,
+    });
+  };
+
+export const getSingleRowSelectionOptions =
+  <TData>(next: Next<TData>) =>
+  (options: TableOptions<TData>) => {
+    return next({
+      enableMultiRowSelection: false,
+      ...options,
+    });
+  };

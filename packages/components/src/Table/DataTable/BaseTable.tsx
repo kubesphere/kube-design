@@ -1,7 +1,8 @@
 import { Table, flexRender } from '@tanstack/react-table';
 import * as React from 'react';
 import * as BaseTable from '../BaseTable';
-import { getDefaultThProps, getDefaultTrProps } from './utils';
+import { getDefaultTrProps } from './utils';
+import TableHead from './TableHead';
 
 interface BaseDataTableProps<T> {
   table: Table<T>;
@@ -11,8 +12,8 @@ export function BaseDataTable<T>({ table }: BaseDataTableProps<T>) {
   const {
     options: {
       meta: {
-        enableDefault: { th: enableTh = true, tr: enableTr = true } = {},
-        getProps: { th: getThProps, table: getTableProps, tr: getTrProps, td: getTdProps } = {},
+        enableDefault: { tr: enableTr = true } = {},
+        getProps: { table: getTableProps, tr: getTrProps, td: getTdProps } = {},
       } = {},
     } = {},
   } = table;
@@ -24,15 +25,7 @@ export function BaseDataTable<T>({ table }: BaseDataTableProps<T>) {
         {table.getHeaderGroups().map((headerGroup) => (
           <BaseTable.TableRow>
             {headerGroup.headers.map((header) => (
-              <BaseTable.TableCell
-                colSpan={header.colSpan}
-                {...(enableTh && getDefaultThProps(table))}
-                {...(getThProps && getThProps(table, header))}
-              >
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(header.column.columnDef.header, header.getContext())}
-              </BaseTable.TableCell>
+              <TableHead header={header} table={table} />
             ))}
           </BaseTable.TableRow>
         ))}
