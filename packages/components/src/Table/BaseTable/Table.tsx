@@ -31,6 +31,10 @@ interface TableInnerProps {
 
 export type { TableInnerProps as TableProps };
 
+const TableWrapper = styled.div`
+  position: relative;
+`;
+
 export const Table = React.forwardRef<HTMLTableElement, React.PropsWithChildren<TableInnerProps>>(
   (props, ref) => {
     const {
@@ -52,14 +56,14 @@ export const Table = React.forwardRef<HTMLTableElement, React.PropsWithChildren<
     );
     return (
       <TableContext.Provider value={table}>
-        <div className={cx(tableWrapperClassName, 'kube-table-wrapper')}>
+        <TableWrapper className={cx(tableWrapperClassName, 'kube-table-wrapper')}>
           <TableRoot
             {...other}
             $stickyHeader={stickyHeader}
             ref={ref}
             className={cx(className, 'kube-table')}
           />
-        </div>
+        </TableWrapper>
       </TableContext.Provider>
     );
   }

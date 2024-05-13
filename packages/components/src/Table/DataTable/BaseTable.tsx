@@ -1,16 +1,23 @@
 import { Table, flexRender } from '@tanstack/react-table';
 import * as React from 'react';
+import styled from 'styled-components';
+import { LoadingOverlay } from '../../LoadingOverlay/LoadingOverlay';
 import * as BaseTable from '../BaseTable';
-import { getDefaultTrProps } from './utils';
 import TableHead from './TableHead';
+import { getDefaultTrProps } from './utils';
 
 interface BaseDataTableProps<T> {
   table: Table<T>;
 }
 
+const LoadingWrapper = styled.div`
+  min-height: 165px;
+`;
+
 export function BaseDataTable<T>({ table }: BaseDataTableProps<T>) {
   const {
     options: {
+      loading,
       meta: {
         refetch,
         enableDefault: { tr: enableTr = true } = {},
@@ -28,6 +35,8 @@ export function BaseDataTable<T>({ table }: BaseDataTableProps<T>) {
   return (
     <>
       <BaseTable.Table {...tableProps}>
+        {loading && <LoadingOverlay visible />}
+        {loading && (table.getRowModel().rows.length === 0 ? <LoadingWrapper /> : null)}
         <BaseTable.TableHead>
           {table.getHeaderGroups().map((headerGroup) => (
             <BaseTable.TableRow>
@@ -56,7 +65,8 @@ export function BaseDataTable<T>({ table }: BaseDataTableProps<T>) {
           ))}
         </BaseTable.TableBody>
       </BaseTable.Table>
-      {table.getRowModel().rows.length === 0 &&
+      {!loading &&
+        table.getRowModel().rows.length === 0 &&
         (table.getState().columnFilters.length > 0 ? (
           <BaseTable.TableFilteredEmpty
             clearAndRefetch={() => {

@@ -5,6 +5,7 @@ import { Button, Dropdown, FilterInput } from '../../../index';
 import { useLocales } from '../../../ConfigProvider/LocaleProvider/LocaleContext';
 
 import { ToolbarWrapper, ToolbarInner, BatchActions } from './index.styles';
+import { CircleLoader } from '../../../Loading/loaders/Circle';
 
 export type Suggestions = {
   label: string | React.ReactNode;
@@ -32,6 +33,7 @@ export interface ToolbarProps {
   };
   onFilterInputChange?: (value: any) => void;
   refetch?: any;
+  loading?: boolean;
 }
 
 export const Toolbar = (props: ToolbarProps) => {
@@ -48,6 +50,7 @@ export const Toolbar = (props: ToolbarProps) => {
     toolbarRight,
     settingMenu,
     refetch,
+    loading,
     enableSettingMenu = true,
   } = props;
   return (
@@ -70,8 +73,8 @@ export const Toolbar = (props: ToolbarProps) => {
         <div className="toolbar-left">{toolbarLeft}</div>
         <div className="toolbar-item">{enableFilters && <FilterInput {...filterProps} />}</div>
         <div className="toolbar-right">
-          <Button variant="text" className="btn-refresh" onClick={refetch}>
-            <Refresh />
+          <Button variant="text" className="btn-refresh" disabled={!!loading} onClick={refetch}>
+            {loading ? <CircleLoader size={14} /> : <Refresh />}
           </Button>
           {enableSettingMenu && (
             <Dropdown content={settingMenu} placement="bottom-end" maxWidth={160}>

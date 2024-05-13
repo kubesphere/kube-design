@@ -16,7 +16,6 @@ import { Dropdown } from '../Dropdown/Dropdown';
 import { Menu, MenuItem } from '../Menu/Menu';
 import { Select } from '../Select/Select';
 import { StateHandler, Status2StorageFeature, getDefaultTableOptions, useTable } from './DataTable';
-import { isFunction, set } from 'lodash';
 
 const { Table, TableBody, TableCell, TableHead, TableRow, Pagination, Toolbar } = BaseTable;
 export default {
@@ -534,9 +533,9 @@ export const DataTableWithRemoteData = () => {
   const [columns] = React.useState<typeof defaultColumns>(() => [...defaultColumns]);
   const total = 100;
   const data = React.useMemo(() => {
-    if (loading) {
-      return [];
-    }
+    // if (loading) {
+    //   return [];
+    // }
     return [...Array(pagination.pageSize)].map((_, i) => ({
       firstName: `page-${pagination.pageIndex}-firstName-${i}`,
       lastName: `lastName-${i}`,
@@ -603,12 +602,11 @@ export const DataTableWithSelected = () => {
       pageIndex: 0,
       pageSize: 10,
     },
-  });
+  } as any);
   const { pagination = {} } = params;
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({}); //manage your own row selection state
 
   const handleParams = (p: Updater<any>) => {
-    console.log('handleParams', p);
     setRowSelection({});
     setParams(p);
   };
@@ -767,15 +765,10 @@ export const DataTableWithSelected = () => {
       registerHandlers,
     },
   });
-  const forceUpdate = React.useReducer(() => ({}), {})[1];
+  // const forceUpdate = React.useReducer(() => ({}), {})[1];
 
   return (
     <>
-      <div>
-        <button onClick={() => forceUpdate()} type="button">
-          forceUpdate
-        </button>
-      </div>
       <DataTable.TableRoot table={table} />
     </>
   );
@@ -808,7 +801,13 @@ export const DataTableWithDefault = () => {
       });
     }
   };
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
+  React.useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, [params]);
   const [columns] = React.useState<typeof defaultColumns>(() => [
     {
       id: 'selection',
@@ -863,6 +862,7 @@ export const DataTableWithDefault = () => {
   const table = useTable<Person>({
     ...defaultOption,
     data,
+    loading,
     columns,
     onRowSelectionChange: setRowSelection,
     onParamsChange: handleParams,
@@ -1031,9 +1031,9 @@ export const DataTableSimple = () => {
   return (
     <>
       <div>
-        <button onClick={() => forceUpdate()} type="button">
+        {/* <button onClick={() => forceUpdate()} type="button">
           forceUpdate
-        </button>
+        </button> */}
       </div>
       <DataTable.TableRoot table={table} />
     </>

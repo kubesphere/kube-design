@@ -6,13 +6,14 @@ import type {
   Header,
   TableState,
   Row,
-  TableOptions,
+  TableOptions as TableOptionsBase,
   TableOptionsResolved,
 } from '@tanstack/react-table';
 import { Pagination } from './Pagination';
 import * as BaseTable from '../BaseTable';
 import { Toolbar } from './Toolbar';
 import { BaseDataTable } from './BaseTable';
+import styled from 'styled-components';
 
 export interface EnableConfig {
   // enableExpanded?: boolean;
@@ -27,8 +28,6 @@ export interface EnableConfig {
   enableMultiSelection?: boolean;
   enableInitParamsByUrl?: boolean;
 }
-
-export type Next<TData> = (options: TableOptions<TData>) => TableOptions<TData>;
 
 export interface StorageStateOptions {
   storage2State?: (storageKey: string) => Partial<TableState>;
@@ -53,7 +52,9 @@ declare module '@tanstack/react-table' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface TableOptionsResolved<TData extends RowData>
     extends StorageStateOptions,
-      FeaturesHandlersOPtions {}
+      FeaturesHandlersOPtions {
+    loading?: boolean;
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface ColumnMeta<TData extends RowData, TValue = unknown> {
@@ -66,6 +67,7 @@ declare module '@tanstack/react-table' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface TableOptions<TData extends RowData> {
     onParamsChange?: (params: Partial<TableState>, key: keyof TableState) => void;
+    loading?: boolean;
   }
 
   interface TableFeature<TData extends RowData = any> extends DefaultOptionsResolved<TData> {}
@@ -108,22 +110,11 @@ declare module '@tanstack/react-table' {
     };
 
     registerHandlers?: StateHandler[];
-    // Remove middlewares because it's difficult
-    __middlewares?: ((
-      next: Next<TData>
-    ) => (options: TableOptions<TData>) => TableOptions<TData>)[];
-    __registerEvents?: {
-      eventNames: (keyof TableState | 'state')[] | (keyof TableState | 'state');
-      stopPropagation?: boolean;
-      callback: (args: Record<string, any>) => void;
-    }[];
   }
 }
 
-interface TableInnerProps {}
-
-interface TableInstance<T> extends Table<T>, TableInnerProps {}
-
+export interface TableInstance<T> extends Table<T> {}
+export interface TableOptions<T> extends TableOptionsBase<T> {}
 export interface DataTableRootProps<T> {
   className?: string;
   table: TableInstance<T>;

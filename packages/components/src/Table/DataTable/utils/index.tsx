@@ -120,6 +120,7 @@ export function getDefaultToolbarProps<T>(
     enableSettingMenu,
     settingMenu,
     settingMenuText,
+    loading: table.options.loading,
   };
 }
 
