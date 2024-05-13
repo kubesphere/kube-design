@@ -979,7 +979,7 @@ export const DataTableSimple = () => {
     meta: {
       refetch: () => forceUpdate(),
       ...defaultOption.meta,
-      tableName: defaultOption.meta.tableName,
+      tableName: defaultOption.meta?.tableName!,
       getProps: {
         filters: () => {
           return {
