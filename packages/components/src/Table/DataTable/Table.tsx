@@ -71,6 +71,7 @@ declare module '@tanstack/react-table' {
   interface TableFeature<TData extends RowData = any> extends DefaultOptionsResolved<TData> {}
   interface TableMeta<TData extends RowData> {
     tableName: string;
+    refetch?: () => void;
     storageStateKeys?: (keyof TableState)[] | '*';
     manual?: boolean;
     enable?: {
@@ -103,6 +104,7 @@ declare module '@tanstack/react-table' {
         table: Table<TData>,
         props: Record<string, any>
       ) => Omit<BaseTable.TableCellProps, 'ref'>;
+      empty?: () => Partial<BaseTable.TableFilteredEmptyProps>;
     };
 
     registerHandlers?: StateHandler[];

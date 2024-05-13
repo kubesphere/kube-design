@@ -6,3 +6,5 @@ export * from './TableRow';
 export * from './Pagination';
 export * from './Toolbar';
 export * from './BasePagination';
+export * from './TableEmpty';
+export * from './TableFilteredEmpty';

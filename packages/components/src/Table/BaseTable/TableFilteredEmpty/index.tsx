@@ -1,13 +1,13 @@
 import React from 'react';
-import type { EmptyProps } from '../../../index';
 
 import { useLocales } from '../../../ConfigProvider/LocaleProvider/LocaleContext';
 
 import type { DescriptionProps } from './Description';
 import { Description } from './Description';
 import { StyledEmpty } from '../TableEmpty/index.styles';
+import { TableEmptyProps } from '../TableEmpty';
 
-export type TableFilteredEmptyProps = EmptyProps & DescriptionProps;
+export type TableFilteredEmptyProps = TableEmptyProps & DescriptionProps;
 
 export function TableFilteredEmpty({
   refetch,

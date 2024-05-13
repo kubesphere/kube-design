@@ -146,9 +146,9 @@ export const BasePagination = ({
 
   const renderPageDropDown = () => {
     if (pageCount && pageCount > 0) {
-      const items = Array.from({ length: pageCount }, (_, i) => i + 1).map((item) => (
+      const items = Array.from({ length: pageCount }, (_, i) => i).map((item) => (
         <MenuItem key={item} onClick={() => setPageIndex(item)}>
-          {item}
+          {item + 1}
         </MenuItem>
       ));
       return <MenuWrapper>{items}</MenuWrapper>;

@@ -946,7 +946,6 @@ export const DataTableSimple = () => {
     },
     ...defaultColumns,
   ]);
-  const total = 100;
   const data = React.useMemo(() => {
     if (loading) {
       return [];
@@ -976,6 +975,7 @@ export const DataTableSimple = () => {
     columns,
     getRowId: (row) => row.firstName,
     meta: {
+      refetch: () => forceUpdate(),
       ...defaultOption.meta,
       tableName: defaultOption.meta.tableName,
       getProps: {
@@ -1009,9 +1009,19 @@ export const DataTableSimple = () => {
                     key: 'status-1',
                     label: 'status-1',
                   },
+                  {
+                    key: 'status-x',
+                    label: 'status-x',
+                  },
                 ],
               },
             ],
+          };
+        },
+        empty: () => {
+          return {
+            title: 'xxxx',
+            enableCreate: true,
           };
         },
       },
