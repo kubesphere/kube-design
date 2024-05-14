@@ -4,6 +4,7 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   RowSelectionState,
+  TableState,
   Updater,
   useReactTable,
 } from '@tanstack/react-table';
@@ -688,8 +689,9 @@ export const DataTableWithSelected = () => {
     // onPaginationChange: handlePagination,
     getCoreRowModel: getCoreRowModel(),
     onParamsChange: handleParams,
-    onStateChange1: (state) => {
-      console.log('onStateChange1', state);
+    // @ts-ignore
+    onStateChange1: (s: TableState) => {
+      console.log('onStateChange1', s);
     },
     manualPagination: true,
     debugTable: true,
@@ -790,7 +792,6 @@ export const DataTableWithDefault = () => {
   const handleParams = (p: Updater<any>, key: string) => {
     setRowSelection({});
     const { pagination: page } = p;
-    console.log('change params', p);
     if (key === 'pagination') {
       setParams(p);
     } else {
@@ -852,10 +853,10 @@ export const DataTableWithDefault = () => {
     };
   }, [params, rowSelection]);
 
-  const forceUpdate = React.useReducer(() => ({}), {})[1];
-
   const defaultOption = React.useState(
-    getDefaultTableOptions<Person>('table1', true, {
+    getDefaultTableOptions<Person>({
+      tableName: 'table1',
+      manual: true,
       enableSelection: true,
       enableMultiSelection: true,
     })
@@ -927,7 +928,7 @@ export const DataTableWithDefault = () => {
 };
 
 export const DataTableSimple = () => {
-  const [loading, setLoading] = React.useState(false);
+  const [loading] = React.useState(false);
   const [columns] = React.useState<typeof defaultColumns>(() => [
     {
       id: 'selection',
@@ -965,7 +966,9 @@ export const DataTableSimple = () => {
   const forceUpdate = React.useReducer(() => ({}), {})[1];
 
   const defaultOption = React.useState(
-    getDefaultTableOptions<Person>('table1', false, {
+    getDefaultTableOptions<Person>({
+      tableName: 'table1',
+      manual: false,
       enableSelection: true,
       enableMultiSelection: false,
       enableFilters: false,
@@ -1045,7 +1048,9 @@ export const DataTableSimple = () => {
 
 export const TableDemo = () => {
   const [defaultOptions] = React.useState(
-    getDefaultTableOptions('table-demo', false, {
+    getDefaultTableOptions({
+      tableName: 'table-demo',
+      manual: false,
       enableFilters: false,
       enablePagination: false,
     })
