@@ -121,7 +121,7 @@ export interface DataTableRootProps<T> {
   table: TableInstance<T>;
 }
 
-export function TableRoot<T>({ className, table }: DataTableRootProps<T>) {
+export function DataTable<T>({ className, table }: DataTableRootProps<T>) {
   const { options: { meta: { enable: { pagination, toolbar } = {} } = {} } = {} } = table;
   return (
     <div className={cx('table-container', className)}>

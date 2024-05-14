@@ -9,7 +9,7 @@ import {
 } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 import { Checkbox } from '../Checkbox/Checkbox';
-import { BaseTable, DataTable } from './index';
+import { BaseTable, DataTable } from './Table';
 
 import { Button } from '../Button/Button';
 import { Dropdown } from '../Dropdown/Dropdown';
@@ -522,7 +522,7 @@ export const BaseDataTable = () => {
       },
     },
   });
-  return <DataTable.TableRoot table={table} />;
+  return <DataTable.DataTable table={table} />;
 };
 
 export const DataTableWithRemoteData = () => {
@@ -590,7 +590,7 @@ export const DataTableWithRemoteData = () => {
     },
   });
 
-  return <DataTable.TableRoot table={table} />;
+  return <DataTable.DataTable table={table} />;
 };
 
 export const DataTableWithSelected = () => {
@@ -770,7 +770,7 @@ export const DataTableWithSelected = () => {
 
   return (
     <>
-      <DataTable.TableRoot table={table} />
+      <DataTable.DataTable table={table} />
     </>
   );
 };
@@ -921,7 +921,7 @@ export const DataTableWithDefault = () => {
           forceUpdate
         </button>
       </div> */}
-      <DataTable.TableRoot table={table} />
+      <DataTable.DataTable table={table} />
     </>
   );
 };
@@ -968,6 +968,7 @@ export const DataTableSimple = () => {
     getDefaultTableOptions<Person>('table1', false, {
       enableSelection: true,
       enableMultiSelection: false,
+      enableFilters: false,
     })
   )[0];
 
@@ -1037,7 +1038,7 @@ export const DataTableSimple = () => {
           forceUpdate
         </button> */}
       </div>
-      <DataTable.TableRoot table={table} />
+      <DataTable.DataTable table={table} />
     </>
   );
 };

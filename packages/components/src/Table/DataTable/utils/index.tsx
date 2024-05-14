@@ -1,10 +1,25 @@
 import { Eye, EyeClosed } from '@kubed/icons';
-import { Row, Table } from '@tanstack/react-table';
 import { pick } from 'lodash';
+import {
+  Row,
+  RowData,
+  Table,
+  TableMeta,
+  TableOptions,
+  getCoreRowModel,
+} from '@tanstack/react-table';
 import * as React from 'react';
+
 import { Menu, MenuItem, MenuLabel } from '../../../index';
 import type { ToolbarProps } from '../../BaseTable';
 import { Suggestions } from '../../BaseTable';
+import { EnableConfig } from '../Table';
+import {
+  InitFilterFeature,
+  InitPaginationFeature,
+  InitSortFeature,
+  Status2StorageFeature,
+} from '../features';
 
 export function getDefaultToolbarFiltersProps<T>(
   table: Table<T>,
@@ -133,5 +148,62 @@ export function getDefaultThProps<T>(table: Table<T>) {
 export function getDefaultTrProps<T>(table: Table<T>, row: Row<T>) {
   return {
     selected: row.getIsSelected(),
+  };
+}
+
+export function getDefaultTableOptions<TData extends RowData>(
+  tableName: string,
+  manual: boolean = true,
+  enableConfig: EnableConfig = {}
+): Partial<TableOptions<TData>> & { getCoreRowModel: (table: Table<TData>) => any } {
+  const {
+    enableFilters = true,
+    enablePagination = true,
+    enableToolbar = true,
+    enableVisible = true,
+    // enableParamsToUrl = true,
+    enableSelection = false,
+    enableMultiSelection = true,
+    enableStateToStorage = true,
+    enableSort = true,
+  } = enableConfig;
+
+  return {
+    _features: [
+      enablePagination && InitPaginationFeature,
+      enableFilters && InitFilterFeature,
+      // enableSelection && InitRowSelectionFeature,
+      enableSort && InitSortFeature,
+      enableStateToStorage && Status2StorageFeature,
+    ].filter(Boolean) as TableOptions<TData>['_features'],
+
+    enableMultiRowSelection: enableMultiSelection,
+    enableRowSelection: enableSelection,
+    getCoreRowModel: getCoreRowModel(),
+    meta: {
+      tableName,
+      manual,
+      storageStateKeys: ['columnVisibility'],
+      registerHandlers: manual
+        ? [
+            {
+              handlerName: 'onParamsChange',
+              stateKeys: ['pagination', 'columnFilters', 'sorting'],
+            },
+          ]
+        : [],
+      enable: {
+        filters: enableFilters,
+        pagination: enablePagination,
+        toolbar: enableToolbar,
+        visible: enableVisible,
+      },
+      enableDefault: {
+        td: true,
+        th: true,
+        toolbar: true,
+        tr: true,
+      },
+    } as TableMeta<TData>,
   };
 }

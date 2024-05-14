@@ -1,7 +1,7 @@
 import { Table } from '@tanstack/react-table';
 import * as React from 'react';
 import styled from 'styled-components';
-import { BaseTable } from '../index';
+import { BaseTable } from '../Table';
 
 interface PaginationProps<T> {
   table: Table<T>;

@@ -54,6 +54,7 @@ export default {
         'Empty',
         'Form',
         'Dropdown',
+        'Table',
       ],
     },
     {
