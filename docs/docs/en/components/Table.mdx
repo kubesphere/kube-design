@@ -104,6 +104,22 @@ interface TableMeta<TData extends RowData> {
 }
 ```
 
+#### options.meta.registerHandlers
+
+Extend the state processing function of the table by registering through `registerHandlers`.
+
+When `stateKeys` is '\*', all state changes are listened to through `useEffect`. When `(keyof TableState[])`, state changes are listened to through onXXXChange.
+
+`handleName` and `callback` are optional, and `callback` has a higher priority than `handleName`.
+
+```ts
+interface StateHandler {
+  handlerName?: string; // options 中的方法名
+  stateKeys: (keyof TableState)[] | '*'; // 监听的状态
+  callback?: (state: Partial<TableState>) => void; // 状态变化时的回调
+}
+```
+
 #### options.columns
 
 Customize column configuration by setting `column.meta`

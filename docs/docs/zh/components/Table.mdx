@@ -104,6 +104,22 @@ interface TableMeta<TData extends RowData> {
 }
 ```
 
+#### options.meta.registerHandlers
+
+扩展 table 的状态处理函数，通过 `registerHandlers` 注册。
+
+`stateKeys` 为 '\*' 时，是通过 `useEffect` 监听所有状态变化。`(keyof TableState[])` 时，通过 onXXXChange 监听状态变化。
+
+`handleName` 和 `callback` `为可选项，callback` 优先级大于 `handleName`。
+
+```ts
+interface StateHandler {
+  handlerName?: string; // options 中的方法名
+  stateKeys: (keyof TableState)[] | '*'; // 监听的状态
+  callback?: (state: Partial<TableState>) => void; // 状态变化时的回调
+}
+```
+
 #### options.columns
 
 通过设置 `column.meta` 自定义列配置
