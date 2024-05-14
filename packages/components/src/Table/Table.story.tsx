@@ -1042,3 +1042,44 @@ export const DataTableSimple = () => {
     </>
   );
 };
+
+export const TableDemo = () => {
+  const [defaultOptions] = React.useState(
+    getDefaultTableOptions('table-demo', false, {
+      enableFilters: false,
+      enablePagination: false,
+    })
+  );
+  const columns = React.useMemo(() => {
+    return [
+      {
+        accessorKey: 'name',
+        header: 'Name',
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: 'age',
+        header: 'Age',
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: 'address',
+        header: 'Address',
+        cell: (info) => info.getValue(),
+      },
+    ];
+  }, []);
+  const data = React.useMemo(() => {
+    return [
+      { name: 'KubeSphere', age: 1, address: 'Beijing' },
+      { name: 'KubeSphere', age: 3, address: 'Beijing' },
+      { name: 'KubeSphere', age: 2, address: 'Beijing' },
+    ];
+  }, []);
+  const table = useTable({
+    ...defaultOptions,
+    columns,
+    data,
+  });
+  return <DataTable.DataTable table={table} />;
+};

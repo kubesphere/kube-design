@@ -155,7 +155,8 @@ export function getDefaultTableOptions<TData extends RowData>(
   tableName: string,
   manual: boolean = true,
   enableConfig: EnableConfig = {}
-): Partial<TableOptions<TData>> & { getCoreRowModel: (table: Table<TData>) => any } {
+): Partial<TableOptions<TData>> &
+  Required<Pick<TableOptions<TData>, '_features' | 'meta' | 'getCoreRowModel'>> {
   const {
     enableFilters = true,
     enablePagination = true,
@@ -176,7 +177,6 @@ export function getDefaultTableOptions<TData extends RowData>(
       enableSort && InitSortFeature,
       enableStateToStorage && Status2StorageFeature,
     ].filter(Boolean) as TableOptions<TData>['_features'],
-
     enableMultiRowSelection: enableMultiSelection,
     enableRowSelection: enableSelection,
     getCoreRowModel: getCoreRowModel(),
@@ -184,6 +184,7 @@ export function getDefaultTableOptions<TData extends RowData>(
       tableName,
       manual,
       storageStateKeys: ['columnVisibility'],
+      autoResetPageIndex: false,
       registerHandlers: manual
         ? [
             {

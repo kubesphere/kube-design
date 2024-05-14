@@ -13,7 +13,6 @@ import { Pagination } from './Pagination';
 import * as BaseTable from '../BaseTable';
 import { Toolbar } from './Toolbar';
 import { BaseDataTable } from './BaseTable';
-import styled from 'styled-components';
 
 export interface EnableConfig {
   // enableExpanded?: boolean;

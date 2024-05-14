@@ -31,7 +31,6 @@ export function BaseDataTable<T>({ table }: BaseDataTableProps<T>) {
     } = {},
   } = table;
 
-  
   const tableProps = getTableProps ? getTableProps(table) : {};
   return (
     <>
