@@ -5,18 +5,13 @@ import * as DataTable from './DataTable';
 export { BaseTable, DataTable };
 
 export interface TableProps<T> {
-  /**  */
+  /** react table instance */
   table: DataTable.TableInstance<T>;
 
-  /** */
+  /** class name */
   className?: string;
 }
 
-export function Table<T>({ table }: TableProps<T>) {
-  return <DataTable.DataTable table={table} />;
-}
-
-export interface Table1111Props<T> {
-  /** xxxx */
-  table: DataTable.TableInstance<T>;
+export function Table<T>({ table, className }: TableProps<T>) {
+  return <DataTable.DataTable table={table} className={className} />;
 }

@@ -15,7 +15,6 @@ import { Toolbar } from './Toolbar';
 import { BaseDataTable } from './BaseTable';
 
 export interface EnableConfig {
-  // enableExpanded?: boolean;
   enableToolbar?: boolean;
   enablePagination?: boolean;
   enableVisible?: boolean;

@@ -8,6 +8,8 @@ order: 10
 
 ## 基础用法
 
+> 详细 react table 使用请参考 [react-table](https://tanstack.com/table/latest/docs/introduction)
+
 ```jsx
 import * as React from 'react';
 import { useTable, getDefaultTableOptions } from '@kubed/components';
@@ -49,6 +51,463 @@ import { useTable, getDefaultTableOptions } from '@kubed/components';
     columns,
     data,
   });
+  return <Table table={table} />;
+};
+```
+
+## useTable 扩展点
+
+### useTable(options)
+
+#### options.meta
+
+table 中大部分扩展点都是通过 meta 进行配置的。
+
+```ts
+interface TableMeta<TData extends RowData> {
+  tableName: string; // table 名称, 现在仅用于存储状态
+  refetch?: () => void; // 重新获取数据
+  storageStateKeys?: (keyof TableState)[] | '*'; // 需要存储的状态字段, 配合 Status2StorageFeature 使用
+  manual?: boolean; // 是否手动控制数据
+  enable?: {
+    // 是否启用某些功能
+    pagination?: boolean; // 是否启用分页
+    toolbar?: boolean; // 是否启用工具栏
+    visible?: boolean; // 是否启用隐藏列
+    filters?: boolean; // 是否启用过滤
+  };
+  enableDefault?: {
+    // 是否启用默认功能
+    toolbar?: boolean; // toolbar 默认功能，包含选中显示多选操作状态切换等
+    th?: boolean; // th 多于一行时，启用 border
+  };
+  getProps?: {
+    // 自定义 BaseTable 中各个组件的 props，可以通过函数返回。各个组件的 props 参考 BaseTable
+    filters?: (table: Table<TData>) => BaseTable.ToolbarProps['filterProps'];
+    toolbar?: (
+      table: Table<TData>
+    ) => Partial<Omit<BaseTable.ToolbarProps, 'filtersProps' | 'enableFilters'>>;
+    table?: (table: Table<TData>) => Partial<BaseTable.TableProps>;
+    th?: (
+      table: Table<TData>,
+      header: Header<TData, unknown>
+    ) => Omit<BaseTable.TableCellProps, 'ref'>;
+    pagination?: (table: Table<TData>) => Partial<BaseTable.BaseTablePaginationProps> & {
+      total?: number;
+    };
+    tr?: (table: Table<TData>, row: Row<TData>) => Partial<BaseTable.TableRowProps>;
+    td?: (table: Table<TData>, props: Record<string, any>) => Omit<BaseTable.TableCellProps, 'ref'>;
+    empty?: () => Partial<BaseTable.TableFilteredEmptyProps>;
+  };
+
+  registerHandlers?: StateHandler[];
+}
+```
+
+#### options.columns
+
+通过设置 `column.meta` 自定义列配置
+
+```ts
+interface ColumnMeta<TData extends RowData, TValue = unknown> {
+  description?: Record<string, any>; // icon ? tooltip props
+  filterOptions?: { key: string; label: React.ReactNode }[]; // 过滤选项
+  selectType?: 'single' | 'multiple'; // 多选类型
+  sortable?: boolean; // 是否可排序
+  searchKey?: string; // 自定义搜索 key
+}
+```
+
+### Feature
+
+#### Status2StorageFeature
+
+加入到 \_features 后，默认将配置的 state 中字段存储到 localStorage 中。
+getDefaultTableOptions 会自动注册该 feature。
+
+- `options.state2Storage`
+  状态转换为存储的方法，将 state 转换为存储的方法。
+- `options.storage2State`
+  存储转换为状态的方法，将存储转换为状态的方法。
+- `options.meta.storageKeys`
+  需要存储的字段。
+
+```ts
+// storageKey 字段构成 kube-table-${tableName}-state
+interface StorageStateOptions {
+  storage2State?: (storageKey: string) => Partial<TableState>;
+  state2Storage?: (storageKey: string, state: Partial<TableState>) => void;
+}
+
+interface TableMeta<TData extends RowData> {
+  storageKeys?: Array<keyof TableState>;
+  tableName: string;
+}
+```
+
+### getDefaultTableOptions(config)
+
+可快速生成默认 options 配置项
+
+**config**:
+
+```ts
+interface Config {
+  tableName: string;
+  manual: boolean; // 是否手动控制数据
+  enableToolbar?: boolean; // 是否启用 toolbar
+  enablePagination?: boolean; // 是否启用分页
+  enableVisible?: boolean; // 是否启用隐藏列
+  enableFilters?: boolean; // 是否启用过滤
+  enableStateToStorage?: boolean; // 是否将 state 存储到 storage，配合 options.meta.storageKeys 使用
+  enableSelection?: boolean; // 是否启用选择
+  enableSort?: boolean; // 是否启用排序
+  enableMultiSelection?: boolean; // 是否启用多选
+  enableInitParamsByUrl?: boolean; // TODO: 是否启用 url 参数初始化（未实现）
+  enableParamsToUrl?: boolean; // TODO: 是否启用 url 参数（未实现）
+}
+```
+
+**默认开启功能**：
+
+- `enableFilters`
+- `enablePagination`
+- `enableToolbar`
+- `enableVisible`
+- `enableStateToStorage`
+- `enableSort`
+
+**默认启用 Feature**：
+
+- `Status2StorageFeature`
+
+**默认生成配置**：
+
+```ts
+{
+  storageStateKeys: ['columnVisibility'],
+  registerHandlers: manual
+    ? [
+        {
+          handlerName: 'onParamsChange',
+          stateKeys: ['pagination', 'columnFilters', 'sorting'],
+        },
+      ]
+    : [],
+}
+```
+
+## BaseTable
+
+### BaseTable.TableProps
+
+```ts
+interface TableInnerProps {
+  padding?: 'normal' | 'none';
+  size?: 'small' | 'medium';
+  stickyHeader?: boolean; // 是否固定表头
+  className?: string;
+  style?: React.CSSProperties;
+  tableWrapperClassName?: string;
+}
+```
+
+### BaseTable.TableHeadProps
+
+```ts
+interface TableHeadProps {
+  className?: string;
+  style?: React.CSSProperties;
+  hasBorder?: boolean; // table th 是否有边框
+}
+```
+
+### BaseTable.TableBodyProps
+
+```ts
+interface TableBodyProps {
+  className?: string;
+  style?: React.CSSProperties;
+  hasBorder?: boolean; // table body 中 td 是否有边框
+}
+```
+
+### BaseTable.TableRowProps
+
+```ts
+export interface TableRowProps {
+  className?: string;
+  hover?: boolean; // 是否 hover 效果
+  selected?: boolean; // 是否选中
+  style?: React.CSSProperties;
+}
+```
+
+### BaseTable.TableCellProps
+
+```ts
+/**
+   padding 为 normal 时， variant 和 size 对应 padding 属性
+  'head-small': '8px 12px',
+  'head-medium': '16px 12px',
+  'body-small': '4px 8px',
+  'body-medium': '8px 12px',
+*/
+export type TableCellProps = {
+  padding?: 'none' | 'normal'; // 单元格 padding
+  align?: 'left' | 'center' | 'right' | 'justify'; // 单元格对齐方式
+  className?: string;
+  size?: 'small' | 'medium'; // 单元格大小
+  ariaSort?: 'asc' | 'desc' | false; // 是否排序
+  variant?: 'head' | 'body'; // 区分 th 和 td
+  stickyHeader?: boolean; // 是否固定表头
+  fixed?: 'left' | 'right'; // 固定列
+  fixedWidth?: number; // 固定列时的宽度（当 position 为 sticky; left 或者 right 值）
+  fixedLastLeft?: boolean; // 是否是最左侧的 fixed，主要用于隔断阴影效果
+  fixedLastRight?: boolean; // 是否是最右侧的 fixed，主要用于隔断阴影效果
+  style?: React.CSSProperties;
+  hasBorder?: boolean;
+};
+```
+
+## 完整示例
+
+```tsx
+import { Table, useTable, Dropdown, Menu } from '@kubed/components;';
+
+const defaultColumns: ColumnDef<Person>[] = [
+  {
+    header: 'Name',
+    footer: (props) => props.column.id,
+    columns: [
+      {
+        accessorKey: 'firstName',
+        cell: (info) => info.getValue(),
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorFn: (row) => row.lastName,
+        id: 'lastName',
+        cell: (info) => info.getValue(),
+        header: () => <span>Last Name</span>,
+        footer: (props) => props.column.id,
+        enableHiding: true,
+      },
+    ],
+  },
+  {
+    header: 'Info',
+    footer: (props) => props.column.id,
+    columns: [
+      {
+        accessorKey: 'age',
+        header: () => 'Age',
+        footer: (props) => props.column.id,
+        meta: {
+          sortable: true,
+          filterOptions: [
+            {
+              key: '0',
+              label: '0',
+            },
+            {
+              key: '1',
+              label: '1',
+            },
+          ],
+        },
+      },
+      {
+        header: 'More Info',
+        columns: [
+          {
+            accessorKey: 'visits',
+            header: () => <span>Visits</span>,
+            footer: (props) => props.column.id,
+          },
+          {
+            accessorKey: 'status',
+            header: 'Status',
+            footer: (props) => props.column.id,
+            meta: {
+              searchKey: 'status1',
+              filterOptions: [
+                {
+                  key: 'status-0',
+                  label: 'status-0',
+                },
+                {
+                  key: 'status-1',
+                  label: 'status-1',
+                },
+              ],
+            },
+          },
+          {
+            accessorKey: 'progress',
+            header: 'Profile Progress',
+            footer: (props) => props.column.id,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'actions',
+    cell: () => (
+      <Dropdown
+        content={
+          <Menu>
+            <MenuItem icon={<Pen />}>Edit</MenuItem>
+          </Menu>
+        }
+      >
+        <Button variant="text" radius="lg">
+          <More size={16} />
+        </Button>
+      </Dropdown>
+    ),
+  },
+];
+
+export const App = () => {
+  const [params, setParams] = React.useState({
+    pagination: {
+      pageIndex: 0,
+      pageSize: 10,
+    },
+    columnFilters: [],
+    sorting: [],
+  } as any);
+  const { pagination = {} } = params;
+  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({}); //manage your own row selection state
+
+  const handleParams = (p: Updater<any>, key: string) => {
+    setRowSelection({});
+    console.log('change params', p);
+    if (key === 'pagination') {
+      setParams(p);
+    } else {
+      setParams({
+        ...p,
+        pagination: {
+          ...page,
+          pageIndex: 0,
+        },
+      });
+    }
+  };
+  const [loading, setLoading] = React.useState(true);
+  React.useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, [params]);
+  const [columns] = React.useState<typeof defaultColumns>(() => [
+    {
+      id: 'selection',
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllRowsSelected()}
+          indeterminate={table.getIsSomeRowsSelected()}
+          onChange={table.getToggleAllRowsSelectedHandler()} //or getToggleAllPageRowsSelectedHandler
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          disabled={!row.getCanSelect()}
+          onChange={row.getToggleSelectedHandler()}
+        />
+      ),
+    },
+    ...defaultColumns,
+  ]);
+  const total = 100;
+  const data = React.useMemo(() => {
+    if (loading) {
+      return [];
+    }
+    return [...Array(pagination.pageSize)].map((_, i) => ({
+      firstName: `page-${pagination.pageIndex}-firstName-${i}`,
+      lastName: `lastName-${i}`,
+      age: i,
+      visits: i,
+      status: `status-${i}`,
+      progress: i,
+    }));
+  }, [params, loading]);
+
+  const state = useMemo(() => {
+    return {
+      ...params,
+      rowSelection,
+    };
+  }, [params, rowSelection]);
+
+  const forceUpdate = React.useReducer(() => ({}), {})[1];
+
+  const defaultOption = React.useState(
+    getDefaultTableOptions<Person>('table1', true, {
+      enableSelection: true,
+      enableMultiSelection: true,
+    })
+  )[0];
+
+  const table = useTable<Person>({
+    ...defaultOption,
+    data,
+    loading,
+    columns,
+    onRowSelectionChange: setRowSelection,
+    onParamsChange: handleParams,
+    rowCount: total,
+    getRowId: (row) => row.firstName,
+    state,
+    meta: {
+      ...defaultOption.meta,
+      tableName: defaultOption.meta.tableName,
+      getProps: {
+        filters: () => {
+          return {
+            simpleMode: false,
+            suggestions: [
+              {
+                key: 'age',
+                label: 'Age',
+                options: [
+                  {
+                    key: '0',
+                    label: '0',
+                  },
+                  {
+                    key: '1',
+                    label: '1',
+                  },
+                ],
+              },
+              {
+                key: 'status1',
+                label: 'Status',
+                options: [
+                  {
+                    key: 'status-0',
+                    label: 'status-0',
+                  },
+                  {
+                    key: 'status-1',
+                    label: 'status-1',
+                  },
+                ],
+              },
+            ],
+          };
+        },
+      },
+    },
+  });
+
   return <Table table={table} />;
 };
 ```

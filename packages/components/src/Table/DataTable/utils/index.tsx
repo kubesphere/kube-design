@@ -183,8 +183,8 @@ export function getDefaultTableOptions<TData extends RowData>(
     meta: {
       tableName,
       manual,
-      storageStateKeys: ['columnVisibility'],
       autoResetPageIndex: false,
+      storageStateKeys: ['columnVisibility'],
       registerHandlers: manual
         ? [
             {
