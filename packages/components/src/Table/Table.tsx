@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as BaseTable from './BaseTable';
 import * as DataTable from './DataTable';
-import { DataTable } from './DataTable/Table';
 
 export { BaseTable, DataTable };
 
@@ -14,7 +13,7 @@ export interface TableProps<T> {
 }
 
 export function Table<T>({ table }: TableProps<T>) {
-  return <DataTable table={table} />;
+  return <DataTable.DataTable table={table} />;
 }
 
 export interface Table1111Props<T> {
