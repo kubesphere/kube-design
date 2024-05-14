@@ -6,7 +6,7 @@ export default {
     },
     {
       title: 'Customization',
-      menu: ['Colors', 'Themes'],
+      menu: ['KubedConfigProvider', 'ThemeObject'],
     },
   ],
   Icons: [],

@@ -1,0 +1,131 @@
+---
+group: 'guide'
+title: ThemeObject
+description: theme object
+order: 2
+---
+
+## Theme Object
+
+Kubed的主题对象是一个包含了一系列主题配置的对象，它包含了颜色、布局、字体等属性
+
+```ts
+interface KubedTheme {
+  /** 主题名称*/
+  type: string;
+  /** 配置字体和默认字号*/
+  font: KubedThemeFont;
+  /** 可以定义间距、控件大小、圆角等*/
+  layout: KubedThemeLayout;
+  /** 调色板，自定义主题颜色*/
+  palette: KubedThemePalette;
+  /** 设置响应式断点*/
+  breakpoints: KubedThemeBreakpoints;
+  /** 设置阴影、透明度、线条样式等*/
+  expressiveness: KubedThemeExpressiveness;
+}
+```
+
+### 使用
+```jsx
+import { KubedConfigProvider, Button, themeUtils } from "@kubed/components"
+function App() {
+  const customDarkTheme = themeUtils.createFromDark({
+    type: "customDark",
+    palette: {
+      colors: {
+        green: ["#E9EDFC", "#E9EDFC", "#E9EDFC", "#E9EDFC", "#E9EDFC"],
+      },
+    },
+    layout: {
+      inputSizes: {
+        sm: "24px",
+      },
+    },
+    expressiveness: {
+      buttonShadow: () => "10px 10px 10px hotpink",
+    },
+  })
+  return (
+    <KubedConfigProvider themes={[customDarkTheme]} themeType={"customDark"}>
+      <Button color="primary" shadow>
+        button
+      </Button>
+    </KubedConfigProvider>
+  )
+}
+```
+
+### Theme properties
+
+#### palette
+Kubed的调色板是一个包含了一系列颜色配置的对象，它包含了主题的颜色、背景色、文本色等属性。可以通过`palette`属性来配置主题的颜色。
+KubedDesign的主色调是绿色，你可以通过设置`palette.colors.green`来改变主色调(但是只支持rbg、rgba、hex),也可以直接设置`primary`
+```jsx live=true
+() => {
+const customDarkTheme = themeUtils.createFromDark({
+    type: "customDark",
+    palette: {
+      colors: {
+        green: ["#E3FAFC", "#C5F6FA", "#99E9F2", "#66D9E8", "#3BC9DB"],
+      },
+    //  primary: "#3BC9DB",
+    }
+  });
+ return <KubedConfigProvider themes={[customDarkTheme]} themeType={"customDark"}>
+      <Button color="primary" shadow>
+        button
+      </Button>
+    </KubedConfigProvider>;
+};
+```
+
+#### layout
+Kubed的布局是一个包含了一系列间距、控件大小、圆角等属性的对象
+```jsx live=true
+() => {
+const customDarkTheme = themeUtils.createFromDark({
+    type: "customDark",
+    layout: {
+      inputSizes: {
+        xs:'16px',
+        sm: "24px",
+        md: "32px",
+        lg: "40px",
+        xl: "48px",
+      },
+    },
+  });
+ return  <KubedConfigProvider themes={[customDarkTheme]} themeType={"customDark"}>
+      <Button color='primary' size="xs">KubeSphere</Button>
+      <Button color='primary' size="sm">KubeSphere</Button>
+      <Button color='primary' size="md">KubeSphere</Button>
+      <Button color='primary' size="lg">KubeSphere</Button>
+      <Button color='primary' size="xl">KubeSphere</Button>
+    </KubedConfigProvider>;
+};
+```
+
+#### expressiveness
+Kubed的expressiveness是一个包含了按钮阴影、透明度、线条样式等属性的对象
+```jsx live=true
+() => {
+const customDarkTheme = themeUtils.createFromDark({
+    type: "customDark",
+    expressiveness: {
+      buttonShadow: () => "10px 10px 10px #5e9b7d",
+    },
+  });
+ return  <KubedConfigProvider themes={[customDarkTheme]} themeType={"customDark"}>
+      <Button color="primary" shadow>
+        button
+      </Button>
+    </KubedConfigProvider>;
+};
+```
+
+
+
+
+#### Colors
+<PaletteBlock />

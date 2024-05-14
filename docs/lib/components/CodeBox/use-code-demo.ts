@@ -2,7 +2,6 @@ import { get, cloneDeep } from 'lodash';
 
 const importRegex = /^(import)\s(?!type(of\s|\s)(?!from)).*?$/gm;
 const exportDefaultRegex = /export\s+default\s+function\s+\w+\s*\(\s*\)\s*\{/;
-
 export const transformCode = (code: string, imports = {}, compName = 'App') => {
   let cleanedCode = code
     .replace(importRegex, (match) => {
