@@ -1,0 +1,514 @@
+---
+group: 'components'
+category: 'state'
+title: Table
+description: 'Table is a component that displays data in a tabular format.'
+order: 10
+---
+
+## Basic Usage
+
+> For detailed react table usage, please refer to [react-table](https://tanstack.com/table/latest/docs/introduction)
+
+```jsx
+import * as React from 'react';
+import { useTable, getDefaultTableOptions } from '@kubed/components';
+() => {
+  const [defaultOptions] = React.useState(
+    getDefaultTableOptions('table-demo', false, {
+      enableFilters: false,
+      enablePagination: false,
+    })
+  );
+  const columns = React.useMemo(() => {
+    return [
+      {
+        accessorKey: 'name',
+        header: 'Name',
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: 'age',
+        header: 'Age',
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: 'address',
+        header: 'Address',
+        cell: (info) => info.getValue(),
+      },
+    ];
+  }, []);
+  const data = React.useMemo(() => {
+    return [
+      { name: 'KubeSphere', age: 1, address: 'Beijing' },
+      { name: 'KubeSphere', age: 3, address: 'Beijing' },
+      { name: 'KubeSphere', age: 2, address: 'Beijing' },
+    ];
+  }, []);
+  const table = useTable({
+    ...defaultOptions,
+    columns,
+    data,
+  });
+  return <Table table={table} />;
+};
+```
+
+## useTable Extension Points
+
+### useTable(options)
+
+#### options.meta
+
+Most of the extension points in the table are configured through meta.
+
+```ts
+interface TableMeta<TData extends RowData> {
+  tableName: string; // table name, now only used for storage state
+  refetch?: () => void; // refetch data
+  storageStateKeys?: (keyof TableState)[] | '*'; // state keys need to be stored, used with Status2StorageFeature
+  manual?: boolean; // whether to manually control the data
+  enable?: {
+    // whether to enable some features
+    pagination?: boolean; // whether to enable pagination
+    toolbar?: boolean; // whether to enable toolbar
+    visible?: boolean; // whether to enable hidden columns
+    filters?: boolean; // whether to enable filters
+  };
+  enableDefault?: {
+    // whether to enable default functions
+    toolbar?: boolean; // toolbar default functions, including multi-selection display, multi-selection operation status switching, etc.
+    th?: boolean; // when th is more than one line, enable border
+  };
+  getProps?: {
+    // custom props of each component in BaseTable, can be returned by function. Refer to BaseTable for the props of each component
+    filters?: (table: Table<TData>) => BaseTable.ToolbarProps['filterProps'];
+    toolbar?: (
+      table: Table<TData>
+    ) => Partial<Omit<BaseTable.ToolbarProps, 'filtersProps' | 'enableFilters'>>;
+    table?: (table: Table<TData>) => Partial<BaseTable.TableProps>;
+    th?: (
+      table: Table<TData>,
+      header: Header<TData, unknown>
+    ) => Omit<BaseTable.TableCellProps, 'ref'>;
+    pagination?: (table: Table<TData>) => Partial<BaseTable.BaseTablePaginationProps> & {
+      total?: number;
+    };
+    tr?: (table: Table<TData>, row: Row<TData>) => Partial<BaseTable.TableRowProps>;
+    td?: (table: Table<TData>, props: Record<string, any>) => Omit<BaseTable.TableCellProps, 'ref'>;
+    empty?: () => Partial<BaseTable.TableFilteredEmptyProps>;
+  };
+
+  registerHandlers?: StateHandler[];
+}
+```
+
+#### options.columns
+
+Customize column configuration by setting `column.meta`
+
+```ts
+interface ColumnMeta<TData extends RowData, TValue = unknown> {
+  description?: Record<string, any>; // icon ? tooltip props
+  filterOptions?: { key: string; label: React.ReactNode }[]; // filter options
+  selectType?: 'single' | 'multiple'; // multiple selection type
+  sortable?: boolean; // whether it can be sorted
+  searchKey?: string; // custom search key
+}
+```
+
+### Feature
+
+#### Status2StorageFeature
+
+After being added to \_features, the fields in the configured state are stored in localStorage by default.
+getDefaultTableOptions will automatically register this feature.
+
+- `options.state2Storage`
+  The method of converting state to storage, the method of converting state to storage.
+- `options.storage2State`
+  The method of converting storage to state, the method of converting storage to state.
+- `options.meta.storageKeys`
+  Fields that need to be stored.
+
+```ts
+// storageKey field consists of kube-table-${tableName}-state
+interface StorageStateOptions {
+  storage2State?: (storageKey: string) => Partial<TableState>;
+  state2Storage?: (storageKey: string, state: Partial<TableState>) => void;
+}
+
+interface TableMeta<TData extends RowData> {
+  storageKeys?: Array<keyof TableState>;
+  tableName: string;
+}
+```
+
+### getDefaultTableOptions(config)
+
+Quickly generate default options configuration
+
+````ts
+**config**:
+
+```ts
+interface Config {
+  tableName: string;
+  manual: boolean; // whether to manually control the data
+  enableToolbar?: boolean; // whether to enable toolbar
+  enablePagination?: boolean; // whether to enable pagination
+  enableVisible?: boolean; // whether to enable hidden columns
+  enableFilters?: boolean; // whether to enable filters
+  enableStateToStorage?: boolean; // whether to store state to storage, used with options.meta.storageKeys
+  enableSelection?: boolean; // whether to enable selection
+  enableSort?: boolean; // whether to enable sorting
+  enableMultiSelection?: boolean; // whether to enable multi-selection
+  enableInitParamsByUrl?: boolean; // TODO: whether to enable url parameter initialization (not implemented)
+  enableParamsToUrl?: boolean; // TODO: whether to enable url parameters (not implemented)
+}
+````
+
+**Default enabled features**:
+
+- `enableFilters`
+- `enablePagination`
+- `enableToolbar`
+- `enableVisible`
+- `enableStateToStorage`
+- `enableSort`
+
+**Default enabled Feature**:
+
+- `Status2StorageFeature`
+
+**Default generated configuration**:
+
+```ts
+{
+  storageStateKeys: ['columnVisibility'],
+  registerHandlers: manual
+    ? [
+        {
+          handlerName: 'onParamsChange',
+          stateKeys: ['pagination', 'columnFilters', 'sorting'],
+        },
+      ]
+    : [],
+}
+```
+
+## BaseTable
+
+### BaseTable.TableProps
+
+```ts
+interface TableInnerProps {
+  padding?: 'normal' | 'none';
+  size?: 'small' | 'medium';
+  stickyHeader?: boolean; // whether to fix the table header
+  className?: string;
+  style?: React.CSSProperties;
+  tableWrapperClassName?: string;
+}
+```
+
+### BaseTable.TableHeadProps
+
+```ts
+interface TableHeadProps {
+  className?: string;
+  style?: React.CSSProperties;
+  hasBorder?: boolean; // whether the table th has a border
+}
+```
+
+### BaseTable.TableBodyProps
+
+```ts
+interface TableBodyProps {
+  className?: string;
+  style?: React.CSSProperties;
+  hasBorder?: boolean; // whether the td in the table body has a border
+}
+```
+
+### BaseTable.TableRowProps
+
+```ts
+export interface TableRowProps {
+  className?: string;
+  hover?: boolean; // whether hover effect
+  selected?: boolean; // whether selected
+  style?: React.CSSProperties;
+}
+```
+
+### BaseTable.TableCellProps
+
+```ts
+/**
+when padding is normal, variant and size correspond to the padding attributeQ
+  'head-small': '8px 12px',
+  'head-medium': '16px 12px',
+  'body-small': '4px 8px',
+  'body-medium': '8px 12px',
+*/
+export type TableCellProps = {
+  padding?: 'none' | 'normal'; // cell padding
+  align?: 'left' | 'center' | 'right' | 'justify'; // cell alignment
+  className?: string;
+  size?: 'small' | 'medium'; // cell size
+  ariaSort?: 'asc' | 'desc' | false; // whether to sort
+  variant?: 'head' | 'body'; // distinguish th and td
+  stickyHeader?: boolean; // whether to fix the table header
+  fixed?: 'left' | 'right'; // fixed column
+  fixedWidth?: number; // width when the column is fixed (when position is sticky; left or right value)
+  fixedLastLeft?: boolean; // whether it is the most left fixed, mainly used to separate shadow effects
+  fixedLastRight?: boolean; // whether it is the most right fixed, mainly used to separate shadow effects
+  style?: React.CSSProperties;
+  hasBorder?: boolean;
+};
+```
+
+## Full example
+
+```tsx
+import { Table, useTable, Dropdown, Menu } from '@kubed/components;';
+
+const defaultColumns: ColumnDef<Person>[] = [
+  {
+    header: 'Name',
+    footer: (props) => props.column.id,
+    columns: [
+      {
+        accessorKey: 'firstName',
+        cell: (info) => info.getValue(),
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorFn: (row) => row.lastName,
+        id: 'lastName',
+        cell: (info) => info.getValue(),
+        header: () => <span>Last Name</span>,
+        footer: (props) => props.column.id,
+        enableHiding: true,
+      },
+    ],
+  },
+  {
+    header: 'Info',
+    footer: (props) => props.column.id,
+    columns: [
+      {
+        accessorKey: 'age',
+        header: () => 'Age',
+        footer: (props) => props.column.id,
+        meta: {
+          sortable: true,
+          filterOptions: [
+            {
+              key: '0',
+              label: '0',
+            },
+            {
+              key: '1',
+              label: '1',
+            },
+          ],
+        },
+      },
+      {
+        header: 'More Info',
+        columns: [
+          {
+            accessorKey: 'visits',
+            header: () => <span>Visits</span>,
+            footer: (props) => props.column.id,
+          },
+          {
+            accessorKey: 'status',
+            header: 'Status',
+            footer: (props) => props.column.id,
+            meta: {
+              searchKey: 'status1',
+              filterOptions: [
+                {
+                  key: 'status-0',
+                  label: 'status-0',
+                },
+                {
+                  key: 'status-1',
+                  label: 'status-1',
+                },
+              ],
+            },
+          },
+          {
+            accessorKey: 'progress',
+            header: 'Profile Progress',
+            footer: (props) => props.column.id,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'actions',
+    cell: () => (
+      <Dropdown
+        content={
+          <Menu>
+            <MenuItem icon={<Pen />}>Edit</MenuItem>
+          </Menu>
+        }
+      >
+        <Button variant="text" radius="lg">
+          <More size={16} />
+        </Button>
+      </Dropdown>
+    ),
+  },
+];
+
+export const App = () => {
+  const [params, setParams] = React.useState({
+    pagination: {
+      pageIndex: 0,
+      pageSize: 10,
+    },
+    columnFilters: [],
+    sorting: [],
+  } as any);
+  const { pagination = {} } = params;
+  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({}); //manage your own row selection state
+
+  const handleParams = (p: Updater<any>, key: string) => {
+    setRowSelection({});
+    console.log('change params', p);
+    if (key === 'pagination') {
+      setParams(p);
+    } else {
+      setParams({
+        ...p,
+        pagination: {
+          ...page,
+          pageIndex: 0,
+        },
+      });
+    }
+  };
+  const [loading, setLoading] = React.useState(true);
+  React.useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, [params]);
+  const [columns] = React.useState<typeof defaultColumns>(() => [
+    {
+      id: 'selection',
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllRowsSelected()}
+          indeterminate={table.getIsSomeRowsSelected()}
+          onChange={table.getToggleAllRowsSelectedHandler()} //or getToggleAllPageRowsSelectedHandler
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          disabled={!row.getCanSelect()}
+          onChange={row.getToggleSelectedHandler()}
+        />
+      ),
+    },
+    ...defaultColumns,
+  ]);
+  const total = 100;
+  const data = React.useMemo(() => {
+    if (loading) {
+      return [];
+    }
+    return [...Array(pagination.pageSize)].map((_, i) => ({
+      firstName: `page-${pagination.pageIndex}-firstName-${i}`,
+      lastName: `lastName-${i}`,
+      age: i,
+      visits: i,
+      status: `status-${i}`,
+      progress: i,
+    }));
+  }, [params, loading]);
+
+  const state = useMemo(() => {
+    return {
+      ...params,
+      rowSelection,
+    };
+  }, [params, rowSelection]);
+
+  const forceUpdate = React.useReducer(() => ({}), {})[1];
+
+  const defaultOption = React.useState(
+    getDefaultTableOptions<Person>('table1', true, {
+      enableSelection: true,
+      enableMultiSelection: true,
+    })
+  )[0];
+
+  const table = useTable<Person>({
+    ...defaultOption,
+    data,
+    loading,
+    columns,
+    onRowSelectionChange: setRowSelection,
+    onParamsChange: handleParams,
+    rowCount: total,
+    getRowId: (row) => row.firstName,
+    state,
+    meta: {
+      ...defaultOption.meta,
+      tableName: defaultOption.meta.tableName,
+      getProps: {
+        filters: () => {
+          return {
+            simpleMode: false,
+            suggestions: [
+              {
+                key: 'age',
+                label: 'Age',
+                options: [
+                  {
+                    key: '0',
+                    label: '0',
+                  },
+                  {
+                    key: '1',
+                    label: '1',
+                  },
+                ],
+              },
+              {
+                key: 'status1',
+                label: 'Status',
+                options: [
+                  {
+                    key: 'status-0',
+                    label: 'status-0',
+                  },
+                  {
+                    key: 'status-1',
+                    label: 'status-1',
+                  },
+                ],
+              },
+            ],
+          };
+        },
+      },
+    },
+  });
+
+  return <Table table={table} />;
+};
+```
