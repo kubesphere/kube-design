@@ -216,13 +216,12 @@ function _getDefaultTableOptions<TData extends RowData>(
 
 export function getDefaultTableOptions<TData extends RowData>(
   config: DefaultTdPropsConfig | string,
-  manual?: boolean,
-  enableConfig: TableEnableConfig = {}
+  manual?: boolean
 ): Partial<TableOptions<TData>> &
   Required<Pick<TableOptions<TData>, '_features' | 'meta' | 'getCoreRowModel'>> {
   if (typeof config === 'string') {
-    return _getDefaultTableOptions(config, manual, enableConfig);
+    return _getDefaultTableOptions(config, manual);
   }
   const { tableName, manual: _manual, ...rest } = config;
-  return _getDefaultTableOptions(tableName, manual ?? _manual, enableConfig ?? rest);
+  return _getDefaultTableOptions(tableName, manual ?? _manual, rest);
 }
