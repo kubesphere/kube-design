@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Language } from 'prism-react-renderer';
 import { LiveProvider } from 'react-live';
 import { mdx, MDXContext } from '@mdx-js/react';
 import styled from 'styled-components';
 import { useTheme } from '@kubed/components';
 import { dark, light } from './prismTheme';
+import { useCodeDemo } from './use-code-demo';
 
 import CodeEditor from './CodeEditor';
 import Prism from './Prism';
@@ -74,13 +75,31 @@ export default function CodeBox({
 
   const mdxContext = useContext(MDXContext) as object;
   const scope = { mdx, ...mdxContext, TestWrapper };
+  const [preViewCode, setPreViewCode] = useState<string>(children);
+
+  const { code, noInline } = useCodeDemo({ scope, code: preViewCode });
 
   if (live) {
     return (
       <CodeBoxWrapper live>
-        <LiveProvider language={language} code={children.trim()} scope={scope} theme={prismTheme}>
-          <LivePreview />
-          <CodeEditor fontFamily={theme.font.mono} className="code-editor" />
+        <LiveProvider
+          language={language}
+          noInline={noInline}
+          code={code}
+          scope={scope}
+          theme={prismTheme}
+        >
+          <div>
+            <LivePreview />
+            <CodeEditor
+              code={children}
+              onChange={(val) => {
+                setPreViewCode(val);
+              }}
+              fontFamily={theme.font.mono}
+              className="code-editor"
+            />
+          </div>
         </LiveProvider>
       </CodeBoxWrapper>
     );
