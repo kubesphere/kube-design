@@ -13,7 +13,7 @@ import * as React from 'react';
 import { Menu, MenuItem, MenuLabel } from '../../../index';
 import type { ToolbarProps } from '../../BaseTable';
 import { Suggestions } from '../../BaseTable';
-import { EnableConfig } from '../Table';
+import { TableEnableConfig } from '../Table';
 import {
   InitFilterFeature,
   InitPaginationFeature,
@@ -151,10 +151,15 @@ export function getDefaultTrProps<T>(table: Table<T>, row: Row<T>) {
   };
 }
 
-export function getDefaultTableOptions<TData extends RowData>(
+export interface DefaultTdPropsConfig extends TableEnableConfig {
+  tableName: string;
+  manual: boolean;
+}
+
+function _getDefaultTableOptions<TData extends RowData>(
   tableName: string,
   manual: boolean = true,
-  enableConfig: EnableConfig = {}
+  enableConfig: TableEnableConfig = {}
 ): Partial<TableOptions<TData>> &
   Required<Pick<TableOptions<TData>, '_features' | 'meta' | 'getCoreRowModel'>> {
   const {
@@ -207,4 +212,17 @@ export function getDefaultTableOptions<TData extends RowData>(
       },
     } as TableMeta<TData>,
   };
+}
+
+export function getDefaultTableOptions<TData extends RowData>(
+  config: DefaultTdPropsConfig | string,
+  manual?: boolean,
+  enableConfig: TableEnableConfig = {}
+): Partial<TableOptions<TData>> &
+  Required<Pick<TableOptions<TData>, '_features' | 'meta' | 'getCoreRowModel'>> {
+  if (typeof config === 'string') {
+    return _getDefaultTableOptions(config, manual, enableConfig);
+  }
+  const { tableName, manual: _manual, ...rest } = config;
+  return _getDefaultTableOptions(tableName, manual ?? _manual, enableConfig ?? rest);
 }
