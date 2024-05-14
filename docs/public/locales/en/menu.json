@@ -50,5 +50,7 @@
   "StatusDot": "StatusDot",
   "State Management": "State Management",
   "UI and Dom": "UI & Dom",
-  "Others": "Other"
+  "Others": "Other",
+  "ThemeObject": "Theme Object",
+  "KubedConfigProvider": "KubedConfigProvider"
 }

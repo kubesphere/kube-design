@@ -50,5 +50,7 @@
   "StatusDot": "StatusDot 状态点",
   "State Management": "状态管理",
   "UI and Dom": "UI & Dom",
-  "Others": "其他"
+  "Others": "其他",
+  "ThemeObject": "主题对象",
+  "KubedConfigProvider": "KubedConfigProvider"
 }

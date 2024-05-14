@@ -1,0 +1,80 @@
+---
+group: 'guide'
+title: KubedConfigProvider
+description: KubedConfigProvider configuration
+order: 1
+---
+
+## KubedConfigProvider
+Provide the subject context objects, internationalization context, and custom color schemes.
+This must be used in the root directory of the application and can only be used once.
+
+### Usage
+
+```jsx
+import { KubedConfigProvider } from "@kubed/components";
+
+<KubedConfigProvider themeType={'dark'} locale={'zh'}>
+  <App />
+</KubedConfigProvider>;
+```
+
+### Props
+```ts
+interface Props {
+  /** your application **/
+  children: React.ReactNode;
+  /** Custom theme **/
+  themes?: Array<KubedTheme>;
+  /** Dark/light theme, or the name of a custom theme. **/
+  themeType?: string | 'dark' | 'light';
+  /** The current language,default support 'en', 'zh', 'zh-tw', 'es' **/
+  locale?: Locale;
+  /**  extend your locals **/
+  extendLocales?: Record<Locale, ILocale>;
+}
+```
+
+### Custom theme
+
+Pass the theme objects to the themes property to customize the theme,
+which will be merged with the default theme and used across all components.
+```jsx
+import { KubedConfigProvider, Button, themeUtils } from "@kubed/components"
+function App() {
+  const customDarkTheme = themeUtils.createFromDark({
+    type: "customDark",
+    palette: {
+      accents_1: "#1098AD",
+      accents_2: "#3BC9DB",
+    },
+  })
+  const customLightTheme = themeUtils.createFromLight({
+    type: "customLight",
+    palette: {
+      accents_1: "#F76707",
+      accents_2: "#FFA94D",
+    },
+  })
+  const [themeType, setThemeType] = useState("customDark")
+  return (
+    <KubedConfigProvider
+      themes={[customDarkTheme, customLightTheme]}
+      themeType={themeType}
+    >
+      <Button
+        onClick={() => {
+          if (themeType === "customDark") {
+            setThemeType("customLight")
+          } else {
+            setThemeType("customDark")
+          }
+        }}
+      >
+        button
+      </Button>
+    </KubedConfigProvider>
+  )
+}
+```
+
