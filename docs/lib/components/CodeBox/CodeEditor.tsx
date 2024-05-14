@@ -5,8 +5,10 @@ import styled from 'styled-components';
 import Prism from './Prism';
 
 interface CodeEditorProps {
+  code: string;
   fontFamily?: string;
   className?: string;
+  onChange: (code: string) => void;
 }
 
 interface StateProps {
@@ -26,9 +28,9 @@ const EditorContainer = styled.div`
   }
 `;
 
-export default function CodeEditor({ fontFamily, className }: CodeEditorProps) {
+export default function CodeEditor({ fontFamily, className, code, onChange }: CodeEditorProps) {
   // @ts-ignore
-  const { code, language, onChange } = useContext(LiveContext);
+  const { language } = useContext(LiveContext);
   const [state, setState] = useState<StateProps>({ code: code || '' });
 
   useEffect(() => {
