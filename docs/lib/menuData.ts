@@ -1,76 +1,76 @@
 export default {
   guide: [
     {
-      title: "Getting Started",
-      menu: ["Introduction", "Installation", "Changelog"]
+      title: 'Getting Started',
+      menu: ['Introduction', 'Installation', 'Changelog'],
     },
     {
-      title: "Customization",
-      menu: ["Colors", "Themes"]
-    }
+      title: 'Customization',
+      menu: ['KubedConfigProvider', 'ThemeObject'],
+    },
   ],
   Icons: [],
   components: [
     {
-      title: "Layout",
-      menu: ["Grid", "Group", "Divider", "Container", "Center"]
+      title: 'Layout',
+      menu: ['Grid', 'Group', 'Divider', 'Container', 'Center'],
     },
     {
-      title: "General",
-      menu: ["Button", "Text"]
+      title: 'General',
+      menu: ['Button', 'Text'],
     },
     {
-      title: "Data Entry",
+      title: 'Data Entry',
       menu: [
-        "Checkbox",
-        "DatePicker",
-        "AutoComplete",
-        "Input",
-        "InputNumber",
-        "Radio",
-        "Select",
-        "Slider",
-        "Switch"
-      ]
+        'Checkbox',
+        'DatePicker',
+        'AutoComplete',
+        'Input',
+        'InputNumber',
+        'Radio',
+        'Select',
+        'Slider',
+        'Switch',
+      ],
     },
     {
-      title: "Data Display",
+      title: 'Data Display',
       menu: [
-        "Badge",
-        "Card",
-        "Popover",
-        "Tabs",
-        "Tag",
-        "Tooltip",
-        "menu",
-        "Navs",
-        "Notify",
-        "Banner",
-        "Descriptions",
-        "Entity",
-        "Empty",
-        "Form",
-        "Dropdown",
-        "Table"
-      ]
+        'Badge',
+        'Card',
+        'Popover',
+        'Tabs',
+        'Tag',
+        'Tooltip',
+        'menu',
+        'Navs',
+        'Notify',
+        'Banner',
+        'Descriptions',
+        'Entity',
+        'Empty',
+        'Form',
+        'Dropdown',
+        'Table',
+      ],
     },
     {
-      title: "Feedback",
-      menu: ["Alert", "Loading", "LoadingOverlay", "Modal", "StatusDot"]
-    }
+      title: 'Feedback',
+      menu: ['Alert', 'Loading', 'LoadingOverlay', 'Modal', 'StatusDot'],
+    },
   ],
   hooks: [
     {
-      title: "State Management",
-      menu: ["useId", "useToggle"]
+      title: 'State Management',
+      menu: ['useId', 'useToggle'],
     },
     {
-      title: "UI and Dom",
-      menu: ["useClickOutside", "useScrollLock"]
+      title: 'UI and Dom',
+      menu: ['useClickOutside', 'useScrollLock'],
     },
     {
-      title: "Others",
-      menu: ["useClipboard", "useDidUpdate", "useForceUpdate"]
-    }
-  ]
+      title: 'Others',
+      menu: ['useClipboard', 'useDidUpdate', 'useForceUpdate'],
+    },
+  ],
 };

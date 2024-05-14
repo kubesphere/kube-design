@@ -1,0 +1,78 @@
+---
+group: 'guide'
+title: KubedConfigProvider
+description: KubedConfigProvider configuration
+order: 1
+---
+
+## KubedConfigProvider
+提供主题对象上下文、国际化上下文和自定义配色方案。必须在应用程序的根目录下使用，并且只能使用一次.
+
+### 使用
+
+```jsx
+import { KubedConfigProvider } from "@kubed/components";
+
+<KubedConfigProvider themeType={'dark'} locale={'zh'}>
+  <App />
+</KubedConfigProvider>;
+```
+
+### Props
+```ts
+interface Props {
+  /** 应用程序 **/
+  children: React.ReactNode;
+  /** 自定义主题 **/
+  themes?: Array<KubedTheme>;
+  /** 暗/亮色主题、或者自定义主题的name **/
+  themeType?: string | 'dark' | 'light';
+  /** 当前语言，默认支持'en', 'zh', 'zh-tw', 'es' **/
+  locale?: Locale;
+  /**  扩展的语言 **/
+  extendLocales?: Record<Locale, ILocale>;
+}
+```
+
+### 自定义主题
+
+将主题对象传递给themes属性，可以自定义主题,它将与默认主题合并在所有组件中使用
+```jsx
+import { KubedConfigProvider, Button, themeUtils } from "@kubed/components"
+function App() {
+  const customDarkTheme = themeUtils.createFromDark({
+    type: "customDark",
+    palette: {
+      accents_1: "#1098AD",
+      accents_2: "#3BC9DB",
+    },
+  })
+  const customLightTheme = themeUtils.createFromLight({
+    type: "customLight",
+    palette: {
+      accents_1: "#F76707",
+      accents_2: "#FFA94D",
+    },
+  })
+  const [themeType, setThemeType] = useState("customDark")
+  return (
+    <KubedConfigProvider
+      themes={[customDarkTheme, customLightTheme]}
+      themeType={themeType}
+    >
+      <Button
+        onClick={() => {
+          if (themeType === "customDark") {
+            setThemeType("customLight")
+          } else {
+            setThemeType("customDark")
+          }
+        }}
+      >
+        button
+      </Button>
+    </KubedConfigProvider>
+  )
+}
+```
+
