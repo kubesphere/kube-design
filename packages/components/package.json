@@ -25,6 +25,7 @@
     "react-is": "^17.0.2"
   },
   "dependencies": {
+    "@tanstack/react-table": "^8.16.0",
     "@tippyjs/react": "^4.2.5",
     "classnames": "^2.3.1",
     "dayjs": "^1.10.7",

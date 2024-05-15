@@ -104,5 +104,6 @@ module.exports = {
 
     // it does not spoil anything if used wisely
     'jsx-a11y/no-autofocus': 'off',
+    'react/prop-types': 'off',
   },
 };
