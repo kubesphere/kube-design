@@ -9,6 +9,7 @@ export default {
       menu: ['Colors', 'Themes'],
     },
   ],
+  Icons: [],
   components: [
     {
       title: 'Layout',
@@ -16,11 +17,7 @@ export default {
     },
     {
       title: 'General',
-      menu: [
-        'Button',
-        'Text',
-        // 'Icon'
-      ],
+      menu: ['Button', 'Text'],
     },
     {
       title: 'Data Entry',

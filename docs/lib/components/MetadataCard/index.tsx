@@ -55,7 +55,7 @@ const List = styled.div`
   }
 `;
 
-const REPO_BASE = 'https://github.com/chenz24/kube-design/blob/master';
+const REPO_BASE = 'https://github.com/kubesphere/kube-design/blob/next';
 const DOCS_BASE = `${REPO_BASE}/docs/docs`;
 const SOURCE_BASE = `${REPO_BASE}/packages`;
 

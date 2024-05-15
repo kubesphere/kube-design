@@ -28,6 +28,11 @@ module.exports = withPlugins([withTM], {
         permanent: true,
         destination: '/hooks/use-id',
       },
+      {
+        source: '/Icons',
+        permanent: true,
+        destination: '/Icons/Icons',
+      },
     ];
   },
 });
