@@ -2,4 +2,4 @@
 'kubed-documents': major
 ---
 
-fix: LivePreview
+fix: ReactLivePreview
