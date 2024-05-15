@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Language } from 'prism-react-renderer';
 import { LiveProvider } from 'react-live';
 import { mdx, MDXContext } from '@mdx-js/react';
 import styled from 'styled-components';
 import { useTheme } from '@kubed/components';
 import { dark, light } from './prismTheme';
+import ReactLivePreview from './ReactLivePreview';
 
-import CodeEditor from './CodeEditor';
 import Prism from './Prism';
 import LivePreview from './LivePreview';
 
@@ -78,10 +78,7 @@ export default function CodeBox({
   if (live) {
     return (
       <CodeBoxWrapper live>
-        <LiveProvider language={language} code={children.trim()} scope={scope} theme={prismTheme}>
-          <LivePreview />
-          <CodeEditor fontFamily={theme.font.mono} className="code-editor" />
-        </LiveProvider>
+        <ReactLivePreview language={language} code={children} scope={scope} />
       </CodeBoxWrapper>
     );
   }

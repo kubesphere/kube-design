@@ -11,6 +11,7 @@
   "repository": "https://github.com/kubesphere/kube-design",
   "license": "MIT",
   "scripts": {
+    "start:docs": "cd ./docs && npm run dev",
     "postinstall": "npm run docs:docgen && npm run build:icons",
     "syncpack": "syncpack list-mismatches",
     "typecheck": "tsc --noEmit",
