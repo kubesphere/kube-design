@@ -110,7 +110,7 @@ export const basicTableWithSelected = () => {
 
 export const basicTableWithFixedHeader = () => {
   const data = React.useMemo(() => {
-    return [...Array(100)].map((_, i) => ({
+    return [...Array(100).fill(1)].map((_, i) => ({
       col1: i,
       col2: `col2-${i}`,
       col3: `col3-${i}`,
@@ -151,7 +151,7 @@ export const basicTableWithFixedHeader = () => {
 
 export const basicTableWithFixedColumn = () => {
   const data = React.useMemo(() => {
-    return [...Array(100)].map((_, i) => ({
+    return [...Array(100).fill(1)].map((_, i) => ({
       col1: i,
       col2: `col2-${i}`,
       col3: `col3-${i}`,
@@ -274,7 +274,7 @@ export const TableWithPaginationAndToolbar = () => {
   //   ];
   // }, []);
   const data = React.useMemo(() => {
-    return [...Array(10)].map((_, i) => ({
+    return [...Array(10).fill(1)].map((_, i) => ({
       col1: `page-${page}-col1-${i}`,
       col2: `page-${page}-col2-${i}`,
       col3: `page-${page}-col3-${i}`,
@@ -954,7 +954,7 @@ export const DataTableSimple = () => {
     if (loading) {
       return [];
     }
-    return [...Array(100)].map((_, i) => ({
+    return [...Array(100).fill(1)].map((_, i) => ({
       firstName: `firstName-${i}`,
       lastName: `lastName-${i}`,
       age: i,
@@ -1091,7 +1091,7 @@ export const TableDemo = () => {
   }, []);
   const table = useTable({
     ...defaultOptions,
-    columns,
+    columns: columns as any,
     data,
     meta: {
       ...defaultOptions.meta,
