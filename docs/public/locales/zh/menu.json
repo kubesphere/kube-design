@@ -47,5 +47,8 @@
   "Loading": "Loading 加载中",
   "LoadingOverlay": "LoadingOverlay 覆盖加载",
   "Modal": "Modal 对话框",
-  "StatusDot": "StatusDot 状态点"
+  "StatusDot": "StatusDot 状态点",
+  "State Management": "状态管理",
+  "UI and Dom": "UI & Dom",
+  "Others": "其他"
 }

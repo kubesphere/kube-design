@@ -2,48 +2,67 @@
 group: 'hooks'
 category: 'state'
 title: 'useId'
-description: 'Generate memoized random id'
+description: 'Generate a random ID for memory'
 order: 1
 ---
 
 ## Usage
 
-use-id generates random id that persists across renders.
-Hook is usually used to bind input elements to labels.
-Generated random id is saved to ref and will not change unless component is unmounted.
+use-id generates a random ID that persists during rendering.
+Hooks are typically used to bind input elements to tags.
+The generated random id is saved into the ref and will not change unless the component is unloaded.
 
-```jsx
+```jsx live=true
 import { useId } from '@kubed/hooks';
+import { Input } from '@kubed/components'
 
-function Input({ id }) {
-  const uuid = useId(id);
+function MyInput({ id }) {
+   const uuid = useId(id);
 
-  return (
-    <>
-      <label htmlFor={uuid}>Input label</label>
-      <input type="text" id={uuid} />
-    </>
-  );
+   return (
+     <>
+       <label htmlFor={uuid}>Input label</label>
+       <Input type="text" id={uuid} />
+     </>
+   );
 }
 
-// input and label will have id 'my-id'
-const withId = <Input id="my-id" />;
+export default function App() {
+   return (
+     <div className="flex gap-3 items-center">
+       // input and label will have id 'my-id'
+       <MyInput id="my-id" />
+       // input and label will have random id 'kubed-fZMoF'
+       <MyInput />
+     </div>
+   );
+}
 
-// input and label will have random id 'kubed-fZMoF'
-const withoutId = <Input />;
 ```
 
 ## API
 
-use-id hook accepts two arguments:
+The use-id hook accepts two parameters:
 
-- `id` – string value that is returned by default
-- `generateId` – function that is used to generate random id
+- `id` – the string value returned by default
+- `generateId` – function for generating random IDs
 
-Hook returns string value that is either `id` (if first argument is passed) or random id generated with `generateId` function.
-
-## Definition
+Hook returns a string value, which can be either "id" (if the first argument is passed) or a random id generated using the "generateId" function.
 
 ```tsx
 function useId(id: string, generateId?: () => string): string;
 ```
+
+## Params
+
+| Parameters | Default Value | Type | Description |
+| --- | --- | --- | --- |
+| id | - | `string` | The string value returned by default |
+| generateId | - | `() => string` | Function to generate a random ID` |
+
+## Result
+
+
+| Parameters | Default Value | Type | Description |
+| --- | --- | --- | --- |
+| id | - | `string` | Generate a random ID for memory |
