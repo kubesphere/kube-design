@@ -4,7 +4,6 @@ import * as React from 'react';
 export const useCodeDemo = ({ scope, code: inputCode }) => {
   let code = cloneDeep(inputCode?.trim());
   let noInline = false;
-  console.log(code, 'codecodecodecode');
 
   const scopeKeys = Object.keys(scope);
   const scopeValues = scopeKeys.map((key) => {
@@ -17,8 +16,6 @@ export const useCodeDemo = ({ scope, code: inputCode }) => {
   const imports = Object.assign({}, ...scopeValues);
   code = transformCode(code, imports);
   noInline = code.includes('render');
-  console.log(code, 'code-ddf');
-
   return {
     code,
     noInline,
@@ -32,7 +29,11 @@ export const transformCode = (code: string, imports = {}, compName = 'App') => {
   let cleanedCode = code
     .replace(importRegex, (match) => {
       // get component name from the match ex. "import { Table } from '@nextui-org/react'"
-      const componentName = match.match(/\w+/g)?.[1] || '';
+
+      let componentName = match.match(/\w+/g)?.[1] || '';
+      // replace as
+      componentName = componentName === 'as' ? match.match(/\w+/g)?.[2] || '' : componentName;
+
       const matchingImport = get(imports, componentName);
 
       if (matchingImport) {

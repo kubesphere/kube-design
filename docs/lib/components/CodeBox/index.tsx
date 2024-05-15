@@ -5,9 +5,8 @@ import { mdx, MDXContext } from '@mdx-js/react';
 import styled from 'styled-components';
 import { useTheme } from '@kubed/components';
 import { dark, light } from './prismTheme';
-import { useCodeDemo } from './use-code-demo';
+import ReactLivePreview from './ReactLivePreview';
 
-import CodeEditor from './CodeEditor';
 import Prism from './Prism';
 import LivePreview from './LivePreview';
 
@@ -75,32 +74,11 @@ export default function CodeBox({
 
   const mdxContext = useContext(MDXContext) as object;
   const scope = { mdx, ...mdxContext, TestWrapper };
-  const [preViewCode, setPreViewCode] = useState<string>(children);
-
-  const { code, noInline } = useCodeDemo({ scope, code: preViewCode });
 
   if (live) {
     return (
       <CodeBoxWrapper live>
-        <LiveProvider
-          language={language}
-          noInline={noInline}
-          code={code}
-          scope={scope}
-          theme={prismTheme}
-        >
-          <div>
-            <LivePreview />
-            <CodeEditor
-              code={children}
-              onChange={(val) => {
-                setPreViewCode(val);
-              }}
-              fontFamily={theme.font.mono}
-              className="code-editor"
-            />
-          </div>
-        </LiveProvider>
+        <ReactLivePreview language={language} code={children} scope={scope} />
       </CodeBoxWrapper>
     );
   }
