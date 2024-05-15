@@ -86,6 +86,7 @@ const menus = [
   { label: 'Guide', value: 'guide' },
   { label: 'Components', value: 'components' },
   // { label: 'Hooks', value: 'hooks' },
+  { label: 'Icons', value: 'Icons' },
 ];
 
 interface TopBarProps {

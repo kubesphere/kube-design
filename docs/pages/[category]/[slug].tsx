@@ -12,6 +12,7 @@ import MetadataCard from '../../lib/components/MetadataCard';
 import TOC from '../../lib/components/TOC';
 import CodeBox from '../../lib/components/CodeBox';
 import PropsTable from '../../lib/components/PropsTable';
+import IconList from '../../lib/components/IconList/IconList';
 
 const Pre = ({ children }: React.PropsWithChildren<any>) => <>{children}</>;
 
@@ -20,6 +21,7 @@ const components = {
   KubeIcon,
   pre: Pre,
   code: CodeBox,
+  IconList,
 };
 
 const MainContent = styled.div`
@@ -115,7 +117,13 @@ export default function Slug(props: any) {
       )}
       {group === 'hooks' && (
         <>
-          <MetadataCard title={title} description={description} group={group} imports={imports} />
+          <MetadataCard
+            title={title}
+            description={description}
+            group={group}
+            imports={imports}
+            locale={props.locale}
+          />
           <MainContent>
             <Content>
               <MDXRemote {...props.source} components={components} />
@@ -125,6 +133,16 @@ export default function Slug(props: any) {
         </>
       )}
       {group === 'guide' && (
+        <>
+          <MainContent>
+            <Content>
+              <MDXRemote {...props.source} components={components} />
+            </Content>
+            <TOC headings={props.toc} withTabs />
+          </MainContent>
+        </>
+      )}
+      {group === 'Icons' && (
         <>
           <MainContent>
             <Content>

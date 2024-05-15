@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { isEmpty } from 'lodash';
 import TopBar from '../TopBar';
 import SideMenu from '../../components/SideMenu';
 import menuData from '../../menuData';
@@ -68,22 +69,26 @@ export function DocLayout({ children, category, slug }: DocLayoutProps) {
     <BodyWrapper>
       <TopBar isHome={false} isScroll={isScroll} />
       <MainSection>
-        <SideBar>
-          <SideBarInner isScroll={isScroll}>
-            {categoryMenu.map((item) => {
-              return (
-                <SideMenu
-                  title={item.title}
-                  category={category}
-                  menu={item.menu}
-                  key={item.title}
-                  slug={slug}
-                />
-              );
-            })}
-          </SideBarInner>
-        </SideBar>
-        <SideShadow />
+        {!isEmpty(categoryMenu) && (
+          <>
+            <SideBar>
+              <SideBarInner isScroll={isScroll}>
+                {categoryMenu.map((item) => {
+                  return (
+                    <SideMenu
+                      title={item.title}
+                      category={category}
+                      menu={item.menu}
+                      key={item.title}
+                      slug={slug}
+                    />
+                  );
+                })}
+              </SideBarInner>
+            </SideBar>
+            <SideShadow />
+          </>
+        )}
         <MainContent>{children}</MainContent>
       </MainSection>
     </BodyWrapper>

@@ -18,7 +18,7 @@ interface StateProps {
 
 const EditorContainer = styled.div`
   padding: 20px 20px 20px 10px;
-  background-color: rgba(248, 249, 250, 0.65);
+  background-color: ${({ theme }) => theme.palette.accents_1};
   border: 1px solid ${({ theme }) => theme.palette.accents_2};
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
