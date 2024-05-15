@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.1.0
+
+### Minor Changes
+
+- [#194](https://github.com/kubesphere/kube-design/pull/194) [`185e5fb`](https://github.com/kubesphere/kube-design/commit/185e5fb4f4e777be3373e94185fdad0f0b122f5a) Thanks [@yazhouio](https://github.com/yazhouio)! - feat: Add table component
+
 ## 0.0.87
 
 ### Patch Changes
