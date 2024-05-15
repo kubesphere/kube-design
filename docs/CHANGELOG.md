@@ -1,5 +1,11 @@
 # kubed-documents
 
+## 0.2.0
+
+### Minor Changes
+
+- [#203](https://github.com/kubesphere/kube-design/pull/203) [`a15b13d`](https://github.com/kubesphere/kube-design/commit/a15b13d1495b226c30af0d051ba25758012fcd70) Thanks [@51wangping](https://github.com/51wangping)! - fix: add Icon docs
+
 ## 0.1.0
 
 ### Minor Changes
