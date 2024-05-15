@@ -1,6 +1,6 @@
 {
   "name": "kubed-documents",
-  "version": "0.0.87",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",

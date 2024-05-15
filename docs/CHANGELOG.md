@@ -1,5 +1,11 @@
 # kubed-documents
 
+## 0.1.0
+
+### Minor Changes
+
+- [#201](https://github.com/kubesphere/kube-design/pull/201) [`8590b36`](https://github.com/kubesphere/kube-design/commit/8590b3694c9fd4dc72270ceec4edce4db6faba9b) Thanks [@51wangping](https://github.com/51wangping)! - fix: LivePreview
+
 ## 0.0.87
 
 ### Patch Changes
