@@ -21,11 +21,11 @@ export const usePaginationInstance = ({
   });
   const pageCount = Math.ceil(total / pageSize);
   return {
-    getCanNextPage: () => pageIndex < pageCount,
-    getCanPreviousPage: () => pageIndex > 1,
+    getCanNextPage: () => pageIndex + 1 < pageCount,
+    getCanPreviousPage: () => pageIndex > 0,
     getState: () => pagination,
-    getPageCount: () => total,
-    getRowCount: () => pageCount,
+    getPageCount: () => pageCount,
+    getRowCount: () => total,
     nextPage: () => {
       if (pageIndex < pageCount) {
         const newPageIndex = pageIndex + 1;
@@ -40,7 +40,7 @@ export const usePaginationInstance = ({
       }
     },
     previousPage: () => {
-      if (pageIndex > 1) {
+      if (pageIndex > 0) {
         const newPageIndex = pageIndex - 1;
         setPagination({
           ...pagination,

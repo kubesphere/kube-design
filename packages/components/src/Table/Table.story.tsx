@@ -222,7 +222,10 @@ export const basicTableWithFixedColumn = () => {
 };
 
 export const paginationTable = () => {
-  return <Pagination total={100} onChange={console.log} />;
+  const [state, setState] = React.useState({
+    page: 1,
+  });
+  return <BaseTable.Pagination total={100} pagination={state} onChange={setState} />;
 };
 
 export const TableWithPaginationAndToolbar = () => {
@@ -538,7 +541,7 @@ export const DataTableWithRemoteData = () => {
     // if (loading) {
     //   return [];
     // }
-    return [...Array(pagination.pageSize)].map((_, i) => ({
+    return [...Array(pagination.pageSize)].fill(1).map((_, i) => ({
       firstName: `page-${pagination.pageIndex}-firstName-${i}`,
       lastName: `lastName-${i}`,
       age: i,
@@ -576,6 +579,12 @@ export const DataTableWithRemoteData = () => {
     meta: {
       tableName: 'adadfssv',
       manual: true,
+      registerHandlers: [
+        {
+          stateKeys: '*',
+          callback: console.log,
+        },
+      ],
       enable: {
         toolbar: true,
         pagination: true,
@@ -638,7 +647,7 @@ export const DataTableWithSelected = () => {
     if (loading) {
       return [];
     }
-    return [...Array(pagination.pageSize)].map((_, i) => ({
+    return [...Array(pagination.pageSize)].fill(1).map((_, i) => ({
       firstName: `page-${pagination.pageIndex}-firstName-${i}`,
       lastName: `lastName-${i}`,
       age: i,
@@ -668,8 +677,8 @@ export const DataTableWithSelected = () => {
         stateKeys: ['pagination', 'columnFilters', 'sorting'],
       },
       {
-        handlerName: 'onStateChange1',
         stateKeys: '*',
+        callback: console.log,
       },
       {
         handlerName: 'onRowSelectionChange1',
@@ -690,9 +699,6 @@ export const DataTableWithSelected = () => {
     getCoreRowModel: getCoreRowModel(),
     onParamsChange: handleParams,
     // @ts-ignore
-    onStateChange1: (s: TableState) => {
-      console.log('onStateChange1', s);
-    },
     manualPagination: true,
     debugTable: true,
     debugHeaders: true,
@@ -787,9 +793,9 @@ export const DataTableWithDefault = () => {
     sorting: [],
   } as any);
   const { pagination = {} } = params;
-  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({}); //manage your own row selection state
+  const [rowSelection, setRowSelection] = React.useState({}); //manage your own row selection state
 
-  const handleParams = (p: Updater<any>, key: string) => {
+  const handleParams = (p, key) => {
     setRowSelection({});
     const { pagination: page } = p;
     if (key === 'pagination') {
@@ -811,7 +817,7 @@ export const DataTableWithDefault = () => {
       setLoading(false);
     }, 2000);
   }, [params]);
-  const [columns] = React.useState<typeof defaultColumns>(() => [
+  const [columns] = React.useState(() => [
     {
       id: 'selection',
       header: ({ table }) => (
@@ -836,7 +842,7 @@ export const DataTableWithDefault = () => {
     if (loading) {
       return [];
     }
-    return [...Array(pagination.pageSize)].map((_, i) => ({
+    return [...Array(pagination.pageSize)].fill(1).map((_, i) => ({
       firstName: `page-${pagination.pageIndex}-firstName-${i}`,
       lastName: `lastName-${i}`,
       age: i,
@@ -846,7 +852,7 @@ export const DataTableWithDefault = () => {
     }));
   }, [params, loading]);
 
-  const state = useMemo(() => {
+  const state = React.useMemo(() => {
     return {
       ...params,
       rowSelection,
@@ -854,7 +860,7 @@ export const DataTableWithDefault = () => {
   }, [params, rowSelection]);
 
   const defaultOption = React.useState(
-    getDefaultTableOptions<Person>({
+    DataTable.getDefaultTableOptions<Person>({
       tableName: 'table1',
       manual: true,
       enableSelection: true,
@@ -862,7 +868,7 @@ export const DataTableWithDefault = () => {
     })
   )[0];
 
-  const table = useTable<Person>({
+  const table = DataTable.useTable<Person>({
     ...defaultOption,
     data,
     loading,
@@ -906,6 +912,10 @@ export const DataTableWithDefault = () => {
                     key: 'status-1',
                     label: 'status-1',
                   },
+                  {
+                    key: 'status-2',
+                    label: 'status-2',
+                  },
                 ],
               },
             ],
@@ -915,16 +925,7 @@ export const DataTableWithDefault = () => {
     },
   });
 
-  return (
-    <>
-      {/* <div>
-        <button onClick={() => forceUpdate()} type="button">
-          forceUpdate
-        </button>
-      </div> */}
-      <DataTable.DataTable table={table} />
-    </>
-  );
+  return <DataTable.DataTable table={table} />;
 };
 
 export const DataTableSimple = () => {
@@ -984,6 +985,12 @@ export const DataTableSimple = () => {
       refetch: () => forceUpdate(),
       ...defaultOption.meta,
       tableName: defaultOption.meta?.tableName!,
+      registerHandlers: [
+        {
+          stateKeys: '*',
+          callback: console.log,
+        },
+      ],
       getProps: {
         filters: () => {
           return {
@@ -1066,6 +1073,7 @@ export const TableDemo = () => {
         accessorKey: 'age',
         header: 'Age',
         cell: (info) => info.getValue(),
+        filterFn: 'equals',
       },
       {
         accessorKey: 'address',
@@ -1085,6 +1093,25 @@ export const TableDemo = () => {
     ...defaultOptions,
     columns,
     data,
+    meta: {
+      ...defaultOptions.meta,
+      getProps: {
+        filters: () => {
+          return {
+            simpleMode: false,
+            suggestions: [
+              {
+                key: 'age',
+                label: 'Age',
+                options: Array(4)
+                  .fill(1)
+                  .map((i, index) => ({ key: index, label: `Age ${index}` })),
+              },
+            ],
+          };
+        },
+      },
+    },
   });
   return <DataTable.DataTable table={table} />;
 };

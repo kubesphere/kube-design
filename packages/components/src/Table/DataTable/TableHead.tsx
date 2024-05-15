@@ -106,15 +106,7 @@ function TableHead<T>({ header, table }: PropsWithChildren<TableHeadProps<T>>) {
   };
 
   const handleFilter = (value: any) => {
-    const { columnFilters } = table.getState();
-    const currentFilter = columnFilters.findIndex((filter) => filter.id === searchKey);
-    const isFiltered = currentFilter > -1;
-    const newFilters = [...columnFilters];
-    if (isFiltered) {
-      newFilters.splice(currentFilter, 1);
-    }
-    newFilters.push({ id: searchKey, value });
-    table.setColumnFilters(newFilters);
+    header.column.setFilterValue(value);
   };
 
   const renderDropdown = () => {
@@ -142,7 +134,7 @@ function TableHead<T>({ header, table }: PropsWithChildren<TableHeadProps<T>>) {
               </MenuItem>
             </>
           )}
-          {filterOptions.length && (
+          {header.column.getCanFilter() && filterOptions.length && (
             <>
               <MenuLabel>{locales.Table.Filter}</MenuLabel>
               {filterOptions.map((option: any) => (

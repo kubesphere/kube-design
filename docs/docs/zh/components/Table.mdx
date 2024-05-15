@@ -10,16 +10,20 @@ order: 10
 
 > 详细 react table 使用请参考 [react-table](https://tanstack.com/table/latest/docs/introduction)
 
-```jsx
+```jsx live=true
 import * as React from 'react';
-import { useTable, getDefaultTableOptions, Table } from '@kubed/components';
+import { DataTable, Table } from '@kubed/components';
+
 () => {
   const [defaultOptions] = React.useState(
-    getDefaultTableOptions('table-demo', false, {
-      enableFilters: false,
+    DataTable.getDefaultTableOptions({
+      tableName: 'table-demo',
+      manual: false,
+      enableFilters: true,
       enablePagination: false,
     })
   );
+  const [columnFilters, setColumnFilters] = React.useState([]);
   const columns = React.useMemo(() => {
     return [
       {
@@ -31,6 +35,7 @@ import { useTable, getDefaultTableOptions, Table } from '@kubed/components';
         accessorKey: 'age',
         header: 'Age',
         cell: (info) => info.getValue(),
+        filterFn: 'equals',
       },
       {
         accessorKey: 'address',
@@ -46,10 +51,29 @@ import { useTable, getDefaultTableOptions, Table } from '@kubed/components';
       { name: 'KubeSphere', age: 2, address: 'Beijing' },
     ];
   }, []);
-  const table = useTable({
+  const table = DataTable.useTable({
     ...defaultOptions,
     columns,
     data,
+    meta: {
+      ...defaultOptions.meta,
+      getProps: {
+        filters: () => {
+          return {
+            simpleMode: false,
+            suggestions: [
+              {
+                key: 'age',
+                label: 'Age',
+                options: Array(4)
+                  .fill(1)
+                  .map((i, index) => ({ key: index, label: `Age ${index}` })),
+              },
+            ],
+          };
+        },
+      },
+    },
   });
   return <Table table={table} />;
 };
@@ -286,107 +310,163 @@ export type TableCellProps = {
 };
 ```
 
+### BaseTable.ToolbarProps
+
+```ts
+interface ToolbarProps {
+  enableBatchActions: boolean; // 是否多选时操作
+  enableSettingMenu?: boolean; // 是否暂时操作按钮
+  onDisableBatchActions?: () => void; // 取消多选操作框
+  enableFilters?: boolean; // 是否启用过滤
+  settingMenu?: React.ReactNode; // 操作列表
+  settingMenuText?: string;
+  toolbarLeft?: React.ReactNode; // left 组件
+  toolbarRight?: React.ReactNode; // right 组件
+  batchActions?: React.ReactNode; // 多选操作按钮
+  filterProps: {
+    // FilterInput props
+    filters?: any;
+    placeholder?: string;
+    suggestions: Suggestions;
+    simpleMode?: boolean;
+    onChange?: (value: any) => void;
+    initialKeyword?: string;
+  };
+  onFilterInputChange?: (value: any) => void; // FilterInput onChange
+  refetch?: any; // 刷新
+  loading?: boolean; // 刷新按钮上的 loading
+}
+```
+
+### BaseTable.EmptyProps
+
+```ts
+// empty 创建按钮 props
+interface CreateButtonProps {
+  enableCreate?: boolean;
+  createButton?: ReactElement;
+  clickCreateButtonFn?: (event: MouseEvent<HTMLButtonElement>) => void;
+}
+
+// data 为空，无过滤条件
+export type TableEmptyProps = PropsWithChildren<EmptyProps & CreateButtonProps>;
+
+interface DescriptionProps {
+  clearAndRefetch?: false | (() => void); // 清除过滤条件
+  refetch?: false | (() => void); // 刷新
+}
+
+// data 为空，有过滤条件
+export type TableFilteredEmptyProps = TableEmptyProps & DescriptionProps;
+```
+
 ## 完整示例
 
-```tsx
-import { Table, useTable, Dropdown, Menu } from '@kubed/components;';
+```js live=true
+import { Table, DataTable, Dropdown, Menu } from '@kubed/components;';
 
-const defaultColumns: ColumnDef<Person>[] = [
-  {
-    header: 'Name',
-    footer: (props) => props.column.id,
-    columns: [
+export const App = () => {
+  const defaultColumns = React.useMemo(
+    () => [
       {
-        accessorKey: 'firstName',
-        cell: (info) => info.getValue(),
+        header: 'Name',
         footer: (props) => props.column.id,
-      },
-      {
-        accessorFn: (row) => row.lastName,
-        id: 'lastName',
-        cell: (info) => info.getValue(),
-        header: () => <span>Last Name</span>,
-        footer: (props) => props.column.id,
-        enableHiding: true,
-      },
-    ],
-  },
-  {
-    header: 'Info',
-    footer: (props) => props.column.id,
-    columns: [
-      {
-        accessorKey: 'age',
-        header: () => 'Age',
-        footer: (props) => props.column.id,
-        meta: {
-          sortable: true,
-          filterOptions: [
-            {
-              key: '0',
-              label: '0',
-            },
-            {
-              key: '1',
-              label: '1',
-            },
-          ],
-        },
-      },
-      {
-        header: 'More Info',
         columns: [
           {
-            accessorKey: 'visits',
-            header: () => <span>Visits</span>,
+            accessorFn: (row) => {
+              return row.firstName;
+            },
+            accessorKey: 'firstName',
+            cell: (info) => info.getValue(),
             footer: (props) => props.column.id,
           },
           {
-            accessorKey: 'status',
-            header: 'Status',
+            accessorFn: (row) => row.lastName,
+            id: 'lastName',
+            cell: (info) => info.getValue(),
+            header: () => <span>Last Name</span>,
+            footer: (props) => props.column.id,
+            enableHiding: true,
+          },
+        ],
+      },
+      {
+        header: 'Info',
+        footer: (props) => props.column.id,
+        columns: [
+          {
+            accessorKey: 'age',
+            header: () => 'Age',
             footer: (props) => props.column.id,
             meta: {
-              searchKey: 'status1',
+              sortable: true,
               filterOptions: [
                 {
-                  key: 'status-0',
-                  label: 'status-0',
+                  key: '0',
+                  label: '0',
                 },
                 {
-                  key: 'status-1',
-                  label: 'status-1',
+                  key: '1',
+                  label: '1',
                 },
               ],
             },
           },
           {
-            accessorKey: 'progress',
-            header: 'Profile Progress',
-            footer: (props) => props.column.id,
+            header: 'More Info',
+            columns: [
+              {
+                accessorKey: 'visits',
+                header: () => <span>Visits</span>,
+                footer: (props) => props.column.id,
+              },
+              {
+                accessorKey: 'status',
+                header: 'Status',
+                footer: (props) => props.column.id,
+                meta: {
+                  searchKey: 'status1',
+                  filterOptions: [
+                    {
+                      key: 'status-0',
+                      label: 'status-0',
+                    },
+                    {
+                      key: 'status-1',
+                      label: 'status-1',
+                    },
+                  ],
+                },
+              },
+              {
+                accessorKey: 'progress',
+                header: 'Profile Progress',
+                footer: (props) => props.column.id,
+              },
+            ],
           },
         ],
       },
+      {
+        id: 'actions',
+        cell: () => (
+          <Dropdown
+            content={
+              <Menu>
+                <MenuItem>Edit</MenuItem>
+              </Menu>
+            }
+          >
+            <Button variant="text" radius="lg">
+              More
+            </Button>
+          </Dropdown>
+        ),
+      },
     ],
-  },
-  {
-    id: 'actions',
-    cell: () => (
-      <Dropdown
-        content={
-          <Menu>
-            <MenuItem icon={<Pen />}>Edit</MenuItem>
-          </Menu>
-        }
-      >
-        <Button variant="text" radius="lg">
-          <More size={16} />
-        </Button>
-      </Dropdown>
-    ),
-  },
-];
+    []
+  );
 
-export const App = () => {
   const [params, setParams] = React.useState({
     pagination: {
       pageIndex: 0,
@@ -394,13 +474,13 @@ export const App = () => {
     },
     columnFilters: [],
     sorting: [],
-  } as any);
+  });
   const { pagination = {} } = params;
-  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({}); //manage your own row selection state
+  const [rowSelection, setRowSelection] = React.useState({}); //manage your own row selection state
 
-  const handleParams = (p: Updater<any>, key: string) => {
+  const handleParams = (p, key) => {
     setRowSelection({});
-    console.log('change params', p);
+    const { pagination: page } = p;
     if (key === 'pagination') {
       setParams(p);
     } else {
@@ -420,7 +500,7 @@ export const App = () => {
       setLoading(false);
     }, 2000);
   }, [params]);
-  const [columns] = React.useState<typeof defaultColumns>(() => [
+  const [columns] = React.useState(() => [
     {
       id: 'selection',
       header: ({ table }) => (
@@ -445,17 +525,21 @@ export const App = () => {
     if (loading) {
       return [];
     }
-    return [...Array(pagination.pageSize)].map((_, i) => ({
-      firstName: `page-${pagination.pageIndex}-firstName-${i}`,
-      lastName: `lastName-${i}`,
-      age: i,
-      visits: i,
-      status: `status-${i}`,
-      progress: i,
-    }));
+    return Array.from({ length: pagination.pageSize })
+      .fill(1)
+      .map((_, i) => {
+        return {
+          firstName: `page-${pagination.pageIndex}-firstName-${i}`,
+          lastName: `lastName-${i}`,
+          age: i,
+          visits: i,
+          status: `status-${i}`,
+          progress: i,
+        };
+      });
   }, [params, loading]);
 
-  const state = useMemo(() => {
+  const state = React.useMemo(() => {
     return {
       ...params,
       rowSelection,
@@ -465,13 +549,15 @@ export const App = () => {
   const forceUpdate = React.useReducer(() => ({}), {})[1];
 
   const defaultOption = React.useState(
-    getDefaultTableOptions<Person>('table1', true, {
+    DataTable.getDefaultTableOptions({
+      tableName: 'table1',
+      manual: true,
       enableSelection: true,
       enableMultiSelection: true,
     })
   )[0];
 
-  const table = useTable<Person>({
+  const table = DataTable.useTable({
     ...defaultOption,
     data,
     loading,
@@ -479,7 +565,7 @@ export const App = () => {
     onRowSelectionChange: setRowSelection,
     onParamsChange: handleParams,
     rowCount: total,
-    getRowId: (row) => row.firstName,
+    //  getRowId: (row) => row.firstName,
     state,
     meta: {
       ...defaultOption.meta,
@@ -525,5 +611,371 @@ export const App = () => {
   });
 
   return <Table table={table} />;
+};
+```
+
+### Base Table
+
+BaseTable 是一个基础的表格组件，提供了一些基础的表格组件，如 Table, TableHead, TableBody, TableRow, TableCell。
+
+```jsx live=true
+import { BaseTable } from '@kubed/components';
+() => {
+  const { Table, TableHead, TableBody, TableRow, TableCell } = BaseTable;
+  return (
+    <>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Header 1</TableCell>
+            <TableCell>Header 2</TableCell>
+            <TableCell>Header 3</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableCell>Cell 1</TableCell>
+            <TableCell>Cell 2</TableCell>
+            <TableCell>Cell 3</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Cell 4</TableCell>
+            <TableCell>Cell 5</TableCell>
+            <TableCell>Cell 6</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </>
+  );
+};
+```
+
+### baseTable selected
+
+```jsx live=true
+import { BaseTable } from '@kubed/components';
+
+() => {
+  const { Table, TableHead, TableBody, TableRow, TableCell } = BaseTable;
+  const [selectIds, setSelectIds] = React.useState([]);
+  const handleSelect = (id) => {
+    setSelectIds((ids) => {
+      if (ids.includes(id)) {
+        return ids.filter((i) => i !== id);
+      }
+      return [...ids, id];
+    });
+  };
+  return (
+    <>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>
+              <Checkbox
+                checked={selectIds.length > 0 && selectIds.length === 2}
+                indeterminate={selectIds.length > 0 && selectIds.length < 2}
+                onChange={() => {
+                  if (selectIds.length > 0) {
+                    setSelectIds([]);
+                  } else {
+                    setSelectIds(['1', '2']);
+                  }
+                }}
+              />
+            </TableCell>
+            <TableCell>Header 1</TableCell>
+            <TableCell>Header 2</TableCell>
+            <TableCell>Header 3</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          <TableRow selected={selectIds.includes('1')}>
+            <TableCell>
+              <Checkbox checked={selectIds.includes('1')} onChange={() => handleSelect('1')} />
+            </TableCell>
+            <TableCell>Cell 1</TableCell>
+            <TableCell>Cell 2</TableCell>
+            <TableCell>Cell 3</TableCell>
+          </TableRow>
+          <TableRow selected={selectIds.includes('2')}>
+            <TableCell>
+              <Checkbox checked={selectIds.includes('2')} onChange={() => handleSelect('2')} />
+            </TableCell>
+            <TableCell>Cell 4</TableCell>
+            <TableCell>Cell 5</TableCell>
+            <TableCell>Cell 6</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </>
+  );
+};
+```
+
+### BaseTable 顶部固定
+
+```jsx live=true
+import { BaseTable } from '@kubed/components';
+import * as React from 'react';
+
+() => {
+  const { Table, TableHead, TableBody, TableRow, TableCell } = BaseTable;
+  const data = React.useMemo(() => {
+    return [...Array(100)].fill(1).map((_, i) => ({
+      col1: i,
+      col2: `col2-${i}`,
+      col3: `col3-${i}`,
+    }));
+  }, []);
+  return (
+    <div
+      style={{
+        height: '300px',
+        overflowY: 'auto',
+      }}
+    >
+      <Table stickyHeader>
+        <TableHead hasBorder>
+          <TableRow>
+            <TableCell colSpan={2}>Header 1</TableCell>
+            <TableCell colSpan={1}>Header 2</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Header 1</TableCell>
+            <TableCell>Header 2</TableCell>
+            <TableCell>Header 3</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody hasBorder>
+          {data.map((row) => (
+            <TableRow key={row.col1}>
+              <TableCell>{row.col1}</TableCell>
+              <TableCell>{row.col2}</TableCell>
+              <TableCell>{row.col3}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+};
+```
+
+### BaseTable 列固定
+
+```jsx live=true
+import { BaseTable } from '@kubed/components';
+import * as React from 'react';
+
+() => {
+  const { Table, TableHead, TableBody, TableRow, TableCell } = BaseTable;
+  const data = React.useMemo(() => {
+    return [...Array(100)].fill(1).map((_, i) => ({
+      col1: i,
+      col2: `col2-${i}`,
+      col3: `col3-${i}`,
+    }));
+  }, []);
+  return (
+    <div
+      style={{
+        height: '300px',
+        overflow: 'auto',
+        width: 500,
+      }}
+    >
+      <Table
+        stickyHeader
+        style={{
+          width: 700,
+          minWidth: '100%',
+        }}
+      >
+        <colgroup>
+          <col width="100" />
+          <col width="200" />
+          <col />
+          <col />
+          <col />
+          <col width="100" />
+        </colgroup>
+        <TableHead hasBorder>
+          <TableRow>
+            <TableCell fixed="left" fixedWidth={0} width={100}>
+              Header 1
+            </TableCell>
+            <TableCell fixed="left" fixedWidth={100} fixedLastLeft>
+              Header 2
+            </TableCell>
+            <TableCell>Header 3</TableCell>
+            <TableCell>Header 3</TableCell>
+            <TableCell>Header 3</TableCell>
+            <TableCell fixed="right" fixedLastRight fixedWidth={0}>
+              Header 3
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody hasBorder>
+          {data.map((row) => (
+            <TableRow key={row.col1}>
+              <TableCell fixed="left" fixedWidth={0}>
+                {row.col1}
+              </TableCell>
+              <TableCell fixed="left" fixedWidth={100} fixedLastLeft>
+                <div> {row.col2}</div>
+              </TableCell>
+              <TableCell>
+                <div>{row.col3}</div>
+              </TableCell>
+              <TableCell>{row.col3}</TableCell>
+              <TableCell>{row.col3}</TableCell>
+              <TableCell fixed="right" fixedLastRight fixedWidth={0}>
+                {row.col3}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+};
+```
+
+### BaseTable Pagination
+
+```jsx live=true
+import { BaseTable } from '@kubed/components';
+import * as React from 'react';
+
+() => {
+  const [state, setState] = React.useState({});
+  return <BaseTable.Pagination total={100} pagination={state} onChange={setState} />;
+};
+```
+
+### BaseTable with toolbar
+
+```jsx live=true
+import { BaseTable } from '@kubed/components';
+import * as React from 'react';
+
+() => {
+  const { Table, TableHead, TableBody, TableRow, TableCell, Toolbar, Pagination } = BaseTable;
+  const [page, setPage] = React.useState(1);
+  const [pageSize, setPageSize] = React.useState(10);
+  const [selectedIds, setSelectedIds] = React.useState([]);
+
+  const handlePaginationChange = (pagination) => {
+    setPage(pagination.page);
+    setPageSize(pagination.pageSize);
+    setSelectedIds([]);
+  };
+
+  const data = React.useMemo(() => {
+    return [...Array(10)].fill(1).map((_, i) => ({
+      col1: `page-${page}-col1-${i}`,
+      col2: `page-${page}-col2-${i}`,
+      col3: `page-${page}-col3-${i}`,
+    }));
+  }, [page]);
+
+  const handleSelect = (id) => {
+    setSelectedIds((ids) => {
+      if (ids.includes(id)) {
+        return ids.filter((i) => i !== id);
+      }
+      return [...ids, id];
+    });
+  };
+
+  const enableBatchActions = selectedIds.length > 0;
+  const setEnableBatchActions = () => {
+    setSelectedIds([]);
+  };
+
+  return (
+    <>
+      <Toolbar
+        enableBatchActions={enableBatchActions}
+        onDisableBatchActions={setEnableBatchActions}
+        enableFilters={false}
+        filterProps={{
+          suggestions: [],
+          onChange: () => {},
+        }}
+        toolbarRight={<div>Toolbar Right</div>}
+      />
+      <Table
+        stickyHeader
+        style={{
+          width: 700,
+          minWidth: '100%',
+        }}
+      >
+        <colgroup>
+          <col width="100" />
+          <col width="100" />
+          <col width="100" />
+          <col />
+          <col width="100" />
+          <col width="100" />
+        </colgroup>
+        <TableHead>
+          <TableRow>
+            <TableCell fixed="left" fixedWidth={0}>
+              <Checkbox
+                checked={selectedIds.length > 0 && selectedIds.length === 2}
+                indeterminate={selectedIds.length > 0 && selectedIds.length < 2}
+                onChange={() => {
+                  if (selectedIds.length > 0) {
+                    setSelectedIds([]);
+                  } else {
+                    setSelectedIds(['1', '2']);
+                  }
+                }}
+              />
+            </TableCell>
+            <TableCell fixed="left" fixedWidth={100} fixedLastLeft>
+              Header 2
+            </TableCell>
+            <TableCell>Header 3</TableCell>
+            <TableCell>Header 3</TableCell>
+            <TableCell>Header 3</TableCell>
+            <TableCell>Header 3</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {data.map((row) => (
+            <TableRow key={row.col1} selected={selectedIds.includes(row.col1)}>
+              <TableCell fixed="left" fixedWidth={0}>
+                <Checkbox
+                  checked={selectedIds.includes(row.col1)}
+                  onChange={() => handleSelect(row.col1)}
+                />
+              </TableCell>
+              <TableCell fixed="left" fixedWidth={100} fixedLastLeft>
+                <div> {row.col2}</div>
+              </TableCell>
+              <TableCell>
+                <div>{row.col3}</div>
+              </TableCell>
+              <TableCell>{row.col3}</TableCell>
+              <TableCell>{row.col3}</TableCell>
+              <TableCell>{row.col3}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <Pagination
+        total={100}
+        pagination={{
+          page,
+          pageSize,
+        }}
+        onChange={handlePaginationChange}
+      />
+    </>
+  );
 };
 ```

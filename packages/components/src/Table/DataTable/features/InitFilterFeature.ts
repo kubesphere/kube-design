@@ -1,4 +1,12 @@
-import { TableFeature, TableOptionsResolved, getFilteredRowModel } from '@tanstack/react-table';
+import {
+  ColumnFiltersState,
+  TableFeature,
+  TableOptionsResolved,
+  Updater,
+  functionalUpdate,
+  getFilteredRowModel,
+  shouldAutoRemoveFilter,
+} from '@tanstack/react-table';
 
 const getFilterOptions = <TData>(options: TableOptionsResolved<TData>) => {
   const {
@@ -6,12 +14,15 @@ const getFilterOptions = <TData>(options: TableOptionsResolved<TData>) => {
   } = options;
   if (!manual) {
     return {
-      enableSorting: true,
+      enableFilters: true,
+      enableColumnFilter: true,
+      manualFiltering: false,
       getFilteredRowModel: getFilteredRowModel(),
       ...options,
     };
   }
   return {
+    enableFilters: true,
     enableGlobalFilter: false,
     enableColumnFilter: true,
     manualFiltering: true,

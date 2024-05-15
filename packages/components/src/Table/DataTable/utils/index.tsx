@@ -82,7 +82,7 @@ export function getDefaultToolbarProps<T>(
   if (enableSettingMenu === undefined) {
     enableSettingMenu = visibilityColumns.length > 0;
   }
-  const enableBatchActions = table.getIsSomeRowsSelected();
+  const enableBatchActions = table.getIsAllPageRowsSelected() || table.getIsSomeRowsSelected();
 
   let filterProps;
   let defaultFilterProps;
@@ -182,6 +182,7 @@ function _getDefaultTableOptions<TData extends RowData>(
       enableSort && InitSortFeature,
       enableStateToStorage && Status2StorageFeature,
     ].filter(Boolean) as TableOptions<TData>['_features'],
+    enableFilters,
     enableMultiRowSelection: enableMultiSelection,
     enableRowSelection: enableSelection,
     getCoreRowModel: getCoreRowModel(),
