@@ -1,5 +1,11 @@
 # kubed-documents
 
+## 0.2.3
+
+### Patch Changes
+
+- [#212](https://github.com/kubesphere/kube-design/pull/212) [`77982cb`](https://github.com/kubesphere/kube-design/commit/77982cbb01b82c12562a328cbf6574e9873eb64a) Thanks [@51wangping](https://github.com/51wangping)! - docs: change link
+
 ## 0.2.2
 
 ### Patch Changes
