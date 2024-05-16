@@ -1,0 +1,37 @@
+---
+group: 'hooks'
+category: 'state'
+title: 'useForceUpdate'
+description: 'useForceUpdate 会返回一个函数，调用该函数会强制组件重新渲染'
+order: 2
+---
+
+## 用法
+
+useForceUpdate 强制组件重新渲染。
+
+```jsx live=true
+import React from 'react';
+import { useForceUpdate } from '@kubed/hooks';
+import { Button, Group } from '@kubed/components'
+
+export default function App() {
+  const update = useForceUpdate();
+
+    return (
+      <div>
+        <p>Time:{Date.now()}</p>
+        <Group spacing="xl">
+          <Button onClick={() => update()}>update</Button>
+        </Group>
+      </div>
+    );
+}
+
+```
+
+## API
+
+```tsx
+function useForceUpdate(): () => void
+```

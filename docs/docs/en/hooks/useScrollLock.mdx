@@ -24,7 +24,7 @@ export default function App() {
          <Group spacing="xl">
            <Button onClick={() => setScrollLocked(true)}>Lock</Button>
            <Button onClick={() => setScrollLocked(false)}>unLock</Button>
-       </Group>
+        </Group>
        </div>
      );
 }
@@ -39,7 +39,8 @@ The useScrollLock hook accepts one parameter:
 
 ```tsx
 function useScrollLock(
-   lock?: boolean ): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>]
+   lock?: boolean
+  ): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>]
 ```
 
 ## Params
