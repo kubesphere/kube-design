@@ -36,6 +36,7 @@ const NavWrapper = styled('nav')<TopBarProps>`
 
   .nav-icon {
     padding: 0 8px;
+
     &:hover {
       color: #fff;
       background-color: transparent;
@@ -69,6 +70,7 @@ const TopMenu = styled.div`
 
   .topmenu-item {
     color: #eff4f9;
+
     &:hover {
       color: #fff;
     }
@@ -77,6 +79,7 @@ const TopMenu = styled.div`
 
 const TopMenuItem = styled.a`
   color: #eff4f9;
+
   &:hover {
     color: #fff;
   }
@@ -127,7 +130,7 @@ const TopBar = ({ isHome = true, isScroll = false }: TopBarProps) => {
               color="white"
               className="nav-icon"
               as="a"
-              href="https://github.com/chenz24/kube-design"
+              href="https://github.com/kubesphere/kube-design/tree/next"
               target="_blank"
             >
               <Github variant="light" size={22} />
