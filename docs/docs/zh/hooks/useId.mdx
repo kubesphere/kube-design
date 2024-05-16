@@ -1,0 +1,68 @@
+---
+group: 'hooks'
+category: 'state'
+title: 'useId'
+description: '生成记忆的随机 ID'
+order: 1
+---
+
+## 用法
+
+useId 生成在渲染过程中持续存在的随机 ID。
+Hook 通常用于将输入元素绑定到标签。
+生成的随机 id 保存到 ref 中，除非卸载组件，否则不会更改。
+
+```jsx live=true
+import { useId } from '@kubed/hooks';
+import { Input } from '@kubed/components'
+
+function MyInput({ id }) {
+  const uuid = useId(id);
+
+  return (
+    <>
+      <label htmlFor={uuid}>Input label</label>
+      <Input type="text" id={uuid} />
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <div className="flex gap-3 items-center">
+      // input and label will have id 'my-id'
+      <MyInput id="my-id" />
+      // input and label will have random id 'kubed-fZMoF'
+      <MyInput />
+    </div>
+  );
+}
+
+```
+
+## API
+
+useId 钩子接受两个参数：
+
+- `id` – 默认返回的字符串值
+- `generateId` – 用于生成随机 ID 的函数
+
+Hook 返回字符串值，该值可以是“id”（如果传递了第一个参数），也可以是使用“generateId”函数生成的随机 id。
+
+```tsx
+function useId(id: string, generateId?: () => string): string;
+```
+
+## Params
+
+| 参数 | 默认值 | 类型 | 描述 |
+| --- | --- | --- | --- |
+| id | - | `string` | 默认返回的字符串值 |
+| generateId | - | `() => string` | 用于生成随机 ID 的函数`  |
+
+## Result
+
+
+| 参数 | 默认值 | 类型 | 描述 |
+| --- | --- | --- | --- |
+| id | - | `string` | 生成记忆的随机 id |

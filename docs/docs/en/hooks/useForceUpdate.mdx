@@ -1,0 +1,37 @@
+---
+group: 'hooks'
+category: 'state'
+title: 'useForceUpdate'
+description: 'useForceUpdate will return a function, calling this function will force the component to re-render'
+Order: 2
+---
+
+## Usage
+
+useForceUpdate forces the component to re-render.
+
+```jsx live=true
+import React from 'react';
+import { useForceUpdate } from '@kubed/hooks';
+import { Button, Group } from '@kubed/components'
+
+export default function App() {
+   const update = useForceUpdate();
+
+     return (
+       <div>
+         <p>Time:{Date.now()}</p>
+         <Group spacing="xl">
+           <Button onClick={() => update()}>update</Button>
+         </Group>
+       </div>
+     );
+}
+
+```
+
+## API
+
+```tsx
+function useForceUpdate(): () => void
+```

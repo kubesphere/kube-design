@@ -1,0 +1,84 @@
+---
+group: 'hooks'
+category: 'state'
+title: 'useToggle'
+description: 'Hook for switching between two status values'
+order: 1
+---
+
+## Usage
+
+useToggle Hook for switching between two state values
+
+```jsx live=true
+import { useToggle } from '@kubed/hooks';
+import { Button } from '@kubed/components'
+
+export default function App() {
+const [value, toggle] = useToggle('light', ['light', 'dark']);
+   return (
+     <div>
+       <p>themeType: {`${value}`}</p>
+       <Group spacing="xl">
+         <Button onClick={() => toggle()}>toggle</Button>
+         <Button onClick={() => toggle('light')}>Set light</Button>
+         <Button onClick={() => toggle('dark')}>Set dark</Button>
+       </Group>
+     </div>
+   );
+}
+
+```
+
+useBooleanToggle Hook for switching between `true` and `false` values
+
+```jsx live=true
+import { useBooleanToggle } from '@kubed/hooks';
+import { Button } from '@kubed/components'
+
+export default function App() {
+const [value, toggle] = useBooleanToggle();
+   return (
+     <div>
+       <p>state：{`${value}`}</p>
+       <Group spacing="xl">
+         <Button onClick={() => toggle()}>change</Button>
+         <Button onClick={() => toggle(false)}>Set false</Button>
+         <Button onClick={() => toggle(true)}>Set true</Button>
+       </Group>
+     </div>
+   );
+}
+
+```
+
+
+## API
+
+The useToggle hook accepts two parameters:
+
+- `initialValue` – initial value
+- `options` – two options for switching
+
+Hook returns the new value after the switch and the function used to switch.
+
+```tsx
+function useToggle<T>(
+initialValue: T, options: [T, T]
+): readonly [T, (value?: React.SetStateAction<T>) => void]
+```
+
+## Params
+
+| Parameters   | Default Value | Type     | Description               |
+|--------------|---------------|----------|---------------------------|
+| initialValue | -             | `T`      | initial value             |
+| generateId   | -             | `[T, T]` | Two options for switching |
+
+## Result
+
+
+| Parameters | Default Value | Type                      | Description           |
+|------------|---------------|---------------------------|-----------------------|
+| state      | -             | `T`                       | Value after switching |
+| toggle     | -             | `React.SetStateAction<T>` | Toggle value          |

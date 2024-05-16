@@ -1,27 +1,29 @@
-import React from 'react';
-import Head from 'next/head';
-import { MDXRemote } from 'next-mdx-remote';
-import styled from 'styled-components';
-import { Tabs, Tab } from '@kubed/components';
-import * as Kubed from '@kubed/components';
-import * as KubeIcon from '@kubed/icons';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { getMdxData } from '../../lib/getMdx';
-import { DocLayout } from '../../lib/layouts/DocLayout';
-import MetadataCard from '../../lib/components/MetadataCard';
-import TOC from '../../lib/components/TOC';
-import CodeBox from '../../lib/components/CodeBox';
-import PropsTable from '../../lib/components/PropsTable';
-import IconList from '../../lib/components/IconList/IconList';
+import React from "react";
+import Head from "next/head";
+import { MDXRemote } from "next-mdx-remote";
+import styled from "styled-components";
+import { Tabs, Tab } from "@kubed/components";
+import * as Kubed from "@kubed/components";
+import * as KubeIcon from "@kubed/icons";
+import * as KubeHooks from "@kubed/hooks";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { getMdxData } from "../../lib/getMdx";
+import { DocLayout } from "../../lib/layouts/DocLayout";
+import MetadataCard from "../../lib/components/MetadataCard";
+import TOC from "../../lib/components/TOC";
+import CodeBox from "../../lib/components/CodeBox";
+import PropsTable from "../../lib/components/PropsTable";
+import IconList from "../../lib/components/IconList/IconList";
 
 const Pre = ({ children }: React.PropsWithChildren<any>) => <>{children}</>;
 
 const components = {
   ...Kubed,
+  ...KubeHooks,
   KubeIcon,
   pre: Pre,
   code: CodeBox,
-  IconList,
+  IconList
 };
 
 const MainContent = styled.div`
@@ -51,12 +53,15 @@ const Content = styled.div`
       color: ${({ theme }) => theme.palette.accents_8};
     }
   }
+
   h2 {
     margin-top: 40px;
+
     &:first-of-type {
       margin-top: 10px;
     }
   }
+
   h3 {
     margin-top: 20px;
   }
@@ -91,7 +96,7 @@ export default function Slug(props: any) {
       <Head>
         <title>{title} - Kube Design</title>
       </Head>
-      {group === 'components' && (
+      {group === "components" && (
         <>
           <MetadataCard
             title={title}
@@ -115,7 +120,7 @@ export default function Slug(props: any) {
           </Tabs>
         </>
       )}
-      {group === 'hooks' && (
+      {group === "hooks" && (
         <>
           <MetadataCard
             title={title}
@@ -132,7 +137,7 @@ export default function Slug(props: any) {
           </MainContent>
         </>
       )}
-      {group === 'guide' && (
+      {group === "guide" && (
         <>
           <MainContent>
             <Content>
@@ -142,7 +147,7 @@ export default function Slug(props: any) {
           </MainContent>
         </>
       )}
-      {group === 'Icons' && (
+      {group === "Icons" && (
         <>
           <MainContent>
             <Content>
@@ -168,7 +173,7 @@ export async function getServerSideProps({ params, locale }: Params) {
       toc,
       locale,
       metaData,
-      ...(await serverSideTranslations(locale, ['common', 'menu'])),
-    },
+      ...(await serverSideTranslations(locale, ["common", "menu"]))
+    }
   };
 }

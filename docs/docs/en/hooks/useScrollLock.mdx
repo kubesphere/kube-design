@@ -1,0 +1,58 @@
+---
+group: 'hooks'
+category: 'state'
+title: 'useScrollLock'
+description: 'Whether the user processing page can scroll'
+Order: 2
+---
+
+## Usage
+
+useScrollLock Please click the button to see the effect
+
+```jsx live=true
+import React from 'react';
+import { useScrollLock } from '@kubed/hooks';
+import { Button, Group } from '@kubed/components'
+
+export default function App() {
+   const [scrollLocked, setScrollLocked] = useScrollLock(false);
+
+     return (
+       <div>
+         <p>{ 'scrollLocked: '+scrollLocked }</p>
+         <Group spacing="xl">
+           <Button onClick={() => setScrollLocked(true)}>Lock</Button>
+           <Button onClick={() => setScrollLocked(false)}>unLock</Button>
+        </Group>
+       </div>
+     );
+}
+
+```
+
+## API
+
+The useScrollLock hook accepts one parameter:
+
+- `lock` – whether to lock or not
+
+```tsx
+function useScrollLock(
+   lock?: boolean
+  ): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>]
+```
+
+## Params
+
+| Parameters | Default Value | Type      | Description                      |
+|------------|---------------|-----------|----------------------------------|
+| lock       | `false`       | `boolean` | Whether the page locks scrolling |
+
+## Result
+
+
+| Parameters | Default Value | Type | Description |
+|------------------|-----|-------------------------- --------------------------|--------|
+| scrollLocked | - | `boolean` | Whether it is locked |
+| setScrollLocked | - | `React.Dispatch<React.SetStateAction<boolean>>` | Set the current state |

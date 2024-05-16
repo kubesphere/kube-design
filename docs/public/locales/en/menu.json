@@ -47,5 +47,8 @@
   "Loading": "Loading",
   "LoadingOverlay": "LoadingOverlay",
   "Modal": "Modal",
-  "StatusDot": "StatusDot"
+  "StatusDot": "StatusDot",
+  "State Management": "State Management",
+  "UI and Dom": "UI & Dom",
+  "Others": "Other"
 }

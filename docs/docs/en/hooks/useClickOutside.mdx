@@ -1,0 +1,63 @@
+---
+group: 'hooks'
+category: 'state'
+title: 'useClickOutside'
+description: 'Listen to click events outside the target element'
+order: 2
+---
+
+## Usage
+
+useClickOutside Please click the button or outside the button to see the effect
+
+```jsx live=true
+import React from 'react';
+import { useClickOutside } from '@kubed/hooks';
+import { Button } from '@kubed/components'
+
+export default function App() {
+   const [counter, setCounter] = React.useState(0);
+   const ref = useClickOutside(() => {
+     console.log('OutsideClick')
+     setCounter(counter => counter+1)
+   }
+);
+
+     return (
+       <div>
+         <p>counter: {counter}</p>
+         <Button ref={ref}>Button</Button>
+       </div>
+     );
+}
+
+```
+
+## API
+
+The useClickOutside hook accepts three parameters:
+
+- `handler` – the callback function that triggers the event
+- `events` – the event type used for monitoring, default value: `['mousedown', 'touchstart']`
+- `nodes` – DOM nodes or Ref, supports arrays
+
+```tsx
+function useClickOutside<T extends HTMLElement = any>(
+   handler: () => void, events?: string[] | null, nodes?: HTMLElement[]
+): React.MutableRefObject<T>
+```
+
+## Params
+
+| Parameters | Default Value | Type | Description |
+|---------|----------------------------------|------ ------------|-------------------|
+| handler | - | `() => void` | callback function that triggers the event |
+| events | `['mousedown', 'touchstart']` | `(string[] null)` | Event type for listening |
+| nodes | - | `HTMLElement[]` | DOM node or Ref, supports array |
+
+## Result
+
+
+| Parameters | Default Value | Type                        | Description    |
+|------------|---------------|-----------------------------|----------------|
+| ref        | -             | `React.MutableRefObject<T>` | target element |

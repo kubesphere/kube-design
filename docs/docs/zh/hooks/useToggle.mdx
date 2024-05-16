@@ -1,0 +1,84 @@
+---
+group: 'hooks'
+category: 'state'
+title: 'useToggle'
+description: '用于在两个状态值间切换的 Hook'
+order: 1
+---
+
+## 用法
+
+useToggle 用于在两个状态值间切换的 Hook
+
+```jsx live=true
+import { useToggle } from '@kubed/hooks';
+import { Button } from '@kubed/components'
+
+export default function App() {
+const [value, toggle] = useToggle('light', ['light', 'dark']);
+  return (
+    <div>
+      <p>themeType：{`${value}`}</p>
+      <Group spacing="xl">
+        <Button onClick={() => toggle()}>toggle</Button>
+        <Button onClick={() => toggle('light')}>Set light</Button>
+        <Button onClick={() => toggle('dark')}>Set dark</Button>
+      </Group>
+    </div>
+  );
+}
+
+```
+
+useBooleanToggle 用于在 `true`,`false` 值间切换的 Hook
+
+```jsx live=true
+import { useBooleanToggle } from '@kubed/hooks';
+import { Button } from '@kubed/components'
+
+export default function App() {
+const [value, toggle] = useBooleanToggle();
+  return (
+    <div>
+      <p>state：{`${value}`}</p>
+      <Group spacing="xl">
+        <Button onClick={() => toggle()}>change</Button>
+        <Button onClick={() => toggle(false)}>Set false</Button>
+        <Button onClick={() => toggle(true)}>Set true</Button>
+      </Group>
+    </div>
+  );
+}
+
+```
+
+
+## API
+
+useToggle 钩子接受两个参数：
+
+- `initialValue` – 初始值
+- `options` – 用于切换的两个选项
+
+Hook 返回切换后的新值和用于切换的函数。
+
+```tsx
+function useToggle<T>(
+initialValue: T,options: [T, T]
+): readonly [T, (value?: React.SetStateAction<T>) => void]
+```
+
+## Params
+
+| 参数           | 默认值 | 类型       | 描述        |
+|--------------|-----|----------|-----------|
+| initialValue | -   | `T`      | 初始值       |
+| generateId   | -   | `[T, T]` | 用于切换的两个选项 |
+
+## Result
+
+
+| 参数     | 默认值 | 类型                        | 描述    |
+|--------|-----|---------------------------|-------|
+| state  | -   | `T`                       | 切换后的值 |
+| toggle | -   | `React.SetStateAction<T>` | 切换后的值 |
