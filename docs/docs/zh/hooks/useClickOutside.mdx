@@ -1,0 +1,63 @@
+---
+group: 'hooks'
+category: 'state'
+title: 'useClickOutside'
+description: '监听目标元素外的点击事件'
+order: 2
+---
+
+## 用法
+
+useClickOutside 请点击按钮或按钮外查看效果
+
+```jsx live=true
+import React from 'react';
+import { useClickOutside } from '@kubed/hooks';
+import { Button } from '@kubed/components'
+
+export default function App() {
+  const [counter, setCounter] = React.useState(0);
+  const ref = useClickOutside(() => {
+    console.log('OutsideClick')
+    setCounter(counter => counter+1)
+  }
+);
+
+    return (
+      <div>
+        <p>counter: {counter}</p>
+        <Button ref={ref}>Button</Button>
+      </div>
+    );
+}
+
+```
+
+## API
+
+useClickOutside 钩子接受三个参数：
+
+- `handler` – 触发事件的回调函数
+- `events`  – 用于监听的事件类型， 默认值: `['mousedown', 'touchstart']`
+- `nodes`   – DOM 节点或者 Ref，支持数组
+
+```tsx
+function useClickOutside<T extends HTMLElement = any>(
+  handler: () => void, events?: string[] | null, nodes?: HTMLElement[]
+): React.MutableRefObject<T>
+```
+
+## Params
+
+| 参数      | 默认值                           | 类型                | 描述                |
+|---------|-------------------------------|-------------------|-------------------|
+| handler | -                             | `() => void`      | 触发事件的回调函数         |
+| events  | `['mousedown', 'touchstart']` | `(string[] null)` | 用于监听的事件类型         |
+| nodes   | -                             | `HTMLElement[]`   | DOM 节点或者 Ref，支持数组 |
+
+## Result
+
+
+| 参数  | 默认值 | 类型                          | 描述   |
+|-----|-----|-----------------------------|------|
+| ref | -   | `React.MutableRefObject<T>` | 目标元素 |
