@@ -1,5 +1,21 @@
 # kubed-documents
 
+## 1.0.0
+
+### Major Changes
+
+- [#206](https://github.com/kubesphere/kube-design/pull/206) [`ed70ae1`](https://github.com/kubesphere/kube-design/commit/ed70ae118ff4a1be548fa64eaf040d52911c6fa8) Thanks [@51wangping](https://github.com/51wangping)! - fix: add hooks docs
+
+### Minor Changes
+
+- [#208](https://github.com/kubesphere/kube-design/pull/208) [`6e4b821`](https://github.com/kubesphere/kube-design/commit/6e4b82161a93338769597be3a1a917d0a5a5a75b) Thanks [@51wangping](https://github.com/51wangping)! - fix: add hooks docs
+
+### Patch Changes
+
+- Updated dependencies [[`6e4b821`](https://github.com/kubesphere/kube-design/commit/6e4b82161a93338769597be3a1a917d0a5a5a75b), [`ed70ae1`](https://github.com/kubesphere/kube-design/commit/ed70ae118ff4a1be548fa64eaf040d52911c6fa8)]:
+  - @kubed/hooks@1.0.0
+  - @kubed/components@1.0.0
+
 ## 0.2.1
 
 ### Patch Changes

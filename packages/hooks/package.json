@@ -1,6 +1,6 @@
 {
   "name": "@kubed/hooks",
-  "version": "0.0.14",
+  "version": "1.0.0",
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "types": "lib/index.d.ts",

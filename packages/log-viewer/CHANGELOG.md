@@ -1,5 +1,12 @@
 # @kubed/log-viewer
 
+## 1.0.0
+
+### Patch Changes
+
+- Updated dependencies [[`6e4b821`](https://github.com/kubesphere/kube-design/commit/6e4b82161a93338769597be3a1a917d0a5a5a75b), [`ed70ae1`](https://github.com/kubesphere/kube-design/commit/ed70ae118ff4a1be548fa64eaf040d52911c6fa8)]:
+  - @kubed/hooks@1.0.0
+
 ## 0.0.17
 
 ### Patch Changes
