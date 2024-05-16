@@ -1,0 +1,45 @@
+---
+group: 'hooks'
+category: 'state'
+title: 'useDidUpdate'
+description: 'useDidUpdate 在组件在依赖更新时执行的 Hook。'
+order: 4
+---
+
+## 用法
+
+useDidUpdate 使用上与 useEffect 完全相同，只是它忽略了首次执行，只在依赖项更新时执行。
+
+```jsx live=true
+import React from 'react';
+import { useDidUpdate } from '@kubed/hooks';
+import { Button, Group } from '@kubed/components'
+
+export default function App() {
+  const [counter, setCounter] = React.useState(0);
+  const [updateCount, setUpdateCount] = React.useState(0);
+    useDidUpdate(() => {
+      setUpdateCount((updateCount) => updateCount + 1 )
+    }, [counter]);
+
+    return (
+      <div>
+        <p>counter:{counter}</p>
+        <p>updateCount: {updateCount}</p>
+        <Group spacing="xl">
+          <Button onClick={() => setCounter((counter) =>counter + 1 )}> counter +1 </Button>
+        </Group>
+      </div>
+    );
+}
+
+```
+
+## API
+
+```tsx
+
+function useDidUpdate(
+  fn: () => void,
+  dependencies?: any[]): void
+```
