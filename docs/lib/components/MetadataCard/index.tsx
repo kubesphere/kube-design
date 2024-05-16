@@ -63,7 +63,7 @@ const getLinks = (title, group, locale) => {
   const isHooks = title.startsWith('use');
   const sourceName = isHooks ? toCamelCase(title) : toPascalCase(title);
 
-  const sourceLink = `${SOURCE_BASE}/${group}/src/${sourceName}/${sourceName}.${
+  const sourceLink = `${SOURCE_BASE}/${group}/src/${sourceName}/${isHooks ? 'index' : sourceName}.${
     isHooks ? 'ts' : 'tsx'
   }`;
   const docLink = `${DOCS_BASE}/${locale}/${group}/${sourceName}.mdx`;
