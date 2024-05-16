@@ -1,0 +1,57 @@
+---
+group: 'hooks'
+category: 'state'
+title: 'useScrollLock'
+description: '用户处理页面是否能滚动'
+order: 2
+---
+
+## 用法
+
+useScrollLock 请点击按钮查看效果
+
+```jsx live=true
+import React from 'react';
+import { useScrollLock } from '@kubed/hooks';
+import { Button, Group } from '@kubed/components'
+
+export default function App() {
+  const [scrollLocked, setScrollLocked] = useScrollLock(false);
+
+    return (
+      <div>
+        <p>{ 'scrollLocked: '+scrollLocked }</p>
+        <Group spacing="xl">
+          <Button onClick={() => setScrollLocked(true)}>Lock</Button>
+          <Button onClick={() => setScrollLocked(false)}>unLock</Button>
+      </Group>
+      </div>
+    );
+}
+
+```
+
+## API
+
+useScrollLock 钩子接受一个参数：
+
+- `lock` – 是否锁定
+
+```tsx
+function useScrollLock(
+  lock?: boolean ): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>]
+```
+
+## Params
+
+| 参数   | 默认值     | 类型        | 描述       |
+|------|---------|-----------|----------|
+| lock | `false` | `boolean` | 页面是否锁定滚动 |
+
+## Result
+
+
+| 参数              | 默认值 | 类型                                              | 描述     |
+|-----------------|-----|-------------------------------------------------|--------|
+| scrollLocked    | -   | `boolean`                                       | 是否锁定状态 |
+| setScrollLocked | -   | `React.Dispatch<React.SetStateAction<boolean>>` | 设置当前状态 |
