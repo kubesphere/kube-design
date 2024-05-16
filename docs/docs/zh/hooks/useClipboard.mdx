@@ -1,0 +1,58 @@
+---
+group: 'hooks'
+category: 'state'
+title: 'useClipboard'
+description: 'useClipboard 在组件中复制值'
+order: 4
+---
+
+## 用法
+
+useClipboard 在组件中复制值。
+
+```jsx live=true
+import { useClipboard } from '@kubed/hooks';
+import { Button, Group } from '@kubed/components'
+
+export default function App() {
+  const {copy, reset, error, copied } = useClipboard();
+
+    return (
+      <div>
+        <p>{"copied: "+copied}</p>
+        <p>error: {error}</p>
+        <Group spacing="xl">
+          <Button onClick={() => copy('copy message')}> copy </Button>
+          <Button onClick={() => reset() }> reset </Button>
+        </Group>
+      </div>
+    );
+}
+
+```
+
+## API
+
+```tsx
+
+function useClipboard(
+    {timeout}?: {timeout?: number}
+  ): {copy: (valueToCopy: any) => void, reset: () => void, error: Error, copied: boolean}
+```
+
+## Params
+
+| 参数      | 默认值    | 类型       | 描述          |
+|---------|--------|----------|-------------|
+| timeout | `2000` | `number` | 事件触发的时间延迟时间 |
+
+## Result
+
+
+| 参数     | 默认值 | 类型                           | 描述        |
+|--------|-----|------------------------------|-----------|
+| copy   | -   | `(valueToCopy: any) => void` | 需要复制的值    |
+| reset  | -   | `() => void`                 | 重置复制的值    |
+| error  | -   | `Error`                      | 复制值时出现的错误 |
+| copied | -   | `boolean`                    | 复制值是否成功   |
+

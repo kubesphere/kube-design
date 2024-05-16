@@ -1,0 +1,57 @@
+---
+group: 'hooks'
+category: 'state'
+title: 'useClipboard'
+description: 'useClipboard copies values in components'
+Order: 4
+---
+
+## Usage
+
+useClipboard copies the value in the component.
+
+```jsx live=true
+import { useClipboard } from '@kubed/hooks';
+import { Button, Group } from '@kubed/components'
+
+export default function App() {
+   const {copy, reset, error, copied } = useClipboard();
+
+     return (
+       <div>
+         <p>{"copied: "+copied}</p>
+         <p>error: {error}</p>
+         <Group spacing="xl">
+           <Button onClick={() => copy('copy message')}> copy </Button>
+           <Button onClick={() => reset() }> reset </Button>
+         </Group>
+       </div>
+     );
+}
+
+```
+
+## API
+
+```tsx
+
+function useClipboard(
+     {timeout}?: {timeout?: number}
+   ): {copy: (valueToCopy: any) => void, reset: () => void, error: Error, copied: boolean}
+```
+
+## Params
+
+| Parameters | Default Value | Type | Description |
+|---------|--------|----------|-------------|
+| timeout | `2000` | `number` | The time delay for event triggering |
+
+## Result
+
+
+| Parameters | Default Value | Type | Description |
+|--------|-----|---------------------------------|--- --------|
+| copy | - | `(valueToCopy: any) => void` | The value to be copied |
+| reset | - | `() => void` | Reset the copied value |
+| error | - | `Error` | An error when copying a value |
+| copied | - | `boolean` | Whether the copied value was successful |
