@@ -62,7 +62,7 @@ export default {
   hooks: [
     {
       title: 'State Management',
-      menu: ['useId', 'useInterval', 'useToggle'],
+      menu: ['useId', 'useToggle'],
     },
     {
       title: 'UI and Dom',
