@@ -1,6 +1,6 @@
 {
   "name": "@kubed/code-editor",
-  "version": "0.0.23",
+  "version": "0.0.24",
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "types": "lib/index.d.ts",
@@ -18,8 +18,8 @@
     "directory": "packages/code-editor"
   },
   "peerDependencies": {
-    "@kubed/hooks": "0.0.14",
-    "@kubed/icons": "0.0.16",
+    "@kubed/hooks": "0.0.15",
+    "@kubed/icons": "0.0.17",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0",
     "react-is": "^17.0.2"

@@ -1,5 +1,11 @@
 # @kubed/icons
 
+## 0.0.17
+
+### Patch Changes
+
+- [#210](https://github.com/kubesphere/kube-design/pull/210) [`20358b2`](https://github.com/kubesphere/kube-design/commit/20358b232e3c6515fc7d847da10862f20eaaee7f) Thanks [@donniean](https://github.com/donniean)! - docs: add hooks docs
+
 ## 0.0.16
 
 ### Patch Changes
