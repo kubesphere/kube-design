@@ -1,5 +1,12 @@
 # @kubed/components
 
+## 1.0.0
+
+### Patch Changes
+
+- Updated dependencies [[`ed70ae1`](https://github.com/kubesphere/kube-design/commit/ed70ae118ff4a1be548fa64eaf040d52911c6fa8)]:
+  - @kubed/hooks@1.0.0
+
 ## 0.1.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @kubed/hooks
 
+## 1.0.0
+
+### Major Changes
+
+- [#206](https://github.com/kubesphere/kube-design/pull/206) [`ed70ae1`](https://github.com/kubesphere/kube-design/commit/ed70ae118ff4a1be548fa64eaf040d52911c6fa8) Thanks [@51wangping](https://github.com/51wangping)! - fix: add hooks docs
+
 ## 0.0.14
 
 ### Patch Changes

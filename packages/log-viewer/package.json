@@ -1,6 +1,6 @@
 {
   "name": "@kubed/log-viewer",
-  "version": "0.0.17",
+  "version": "1.0.0",
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "types": "lib/index.d.ts",
@@ -18,7 +18,7 @@
     "directory": "packages/log-viewer"
   },
   "peerDependencies": {
-    "@kubed/hooks": "0.0.14",
+    "@kubed/hooks": "1.0.0",
     "@kubed/icons": "0.0.16",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0",
