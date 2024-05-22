@@ -18,7 +18,7 @@
     "directory": "packages/hooks"
   },
   "peerDependencies": {
-    "react": ">=16.8.0"
+    "react": ">=16.8.6"
   },
   "dependencies": {},
   "devDependencies": {}
