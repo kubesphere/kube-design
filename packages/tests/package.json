@@ -1,7 +1,7 @@
 {
   "name": "@kubed/tests",
   "private": true,
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Testing utilities for Kubed components",
   "main": "cjs/index.js",
   "module": "esm/index.js",

@@ -1,5 +1,11 @@
 # @kubed/hooks
 
+## 0.0.16
+
+### Patch Changes
+
+- [#218](https://github.com/kubesphere/kube-design/pull/218) [`b9714b7`](https://github.com/kubesphere/kube-design/commit/b9714b7cc77c3899f1f63c94f3a62d75739fc324) Thanks [@donniean](https://github.com/donniean)! - feat: add TopicCircle icon
+
 ## 0.0.15
 
 ### Patch Changes

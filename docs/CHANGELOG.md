@@ -1,5 +1,16 @@
 # kubed-documents
 
+## 0.2.5
+
+### Patch Changes
+
+- [#218](https://github.com/kubesphere/kube-design/pull/218) [`b9714b7`](https://github.com/kubesphere/kube-design/commit/b9714b7cc77c3899f1f63c94f3a62d75739fc324) Thanks [@donniean](https://github.com/donniean)! - feat: add TopicCircle icon
+
+- Updated dependencies [[`b9714b7`](https://github.com/kubesphere/kube-design/commit/b9714b7cc77c3899f1f63c94f3a62d75739fc324)]:
+  - @kubed/components@0.2.1
+  - @kubed/hooks@0.0.16
+  - @kubed/icons@0.0.18
+
 ## 0.2.4
 
 ### Patch Changes
