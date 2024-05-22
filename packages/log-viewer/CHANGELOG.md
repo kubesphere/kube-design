@@ -1,5 +1,11 @@
 # @kubed/log-viewer
 
+## 0.0.19
+
+### Patch Changes
+
+- [#216](https://github.com/kubesphere/kube-design/pull/216) [`ecec904`](https://github.com/kubesphere/kube-design/commit/ecec9043ceb71055e56375aeb9042cb1416abf57) Thanks [@yazhouio](https://github.com/yazhouio)! - Update react version
+
 ## 0.0.18
 
 ### Patch Changes
