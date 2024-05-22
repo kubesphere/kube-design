@@ -1,6 +1,6 @@
 ---
-'@kubed/diff-viewer': minor
-'@kubed/log-viewer': minor
+'@kubed/diff-viewer': patch
+'@kubed/log-viewer': patch
 ---
 
-fix ts type
+Update react version
