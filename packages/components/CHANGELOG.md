@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.2.0
+
+### Minor Changes
+
+- [#214](https://github.com/kubesphere/kube-design/pull/214) [`b488295`](https://github.com/kubesphere/kube-design/commit/b488295d895421a00de205f0ebc85ce4b5086457) Thanks [@yazhouio](https://github.com/yazhouio)! - fix: Fix DescriptionProps
+
 ## 0.1.1
 
 ### Patch Changes
