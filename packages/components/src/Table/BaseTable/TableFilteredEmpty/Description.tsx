@@ -4,8 +4,8 @@ import { LinkButton } from './Description.styles';
 import { useLocales } from '../../../ConfigProvider/LocaleProvider/LocaleContext';
 
 interface DescriptionProps {
-  clearAndRefetch?: false | (() => void);
-  refetch?: false | (() => void);
+  clearAndRefetch?: () => void;
+  refetch?: () => void;
 }
 
 export type { DescriptionProps };
