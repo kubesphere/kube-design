@@ -1,6 +1,6 @@
 {
   "name": "@kubed/diff-viewer",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "types": "lib/index.d.ts",
