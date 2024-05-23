@@ -1,5 +1,11 @@
 # @kubed/tests
 
+## 0.0.5
+
+### Patch Changes
+
+- [#221](https://github.com/kubesphere/kube-design/pull/221) [`1e8bc0e`](https://github.com/kubesphere/kube-design/commit/1e8bc0ec1482d3a2aeca4040f32bf0f10008ae0b) Thanks [@donniean](https://github.com/donniean)! - feat: update TopicCircle icon
+
 ## 0.0.4
 
 ### Patch Changes
