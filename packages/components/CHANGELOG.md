@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.2.3
+
+### Patch Changes
+
+- [#223](https://github.com/kubesphere/kube-design/pull/223) [`4259783`](https://github.com/kubesphere/kube-design/commit/4259783a31854ddce1d86ab87e408db9f6365ded) Thanks [@yazhouio](https://github.com/yazhouio)! - Refactor table api and type
+
 ## 0.2.2
 
 ### Patch Changes
