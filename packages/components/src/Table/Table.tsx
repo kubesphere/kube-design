@@ -6,7 +6,7 @@ export { BaseTable, DataTable };
 
 export interface TableProps<T> {
   /** react table instance */
-  table: DataTable.TableInstance<T>;
+  table: DataTable.Table<T>;
 
   /** class name */
   className?: string;
