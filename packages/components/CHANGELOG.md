@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.2.5
+
+### Patch Changes
+
+- [#227](https://github.com/kubesphere/kube-design/pull/227) [`5c8b69c`](https://github.com/kubesphere/kube-design/commit/5c8b69cb036edca048d2d0e607f2379e354aff54) Thanks [@yazhouio](https://github.com/yazhouio)! - Fix table error
+
 ## 0.2.4
 
 ### Patch Changes
