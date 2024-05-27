@@ -1,12 +1,6 @@
-import {
-  ColumnFiltersState,
-  TableFeature,
-  TableOptionsResolved,
-  Updater,
-  functionalUpdate,
-  getFilteredRowModel,
-  shouldAutoRemoveFilter,
-} from '@tanstack/react-table';
+import { TableOptionsResolved, getFilteredRowModel } from '@tanstack/react-table';
+
+import { TableFeature } from '../interfaces';
 
 const getFilterOptions = <TData>(options: TableOptionsResolved<TData>) => {
   const {

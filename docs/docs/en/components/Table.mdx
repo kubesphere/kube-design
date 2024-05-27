@@ -155,6 +155,8 @@ interface ColumnMeta<TData extends RowData, TValue = unknown> {
   selectType?: 'single' | 'multiple'; // multiple selection type
   sortable?: boolean; // whether it can be sorted
   searchKey?: string; // custom search key
+  th?: Partial<BaseTable.TableCellProps>; // baseTable th props, priority is higher than getProps.th
+  td?: Partial<BaseTable.TableCellProps>; //baseTable td props, priority is higher than getProps.td
 }
 ```
 

@@ -7,10 +7,8 @@ import { BaseTable, Dropdown, Menu, MenuItem, MenuLabel, Popover } from '../../i
 import { getDefaultThProps } from './utils';
 import { useLocales } from '../../ConfigProvider/LocaleProvider/LocaleContext';
 
-const TWrapper = styled.div`
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+const TWrapper = styled.div<{ center?: boolean }>`
+  ${({ center }) => center && 'display: flex; align-items: center; justify-content: center;'}
 
   .sort-indicator {
     color: #79879c;
@@ -41,18 +39,21 @@ const DropdownWrapper = styled.span`
   justify-content: center;
 `;
 
-export interface TableHeadProps<TData extends RowData> {
+interface TableHeadProps<TData extends RowData> {
   header: Header<TData, unknown>;
   table: Table<TData>;
 }
 
-function TableHead<T>({ header, table }: PropsWithChildren<TableHeadProps<T>>) {
+export type { TableHeadProps };
+
+export function TableHead<T>({ header, table }: PropsWithChildren<TableHeadProps<T>>) {
   const {
     description,
     // filterOptions = [],
     searchKey: _searchKey,
     selectType,
     sortable: _sortable,
+    th = {},
   } = header.column.columnDef.meta ?? {};
 
   const { locales } = useLocales();
@@ -69,6 +70,17 @@ function TableHead<T>({ header, table }: PropsWithChildren<TableHeadProps<T>>) {
   } = table;
 
   const searchKey = manualFiltering ? _searchKey ?? id : id;
+
+  const isCheckbox = selectType
+    ? selectType === 'multiple'
+    : table.options.enableMultiRowSelection &&
+      id === table.options.meta._defaultConfig?.selectColumnId;
+
+  const isRadio = selectType
+    ? selectType === 'single'
+    : table.options.enableRowSelection &&
+      !table.options.enableMultiRowSelection &&
+      id === table.options.meta._defaultConfig?.selectColumnId;
 
   const suggestions = getFiltersProps?.(table)?.suggestions ?? [];
   const filterOptions =
@@ -106,7 +118,20 @@ function TableHead<T>({ header, table }: PropsWithChildren<TableHeadProps<T>>) {
   };
 
   const handleFilter = (value: any) => {
-    header.column.setFilterValue(value);
+    if (searchKey === id) {
+      header.column.setFilterValue(value);
+    } else {
+      table.setColumnFilters((rows) => {
+        const index = rows.findIndex((row) => row.id === searchKey);
+        return [
+          ...rows.slice(index, 1),
+          {
+            id: searchKey,
+            value,
+          },
+        ];
+      });
+    }
   };
 
   const renderDropdown = () => {
@@ -162,7 +187,7 @@ function TableHead<T>({ header, table }: PropsWithChildren<TableHeadProps<T>>) {
       );
     }
 
-    if (header.column.id === '_selector' && selectType === 'single') return null;
+    if (isRadio) return null;
     return flexRender(header.column.columnDef.header, header.getContext());
   };
 
@@ -171,23 +196,18 @@ function TableHead<T>({ header, table }: PropsWithChildren<TableHeadProps<T>>) {
       colSpan={header.colSpan}
       {...(enableTh && getDefaultThProps(table))}
       {...(getThProps && getThProps(table, header))}
+      {...th}
     >
-      <div>
-        {header.isPlaceholder ? null : (
-          <>
-            <TWrapper>
-              {renderDropdown()}
-              {description && (
-                <Popover {...(description as Record<string, any>)}>
-                  <Information />
-                </Popover>
-              )}
-            </TWrapper>
-          </>
-        )}
-      </div>
+      {header.isPlaceholder ? null : (
+        <TWrapper center={isCheckbox}>
+          {renderDropdown()}
+          {description && (
+            <Popover {...(description as Record<string, any>)}>
+              <Information />
+            </Popover>
+          )}
+        </TWrapper>
+      )}
     </BaseTable.TableCell>
   );
 }
-
-export default TableHead;

@@ -1,66 +1,35 @@
-import * as React from 'react';
+import type { Header, Row, RowData, Table, TableState } from '@tanstack/react-table';
 import cx from 'classnames';
-import type {
-  Table,
-  RowData,
-  Header,
-  TableState,
-  Row,
-  TableOptions as TableOptionsBase,
-  TableOptionsResolved,
-} from '@tanstack/react-table';
-import { Pagination } from './Pagination';
+import * as React from 'react';
 import * as BaseTable from '../BaseTable';
-import { Toolbar } from './Toolbar';
 import { BaseDataTable } from './BaseTable';
-
-export interface TableEnableConfig {
-  enableToolbar?: boolean;
-  enablePagination?: boolean;
-  enableVisible?: boolean;
-  enableFilters?: boolean;
-  enableParamsToUrl?: boolean;
-  enableStateToStorage?: boolean;
-  enableSelection?: boolean;
-  enableSort?: boolean;
-  enableMultiSelection?: boolean;
-  enableInitParamsByUrl?: boolean;
-}
-
-export interface StorageStateOptions {
-  storage2State?: (storageKey: string) => Partial<TableState>;
-  state2Storage?: (storageKey: string, state: Partial<TableState>) => void;
-}
-export interface StateHandler {
-  handlerName?: string;
-  stateKeys: (keyof TableState)[] | '*';
-  callback?: (state: Partial<TableState>) => void;
-}
-
-export interface FeaturesHandlersOPtions {
-  _featuresHandlers?: StateHandler[];
-  _featuresInitState?: Partial<TableState>;
-}
-
-export interface DefaultOptionsResolved<TData> {
-  getDefaultOptionsResolved?: (options: TableOptionsResolved<TData>) => TableOptionsResolved<TData>;
-}
+import { Pagination } from './Pagination';
+import { Toolbar } from './Toolbar';
+import {
+  DataTableRootProps,
+  DefaultOptionsResolved,
+  FeaturesHandlersOptions,
+  StateHandler,
+  StorageStateOptions,
+} from './interfaces';
 
 declare module '@tanstack/react-table' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface TableOptionsResolved<TData extends RowData>
     extends StorageStateOptions,
-      FeaturesHandlersOPtions {
+      FeaturesHandlersOptions {
     loading?: boolean;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface ColumnMeta<TData extends RowData, TValue = unknown> {
     description?: Record<string, any>;
-    filterOptions?: { key: string; label: React.ReactNode }[];
+    // filterOptions?: { key: string; label: React.ReactNode }[];
     selectType?: 'single' | 'multiple';
     sortable?: boolean;
     searchKey?: string;
+    th?: Omit<BaseTable.TableCellProps, 'ref'>;
+    td?: Omit<BaseTable.TableCellProps, 'ref'>;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -74,6 +43,9 @@ declare module '@tanstack/react-table' {
     tableName: string;
     refetch?: () => void;
     storageStateKeys?: (keyof TableState)[] | '*';
+    _defaultConfig?: {
+      selectColumnId?: string;
+    };
     manual?: boolean;
     enable?: {
       pagination?: boolean;
@@ -110,13 +82,6 @@ declare module '@tanstack/react-table' {
 
     registerHandlers?: StateHandler[];
   }
-}
-
-export interface TableInstance<T> extends Table<T> {}
-export interface TableOptions<T> extends TableOptionsBase<T> {}
-export interface DataTableRootProps<T> {
-  className?: string;
-  table: TableInstance<T>;
 }
 
 export function DataTable<T>({ className, table }: DataTableRootProps<T>) {

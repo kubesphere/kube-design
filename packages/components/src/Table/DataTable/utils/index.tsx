@@ -1,19 +1,12 @@
 import { Eye, EyeClosed } from '@kubed/icons';
 import { pick } from 'lodash';
-import {
-  Row,
-  RowData,
-  Table,
-  TableMeta,
-  TableOptions,
-  getCoreRowModel,
-} from '@tanstack/react-table';
+import { Row, RowData, getCoreRowModel } from '@tanstack/react-table';
 import * as React from 'react';
 
 import { Menu, MenuItem, MenuLabel } from '../../../index';
 import type { ToolbarProps } from '../../BaseTable';
 import { Suggestions } from '../../BaseTable';
-import { TableEnableConfig } from '../Table';
+import { TableEnableConfig, Table, TableMeta, TableOptions } from '../interfaces';
 import {
   InitFilterFeature,
   InitPaginationFeature,
@@ -67,6 +60,7 @@ export function getDefaultToolbarProps<T>(
   const {
     options: {
       meta: {
+        refetch,
         enable: { filters: enableFilters } = {},
         getProps: { filters: getFiltersProps } = {},
       } = {},
@@ -136,6 +130,7 @@ export function getDefaultToolbarProps<T>(
     settingMenu,
     settingMenuText,
     loading: table.options.loading,
+    refetch: props.refetch ?? refetch,
   };
 }
 
@@ -151,10 +146,12 @@ export function getDefaultTrProps<T>(table: Table<T>, row: Row<T>) {
   };
 }
 
-export interface DefaultTdPropsConfig extends TableEnableConfig {
+interface DefaultTdPropsConfig extends TableEnableConfig {
   tableName: string;
   manual: boolean;
 }
+
+export const TABLE_DEFAULT_SELECT_COLUMN_ID = '_selector';
 
 function _getDefaultTableOptions<TData extends RowData>(
   tableName: string,
@@ -189,6 +186,9 @@ function _getDefaultTableOptions<TData extends RowData>(
     meta: {
       tableName,
       manual,
+      _defaultConfig: {
+        selectColumnId: TABLE_DEFAULT_SELECT_COLUMN_ID,
+      },
       autoResetPageIndex: false,
       storageStateKeys: ['columnVisibility'],
       registerHandlers: manual

@@ -155,6 +155,8 @@ interface ColumnMeta<TData extends RowData, TValue = unknown> {
   selectType?: 'single' | 'multiple'; // 多选类型
   sortable?: boolean; // 是否可排序
   searchKey?: string; // 自定义搜索 key
+  th?: Partial<BaseTable.TableCellProps>; // baseTable th props，优先级高于 getProps.th
+  td?: Partial<BaseTable.TableCellProps>; //baseTable td props，优先级高于 getProps.td
 }
 ```
 

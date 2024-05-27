@@ -3,7 +3,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { LoadingOverlay } from '../../LoadingOverlay/LoadingOverlay';
 import * as BaseTable from '../BaseTable';
-import TableHead from './TableHead';
+import { TableHead } from './TableHead';
 import { getDefaultTrProps } from './utils';
 
 interface BaseDataTableProps<T> {
@@ -57,6 +57,7 @@ export function BaseDataTable<T>({ table }: BaseDataTableProps<T>) {
                 <BaseTable.TableCell
                   key={cell.id}
                   {...(getTdProps && getTdProps(table, cell.getContext()))}
+                  {...(cell.column.columnDef.meta?.td ?? {})}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </BaseTable.TableCell>

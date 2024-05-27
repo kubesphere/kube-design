@@ -4,7 +4,6 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   RowSelectionState,
-  TableState,
   Updater,
   useReactTable,
 } from '@tanstack/react-table';
@@ -17,6 +16,7 @@ import { Dropdown } from '../Dropdown/Dropdown';
 import { Menu, MenuItem } from '../Menu/Menu';
 import { Select } from '../Select/Select';
 import { StateHandler, Status2StorageFeature, getDefaultTableOptions, useTable } from './DataTable';
+import { Center } from '../Center/Center';
 
 const { Table, TableBody, TableCell, TableHead, TableRow, Pagination, Toolbar } = BaseTable;
 export default {
@@ -428,16 +428,16 @@ const defaultColumns: ColumnDef<Person>[] = [
         footer: (props) => props.column.id,
         meta: {
           sortable: true,
-          filterOptions: [
-            {
-              key: '0',
-              label: '0',
-            },
-            {
-              key: '1',
-              label: '1',
-            },
-          ],
+          // filterOptions: [
+          //   {
+          //     key: '0',
+          //     label: '0',
+          //   },
+          //   {
+          //     key: '1',
+          //     label: '1',
+          //   },
+          // ],
         },
       },
       {
@@ -454,17 +454,18 @@ const defaultColumns: ColumnDef<Person>[] = [
             footer: (props) => props.column.id,
             meta: {
               searchKey: 'status1',
-              filterOptions: [
-                {
-                  key: 'status-0',
-                  label: 'status-0',
-                },
-                {
-                  key: 'status-1',
-                  label: 'status-1',
-                },
-              ],
             },
+            //   filterOptions: [
+            //     {
+            //       key: 'status-0',
+            //       label: 'status-0',
+            //     },
+            //     {
+            //       key: 'status-1',
+            //       label: 'status-1',
+            //     },
+            //   ],
+            // },
           },
           {
             accessorKey: 'progress',
@@ -477,6 +478,11 @@ const defaultColumns: ColumnDef<Person>[] = [
   },
   {
     id: 'actions',
+    meta: {
+      th: {
+        width: '100px',
+      },
+    },
     cell: () => (
       <Dropdown
         content={
@@ -633,11 +639,13 @@ export const DataTableWithSelected = () => {
         />
       ),
       cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          disabled={!row.getCanSelect()}
-          onChange={row.getToggleSelectedHandler()}
-        />
+        <Center>
+          <Checkbox
+            checked={row.getIsSelected()}
+            disabled={!row.getCanSelect()}
+            onChange={row.getToggleSelectedHandler()}
+          />
+        </Center>
       ),
     },
     ...defaultColumns,
@@ -932,20 +940,37 @@ export const DataTableSimple = () => {
   const [loading] = React.useState(false);
   const [columns] = React.useState<typeof defaultColumns>(() => [
     {
-      id: 'selection',
-      header: ({ table }) => (
+      id: '_selector',
+      meta: {
+        th: {
+          width: '36px',
+          align: 'center',
+        },
+        td: {
+          align: 'center',
+        },
+      },
+      header: ({ table }: { table }) => (
         <Checkbox
           checked={table.getIsAllRowsSelected()}
           indeterminate={table.getIsSomeRowsSelected()}
-          onChange={table.getToggleAllRowsSelectedHandler()} //or getToggleAllPageRowsSelectedHandler
+          onChange={(e) => {
+            const indeterminate = table.getIsSomeRowsSelected();
+            if (indeterminate) {
+              e.target.checked = true;
+            }
+            table.getToggleAllRowsSelectedHandler()(e);
+          }} //or getToggleAllPageRowsSelectedHandler
         />
       ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          disabled={!row.getCanSelect()}
-          onChange={row.getToggleSelectedHandler()}
-        />
+      cell: ({ row }: { row }) => (
+        <Center>
+          <Checkbox
+            checked={row.getIsSelected()}
+            disabled={!row.getCanSelect()}
+            onChange={row.getToggleSelectedHandler()}
+          />
+        </Center>
       ),
     },
     ...defaultColumns,
@@ -971,8 +996,8 @@ export const DataTableSimple = () => {
       tableName: 'table1',
       manual: false,
       enableSelection: true,
-      enableMultiSelection: false,
-      enableFilters: false,
+      enableMultiSelection: true,
+      enableFilters: true,
     })
   )[0];
 
