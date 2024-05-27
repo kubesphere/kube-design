@@ -1,7 +1,7 @@
 import { RowData, TableOptionsResolved, createTable } from '@tanstack/react-table';
 import { concat, flow, isFunction, pick } from 'lodash';
 import * as React from 'react';
-import { TableOptions } from '../Table';
+import { TableOptions } from '../index';
 
 export function useTable<TData extends RowData>(options: TableOptions<TData>) {
   // Compose in the generic options to the user options
