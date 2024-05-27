@@ -151,7 +151,7 @@ Customize column configuration by setting `column.meta`
 ```ts
 interface ColumnMeta<TData extends RowData, TValue = unknown> {
   description?: Record<string, any>; // icon ? tooltip props
-  filterOptions?: { key: string; label: React.ReactNode }[]; // filter options
+  // filterOptions?: { key: string; label: React.ReactNode }[]; // filter options
   selectType?: 'single' | 'multiple'; // multiple selection type
   sortable?: boolean; // whether it can be sorted
   searchKey?: string; // custom search key
@@ -403,16 +403,6 @@ export const App = () => {
             footer: (props) => props.column.id,
             meta: {
               sortable: true,
-              filterOptions: [
-                {
-                  key: '0',
-                  label: '0',
-                },
-                {
-                  key: '1',
-                  label: '1',
-                },
-              ],
             },
           },
           {
@@ -429,16 +419,6 @@ export const App = () => {
                 footer: (props) => props.column.id,
                 meta: {
                   searchKey: 'status1',
-                  filterOptions: [
-                    {
-                      key: 'status-0',
-                      label: 'status-0',
-                    },
-                    {
-                      key: 'status-1',
-                      label: 'status-1',
-                    },
-                  ],
                 },
               },
               {
@@ -613,7 +593,12 @@ export const App = () => {
     },
   });
 
-  return <Table table={table} />;
+  return (
+    <>
+      <Table table={table} />
+      <pre>{JSON.stringify(state, null, 2)}</pre>
+    </>
+  );
 };
 ```
 

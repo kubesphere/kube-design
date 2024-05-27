@@ -151,7 +151,7 @@ interface StateHandler {
 ```ts
 interface ColumnMeta<TData extends RowData, TValue = unknown> {
   description?: Record<string, any>; // icon ? tooltip props
-  filterOptions?: { key: string; label: React.ReactNode }[]; // 过滤选项
+  // filterOptions?: { key: string; label: React.ReactNode }[]; // 过滤选项
   selectType?: 'single' | 'multiple'; // 多选类型
   sortable?: boolean; // 是否可排序
   searchKey?: string; // 自定义搜索 key
@@ -402,16 +402,6 @@ export const App = () => {
             footer: (props) => props.column.id,
             meta: {
               sortable: true,
-              filterOptions: [
-                {
-                  key: '0',
-                  label: '0',
-                },
-                {
-                  key: '1',
-                  label: '1',
-                },
-              ],
             },
           },
           {
@@ -428,16 +418,6 @@ export const App = () => {
                 footer: (props) => props.column.id,
                 meta: {
                   searchKey: 'status1',
-                  filterOptions: [
-                    {
-                      key: 'status-0',
-                      label: 'status-0',
-                    },
-                    {
-                      key: 'status-1',
-                      label: 'status-1',
-                    },
-                  ],
                 },
               },
               {
@@ -612,7 +592,12 @@ export const App = () => {
     },
   });
 
-  return <Table table={table} />;
+  return (
+    <>
+      <Table table={table} />
+      <pre>{JSON.stringify(state, null, 2)}</pre>
+    </>
+  );
 };
 ```
 
