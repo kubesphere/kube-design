@@ -46,6 +46,7 @@ export default class Select extends React.Component {
     valueRenderer: PropTypes.func,
     dorpdownRender: PropTypes.func,
     disableRemoteSearch: PropTypes.bool,
+    showTip: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -63,6 +64,7 @@ export default class Select extends React.Component {
     onChange() {},
     onPaging() {},
     disableRemoteSearch: false,
+    showTip: false,
   };
 
   state = {
@@ -494,7 +496,7 @@ export default class Select extends React.Component {
 
   renderOption = (options) => {
     const { value } = this.state;
-    const { multi, optionRenderer } = this.props;
+    const { multi, optionRenderer, showTip } = this.props;
     const isActive = (v) =>
       multi ? value.includes(v.value) : v.disabled ? false : v.value === value;
 
@@ -515,6 +517,7 @@ export default class Select extends React.Component {
             onClick={this.handleOptionClick}
             isActive={isActive(item)}
             option={item}
+            showTip={showTip}
           >
             {optionRenderer ? optionRenderer(item) : item.label}
           </Option>
@@ -524,8 +527,9 @@ export default class Select extends React.Component {
   };
 
   renderInput = () => {
-    const { searchable, name, placeholder, multi } = this.props;
-    const { inputVisible, inputValue, value } = this.state;
+    const { searchable, name, placeholder, multi, showTip } = this.props;
+    const { inputVisible, inputValue, value, options } = this.state;
+
     const multiClassName =
       multi && searchable
         ? classNames("select-input", {
@@ -544,6 +548,19 @@ export default class Select extends React.Component {
           : ""
         : localePlaceholder;
 
+    let option = { label: value, value };
+    options.forEach((item) => {
+      if (item.value === value) {
+        option = item;
+      } else if (item.options) {
+        item.options.forEach((op) => {
+          if (op.value === value) {
+            option = op;
+          }
+        });
+      }
+    });
+
     return (
       <div className={multiClassName}>
         <input
@@ -554,6 +571,7 @@ export default class Select extends React.Component {
           onChange={this.handleInputChange}
           readOnly={!searchable}
           autoComplete="off"
+          title={showTip ? option?.label || "" : ""}
         />
         <span className="select-input-search" ref={this.inputValueRef}>
           {inputValue}
