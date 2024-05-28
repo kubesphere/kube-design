@@ -527,7 +527,7 @@ export default class Select extends React.Component {
   };
 
   renderInput = () => {
-    const { searchable, name, placeholder, multi, showTip } = this.props;
+    const { searchable, name, placeholder, multi } = this.props;
     const { inputVisible, inputValue, value, options } = this.state;
 
     const multiClassName =
@@ -571,7 +571,6 @@ export default class Select extends React.Component {
           onChange={this.handleInputChange}
           readOnly={!searchable}
           autoComplete="off"
-          title={showTip ? option?.label || "" : ""}
         />
         <span className="select-input-search" ref={this.inputValueRef}>
           {inputValue}
@@ -581,7 +580,7 @@ export default class Select extends React.Component {
   };
 
   renderMultiValue = (value, i) => {
-    const { valueRenderer } = this.props;
+    const { valueRenderer, showTip } = this.props;
     const { options } = this.state;
 
     const option = options.find((item) => item.value === value) || {
@@ -592,7 +591,10 @@ export default class Select extends React.Component {
     return (
       <Tag className="select-multi-value-item" key={i}>
         <span>
-          <span className="select-multi-value-item-label">
+          <span
+            className="select-multi-value-item-label"
+            title={showTip ? option?.label || "" : ""}
+          >
             {valueRenderer ? valueRenderer(option) : option.label}
           </span>
           <span
@@ -608,7 +610,7 @@ export default class Select extends React.Component {
 
   renderBaseValues = () => {
     const { value, inputVisible, options } = this.state;
-    const { multi, valueRenderer } = this.props;
+    const { multi, valueRenderer, showTip } = this.props;
 
     if (multi) {
       if (isEmpty(value)) {
@@ -637,6 +639,7 @@ export default class Select extends React.Component {
           "select-value-opacity": inputVisible,
           "select-multi-value": multi,
         })}
+        title={showTip ? option?.label || "" : ""}
       >
         {valueRenderer ? valueRenderer(option) : option.label}
       </div>

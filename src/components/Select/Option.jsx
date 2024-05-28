@@ -39,13 +39,13 @@ export default class Option extends React.Component {
   };
 
   renderContent = () => {
-    const { multi, children, showTip } = this.props;
+    const { multi, children, showTip, option } = this.props;
     return multi ? (
       <>
         {this.renderCheckbox()}
         <span
           className="select-option-label"
-          title={showTip ? children || "" : ""}
+          title={showTip ? option?.label || "" : ""}
         >
           {children}
         </span>
@@ -54,7 +54,7 @@ export default class Option extends React.Component {
       <>
         <span
           className="select-option-label"
-          title={showTip ? children || "" : ""}
+          title={showTip ? option?.label || "" : ""}
         >
           {children}
         </span>

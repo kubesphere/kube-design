@@ -48,6 +48,7 @@
       display: inline-flex;
       align-items: center;
       max-width: 100%;
+      z-index: 1;
       @include TypographySymbolText;
       @include ellipsis;
     }

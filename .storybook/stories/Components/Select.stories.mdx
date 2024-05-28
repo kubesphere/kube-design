@@ -154,7 +154,7 @@ Basic usages for `Select` component.
         },
         { value: "Windows", label: "Windows Server 2003 R2" },
       ];
-      return <Select multi name="select-multi" options={options} />;
+      return <Select multi name="select-multi" options={options} showTip/>;
     }}
   </Story>
 </Preview>
@@ -179,7 +179,7 @@ Basic usages for `Select` component.
   </Story>
 </Preview>
 
-### Custom Select Render
+### Custom Select Render Add Support ShowTip
 
 <Preview>
   <Story name="select-render">
@@ -219,6 +219,7 @@ Basic usages for `Select` component.
           optionRenderer={optionRenderer}
           valueRenderer={valueRenderer}
           options={options}
+          showTip={true}
         />
       );
     }}
