@@ -406,6 +406,7 @@ const defaultColumns: ColumnDef<Person>[] = [
       {
         accessorKey: 'firstName',
         cell: (info) => info.getValue(),
+        enableSorting: true,
         footer: (props) => props.column.id,
       },
       {
@@ -424,8 +425,11 @@ const defaultColumns: ColumnDef<Person>[] = [
     columns: [
       {
         accessorKey: 'age',
-        header: () => 'Age',
+        header: () => {
+          return 'Age';
+        },
         footer: (props) => props.column.id,
+        enableHiding: true,
         meta: {
           sortable: true,
           // filterOptions: [
@@ -452,6 +456,8 @@ const defaultColumns: ColumnDef<Person>[] = [
             accessorKey: 'status',
             header: 'Status',
             footer: (props) => props.column.id,
+
+            enableHiding: true,
             meta: {
               searchKey: 'status1',
             },
@@ -633,7 +639,7 @@ export const DataTableWithSelected = () => {
       id: 'selection',
       header: ({ table }) => (
         <Checkbox
-          checked={table.getIsAllRowsSelected()}
+          checked={table.getIsAllRowsSelected() || table.getIsAllPageRowsSelected()}
           indeterminate={table.getIsSomeRowsSelected()}
           onChange={table.getToggleAllRowsSelectedHandler()} //or getToggleAllPageRowsSelectedHandler
         />
@@ -729,7 +735,15 @@ export const DataTableWithSelected = () => {
         }),
         toolbar: () => {
           return {
-            batchActions: <Button> Delete </Button>,
+            batchActions: (
+              <Button
+                onClick={() => {
+                  console.log(rowSelection);
+                }}
+              >
+                Delete
+              </Button>
+            ),
             toolbarLeft: <Select />,
             toolbarRight: (
               <>

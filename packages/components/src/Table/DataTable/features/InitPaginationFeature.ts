@@ -1,4 +1,11 @@
-import { TableFeature, TableOptionsResolved, getPaginationRowModel } from '@tanstack/react-table';
+import {
+  PaginationState,
+  TableFeature,
+  TableOptionsResolved,
+  Updater,
+  functionalUpdate,
+  getPaginationRowModel,
+} from '@tanstack/react-table';
 
 const getPaginationOptions = <TData>(options: TableOptionsResolved<TData>) => {
   const {
@@ -15,6 +22,7 @@ const getPaginationOptions = <TData>(options: TableOptionsResolved<TData>) => {
     manualPagination: true,
     rowCount: 0,
     autoResetPageIndex: false,
+    autoResetFiltersWhenPageChange: true,
     ...options,
   };
 };
@@ -31,5 +39,20 @@ export const InitPaginationFeature: TableFeature<any> = {
   },
   getDefaultOptionsResolved: (options) => {
     return getPaginationOptions(options);
+  },
+  createTable: (table) => {
+    // eslint-disable-next-line no-param-reassign
+    table.setPagination = (updater) => {
+      const safeUpdater: Updater<PaginationState> = (old) => {
+        const newState = functionalUpdate(updater, old);
+        return newState;
+      };
+
+      const { autoResetFiltersWhenPageChange = false } = table.options;
+      if (autoResetFiltersWhenPageChange) {
+        table.setRowSelection({});
+      }
+      return table.options.onPaginationChange?.(safeUpdater);
+    };
   },
 };

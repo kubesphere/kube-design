@@ -76,7 +76,11 @@ export function getDefaultToolbarProps<T>(
   if (enableSettingMenu === undefined) {
     enableSettingMenu = visibilityColumns.length > 0;
   }
-  const enableBatchActions = table.getIsAllPageRowsSelected() || table.getIsSomeRowsSelected();
+  const enableBatchActions =
+    table.getIsAllRowsSelected() ||
+    table.getIsAllPageRowsSelected() ||
+    table.getIsSomeRowsSelected() ||
+    table.getIsSomePageRowsSelected();
 
   let filterProps;
   let defaultFilterProps;
@@ -106,6 +110,14 @@ export function getDefaultToolbarProps<T>(
         const { id: menuItemKey } = column;
         const isVisible = column.getIsVisible();
         const icon = isVisible ? <Eye /> : <EyeClosed />;
+        let title = column.columnDef.header;
+        if (typeof column.columnDef.header === 'function') {
+          title = column.columnDef.header({
+            table,
+            header: undefined,
+            column,
+          });
+        }
         return (
           <MenuItem
             key={menuItemKey}
@@ -114,7 +126,7 @@ export function getDefaultToolbarProps<T>(
               column.toggleVisibility(!isVisible);
             }}
           >
-            {column.id}
+            {title}
           </MenuItem>
         );
       })}
