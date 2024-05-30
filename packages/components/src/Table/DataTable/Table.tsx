@@ -19,6 +19,7 @@ declare module '@tanstack/react-table' {
     extends StorageStateOptions,
       FeaturesHandlersOptions {
     loading?: boolean;
+    autoResetFiltersWhenPageChange?: boolean;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

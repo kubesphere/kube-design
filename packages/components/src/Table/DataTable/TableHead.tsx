@@ -61,7 +61,6 @@ export function TableHead<T>({ header, table }: PropsWithChildren<TableHeadProps
   const {
     options: {
       manualSorting,
-      manualFiltering,
       meta: {
         enableDefault: { th: enableTh = true } = {},
         getProps: { th: getThProps, filters: getFiltersProps } = {},
@@ -69,7 +68,7 @@ export function TableHead<T>({ header, table }: PropsWithChildren<TableHeadProps
     } = {},
   } = table;
 
-  const searchKey = manualFiltering ? _searchKey ?? id : id;
+  const searchKey = _searchKey ?? id;
 
   const isCheckbox = selectType
     ? selectType === 'multiple'
@@ -86,7 +85,9 @@ export function TableHead<T>({ header, table }: PropsWithChildren<TableHeadProps
   const filterOptions =
     suggestions.find((suggestion) => suggestion.key === searchKey)?.options ?? [];
 
-  const sortable = !manualSorting ? header.column.getCanSort() : _sortable;
+  const sortable =
+    header.column.columnDef.enableSorting ??
+    (!manualSorting ? header.column.getCanSort() : _sortable);
 
   const { enableMultiSort = false } = table.options;
 
