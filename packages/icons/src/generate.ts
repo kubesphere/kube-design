@@ -13,7 +13,11 @@ import {
 } from './utils';
 
 const outputDir = path.join(__dirname, '../', 'dist');
-const sourceDir = path.join(__dirname, '../', 'source');
+const sourceDirs = [
+  path.join(__dirname, '../', 'source'),
+  path.join(__dirname, '../', 'fill'),
+  path.join(__dirname, '../', 'duotone'),
+];
 const primaryColor = '#324558';
 
 const parseSvg = (svg: string) => {
@@ -39,38 +43,45 @@ export default (async () => {
   let definition = makeBasicDefinition();
   const iconSet = {};
 
-  const dirs = fs.readdirSync(sourceDir);
-  await dirs.forEach((dir) => {
-    const dirStat = fs.lstatSync(`${sourceDir}/${dir}`);
-    if (dirStat.isDirectory()) {
-      iconSet[dir] = [];
-      fs.readdirSync(`${sourceDir}/${dir}`).forEach(async (file) => {
-        const componentName = toComponentName(file.split('.')[0]);
-        iconSet[dir].push(componentName);
-        const fileName = toHumpName(file.split('.')[0]);
-        const fileContent = fs.readFileSync(`${sourceDir}/${dir}/${file}`);
-        const { data } = await svgo.optimize(fileContent);
-        const optimizedSvgString = data.replace(new RegExp(`${primaryColor}`, 'g'), 'currentColor');
+  const action = async (sourceDir) => {
+    const dirs = fs.readdirSync(sourceDir);
+    await dirs.forEach((dir) => {
+      const dirStat = fs.lstatSync(`${sourceDir}/${dir}`);
+      if (dirStat.isDirectory()) {
+        iconSet[dir] = [];
+        fs.readdirSync(`${sourceDir}/${dir}`).forEach(async (file) => {
+          const componentName = toComponentName(file.split('.')[0]);
+          iconSet[dir].push(componentName);
+          const fileName = toHumpName(file.split('.')[0]);
+          const fileContent = fs.readFileSync(`${sourceDir}/${dir}/${file}`);
+          const { data } = await svgo.optimize(fileContent);
+          const optimizedSvgString = data.replace(
+            new RegExp(`${primaryColor}`, 'g'),
+            'currentColor'
+          );
 
-        const component = `import React, {forwardRef} from 'react';
-const ${componentName} = forwardRef(({ variant = 'dark' ,size = 16, className = '', ...props }, ref) => {
-  const classNames = \`kubed-icon kubed-icon__\${variant} \${className}\`;
-  return ${parseSvg(optimizedSvgString)};
-});
-export default ${componentName};`;
-
-        exports += `export { default as ${componentName} } from './${fileName}';\n`;
-        definition += `export const ${componentName}: Icon;\n`;
-
-        const componentDefinition = `${makeBasicDefinition()}declare const ${componentName}: Icon;
-export default ${componentName}\n`;
-        const componentCode = transform(component, moduleBabelConfig).code;
-
-        await fs.outputFile(path.join(outputDir, `${fileName}.d.ts`), componentDefinition);
-        await fs.outputFile(path.join(outputDir, `${fileName}.js`), componentCode);
-      });
-    }
+          const component = `import React, {forwardRef} from 'react';
+  const ${componentName} = forwardRef(({ variant = 'dark' ,size = 16, className = '', ...props }, ref) => {
+    const classNames = \`kubed-icon kubed-icon__\${variant} \${className}\`;
+    return ${parseSvg(optimizedSvgString)};
   });
+  export default ${componentName};`;
+
+          exports += `export { default as ${componentName} } from './${fileName}';\n`;
+          definition += `export const ${componentName}: Icon;\n`;
+
+          const componentDefinition = `${makeBasicDefinition()}declare const ${componentName}: Icon;
+  export default ${componentName}\n`;
+          const componentCode = transform(component, moduleBabelConfig).code;
+
+          await fs.outputFile(path.join(outputDir, `${fileName}.d.ts`), componentDefinition);
+          await fs.outputFile(path.join(outputDir, `${fileName}.js`), componentCode);
+        });
+      }
+    });
+  };
+
+  await Promise.all(sourceDirs.map((sourceDir) => action(sourceDir)));
 
   const allModulesCode = transform(exports, allModulesBabelConfig).code;
   await fs.outputFile(path.join(outputDir, 'index.d.ts'), definition);
