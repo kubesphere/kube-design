@@ -15,6 +15,7 @@ import CodeBox from '../../lib/components/CodeBox';
 import PropsTable from '../../lib/components/PropsTable';
 import IconList from '../../lib/components/IconList/IconList';
 import { PaletteBlock } from '../../lib/components/Palette/PaletteBlock';
+import { ChangelogRender } from '../../lib/components/ChangelogRender';
 
 const Pre = ({ children }: React.PropsWithChildren<any>) => <>{children}</>;
 
@@ -26,6 +27,7 @@ const components = {
   code: CodeBox,
   IconList,
   PaletteBlock,
+  ChangelogRender,
 };
 
 const MainContent = styled.div`

@@ -35,4 +35,17 @@ module.exports = withPlugins([withTM], {
       },
     ];
   },
+  webpack: (config, options) => {
+    config.module.rules.push({
+      test: /\.md$/,
+      use: [
+        options.defaultLoaders.babel,
+        {
+          loader: '@mdx-js/loader',
+        },
+      ],
+    });
+
+    return config;
+  },
 });
