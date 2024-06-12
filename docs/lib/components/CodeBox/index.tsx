@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { Language } from 'prism-react-renderer';
 import { LiveProvider } from 'react-live';
 import { mdx, MDXContext } from '@mdx-js/react';
