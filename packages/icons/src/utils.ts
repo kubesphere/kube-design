@@ -17,7 +17,7 @@ export const replaceAll = (target: string, find: string, replace: string): strin
 };
 
 export const toHumpName = (name: string): string => {
-  return name.replace(/-(.)/g, (g) => g[1].toUpperCase());
+  return name.replace(/[-_](.)/g, (g) => g[1].toUpperCase());
 };
 
 export const toComponentName = (name: string): string => {
