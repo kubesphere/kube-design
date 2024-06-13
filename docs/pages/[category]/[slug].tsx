@@ -14,6 +14,7 @@ import TOC from '../../lib/components/TOC';
 import CodeBox from '../../lib/components/CodeBox';
 import PropsTable from '../../lib/components/PropsTable';
 import IconList from '../../lib/components/IconList/IconList';
+import { PaletteBlock } from '../../lib/components/Palette/PaletteBlock';
 
 const Pre = ({ children }: React.PropsWithChildren<any>) => <>{children}</>;
 
@@ -24,6 +25,7 @@ const components = {
   pre: Pre,
   code: CodeBox,
   IconList,
+  PaletteBlock,
 };
 
 const MainContent = styled.div`

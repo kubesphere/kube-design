@@ -1,0 +1,128 @@
+---
+group: 'guide'
+title: ThemeObject
+description: theme object
+order: 1
+---
+
+## Theme Object
+
+Kubed theme is an object containing a series of theme configurations, which include properties for colors, layout, fonts, and more.
+
+```ts
+interface KubedTheme {
+  /** Theme name */
+  type: string;
+  /** Configure the font and default font size */
+  font: KubedThemeFont;
+  /** You can define spacing, control sizes, border radius, and other layout-related properties */
+  layout: KubedThemeLayout;
+  /** The color palette, where you can customize the theme colors */
+  palette: KubedThemePalette;
+  /** Set the responsive breakpoints */
+  breakpoints: KubedThemeBreakpoints;
+  /** Configure shadows, opacities, and line styles */
+  expressiveness: KubedThemeExpressiveness;
+}
+```
+
+### Usage
+```jsx
+import { KubedConfigProvider, Button, themeUtils } from "@kubed/components"
+function App() {
+  const customDarkTheme = themeUtils.createFromDark({
+    type: "customDark",
+    palette: {
+      colors: {
+        green: ["#E9EDFC", "#E9EDFC", "#E9EDFC", "#E9EDFC", "#E9EDFC"],
+      },
+    },
+    layout: {
+      inputSizes: {
+        sm: "24px",
+      },
+    },
+    expressiveness: {
+      buttonShadow: () => "10px 10px 10px hotpink",
+    },
+  })
+  return (
+    <KubedConfigProvider themes={[customDarkTheme]} themeType={"customDark"}>
+      <Button color="primary" shadow>
+        button
+      </Button>
+    </KubedConfigProvider>
+  )
+}
+```
+### Theme properties
+
+#### palette
+The color palette for Kubed is an object containing a series of color configurations, including properties for the theme's colors, backgrounds, text colors, and more.
+You can configure the theme's colors through the `palette` property.
+In KubedDesign, the primary color is green. You can change the primary color by setting the `palette.colors.green` property,
+using RGB, RGBA, or hex values. Alternatively, you can directly set the primary property
+```jsx live=true
+() => {
+const customDarkTheme = themeUtils.createFromDark({
+    type: "customDark",
+    palette: {
+      colors: {
+        green: ["#E3FAFC", "#C5F6FA", "#99E9F2", "#66D9E8", "#3BC9DB"],
+      },
+    //  primary: "#3BC9DB",
+    }
+  });
+ return <KubedConfigProvider themes={[customDarkTheme]} themeType={"customDark"}>
+      <Button color="primary" shadow>
+        button
+      </Button>
+    </KubedConfigProvider>;
+};
+```
+
+#### layout
+The layout in Kubed is an object containing a series of properties for spacing, control sizes, border radius, and other layout-related settings
+```jsx live=true
+() => {
+const customDarkTheme = themeUtils.createFromDark({
+    type: "customDark",
+    layout: {
+      inputSizes: {
+        xs:'16px',
+        sm: "24px",
+        md: "32px",
+        lg: "40px",
+        xl: "48px",
+      },
+    },
+  });
+ return  <KubedConfigProvider themes={[customDarkTheme]} themeType={"customDark"}>
+      <Button color='primary' size="xs">KubeSphere</Button>
+      <Button color='primary' size="sm">KubeSphere</Button>
+      <Button color='primary' size="md">KubeSphere</Button>
+      <Button color='primary' size="lg">KubeSphere</Button>
+      <Button color='primary' size="xl">KubeSphere</Button>
+    </KubedConfigProvider>;
+};
+```
+
+#### expressiveness
+The expressiveness in Kubed is an object containing properties for button shadows, opacities, line styles, and other expressive design elements
+```jsx live=true
+() => {
+const customDarkTheme = themeUtils.createFromDark({
+    type: "customDark",
+    expressiveness: {
+      buttonShadow: () => "10px 10px 10px #5e9b7d",
+    },
+  });
+ return  <KubedConfigProvider themes={[customDarkTheme]} themeType={"customDark"}>
+      <Button color="primary" shadow>
+        button
+      </Button>
+    </KubedConfigProvider>;
+};
+```
+
+
