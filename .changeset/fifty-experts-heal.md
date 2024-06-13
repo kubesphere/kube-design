@@ -5,7 +5,7 @@
 '@kubed/components': patch
 '@kubed/diff-viewer': patch
 '@kubed/hooks': patch
-'@kubed/icons': minor
+'@kubed/icons': patch
 '@kubed/log-viewer': patch
 '@kubed/tests': patch
 ---
