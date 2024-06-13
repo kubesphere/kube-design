@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.2.7
+
+### Patch Changes
+
+- [#237](https://github.com/kubesphere/kube-design/pull/237) [`d32ed55`](https://github.com/kubesphere/kube-design/commit/d32ed5562b5a758d5095a697fb1e5742cb8fa2ae) Thanks [@yazhouio](https://github.com/yazhouio)! - refactor: Refactor table footer
+
 ## 0.2.6
 
 ### Patch Changes
