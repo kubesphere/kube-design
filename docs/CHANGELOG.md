@@ -1,5 +1,16 @@
 # kubed-documents
 
+## 0.2.7
+
+### Patch Changes
+
+- [#241](https://github.com/kubesphere/kube-design/pull/241) [`5e80314`](https://github.com/kubesphere/kube-design/commit/5e80314a3681d64d5797f6ffe10019964a10d166) Thanks [@yazhouio](https://github.com/yazhouio)! - chore: Update version
+
+- Updated dependencies [[`5e80314`](https://github.com/kubesphere/kube-design/commit/5e80314a3681d64d5797f6ffe10019964a10d166)]:
+  - @kubed/components@0.2.8
+  - @kubed/hooks@0.0.18
+  - @kubed/icons@0.0.20
+
 ## 0.2.6
 
 ### Patch Changes
