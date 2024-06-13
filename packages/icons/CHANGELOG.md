@@ -1,5 +1,11 @@
 # @kubed/icons
 
+## 0.1.0
+
+### Minor Changes
+
+- [#233](https://github.com/kubesphere/kube-design/pull/233) [`d231dc8`](https://github.com/kubesphere/kube-design/commit/d231dc8f5073b4f9d493e8a51e988794bcc46b34) Thanks [@yazhouio](https://github.com/yazhouio)! - feat: add Qing icons
+
 ## 0.0.19
 
 ### Patch Changes
