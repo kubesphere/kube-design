@@ -7,7 +7,7 @@ interface PaginationProps<T> {
   table: Table<T>;
 }
 
-const TableFooter = styled.div`
+export const TableFooter = styled.div`
   position: relative;
   padding: 10px 20px;
   background-color: ${({ theme }) => theme.palette.accents_0};
@@ -41,9 +41,5 @@ export const Pagination = <T extends {}>({ table }: PaginationProps<T>) => {
     };
   }, [table, props.total]);
 
-  return (
-    <TableFooter>
-      <BaseTable.BasePagination instance={instance} {...props} />
-    </TableFooter>
-  );
+  return <BaseTable.BasePagination instance={instance} {...props} />;
 };

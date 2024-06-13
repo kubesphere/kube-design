@@ -3,7 +3,7 @@ import cx from 'classnames';
 import * as React from 'react';
 import * as BaseTable from '../BaseTable';
 import { BaseDataTable } from './BaseTable';
-import { Pagination } from './Pagination';
+import { Pagination, TableFooter } from './Pagination';
 import { Toolbar } from './Toolbar';
 import {
   DataTableRootProps,
@@ -91,7 +91,11 @@ export function DataTable<T>({ className, table }: DataTableRootProps<T>) {
     <div className={cx('table-container', className)}>
       {!!toolbar && <Toolbar table={table} />}
       <BaseDataTable table={table} />
-      {!!pagination && <Pagination table={table} />}
+      {!!pagination && (
+        <TableFooter>
+          <Pagination table={table} />
+        </TableFooter>
+      )}
     </div>
   );
 }
