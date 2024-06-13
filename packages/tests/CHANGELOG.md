@@ -1,5 +1,11 @@
 # @kubed/tests
 
+## 0.0.6
+
+### Patch Changes
+
+- [#241](https://github.com/kubesphere/kube-design/pull/241) [`5e80314`](https://github.com/kubesphere/kube-design/commit/5e80314a3681d64d5797f6ffe10019964a10d166) Thanks [@yazhouio](https://github.com/yazhouio)! - chore: Update version
+
 ## 0.0.5
 
 ### Patch Changes
