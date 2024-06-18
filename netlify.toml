@@ -4,6 +4,12 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
+[build]
+base = "/"
+command = "npm run build:docs"
+publish = "docs/.next"
+
+
 # Netlify configuration
 # Runtime Next.js
 # Base directory   /
