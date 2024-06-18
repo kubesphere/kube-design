@@ -1,5 +1,10 @@
 [functions]
-  included_files = ["docs/next-i18next.config.cjs", "docs/public/locales/**"]
+  included_files = ["docs/next-i18next.config.js", "docs/public/locales/**"]
+
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
 
 [build]
 base = "/"
