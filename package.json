@@ -12,6 +12,7 @@
   "license": "MIT",
   "scripts": {
     "start:docs": "cd ./docs && npm run dev",
+    "build:docs": "cd ./docs && npm run build",
     "postinstall": "npm run docs:docgen && npm run build:icons",
     "syncpack": "syncpack list-mismatches",
     "typecheck": "tsc --noEmit",
