@@ -6,9 +6,9 @@ const withPlugins = require('next-compose-plugins');
 //   'rehype-react',
 //   'hast-to-hyperscript',
 // ]);
-process.env.I18NEXT_DEFAULT_CONFIG_PATH = `${__dirname}/next-i18next.config.js`;
+process.env.I18NEXT_DEFAULT_CONFIG_PATH = `${__dirname}/next-i18next.config.cjs`;
 
-const { i18n } = require('./next-i18next.config');
+const { i18n } = require('./next-i18next.config.cjs');
 
 module.exports = withPlugins([], {
   transpilePackages: ['@kubed/components', '@kubed/hooks', '@kubed/hooks'],
