@@ -1,6 +1,8 @@
 [functions]
   included_files = ["docs/next-i18next.config.cjs", "docs/public/locales/**"]
 
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
 
 # Netlify configuration
 # Runtime Next.js
