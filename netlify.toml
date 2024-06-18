@@ -1,0 +1,18 @@
+[functions]
+  included_files = ["docs/next-i18next.config.cjs", "docs/public/locales/**"]
+
+[build]
+base = "/"
+command = "npm run build:docs"
+publish = "docs/.next"
+
+
+# Netlify configuration
+# Runtime Next.js
+# Base directory   /
+# Package directory    /docs
+# Build command    npm run build:docs
+# Publish directory   /docs/.next
+# Functions directory     /netlify/functions
+# Deploy log visibility   Logs are public
+# Build status    Active

@@ -77,7 +77,7 @@ const TopMenu = styled.div`
   }
 `;
 
-const TopMenuItem = styled.a`
+const TopMenuItem = styled.span`
   color: #eff4f9;
 
   &:hover {
@@ -114,8 +114,8 @@ const TopBar = ({ isHome = true, isScroll = false }: TopBarProps) => {
         <TopMenu>
           <Group style={{ marginRight: '70px' }} spacing={20}>
             {menus.map((menu) => (
-              <Link href={`/${menu.value}`} key={menu.value}>
-                <a className="topmenu-item">{t(menu.label)}</a>
+              <Link href={`/${menu.value}`} key={menu.value} className="topmenu-item">
+                {t(menu.label)}
               </Link>
             ))}
           </Group>
