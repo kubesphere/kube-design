@@ -7,8 +7,8 @@ const withTM = require('next-transpile-modules')([
   'hast-to-hyperscript',
 ]);
 
-process.env.I18NEXT_DEFAULT_CONFIG_PATH = `${__dirname}/next-i18next.config.cjs`;
-const { i18n } = require('./next-i18next.config.cjs');
+process.env.I18NEXT_DEFAULT_CONFIG_PATH = `${__dirname}/next-i18next.config`;
+const { i18n } = require('./next-i18next.config');
 
 module.exports = withPlugins([withTM], {
   reactStrictMode: false,
