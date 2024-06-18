@@ -1,14 +1,22 @@
 {
   "extends": "../tsconfig.json",
-//  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "../packages/**/*.tsx"],
+  //  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "../packages/**/*.tsx"],
   "compilerOptions": {
     "paths": {
-      "@docs/demos": ["./docs/src/demos"],
-      "@kubed/*": ["packages/*/src"],
-//      "@demos/*": ["packages/*/src/demos"]
+      "@docs/demos": [
+        "./docs/src/demos"
+      ],
+      "@kubed/*": [
+        "packages/*/src"
+      ]
+      //      "@demos/*": ["packages/*/src/demos"]
     },
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -20,6 +28,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "incremental": true
   }
 }

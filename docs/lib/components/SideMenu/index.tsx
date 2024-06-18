@@ -78,9 +78,7 @@ export default function SideMenu({ title, category, menu, slug }: SideMenuProps)
           const kebabMenu = kebabCase(item);
           return (
             <li key={item} className={cx({ active: slug === kebabMenu })}>
-              <Link href={`/${category}/${kebabMenu}`}>
-                <a>{t(item)}</a>
-              </Link>
+              <Link href={`/${category}/${kebabMenu}`}>{t(item)}</Link>
             </li>
           );
         })}
