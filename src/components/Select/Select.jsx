@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { get, isEmpty, isUndefined, isFunction, isEqual } from "lodash";
+import { get, isEmpty, isUndefined, isFunction } from "lodash";
 
 import Tag from "../Tag";
 import Icon from "../Icon";
@@ -94,11 +94,8 @@ export default class Select extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { value, options } = this.props;
-    const equal = isEqual(prevProps.options, options);
     if (prevProps.options.length !== options.length) {
       this.reachBottom = false;
-      this.setState({ options, options_copy: options });
-    } else if (!equal) {
       this.setState({ options, options_copy: options });
     }
 
