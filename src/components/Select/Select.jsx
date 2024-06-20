@@ -528,8 +528,7 @@ export default class Select extends React.Component {
 
   renderInput = () => {
     const { searchable, name, placeholder, multi } = this.props;
-    const { inputVisible, inputValue, value, options } = this.state;
-
+    const { inputVisible, inputValue, value } = this.state;
     const multiClassName =
       multi && searchable
         ? classNames("select-input", {
@@ -547,19 +546,6 @@ export default class Select extends React.Component {
           ? localePlaceholder
           : ""
         : localePlaceholder;
-
-    let option = { label: value, value };
-    options.forEach((item) => {
-      if (item.value === value) {
-        option = item;
-      } else if (item.options) {
-        item.options.forEach((op) => {
-          if (op.value === value) {
-            option = op;
-          }
-        });
-      }
-    });
 
     return (
       <div className={multiClassName}>
@@ -610,7 +596,7 @@ export default class Select extends React.Component {
 
   renderBaseValues = () => {
     const { value, inputVisible, options } = this.state;
-    const { multi, valueRenderer, showTip } = this.props;
+    const { multi, valueRenderer } = this.props;
 
     if (multi) {
       if (isEmpty(value)) {
@@ -639,7 +625,6 @@ export default class Select extends React.Component {
           "select-value-opacity": inputVisible,
           "select-multi-value": multi,
         })}
-        title={showTip ? option?.label || "" : ""}
       >
         {valueRenderer ? valueRenderer(option) : option.label}
       </div>
