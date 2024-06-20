@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { get, isEmpty, isUndefined, isFunction, isEqual } from "lodash";
+import { get, isEmpty, isUndefined, isFunction } from "lodash";
 
 import Tag from "../Tag";
 import Icon from "../Icon";
@@ -45,7 +45,6 @@ export default class Select extends React.Component {
     optionRenderer: PropTypes.func,
     valueRenderer: PropTypes.func,
     dorpdownRender: PropTypes.func,
-    disableRemoteSearch: PropTypes.bool,
     showTip: PropTypes.bool,
   };
 
@@ -63,7 +62,6 @@ export default class Select extends React.Component {
     options: [],
     onChange() {},
     onPaging() {},
-    disableRemoteSearch: false,
     showTip: false,
   };
 
@@ -72,8 +70,6 @@ export default class Select extends React.Component {
     value: this.props.multi ? [] : "",
     inputValue: "",
     inputVisible: true,
-    options: this.props.options ? this.props.options : [],
-    options_copy: this.props.options ? this.props.options : [],
   };
 
   inputRef = React.createRef();
@@ -94,12 +90,8 @@ export default class Select extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { value, options } = this.props;
-    const equal = isEqual(prevProps.options, options);
     if (prevProps.options.length !== options.length) {
       this.reachBottom = false;
-      this.setState({ options, options_copy: options });
-    } else if (!equal) {
-      this.setState({ options, options_copy: options });
     }
 
     if (!isUndefined(value) && value !== prevState.value) {
@@ -312,11 +304,10 @@ export default class Select extends React.Component {
   };
 
   handleInputStatus = (visible) => {
-    const { value, inputValue, options } = this.state;
-    const { multi, searchable } = this.props;
+    const { value, inputValue } = this.state;
+    const { multi, searchable, options } = this.props;
     const option = options.find((item) => item.value === value) || {};
     const currentInputValue = multi ? "" : option.value || inputValue || "";
-
     this.setState(
       { inputVisible: visible, inputValue: currentInputValue },
       () => {
@@ -332,7 +323,7 @@ export default class Select extends React.Component {
 
   handleInputChange = (e) => {
     const value = e.target.value;
-    const { multi, searchable, onFetch, disableRemoteSearch } = this.props;
+    const { multi, searchable, onFetch, onChange } = this.props;
 
     const newState = { inputValue: value };
     if (!multi) {
@@ -345,17 +336,11 @@ export default class Select extends React.Component {
           : `${get(this.inputValueRef, "current.clientWidth", 0) + 5}px`;
         this.updateInputDOM({ width });
       }
+      onChange(this.state.value);
     });
 
-    if (isFunction(onFetch) && !disableRemoteSearch) {
+    if (isFunction(onFetch)) {
       onFetch({ name: value });
-    } else if (searchable) {
-      const options = value
-        ? this.state.options_copy.filter((item) =>
-            item.label.toLowerCase().includes(value.toLowerCase())
-          )
-        : this.state.options_copy;
-      this.setState({ options });
     }
   };
 
@@ -380,27 +365,18 @@ export default class Select extends React.Component {
   handleClearValue = (e) => {
     e.nativeEvent.stopImmediatePropagation();
     e.stopPropagation();
-    const {
-      multi,
-      searchable,
-      onChange,
-      onFetch,
-      disableRemoteSearch,
-    } = this.props;
+    const { multi, searchable, onChange, onFetch } = this.props;
 
     this.setState(
       {
         value: multi ? [] : "",
         inputValue: "",
         inputVisible: true,
-        visible: false,
       },
       () => {
         onChange();
-        if (searchable && isFunction(onFetch) && !disableRemoteSearch) {
+        if (searchable && isFunction(onFetch)) {
           onFetch();
-        } else if (searchable) {
-          this.setState({ options: this.state.options_copy });
         }
       }
     );
@@ -439,8 +415,8 @@ export default class Select extends React.Component {
   };
 
   renderOptions = () => {
-    const { visible, options } = this.state;
-    const { isLoading, pagination = {}, onFetch } = this.props;
+    const { visible } = this.state;
+    const { options, isLoading, pagination = {}, onFetch } = this.props;
     const { page = 1, total = 0, limit = 10 } = pagination;
 
     if (!visible || !get(this.selectRef, "current")) {
@@ -566,8 +542,7 @@ export default class Select extends React.Component {
   };
 
   renderMultiValue = (value, i) => {
-    const { valueRenderer, showTip } = this.props;
-    const { options } = this.state;
+    const { valueRenderer, options, showTip } = this.props;
 
     const option = options.find((item) => item.value === value) || {
       label: value,
@@ -595,8 +570,8 @@ export default class Select extends React.Component {
   };
 
   renderBaseValues = () => {
-    const { value, inputVisible, options } = this.state;
-    const { multi, valueRenderer } = this.props;
+    const { value, inputVisible } = this.state;
+    const { multi, valueRenderer, options } = this.props;
 
     if (multi) {
       if (isEmpty(value)) {
