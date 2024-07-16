@@ -15,7 +15,6 @@ import {
 } from './Sheet.styles';
 import { Button, Field } from '../index';
 
-export interface SheetProps extends SheetPrimitive.DialogProps {}
 
 const Sheet = SheetPrimitive.Root;
 const SheetTrigger = SheetPrimitive.Trigger;
@@ -55,7 +54,7 @@ const SheetOverlay = React.forwardRef<
   <StyledSheetOverlay {...props} ref={ref} className={className} />
 ));
 
-interface SheetContentProps
+export interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
     React.ComponentPropsWithoutRef<typeof StyledSheetContent> {
   /** Use the side property to <SheetContent /> to indicate the edge of the screen where the component will appear. The values can be top, right, bottom or left.Default 'right'. */
@@ -125,5 +124,4 @@ export {
   SheetDescription,
   SheetHeaderClose,
   SheetFieldTitle,
-  SheetContentProps,
 };

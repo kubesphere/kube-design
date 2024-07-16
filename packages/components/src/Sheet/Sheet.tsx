@@ -1,23 +1,32 @@
 import * as Sheets from './Sheets';
 
+export { SheetContentProps } from './Sheets';
 const {
   Sheet,
-  SheetContent,
+  SheetPortal,
+  SheetOverlay,
   SheetTrigger,
   SheetClose,
-  SheetPortal,
+  SheetContent,
+  SheetHeader,
+  SheetFooter,
+  SheetTitle,
+  SheetDescription,
   SheetHeaderClose,
   SheetFieldTitle,
-  SheetOverlay,
 } = Sheets;
 
 export {
   Sheet,
-  SheetContent,
+  SheetPortal,
+  SheetOverlay,
   SheetTrigger,
   SheetClose,
-  SheetPortal,
+  SheetContent,
+  SheetHeader,
+  SheetFooter,
+  SheetTitle,
+  SheetDescription,
   SheetHeaderClose,
   SheetFieldTitle,
-  SheetOverlay,
 };
