@@ -56,7 +56,7 @@ export default {
     },
     {
       title: 'Feedback',
-      menu: ['Alert', 'Loading', 'LoadingOverlay', 'Modal', 'StatusDot'],
+      menu: ['Alert', 'Loading', 'LoadingOverlay', 'Modal', 'StatusDot', 'Sheet'],
     },
   ],
   hooks: [

@@ -55,4 +55,4 @@ export { default as Collapse } from './Collapse/Collapse';
 export { default as forwardRef } from './utils/forwardRef';
 export { default as toArray } from './utils/toArray';
 export * from './Table/Table';
-export * from './Sheet/Sheet';
+export * as Sheet from './Sheet/Sheet';

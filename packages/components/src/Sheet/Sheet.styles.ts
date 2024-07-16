@@ -56,7 +56,7 @@ const slideOutToRight = keyframes`
 
 const baseStyles = css`
   position: fixed;
-  z-index: 202;
+  z-index: 999;
   gap: 1rem;
   background: ${({ theme }) => theme.palette.background};
   box-shadow: var(--shadow-lg);
@@ -217,7 +217,7 @@ ${({ width }) =>
 export const StyledSheetOverlay = styled(SheetPrimitive.Overlay)`
   position: fixed;
   inset: 0;
-  z-index: 201;
+  z-index: 998;
   background: rgba(0, 0, 0, 0.8);
 
   &[data-state='open'] {
