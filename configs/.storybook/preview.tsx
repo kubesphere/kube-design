@@ -11,3 +11,4 @@ export const decorators = [
     </KubedConfigProvider>
   ),
 ];
+export const tags = ['autodocs'];
