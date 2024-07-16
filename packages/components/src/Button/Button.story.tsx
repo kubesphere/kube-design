@@ -1,47 +1,52 @@
 import * as React from 'react';
-import { storiesOf } from '@storybook/react';
 import { Add } from '@kubed/icons';
 import { Group } from '../Group/Group';
 import { Button } from './Button';
 
-storiesOf('Components/Button', module)
-  .addParameters({ component: Button })
-  .add('Demos', () => (
-    <Group spacing="xl">
-      <Button variant="filled" color="secondary" shadow radius="xl">
-        KubeSphere
-      </Button>
-      <Button variant="filled" color="default" radius="xl">
-        KubeSphere
-      </Button>
-      <Button variant="text" radius="xl">
-        KubeSphere
-      </Button>
-      <Button variant="filled" shadow color="secondary" radius="xl" disabled>
-        KubeSphere
-      </Button>
-    </Group>
-  ));
+export default {
+  title: 'Components/Button',
 
-storiesOf('Components/Button', module).add('Colors', () => (
+  parameters: {
+    component: Button,
+  },
+};
+
+export const Demos = () => (
+  <Group spacing="xl">
+    <Button variant="filled" color="secondary" shadow radius="xl">
+      KubeSphere
+    </Button>
+    <Button variant="filled" color="default" radius="xl">
+      KubeSphere
+    </Button>
+    <Button variant="text" radius="xl">
+      KubeSphere
+    </Button>
+    <Button variant="filled" shadow color="secondary" radius="xl" disabled>
+      KubeSphere
+    </Button>
+  </Group>
+);
+
+export const Colors = () => (
   <Button variant="filled" color="warning" shadow radius="xl">
     KubeSphere
   </Button>
-));
+);
 
-storiesOf('Components/Button', module).add('With Icon', () => (
+export const WithIcon = () => (
   <Button variant="filled" color="default" radius="xl" leftIcon={<Add size={16} />}>
     KubeSphere
   </Button>
-));
+);
 
-storiesOf('Components/Button', module).add('Size', () => (
+export const Size = () => (
   <Button variant="filled" color="default" radius="xl" size="md" leftIcon={<Add size={16} />}>
     KubeSphere
   </Button>
-));
+);
 
-storiesOf('Components/Button', module).add('Loading', () => (
+export const Loading = () => (
   <Group>
     <Button variant="filled" color="default" radius="xl" loading>
       KubeSphere
@@ -59,4 +64,4 @@ storiesOf('Components/Button', module).add('Loading', () => (
       KubeSphere
     </Button>
   </Group>
-));
+);

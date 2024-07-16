@@ -1,16 +1,19 @@
 import * as React from 'react';
-import { storiesOf } from '@storybook/react';
 import { Container } from './Container';
 
-storiesOf('Components/Container', module).add('Demo', () => (
+export default {
+  title: 'Components/Container',
+};
+
+export const Demo = () => (
   <Container>
     To get the most out of this module, you should have worked your way through the previous
     JavaScript modules in the series. Those modules typically involve simple API usage, as it is
     often difficult to write client-side JavaScript examples without them.
   </Container>
-));
+);
 
-storiesOf('Components/Container', module).add('Size', () => (
+export const Size = () => (
   <>
     <Container size="xl">
       To get the most out of this module, you should have worked your way through the previous
@@ -23,9 +26,9 @@ storiesOf('Components/Container', module).add('Size', () => (
       often difficult to write client-side JavaScript examples without them.
     </Container>
   </>
-));
+);
 
-storiesOf('Components/Container', module).add('Padding', () => (
+export const Padding = () => (
   <>
     <Container padding="xl">
       To get the most out of this module, you should have worked your way through the previous
@@ -38,12 +41,12 @@ storiesOf('Components/Container', module).add('Padding', () => (
       often difficult to write client-side JavaScript examples without them.
     </Container>
   </>
-));
+);
 
-storiesOf('Components/Container', module).add('Fluid', () => (
+export const Fluid = () => (
   <Container fluid>
     To get the most out of this module, you should have worked your way through the previous
     JavaScript modules in the series. Those modules typically involve simple API usage, as it is
     often difficult to write client-side JavaScript examples without them.
   </Container>
-));
+);
