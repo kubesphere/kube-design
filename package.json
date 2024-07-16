@@ -85,7 +85,7 @@
     "rollup-plugin-esbuild": "^4.2.3",
     "rollup-plugin-node-externals": "^2.2.0",
     "rollup-plugin-visualizer": "^5.5.0",
-    "simple-git": "^2.39.0",
+    "simple-git": "^3.16.0",
     "storybook": "^8.2.3",
     "storybook-addon-turbo-build": "^2.0.1",
     "syncpack": "^5.7.11",
