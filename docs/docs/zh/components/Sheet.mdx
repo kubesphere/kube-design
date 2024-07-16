@@ -1,0 +1,67 @@
+---
+group: 'components'
+category: 'state'
+title: Sheet
+description: 'Extends the Dialog component to display content that complements the main content of the screen.'
+order: 1
+---
+
+## 基础用法
+
+仅扩展了 SheetContent，其他 Api 请参考 https://www.radix-ui.com/primitives/docs/components/dialog。
+
+### SheetContent 扩展 API
+
+- side: 'top'| 'right' | 'bottom' | 'left'
+- width: number | string
+
+```js live=true
+import * as React from 'react';
+// import styled from 'styled-components';
+import { Sheet } from '@kubed/components';
+
+// const { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTrigger, SheetFieldTitle } = Sheets;
+
+// const SheetContentChildrenWrapper = styled.div`
+//  display: grid;
+//  grid-template-rows: auto 1fr auto;
+//  height: 100%;
+// `;
+
+() => {
+  const SHEET_SIDES = ['top', 'right', 'bottom', 'left'];
+  const wrapper = (side) => {
+    // if (side === 'left' || side === 'right') {
+    //   return SheetContentChildrenWrapper;
+    // }
+    return 'div';
+  };
+
+  return SHEET_SIDES.map((side) => {
+    const Wrapper = wrapper('left');
+    return (
+      <Sheet.Sheet>
+        <Sheet.SheetTrigger asChild>
+          <Button variant="outline">{side}</Button>
+        </Sheet.SheetTrigger>
+        <Sheet.SheetContent width={1200} side={side}>
+          <Wrapper>
+            <Sheet.SheetHeader>
+              <Sheet.SheetFieldTitle
+                title="Edit profile"
+                description="Make changes to your profile here. Click save when you are done."
+              />
+            </Sheet.SheetHeader>
+            body
+            <Sheet.SheetFooter>
+              <Sheet.SheetClose asChild>
+                <Button type="submit">Save changes</Button>
+              </Sheet.SheetClose>
+            </Sheet.SheetFooter>
+          </Wrapper>
+        </Sheet.SheetContent>
+      </Sheet.Sheet>
+    );
+  });
+};
+```
