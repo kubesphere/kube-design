@@ -75,7 +75,7 @@ const topStyles = css`
   left: 0px;
   right: 0px;
   top: 0;
-  border-bottom: 1px solid;
+  /* border-bottom: 1px solid; */
   &[data-state='open'] {
     animation-name: ${fadeIn}, ${slideInFromTop};
   }
@@ -88,7 +88,7 @@ const bottomStyles = css`
   left: 0px;
   right: 0px;
   bottom: 0;
-  border-top: 1px solid;
+  /* border-top: 1px solid; */
   &[data-state='open'] {
     animation-name: ${fadeIn}, ${slideInFromBottom};
   }
@@ -103,7 +103,7 @@ const leftStyles = css`
   left: 0;
   height: 100%;
   width: 75%;
-  border-right: 1px solid;
+  /* border-right: 1px solid; */
   max-width: 16rem; /* equivalent to sm:max-w-sm */
   &[data-state='open'] {
     animation-name: ${fadeIn}, ${slideInFromLeft};
@@ -119,7 +119,7 @@ const rightStyles = css`
   right: 0;
   height: 100%;
   width: 75%;
-  border-left: 1px solid;
+  /* border-left: 1px solid; */
   max-width: 16rem; /* equivalent to sm:max-w-sm */
   &[data-state='open'] {
     animation-name: ${fadeIn}, ${slideInFromRight};
@@ -197,7 +197,7 @@ ${({ width }) =>
     background-color: ${({ theme }) => theme.palette.background};
     vertical-align: middle;
     outline: none;
-    box-shadow: 0 4px 8px 0 rgb(72 91 127 / 20%);
+    box-shadow: 0 8px 16px ${({ theme }) => addColorAlpha(theme.palette.accents_8, 0.28)};
   }
 
   .kubed-sheet-footer {
