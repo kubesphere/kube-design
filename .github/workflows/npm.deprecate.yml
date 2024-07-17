@@ -21,4 +21,4 @@ jobs:
 
       - name: Deprecate
         run: |
-          npm deprecate @kubed/components@0.2.10 ""
+          npm deprecate @kubed/NAME@VERSION "This version is deprecated."
