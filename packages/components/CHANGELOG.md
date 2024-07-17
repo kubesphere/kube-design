@@ -1,5 +1,11 @@
 # @kubed/components
 
+## 0.2.10
+
+### Patch Changes
+
+- [#261](https://github.com/kubesphere/kube-design/pull/261) [`8f164367fa392489c155b730f4fe284d74d3bc00`](https://github.com/kubesphere/kube-design/commit/8f164367fa392489c155b730f4fe284d74d3bc00) Thanks [@yazhouio](https://github.com/yazhouio)! - Update ts version
+
 ## 0.2.9
 
 ### Patch Changes
