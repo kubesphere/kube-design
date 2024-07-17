@@ -126,7 +126,10 @@ export function getDefaultToolbarProps<T>(
               column.toggleVisibility(!isVisible);
             }}
           >
-            {title}
+            {
+              // FIXME: remove any
+              title as any
+            }
           </MenuItem>
         );
       })}

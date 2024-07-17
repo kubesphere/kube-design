@@ -55,8 +55,9 @@ export interface SnippetProps extends React.ComponentPropsWithoutRef<'div'> {
   /** Width of snippet */
   width?: number;
 
+  // FIXME:Got error when  add more types. Such as: string[] | ReactNode
   /** Content of snippet */
-  content?: string | string[] | React.ReactNode;
+  content?: string;
 
   /** Border-radius from theme or number to set border-radius in px */
   radius?: KubedNumberSize;

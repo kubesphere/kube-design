@@ -73,7 +73,7 @@ const InternalSelect = forwardRef<SelectProps<any>, 'div'>(
     const { suffixIcon, itemIcon, removeIcon, clearIcon } = getIcons({
       ...rest,
       multiple: isMultiple,
-    });
+    } /** // FIXME: remove any */ as any);
 
     return (
       <>

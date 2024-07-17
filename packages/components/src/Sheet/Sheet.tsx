@@ -1,6 +1,7 @@
 import * as Sheets from './Sheets';
 
-export { SheetContentProps } from './Sheets';
+export type { SheetContentProps } from './Sheets';
+
 const {
   Sheet,
   SheetPortal,

@@ -31,7 +31,8 @@ export default function generateRangePicker<DateType>(
     additionalOverrideProps = {
       ...additionalOverrideProps,
       ...(showTime ? getTimeProps({ format, picker, ...showTime }) : {}),
-      ...(picker === 'time' ? getTimeProps({ format, ...props, picker }) : {}),
+      // FIXME: remove any
+      ...(picker === 'time' ? getTimeProps({ format, ...props, picker } as any) : {}),
     };
 
     const pickerRef = useRef<RCRangePicker<DateType>>();
