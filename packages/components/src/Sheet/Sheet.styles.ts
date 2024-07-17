@@ -59,7 +59,8 @@ const baseStyles = css`
   z-index: 999;
   gap: 1rem;
   background: ${({ theme }) => theme.palette.background};
-  box-shadow: var(--shadow-lg);
+  border: none;
+  box-shadow: 0px 8px 16px 0px #242E4247;
   transition: ease-in-out;
   &[data-state='open'] {
     animation-duration: 500ms;
@@ -218,7 +219,7 @@ export const StyledSheetOverlay = styled(SheetPrimitive.Overlay)`
   position: fixed;
   inset: 0;
   z-index: 998;
-  background: rgba(0, 0, 0, 0.8);
+  background: #242E42B2;
 
   &[data-state='open'] {
     animation: fadeIn 0.3s;
