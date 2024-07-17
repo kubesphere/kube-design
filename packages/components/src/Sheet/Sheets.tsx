@@ -15,7 +15,6 @@ import {
 } from './Sheet.styles';
 import { Button, Field } from '../index';
 
-
 const Sheet = SheetPrimitive.Root;
 const SheetTrigger = SheetPrimitive.Trigger;
 const SheetClose = SheetPrimitive.Close;
