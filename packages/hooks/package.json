@@ -17,8 +17,6 @@
     "esm",
     "lib"
   ],
-  "dependencies": {},
-  "devDependencies": {},
   "peerDependencies": {
     "react": ">=16.8.6"
   }

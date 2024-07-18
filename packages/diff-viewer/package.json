@@ -23,7 +23,6 @@
     "lodash": "^4.17.21",
     "styled-components": "^5.3.0"
   },
-  "devDependencies": {},
   "peerDependencies": {
     "@kubed/hooks": "0.0.18",
     "@kubed/icons": "0.0.20",

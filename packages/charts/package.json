@@ -22,7 +22,6 @@
     "recharts": "^2.3.2",
     "styled-components": "^5.3.0"
   },
-  "devDependencies": {},
   "peerDependencies": {
     "@kubed/hooks": "0.0.18",
     "@kubed/icons": "0.0.20",

@@ -7,8 +7,6 @@
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "types": "lib/index.d.ts",
-  "dependencies": {},
-  "devDependencies": {},
   "peerDependencies": {
     "enzyme": ">=3.11.0",
     "jest-axe": ">=4.1.0",
