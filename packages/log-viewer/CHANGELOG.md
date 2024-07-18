@@ -1,5 +1,15 @@
 # @kubed/log-viewer
 
+## 0.2.11
+
+### Patch Changes
+
+- [#268](https://github.com/kubesphere/kube-design/pull/268) [`af6740b`](https://github.com/kubesphere/kube-design/commit/af6740b831e364cc680d6a42088fdf6e6d1750e8) Thanks [@donniean](https://github.com/donniean)! - ci: update changesets config
+
+- Updated dependencies [[`af6740b`](https://github.com/kubesphere/kube-design/commit/af6740b831e364cc680d6a42088fdf6e6d1750e8)]:
+  - @kubed/hooks@0.2.11
+  - @kubed/icons@0.2.11
+
 ## 0.0.22
 
 ### Patch Changes

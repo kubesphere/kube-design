@@ -1,5 +1,16 @@
 # kubed-documents
 
+## 0.2.8
+
+### Patch Changes
+
+- [#268](https://github.com/kubesphere/kube-design/pull/268) [`af6740b`](https://github.com/kubesphere/kube-design/commit/af6740b831e364cc680d6a42088fdf6e6d1750e8) Thanks [@donniean](https://github.com/donniean)! - ci: update changesets config
+
+- Updated dependencies [[`af6740b`](https://github.com/kubesphere/kube-design/commit/af6740b831e364cc680d6a42088fdf6e6d1750e8)]:
+  - @kubed/components@0.2.11
+  - @kubed/hooks@0.2.11
+  - @kubed/icons@0.2.11
+
 ## 0.2.7
 
 ### Patch Changes
@@ -193,8 +204,7 @@
 
 ### Patch Changes
 
-- [`749c17b`](https://github.com/kubesphere/kube-design/commit/749c17b2c23ef8d75042080165abf3fc67a2701f) Thanks [@chenz24](https://github.com/chenz24)! - 1. refactor: Refine async ok logic
-  2. fix: checkbox cannot be set value in FormItem.
+- [`749c17b`](https://github.com/kubesphere/kube-design/commit/749c17b2c23ef8d75042080165abf3fc67a2701f) Thanks [@chenz24](https://github.com/chenz24)! - 1. refactor: Refine async ok logic 2. fix: checkbox cannot be set value in FormItem.
 - Updated dependencies [[`749c17b`](https://github.com/kubesphere/kube-design/commit/749c17b2c23ef8d75042080165abf3fc67a2701f)]:
   - @kubed/components@0.0.72
 
@@ -592,8 +602,7 @@
 
 ### Patch Changes
 
-- [`a7f7e6a`](https://github.com/kubesphere/kube-design/commit/a7f7e6aa089002b1c24ab650aef124a7ecc3157d) Thanks [@chenz24](https://github.com/chenz24)! - 1. Use classnames instead of clsx.
-  2. Fix package bug cause by importing dayjs locales
+- [`a7f7e6a`](https://github.com/kubesphere/kube-design/commit/a7f7e6aa089002b1c24ab650aef124a7ecc3157d) Thanks [@chenz24](https://github.com/chenz24)! - 1. Use classnames instead of clsx. 2. Fix package bug cause by importing dayjs locales
 - Updated dependencies [[`a7f7e6a`](https://github.com/kubesphere/kube-design/commit/a7f7e6aa089002b1c24ab650aef124a7ecc3157d)]:
   - @kubed/components@0.0.18
 
@@ -622,9 +631,7 @@
 
 ### Patch Changes
 
-- [`81610f7`](https://github.com/kubesphere/kube-design/commit/81610f7b72e85c675dfd129bd5c676ad09c6f702) Thanks [@chenz24](https://github.com/chenz24)! - 1. Fix ModalContext default value.
-  2. Fix MenuItem error cause by 'as' props.
-  3. Fix background of doc page in dark mode.
+- [`81610f7`](https://github.com/kubesphere/kube-design/commit/81610f7b72e85c675dfd129bd5c676ad09c6f702) Thanks [@chenz24](https://github.com/chenz24)! - 1. Fix ModalContext default value. 2. Fix MenuItem error cause by 'as' props. 3. Fix background of doc page in dark mode.
 - Updated dependencies [[`81610f7`](https://github.com/kubesphere/kube-design/commit/81610f7b72e85c675dfd129bd5c676ad09c6f702)]:
   - @kubed/components@0.0.14
 
