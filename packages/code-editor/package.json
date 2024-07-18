@@ -1,29 +1,22 @@
 {
   "name": "@kubed/code-editor",
   "version": "0.0.27",
+  "homepage": "https://github.com/kubesphere/kube-design",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kubesphere/kube-design.git",
+    "directory": "packages/code-editor"
+  },
+  "license": "MIT",
+  "sideEffects": false,
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "types": "lib/index.d.ts",
-  "license": "MIT",
-  "sideEffects": false,
-  "homepage": "https://github.com/kubesphere/kube-design",
   "files": [
     "cjs",
     "esm",
     "lib"
   ],
-  "repository": {
-    "url": "https://github.com/kubesphere/kube-design.git",
-    "type": "git",
-    "directory": "packages/code-editor"
-  },
-  "peerDependencies": {
-    "@kubed/hooks": "0.0.18",
-    "@kubed/icons": "0.0.20",
-    "react": ">=16.8.6",
-    "react-dom": ">=16.8.6",
-    "react-is": "^17.0.2"
-  },
   "dependencies": {
     "ace-builds": "^1.12.5",
     "file-saver": "^2.0.5",
@@ -34,5 +27,12 @@
   },
   "devDependencies": {
     "@types/file-saver": "^2.0.5"
+  },
+  "peerDependencies": {
+    "@kubed/hooks": "0.0.18",
+    "@kubed/icons": "0.0.20",
+    "react": ">=16.8.6",
+    "react-dom": ">=16.8.6",
+    "react-is": "^17.0.2"
   }
 }

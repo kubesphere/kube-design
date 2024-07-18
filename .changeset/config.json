@@ -1,13 +1,15 @@
 {
-  "$schema": "https://unpkg.com/@changesets/config@1.6.0/schema.json",
-  "changelog": [
-    "@changesets/changelog-github",
-    { "repo": "kubesphere/kube-design" }
-  ],
+  "$schema": "https://unpkg.com/@changesets/config@3.0.2/schema.json",
+  "changelog": ["@changesets/changelog-github", { "repo": "kubesphere/kube-design" }],
   "commit": false,
+  "fixed": [["@kubed/*"]],
   "linked": [],
   "access": "public",
   "baseBranch": "master",
   "updateInternalDependencies": "patch",
-  "ignore": []
+  "ignore": [],
+  "snapshot": {
+    "useCalculatedVersion": false,
+    "prereleaseTemplate": "{tag}.{datetime}"
+  }
 }

@@ -1,21 +1,27 @@
 {
   "name": "@kubed/diff-viewer",
   "version": "0.0.23",
+  "homepage": "https://github.com/kubesphere/kube-design",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kubesphere/kube-design.git",
+    "directory": "packages/diff-viewer"
+  },
+  "license": "MIT",
+  "sideEffects": false,
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "types": "lib/index.d.ts",
-  "license": "MIT",
-  "sideEffects": false,
-  "homepage": "https://github.com/kubesphere/kube-design",
   "files": [
     "cjs",
     "esm",
     "lib"
   ],
-  "repository": {
-    "url": "https://github.com/kubesphere/kube-design.git",
-    "type": "git",
-    "directory": "packages/diff-viewer"
+  "dependencies": {
+    "diff": "^5.1.0",
+    "diff2html": "^3.4.22",
+    "lodash": "^4.17.21",
+    "styled-components": "^5.3.0"
   },
   "peerDependencies": {
     "@kubed/hooks": "0.0.18",
@@ -23,12 +29,5 @@
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6",
     "react-is": "^17.0.2"
-  },
-  "dependencies": {
-    "diff": "^5.1.0",
-    "diff2html": "^3.4.22",
-    "lodash": "^4.17.21",
-    "styled-components": "^5.3.0"
-  },
-  "devDependencies": {}
+  }
 }
