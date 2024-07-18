@@ -1,25 +1,25 @@
 {
   "name": "@kubed/hooks",
   "version": "0.0.18",
+  "homepage": "https://github.com/kubesphere/kube-design",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kubesphere/kube-design.git",
+    "directory": "packages/hooks"
+  },
+  "license": "MIT",
+  "sideEffects": false,
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "types": "lib/index.d.ts",
-  "license": "MIT",
-  "sideEffects": false,
-  "homepage": "https://github.com/kubesphere/kube-design",
   "files": [
     "cjs",
     "esm",
     "lib"
   ],
-  "repository": {
-    "url": "https://github.com/kubesphere/kube-design.git",
-    "type": "git",
-    "directory": "packages/hooks"
-  },
+  "dependencies": {},
+  "devDependencies": {},
   "peerDependencies": {
     "react": ">=16.8.6"
-  },
-  "dependencies": {},
-  "devDependencies": {}
+  }
 }

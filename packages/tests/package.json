@@ -1,17 +1,17 @@
 {
   "name": "@kubed/tests",
+  "version": "0.0.0",
   "private": true,
-  "version": "0.0.6",
   "description": "Testing utilities for Kubed components",
+  "license": "MIT",
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "types": "lib/index.d.ts",
-  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {},
   "peerDependencies": {
     "enzyme": ">=3.11.0",
     "jest-axe": ">=4.1.0",
     "react": ">=16.8.6"
-  },
-  "dependencies": {},
-  "devDependencies": {}
+  }
 }
