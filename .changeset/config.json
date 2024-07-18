@@ -2,7 +2,7 @@
   "$schema": "https://unpkg.com/@changesets/config@3.0.2/schema.json",
   "changelog": ["@changesets/changelog-github", { "repo": "kubesphere/kube-design" }],
   "commit": false,
-  "fixed": [["@kubed/*"]],
+  "fixed": [["@kubed/*", "kubed-documents"]],
   "linked": [],
   "access": "public",
   "baseBranch": "master",
