@@ -59,7 +59,8 @@ const baseStyles = css`
   z-index: 999;
   gap: 1rem;
   background: ${({ theme }) => theme.palette.background};
-  box-shadow: var(--shadow-lg);
+  border: none;
+  box-shadow: 0 8px 16px 0 #242E4247;
   transition: ease-in-out;
   &[data-state='open'] {
     animation-duration: 500ms;
@@ -72,10 +73,10 @@ const baseStyles = css`
 `;
 
 const topStyles = css`
-  left: 0px;
-  right: 0px;
+  left: 0;
+  right: 0;
   top: 0;
-  border-bottom: 1px solid;
+  /* border-bottom: 1px solid; */
   &[data-state='open'] {
     animation-name: ${fadeIn}, ${slideInFromTop};
   }
@@ -85,10 +86,10 @@ const topStyles = css`
 `;
 
 const bottomStyles = css`
-  left: 0px;
-  right: 0px;
+  left: 0;
+  right: 0;
   bottom: 0;
-  border-top: 1px solid;
+  /* border-top: 1px solid; */
   &[data-state='open'] {
     animation-name: ${fadeIn}, ${slideInFromBottom};
   }
@@ -98,12 +99,12 @@ const bottomStyles = css`
 `;
 
 const leftStyles = css`
-  top: 0px;
-  bottom: 0px;
+  top: 0;
+  bottom: 0;
   left: 0;
   height: 100%;
   width: 75%;
-  border-right: 1px solid;
+  /* border-right: 1px solid; */
   max-width: 16rem; /* equivalent to sm:max-w-sm */
   &[data-state='open'] {
     animation-name: ${fadeIn}, ${slideInFromLeft};
@@ -114,12 +115,12 @@ const leftStyles = css`
 `;
 
 const rightStyles = css`
-  top: 0px;
-  bottom: 0px;
+  top: 0;
+  bottom: 0;
   right: 0;
   height: 100%;
   width: 75%;
-  border-left: 1px solid;
+  /* border-left: 1px solid; */
   max-width: 16rem; /* equivalent to sm:max-w-sm */
   &[data-state='open'] {
     animation-name: ${fadeIn}, ${slideInFromRight};
@@ -197,7 +198,7 @@ ${({ width }) =>
     background-color: ${({ theme }) => theme.palette.background};
     vertical-align: middle;
     outline: none;
-    box-shadow: 0 4px 8px 0 rgb(72 91 127 / 20%);
+    box-shadow: 0 8px 16px ${({ theme }) => addColorAlpha(theme.palette.accents_8, 0.28)};
   }
 
   .kubed-sheet-footer {
@@ -218,7 +219,7 @@ export const StyledSheetOverlay = styled(SheetPrimitive.Overlay)`
   position: fixed;
   inset: 0;
   z-index: 998;
-  background: rgba(0, 0, 0, 0.8);
+  background: #242E42B2;
 
   &[data-state='open'] {
     animation: fadeIn 0.3s;
