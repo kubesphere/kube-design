@@ -1,5 +1,17 @@
 # @kubed/charts
 
+## 0.2.11
+
+### Patch Changes
+
+- [#268](https://github.com/kubesphere/kube-design/pull/268) [`af6740b`](https://github.com/kubesphere/kube-design/commit/af6740b831e364cc680d6a42088fdf6e6d1750e8) Thanks [@donniean](https://github.com/donniean)! - ci: update changesets config
+
+- [#271](https://github.com/kubesphere/kube-design/pull/271) [`fd28929`](https://github.com/kubesphere/kube-design/commit/fd289299aaa6523ea1685c2194ecd6d637982387) Thanks [@donniean](https://github.com/donniean)! - chore: update changesets config
+
+- Updated dependencies [[`af6740b`](https://github.com/kubesphere/kube-design/commit/af6740b831e364cc680d6a42088fdf6e6d1750e8), [`fd28929`](https://github.com/kubesphere/kube-design/commit/fd289299aaa6523ea1685c2194ecd6d637982387)]:
+  - @kubed/hooks@0.2.11
+  - @kubed/icons@0.2.11
+
 ## 0.0.22
 
 ### Patch Changes
@@ -112,9 +124,7 @@
 
 ### Patch Changes
 
-- [`ebf0dc3`](https://github.com/kubesphere/kube-design/commit/ebf0dc384d6216c92f00de3e650a23f71f5857fc) Thanks [@EliChen95](https://github.com/EliChen95)! - 1. feat: Support Area chart override axis props
-  2. feat: Support Pie chart set empty color
-  3. fix: Fix loop node without key
+- [`ebf0dc3`](https://github.com/kubesphere/kube-design/commit/ebf0dc384d6216c92f00de3e650a23f71f5857fc) Thanks [@EliChen95](https://github.com/EliChen95)! - 1. feat: Support Area chart override axis props 2. feat: Support Pie chart set empty color 3. fix: Fix loop node without key
 
 ## 0.0.7
 

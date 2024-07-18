@@ -1,6 +1,6 @@
 {
   "name": "@kubed/hooks",
-  "version": "0.0.18",
+  "version": "0.2.11",
   "homepage": "https://github.com/kubesphere/kube-design",
   "repository": {
     "type": "git",

@@ -1,5 +1,13 @@
 # @kubed/tests
 
+## 0.2.11
+
+### Patch Changes
+
+- [#268](https://github.com/kubesphere/kube-design/pull/268) [`af6740b`](https://github.com/kubesphere/kube-design/commit/af6740b831e364cc680d6a42088fdf6e6d1750e8) Thanks [@donniean](https://github.com/donniean)! - ci: update changesets config
+
+- [#271](https://github.com/kubesphere/kube-design/pull/271) [`fd28929`](https://github.com/kubesphere/kube-design/commit/fd289299aaa6523ea1685c2194ecd6d637982387) Thanks [@donniean](https://github.com/donniean)! - chore: update changesets config
+
 ## 0.0.6
 
 ### Patch Changes
@@ -28,6 +36,4 @@
 
 ### Patch Changes
 
-- [`c2610f8`](https://github.com/kubesphere/kube-design/commit/c2610f898a081e743918bc755a308ae2c2016035) Thanks [@chenz24](https://github.com/chenz24)! - 1. Add AutoComplete component.
-  2. Add Slider component.
-  3. Notify support adding title.
+- [`c2610f8`](https://github.com/kubesphere/kube-design/commit/c2610f898a081e743918bc755a308ae2c2016035) Thanks [@chenz24](https://github.com/chenz24)! - 1. Add AutoComplete component. 2. Add Slider component. 3. Notify support adding title.
