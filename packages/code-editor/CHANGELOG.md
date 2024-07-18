@@ -1,5 +1,17 @@
 # @kubed/code-editor
 
+## 0.2.11
+
+### Patch Changes
+
+- [#268](https://github.com/kubesphere/kube-design/pull/268) [`af6740b`](https://github.com/kubesphere/kube-design/commit/af6740b831e364cc680d6a42088fdf6e6d1750e8) Thanks [@donniean](https://github.com/donniean)! - ci: update changesets config
+
+- [#271](https://github.com/kubesphere/kube-design/pull/271) [`fd28929`](https://github.com/kubesphere/kube-design/commit/fd289299aaa6523ea1685c2194ecd6d637982387) Thanks [@donniean](https://github.com/donniean)! - chore: update changesets config
+
+- Updated dependencies [[`af6740b`](https://github.com/kubesphere/kube-design/commit/af6740b831e364cc680d6a42088fdf6e6d1750e8), [`fd28929`](https://github.com/kubesphere/kube-design/commit/fd289299aaa6523ea1685c2194ecd6d637982387)]:
+  - @kubed/hooks@0.2.11
+  - @kubed/icons@0.2.11
+
 ## 0.0.27
 
 ### Patch Changes
@@ -174,8 +186,7 @@
 
 ### Patch Changes
 
-- [`8415db6`](https://github.com/kubesphere/kube-design/commit/8415db61f675499d4787c526c42ffd7984e6c2f2) Thanks [@chenz24](https://github.com/chenz24)! - 1. fix: CodeEditor yaml worker error
-  2. feat: Add DiffView component
+- [`8415db6`](https://github.com/kubesphere/kube-design/commit/8415db61f675499d4787c526c42ffd7984e6c2f2) Thanks [@chenz24](https://github.com/chenz24)! - 1. fix: CodeEditor yaml worker error 2. feat: Add DiffView component
 
 ## 0.0.3
 
