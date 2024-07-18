@@ -60,7 +60,7 @@ const baseStyles = css`
   gap: 1rem;
   background: ${({ theme }) => theme.palette.background};
   border: none;
-  box-shadow: 0px 8px 16px 0px #242E4247;
+  box-shadow: 0 8px 16px 0 #242E4247;
   transition: ease-in-out;
   &[data-state='open'] {
     animation-duration: 500ms;
