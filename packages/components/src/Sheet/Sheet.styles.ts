@@ -73,8 +73,8 @@ const baseStyles = css`
 `;
 
 const topStyles = css`
-  left: 0px;
-  right: 0px;
+  left: 0;
+  right: 0;
   top: 0;
   /* border-bottom: 1px solid; */
   &[data-state='open'] {
@@ -86,8 +86,8 @@ const topStyles = css`
 `;
 
 const bottomStyles = css`
-  left: 0px;
-  right: 0px;
+  left: 0;
+  right: 0;
   bottom: 0;
   /* border-top: 1px solid; */
   &[data-state='open'] {
@@ -99,8 +99,8 @@ const bottomStyles = css`
 `;
 
 const leftStyles = css`
-  top: 0px;
-  bottom: 0px;
+  top: 0;
+  bottom: 0;
   left: 0;
   height: 100%;
   width: 75%;
@@ -115,8 +115,8 @@ const leftStyles = css`
 `;
 
 const rightStyles = css`
-  top: 0px;
-  bottom: 0px;
+  top: 0;
+  bottom: 0;
   right: 0;
   height: 100%;
   width: 75%;
