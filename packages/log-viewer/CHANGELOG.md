@@ -1,5 +1,15 @@
 # @kubed/log-viewer
 
+## 0.2.12
+
+### Patch Changes
+
+- [#273](https://github.com/kubesphere/kube-design/pull/273) [`e469bbb`](https://github.com/kubesphere/kube-design/commit/e469bbb10dca58686a546185c92a3497b572fbc1) Thanks [@51wangping](https://github.com/51wangping)! - add icons
+
+- Updated dependencies [[`e469bbb`](https://github.com/kubesphere/kube-design/commit/e469bbb10dca58686a546185c92a3497b572fbc1)]:
+  - @kubed/hooks@0.2.12
+  - @kubed/icons@0.2.12
+
 ## 0.2.11
 
 ### Patch Changes
