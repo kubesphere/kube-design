@@ -7,7 +7,7 @@ import type {
   RowData,
   ColumnDef as _ColumnDef,
   Table as _Table,
-  TableState,
+  TableState as _TableState,
 } from '@tanstack/react-table';
 
 export type TableOptionsResolved<TData extends RowData> = _TableOptionsResolved<TData>;
@@ -21,6 +21,8 @@ export type TableFeature<TData extends RowData = any> = _TableFeature<TData>;
 export type TableMeta<TData extends RowData> = _TableMeta<TData>;
 
 export type ColumnDef<TData, TValue> = _ColumnDef<TData, TValue>;
+
+export interface TableState extends _TableState {}
 
 export interface TableEnableConfig {
   enableToolbar?: boolean;
