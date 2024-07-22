@@ -904,6 +904,9 @@ export const DataTableWithDefault = () => {
       ...defaultOption.meta,
       tableName: defaultOption.meta.tableName,
       getProps: {
+        toolbar: () => ({
+          toolbarLeft: <Select />,
+        }),
         filters: () => {
           return {
             simpleMode: false,

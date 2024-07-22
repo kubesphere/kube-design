@@ -70,7 +70,7 @@ export const Toolbar = (props: ToolbarProps) => {
         </BatchActions>
       )}
       <ToolbarInner>
-        <div className="toolbar-left">{toolbarLeft}</div>
+        {toolbarLeft && <div className="toolbar-left">{toolbarLeft}</div>}
         <div className="toolbar-item">{enableFilters && <FilterInput {...filterProps} />}</div>
         <div className="toolbar-right">
           <Button variant="text" className="btn-refresh" disabled={!!loading} onClick={refetch}>
