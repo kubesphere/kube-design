@@ -1,5 +1,11 @@
 # @kubed/hooks
 
+## 0.2.14
+
+### Patch Changes
+
+- [#278](https://github.com/kubesphere/kube-design/pull/278) [`74a473a`](https://github.com/kubesphere/kube-design/commit/74a473a924ae00fd1aa001c2a0b4a09a5692360c) Thanks [@51wangping](https://github.com/51wangping)! - add collap icons
+
 ## 0.2.13
 
 ### Patch Changes
