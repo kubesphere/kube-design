@@ -1,5 +1,15 @@
 # @kubed/code-editor
 
+## 0.2.13
+
+### Patch Changes
+
+- [#276](https://github.com/kubesphere/kube-design/pull/276) [`ff3dd30`](https://github.com/kubesphere/kube-design/commit/ff3dd30806435f582709458d701592dfa1c86188) Thanks [@yazhouio](https://github.com/yazhouio)! - Fix: fix table styles. Add TableState type. Fix storybook cli err.
+
+- Updated dependencies [[`ff3dd30`](https://github.com/kubesphere/kube-design/commit/ff3dd30806435f582709458d701592dfa1c86188)]:
+  - @kubed/hooks@0.2.13
+  - @kubed/icons@0.2.13
+
 ## 0.2.12
 
 ### Patch Changes

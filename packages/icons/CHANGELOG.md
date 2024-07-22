@@ -1,5 +1,11 @@
 # @kubed/icons
 
+## 0.2.13
+
+### Patch Changes
+
+- [#276](https://github.com/kubesphere/kube-design/pull/276) [`ff3dd30`](https://github.com/kubesphere/kube-design/commit/ff3dd30806435f582709458d701592dfa1c86188) Thanks [@yazhouio](https://github.com/yazhouio)! - Fix: fix table styles. Add TableState type. Fix storybook cli err.
+
 ## 0.2.12
 
 ### Patch Changes
