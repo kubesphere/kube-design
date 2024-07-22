@@ -21,7 +21,7 @@
     "lint": "eslint src --ext .ts,.tsx",
     "release": "yarn build all && changeset publish",
     "start:docs": "cd ./docs && npm run dev",
-    "storybook": "storybook dev -p 7001 -c configs/.storybook",
+    "storybook": "storybook dev -p 7001 -c configs/.storybook --no-open",
     "syncpack": "syncpack list-mismatches",
     "test": "npm run syncpack && npm run typecheck && npm run lint && npm run jest",
     "typecheck": "tsc --noEmit"
