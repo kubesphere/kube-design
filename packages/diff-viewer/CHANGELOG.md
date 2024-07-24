@@ -1,5 +1,15 @@
 # @kubed/diff-view
 
+## 0.2.15
+
+### Patch Changes
+
+- [#280](https://github.com/kubesphere/kube-design/pull/280) [`86f905c`](https://github.com/kubesphere/kube-design/commit/86f905c36d698fd1efcedadca0d6401c9ee7b5a5) Thanks [@yazhouio](https://github.com/yazhouio)! - fix: Fix table head list key error
+
+- Updated dependencies [[`86f905c`](https://github.com/kubesphere/kube-design/commit/86f905c36d698fd1efcedadca0d6401c9ee7b5a5)]:
+  - @kubed/hooks@0.2.15
+  - @kubed/icons@0.2.15
+
 ## 0.2.14
 
 ### Patch Changes
