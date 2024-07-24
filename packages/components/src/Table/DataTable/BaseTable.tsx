@@ -39,9 +39,9 @@ export function BaseDataTable<T>({ table }: BaseDataTableProps<T>) {
         {loading && (table.getRowModel().rows.length === 0 ? <LoadingWrapper /> : null)}
         <BaseTable.TableHead>
           {table.getHeaderGroups().map((headerGroup) => (
-            <BaseTable.TableRow>
+            <BaseTable.TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <TableHead header={header} table={table} />
+                <TableHead header={header} table={table} key={header.id} />
               ))}
             </BaseTable.TableRow>
           ))}
