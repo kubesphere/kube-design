@@ -1,5 +1,15 @@
 # @kubed/components
 
+## 0.2.16
+
+### Patch Changes
+
+- [#283](https://github.com/kubesphere/kube-design/pull/283) [`48aaace`](https://github.com/kubesphere/kube-design/commit/48aaacefe451437b6cc987465daf528555198633) Thanks [@yazhouio](https://github.com/yazhouio)! - fix: Fix table loading style, fix "Warning: validateDOMNesting(...): <div> cannot appear as a child of <table>."
+
+- Updated dependencies [[`48aaace`](https://github.com/kubesphere/kube-design/commit/48aaacefe451437b6cc987465daf528555198633)]:
+  - @kubed/hooks@0.2.16
+  - @kubed/icons@0.2.16
+
 ## 0.2.15
 
 ### Patch Changes
