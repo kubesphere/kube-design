@@ -1,18 +1,13 @@
 import { Table, flexRender } from '@tanstack/react-table';
 import * as React from 'react';
-import styled from 'styled-components';
-import { LoadingOverlay } from '../../LoadingOverlay/LoadingOverlay';
 import * as BaseTable from '../BaseTable';
 import { TableHead } from './TableHead';
 import { getDefaultTrProps } from './utils';
+import { Skeleton } from '../../Skeleton/Skeleton';
 
 interface BaseDataTableProps<T> {
   table: Table<T>;
 }
-
-const LoadingWrapper = styled.div`
-  min-height: 165px;
-`;
 
 export function BaseDataTable<T>({ table }: BaseDataTableProps<T>) {
   const {
@@ -32,11 +27,10 @@ export function BaseDataTable<T>({ table }: BaseDataTableProps<T>) {
   } = table;
 
   const tableProps = getTableProps ? getTableProps(table) : {};
+  const tableLoading = loading && table.getRowModel().rows.length === 0;
   return (
     <>
       <BaseTable.Table {...tableProps}>
-        {loading && <LoadingOverlay visible />}
-        {loading && (table.getRowModel().rows.length === 0 ? <LoadingWrapper /> : null)}
         <BaseTable.TableHead>
           {table.getHeaderGroups().map((headerGroup) => (
             <BaseTable.TableRow key={headerGroup.id}>
@@ -46,24 +40,35 @@ export function BaseDataTable<T>({ table }: BaseDataTableProps<T>) {
             </BaseTable.TableRow>
           ))}
         </BaseTable.TableHead>
-        <BaseTable.TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <BaseTable.TableRow
-              key={row.id}
-              {...(enableTr && getDefaultTrProps(table, row))}
-              {...(getTrProps && getTrProps(table, row))}
-            >
-              {row.getVisibleCells().map((cell) => (
-                <BaseTable.TableCell
-                  key={cell.id}
-                  {...(getTdProps && getTdProps(table, cell.getContext()))}
-                  {...(cell.column.columnDef.meta?.td ?? {})}
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </BaseTable.TableCell>
-              ))}
-            </BaseTable.TableRow>
-          ))}
+        <BaseTable.TableBody style={{ minHeight: tableLoading ? 165 : undefined }}>
+          {tableLoading &&
+            [1, 2, 3, 4].map((i) => (
+              <BaseTable.TableRow key={i}>
+                {table.getVisibleLeafColumns().map((column) => (
+                  <BaseTable.TableCell key={column.id}>
+                    <Skeleton height={30} radius="sm" />
+                  </BaseTable.TableCell>
+                ))}
+              </BaseTable.TableRow>
+            ))}
+          {!tableLoading &&
+            table.getRowModel().rows.map((row) => (
+              <BaseTable.TableRow
+                key={row.id}
+                {...(enableTr && getDefaultTrProps(table, row))}
+                {...(getTrProps && getTrProps(table, row))}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <BaseTable.TableCell
+                    key={cell.id}
+                    {...(getTdProps && getTdProps(table, cell.getContext()))}
+                    {...(cell.column.columnDef.meta?.td ?? {})}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </BaseTable.TableCell>
+                ))}
+              </BaseTable.TableRow>
+            ))}
         </BaseTable.TableBody>
       </BaseTable.Table>
       {!loading &&
