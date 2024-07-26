@@ -842,6 +842,15 @@ export const DataTableWithDefault = () => {
   const [columns] = React.useState(() => [
     {
       id: 'selection',
+      meta: {
+        selectType: 'multiple',
+        th: {
+          align: 'center',
+        },
+        td: {
+          align: 'center',
+        },
+      },
       header: ({ table }) => (
         <Checkbox
           checked={table.getIsAllRowsSelected()}
@@ -850,11 +859,13 @@ export const DataTableWithDefault = () => {
         />
       ),
       cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          disabled={!row.getCanSelect()}
-          onChange={row.getToggleSelectedHandler()}
-        />
+        <Center>
+          <Checkbox
+            checked={row.getIsSelected()}
+            disabled={!row.getCanSelect()}
+            onChange={row.getToggleSelectedHandler()}
+          />
+        </Center>
       ),
     },
     ...defaultColumns,
