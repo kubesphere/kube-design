@@ -71,6 +71,11 @@ const TableCellRoot = styled.td<{
       display: 'table-cell',
       verticalAlign: 'inherit',
       // boxShadow: `inset 0 -1px 0 0 ${theme.palette.accents_1}`,
+      ...(size && {
+        height: {
+          'body-medium': '56px',
+        }[`${variant}-${size}`],
+      }),
       ...(hasBorder && {
         borderLeft: `1px solid ${theme.palette.accents_1}`,
         '&:last-child': {

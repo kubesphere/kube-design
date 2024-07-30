@@ -14,6 +14,7 @@ export type Suggestions = {
 }[];
 
 export interface ToolbarProps {
+  className?: string;
   enableBatchActions: boolean;
   enableSettingMenu?: boolean;
   onDisableBatchActions?: () => void;
@@ -52,9 +53,10 @@ export const Toolbar = (props: ToolbarProps) => {
     refetch,
     loading,
     enableSettingMenu = true,
+    className,
   } = props;
   return (
-    <ToolbarWrapper>
+    <ToolbarWrapper className={className}>
       {enableBatchActions && (
         <BatchActions>
           <div className="toolbar-left">{batchActions}</div>

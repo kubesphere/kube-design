@@ -8,9 +8,9 @@ const TableRowRoot = styled('tr')`
   display: table-row;
   vertical-align: middle;
   outline: 0;
-  &:first-child > th {
+  /* &:first-child > th {
     border-top: 1px solid ${({ theme }) => theme.palette.accents_1};
-  }
+  } */
   & > td {
     box-shadow: ${({ theme }) => `inset 0 -1px 0 0 ${theme.palette.accents_1}`};
   }

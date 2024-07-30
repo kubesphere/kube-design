@@ -1,6 +1,7 @@
 import type { Header, Row, RowData, Table, TableState } from '@tanstack/react-table';
 import cx from 'classnames';
 import * as React from 'react';
+import styled from 'styled-components';
 import * as BaseTable from '../BaseTable';
 import { BaseDataTable } from './BaseTable';
 import { Pagination, TableFooter } from './Pagination';
@@ -13,6 +14,9 @@ import {
   StorageStateOptions,
 } from './interfaces';
 
+const ToolbarWithBorder = styled(Toolbar)`
+  border-bottom: 1px solid ${({ theme }) => theme.palette.accents_1};
+`;
 declare module '@tanstack/react-table' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface TableOptionsResolved<TData extends RowData>
@@ -89,7 +93,7 @@ export function DataTable<T>({ className, table }: DataTableRootProps<T>) {
   const { options: { meta: { enable: { pagination, toolbar } = {} } = {} } = {} } = table;
   return (
     <div className={cx('table-container', className)}>
-      {!!toolbar && <Toolbar table={table} />}
+      {!!toolbar && <ToolbarWithBorder table={table} />}
       <BaseDataTable table={table} />
       {!!pagination && (
         <TableFooter>
