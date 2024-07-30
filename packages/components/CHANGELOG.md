@@ -1,5 +1,16 @@
 # @kubed/components
 
+## 0.2.17
+
+### Patch Changes
+
+- [#285](https://github.com/kubesphere/kube-design/pull/285) [`bacf0ca`](https://github.com/kubesphere/kube-design/commit/bacf0ca36782e41605a5581615e4359f2eda0264) Thanks [@yazhouio](https://github.com/yazhouio)! - fix: Add enableSorting in getDefaultTableOptions function
+  fix: Fix sheet content title
+  style: Fix table styles
+- Updated dependencies [[`bacf0ca`](https://github.com/kubesphere/kube-design/commit/bacf0ca36782e41605a5581615e4359f2eda0264)]:
+  - @kubed/hooks@0.2.17
+  - @kubed/icons@0.2.17
+
 ## 0.2.16
 
 ### Patch Changes
