@@ -91,7 +91,7 @@ const TableCellRoot = styled.td<{
         fontSize: theme.font.fontSizeBase,
         fontFamily: theme.font.mono,
         lineHeight: 1.67,
-        cursor: 'pointer',
+        // cursor: 'pointer',
       }),
       ...(variant === 'body' && {
         color: theme.palette.accents_8,

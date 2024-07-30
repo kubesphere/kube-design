@@ -37,6 +37,7 @@ const DropdownWrapper = styled.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 `;
 
 interface TableHeadProps<TData extends RowData> {
