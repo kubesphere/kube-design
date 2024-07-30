@@ -197,6 +197,7 @@ function _getDefaultTableOptions<TData extends RowData>(
     enableFilters,
     enableMultiRowSelection: enableMultiSelection,
     enableRowSelection: enableSelection,
+    enableSorting: enableSort,
     getCoreRowModel: getCoreRowModel(),
     meta: {
       tableName,
