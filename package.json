@@ -12,6 +12,7 @@
   ],
   "scripts": {
     "build": "esno scripts/build",
+    "build:all": "yarn build all",
     "build:docs": "cd ./docs && npm run build",
     "build:icons": "cd packages/icons && npm run build",
     "clean": "rimraf packages/*/{esm,cjs,lib,dist} packages/**/*.tsbuildinfo",
@@ -19,7 +20,7 @@
     "postinstall": "npm run docs:docgen && npm run build:icons",
     "jest": "jest",
     "lint": "eslint src --ext .ts,.tsx",
-    "release": "yarn build all && changeset publish",
+    "release": "changeset publish",
     "start:docs": "cd ./docs && npm run dev",
     "storybook": "storybook dev -p 7001 -c configs/.storybook --no-open",
     "syncpack": "syncpack list-mismatches",

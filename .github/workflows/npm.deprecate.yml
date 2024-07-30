@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  release:
+  npm-deprecate:
     runs-on: ubuntu-latest
 
     steps:
