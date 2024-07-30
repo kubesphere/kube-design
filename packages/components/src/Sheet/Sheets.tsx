@@ -12,6 +12,7 @@ import {
   StyledSheetDescription,
   StyledHeaderClose,
   HeaderWrapper,
+  HiddenTitle,
 } from './Sheet.styles';
 import { Button, Field } from '../index';
 
@@ -60,15 +61,27 @@ export interface SheetContentProps
   side?: 'right' | 'top' | 'left' | 'bottom';
   /** The width of the SheetContent. Accepts any number, string. */
   width?: number | string;
+  /** The accessible title of the SheetContent. */
+  title?: string;
+  /** The accessible description of the SheetContent. */
+  description?: string;
 }
 
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
   SheetContentProps
->(({ side = 'right', className, children, ...props }, ref) => (
+>(({ side = 'right', className, children, title, description, ...props }, ref) => (
   <SheetPortal>
     <SheetOverlay />
     <StyledSheetContent ref={ref} side={side} className={className} {...props}>
+      <HiddenTitle>
+        <SheetPrimitive.Title>{title ?? 'sheet'}</SheetPrimitive.Title>
+      </HiddenTitle>
+      <HiddenTitle>
+        <SheetPrimitive.Description>
+          {description ?? 'sheet description'}
+        </SheetPrimitive.Description>
+      </HiddenTitle>
       <SheetHeaderClose asChild>
         <Button variant="filled" color="secondary" radius="sm" size="sm">
           <CloseDuotone size={24} variant="light" />
