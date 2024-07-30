@@ -71,6 +71,11 @@ const TableCellRoot = styled.td<{
       display: 'table-cell',
       verticalAlign: 'inherit',
       // boxShadow: `inset 0 -1px 0 0 ${theme.palette.accents_1}`,
+      ...(size && {
+        height: {
+          'body-medium': '56px',
+        }[`${variant}-${size}`],
+      }),
       ...(hasBorder && {
         borderLeft: `1px solid ${theme.palette.accents_1}`,
         '&:last-child': {
@@ -86,7 +91,7 @@ const TableCellRoot = styled.td<{
         fontSize: theme.font.fontSizeBase,
         fontFamily: theme.font.mono,
         lineHeight: 1.67,
-        cursor: 'pointer',
+        // cursor: 'pointer',
       }),
       ...(variant === 'body' && {
         color: theme.palette.accents_8,

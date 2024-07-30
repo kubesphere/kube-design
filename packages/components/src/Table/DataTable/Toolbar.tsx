@@ -1,4 +1,5 @@
 import * as React from 'react';
+import classNames from 'classnames';
 
 import { Table } from '@tanstack/react-table';
 import * as BaseTable from '../BaseTable';
@@ -7,9 +8,10 @@ import { useLocales } from '../../ConfigProvider/LocaleProvider/LocaleContext';
 
 interface ToolbarProps<T> {
   table: Table<T>;
+  className?: string;
 }
 
-export function Toolbar<T>({ table }: ToolbarProps<T>) {
+export function Toolbar<T>({ table, className }: ToolbarProps<T>) {
   const {
     options: {
       meta: {
@@ -29,5 +31,11 @@ export function Toolbar<T>({ table }: ToolbarProps<T>) {
       })
     : ({ filterProps } as BaseTable.ToolbarProps);
 
-  return <BaseTable.Toolbar {...defaultToolbarProps} {...rest} />;
+  return (
+    <BaseTable.Toolbar
+      {...defaultToolbarProps}
+      {...rest}
+      className={classNames('table-toolbar', className, props.className || '')}
+    />
+  );
 }

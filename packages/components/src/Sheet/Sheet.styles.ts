@@ -60,7 +60,7 @@ const baseStyles = css`
   gap: 1rem;
   background: ${({ theme }) => theme.palette.background};
   border: none;
-  box-shadow: 0 8px 16px 0 #242E4247;
+  box-shadow: 0 8px 16px 0 #242e4247;
   transition: ease-in-out;
   &[data-state='open'] {
     animation-duration: 500ms;
@@ -219,7 +219,7 @@ export const StyledSheetOverlay = styled(SheetPrimitive.Overlay)`
   position: fixed;
   inset: 0;
   z-index: 998;
-  background: #242E42B2;
+  background: #242e42b2;
 
   &[data-state='open'] {
     animation: fadeIn 0.3s;
@@ -253,7 +253,6 @@ export const StyledSheetHeader = styled.div.attrs(({ className }: { className: s
 }))`
   display: flex;
   flex-direction: column;
-  margin-top: 0.125rem;
   text-align: center;
 
   @media (min-width: 640px) {
@@ -274,7 +273,6 @@ export const StyledSheetFooter = styled.div.attrs(({ className }: { className: s
 `;
 
 export const StyledSheetTitle = styled(SheetPrimitive.Title)`
-  font-size: 1.125rem;
   font-weight: 600;
   color: ${({ theme }) => theme.palette.accents_8};
 `;
@@ -295,4 +293,18 @@ export const StyledHeaderClose = styled(SheetPrimitive.Close)`
 export const HeaderWrapper = styled.div`
   position: relative;
   width: 100%;
+`;
+
+export const HiddenTitle = styled.span`
+  position: absolute;
+  border: 0px;
+  width: 0px;
+  height: 0px;
+  padding: 0px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0px, 0px, 0px, 0px);
+  white-space: nowrap;
+  overflow-wrap: normal;
+  visibility: hidden;
 `;
