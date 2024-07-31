@@ -1,5 +1,15 @@
 # @kubed/components
 
+## 0.2.18
+
+### Patch Changes
+
+- [#290](https://github.com/kubesphere/kube-design/pull/290) [`c24a3e4`](https://github.com/kubesphere/kube-design/commit/c24a3e4443a52bea8c3a5b2b4096d533702ef5e1) Thanks [@yazhouio](https://github.com/yazhouio)! - Fix bugs
+
+- Updated dependencies [[`c24a3e4`](https://github.com/kubesphere/kube-design/commit/c24a3e4443a52bea8c3a5b2b4096d533702ef5e1)]:
+  - @kubed/hooks@0.2.18
+  - @kubed/icons@0.2.18
+
 ## 0.2.17
 
 ### Patch Changes
