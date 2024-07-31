@@ -14,7 +14,7 @@ import {
   StorageStateOptions,
 } from './interfaces';
 
-const ToolbarWithBorder = styled(Toolbar)`
+const ToolbarWithBorder = styled(Toolbar)<any>`
   border-bottom: 1px solid ${({ theme }) => theme.palette.accents_1};
 `;
 declare module '@tanstack/react-table' {
