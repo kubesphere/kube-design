@@ -13,8 +13,9 @@ import {
   StyledHeaderClose,
   HeaderWrapper,
   HiddenTitle,
+  FieldWrapper as Field,
 } from './Sheet.styles';
-import { Button, Field } from '../index';
+import { Button } from '../index';
 
 const Sheet = SheetPrimitive.Root;
 const SheetTrigger = SheetPrimitive.Trigger;
@@ -65,32 +66,56 @@ export interface SheetContentProps
   title?: string;
   /** The accessible description of the SheetContent. */
   description?: string;
+  /** Whether the SheetContent has overlay. */
+  hasOverlay?: boolean;
 }
+
+const SheetBaseContent = React.forwardRef<
+  React.ElementRef<typeof SheetPrimitive.Content>,
+  SheetContentProps
+>(
+  (
+    { side = 'right', hasOverlay = true, className, children, title, description, ...props },
+    ref
+  ) => (
+    <SheetPortal>
+      {hasOverlay && <SheetOverlay />}
+      <StyledSheetContent ref={ref} side={side} className={className} {...props}>
+        {children}
+      </StyledSheetContent>
+    </SheetPortal>
+  )
+);
 
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
   SheetContentProps
->(({ side = 'right', className, children, title, description, ...props }, ref) => (
-  <SheetPortal>
-    <SheetOverlay />
-    <StyledSheetContent ref={ref} side={side} className={className} {...props}>
-      <HiddenTitle>
-        <SheetPrimitive.Title>{title ?? 'sheet'}</SheetPrimitive.Title>
-      </HiddenTitle>
-      <HiddenTitle>
-        <SheetPrimitive.Description>
-          {description ?? 'sheet description'}
-        </SheetPrimitive.Description>
-      </HiddenTitle>
-      <SheetHeaderClose asChild>
-        <Button variant="filled" color="secondary" radius="sm" size="sm">
-          <CloseDuotone size={24} variant="light" />
-        </Button>
-      </SheetHeaderClose>
-      {children}
-    </StyledSheetContent>
-  </SheetPortal>
-));
+>(
+  (
+    { side = 'right', hasOverlay = true, className, children, title, description, ...props },
+    ref
+  ) => (
+    <SheetPortal>
+      {hasOverlay && <SheetOverlay />}
+      <StyledSheetContent ref={ref} side={side} className={className} {...props}>
+        <HiddenTitle>
+          <SheetPrimitive.Title>{title ?? 'sheet'}</SheetPrimitive.Title>
+        </HiddenTitle>
+        <HiddenTitle>
+          <SheetPrimitive.Description>
+            {description ?? 'sheet description'}
+          </SheetPrimitive.Description>
+        </HiddenTitle>
+        <SheetHeaderClose asChild>
+          <Button variant="filled" color="secondary" radius="sm" size="sm">
+            <CloseDuotone size={24} variant="light" />
+          </Button>
+        </SheetHeaderClose>
+        {children}
+      </StyledSheetContent>
+    </SheetPortal>
+  )
+);
 
 const SheetHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <StyledSheetHeader {...props} className={className} />
@@ -136,4 +161,5 @@ export {
   SheetDescription,
   SheetHeaderClose,
   SheetFieldTitle,
+  SheetBaseContent,
 };
