@@ -3,6 +3,13 @@ import * as SheetPrimitive from '@radix-ui/react-dialog';
 import classNames from 'classnames';
 
 import { addColorAlpha } from '../utils/color';
+import { Field } from '../index';
+
+export const FieldWrapper = styled(Field).attrs({
+  className: 'kubed-sheet-header-field',
+})`
+  min-height: 40px;
+`;
 
 const fadeIn = keyframes`
   from { opacity: 0; }
