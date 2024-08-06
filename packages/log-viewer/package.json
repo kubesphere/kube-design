@@ -1,6 +1,6 @@
 {
   "name": "@kubed/log-viewer",
-  "version": "0.2.18",
+  "version": "0.2.19",
   "homepage": "https://github.com/kubesphere/kube-design",
   "repository": {
     "type": "git",
@@ -29,8 +29,8 @@
     "@types/react-window": "^1.8.5"
   },
   "peerDependencies": {
-    "@kubed/hooks": "0.2.18",
-    "@kubed/icons": "0.2.18",
+    "@kubed/hooks": "0.2.19",
+    "@kubed/icons": "0.2.19",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6",
     "react-is": "^17.0.2"

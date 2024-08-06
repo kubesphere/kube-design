@@ -1,5 +1,15 @@
 # @kubed/charts
 
+## 0.2.19
+
+### Patch Changes
+
+- [#292](https://github.com/kubesphere/kube-design/pull/292) [`ccb568f`](https://github.com/kubesphere/kube-design/commit/ccb568f9b936547f49dfbfb62f5dc98495074892) Thanks [@yazhouio](https://github.com/yazhouio)! - style: Update sheet style
+
+- Updated dependencies [[`ccb568f`](https://github.com/kubesphere/kube-design/commit/ccb568f9b936547f49dfbfb62f5dc98495074892)]:
+  - @kubed/hooks@0.2.19
+  - @kubed/icons@0.2.19
+
 ## 0.2.18
 
 ### Patch Changes
