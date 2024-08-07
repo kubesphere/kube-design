@@ -1,5 +1,11 @@
 # @kubed/icons
 
+## 0.2.20
+
+### Patch Changes
+
+- [#294](https://github.com/kubesphere/kube-design/pull/294) [`cb0a386`](https://github.com/kubesphere/kube-design/commit/cb0a386cba79b62a43416c2ca3f18b8e203f9057) Thanks [@yazhouio](https://github.com/yazhouio)! - style: Refactor with-sticky table styles
+
 ## 0.2.19
 
 ### Patch Changes
