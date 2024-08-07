@@ -17,6 +17,7 @@ import { Menu, MenuItem } from '../Menu/Menu';
 import { Select } from '../Select/Select';
 import { StateHandler, Status2StorageFeature, getDefaultTableOptions, useTable } from './DataTable';
 import { Center } from '../Center/Center';
+import styled from 'styled-components';
 
 const { Table, TableBody, TableCell, TableHead, TableRow, Pagination, Toolbar } = BaseTable;
 export default {
@@ -109,6 +110,18 @@ export const basicTableWithSelected = () => {
 };
 
 export const basicTableWithFixedHeader = () => {
+  const Wrapper = styled.div`
+    padding: 20px;
+    height: 300px;
+    overflow-y: auto;
+    background-color: #f5f5f5;
+    & {
+      .kube-table-head.with-sticky,
+      .table-cell.with-sticky {
+        top: -20px;
+      }
+    }
+  `;
   const data = React.useMemo(() => {
     return [...Array(100).fill(1)].map((_, i) => ({
       col1: i,
@@ -117,14 +130,9 @@ export const basicTableWithFixedHeader = () => {
     }));
   }, []);
   return (
-    <div
-      style={{
-        height: '300px',
-        overflowY: 'auto',
-      }}
-    >
+    <Wrapper>
       <Table stickyHeader>
-        <TableHead hasBorder>
+        <TableHead hasBorder hasBorderTop>
           <TableRow>
             <TableCell colSpan={2}>Header 1</TableCell>
             <TableCell colSpan={1}>Header 2</TableCell>
@@ -145,7 +153,7 @@ export const basicTableWithFixedHeader = () => {
           ))}
         </TableBody>
       </Table>
-    </div>
+    </Wrapper>
   );
 };
 

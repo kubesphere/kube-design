@@ -13,13 +13,15 @@ interface TableHeadProps {
   className?: string;
   style?: React.CSSProperties;
   hasBorder?: boolean;
+  hasBorderTop?: boolean;
 }
 
 const TableHeadRoot = styled.thead<{
   $ownerState: {
     stickyHeader?: boolean;
+    hasBorderTop?: boolean;
   };
-}>(({ $ownerState: { stickyHeader }, theme }) => ({
+}>(({ $ownerState: { stickyHeader, hasBorderTop }, theme }) => ({
   display: 'table-header-group',
   backgroundColor: theme.palette.background,
 
@@ -28,12 +30,20 @@ const TableHeadRoot = styled.thead<{
     top: 0,
     zIndex: 2,
   }),
+  ...(hasBorderTop && {
+    borderTop: `1px solid ${theme.palette.accents_1}`,
+  }),
+  '&.with-sticky': {
+    position: 'sticky',
+    top: 0,
+    zIndex: 2,
+  },
 }));
 
 export const TableHead = React.forwardRef<
   HTMLTableSectionElement,
   React.PropsWithChildren<TableHeadProps>
->(({ className, hasBorder = tableLv.hasBorder, ...rest }, ref) => {
+>(({ className, hasBorderTop, hasBorder = tableLv.hasBorder, ...rest }, ref) => {
   const lv = React.useMemo(() => ({ ...tableLv, hasBorder }), [hasBorder]);
   const table = useTableContext();
 
@@ -43,9 +53,16 @@ export const TableHead = React.forwardRef<
         {...rest}
         $ownerState={{
           stickyHeader: table?.stickyHeader,
+          hasBorderTop,
         }}
         ref={ref}
-        className={cx('kube-table-head', className)}
+        className={cx(
+          'kube-table-head',
+          {
+            'with-sticky': table?.stickyHeader,
+          },
+          className
+        )}
       />
     </TableLvContext.Provider>
   );

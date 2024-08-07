@@ -15,6 +15,7 @@ export function BaseDataTable<T>({ table }: BaseDataTableProps<T>) {
       loading,
       meta: {
         refetch,
+        enable: { toolbar } = {},
         enableDefault: { tr: enableTr = true } = {},
         getProps: {
           table: getTableProps,
@@ -31,7 +32,7 @@ export function BaseDataTable<T>({ table }: BaseDataTableProps<T>) {
   return (
     <>
       <BaseTable.Table {...tableProps}>
-        <BaseTable.TableHead>
+        <BaseTable.TableHead hasBorderTop>
           {table.getHeaderGroups().map((headerGroup) => (
             <BaseTable.TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
