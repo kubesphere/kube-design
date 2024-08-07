@@ -109,6 +109,11 @@ const TableCellRoot = styled.td<{
         top: 0,
         zIndex: fixed ? 3 : 2,
       }),
+      '&.with-sticky': {
+        position: 'sticky',
+        top: 0,
+        zIndex: 2,
+      },
       ...(fixedLastLeft && {
         '&:after': {
           content: '""',
@@ -183,7 +188,13 @@ export const TableCell = React.forwardRef<
     return (
       <TableCellRoot
         as={component as any}
-        className={cx('table-cell', className)}
+        className={cx(
+          'table-cell',
+          {
+            'with-sticky': !!(variant === 'head' && table && table.stickyHeader),
+          },
+          className
+        )}
         $ownerState={cellProps}
         ref={ref}
         {...other}
