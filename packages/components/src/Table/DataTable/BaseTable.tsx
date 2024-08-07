@@ -32,7 +32,7 @@ export function BaseDataTable<T>({ table }: BaseDataTableProps<T>) {
   return (
     <>
       <BaseTable.Table {...tableProps}>
-        <BaseTable.TableHead hasBorderTop>
+        <BaseTable.TableHead hasBorderTop={!!toolbar}>
           {table.getHeaderGroups().map((headerGroup) => (
             <BaseTable.TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
