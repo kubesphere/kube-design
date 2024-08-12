@@ -1,5 +1,13 @@
 # @kubed/log-viewer
 
+## 0.2.21
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @kubed/hooks@0.2.21
+  - @kubed/icons@0.2.21
+
 ## 0.2.20
 
 ### Patch Changes
