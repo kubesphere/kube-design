@@ -75,8 +75,8 @@ const CloseButton = styled('div')`
 const WithTitle = ({ title, message }: { title: React.ReactNode; message: React.ReactNode }) => {
   return (
     <>
-      <div className="title-wrap">{title}</div>
-      <div>{message}</div>
+      <div className="title-wrap kubed-notify-title-wrap">{title}</div>
+      <div className="kubed-notify-message-wrap">{message}</div>
     </>
   );
 };
