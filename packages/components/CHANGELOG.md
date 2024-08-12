@@ -1,5 +1,15 @@
 # @kubed/components
 
+## 0.2.21
+
+### Patch Changes
+
+- [#296](https://github.com/kubesphere/kube-design/pull/296) [`8d4528b`](https://github.com/kubesphere/kube-design/commit/8d4528bdc5acd4d6f8b314e86e1bdb76aaf711f6) Thanks [@donniean](https://github.com/donniean)! - feat: add class names for Notify.WithTitle
+
+- Updated dependencies []:
+  - @kubed/hooks@0.2.21
+  - @kubed/icons@0.2.21
+
 ## 0.2.20
 
 ### Patch Changes
