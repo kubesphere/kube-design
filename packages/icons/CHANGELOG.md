@@ -1,5 +1,11 @@
 # @kubed/icons
 
+## 1.0.0
+
+### Minor Changes
+
+- [#303](https://github.com/kubesphere/kube-design/pull/303) [`3083fad`](https://github.com/kubesphere/kube-design/commit/3083fad55c2c61c4b0a168e18d024eac8ed6594c) Thanks [@fuchunlan](https://github.com/fuchunlan)! - feat: add CloneSet icon
+
 ## 0.2.21
 
 ## 0.2.20
