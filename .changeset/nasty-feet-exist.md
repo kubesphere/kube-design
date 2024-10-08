@@ -1,5 +1,5 @@
 ---
-'@kubed/icons': minor
+'@kubed/icons': patch
 ---
 
 feat: add CloneSet icon
