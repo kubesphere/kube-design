@@ -1,5 +1,11 @@
 # @kubed/hooks
 
+## 0.2.24
+
+### Patch Changes
+
+- [#310](https://github.com/kubesphere/kube-design/pull/310) [`27a0de0`](https://github.com/kubesphere/kube-design/commit/27a0de0763cd7fb0c9bf51005f35cc41782ba18a) Thanks [@Leioy](https://github.com/Leioy)! - add edge-cluster icon
+
 ## 0.2.23
 
 ### Patch Changes
