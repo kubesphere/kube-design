@@ -24,14 +24,14 @@ const SheetPortal = SheetPrimitive.Portal;
 const SheetHeaderClose = StyledHeaderClose;
 
 const SheetFieldTitle = (props: {
-  header?: React.ReactNode;
+  header?: React.ReactElement;
   title?: React.ReactNode;
   description?: React.ReactNode;
   titleIcon?: React.ReactNode;
   headerExtra?: React.ReactNode;
-}) => {
+}): React.ReactElement => {
   const { header, title, description, titleIcon, headerExtra } = props;
-  if (header || isNull(header)) return header;
+  if (header) return header;
 
   let body;
   if (headerExtra) {
