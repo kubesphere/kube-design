@@ -1,5 +1,11 @@
 # @kubed/tests
 
+## 0.2.23
+
+### Patch Changes
+
+- [#307](https://github.com/kubesphere/kube-design/pull/307) [`ef4873c`](https://github.com/kubesphere/kube-design/commit/ef4873c0ec8a21b5200374f73c362350224492c0) Thanks [@yazhouio](https://github.com/yazhouio)! - fi sheet ts type
+
 ## 0.2.22
 
 ## 0.2.21
