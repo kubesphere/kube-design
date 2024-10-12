@@ -4,7 +4,7 @@ A suite of components, hooks, and icons. Originally built for KubeSphere Console
 
 ## Documentation
 
-[https://kube-design.vercel.app/](https://kube-design.vercel.app/)
+[https://kubesphere-design.netlify.app/zh](https://kubesphere-design.netlify.app/zh)
 
 ## Requirement
 
