@@ -1,5 +1,16 @@
 # kubed-documents
 
+## 0.2.25
+
+### Patch Changes
+
+- [#314](https://github.com/kubesphere/kube-design/pull/314) [`cdf15ca`](https://github.com/kubesphere/kube-design/commit/cdf15ca97f59181b4b4adb322042a37e7d33f899) Thanks [@yazhouio](https://github.com/yazhouio)! - fix: Update sheet overlay component
+
+- Updated dependencies [[`cdf15ca`](https://github.com/kubesphere/kube-design/commit/cdf15ca97f59181b4b4adb322042a37e7d33f899)]:
+  - @kubed/components@0.2.25
+  - @kubed/hooks@0.2.25
+  - @kubed/icons@0.2.25
+
 ## 0.2.24
 
 ### Patch Changes
