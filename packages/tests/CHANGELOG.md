@@ -1,5 +1,11 @@
 # @kubed/tests
 
+## 0.2.25
+
+### Patch Changes
+
+- [#314](https://github.com/kubesphere/kube-design/pull/314) [`cdf15ca`](https://github.com/kubesphere/kube-design/commit/cdf15ca97f59181b4b4adb322042a37e7d33f899) Thanks [@yazhouio](https://github.com/yazhouio)! - fix: Update sheet overlay component
+
 ## 0.2.24
 
 ### Patch Changes
