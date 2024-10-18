@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as SheetPrimitive from '@radix-ui/react-dialog';
 import { CloseDuotone } from '@kubed/icons';
-import { isNull } from 'lodash';
 
 import {
   StyledSheetContent,
@@ -14,6 +13,7 @@ import {
   HeaderWrapper,
   HiddenTitle,
   FieldWrapper as Field,
+  SheetBaseOverlay as SheetOverlay,
 } from './Sheet.styles';
 import { Button } from '../index';
 
@@ -48,7 +48,7 @@ const SheetFieldTitle = (props: {
   return <div className="kubed-modal-title">{body}</div>;
 };
 
-const SheetOverlay = React.forwardRef<
+const SheetRadixOverlay = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay>
 >(({ className, ...props }, ref) => (
@@ -79,7 +79,7 @@ const SheetBaseContent = React.forwardRef<
     ref
   ) => (
     <SheetPortal>
-      {hasOverlay && <SheetOverlay />}
+      {hasOverlay && <SheetRadixOverlay />}
       <StyledSheetContent ref={ref} side={side} className={className} {...props}>
         {children}
       </StyledSheetContent>
@@ -89,32 +89,57 @@ const SheetBaseContent = React.forwardRef<
 
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
-  SheetContentProps
+  SheetContentProps & {
+    hasRadixOverlay?: boolean;
+    maskClosable?: boolean;
+  }
 >(
   (
-    { side = 'right', hasOverlay = true, className, children, title, description, ...props },
+    {
+      side = 'right',
+      hasRadixOverlay = false,
+      hasOverlay = true,
+      maskClosable = true,
+      className,
+      children,
+      title,
+      description,
+      ...props
+    },
     ref
-  ) => (
-    <SheetPortal>
-      {hasOverlay && <SheetOverlay />}
-      <StyledSheetContent ref={ref} side={side} className={className} {...props}>
-        <HiddenTitle>
-          <SheetPrimitive.Title>{title ?? 'sheet'}</SheetPrimitive.Title>
-        </HiddenTitle>
-        <HiddenTitle>
-          <SheetPrimitive.Description>
-            {description ?? 'sheet description'}
-          </SheetPrimitive.Description>
-        </HiddenTitle>
-        <SheetHeaderClose asChild>
-          <Button variant="filled" color="secondary" radius="sm" size="sm">
-            <CloseDuotone size={24} variant="light" />
-          </Button>
-        </SheetHeaderClose>
-        {children}
-      </StyledSheetContent>
-    </SheetPortal>
-  )
+  ) => {
+    const baseOverlay = hasOverlay ? (
+      maskClosable ? (
+        <SheetClose asChild>
+          <SheetOverlay />
+        </SheetClose>
+      ) : (
+        <SheetOverlay />
+      )
+    ) : null;
+    return (
+      <SheetPortal>
+        {baseOverlay}
+        {hasRadixOverlay && <SheetRadixOverlay />}
+        <StyledSheetContent ref={ref} side={side} className={className} {...props}>
+          <HiddenTitle>
+            <SheetPrimitive.Title>{title ?? 'sheet'}</SheetPrimitive.Title>
+          </HiddenTitle>
+          <HiddenTitle>
+            <SheetPrimitive.Description>
+              {description ?? 'sheet description'}
+            </SheetPrimitive.Description>
+          </HiddenTitle>
+          <SheetHeaderClose asChild>
+            <Button variant="filled" color="secondary" radius="sm" size="sm">
+              <CloseDuotone size={24} variant="light" />
+            </Button>
+          </SheetHeaderClose>
+          {children}
+        </StyledSheetContent>
+      </SheetPortal>
+    );
+  }
 );
 
 const SheetHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
@@ -142,15 +167,17 @@ const SheetDescription = React.forwardRef<
 Sheet.displayName = '@kubed/components/Sheet';
 
 SheetDescription.displayName = SheetPrimitive.Description.displayName;
-SheetOverlay.displayName = SheetPrimitive.Overlay.displayName;
+SheetRadixOverlay.displayName = SheetPrimitive.Overlay.displayName;
 SheetTitle.displayName = SheetPrimitive.Title.displayName;
 SheetContent.displayName = SheetPrimitive.Content.displayName;
 
 SheetHeader.displayName = 'SheetHeader';
 SheetFooter.displayName = 'SheetFooter';
+
 export {
   Sheet,
   SheetPortal,
+  SheetRadixOverlay,
   SheetOverlay,
   SheetTrigger,
   SheetClose,

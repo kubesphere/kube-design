@@ -315,3 +315,11 @@ export const HiddenTitle = styled.span`
   overflow-wrap: normal;
   visibility: hidden;
 `;
+
+export const SheetBaseOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  background-color: #242e42b2;
+  z-index: 998;
+  transition: background-color 0.3s;
+`;
