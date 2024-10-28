@@ -1,5 +1,15 @@
 # @kubed/diff-view
 
+## 0.2.26
+
+### Patch Changes
+
+- [#316](https://github.com/kubesphere/kube-design/pull/316) [`18c19ce`](https://github.com/kubesphere/kube-design/commit/18c19ce15be0c0ed57043c5f9274fae5d0461db0) Thanks [@51wangping](https://github.com/51wangping)! - update icons
+
+- Updated dependencies [[`18c19ce`](https://github.com/kubesphere/kube-design/commit/18c19ce15be0c0ed57043c5f9274fae5d0461db0)]:
+  - @kubed/hooks@0.2.26
+  - @kubed/icons@0.2.26
+
 ## 0.2.25
 
 ### Patch Changes
