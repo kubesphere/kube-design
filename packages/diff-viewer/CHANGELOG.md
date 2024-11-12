@@ -1,5 +1,14 @@
 # @kubed/diff-view
 
+## 0.2.27
+
+### Patch Changes
+
+- [#319](https://github.com/kubesphere/kube-design/pull/319) [`9afc383`](https://github.com/kubesphere/kube-design/commit/9afc383e8dcdee063ff9e1a73775285e5a05475d) Thanks [@yazhouio](https://github.com/yazhouio)! - 1. Fix table fixed style. 2. Table toolbar support disabled status.
+- Updated dependencies [[`9afc383`](https://github.com/kubesphere/kube-design/commit/9afc383e8dcdee063ff9e1a73775285e5a05475d)]:
+  - @kubed/hooks@0.2.27
+  - @kubed/icons@0.2.27
+
 ## 0.2.26
 
 ### Patch Changes
