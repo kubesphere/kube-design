@@ -54,7 +54,6 @@ const TableCellRoot = styled.td<{
       width,
     },
   }) => {
-    console.log('width', width);
     const paddingV =
       padding === 'none'
         ? '0px'
