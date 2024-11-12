@@ -18,8 +18,8 @@ export const Wrapper = styled.div`
   }
 
   &.is-disabled {
-    background-color: ${({ theme }) => theme.palette.accents_2};
-    border-color: ${({ theme }) => theme.palette.accents_2};
+    border: solid 1px transparent;
+    opacity: 0.6;
     cursor: not-allowed;
     & > * {
       pointer-events: none;
