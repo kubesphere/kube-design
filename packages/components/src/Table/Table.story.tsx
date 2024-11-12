@@ -1070,8 +1070,15 @@ export const DataTableSimple = () => {
         },
       ],
       getProps: {
+        toolbar: () => {
+          return {
+            // refreshDisabled: true,
+            // settingMenuDisabled: true,
+          };
+        },
         filters: () => {
           return {
+            disabled: true,
             simpleMode: false,
             suggestions: [
               {

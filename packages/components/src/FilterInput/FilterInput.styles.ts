@@ -17,6 +17,14 @@ export const Wrapper = styled.div`
     border-color: ${({ theme }) => theme.palette.border};
   }
 
+  &.is-disabled {
+    background-color: ${({ theme }) => theme.palette.accents_2};
+    border-color: ${({ theme }) => theme.palette.accents_2};
+    cursor: not-allowed;
+    & > * {
+      pointer-events: none;
+    }
+  }
   &.has-value,
   &.is-focused {
     background-color: ${({ theme }) => theme.palette.background};

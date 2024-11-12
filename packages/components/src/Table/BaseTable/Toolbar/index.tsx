@@ -31,10 +31,13 @@ export interface ToolbarProps {
     simpleMode?: boolean;
     onChange?: (value: any) => void;
     initialKeyword?: string;
+    disabled?: boolean;
   };
   onFilterInputChange?: (value: any) => void;
   refetch?: any;
   loading?: boolean;
+  refreshDisabled?: boolean;
+  settingMenuDisabled?: boolean;
 }
 
 export const Toolbar = (props: ToolbarProps) => {
@@ -54,6 +57,8 @@ export const Toolbar = (props: ToolbarProps) => {
     loading,
     enableSettingMenu = true,
     className,
+    refreshDisabled,
+    settingMenuDisabled,
   } = props;
   return (
     <ToolbarWrapper className={className}>
@@ -75,12 +80,17 @@ export const Toolbar = (props: ToolbarProps) => {
         {toolbarLeft && <div className="toolbar-left">{toolbarLeft}</div>}
         <div className="toolbar-item">{enableFilters && <FilterInput {...filterProps} />}</div>
         <div className="toolbar-right">
-          <Button variant="text" className="btn-refresh" disabled={!!loading} onClick={refetch}>
+          <Button
+            variant="text"
+            className="btn-refresh"
+            disabled={!!loading || refreshDisabled}
+            onClick={refetch}
+          >
             {loading ? <CircleLoader size={14} /> : <Refresh />}
           </Button>
           {enableSettingMenu && (
             <Dropdown content={settingMenu} placement="bottom-end" maxWidth={160}>
-              <Button variant="text" className="btn-setting">
+              <Button variant="text" className="btn-setting" disabled={settingMenuDisabled}>
                 <Cogwheel />
               </Button>
             </Dropdown>
