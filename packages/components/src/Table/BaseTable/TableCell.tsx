@@ -32,6 +32,7 @@ type OwnerState = Pick<
   | 'fixedLastLeft'
   | 'fixedLastRight'
   | 'hasBorder'
+  | 'width'
 >;
 const TableCellRoot = styled.td<{
   $ownerState: OwnerState;
@@ -50,8 +51,10 @@ const TableCellRoot = styled.td<{
       fixedLastLeft,
       fixedLastRight,
       hasBorder = false,
+      width,
     },
   }) => {
+    console.log('width', width);
     const paddingV =
       padding === 'none'
         ? '0px'
@@ -70,6 +73,9 @@ const TableCellRoot = styled.td<{
     return {
       display: 'table-cell',
       verticalAlign: 'inherit',
+      ...(width && {
+        width: typeof width === 'number' ? `${width}px` : width,
+      }),
       // boxShadow: `inset 0 -1px 0 0 ${theme.palette.accents_1}`,
       ...(size && {
         height: {
@@ -104,16 +110,17 @@ const TableCellRoot = styled.td<{
         zIndex: 1,
         backgroundColor: theme.palette.background,
       }),
+      '&.with-sticky': {
+        position: 'sticky',
+        top: 0,
+        zIndex: fixed ? 3 : 2,
+        backgroundColor: 'white',
+      },
       ...(stickyHeader && {
         position: 'sticky',
         top: 0,
         zIndex: fixed ? 3 : 2,
       }),
-      '&.with-sticky': {
-        position: 'sticky',
-        top: 0,
-        zIndex: 2,
-      },
       ...(fixedLastLeft && {
         '&:after': {
           content: '""',
@@ -182,6 +189,7 @@ export const TableCell = React.forwardRef<
       fixedLastLeft,
       fixedLastRight,
       hasBorder: hasBorder ?? (tableLv && tableLv.hasBorder),
+      width: other.width,
     };
     const isHeadCell = tableLv && tableLv.variant === 'head';
     const component = isHeadCell ? 'th' : 'td';

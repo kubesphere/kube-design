@@ -17,6 +17,8 @@ const TableRoot = styled('table')<{
   },
   ...($stickyHeader && {
     borderCollapse: 'separate',
+    width: 'max-content',
+    minWidth: '100%',
   }),
 }));
 
