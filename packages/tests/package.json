@@ -1,6 +1,6 @@
 {
   "name": "@kubed/tests",
-  "version": "0.2.26",
+  "version": "0.2.27",
   "private": true,
   "description": "Testing utilities for Kubed components",
   "license": "MIT",

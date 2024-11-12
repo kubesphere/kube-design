@@ -1,6 +1,6 @@
 {
   "name": "@kubed/code-editor",
-  "version": "0.2.26",
+  "version": "0.2.27",
   "homepage": "https://github.com/kubesphere/kube-design",
   "repository": {
     "type": "git",
@@ -29,8 +29,8 @@
     "@types/file-saver": "^2.0.5"
   },
   "peerDependencies": {
-    "@kubed/hooks": "0.2.26",
-    "@kubed/icons": "0.2.26",
+    "@kubed/hooks": "0.2.27",
+    "@kubed/icons": "0.2.27",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6",
     "react-is": "^17.0.2"
