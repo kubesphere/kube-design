@@ -170,19 +170,20 @@ export const basicTableWithFixedColumn = () => {
       style={{
         height: '300px',
         overflow: 'auto',
-        width: 500,
       }}
     >
-      <Table
-        stickyHeader
-        style={{
-          width: 700,
-          minWidth: '100%',
-        }}
-      >
+      <Table stickyHeader>
         <colgroup>
           <col width="100" />
           <col width="200" />
+          <col />
+          <col />
+          <col />
+          <col />
+          <col />
+          <col />
+          <col />
+          <col />
           <col />
           <col />
           <col />
@@ -196,6 +197,14 @@ export const basicTableWithFixedColumn = () => {
             <TableCell fixed="left" fixedWidth={100} fixedLastLeft>
               Header 2
             </TableCell>
+            <TableCell>Header 3</TableCell>
+            <TableCell>Header 3</TableCell>
+            <TableCell>Header 3</TableCell>
+            <TableCell>Header 3</TableCell>
+            <TableCell>Header 3</TableCell>
+            <TableCell>Header 3</TableCell>
+            <TableCell>Header 3</TableCell>
+            <TableCell>Header 3</TableCell>
             <TableCell>Header 3</TableCell>
             <TableCell>Header 3</TableCell>
             <TableCell>Header 3</TableCell>
@@ -216,6 +225,14 @@ export const basicTableWithFixedColumn = () => {
               <TableCell>
                 <div>{row.col3}</div>
               </TableCell>
+              <TableCell>{row.col3}</TableCell>
+              <TableCell>{row.col3}</TableCell>
+              <TableCell>{row.col3}</TableCell>
+              <TableCell>{row.col3}</TableCell>
+              <TableCell>{row.col3}</TableCell>
+              <TableCell>{row.col3}</TableCell>
+              <TableCell>{row.col3}</TableCell>
+              <TableCell>{row.col3}</TableCell>
               <TableCell>{row.col3}</TableCell>
               <TableCell>{row.col3}</TableCell>
               <TableCell fixed="right" fixedLastRight fixedWidth={0}>
@@ -1053,8 +1070,15 @@ export const DataTableSimple = () => {
         },
       ],
       getProps: {
+        toolbar: () => {
+          return {
+            // refreshDisabled: true,
+            // settingMenuDisabled: true,
+          };
+        },
         filters: () => {
           return {
+            disabled: true,
             simpleMode: false,
             suggestions: [
               {

@@ -57,6 +57,7 @@ export interface FilterInputProps extends DefaultProps {
   // renderMenuItem?: () => void;
   initialKeyword?: string;
   simpleMode?: boolean;
+  disabled?: boolean;
 }
 
 export const FilterInput = forwardRef<FilterInputProps, null>((props, ref) => {
@@ -261,7 +262,11 @@ export const FilterInput = forwardRef<FilterInputProps, null>((props, ref) => {
 
   return (
     <Wrapper
-      className={cx(props.className, { 'has-value': hasValue, 'is-focused': isFocused })}
+      className={cx(props.className, {
+        'has-value': hasValue,
+        'is-focused': isFocused,
+        'is-disabled': props.disabled,
+      })}
       ref={ref}
     >
       <Magnifier className="icon-search" />

@@ -17,6 +17,14 @@ export const Wrapper = styled.div`
     border-color: ${({ theme }) => theme.palette.border};
   }
 
+  &.is-disabled {
+    border: solid 1px transparent;
+    opacity: 0.6;
+    cursor: not-allowed;
+    & > * {
+      pointer-events: none;
+    }
+  }
   &.has-value,
   &.is-focused {
     background-color: ${({ theme }) => theme.palette.background};
