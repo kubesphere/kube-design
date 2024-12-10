@@ -1,7 +1,6 @@
 import type { Header, Row, RowData, Table, TableState } from '@tanstack/react-table';
 import cx from 'classnames';
 import * as React from 'react';
-import styled from 'styled-components';
 import * as BaseTable from '../BaseTable';
 import { BaseDataTable } from './BaseTable';
 import { Pagination, TableFooter } from './Pagination';
