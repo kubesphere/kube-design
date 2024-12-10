@@ -65,7 +65,7 @@ export function BaseDataTable<T>({ table }: BaseDataTableProps<T>) {
                     {...(getTdProps && getTdProps(table, cell.getContext()))}
                     {...(cell.column.columnDef.meta?.td ?? {})}
                   >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    {flexRender(cell.column.columnDef.cell, cell.getContext()) ?? null}
                   </BaseTable.TableCell>
                 ))}
               </BaseTable.TableRow>
