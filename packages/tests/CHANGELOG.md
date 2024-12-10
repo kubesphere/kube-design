@@ -1,5 +1,11 @@
 # @kubed/tests
 
+## 0.2.28
+
+### Patch Changes
+
+- [#321](https://github.com/kubesphere/kube-design/pull/321) [`fc5f10b`](https://github.com/kubesphere/kube-design/commit/fc5f10b8060eb90be6b7bfcd49e4cc907fe26c70) Thanks [@yazhouio](https://github.com/yazhouio)! - fix: handle null rendering in BaseDataTable cell
+
 ## 0.2.27
 
 ### Patch Changes
