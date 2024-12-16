@@ -74,6 +74,7 @@ const TableCellRoot = styled.td<{
       verticalAlign: 'inherit',
       ...(width && {
         width: typeof width === 'number' ? `${width}px` : width,
+        minWidth: typeof width === 'number' ? `${width}px` : width,
       }),
       // boxShadow: `inset 0 -1px 0 0 ${theme.palette.accents_1}`,
       ...(size && {

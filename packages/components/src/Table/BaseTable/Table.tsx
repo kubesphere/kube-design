@@ -5,7 +5,8 @@ import { TableContext } from './context';
 
 const TableRoot = styled('table')<{
   $stickyHeader?: boolean;
-}>(({ theme, $stickyHeader }) => ({
+  $maxContext?: boolean;
+}>(({ theme, $stickyHeader, $maxContext }) => ({
   display: 'table',
   width: '100%',
   borderCollapse: 'collapse',
@@ -17,8 +18,11 @@ const TableRoot = styled('table')<{
   },
   ...($stickyHeader && {
     borderCollapse: 'separate',
-    width: 'max-content',
+    width: '100%',
     minWidth: '100%',
+  }),
+  ...($maxContext && {
+    width: 'max-content',
   }),
 }));
 
@@ -29,12 +33,14 @@ interface TableInnerProps {
   className?: string;
   style?: React.CSSProperties;
   tableWrapperClassName?: string;
+  maxContext?: boolean;
 }
 
 export type { TableInnerProps as TableProps };
 
 const TableWrapper = styled.div`
   position: relative;
+  overflow-x: auto;
 `;
 
 export const Table = React.forwardRef<HTMLTableElement, React.PropsWithChildren<TableInnerProps>>(
@@ -45,6 +51,7 @@ export const Table = React.forwardRef<HTMLTableElement, React.PropsWithChildren<
       stickyHeader = false,
       className,
       tableWrapperClassName,
+      maxContext,
       ...other
     } = props;
 
@@ -62,8 +69,11 @@ export const Table = React.forwardRef<HTMLTableElement, React.PropsWithChildren<
           <TableRoot
             {...other}
             $stickyHeader={stickyHeader}
+            $maxContext={maxContext}
             ref={ref}
-            className={cx(className, 'kube-table')}
+            className={cx(className, 'kube-table', {
+              'kube-table--max-context': maxContext,
+            })}
           />
         </TableWrapper>
       </TableContext.Provider>

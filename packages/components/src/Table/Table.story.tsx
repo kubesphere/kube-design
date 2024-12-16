@@ -8,16 +8,16 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
+import styled from 'styled-components';
+
 import { Checkbox } from '../Checkbox/Checkbox';
 import { BaseTable, DataTable } from './Table';
-
 import { Button } from '../Button/Button';
 import { Dropdown } from '../Dropdown/Dropdown';
 import { Menu, MenuItem } from '../Menu/Menu';
 import { Select } from '../Select/Select';
 import { StateHandler, Status2StorageFeature, getDefaultTableOptions, useTable } from './DataTable';
 import { Center } from '../Center/Center';
-import styled from 'styled-components';
 
 const { Table, TableBody, TableCell, TableHead, TableRow, Pagination, Toolbar } = BaseTable;
 export default {
@@ -172,32 +172,18 @@ export const basicTableWithFixedColumn = () => {
         overflow: 'auto',
       }}
     >
-      <Table stickyHeader>
-        <colgroup>
-          <col width="100" />
-          <col width="200" />
-          <col />
-          <col />
-          <col />
-          <col />
-          <col />
-          <col />
-          <col />
-          <col />
-          <col />
-          <col />
-          <col />
-          <col width="100" />
-        </colgroup>
+      <Table stickyHeader maxContext>
         <TableHead hasBorder>
           <TableRow>
             <TableCell fixed="left" fixedWidth={0} width={100}>
               Header 1
             </TableCell>
-            <TableCell fixed="left" fixedWidth={100} fixedLastLeft>
+            <TableCell fixed="left" fixedWidth={100} width={200}>
               Header 2
             </TableCell>
-            <TableCell>Header 3</TableCell>
+            <TableCell fixed="left" fixedWidth={300} fixedLastLeft>
+              Header 3
+            </TableCell>
             <TableCell>Header 3</TableCell>
             <TableCell>Header 3</TableCell>
             <TableCell>Header 3</TableCell>
@@ -216,14 +202,14 @@ export const basicTableWithFixedColumn = () => {
         <TableBody hasBorder>
           {data.map((row) => (
             <TableRow key={row.col1}>
-              <TableCell fixed="left" fixedWidth={0}>
-                {row.col1}
+              <TableCell fixed="left" fixedWidth={0} width={100}>
+                td 1 + {row.col1}
               </TableCell>
-              <TableCell fixed="left" fixedWidth={100} fixedLastLeft>
-                <div> {row.col2}</div>
+              <TableCell fixed="left" fixedWidth={100} width={200}>
+                td 2 + {row.col2}
               </TableCell>
-              <TableCell>
-                <div>{row.col3}</div>
+              <TableCell fixed="left" fixedWidth={300} fixedLastLeft>
+                td 3 + {row.col3}
               </TableCell>
               <TableCell>{row.col3}</TableCell>
               <TableCell>{row.col3}</TableCell>
