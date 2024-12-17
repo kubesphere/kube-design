@@ -1,5 +1,15 @@
 # @kubed/charts
 
+## 0.2.29
+
+### Patch Changes
+
+- [#324](https://github.com/kubesphere/kube-design/pull/324) [`830ab57`](https://github.com/kubesphere/kube-design/commit/830ab5711cca94a6de37f609d2543638e025bffa) Thanks [@yazhouio](https://github.com/yazhouio)! - feat: add maxContext prop to Table component for dynamic width adjustment
+
+- Updated dependencies [[`830ab57`](https://github.com/kubesphere/kube-design/commit/830ab5711cca94a6de37f609d2543638e025bffa)]:
+  - @kubed/hooks@0.2.29
+  - @kubed/icons@0.2.29
+
 ## 0.2.28
 
 ### Patch Changes
