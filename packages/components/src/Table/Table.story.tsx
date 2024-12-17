@@ -1,4 +1,4 @@
-import { More, Pen } from '@kubed/icons';
+import { Add, More, Pen, Stop, Trash } from '@kubed/icons';
 import {
   ColumnDef,
   getCoreRowModel,
@@ -8,16 +8,16 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
+import styled from 'styled-components';
+
 import { Checkbox } from '../Checkbox/Checkbox';
 import { BaseTable, DataTable } from './Table';
-
 import { Button } from '../Button/Button';
 import { Dropdown } from '../Dropdown/Dropdown';
 import { Menu, MenuItem } from '../Menu/Menu';
 import { Select } from '../Select/Select';
 import { StateHandler, Status2StorageFeature, getDefaultTableOptions, useTable } from './DataTable';
 import { Center } from '../Center/Center';
-import styled from 'styled-components';
 
 const { Table, TableBody, TableCell, TableHead, TableRow, Pagination, Toolbar } = BaseTable;
 export default {
@@ -172,32 +172,19 @@ export const basicTableWithFixedColumn = () => {
         overflow: 'auto',
       }}
     >
-      <Table stickyHeader>
-        <colgroup>
-          <col width="100" />
-          <col width="200" />
-          <col />
-          <col />
-          <col />
-          <col />
-          <col />
-          <col />
-          <col />
-          <col />
-          <col />
-          <col />
-          <col />
-          <col width="100" />
-        </colgroup>
+      <div>header</div>
+      <Table stickyHeader maxContext>
         <TableHead hasBorder>
           <TableRow>
             <TableCell fixed="left" fixedWidth={0} width={100}>
               Header 1
             </TableCell>
-            <TableCell fixed="left" fixedWidth={100} fixedLastLeft>
+            <TableCell fixed="left" fixedWidth={100} width={200}>
               Header 2
             </TableCell>
-            <TableCell>Header 3</TableCell>
+            <TableCell fixed="left" fixedWidth={300} fixedLastLeft>
+              Header 3
+            </TableCell>
             <TableCell>Header 3</TableCell>
             <TableCell>Header 3</TableCell>
             <TableCell>Header 3</TableCell>
@@ -216,14 +203,14 @@ export const basicTableWithFixedColumn = () => {
         <TableBody hasBorder>
           {data.map((row) => (
             <TableRow key={row.col1}>
-              <TableCell fixed="left" fixedWidth={0}>
-                {row.col1}
+              <TableCell fixed="left" fixedWidth={0} width={100}>
+                td 1 + {row.col1}
               </TableCell>
-              <TableCell fixed="left" fixedWidth={100} fixedLastLeft>
-                <div> {row.col2}</div>
+              <TableCell fixed="left" fixedWidth={100} width={200}>
+                td 2 + {row.col2}
               </TableCell>
-              <TableCell>
-                <div>{row.col3}</div>
+              <TableCell fixed="left" fixedWidth={300} fixedLastLeft>
+                td 3 + {row.col3}
               </TableCell>
               <TableCell>{row.col3}</TableCell>
               <TableCell>{row.col3}</TableCell>
@@ -242,6 +229,7 @@ export const basicTableWithFixedColumn = () => {
           ))}
         </TableBody>
       </Table>
+      <div>footer</div>
     </div>
   );
 };
@@ -1144,7 +1132,7 @@ export const TableDemo = () => {
       tableName: 'table-demo',
       manual: false,
       enableFilters: false,
-      enablePagination: false,
+      enablePagination: true,
     })
   );
   const columns = React.useMemo(() => {
@@ -1152,6 +1140,20 @@ export const TableDemo = () => {
       {
         accessorKey: 'name',
         header: 'Name',
+        meta: {
+          th: {
+            fixed: 'left',
+            width: 300,
+            fixedWidth: 0,
+            fixedLastLeft: true,
+          },
+          td: {
+            fixed: 'left',
+            fixedWidth: 0,
+            width: 300,
+            fixedLastLeft: true,
+          },
+        },
         cell: (info) => info.getValue(),
       },
       {
@@ -1161,18 +1163,90 @@ export const TableDemo = () => {
         filterFn: 'equals',
       },
       {
+        accessorKey: 'age1',
+        header: 'Age',
+        cell: (info) => info.getValue(),
+        filterFn: 'equals',
+      },
+      {
+        accessorKey: 'age2',
+        header: 'Age',
+        cell: (info) => info.getValue(),
+        filterFn: 'equals',
+      },
+      {
+        accessorKey: 'age3',
+        header: 'Age',
+        cell: (info) => info.getValue(),
+        filterFn: 'equals',
+      },
+      {
+        accessorKey: 'age4',
+        header: 'Age',
+        cell: (info) => info.getValue(),
+        filterFn: 'equals5',
+      },
+      {
+        accessorKey: 'age5',
+        header: 'Age',
+        cell: (info) => info.getValue(),
+        filterFn: 'equals',
+      },
+      {
+        accessorKey: 'age6',
+        header: 'Age',
+        cell: (info) => info.getValue(),
+        filterFn: 'equals',
+      },
+      {
         accessorKey: 'address',
         header: 'Address',
-        cell: (info) => info.getValue(),
+        meta: {
+          th: {
+            fixed: 'right',
+            width: 80,
+            fixedWidth: 0,
+            fixedLastRight: true,
+          },
+          td: {
+            fixed: 'right',
+            fixedWidth: 0,
+            width: 80,
+            fixedLastRight: true,
+          },
+        },
+        cell: () => {
+          const content = (
+            <Menu>
+              <MenuItem icon={<Add />}>创建</MenuItem>
+              <MenuItem icon={<Stop />}>停止调度</MenuItem>
+              <MenuItem icon={<Pen />}>Edit</MenuItem>
+              <MenuItem icon={<Trash />}>Delete</MenuItem>
+            </Menu>
+          );
+          return (
+            <Dropdown content={content} appendTo={document.body}>
+              <span>Action</span>
+            </Dropdown>
+          );
+        },
       },
     ];
   }, []);
   const data = React.useMemo(() => {
-    return [
-      { name: 'KubeSphere', age: 1, address: 'Beijing' },
-      { name: 'KubeSphere', age: 3, address: 'Beijing' },
-      { name: 'KubeSphere', age: 2, address: 'Beijing' },
-    ];
+    return Array.from({ length: 30 })
+      .fill(1)
+      .map((i) => ({
+        name: 'name',
+        age: 1,
+        age1: 1,
+        age2: 1,
+        age3: 1,
+        age4: 1,
+        age5: 1,
+        age6: 1,
+        address: 'address',
+      }));
   }, []);
   const table = useTable({
     ...defaultOptions,
@@ -1181,6 +1255,15 @@ export const TableDemo = () => {
     meta: {
       ...defaultOptions.meta,
       getProps: {
+        table: () => {
+          return {
+            stickyHeader: true,
+            wrapperStyle: {
+              maxHeight: 250,
+              overflowX: 'auto',
+            },
+          };
+        },
         filters: () => {
           return {
             simpleMode: false,

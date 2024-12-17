@@ -74,6 +74,7 @@ const TableCellRoot = styled.td<{
       verticalAlign: 'inherit',
       ...(width && {
         width: typeof width === 'number' ? `${width}px` : width,
+        minWidth: typeof width === 'number' ? `${width}px` : width,
       }),
       // boxShadow: `inset 0 -1px 0 0 ${theme.palette.accents_1}`,
       ...(size && {
@@ -199,6 +200,8 @@ export const TableCell = React.forwardRef<
           'table-cell',
           {
             'with-sticky': !!(variant === 'head' && table && table.stickyHeader),
+            'table-cell--fixed-last-left': fixedLastLeft,
+            'table-cell--fixed-last-right': fixedLastRight,
           },
           className
         )}

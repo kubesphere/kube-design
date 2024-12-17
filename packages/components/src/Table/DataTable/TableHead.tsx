@@ -180,7 +180,7 @@ export function TableHead<T>({ header, table }: PropsWithChildren<TableHeadProps
       );
 
       return (
-        <Dropdown content={content}>
+        <Dropdown content={content} appendTo={document.body}>
           <DropdownWrapper>
             {flexRender(header.column.columnDef.header, header.getContext())}
             <CaretDown className="sort-indicator" />
