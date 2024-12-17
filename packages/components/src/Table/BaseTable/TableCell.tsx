@@ -200,6 +200,8 @@ export const TableCell = React.forwardRef<
           'table-cell',
           {
             'with-sticky': !!(variant === 'head' && table && table.stickyHeader),
+            'table-cell--fixed-last-left': fixedLastLeft,
+            'table-cell--fixed-last-right': fixedLastRight,
           },
           className
         )}
