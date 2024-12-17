@@ -1,4 +1,4 @@
-import { More, Pen } from '@kubed/icons';
+import { Add, More, Pen, Stop, Trash } from '@kubed/icons';
 import {
   ColumnDef,
   getCoreRowModel,
@@ -172,6 +172,7 @@ export const basicTableWithFixedColumn = () => {
         overflow: 'auto',
       }}
     >
+      <div>header</div>
       <Table stickyHeader maxContext>
         <TableHead hasBorder>
           <TableRow>
@@ -228,6 +229,7 @@ export const basicTableWithFixedColumn = () => {
           ))}
         </TableBody>
       </Table>
+      <div>footer</div>
     </div>
   );
 };
@@ -1130,7 +1132,7 @@ export const TableDemo = () => {
       tableName: 'table-demo',
       manual: false,
       enableFilters: false,
-      enablePagination: false,
+      enablePagination: true,
     })
   );
   const columns = React.useMemo(() => {
@@ -1138,6 +1140,20 @@ export const TableDemo = () => {
       {
         accessorKey: 'name',
         header: 'Name',
+        meta: {
+          th: {
+            fixed: 'left',
+            width: 300,
+            fixedWidth: 0,
+            fixedLastLeft: true,
+          },
+          td: {
+            fixed: 'left',
+            fixedWidth: 0,
+            width: 300,
+            fixedLastLeft: true,
+          },
+        },
         cell: (info) => info.getValue(),
       },
       {
@@ -1147,18 +1163,90 @@ export const TableDemo = () => {
         filterFn: 'equals',
       },
       {
+        accessorKey: 'age1',
+        header: 'Age',
+        cell: (info) => info.getValue(),
+        filterFn: 'equals',
+      },
+      {
+        accessorKey: 'age2',
+        header: 'Age',
+        cell: (info) => info.getValue(),
+        filterFn: 'equals',
+      },
+      {
+        accessorKey: 'age3',
+        header: 'Age',
+        cell: (info) => info.getValue(),
+        filterFn: 'equals',
+      },
+      {
+        accessorKey: 'age4',
+        header: 'Age',
+        cell: (info) => info.getValue(),
+        filterFn: 'equals5',
+      },
+      {
+        accessorKey: 'age5',
+        header: 'Age',
+        cell: (info) => info.getValue(),
+        filterFn: 'equals',
+      },
+      {
+        accessorKey: 'age6',
+        header: 'Age',
+        cell: (info) => info.getValue(),
+        filterFn: 'equals',
+      },
+      {
         accessorKey: 'address',
         header: 'Address',
-        cell: (info) => info.getValue(),
+        meta: {
+          th: {
+            fixed: 'right',
+            width: 80,
+            fixedWidth: 0,
+            fixedLastRight: true,
+          },
+          td: {
+            fixed: 'right',
+            fixedWidth: 0,
+            width: 80,
+            fixedLastRight: true,
+          },
+        },
+        cell: () => {
+          const content = (
+            <Menu>
+              <MenuItem icon={<Add />}>创建</MenuItem>
+              <MenuItem icon={<Stop />}>停止调度</MenuItem>
+              <MenuItem icon={<Pen />}>Edit</MenuItem>
+              <MenuItem icon={<Trash />}>Delete</MenuItem>
+            </Menu>
+          );
+          return (
+            <Dropdown content={content} appendTo={document.body}>
+              <span>Action</span>
+            </Dropdown>
+          );
+        },
       },
     ];
   }, []);
   const data = React.useMemo(() => {
-    return [
-      { name: 'KubeSphere', age: 1, address: 'Beijing' },
-      { name: 'KubeSphere', age: 3, address: 'Beijing' },
-      { name: 'KubeSphere', age: 2, address: 'Beijing' },
-    ];
+    return Array.from({ length: 30 })
+      .fill(1)
+      .map((i) => ({
+        name: 'name',
+        age: 1,
+        age1: 1,
+        age2: 1,
+        age3: 1,
+        age4: 1,
+        age5: 1,
+        age6: 1,
+        address: 'address',
+      }));
   }, []);
   const table = useTable({
     ...defaultOptions,
@@ -1167,6 +1255,15 @@ export const TableDemo = () => {
     meta: {
       ...defaultOptions.meta,
       getProps: {
+        table: () => {
+          return {
+            stickyHeader: true,
+            wrapperStyle: {
+              maxHeight: 250,
+              overflowX: 'auto',
+            },
+          };
+        },
         filters: () => {
           return {
             simpleMode: false,
