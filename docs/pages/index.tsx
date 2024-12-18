@@ -126,7 +126,7 @@ export default function Home() {
               className="hero-button github-link"
               rightIcon={<ExternalLink size={15} />}
               as="a"
-              href="https://github.com/kubesphere/kube-design/tree/next"
+              href="https://github.com/kubesphere/kube-design"
               target="_blank"
             >
               GitHub
