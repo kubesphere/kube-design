@@ -130,7 +130,7 @@ const TopBar = ({ isHome = true, isScroll = false }: TopBarProps) => {
               color="white"
               className="nav-icon"
               as="a"
-              href="https://github.com/kubesphere/kube-design/tree/next"
+              href="https://github.com/kubesphere/kube-design"
               target="_blank"
             >
               <Github variant="light" size={22} />
