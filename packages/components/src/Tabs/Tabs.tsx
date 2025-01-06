@@ -143,10 +143,17 @@ export function Tabs({
       if (_activeKey in refs.current && wrapperRef.current) {
         const element = refs.current[_activeKey];
         const rect = element.getBoundingClientRect();
+
+        const wrapperStyle = window.getComputedStyle(wrapperRef.current);
+        const borderLeftWidth = parseFloat(wrapperStyle.borderLeftWidth);
+
         setActivePosition({
           width: rect.width,
           height: rect.height,
-          translate: rect.x - wrapperRef.current.getBoundingClientRect().x - WRAPPER_PADDING,
+          translate:
+            rect.x -
+            (wrapperRef.current.getBoundingClientRect().x + borderLeftWidth + 1) -
+            WRAPPER_PADDING,
           translateY: rect.y - wrapperRef.current.getBoundingClientRect().y - WRAPPER_PADDING,
         });
 
