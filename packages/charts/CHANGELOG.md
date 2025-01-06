@@ -1,5 +1,15 @@
 # @kubed/charts
 
+## 0.2.30
+
+### Patch Changes
+
+- [#329](https://github.com/kubesphere/kube-design/pull/329) [`51d757d`](https://github.com/kubesphere/kube-design/commit/51d757d6d8e8ec39f9037182daa4f87801d1e5b6) Thanks [@donniean](https://github.com/donniean)! - fix(Tabs): adjust active position calculation to account for border width
+
+- Updated dependencies [[`51d757d`](https://github.com/kubesphere/kube-design/commit/51d757d6d8e8ec39f9037182daa4f87801d1e5b6)]:
+  - @kubed/hooks@0.2.30
+  - @kubed/icons@0.2.30
+
 ## 0.2.29
 
 ### Patch Changes
