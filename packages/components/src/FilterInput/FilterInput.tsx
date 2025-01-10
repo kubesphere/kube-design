@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, ReactNode } from 'react';
 import cx from 'classnames';
-import { find, isEmpty, trim, omit } from 'lodash';
+import { find, isEmpty, trim, omit, isEqual } from 'lodash';
 import { Magnifier, Close } from '@kubed/icons';
 import { useClickOutside } from '@kubed/hooks';
 import forwardRef from '../utils/forwardRef';
@@ -72,15 +72,23 @@ export const FilterInput = forwardRef<FilterInputProps, null>((props, ref) => {
   });
   const inputRef = useRef<HTMLInputElement>();
 
+  const [filters, setFilters] = React.useState(props.filters);
+  React.useEffect(() => {
+    if (isEqual(filters, props.filters)) {
+      return;
+    }
+    setFilters(props.filters);
+  }, [props.filters]);
+
   useEffect(() => {
     if (!props.simpleMode) {
-      const newTags = getTags(props.suggestions, props.filters);
+      const newTags = getTags(props.suggestions, filters);
       setTags(newTags);
       setActiveSuggestion(null);
       setOptionVisible(false);
       setValue('');
     }
-  }, [props.filters]);
+  }, [filters]);
 
   useEffect(() => {
     if (props.simpleMode) {
