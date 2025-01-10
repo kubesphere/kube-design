@@ -1,5 +1,15 @@
 # @kubed/components
 
+## 0.2.31
+
+### Patch Changes
+
+- [#331](https://github.com/kubesphere/kube-design/pull/331) [`425225e`](https://github.com/kubesphere/kube-design/commit/425225e99e395e2e95b772aab1698f52bb597edd) Thanks [@yazhouio](https://github.com/yazhouio)! - fix(FilterInput): synchronize filters state with props and optimize effect dependencies
+
+- Updated dependencies [[`425225e`](https://github.com/kubesphere/kube-design/commit/425225e99e395e2e95b772aab1698f52bb597edd)]:
+  - @kubed/hooks@0.2.31
+  - @kubed/icons@0.2.31
+
 ## 0.2.30
 
 ### Patch Changes
