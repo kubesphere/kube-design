@@ -978,7 +978,7 @@ export const DataTableWithDefault = () => {
 };
 
 export const DataTableSimple = () => {
-  const [loading] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
   const [columns] = React.useState<typeof defaultColumns>(() => [
     {
       id: '_selector',
@@ -1016,19 +1016,27 @@ export const DataTableSimple = () => {
     },
     ...defaultColumns,
   ]);
+  const [key, setKey] = React.useState(0);
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setKey((_key) => _key + 1);
+      setLoading((_loading) => !_loading);
+    }, 2000);
+    return () => clearInterval(timer);
+  }, []);
   const data = React.useMemo(() => {
     if (loading) {
       return [];
     }
     return [...Array(100).fill(1)].map((_, i) => ({
-      firstName: `firstName-${i}`,
-      lastName: `lastName-${i}`,
+      firstName: `firstName-${i}-${key}`,
+      lastName: `lastName-${i}-${key}`,
       age: i,
       visits: i,
-      status: `status-${i}`,
+      status: `status-${i}-${key}`,
       progress: i,
     }));
-  }, [loading]);
+  }, [loading, key]);
 
   const forceUpdate = React.useReducer(() => ({}), {})[1];
 
@@ -1046,6 +1054,7 @@ export const DataTableSimple = () => {
     ...defaultOption,
     data,
     columns,
+    loading,
     getRowId: (row) => row.firstName,
     meta: {
       refetch: () => forceUpdate(),
@@ -1066,7 +1075,7 @@ export const DataTableSimple = () => {
         },
         filters: () => {
           return {
-            disabled: true,
+            disabled: false,
             simpleMode: false,
             suggestions: [
               {
