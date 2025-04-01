@@ -26,17 +26,17 @@ export default function getIcons({
   if (suffixIcon !== undefined) {
     mergedSuffixIcon = suffixIcon;
   } else if (loading) {
-    mergedSuffixIcon = <Loading size={16} key="loading" />;
+    mergedSuffixIcon = <Loading size={16} />;
   } else {
     mergedSuffixIcon = ({ open, showSearch }: { open: boolean; showSearch: boolean }) => {
       if (open && showSearch) {
-        return <Magnifier size={16} key="magnifier" />;
+        return <Magnifier size={16} />;
       }
       if (showArrow) {
         if (open) {
-          return <ChevronUp size={16} key="chevron-up" />;
+          return <ChevronUp size={16} />;
         }
-        return <ChevronDown size={16} key="chevron-down" />;
+        return <ChevronDown size={16} />;
       }
       return null;
     };
