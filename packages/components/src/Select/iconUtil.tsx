@@ -9,6 +9,7 @@ interface IconProps {
   removeIcon?: React.ReactNode;
   loading?: boolean;
   multiple?: boolean;
+  showArrow?: boolean;
 }
 export default function getIcons({
   suffixIcon,
@@ -17,9 +18,9 @@ export default function getIcons({
   removeIcon,
   loading,
   multiple,
+  showArrow = false,
 }: IconProps) {
   const mergedClearIcon = clearIcon || <Close size={16} />;
-
   // Arrow item icon
   let mergedSuffixIcon = null;
   if (suffixIcon !== undefined) {
@@ -31,10 +32,13 @@ export default function getIcons({
       if (open && showSearch) {
         return <Magnifier size={16} />;
       }
-      if (open) {
-        return <ChevronUp size={16} />;
+      if (showArrow) {
+        if (open) {
+          return <ChevronUp size={16} />;
+        }
+        return <ChevronDown size={16} />;
       }
-      return <ChevronDown size={16} />;
+      return null;
     };
   }
 

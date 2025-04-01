@@ -17,6 +17,7 @@ export interface SelectProps<VT>
     'inputIcon' | 'mode' | 'getInputElement' | 'getRawInputElement' | 'backfill'
   > {
   mode?: 'multiple' | 'tags';
+  showArrow?: boolean;
 }
 
 export const SelectStyles = createGlobalStyle`
@@ -24,6 +25,7 @@ export const SelectStyles = createGlobalStyle`
     display: none;
   }
   .kubed-select-dropdown {
+    position: absolute;
     z-index: 1000;
     padding: 4px 0;
     border-radius: 4px;
@@ -51,8 +53,13 @@ export const SelectStyles = createGlobalStyle`
     display: flex;
   }
 
+  .kubed-select-selection-wrap {
+    min-height: 30px;
+  }
+  
   .kubed-select-item-option-content {
     flex-grow: 1;
+    word-break: break-all;
   }
 
   .kubed-select-item-option-state {
@@ -90,6 +97,11 @@ export const StyledSelect = styled(RcSelect)<SelectProps<any>>`
     }
   }
 
+  .kubed-select-selection-overflow {
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+
   &:hover {
     .kubed-select-clear {
       opacity: 1;
@@ -98,6 +110,8 @@ export const StyledSelect = styled(RcSelect)<SelectProps<any>>`
 
   .kubed-select-selector {
     display: flex;
+    align-items: center;
+    gap: 4px;
     position: relative;
     width: 100%;
     padding: 0 11px;
@@ -197,6 +211,16 @@ export const StyledSelect = styled(RcSelect)<SelectProps<any>>`
       }
     }
 
+    .kubed-select-selection-wrap {
+      position: relative;
+      flex: 1;
+      display: flex;
+      width: 100%;
+      position: relative;
+      min-width: 0;
+      max-width: 100%;
+    }
+
     .kubed-select-selector {
       height: 32px; // to
 
@@ -210,16 +234,18 @@ export const StyledSelect = styled(RcSelect)<SelectProps<any>>`
       }
 
       .kubed-select-selection-search {
+        width: 100%;
         position: absolute;
         top: 0;
         right: 11px;
         bottom: 0;
-        left: 11px;
+        left: 0;
       }
 
       .kubed-select-selection-search-input {
-        width: 100%;
+        width: calc(100% - 18px);
         height: 30px;
+        line-height: 30px;
       }
 
       .kubed-select-selection-placeholder {
@@ -231,6 +257,11 @@ export const StyledSelect = styled(RcSelect)<SelectProps<any>>`
   }
 
   &.kubed-select-multiple {
+    &.kubed-select-show-arrow {
+      .kubed-select-selection-wrap {
+        max-width: calc(100% - 24px);
+      }
+    }
     &.kubed-select-allow-clear {
       .kubed-select-selector {
         padding-right: 24px;
@@ -243,15 +274,21 @@ export const StyledSelect = styled(RcSelect)<SelectProps<any>>`
       width: 100%;
       padding: 1px 4px;
     }
+    .kubed-select-selection-wrap {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+    }
 
     .kubed-select-selection-placeholder {
-      line-height: 30px;
+      position: relative;
+      /* line-height: 30px;
       position: absolute;
       top: 50%;
       right: 11px;
       left: 11px;
-      transform: translateY(-50%);
-      transition: all 0.3s;
+      transform: translateY(-50%); */
+      /* transition: all 0.3s; */
     }
 
     .kubed-select-selection-item {
@@ -289,6 +326,11 @@ export const StyledSelect = styled(RcSelect)<SelectProps<any>>`
     .kubed-select-selection-search-input {
       height: 20px;
       line-height: 20px;
+      min-width: 100%;
+    }
+
+    .kubed-select-selection-overflow-item-suffix {
+      overflow-x: hidden;
     }
 
     .kubed-select-selection-search-mirror {
