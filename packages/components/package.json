@@ -31,7 +31,7 @@
     "rc-input-number": "^7.3.0",
     "rc-motion": "^2.4.4",
     "rc-picker": "^2.5.19",
-    "rc-select": "^13.1.0",
+    "rc-select": "^14.16.6",
     "react-dropzone": "^14.2.3",
     "react-hot-toast": "^2.1.1",
     "react-textarea-autosize": "^8.3.2",
