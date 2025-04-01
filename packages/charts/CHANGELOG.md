@@ -1,5 +1,15 @@
 # @kubed/charts
 
+## 0.2.32
+
+### Patch Changes
+
+- [#336](https://github.com/kubesphere/kube-design/pull/336) [`6086ec4`](https://github.com/kubesphere/kube-design/commit/6086ec465a2c796092ce28c643090198bbeb24c4) Thanks [@yazhouio](https://github.com/yazhouio)! - chore: update dependencies and enhance Select component
+
+- Updated dependencies [[`6086ec4`](https://github.com/kubesphere/kube-design/commit/6086ec465a2c796092ce28c643090198bbeb24c4)]:
+  - @kubed/hooks@0.2.32
+  - @kubed/icons@0.2.32
+
 ## 0.2.31
 
 ### Patch Changes
