@@ -83,18 +83,21 @@ export interface TabsProps
   transitionTimingFunction?: string;
 }
 
+// 修改 parseTabList 函数的返回类型和实现
 const parseTabList = (children: React.ReactNode): TabProps[] => {
-  return toArray(children).map((node: React.ReactElement<TabProps>) => {
-    if (React.isValidElement(node)) {
-      const key = node.key !== undefined ? String(node.key) : undefined;
-      return {
-        key,
-        ...node.props,
-        node,
-      };
-    }
-    return null;
-  });
+  return toArray(children)
+    .map((node: React.ReactElement<TabProps>) => {
+      if (React.isValidElement(node)) {
+        const key = node.key !== undefined ? String(node.key) : undefined;
+        return {
+          key,
+          ...node.props,
+          node,
+        } as TabProps;
+      }
+      return null;
+    })
+    .filter((tab): tab is TabProps => tab !== null);
 };
 
 export function Tabs({
@@ -134,7 +137,8 @@ export function Tabs({
   });
   const uuid = useId(name);
   const reduceMotion = useReducedMotion();
-  const refs = useRef<Record<string, HTMLLabelElement>>({});
+  // 修改 refs 的类型定义
+  const refs = useRef<Record<string, HTMLLabelElement | null>>({});
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -186,7 +190,9 @@ export function Tabs({
           active={isActive}
           htmlFor={`${uuid}-${key}`}
           ref={(node) => {
-            refs.current[key] = node;
+            if (key) {
+              refs.current[key] = node;
+            }
           }}
           onClick={() => handleActiveTabChange(key)}
           className="tab-label"
@@ -255,5 +261,3 @@ export function Tabs({
     </TabsContainer>
   );
 }
-
-Tabs.displayName = '@kubed/components/Tabs';

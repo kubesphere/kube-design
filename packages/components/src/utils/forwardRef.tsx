@@ -14,5 +14,6 @@ export default function forwardRef<Props extends object, Component extends As>(
     }
   >
 ) {
+  // @ts-ignore
   return React.forwardRef(component) as unknown as ComponentWithAs<Component, Props>;
 }

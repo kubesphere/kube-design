@@ -1,14 +1,12 @@
-// @ts-ignore
-import { shallow, mount } from 'enzyme';
-import React from 'react';
-// @ts-ignore
+import { shallow, mount, ReactWrapper, ShallowWrapper } from 'enzyme';
+import React, { ReactElement } from 'react';
 import { themeUtils } from '@kubed/components';
 import { ThemeProvider } from 'styled-components';
 
-export function shallowWithTheme(component) {
+export function shallowWithTheme<P = {}>(component: ReactElement<P>): ShallowWrapper {
   return shallow(<ThemeProvider theme={themeUtils.getPresets()[0]}>{component}</ThemeProvider>);
 }
 
-export function mountWithTheme(component) {
+export function mountWithTheme<P = {}>(component: ReactElement<P>): ReactWrapper {
   return mount(<ThemeProvider theme={themeUtils.getPresets()[0]}>{component}</ThemeProvider>);
 }

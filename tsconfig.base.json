@@ -9,7 +9,8 @@
     "**/*.test.ts",
     "**/*.test.tsx",
     "jest-config.js",
-    "configs/storybook/main.js"
+    "configs/storybook/main.js",
+    "docs/next-i18next.config.cjs"
   ],
   "compilerOptions": {
     "target": "ES2015",

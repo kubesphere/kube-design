@@ -32,7 +32,7 @@ async function compile(config: RollupOptions) {
 }
 
 async function generateDts(packagePath: string) {
-  await execa('yarn', ['tsc', '--build'], {
+  await execa('pnpm', ['tsc', '--build'], {
     cwd: packagePath,
   });
 
@@ -55,7 +55,7 @@ export async function buildPackage(packageName: string, options?: BuildOptions) 
     const startTime = Date.now();
 
     if (packageName === '@kubed/icons') {
-      await execa('yarn', ['build:icons']);
+      await execa('pnpm', ['build:icons']);
     } else {
       await generateDts(packagePath);
 

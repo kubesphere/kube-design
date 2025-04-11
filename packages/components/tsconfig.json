@@ -8,10 +8,7 @@
     "declaration": true,
     "declarationMap": true,
     "declarationDir": "lib",
-    "composite": true,
-    "paths": {
-      "@kubed/*": ["packages/*/src"],
-    }
+    "composite": true
   },
-  "references": [{ "path": "../hooks" }]
+  "references": [{ "path": "../hooks" }, { "path": "../tests" }]
 }

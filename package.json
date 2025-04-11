@@ -6,29 +6,27 @@
   "repository": "https://github.com/kubesphere/kube-design",
   "license": "MIT",
   "main": "index.js",
-  "workspaces": [
-    "packages/*",
-    "docs"
-  ],
+  "pnpm": {
+    "overrides": {
+      "@babel/preset-env": "~7.15.8"
+    }
+  },
   "scripts": {
     "build": "esno scripts/build",
-    "build:all": "yarn build all",
-    "build:docs": "cd ./docs && npm run build",
-    "build:icons": "cd packages/icons && npm run build",
+    "build:all": "pnpm build all",
+    "build:docs": "pnpm --filter docs run build",
+    "build:icons": "pnpm --filter icons run build",
     "clean": "rimraf packages/*/{esm,cjs,lib,dist} packages/**/*.tsbuildinfo",
     "docs:docgen": "esno scripts/docgen",
-    "postinstall": "npm run docs:docgen && npm run build:icons",
+    "postinstall": "pnpm run docs:docgen && pnpm run build:icons",
     "jest": "jest",
     "lint": "eslint src --ext .ts,.tsx",
     "release": "changeset publish",
-    "start:docs": "cd ./docs && npm run dev",
+    "start:docs": "pnpm --filter docs run dev",
     "storybook": "storybook dev -p 7001 -c configs/.storybook --no-open",
     "syncpack": "syncpack list-mismatches",
-    "test": "npm run syncpack && npm run typecheck && npm run lint && npm run jest",
+    "test": "pnpm run jest",
     "typecheck": "tsc --noEmit"
-  },
-  "resolutions": {
-    "**/@babel/preset-env": "~7.15.8"
   },
   "dependencies": {
     "dayjs": "^1.10.7",

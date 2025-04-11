@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "build": "esno src/generate.ts",
-    "start": "yarn build"
+    "start": "pnpm build"
   },
   "devDependencies": {
     "@babel/core": "7.12.10",
