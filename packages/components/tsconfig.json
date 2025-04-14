@@ -1,6 +1,6 @@
 {
   "extends": "../../tsconfig.base.json",
-  "include": ["./src", "./demos"],
+  "include": ["./src"],
   "compilerOptions": {
     "rootDir": ".",
     "baseUrl": ".",
@@ -8,7 +8,8 @@
     "declaration": true,
     "declarationMap": true,
     "declarationDir": "lib",
-    "composite": true
+    "composite": true,
+    "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
   "references": [{ "path": "../hooks" }, { "path": "../tests" }]
 }

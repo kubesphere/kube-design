@@ -1,0 +1,97 @@
+---
+sidebar_position: 1
+---
+
+# useClipboard
+
+用于复制文本到剪贴板的 Hook。
+
+## 使用方法
+
+```jsx
+import { useClipboard } from '@kubed/hooks';
+import { Button, Group, Text } from '@kubed/components';
+
+function Demo() {
+  const clipboard = useClipboard();
+
+  return (
+    <Group>
+      <Button onClick={() => clipboard.copy('Hello, World!')}>
+        Copy to Clipboard
+      </Button>
+      <Text>{clipboard.copied ? 'Copied!' : 'Click to copy'}</Text>
+    </Group>
+  );
+}
+```
+
+## 带超时设置
+
+超时后自动重置复制状态。
+
+```jsx
+import { useClipboard } from '@kubed/hooks';
+import { Button } from '@kubed/components';
+
+function Demo() {
+  const clipboard = useClipboard({ timeout: 2000 });
+
+  return (
+    <Button 
+      color={clipboard.copied ? 'success' : 'primary'}
+      onClick={() => clipboard.copy('Copied text')}
+    >
+      {clipboard.copied ? 'Copied!' : 'Copy'}
+    </Button>
+  );
+}
+```
+
+## API
+
+### 参数
+
+```typescript
+interface UseClipboardOptions {
+  timeout?: number; // 重置超时时间（毫秒），默认值：1000
+}
+```
+
+### 返回值
+
+```typescript
+interface UseClipboardReturn {
+  copy: (text: string) => void;  // 复制文本到剪贴板
+  copied: boolean;                // 文本是否已复制
+  reset: () => void;              // 重置复制状态
+  error: Error | null;            // 复制错误（如有）
+}
+```
+
+## 示例
+
+```jsx
+function ClipboardExample() {
+  const clipboard = useClipboard({ timeout: 3000 });
+
+  return (
+    <div>
+      <input 
+        type="text" 
+        id="copy-input" 
+        defaultValue="Text to copy" 
+      />
+      <button 
+        onClick={() => {
+          const input = document.getElementById('copy-input');
+          clipboard.copy(input.value);
+        }}
+      >
+        {clipboard.copied ? 'Copied!' : 'Copy'}
+      </button>
+      {clipboard.error && <p>Error: {clipboard.error.message}</p>}
+    </div>
+  );
+}
+```

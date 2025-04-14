@@ -1,0 +1,160 @@
+---
+sidebar_position: 3
+---
+
+# Select
+
+A dropdown select component for selecting values from a list.
+
+## When To Use
+
+- Use when you need to select a single value from a list
+- Supports search/filter functionality
+- Can display custom content for options
+
+## Examples
+
+### Basic Usage
+
+Basic select dropdown.
+
+```jsx
+import { Select } from '@kubed/components';
+
+function Demo() {
+  const options = [
+    { label: 'React', value: 'react' },
+    { label: 'Vue', value: 'vue' },
+    { label: 'Angular', value: 'angular' },
+  ];
+
+  return (
+    <Select
+      placeholder="Select framework"
+      options={options}
+    />
+  );
+}
+```
+
+### With Default Value
+
+Select with a default value.
+
+```jsx
+import { Select } from '@kubed/components';
+
+function Demo() {
+  const options = [
+    { label: 'React', value: 'react' },
+    { label: 'Vue', value: 'vue' },
+    { label: 'Angular', value: 'angular' },
+  ];
+
+  return (
+    <Select
+      placeholder="Select framework"
+      options={options}
+      defaultValue="react"
+    />
+  );
+}
+```
+
+### Disabled
+
+Disabled select.
+
+```jsx
+import { Select } from '@kubed/components';
+
+function Demo() {
+  const options = [
+    { label: 'React', value: 'react' },
+    { label: 'Vue', value: 'vue' },
+  ];
+
+  return (
+    <Select
+      placeholder="Select framework"
+      options={options}
+      disabled
+    />
+  );
+}
+```
+
+### Searchable
+
+Select with search functionality.
+
+```jsx
+import { Select } from '@kubed/components';
+
+function Demo() {
+  const options = [
+    { label: 'React', value: 'react' },
+    { label: 'Vue', value: 'vue' },
+    { label: 'Angular', value: 'angular' },
+    { label: 'Svelte', value: 'svelte' },
+    { label: 'Solid', value: 'solid' },
+  ];
+
+  return (
+    <Select
+      placeholder="Search framework"
+      options={options}
+      searchable
+    />
+  );
+}
+```
+
+### Multiple Selection
+
+Multiple selection mode.
+
+```jsx
+import { Select } from '@kubed/components';
+
+function Demo() {
+  const options = [
+    { label: 'React', value: 'react' },
+    { label: 'Vue', value: 'vue' },
+    { label: 'Angular', value: 'angular' },
+  ];
+
+  return (
+    <Select
+      placeholder="Select frameworks"
+      options={options}
+      multiple
+    />
+  );
+}
+```
+
+## API
+
+### Select Props
+
+| Property | Description | Type | Default |
+|----------|-------------|------|---------|
+| value | Selected value | `string \| string[]` | - |
+| defaultValue | Default value | `string \| string[]` | - |
+| placeholder | Placeholder text | `string` | - |
+| options | Select options | `Option[]` | `[]` |
+| disabled | Disabled state | `boolean` | `false` |
+| searchable | Enable search | `boolean` | `false` |
+| multiple | Multiple selection | `boolean` | `false` |
+| onChange | Change handler | `(value: string \| string[]) => void` | - |
+
+### Option
+
+```typescript
+interface Option {
+  label: string;
+  value: string;
+  disabled?: boolean;
+}
+```

@@ -1,0 +1,243 @@
+---
+sidebar_position: 1
+---
+
+# Tag 标签
+
+进行标记和分类的小标签。
+
+## 何时使用
+
+- 用于标记事物的属性和维度
+- 进行分类和标识
+
+在 Kube Design 中,Tag 组件提供了丰富的标签样式和交互功能:
+
+- **多种颜色**:支持 default、primary、secondary、success、warning、error、info 等语义化颜色
+- **带标题标签**:可以添加标题以区分标签的类型
+- **可关闭**:支持可关闭的标签,适用于过滤器等场景
+- **灵活扩展**:支持添加图标、前缀和后缀元素
+
+## 示例
+
+### 基础用法
+
+最基本的标签用法。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="xs">
+      <Tag>Default</Tag>
+      <Tag color="primary">Primary</Tag>
+      <Tag color="secondary">Secondary</Tag>
+    </Group>
+  );
+}
+```
+
+### 颜色
+
+Tag 组件提供了七种语义化颜色。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="xs">
+      <Tag color="default">Default</Tag>
+      <Tag color="primary">Primary</Tag>
+      <Tag color="secondary">Secondary</Tag>
+      <Tag color="success">Success</Tag>
+      <Tag color="warning">Warning</Tag>
+      <Tag color="error">Error</Tag>
+      <Tag color="info">Info</Tag>
+    </Group>
+  );
+}
+```
+
+### 带标题的标签
+
+使用 `title` 属性可以为标签添加一个前置标题,用于标识标签的类别。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="xs">
+      <Tag title="命名空间" color="primary">
+        kube-system
+      </Tag>
+      <Tag title="任务名称" color="success">
+        job-sync-data
+      </Tag>
+      <Tag title="状态" color="warning">
+        运行中
+      </Tag>
+      <Tag title="标签" color="secondary">
+        app=nginx
+      </Tag>
+    </Group>
+  );
+}
+```
+
+### 可关闭的标签
+
+通过设置 `closable` 属性可以定义一个可关闭的标签。可关闭的标签常用于过滤器场景。
+
+```jsx live
+function Demo() {
+  const [tags, setTags] = React.useState(['Apple', 'Banana', 'Orange', 'Grape']);
+
+  const handleClose = (tagToRemove) => {
+    setTags(tags.filter((tag) => tag !== tagToRemove));
+  };
+
+  return (
+    <Group spacing="xs">
+      {tags.map((tag) => (
+        <Tag key={tag} color="primary" closable onClose={() => handleClose(tag)}>
+          {tag}
+        </Tag>
+      ))}
+    </Group>
+  );
+}
+```
+
+### 带图标的标签
+
+可以在 `title` 属性中使用图标,或者通过 `prepend` 和 `append` 添加前后缀图标。
+
+```jsx live
+function Demo() {
+  const { Add, Close, Kubernetes } = KubedIcons;
+
+  return (
+    <Group spacing="xs">
+      <Tag
+        color="success"
+        title={<Add variant="light" size={14} />}
+        titleStyle={{ backgroundColor: 'transparent', margin: '0', padding: '0 3px' }}
+      >
+        添加标签
+      </Tag>
+      <Tag color="info" prepend={<Kubernetes size={14} style={{ marginRight: '4px' }} />}>
+        Kubernetes
+      </Tag>
+      <Tag
+        color="warning"
+        append={
+          <Close variant="light" size={14} style={{ marginLeft: '4px', cursor: 'pointer' }} />
+        }
+      >
+        可删除
+      </Tag>
+    </Group>
+  );
+}
+```
+
+### 圆角
+
+使用 `radius` 属性可以设置标签的圆角大小。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="xs">
+      <Tag radius="xs" color="primary">
+        XS 圆角
+      </Tag>
+      <Tag radius="sm" color="success">
+        SM 圆角
+      </Tag>
+      <Tag radius="md" color="warning">
+        MD 圆角
+      </Tag>
+      <Tag radius="lg" color="error">
+        LG 圆角
+      </Tag>
+      <Tag radius="xl" color="info">
+        XL 圆角
+      </Tag>
+    </Group>
+  );
+}
+```
+
+### 自定义样式标题
+
+可以通过 `titleStyle` 属性自定义标题的样式。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="xs">
+      <Tag
+        title="自定义"
+        color="primary"
+        titleStyle={{ backgroundColor: '#1890ff', color: '#fff' }}
+      >
+        蓝色标题
+      </Tag>
+      <Tag
+        title="样式"
+        color="success"
+        titleStyle={{ backgroundColor: '#52c41a', color: '#fff', fontWeight: 'bold' }}
+      >
+        绿色加粗标题
+      </Tag>
+    </Group>
+  );
+}
+```
+
+### 受控的可见性
+
+通过 `visible` 属性可以控制标签的显示和隐藏。
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(true);
+
+  return (
+    <>
+      <Group spacing="xs" style={{ marginBottom: '12px' }}>
+        <Tag visible={visible} color="primary">
+          受控标签
+        </Tag>
+        <Tag visible={!visible} color="success">
+          另一个标签
+        </Tag>
+      </Group>
+      <Button size="sm" onClick={() => setVisible(!visible)}>
+        切换可见性
+      </Button>
+    </>
+  );
+}
+```
+
+## API
+
+### Tag 属性
+
+| 属性       | 说明             | 类型                                                                                   | 默认值      |
+| ---------- | ---------------- | -------------------------------------------------------------------------------------- | ----------- |
+| title      | 标签的前置标题   | `ReactNode`                                                                            | -           |
+| titleStyle | 标题的自定义样式 | `CSSProperties`                                                                        | -           |
+| color      | 标签颜色         | `'default' \| 'primary' \| 'secondary' \| 'success' \| 'warning' \| 'error' \| 'info'` | `'default'` |
+| prepend    | 标签前缀元素     | `ReactNode`                                                                            | -           |
+| append     | 标签后缀元素     | `ReactNode`                                                                            | -           |
+| radius     | 边框圆角         | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number`                                       | -           |
+| visible    | 是否显示标签     | `boolean`                                                                              | `true`      |
+| closable   | 是否可关闭       | `boolean`                                                                              | `false`     |
+| onClose    | 关闭时的回调     | `(e: React.MouseEvent<SVGElement>) => void`                                            | -           |
+| className  | 自定义类名       | `string`                                                                               | -           |
+| style      | 自定义样式       | `CSSProperties`                                                                        | -           |
+| children   | 标签内容         | `ReactNode`                                                                            | -           |
+
+:::info
+Tag 组件继承所有原生 HTML div 元素的属性。当 `closable` 为 `true` 时,点击关闭图标会触发 `onClose` 回调。如果不传入 `visible` 属性,组件内部会自动管理关闭状态。
+:::

@@ -1,27 +1,45 @@
 import React from 'react';
 import { Dropdown } from '@kubed/components';
-import { shallowWithTheme } from '@kubed/tests';
+import { renderWithTheme } from '@kubed/tests';
+import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 
-const defaultProps = {
-  title: 'test',
-  placement: 'bottom',
-  children: null,
-  interactive: true,
-  trigger: 'click',
-  hideOnClick: true,
-  arrow: false,
-  maxWidth: 210,
-  animation: 'shift-away',
-  content: 'test-dropdown',
-};
+describe('@kubd/components/Dropdown', () => {
+  const dropdownMenuContent = <div>menu1</div>;
+  const triggerButtonText = 'open dropdown';
+  const triggerElement = <button>{triggerButtonText}</button>;
+  const menuTestId = 'dropdown-menu-container';
+  const arrowTestId = 'dropdown-arrow';
 
-describe('@kubed/components/Dropdown', () => {
-  it('passes animation, arrow, trigger and placement props to Dropdown component', () => {
-    const props = shallowWithTheme(<Dropdown {...defaultProps} />).find(Dropdown);
-    expect(props.prop('animation')).toBe('shift-away');
-    expect(props.prop('trigger')).toBe('click');
-    expect(props.prop('placement')).toBe('bottom');
-    expect(props.prop('arrow')).toBe(false);
+  it('when trigger is click, the dropdown should be open', async () => {
+    const user = userEvent.setup();
+    renderWithTheme(
+      <Dropdown
+        content={dropdownMenuContent}
+        trigger="click"
+        arrow={false}
+        placement="bottom"
+        animation="shift-away"
+        data-testid={menuTestId}
+      >
+        {triggerElement}
+      </Dropdown>
+    );
+
+    expect(screen.queryByText('menu1')).not.toBeInTheDocument();
+
+    const triggerButton = screen.getByRole('button', { name: triggerButtonText });
+    await user.click(triggerButton);
+
+    const menuItem = await screen.findByText('menu1');
+    expect(menuItem).toBeInTheDocument();
+
+    expect(screen.queryByTestId(arrowTestId)).not.toBeInTheDocument();
+
+    const menuContainer = await screen.getByRole('tooltip');
+    expect(menuContainer).toHaveAttribute('data-placement', 'bottom');
+
+    expect(menuContainer).toHaveAttribute('data-animation', 'shift-away');
   });
 
   it('has correct displayName', () => {

@@ -1,0 +1,588 @@
+---
+sidebar_position: 1
+---
+
+# Textarea 文本域
+
+用于多行文本输入的文本域组件。
+
+## 何时使用
+
+- 需要输入多行文本内容
+- 需要收集用户的长文本反馈、评论或描述
+- 可与其他表单组件组合构建复杂表单
+- 支持自动调整高度以适应内容
+
+## 示例
+
+### 基础用法
+
+最简单的用法，通过 `onChange` 获取输入值。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+
+  return (
+    <div>
+      <Textarea
+        placeholder="请输入内容"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        已输入 {value.length} 个字符
+      </div>
+    </div>
+  );
+}
+```
+
+### 默认值
+
+通过 `defaultValue` 设置默认值。
+
+```jsx live
+function Demo() {
+  return (
+    <Textarea
+      placeholder="请输入内容"
+      defaultValue="这是默认内容"
+    />
+  );
+}
+```
+
+### 禁用和只读
+
+通过 `disabled` 和 `readOnly` 属性设置禁用和只读状态。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Textarea disabled placeholder="禁用状态" />
+      <Textarea disabled defaultValue="禁用状态且有值" />
+      <Textarea readOnly defaultValue="只读状态，不可编辑但可以选择复制" />
+    </Group>
+  );
+}
+```
+
+### 自定义宽度
+
+通过 `width` 属性设置文本域宽度。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Textarea placeholder="width=300" width={300} />
+      <Textarea placeholder="width=500" width={500} />
+      <Textarea placeholder="width=100%" style={{ width: '100%' }} />
+    </Group>
+  );
+}
+```
+
+### 自动调整高度
+
+通过 `autosize` 属性让文本域根据内容自动调整高度。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+
+  return (
+    <div>
+      <Textarea
+        placeholder="输入内容会自动调整高度"
+        autosize
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        提示：随着内容增多，高度会自动增长
+      </div>
+    </div>
+  );
+}
+```
+
+### 限制最大高度
+
+通过 `maxHeight` 限制自动调整高度的最大值。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+
+  return (
+    <div>
+      <Textarea
+        placeholder="最大高度为 150px"
+        autosize
+        maxHeight={150}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        超过最大高度后会出现滚动条
+      </div>
+    </div>
+  );
+}
+```
+
+### 受控组件
+
+通过 `value` 和 `onChange` 实现受控组件。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+
+  const handleClear = () => {
+    setValue('');
+  };
+
+  const handleFill = () => {
+    setValue('这是预填充的内容\n可以包含多行\n方便用户编辑');
+  };
+
+  return (
+    <div>
+      <Textarea
+        placeholder="请输入内容"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <Group style={{ marginTop: '16px' }}>
+        <Button onClick={handleClear}>清空</Button>
+        <Button onClick={handleFill}>填充内容</Button>
+      </Group>
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        已输入 {value.length} 个字符
+      </div>
+    </div>
+  );
+}
+```
+
+### 字符计数
+
+实现字符计数和限制功能。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+  const maxLength = 200;
+
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+    if (newValue.length <= maxLength) {
+      setValue(newValue);
+    }
+  };
+
+  const remaining = maxLength - value.length;
+
+  return (
+    <div>
+      <Textarea
+        placeholder="请输入评论内容（最多200字）"
+        value={value}
+        onChange={handleChange}
+      />
+      <div style={{ marginTop: '8px', textAlign: 'right', fontSize: '14px' }}>
+        <span style={{ color: remaining < 20 ? '#ca2621' : '#79879c' }}>
+          剩余 {remaining} 字符
+        </span>
+      </div>
+    </div>
+  );
+}
+```
+
+### 内容验证
+
+实现输入内容验证功能。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+  const [error, setError] = React.useState('');
+
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+    setValue(newValue);
+
+    if (newValue.length < 10 && newValue.length > 0) {
+      setError('内容不能少于10个字符');
+    } else {
+      setError('');
+    }
+  };
+
+  return (
+    <div>
+      <Textarea
+        placeholder="请输入内容（至少10个字符）"
+        value={value}
+        onChange={handleChange}
+      />
+      {error && (
+        <div style={{ marginTop: '8px', color: '#ca2621', fontSize: '14px' }}>
+          {error}
+        </div>
+      )}
+      {value.length >= 10 && (
+        <div style={{ marginTop: '8px', color: '#55bc8a', fontSize: '14px' }}>
+          内容长度符合要求
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+### 焦点事件
+
+通过 `onFocus` 和 `onBlur` 处理焦点事件。
+
+```jsx live
+function Demo() {
+  const [focused, setFocused] = React.useState(false);
+  const [value, setValue] = React.useState('');
+
+  return (
+    <div>
+      <Textarea
+        placeholder="请输入内容"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        输入框状态: {focused ? '聚焦中' : '未聚焦'}
+      </div>
+    </div>
+  );
+}
+```
+
+### 评论输入框
+
+实现一个典型的评论输入框场景。
+
+```jsx live
+function Demo() {
+  const [comment, setComment] = React.useState('');
+  const [comments, setComments] = React.useState([
+    { id: 1, content: '这是一条示例评论', time: '2分钟前' },
+  ]);
+
+  const handleSubmit = () => {
+    if (comment.trim()) {
+      setComments([
+        ...comments,
+        { id: Date.now(), content: comment, time: '刚刚' },
+      ]);
+      setComment('');
+    }
+  };
+
+  return (
+    <div>
+      <div style={{ marginBottom: '16px' }}>
+        {comments.map((item) => (
+          <div
+            key={item.id}
+            style={{
+              padding: '12px',
+              marginBottom: '8px',
+              background: '#f7f8fa',
+              borderRadius: '4px',
+            }}
+          >
+            <div style={{ fontSize: '14px', marginBottom: '4px' }}>{item.content}</div>
+            <div style={{ fontSize: '12px', color: '#79879c' }}>{item.time}</div>
+          </div>
+        ))}
+      </div>
+      <Textarea
+        placeholder="写下你的评论..."
+        autosize
+        maxHeight={150}
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
+      />
+      <Group style={{ marginTop: '12px' }}>
+        <Button onClick={handleSubmit} variant="filled" color="primary" disabled={!comment.trim()}>
+          发表评论
+        </Button>
+        <Button onClick={() => setComment('')} disabled={!comment}>
+          取消
+        </Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+### 表单场景
+
+在表单中使用 Textarea。
+
+```jsx live
+function Demo() {
+  const [formData, setFormData] = React.useState({
+    title: '',
+    description: '',
+  });
+
+  const handleSubmit = () => {
+    alert(`标题: ${formData.title}\n描述: ${formData.description}`);
+  };
+
+  const handleChange = (field, value) => {
+    setFormData({ ...formData, [field]: value });
+  };
+
+  return (
+    <div>
+      <Group direction="column" spacing="md">
+        <div>
+          <div style={{ marginBottom: '8px', fontSize: '14px', fontWeight: 'bold' }}>
+            标题:
+          </div>
+          <Input
+            placeholder="请输入标题"
+            value={formData.title}
+            onChange={(e) => handleChange('title', e.target.value)}
+          />
+        </div>
+        <div>
+          <div style={{ marginBottom: '8px', fontSize: '14px', fontWeight: 'bold' }}>
+            详细描述:
+          </div>
+          <Textarea
+            placeholder="请输入详细描述"
+            autosize
+            maxHeight={200}
+            value={formData.description}
+            onChange={(e) => handleChange('description', e.target.value)}
+          />
+        </div>
+      </Group>
+      <Button
+        onClick={handleSubmit}
+        variant="filled"
+        color="primary"
+        disabled={!formData.title || !formData.description}
+        style={{ marginTop: '16px' }}
+      >
+        提交
+      </Button>
+    </div>
+  );
+}
+```
+
+## API
+
+### Textarea 属性
+
+| 属性         | 说明                       | 类型                                  | 默认值  |
+| ------------ | -------------------------- | ------------------------------------- | ------- |
+| value        | 输入框的值（受控）         | `string`                              | -       |
+| defaultValue | 默认值（非受控）           | `string`                              | -       |
+| placeholder  | 占位符文本                 | `string`                              | -       |
+| width        | 文本域宽度（像素）         | `number`                              | -       |
+| autosize     | 是否自动调整高度           | `boolean`                             | `false` |
+| maxHeight    | 自动调整时的最大高度       | `number`                              | -       |
+| minRows      | 最小行数                   | `number`                              | -       |
+| disabled     | 是否禁用                   | `boolean`                             | `false` |
+| readOnly     | 是否只读                   | `boolean`                             | `false` |
+| size         | 输入框尺寸                 | `KubedSizes`                          | `'sm'`  |
+| wrapperProps | 传递给外层容器的属性       | `object`                              | -       |
+| onChange     | 值变化时的回调             | `(e: ChangeEvent) => void`            | -       |
+| onFocus      | 获得焦点时的回调           | `(e: FocusEvent) => void`             | -       |
+| onBlur       | 失去焦点时的回调           | `(e: FocusEvent) => void`             | -       |
+| 其他         | 原生属性                   | `HTMLAttributes<HTMLTextAreaElement>` | -       |
+
+:::info
+
+**关于受控与非受控**：
+- 使用 `value` + `onChange` 实现受控组件，完全控制输入值
+- 使用 `defaultValue` 实现非受控组件，组件内部管理状态
+- 受控模式下，必须提供 `onChange` 处理函数更新 `value`
+
+**关于自动调整高度**：
+- `autosize`：启用后，文本域会根据内容自动调整高度
+- `maxHeight`：配合 `autosize` 使用，限制最大高度，超出后出现滚动条
+- `minRows`：设置最小显示行数
+
+**关于尺寸**：
+- Textarea 支持与 Input 相同的尺寸选项：`xs`、`sm`、`md`、`lg`、`xl`
+- 默认尺寸为 `sm`
+
+Textarea 组件继承所有原生 HTML textarea 元素的属性（如 `rows`、`cols`、`maxLength` 等）。
+
+:::
+
+## 使用建议
+
+### 受控与非受控
+
+根据场景选择合适的使用方式：
+
+```jsx
+// 非受控：适用于简单场景，不需要外部控制状态
+<Textarea defaultValue="默认内容" placeholder="请输入" />
+
+// 受控：适用于需要验证、格式化或外部控制的场景
+const [value, setValue] = React.useState('');
+<Textarea value={value} onChange={(e) => setValue(e.target.value)} />
+```
+
+### 字符限制
+
+推荐的字符限制实现方式：
+
+```jsx
+const [value, setValue] = React.useState('');
+const maxLength = 200;
+
+const handleChange = (e) => {
+  const newValue = e.target.value;
+  // 方式1: 限制输入
+  if (newValue.length <= maxLength) {
+    setValue(newValue);
+  }
+
+  // 方式2: 允许输入但提示
+  // setValue(newValue.slice(0, maxLength));
+};
+
+<Textarea value={value} onChange={handleChange} />
+<div>剩余 {maxLength - value.length} 字符</div>
+```
+
+### 内容验证
+
+实现内容验证的推荐方式：
+
+```jsx
+const [value, setValue] = React.useState('');
+const [error, setError] = React.useState('');
+
+const handleChange = (e) => {
+  const newValue = e.target.value;
+  setValue(newValue);
+
+  // 实时验证
+  if (newValue && newValue.length < 10) {
+    setError('内容不能少于10个字符');
+  } else {
+    setError('');
+  }
+};
+
+<Textarea value={value} onChange={handleChange} />
+{error && <div className="error">{error}</div>}
+```
+
+### 自动高度调整
+
+使用自动高度的建议：
+
+```jsx
+// 基础自动高度
+<Textarea autosize placeholder="随内容增长" />
+
+// 带最大高度限制
+<Textarea
+  autosize
+  maxHeight={200}
+  placeholder="最高200px，超出后滚动"
+/>
+
+// 带最小行数
+<Textarea
+  autosize
+  minRows={3}
+  placeholder="至少显示3行"
+/>
+```
+
+### 与表单组件配合
+
+在 Form 中使用 Textarea：
+
+```jsx
+<Form onFinish={handleFinish}>
+  <FormItem
+    name="description"
+    label="描述"
+    rules={[
+      { required: true, message: '请输入描述' },
+      { min: 10, message: '描述至少10个字符' },
+      { max: 500, message: '描述最多500个字符' },
+    ]}
+  >
+    <Textarea
+      placeholder="请输入描述"
+      autosize
+      maxHeight={200}
+    />
+  </FormItem>
+</Form>
+```
+
+### 性能优化
+
+对于频繁更新的场景，考虑使用防抖：
+
+```jsx
+import { useDebouncedValue } from '@kubed/hooks';
+
+const [value, setValue] = React.useState('');
+const [debouncedValue] = useDebouncedValue(value, 300);
+
+React.useEffect(() => {
+  // 使用防抖后的值进行搜索或保存
+  if (debouncedValue) {
+    saveContent(debouncedValue);
+  }
+}, [debouncedValue]);
+
+<Textarea
+  value={value}
+  onChange={(e) => setValue(e.target.value)}
+/>
+```
+
+### 可访问性
+
+增强可访问性的建议：
+
+```jsx
+// 使用 label 关联
+<label htmlFor="description">描述</label>
+<Textarea
+  id="description"
+  placeholder="请输入描述"
+  aria-label="描述输入框"
+  aria-describedby="description-help"
+/>
+<div id="description-help">请输入至少10个字符的描述</div>
+
+// 错误状态提示
+<Textarea
+  aria-invalid={hasError}
+  aria-errormessage="error-message"
+/>
+{hasError && <div id="error-message" role="alert">{errorMessage}</div>}
+```

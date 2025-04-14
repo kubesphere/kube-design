@@ -1,0 +1,578 @@
+---
+sidebar_position: 3
+---
+
+# Select 选择器
+
+用于从列表中选择值的下拉选择组件。
+
+## 何时使用
+
+- 在一组选项中选择单个或多个值
+- 需要提供搜索过滤功能
+- 选项数量较多（超过 5 个）时替代 Radio
+- 需要支持远程搜索或动态加载选项
+
+## 示例
+
+### 基础用法
+
+最简单的用法，通过 `options` 配置选项。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(undefined);
+
+  const options = [
+    { label: 'Kubernetes', value: 'kubernetes' },
+    { label: 'Docker', value: 'docker' },
+    { label: 'Istio', value: 'istio' },
+    { label: 'Helm', value: 'helm' },
+  ];
+
+  return (
+    <div>
+      <Select
+        placeholder="请选择容器平台"
+        options={options}
+        value={value}
+        onChange={setValue}
+        style={{ width: 200 }}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        已选择: {value || '暂无'}
+      </div>
+    </div>
+  );
+}
+```
+
+### 默认值
+
+通过 `defaultValue` 设置默认选中值。
+
+```jsx live
+function Demo() {
+  const options = [
+    { label: 'Kubernetes', value: 'kubernetes' },
+    { label: 'Docker', value: 'docker' },
+    { label: 'Istio', value: 'istio' },
+  ];
+
+  return (
+    <Select
+      placeholder="请选择"
+      options={options}
+      defaultValue="kubernetes"
+      style={{ width: 200 }}
+    />
+  );
+}
+```
+
+### 禁用状态
+
+通过 `disabled` 属性禁用选择器。
+
+```jsx live
+function Demo() {
+  const options = [
+    { label: 'Kubernetes', value: 'kubernetes' },
+    { label: 'Docker', value: 'docker' },
+    { label: 'Istio', value: 'istio' },
+  ];
+
+  return (
+    <Group direction="column">
+      <Select placeholder="禁用状态" options={options} disabled style={{ width: 200 }} />
+      <Select
+        placeholder="禁用状态（有值）"
+        options={options}
+        defaultValue="kubernetes"
+        disabled
+        style={{ width: 200 }}
+      />
+    </Group>
+  );
+}
+```
+
+### 禁用选项
+
+通过 `disabled` 属性禁用单个选项。
+
+```jsx live
+function Demo() {
+  const options = [
+    { label: 'Kubernetes', value: 'kubernetes' },
+    { label: 'Docker', value: 'docker' },
+    { label: 'Istio (不可选)', value: 'istio', disabled: true },
+    { label: 'Helm', value: 'helm' },
+  ];
+
+  return <Select placeholder="请选择" options={options} style={{ width: 200 }} />;
+}
+```
+
+### 可搜索
+
+通过 `showSearch` 属性启用搜索功能。
+
+```jsx live
+function Demo() {
+  const options = [
+    { label: 'Kubernetes', value: 'kubernetes' },
+    { label: 'Docker', value: 'docker' },
+    { label: 'Istio', value: 'istio' },
+    { label: 'Helm', value: 'helm' },
+    { label: 'Prometheus', value: 'prometheus' },
+    { label: 'Grafana', value: 'grafana' },
+    { label: 'Jaeger', value: 'jaeger' },
+    { label: 'Fluentd', value: 'fluentd' },
+  ];
+
+  return <Select placeholder="搜索并选择" options={options} showSearch style={{ width: 200 }} />;
+}
+```
+
+### 多选模式
+
+通过 `mode="multiple"` 启用多选功能。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(['kubernetes']);
+
+  const options = [
+    { label: 'Kubernetes', value: 'kubernetes' },
+    { label: 'Docker', value: 'docker' },
+    { label: 'Istio', value: 'istio' },
+    { label: 'Helm', value: 'helm' },
+    { label: 'Prometheus', value: 'prometheus' },
+  ];
+
+  return (
+    <div>
+      <Select
+        placeholder="请选择多个平台"
+        options={options}
+        mode="multiple"
+        value={value}
+        onChange={setValue}
+        style={{ width: 300 }}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        已选择: {value.length > 0 ? value.join(', ') : '暂无'}
+      </div>
+    </div>
+  );
+}
+```
+
+### 标签模式
+
+通过 `mode="tags"` 启用标签模式，支持自定义输入新值。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState([]);
+
+  const options = [
+    { label: 'app', value: 'app' },
+    { label: 'web', value: 'web' },
+    { label: 'api', value: 'api' },
+  ];
+
+  return (
+    <div>
+      <Select
+        placeholder="输入或选择标签"
+        options={options}
+        mode="tags"
+        value={value}
+        onChange={setValue}
+        style={{ width: 300 }}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        标签: {value.length > 0 ? value.join(', ') : '暂无'}
+      </div>
+    </div>
+  );
+}
+```
+
+### 可清除
+
+通过 `allowClear` 属性允许清除选中值。
+
+```jsx live
+function Demo() {
+  const options = [
+    { label: 'Kubernetes', value: 'kubernetes' },
+    { label: 'Docker', value: 'docker' },
+    { label: 'Istio', value: 'istio' },
+  ];
+
+  return (
+    <Group direction="column">
+      <Select
+        placeholder="单选 - 可清除"
+        options={options}
+        defaultValue="kubernetes"
+        allowClear
+        style={{ width: 200 }}
+      />
+      <Select
+        placeholder="多选 - 可清除"
+        options={options}
+        defaultValue={['kubernetes', 'docker']}
+        mode="multiple"
+        allowClear
+        style={{ width: 300 }}
+      />
+    </Group>
+  );
+}
+```
+
+### 分组选项
+
+使用 `OptGroup` 对选项进行分组。
+
+```jsx live
+function Demo() {
+  return (
+    <Select placeholder="请选择" style={{ width: 200 }}>
+      <Select.OptGroup label="容器运行时">
+        <Select.Option value="docker">Docker</Select.Option>
+        <Select.Option value="containerd">containerd</Select.Option>
+        <Select.Option value="crio">CRI-O</Select.Option>
+      </Select.OptGroup>
+      <Select.OptGroup label="编排平台">
+        <Select.Option value="kubernetes">Kubernetes</Select.Option>
+        <Select.Option value="swarm">Docker Swarm</Select.Option>
+      </Select.OptGroup>
+    </Select>
+  );
+}
+```
+
+### 自定义选项内容
+
+通过 `Option` 子组件自定义选项内容。
+
+```jsx live
+function Demo() {
+  const { Kubernetes, Docker } = KubedIcons;
+
+  return (
+    <Select placeholder="请选择平台" style={{ width: 250 }}>
+      <Select.Option value="kubernetes">
+        <Group spacing="sm">
+          <Kubernetes size={16} />
+          <span>Kubernetes</span>
+        </Group>
+      </Select.Option>
+      <Select.Option value="docker">
+        <Group spacing="sm">
+          <Docker size={16} />
+          <span>Docker</span>
+        </Group>
+      </Select.Option>
+    </Select>
+  );
+}
+```
+
+### 自定义空状态
+
+通过 `notFoundContent` 自定义空状态显示。
+
+```jsx live
+function Demo() {
+  const { Information } = KubedIcons;
+
+  return (
+    <Select
+      placeholder="请搜索"
+      showSearch
+      options={[]}
+      notFoundContent={
+        <Group spacing="xs" style={{ justifyContent: 'center', padding: '12px' }}>
+          <Information size={16} />
+          <span>未找到匹配项</span>
+        </Group>
+      }
+      style={{ width: 200 }}
+    />
+  );
+}
+```
+
+### 受控组件
+
+通过 `value` 和 `onChange` 实现受控组件。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('kubernetes');
+
+  const options = [
+    { label: 'Kubernetes', value: 'kubernetes' },
+    { label: 'Docker', value: 'docker' },
+    { label: 'Istio', value: 'istio' },
+  ];
+
+  return (
+    <div>
+      <Select
+        placeholder="请选择"
+        options={options}
+        value={value}
+        onChange={setValue}
+        style={{ width: 200 }}
+      />
+      <Group style={{ marginTop: '16px' }}>
+        <Button onClick={() => setValue('kubernetes')}>选择 Kubernetes</Button>
+        <Button onClick={() => setValue('docker')}>选择 Docker</Button>
+        <Button onClick={() => setValue(undefined)}>清空</Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+### 动态加载选项
+
+根据搜索内容动态加载选项。
+
+```jsx live
+function Demo() {
+  const [options, setOptions] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+
+  const handleSearch = (value) => {
+    if (!value) {
+      setOptions([]);
+      return;
+    }
+
+    setLoading(true);
+    // 模拟异步搜索
+    setTimeout(() => {
+      const results = [`${value}-app`, `${value}-web`, `${value}-api`, `${value}-service`].map(
+        (item) => ({ label: item, value: item })
+      );
+      setOptions(results);
+      setLoading(false);
+    }, 500);
+  };
+
+  return (
+    <Select
+      placeholder="输入搜索关键词"
+      showSearch
+      options={options}
+      onSearch={handleSearch}
+      filterOption={false}
+      loading={loading}
+      notFoundContent={loading ? '搜索中...' : '暂无数据'}
+      style={{ width: 250 }}
+    />
+  );
+}
+```
+
+## API
+
+### Select 属性
+
+| 属性                     | 说明                     | 类型                                    | 默认值      |
+| ------------------------ | ------------------------ | --------------------------------------- | ----------- |
+| value                    | 选中的值（受控）         | `string \| number \| (string \| number)[] \| LabeledValue \| LabeledValue[]`                    | -           |
+| defaultValue             | 默认值（非受控）         | `string \| number \| (string \| number)[] \| LabeledValue \| LabeledValue[]`                    | -           |
+| placeholder              | 占位符文本               | `string`                                | -           |
+| options                  | 选项数据                 | `Option[]`                              | `[]`        |
+| mode                     | 模式                     | `'multiple' \| 'tags'`                  | -（单选）   |
+| disabled                 | 是否禁用                 | `boolean`                               | `false`     |
+| showSearch               | 是否可搜索               | `boolean`                               | `false`     |
+| showArrow                | 是否显示下拉箭头         | `boolean`                               | `true`      |
+| allowClear               | 是否允许清除             | `boolean`                               | `false`     |
+| loading                  | 是否加载中               | `boolean`                               | `false`     |
+| bordered                 | 是否有边框               | `boolean`                               | `true`      |
+| virtual                  | 是否启用虚拟滚动         | `boolean`                               | `true`      |
+| listHeight               | 下拉列表高度             | `number`                                | `256`       |
+| listItemHeight           | 下拉列表项高度           | `number`                                | `24`        |
+| notFoundContent          | 空状态内容               | `ReactNode`                             | `'No Data'` |
+| filterOption             | 是否过滤选项             | `boolean \| (input, option) => boolean` | `true`      |
+| dropdownMatchSelectWidth | 下拉框宽度是否匹配选择器 | `boolean \| number`                     | `true`      |
+| getPopupContainer        | 下拉框挂载容器           | `(node: HTMLElement) => HTMLElement`    | -           |
+| onChange                 | 值变化时的回调           | `(value, option) => void`               | -           |
+| onSearch                 | 搜索时的回调             | `(value: string) => void`               | -           |
+| onSelect                 | 选中选项时的回调         | `(value, option) => void`               | -           |
+| onDeselect               | 取消选中时的回调（多选） | `(value, option) => void`               | -           |
+| onClear                  | 清除时的回调             | `() => void`                            | -           |
+| 其他                     | 原生属性                 | `HTMLAttributes<HTMLElement>`           | -           |
+
+### Option 类型
+
+```typescript
+interface Option {
+  label: ReactNode; // 显示的文本
+  value: string | number; // 选项值
+  disabled?: boolean; // 是否禁用
+}
+
+interface LabeledValue {
+  key?: string;
+  value: string | number;
+  label: ReactNode;
+}
+```
+
+### Select.Option 属性
+
+| 属性     | 说明     | 类型              | 默认值  |
+| -------- | -------- | ----------------- | ------- |
+| value    | 选项值   | `string \| number` | -       |
+| disabled | 是否禁用 | `boolean`         | `false` |
+| children | 选项内容 | `ReactNode`       | -       |
+
+### Select.OptGroup 属性
+
+| 属性     | 说明     | 类型        | 默认值 |
+| -------- | -------- | ----------- | ------ |
+| label    | 分组标签 | `ReactNode` | -      |
+| children | 子选项   | `ReactNode` | -      |
+
+:::info
+
+**关于模式**：
+
+- 默认模式：单选（不设置 `mode` 属性时）
+- `multiple`：多选模式，可选择多个值，值类型为数组
+- `tags`：标签模式，支持自定义输入新值，值类型为数组
+
+**关于搜索**：
+
+- `showSearch`：启用搜索功能
+- `filterOption`：设为 `false` 可禁用本地过滤，配合 `onSearch` 实现远程搜索
+- 默认过滤规则是匹配 label
+
+**关于箭头显示**：
+
+- `showArrow`：控制是否显示下拉箭头图标，默认为 `true`
+- 多选模式下可通过设置 `showArrow={true}` 来显示箭头
+
+**关于受控与非受控**：
+
+- 使用 `value` + `onChange` 实现受控组件
+- 使用 `defaultValue` 实现非受控组件
+- 多选模式下，值为数组类型
+
+**关于性能**：
+
+- Select 默认启用虚拟滚动，适合大数据量场景
+- 通过 `listHeight` 和 `listItemHeight` 调整虚拟滚动参数
+
+:::
+
+## 使用建议
+
+### 受控与非受控
+
+根据场景选择合适的使用方式：
+
+```jsx
+// 非受控：适用于简单场景
+<Select defaultValue="kubernetes" options={options} />;
+
+// 受控：适用于需要外部控制或联动的场景
+const [value, setValue] = React.useState('kubernetes');
+<Select value={value} onChange={setValue} options={options} />;
+```
+
+### Select vs Radio
+
+选择使用 Select 还是 Radio：
+
+```jsx
+// Select：选项多（>5个）或需要搜索功能
+<Select
+  showSearch
+  options={manyOptions}
+  placeholder="搜索并选择"
+/>
+
+// Radio：选项少（≤5个）且需要一眼看到所有选项
+<RadioGroup value={value} onChange={setValue}>
+  <Radio label="小" value="sm" />
+  <Radio label="中" value="md" />
+  <Radio label="大" value="lg" />
+</RadioGroup>
+```
+
+### 远程搜索
+
+实现远程搜索的推荐方式：
+
+```jsx
+const [options, setOptions] = React.useState([]);
+const [loading, setLoading] = React.useState(false);
+
+const handleSearch = async (value) => {
+  if (!value) {
+    setOptions([]);
+    return;
+  }
+
+  setLoading(true);
+  const results = await fetchOptions(value);
+  setOptions(results);
+  setLoading(false);
+};
+
+<Select
+  showSearch
+  filterOption={false}
+  onSearch={handleSearch}
+  options={options}
+  loading={loading}
+  notFoundContent={loading ? '搜索中...' : '暂无数据'}
+/>;
+```
+
+### 与表单组件配合
+
+在 Form 中使用 Select：
+
+```jsx
+<Form onFinish={handleFinish}>
+  <FormItem name="platform" label="平台" rules={[{ required: true, message: '请选择平台' }]}>
+    <Select placeholder="请选择" options={options} />
+  </FormItem>
+  <FormItem name="tags" label="标签" rules={[{ required: true, message: '请选择标签' }]}>
+    <Select mode="multiple" placeholder="请选择" options={tagOptions} />
+  </FormItem>
+</Form>
+```
+
+### 大数据量优化
+
+对于大数据量场景，Select 默认启用虚拟滚动：
+
+```jsx
+// 大数据量场景
+const options = Array.from({ length: 10000 }, (_, i) => ({
+  label: `选项 ${i + 1}`,
+  value: `option-${i + 1}`,
+}));
+
+<Select
+  showSearch
+  options={options}
+  listHeight={300}
+  listItemHeight={32}
+  placeholder="从10000个选项中选择"
+/>;
+```

@@ -1,6 +1,7 @@
 import React from 'react';
-import { shallowWithTheme } from '@kubed/tests';
+import { renderWithTheme } from '@kubed/tests';
 import { Badge } from './Badge';
+import { screen } from '@testing-library/react';
 
 describe('@kubed/components/Badge', () => {
   it('has correct displayName', () => {
@@ -8,12 +9,30 @@ describe('@kubed/components/Badge', () => {
   });
 
   it('renders given color and shadow', () => {
-    const element = shallowWithTheme(
+    renderWithTheme(
       <Badge color="warning" shadow className="badge-color-shadow">
         test
       </Badge>
     );
-    expect(element.find(Badge).prop('color')).toBe('warning');
-    expect(element.find(Badge).prop('shadow')).toBe(true);
+    screen.debug(screen.getByText('test'));
+    const element = screen.getByText('test');
+
+    expect(element).toHaveAttribute('color', 'warning');
+
+    expect(element).not.toHaveStyle({ boxShadow: 'none' });
+  });
+
+  it('to match snapshot', () => {
+    const { asFragment } = renderWithTheme(<Badge color="warning">test</Badge>);
+    expect(asFragment()).toMatchInlineSnapshot(`
+      <DocumentFragment>
+        <div
+          class="sc-Nxspf jRRSF badge"
+          color="warning"
+        >
+          test
+        </div>
+      </DocumentFragment>
+    `);
   });
 });

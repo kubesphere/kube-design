@@ -1,0 +1,256 @@
+---
+sidebar_position: 1
+---
+
+# Text 文本
+
+用于展示文本内容的基础组件。
+
+## 何时使用
+
+- 需要展示标题、段落、列表内容时
+- 需要对文字内容进行样式控制时
+- 需要展示带语义化颜色的文本时
+
+在 Kube Design 中,Text 组件提供了丰富的文本样式控制:
+
+- **多种尺寸**:支持 xs、sm、md、lg、xl 五种预设尺寸
+- **语义化颜色**:支持主题颜色系统中的所有颜色
+- **标题变体**:支持 h1-h6 标题样式
+- **文本装饰**:支持下划线、斜体、删除线等样式
+- **灵活配置**:支持字重、文本转换、对齐方式等
+
+## 示例
+
+### 基础用法
+
+最基本的文本展示。
+
+```jsx live
+function Demo() {
+  return <Text>这是一段普通文本</Text>;
+}
+```
+
+### 尺寸
+
+使用 `size` 属性设置文本的大小,支持 xs、sm、md、lg、xl 五种预设尺寸。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="xs">
+      <Text size="xs">超小尺寸文本 (xs)</Text>
+      <Text size="sm">小尺寸文本 (sm)</Text>
+      <Text size="md">中等尺寸文本 (md)</Text>
+      <Text size="lg">大尺寸文本 (lg)</Text>
+      <Text size="xl">超大尺寸文本 (xl)</Text>
+    </Group>
+  );
+}
+```
+
+### 颜色
+
+通过 `color` 属性设置文本的颜色,支持主题中的所有颜色。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="xs">
+      <Text color="primary">Primary 颜色文本</Text>
+      <Text color="success">Success 颜色文本</Text>
+      <Text color="warning">Warning 颜色文本</Text>
+      <Text color="error">Error 颜色文本</Text>
+      <Text color="secondary">Secondary 颜色文本</Text>
+    </Group>
+  );
+}
+```
+
+### 标题变体
+
+使用 `variant` 属性可以将文本渲染为 h1-h6 标题,会自动应用对应的字体大小。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="sm">
+      <Text variant="h1">一级标题 (H1)</Text>
+      <Text variant="h2">二级标题 (H2)</Text>
+      <Text variant="h3">三级标题 (H3)</Text>
+      <Text variant="h4">四级标题 (H4)</Text>
+      <Text variant="h5">五级标题 (H5)</Text>
+      <Text variant="h6">六级标题 (H6)</Text>
+    </Group>
+  );
+}
+```
+
+### 文本装饰
+
+Text 组件支持多种文本装饰样式。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="xs">
+      <Text underline>带下划线的文本</Text>
+      <Text italic>斜体文本</Text>
+      <Text delete>删除线文本</Text>
+    </Group>
+  );
+}
+```
+
+### 字重
+
+使用 `weight` 属性设置文本的字重。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="xs">
+      <Text weight={300}>细字重 (300)</Text>
+      <Text weight={400}>正常字重 (400)</Text>
+      <Text weight={500}>中等字重 (500)</Text>
+      <Text weight={600}>半粗字重 (600)</Text>
+      <Text weight={700}>粗字重 (700)</Text>
+      <Text weight={900}>最粗字重 (900)</Text>
+    </Group>
+  );
+}
+```
+
+### 文本转换
+
+使用 `transform` 属性可以转换文本的大小写。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="xs">
+      <Text transform="uppercase">uppercase text</Text>
+      <Text transform="lowercase">LOWERCASE TEXT</Text>
+      <Text transform="capitalize">capitalize text</Text>
+    </Group>
+  );
+}
+```
+
+### 对齐方式
+
+使用 `align` 属性设置文本的对齐方式。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="xs">
+      <Text align="left" style={{ width: '100%', border: '1px dashed #ccc', padding: '8px' }}>
+        左对齐文本
+      </Text>
+      <Text align="center" style={{ width: '100%', border: '1px dashed #ccc', padding: '8px' }}>
+        居中对齐文本
+      </Text>
+      <Text align="right" style={{ width: '100%', border: '1px dashed #ccc', padding: '8px' }}>
+        右对齐文本
+      </Text>
+    </Group>
+  );
+}
+```
+
+### 链接变体
+
+使用 `variant="link"` 可以将文本渲染为链接样式
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="md">
+      <Text variant="link" as="a" href="#" color="primary">
+        这是一个链接
+      </Text>
+      <Text variant="link" as="a" href="#" color="success">
+        成功色链接
+      </Text>
+      <Text variant="link" as="a" href="#" color="error">
+        错误色链接
+      </Text>
+    </Group>
+  );
+}
+```
+
+### 组合使用
+
+可以组合多个属性来创建丰富的文本样式。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Text size="lg" color="primary" weight={600}>
+        大号加粗的主色文本
+      </Text>
+      <Text size="md" color="warning" italic underline>
+        中号斜体带下划线的警告文本
+      </Text>
+      <Text size="sm" color="secondary" transform="uppercase">
+        小号大写的次要文本
+      </Text>
+      <Text variant="h3" color="success" weight={700} align="center">
+        居中加粗的成功色标题
+      </Text>
+    </Group>
+  );
+}
+```
+
+### 自定义元素
+
+使用 `as` 属性可以更改底层渲染的 HTML 元素。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="xs">
+      <Text as="p">渲染为 p 标签的文本</Text>
+      <Text as="span" color="primary">
+        渲染为 span 标签的文本
+      </Text>
+      <Text as="label" weight={600}>
+        渲染为 label 标签的文本
+      </Text>
+    </Group>
+  );
+}
+```
+
+## API
+
+### Text 属性
+
+| 属性      | 说明               | 类型                                                               | 默认值   |
+| --------- | ------------------ | ------------------------------------------------------------------ | -------- |
+| size      | 文本尺寸           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number`                   | `'sm'`   |
+| color     | 文本颜色           | `string`                                                           | -        |
+| weight    | 字体粗细           | `React.CSSProperties['fontWeight']`                                | -        |
+| transform | 文本转换           | `'capitalize' \| 'uppercase' \| 'lowercase'`                       | -        |
+| underline | 是否显示下划线     | `boolean`                                                          | `false`  |
+| italic    | 是否斜体           | `boolean`                                                          | `false`  |
+| delete    | 是否显示删除线     | `boolean`                                                          | `false`  |
+| align     | 文本对齐方式       | `'left' \| 'center' \| 'right'`                                    | -        |
+| variant   | 文本变体           | `'text' \| 'link' \| 'h1' \| 'h2' \| 'h3' \| 'h4' \| 'h5' \| 'h6'` | `'text'` |
+| as        | 更改底层 HTML 元素 | `string \| Component`                                              | `'div'`  |
+| className | 自定义类名         | `string`                                                           | -        |
+| style     | 自定义样式         | `CSSProperties`                                                    | -        |
+| children  | 文本内容           | `ReactNode`                                                        | -        |
+
+:::info
+
+- 当 `variant` 设置为 h1-h6 时,组件会自动使用对应的 HTML 标签渲染
+- `color` 属性支持主题中的所有颜色,包括 primary、success、warning、error 等
+- 可以通过 `style` 属性添加更多自定义样式
+- 组件继承所有原生 HTML div 元素的属性（当 `as` 为其他元素时,继承对应元素的属性）
+  :::

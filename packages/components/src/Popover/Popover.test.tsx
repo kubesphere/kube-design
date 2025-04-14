@@ -1,19 +1,26 @@
-import { shallowWithTheme } from '@kubed/tests';
+import { renderWithTheme } from '@kubed/tests';
 import { Button } from '@kubed/components';
 import React from 'react';
 import { Popover } from './Popover';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 describe('@kubed/components/Popover', () => {
-  it('renders given color and shadow', () => {
-    const element = shallowWithTheme(
+  it('render title correctly', async () => {
+    const user = userEvent.setup();
+    renderWithTheme(
       <Popover title="popover title" content="Display additional, floating content on click">
         <Button radius="xl">KubeSphere</Button>
       </Popover>
     );
-    expect(element.find(Popover).prop('title')).toBe('popover title');
-    expect(element.find(Popover).prop('content')).toBe(
-      'Display additional, floating content on click'
-    );
+
+    const button = screen.getByText('KubeSphere');
+
+    expect(screen.queryByText('popover title')).not.toBeInTheDocument();
+    await user.hover(button);
+    const popoverElement = screen.getByRole('tooltip');
+    expect(popoverElement).toBeInTheDocument();
+    expect(popoverElement).toMatchSnapshot();
   });
 
   it('has correct displayName', () => {

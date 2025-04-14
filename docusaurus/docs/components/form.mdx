@@ -1,0 +1,546 @@
+---
+sidebar_position: 1
+---
+
+# Form 表单
+
+用于收集、校验和提交表单数据。
+
+## 何时使用
+
+- 需要创建一个数据录入表单
+- 需要对用户输入进行验证
+- 需要进行数据提交
+- 需要动态增删表单项
+
+## 示例
+
+### 基础用法
+
+最简单的用法，通过 `onFinish` 获取表单数据。
+
+```jsx live
+function Demo() {
+  const handleFinish = (values) => {
+    console.log('表单数据:', values);
+    alert(JSON.stringify(values, null, 2));
+  };
+
+  return (
+    <Form onFinish={handleFinish}>
+      <FormItem
+        name="username"
+        label="用户名"
+        rules={[{ required: true, message: '请输入用户名' }]}
+      >
+        <Input placeholder="请输入用户名" />
+      </FormItem>
+      <FormItem
+        name="email"
+        label="邮箱"
+        rules={[
+          { required: true, message: '请输入邮箱' },
+          { type: 'email', message: '请输入有效的邮箱地址' },
+        ]}
+      >
+        <Input placeholder="请输入邮箱" />
+      </FormItem>
+      <FormItem>
+        <Button type="submit" variant="filled" color="primary">
+          提交
+        </Button>
+      </FormItem>
+    </Form>
+  );
+}
+```
+
+### 表单布局
+
+通过 `layout` 属性设置表单布局方式。
+
+```jsx live
+function Demo() {
+  const [layout, setLayout] = React.useState('vertical');
+
+  return (
+    <div>
+      <Group style={{ marginBottom: '24px' }}>
+        <Button onClick={() => setLayout('horizontal')}>水平布局</Button>
+        <Button onClick={() => setLayout('vertical')}>垂直布局</Button>
+        <Button onClick={() => setLayout('inline')}>行内布局</Button>
+      </Group>
+
+      <Form layout={layout} onFinish={(values) => console.log(values)}>
+        <FormItem name="name" label="姓名" rules={[{ required: true }]}>
+          <Input />
+        </FormItem>
+        <FormItem name="age" label="年龄">
+          <Input />
+        </FormItem>
+        <FormItem>
+          <Button type="submit">提交</Button>
+        </FormItem>
+      </Form>
+    </div>
+  );
+}
+```
+
+### 表单验证
+
+支持多种验证规则。
+
+```jsx live
+function Demo() {
+  const handleFinish = (values) => {
+    alert('验证通过: ' + JSON.stringify(values));
+  };
+
+  return (
+    <Form onFinish={handleFinish}>
+      <FormItem
+        name="username"
+        label="用户名"
+        rules={[
+          { required: true, message: '用户名不能为空' },
+          { min: 3, message: '用户名至少3个字符' },
+          { max: 20, message: '用户名最多20个字符' },
+        ]}
+      >
+        <Input />
+      </FormItem>
+      <FormItem
+        name="password"
+        label="密码"
+        rules={[
+          { required: true, message: '密码不能为空' },
+          { min: 6, message: '密码至少6个字符' },
+        ]}
+      >
+        <InputPassword />
+      </FormItem>
+      <FormItem
+        name="confirm"
+        label="确认密码"
+        dependencies={['password']}
+        rules={[
+          { required: true, message: '请确认密码' },
+          ({ getFieldValue }) => ({
+            validator(_, value) {
+              if (!value || getFieldValue('password') === value) {
+                return Promise.resolve();
+              }
+              return Promise.reject(new Error('两次密码不一致'));
+            },
+          }),
+        ]}
+      >
+        <InputPassword />
+      </FormItem>
+      <FormItem>
+        <Button type="submit" variant="filled" color="primary">
+          提交
+        </Button>
+      </FormItem>
+    </Form>
+  );
+}
+```
+
+### 动态表单项
+
+使用 `FormList` 实现动态增删表单项。
+
+```jsx live
+function Demo() {
+  const { Add, Trash } = KubedIcons;
+
+  return (
+    <Form onFinish={(values) => console.log(values)}>
+      <FormList name="users">
+        {(fields, { add, remove }) => (
+          <>
+            {fields.map(({ key, name, ...restField }) => (
+              <Group key={key} style={{ marginBottom: '12px' }}>
+                <FormItem
+                  {...restField}
+                  name={[name, 'firstName']}
+                  label="名"
+                  rules={[{ required: true, message: '请输入名' }]}
+                  style={{ marginBottom: 0, flex: 1 }}
+                >
+                  <Input />
+                </FormItem>
+                <FormItem
+                  {...restField}
+                  name={[name, 'lastName']}
+                  label="姓"
+                  rules={[{ required: true, message: '请输入姓' }]}
+                  style={{ marginBottom: 0, flex: 1 }}
+                >
+                  <Input />
+                </FormItem>
+                <Button variant="text" color="error" onClick={() => remove(name)}>
+                  <Trash size={16} />
+                </Button>
+              </Group>
+            ))}
+            <Button onClick={() => add()} leftIcon={<Add size={16} />}>
+              添加用户
+            </Button>
+          </>
+        )}
+      </FormList>
+      <FormItem style={{ marginTop: '24px' }}>
+        <Button type="submit" variant="filled" color="primary">
+          提交
+        </Button>
+      </FormItem>
+    </Form>
+  );
+}
+```
+
+### 表单方法
+
+使用 `useForm` Hook 获取表单实例，调用表单方法。
+
+```jsx live
+function Demo() {
+  const [form] = useForm();
+
+  const handleFill = () => {
+    form.setFieldsValue({
+      username: 'admin',
+      email: 'admin@example.com',
+    });
+  };
+
+  const handleReset = () => {
+    form.resetFields();
+  };
+
+  const handleGetValues = () => {
+    const values = form.getFieldsValue();
+    alert(JSON.stringify(values, null, 2));
+  };
+
+  return (
+    <div>
+      <Group style={{ marginBottom: '16px' }}>
+        <Button onClick={handleFill}>填充数据</Button>
+        <Button onClick={handleReset}>重置</Button>
+        <Button onClick={handleGetValues}>获取值</Button>
+      </Group>
+      <Form form={form} onFinish={(values) => console.log(values)}>
+        <FormItem name="username" label="用户名" rules={[{ required: true }]}>
+          <Input />
+        </FormItem>
+        <FormItem name="email" label="邮箱" rules={[{ required: true, type: 'email' }]}>
+          <Input />
+        </FormItem>
+        <FormItem>
+          <Button type="submit" variant="filled" color="primary">
+            提交
+          </Button>
+        </FormItem>
+      </Form>
+    </div>
+  );
+}
+```
+
+### 复选框组
+
+在表单中使用 CheckboxGroup。
+
+```jsx live
+function Demo() {
+  return (
+    <Form onFinish={(values) => alert(JSON.stringify(values, null, 2))}>
+      <FormItem name="permissions" label="权限" rules={[{ required: true, message: '请选择权限' }]}>
+        <CheckboxGroup>
+          <Checkbox label="读取" value="read" />
+          <Checkbox label="写入" value="write" />
+          <Checkbox label="删除" value="delete" />
+          <Checkbox label="执行" value="execute" />
+        </CheckboxGroup>
+      </FormItem>
+      <FormItem>
+        <Button type="submit" variant="filled" color="primary">
+          提交
+        </Button>
+      </FormItem>
+    </Form>
+  );
+}
+```
+
+### 网格布局
+
+使用 Grid 组件实现复杂的表单布局。
+
+```jsx live
+function Demo() {
+  return (
+    <Form onFinish={(values) => console.log(values)}>
+      <Row gutter={[16, 16]}>
+        <Col span={12}>
+          <FormItem name="firstName" label="名" rules={[{ required: true }]}>
+            <Input />
+          </FormItem>
+        </Col>
+        <Col span={12}>
+          <FormItem name="lastName" label="姓" rules={[{ required: true }]}>
+            <Input />
+          </FormItem>
+        </Col>
+        <Col span={12}>
+          <FormItem name="email" label="邮箱" rules={[{ required: true, type: 'email' }]}>
+            <Input />
+          </FormItem>
+        </Col>
+        <Col span={12}>
+          <FormItem name="phone" label="电话" rules={[{ required: true }]}>
+            <Input />
+          </FormItem>
+        </Col>
+        <Col span={24}>
+          <FormItem name="address" label="地址">
+            <Textarea />
+          </FormItem>
+        </Col>
+      </Row>
+      <FormItem>
+        <Button type="submit" variant="filled" color="primary">
+          提交
+        </Button>
+      </FormItem>
+    </Form>
+  );
+}
+```
+
+### 帮助文本和提示
+
+使用 `help` 和 `tooltip` 属性添加额外信息。
+
+```jsx live
+function Demo() {
+  const { Question } = KubedIcons;
+
+  return (
+    <Form onFinish={(values) => console.log(values)}>
+      <FormItem
+        name="username"
+        label="用户名"
+        help="用户名用于登录系统"
+        rules={[{ required: true }]}
+      >
+        <Input />
+      </FormItem>
+      <FormItem
+        name="apiKey"
+        label="API 密钥"
+        tooltip="API密钥用于接口调用认证，请妥善保管"
+        rules={[{ required: true }]}
+      >
+        <Input />
+      </FormItem>
+      <FormItem>
+        <Button type="submit" variant="filled" color="primary">
+          提交
+        </Button>
+      </FormItem>
+    </Form>
+  );
+}
+```
+
+## API
+
+### Form 属性
+
+| 属性                | 说明                             | 类型                                      | 默认值       |
+| ------------------- | -------------------------------- | ----------------------------------------- | ------------ |
+| form                | 表单实例，通过 useForm 创建      | `FormInstance`                            | -            |
+| name                | 表单名称                         | `string`                                  | -            |
+| layout              | 表单布局                         | `'horizontal' \| 'vertical' \| 'inline'`  | `'vertical'` |
+| labelAlign          | 标签对齐方式                     | `'left' \| 'right'`                       | `'right'`    |
+| labelCol            | 标签栅格布局                     | `ColProps`                                | `{span: 4}`  |
+| wrapperCol          | 输入控件栅格布局                 | `ColProps`                                | `{span: 14}` |
+| size                | 表单组件尺寸                     | `KubedSizes`                              | `'sm'`       |
+| initialValues       | 表单初始值                       | `object`                                  | -            |
+| onFinish            | 提交表单且验证通过后的回调       | `(values: any) => void`                   | -            |
+| onFinishFailed      | 提交表单且验证失败后的回调       | `(errorInfo: ValidateErrorEntity) => void`| -            |
+| onValuesChange      | 字段值更新时触发回调             | `(changedValues, allValues) => void`      | -            |
+| validateMessages    | 验证提示模板                     | `ValidateMessages`                        | -            |
+| scrollToFirstError  | 提交失败自动滚动到第一个错误字段 | `boolean \| Options`                      | `false`      |
+| 其他                | 原生属性                         | `HTMLAttributes<HTMLFormElement>`         | -            |
+
+:::info
+
+**关于表单布局**：
+- `horizontal`：水平布局，标签和表单控件在同一行
+- `vertical`：垂直布局，标签和表单控件上下排列（默认）
+- `inline`：行内布局，所有表单项在一行
+
+**关于表单实例**：
+- 使用 `useForm()` Hook 创建表单实例
+- 表单实例提供了丰富的方法来操作表单
+
+:::
+
+### FormItem 属性
+
+| 属性         | 说明                     | 类型                          | 默认值  |
+| ------------ | ------------------------ | ----------------------------- | ------- |
+| name         | 字段名                   | `string \| string[]`          | -       |
+| label        | 标签文本                 | `ReactNode`                   | -       |
+| rules        | 校验规则                 | `Rule[]`                      | -       |
+| required     | 是否必填                 | `boolean`                     | `false` |
+| help         | 提示信息                 | `ReactNode`                   | -       |
+| tooltip      | 提示信息（悬停显示）     | `ReactNode`                   | -       |
+| dependencies | 依赖字段                 | `string[]`                    | -       |
+| valuePropName| 子节点的值属性名         | `string`                      | `'value'`|
+| initialValue | 初始值                   | `any`                         | -       |
+| 其他         | 原生属性                 | `HTMLAttributes<HTMLElement>` | -       |
+
+:::info
+
+**关于校验规则**：
+- `required`: 是否必填
+- `type`: 字段类型（`string`、`number`、`email`、`url` 等）
+- `min` / `max`: 最小/最大长度或值
+- `pattern`: 正则表达式
+- `validator`: 自定义验证函数
+- `message`: 错误提示信息
+
+**关于 dependencies**：
+- 当依赖字段更新时，会触发当前字段的验证
+- 常用于确认密码等场景
+
+:::
+
+### FormList
+
+用于渲染动态表单项列表。
+
+```jsx
+<FormList name="users">
+  {(fields, { add, remove }) => (
+    <>
+      {fields.map((field) => (
+        <FormItem key={field.key} {...field}>
+          <Input />
+        </FormItem>
+      ))}
+      <Button onClick={() => add()}>添加</Button>
+    </>
+  )}
+</FormList>
+```
+
+### Form 实例方法
+
+| 方法                | 说明                     | 类型                                      |
+| ------------------- | ------------------------ | ----------------------------------------- |
+| getFieldValue       | 获取指定字段的值         | `(name: string) => any`                   |
+| getFieldsValue      | 获取所有字段的值         | `() => any`                               |
+| setFieldValue       | 设置指定字段的值         | `(name: string, value: any) => void`      |
+| setFieldsValue      | 设置多个字段的值         | `(values: any) => void`                   |
+| resetFields         | 重置表单                 | `(fields?: string[]) => void`             |
+| validateFields      | 触发表单验证             | `(nameList?: string[]) => Promise<any>`   |
+| submit              | 提交表单                 | `() => void`                              |
+| scrollToField       | 滚动到指定字段位置       | `(name: string, options?: Options) => void`|
+
+## 使用建议
+
+### 表单验证
+
+常用的验证规则示例：
+
+```jsx
+// 必填
+{ required: true, message: '此字段为必填项' }
+
+// 邮箱
+{ type: 'email', message: '请输入有效的邮箱地址' }
+
+// 长度限制
+{ min: 3, max: 20, message: '长度在3到20个字符之间' }
+
+// 正则表达式
+{ pattern: /^1[3-9]\d{9}$/, message: '请输入有效的手机号' }
+
+// 自定义验证
+{
+  validator: (_, value) => {
+    if (value && value < 18) {
+      return Promise.reject('年龄必须大于18岁');
+    }
+    return Promise.resolve();
+  }
+}
+```
+
+### 动态表单
+
+使用 FormList 实现动态表单：
+
+```jsx
+<FormList name="members">
+  {(fields, { add, remove }) => (
+    <>
+      {fields.map((field, index) => (
+        <Row key={field.key}>
+          <Col span={10}>
+            <FormItem {...field} name={[field.name, 'name']}>
+              <Input />
+            </FormItem>
+          </Col>
+          <Col span={10}>
+            <FormItem {...field} name={[field.name, 'age']}>
+              <Input />
+            </FormItem>
+          </Col>
+          <Col span={4}>
+            <Button onClick={() => remove(field.name)}>删除</Button>
+          </Col>
+        </Row>
+      ))}
+      <Button onClick={() => add()}>添加成员</Button>
+    </>
+  )}
+</FormList>
+```
+
+### 表单联动
+
+通过 `dependencies` 和自定义验证实现表单联动：
+
+```jsx
+<FormItem name="country" label="国家">
+  <Select />
+</FormItem>
+
+<FormItem
+  name="province"
+  label="省份"
+  dependencies={['country']}
+  rules={[
+    ({ getFieldValue }) => ({
+      validator(_, value) {
+        const country = getFieldValue('country');
+        if (country === 'China' && !value) {
+          return Promise.reject('请选择省份');
+        }
+        return Promise.resolve();
+      },
+    }),
+  ]}
+>
+  <Select />
+</FormItem>
+```

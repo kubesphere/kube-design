@@ -1,18 +1,18 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import { themeUtils } from '@kubed/components';
-import { ThemeProvider } from 'styled-components';
+import { screen } from '@testing-library/react';
+import { renderWithTheme } from './itSupportsTheme';
 
 export function itSupportsClassName(
   Component: React.ElementType,
-  requiredProps: Record<string, any>
+  requiredProps: Record<string, any>,
+  testId: string = 'test-root-element'
 ) {
   it('accepts className from props', () => {
-    const element = shallow(
-      <ThemeProvider theme={themeUtils.getPresets()[0]}>
-        <Component {...requiredProps} className="test-class-name" />
-      </ThemeProvider>
+    const testClassName = 'test-class-name';
+    renderWithTheme(
+      <Component {...requiredProps} className={testClassName} data-testid={testId} />
     );
-    expect(element.render().hasClass('test-class-name')).toBe(true);
+    const element = screen.getByTestId(testId);
+    expect(element).toHaveClass(testClassName);
   });
 }

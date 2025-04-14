@@ -1,28 +1,64 @@
-import { itSupportsClassName, itSupportsStyle, shallowWithTheme } from '@kubed/tests';
-import * as React from 'react';
+import React from 'react';
+import { screen } from '@testing-library/react';
 import { Tag } from './Tag';
-
-const defaultProps = {
-  title: 'test',
-  titleStyle: 'test',
-  color: 'default',
-};
+import { renderWithTheme } from '@kubed/tests';
 
 describe('@kubed/components/Tag', () => {
-  itSupportsStyle(Tag, {});
-  itSupportsClassName(Tag, defaultProps);
+  const testContent = 'KubeSphere';
+  const testClassName = 'test-classname';
+  const testStyle = { marginTop: '10px' };
 
-  it('set color to Tag component', () => {
-    const wrapper = shallowWithTheme(<Tag color="warning">KubeSphere</Tag>);
-    expect(wrapper.render().attr('color')).toBe('warning');
+  it('supports className prop', () => {
+    const { container } = renderWithTheme(<Tag className={testClassName}>{testContent}</Tag>);
+    expect(container.firstChild).toHaveClass(testClassName);
   });
 
-  it('set title to Tag component', () => {
-    const wrapper = shallowWithTheme(<Tag title="job-name">KubeSphere</Tag>);
-    expect(wrapper.render().attr('title')).toBe('job-name');
+  it('supports style prop', () => {
+    const { container } = renderWithTheme(<Tag style={testStyle}>{testContent}</Tag>);
+    expect(container.firstChild).toHaveStyle(testStyle);
+  });
+
+  it('renders with correct color attribute or class', () => {
+    const colorValue = 'warning';
+    const testId = 'tag';
+    renderWithTheme(
+      <Tag data-testid={testId} color={colorValue}>
+        {testContent}
+      </Tag>
+    );
+    const tagElement = screen.getByTestId(testId);
+    expect(tagElement).toHaveAttribute('color', colorValue);
+  });
+
+  it('renders with correct title attribute', () => {
+    const titleValue = 'job-name';
+    const testId = 'tag';
+    renderWithTheme(
+      <Tag data-testid={testId} title={titleValue}>
+        {testContent}
+      </Tag>
+    );
+    expect(screen.getByTestId(testId)).toHaveAttribute('title', titleValue);
   });
 
   it('has correct displayName', () => {
     expect(Tag.displayName).toEqual('@kubed/components/Tag');
+  });
+
+  it('to match snapshot', () => {
+    const { asFragment } = renderWithTheme(<Tag>{testContent}</Tag>);
+    expect(asFragment()).toMatchInlineSnapshot(`
+      <DocumentFragment>
+        <div
+          class="sc-aXZVg iCWTFz"
+        >
+          <span
+            class="tag-content"
+          >
+            KubeSphere
+          </span>
+        </div>
+      </DocumentFragment>
+    `);
   });
 });

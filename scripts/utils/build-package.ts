@@ -32,7 +32,7 @@ async function compile(config: RollupOptions) {
 }
 
 async function generateDts(packagePath: string) {
-  await execa('pnpm', ['tsc', '--build'], {
+  await execa('pnpm', ['tsc', '--build', 'tsconfig.build.json'], {
     cwd: packagePath,
   });
 

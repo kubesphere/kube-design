@@ -1,0 +1,119 @@
+---
+sidebar_position: 2
+---
+
+# useToggle
+
+用于管理布尔状态并提供切换功能的 Hook。
+
+## 使用方法
+
+```jsx
+import { useToggle } from '@kubed/hooks';
+import { Button, Text, Group } from '@kubed/components';
+
+function Demo() {
+  const [value, toggle] = useToggle(false);
+
+  return (
+    <Group>
+      <Button onClick={() => toggle()}>
+        Toggle
+      </Button>
+      <Text>Status: {value ? 'ON' : 'OFF'}</Text>
+    </Group>
+  );
+}
+```
+
+## 设置初始值
+
+```jsx
+import { useToggle } from '@kubed/hooks';
+import { Button } from '@kubed/components';
+
+function Demo() {
+  const [visible, toggle] = useToggle(true);
+
+  return (
+    <div>
+      <Button onClick={() => toggle()}>
+        {visible ? 'Hide' : 'Show'}
+      </Button>
+      {visible && <p>Visible content</p>}
+    </div>
+  );
+}
+```
+
+## 设置特定值
+
+```jsx
+import { useToggle } from '@kubed/hooks';
+import { Button, Group } from '@kubed/components';
+
+function Demo() {
+  const [value, toggle] = useToggle(false);
+
+  return (
+    <Group>
+      <Button onClick={() => toggle()}>Toggle</Button>
+      <Button onClick={() => toggle(true)}>Set True</Button>
+      <Button onClick={() => toggle(false)}>Set False</Button>
+      <p>Value: {String(value)}</p>
+    </Group>
+  );
+}
+```
+
+## API
+
+### 参数
+
+```typescript
+function useToggle(
+  initialValue?: boolean
+): [boolean, (value?: boolean) => void]
+```
+
+- `initialValue` - 初始布尔值（默认值：`false`）
+
+### 返回值
+
+返回一个元组：
+
+1. `value` - 当前布尔值
+2. `toggle` - 切换或设置值的函数
+   - `toggle()` - 在 true/false 之间切换
+   - `toggle(true)` - 设置为 true
+   - `toggle(false)` - 设置为 false
+
+## 示例 - 模态框切换
+
+```jsx
+import { useToggle } from '@kubed/hooks';
+import { Button, Modal } from '@kubed/components';
+
+function ModalExample() {
+  const [opened, toggle] = useToggle(false);
+
+  return (
+    <>
+      <Button onClick={() => toggle(true)}>
+        Open Modal
+      </Button>
+
+      <Modal 
+        opened={opened} 
+        onClose={() => toggle(false)}
+      >
+        <h2>Modal Content</h2>
+        <p>This is a modal dialog.</p>
+        <Button onClick={() => toggle(false)}>
+          Close
+        </Button>
+      </Modal>
+    </>
+  );
+}
+```

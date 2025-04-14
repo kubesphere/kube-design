@@ -1,0 +1,105 @@
+---
+sidebar_position: 2
+---
+
+# Input
+
+A basic input field for user text input.
+
+## When To Use
+
+- Use when you need to collect user input
+- Supports various input types (text, password, email, etc.)
+- Can be combined with other components for complex forms
+
+## Examples
+
+### Basic Usage
+
+Basic text input field.
+
+```jsx live
+function Demo() {
+  return <Input placeholder="Enter text..." />;
+}
+```
+
+### With Label
+
+Input with a label.
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <label>Username</label>
+      <Input placeholder="Enter username" />
+    </div>
+  );
+}
+```
+
+### Sizes
+
+Input supports different sizes: `xs`, `sm`, `md`, `lg`, `xl`.
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <Input size="xs" placeholder="Extra small" />
+      <Input size="sm" placeholder="Small" />
+      <Input size="md" placeholder="Medium" />
+      <Input size="lg" placeholder="Large" />
+      <Input size="xl" placeholder="Extra large" />
+    </div>
+  );
+}
+```
+
+### Disabled
+
+Disabled input field.
+
+```jsx live
+function Demo() {
+  return <Input disabled placeholder="Disabled input" />;
+}
+```
+
+### With Error
+
+Input with error state.
+
+```jsx live
+function Demo() {
+  return <Input error="This field is required" placeholder="Enter value" />;
+}
+```
+
+### Password Input
+
+Password input with toggle visibility.
+
+```jsx live
+function Demo() {
+  return <Input type="password" placeholder="Enter password" />;
+}
+```
+
+## API
+
+### Input Props
+
+| Property     | Description      | Type                                   | Default  |
+| ------------ | ---------------- | -------------------------------------- | -------- |
+| value        | Input value      | `string`                               | -        |
+| defaultValue | Default value    | `string`                               | -        |
+| placeholder  | Placeholder text | `string`                               | -        |
+| size         | Input size       | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'`   |
+| disabled     | Disabled state   | `boolean`                              | `false`  |
+| error        | Error message    | `string \| boolean`                    | -        |
+| type         | Input type       | `string`                               | `'text'` |
+| onChange     | Change handler   | `(value: string) => void`              | -        |
+| onFocus      | Focus handler    | `() => void`                           | -        |
+| onBlur       | Blur handler     | `() => void`                           | -        |

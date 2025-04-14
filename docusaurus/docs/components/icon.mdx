@@ -1,0 +1,319 @@
+---
+sidebar_position: 2
+---
+
+# Icon 图标
+
+Kube Design 提供了丰富的图标库，涵盖了云原生、系统操作、品牌标识等多个场景。
+
+## 何时使用
+
+- 作为视觉辅助元素，提升界面的可读性和美观度
+- 在按钮、导航栏、表单等组件中使用
+- 表示操作、状态或类别
+
+## 图标分类
+
+Kube Design 图标库包含以下分类：
+
+- **AppCenter**：应用中心相关图标（MySQL、Kafka、Redis等）
+- **Company/Brands**：品牌和公司标识（GitHub、Kubernetes、Docker等）
+- **Direction/Arrow**：方向和箭头图标
+- **Object**：对象和实体图标（容器、集群、存储等）
+- **Operation**：操作类图标（添加、删除、编辑等）
+- **Chart**：图表类图标
+- **File**：文件和文档图标
+- **Form**：表单控件图标
+- **Feedback**：反馈类图标（成功、警告、错误等）
+- **Layout**：布局相关图标
+- **Media**：媒体播放图标
+- **Service**：云服务相关图标
+- **Time**：时间相关图标
+- **Person**：人物和用户图标
+- **Physical**：物理设备图标
+- **Money**：金融相关图标
+- **Map**：地图和位置图标
+- **Notification**：通知相关图标
+- **Language**：编程语言图标
+- **OS**：操作系统图标
+
+## 示例
+
+### 基础用法
+
+导入图标并直接使用：
+
+```jsx live
+const { Add, Delete, Edit, Search } = KubedIcons;
+function Demo() {
+  return (
+    <Group spacing="xl">
+      <Add />
+      <Delete />
+      <Edit />
+      <Search />
+    </Group>
+  );
+}
+```
+
+### 尺寸
+
+通过 `size` 属性控制图标大小：
+
+```jsx live
+const { Kubernetes } = KubedIcons;
+function Demo() {
+  return (
+    <Group spacing="xl" style={{ alignItems: 'center' }}>
+      <Kubernetes size={16} />
+      <Kubernetes size={24} />
+      <Kubernetes size={32} />
+      <Kubernetes size={48} />
+      <Kubernetes size={64} />
+    </Group>
+  );
+}
+```
+
+### 颜色
+
+使用 `color` 属性设置图标颜色：
+
+```jsx live
+const { Github, Gitlab, Docker, Kubernetes } = KubedIcons;
+function Demo() {
+  return (
+    <Group spacing="xl">
+      <Github size={32} color="#181717" />
+      <Gitlab size={32} color="#FC6D26" />
+      <Docker size={32} color="#2496ED" />
+      <Kubernetes size={32} color="#326CE5" />
+    </Group>
+  );
+}
+```
+
+### 变体（Variant）
+
+部分图标提供多种变体（dark、light、coloured、duotone、fill）：
+
+```jsx live
+const { Add, AddDuotone, AddCircleDuotone, AddBoxDuotone } = KubedIcons;
+function Demo() {
+  return (
+    <Group spacing="xl">
+      <Add size={32} />
+      <AddDuotone size={32} />
+      <AddCircleDuotone size={32} />
+      <AddBoxDuotone size={32} />
+    </Group>
+  );
+}
+```
+
+### 在按钮中使用
+
+图标常与其他组件配合使用：
+
+```jsx live
+const { Download, Upload, Refresh, Settings } = KubedIcons;
+function Demo() {
+  return (
+    <Group spacing="md">
+      <Button variant="filled" leftIcon={<Download size={16} />}>
+        下载
+      </Button>
+      <Button variant="outline" leftIcon={<Upload size={16} />}>
+        上传
+      </Button>
+      <Button variant="text" leftIcon={<Refresh size={16} />}>
+        刷新
+      </Button>
+      <Button variant="filled" color="secondary">
+        <Settings size={20} />
+      </Button>
+    </Group>
+  );
+}
+```
+
+### 云原生图标
+
+Kube Design 特别提供了丰富的云原生相关图标：
+
+```jsx live
+const { Kubernetes, Docker, Helm, Istio, Prometheus, Grafana, Jenkins, Gitlab } = KubedIcons;
+function Demo() {
+  return (
+    <Group spacing="xl">
+      <Kubernetes size={40} />
+      <Docker size={40} />
+      <Helm size={40} />
+      <Istio size={40} />
+      <Prometheus size={40} />
+      <Grafana size={40} />
+      <Jenkins size={40} />
+      <Gitlab size={40} />
+    </Group>
+  );
+}
+```
+
+### 操作图标
+
+常用的操作类图标：
+
+```jsx live
+const {
+  AddDuotone,
+  SubtractDuotone,
+  DeleteDuotone,
+  EditDuotone,
+  CopyDuotone,
+  DownloadDuotone,
+  UploadDuotone,
+  RefreshDuotone
+} = KubedIcons;
+function Demo() {
+  return (
+    <Group spacing="xl">
+      <AddDuotone size={32} color="#55bc8a" />
+      <SubtractDuotone size={32} color="#f5a623" />
+      <DeleteDuotone size={32} color="#ca2621" />
+      <EditDuotone size={32} color="#329dce" />
+      <CopyDuotone size={32} />
+      <DownloadDuotone size={32} />
+      <UploadDuotone size={32} />
+      <RefreshDuotone size={32} />
+    </Group>
+  );
+}
+```
+
+### 状态和反馈
+
+表示不同状态的图标：
+
+```jsx live
+const { SuccessDuotone, WarningDuotone, ErrorDuotone, InformationDuotone, QuestionDuotone } = KubedIcons;
+function Demo() {
+  return (
+    <Group spacing="xl">
+      <SuccessDuotone size={36} color="#55bc8a" />
+      <WarningDuotone size={36} color="#f5a623" />
+      <ErrorDuotone size={36} color="#ca2621" />
+      <InformationDuotone size={36} color="#329dce" />
+      <QuestionDuotone size={36} color="#8c96ad" />
+    </Group>
+  );
+}
+```
+
+### 自定义样式
+
+图标支持所有 SVG 属性：
+
+```jsx live
+const { Star, StarDuotone } = KubedIcons;
+function Demo() {
+  const [filled, setFilled] = React.useState(false);
+
+  return (
+    <div onClick={() => setFilled(!filled)} style={{ cursor: 'pointer', display: 'inline-flex' }}>
+      {filled ? (
+        <StarDuotone size={48} color="#f5a623" />
+      ) : (
+        <Star size={48} color="#d1d5de" />
+      )}
+    </div>
+  );
+}
+```
+
+## API
+
+### Icon 属性
+
+所有图标组件都支持以下属性：
+
+| 属性    | 说明           | 类型                                        | 默认值 |
+| ------- | -------------- | ------------------------------------------- | ------ |
+| size    | 图标尺寸       | `number \| string`                          | `20`   |
+| color   | 图标颜色       | `string`                                    | -      |
+| variant | 图标变体       | `'dark' \| 'light' \| 'coloured' \| string` | -      |
+| style   | 自定义样式     | `React.CSSProperties`                       | -      |
+| className | 自定义类名   | `string`                                    | -      |
+
+图标组件同时支持所有标准 SVG 元素的属性，如 `onClick`、`onMouseEnter`、`fill`、`stroke` 等。
+
+## 图标命名规范
+
+- **基础图标**：使用简单名称，如 `Add`、`Edit`、`Delete`
+- **Duotone 变体**：以 `Duotone` 结尾，如 `AddDuotone`、`EditDuotone`
+- **Fill 变体**：以 `Fill` 结尾，如 `AddCircleFill`
+- **形状变体**：包含形状名称，如 `AddCircle`、`AddBox`
+
+## 完整图标列表
+
+查看所有可用图标，请访问 [Icons 页面](/docs/icons/usage)。
+
+## 最佳实践
+
+### 尺寸选择
+
+- **16px**：用于按钮内部或紧凑型界面
+- **20px**：默认尺寸，适用于大多数场景
+- **24px**：用于列表项、卡片标题
+- **32px-48px**：用于重要操作或空状态
+- **64px 以上**：用于大型插画或欢迎页面
+
+### 颜色使用
+
+- 图标颜色应���文本颜色保持一致
+- 使用主题色突出重要操作
+- 状态图标使用语义化颜色：
+  - 成功：绿色 `#55bc8a`
+  - 警告：橙色 `#f5a623`
+  - 错误：红色 `#ca2621`
+  - 信息：蓝色 `#329dce`
+
+### 变体选择
+
+- **默认**：适用于工具栏、导航等需要简洁图标的场景
+- **Duotone**：双色调图标，视觉效果更丰富，适合卡片、列表
+- **Fill**：填充图标，用于已选中或激活状态
+- **Coloured**：彩色品牌图标，保持品牌识别度
+
+### 语义化使用
+
+- 为纯图标按钮添加 `aria-label` 属性
+- 在无障碍场景下提供文本说明
+- 保持图标语义与功能一致
+
+```jsx
+<Button aria-label="删除项目" variant="text">
+  <Delete />
+</Button>
+```
+
+## 无障碍访问
+
+- 图标默认设置 `aria-hidden="true"`，不会被屏幕阅读器读取
+- 当图标作为唯一视觉提示时，需要添加 `aria-label` 或配合文本使用
+- 交互式图标（如按钮中的图标）应该有明确的文本说明
+
+## 性能优化
+
+- 图标采用 SVG 格式，支持按需加载
+- 使用时只导入需要的图标，避免全量导入：
+
+```jsx
+// ✅ 推荐：按需导入
+import { Kubernetes, Docker } from '@kubed/icons';
+
+// ❌ 不推荐：全量导入
+import * as Icons from '@kubed/icons';
+```
+
+- 如果需要动态使用大量图标，建议使用动态导入或图标组件映射

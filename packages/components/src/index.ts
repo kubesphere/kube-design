@@ -6,6 +6,7 @@ export * from './Container/Container';
 export * from './Center/Center';
 export * from './Grid/Row';
 export * from './Navs/Navs';
+export * from './Pagination/Pagination';
 export * from './Snippet/Snippet';
 export * from './Tabs/Tabs';
 export * from './Text/Text';

@@ -2,6 +2,7 @@
   "extends": "../tsconfig.json",
   //  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "../packages/**/*.tsx"],
   "compilerOptions": {
+    "baseUrl": "./",
     "paths": {
       "@docs/demos": [
         "./docs/src/demos"
@@ -30,5 +31,8 @@
     "jsx": "preserve",
     "noImplicitAny": false,
     "incremental": true
-  }
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }

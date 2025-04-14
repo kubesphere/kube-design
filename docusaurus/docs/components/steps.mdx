@@ -1,0 +1,895 @@
+---
+sidebar_position: 1
+---
+
+# Steps 步骤条
+
+引导用户按照流程完成任务的导航条。
+
+## 何时使用
+
+- 当任务需要分多个步骤完成时
+- 当需要告知用户当前在多步骤任务中的位置时
+- 适用于表单向导、安装引导等场景
+
+在 Kube Design 中,Steps 组件提供了丰富的步骤条功能:
+
+- **两种方向**:支持水平和垂直两种布局
+- **两种变体**:default(带分隔符)和 tab(标签页式)
+- **状态管理**:自动管理步骤的完成、进行中、未开始状态
+- **可点击导航**:支持点击步骤进行跳转
+- **内容展示**:每个步骤可以包含对应的内容区域
+
+## 示例
+
+### 基础用法
+
+最基本的步骤条,引导用户完成流程。
+
+```jsx live
+function Demo() {
+  const [active, setActive] = React.useState(0);
+
+  return (
+    <Group direction="column" spacing="md">
+      <Steps active={active} onStepClick={setActive}>
+        <Step label="基本信息" description="填写基本信息">
+          请填写应用的基本信息
+        </Step>
+        <Step label="配置参数" description="配置应用参数">
+          配置应用运行所需的参数
+        </Step>
+        <Step label="确认创建" description="确认信息">
+          确认并创建应用
+        </Step>
+      </Steps>
+      <Group spacing="xs">
+        <Button
+          size="sm"
+          onClick={() => setActive(Math.max(0, active - 1))}
+          disabled={active === 0}
+        >
+          上一步
+        </Button>
+        <Button
+          size="sm"
+          color="secondary"
+          onClick={() => setActive(Math.min(2, active + 1))}
+          disabled={active === 2}
+        >
+          下一步
+        </Button>
+      </Group>
+    </Group>
+  );
+}
+```
+
+### 带图标的步骤
+
+为每个步骤添加图标以增强识别性。
+
+```jsx live
+function Demo() {
+  const { Cluster, FolderSettingDuotone, MessageCircleCheckDuotone } = KubedIcons;
+  const [active, setActive] = React.useState(1);
+
+  return (
+    <Group direction="column" spacing="md">
+      <Steps active={active} onStepClick={setActive}>
+        <Step label="选择集群" description="选择目标集群" icon={<Cluster size={20} />}>
+          选择要部署的集群
+        </Step>
+        <Step label="配置应用" description="配置应用信息" icon={<FolderSettingDuotone size={20} />}>
+          配置应用的详细信息
+        </Step>
+        <Step
+          label="完成部署"
+          description="完成并部署"
+          icon={<MessageCircleCheckDuotone size={20} />}
+        >
+          确认并完成部署
+        </Step>
+      </Steps>
+    </Group>
+  );
+}
+```
+
+### 垂直步骤条
+
+垂直方向的步骤条,适合侧边栏场景。
+
+```jsx live
+function Demo() {
+  const [active, setActive] = React.useState(1);
+
+  return (
+    <Group direction="column" spacing="md">
+      <Steps active={active} onStepClick={setActive} orientation="vertical">
+        <Step label="创建项目" description="设置项目基本信息">
+          输入项目名称和描述
+        </Step>
+        <Step label="配置资源" description="配置项目资源限额">
+          设置 CPU、内存等资源限制
+        </Step>
+        <Step label="添加成员" description="邀请团队成员">
+          添加项目成员并分配角色
+        </Step>
+        <Step label="完成创建" description="确认并创建项目">
+          检查信息并完成创建
+        </Step>
+      </Steps>
+      <Group spacing="xs">
+        <Button
+          size="sm"
+          onClick={() => setActive(Math.max(0, active - 1))}
+          disabled={active === 0}
+        >
+          上一步
+        </Button>
+        <Button
+          size="sm"
+          color="secondary"
+          onClick={() => setActive(Math.min(3, active + 1))}
+          disabled={active === 3}
+        >
+          下一步
+        </Button>
+      </Group>
+    </Group>
+  );
+}
+```
+
+### Tab 变体
+
+使用 tab 变体显示更突出的步骤导航。
+
+```jsx live
+function Demo() {
+  const { Cluster, Kubernetes, Kubesphere } = KubedIcons;
+  const [active, setActive] = React.useState(0);
+
+  return (
+    <Group direction="column" spacing="md">
+      <Steps active={active} onStepClick={setActive} variant="tab">
+        <TabStep
+          label="步骤 1"
+          description="未设置"
+          completedDescription="已设置"
+          icon={<Cluster size={24} />}
+        >
+          第一步内容
+        </TabStep>
+        <TabStep
+          label="步骤 2"
+          description="未设置"
+          completedDescription="已设置"
+          icon={<Kubernetes size={24} />}
+        >
+          第二步内容
+        </TabStep>
+        <TabStep
+          label="步骤 3"
+          description="未设置"
+          completedDescription="已设置"
+          icon={<Kubesphere size={24} />}
+        >
+          第三步内容
+        </TabStep>
+      </Steps>
+      <Group spacing="xs">
+        <Button
+          size="sm"
+          onClick={() => setActive(Math.max(0, active - 1))}
+          disabled={active === 0}
+        >
+          上一步
+        </Button>
+        <Button
+          size="sm"
+          color="secondary"
+          onClick={() => setActive(Math.min(2, active + 1))}
+          disabled={active === 2}
+        >
+          下一步
+        </Button>
+      </Group>
+    </Group>
+  );
+}
+```
+
+### 垂直 Tab 步骤
+
+垂直方向的 Tab 变体。
+
+```jsx live
+function Demo() {
+  const { Cluster, Setting, CheckCircle } = KubedIcons;
+  const [active, setActive] = React.useState(0);
+
+  return (
+    <div style={{ display: 'flex', gap: '16px' }}>
+      <Steps
+        active={active}
+        onStepClick={setActive}
+        variant="tab"
+        orientation="vertical"
+        style={{ width: '300px' }}
+      >
+        <TabStep
+          label="基础配置"
+          description="未完成"
+          completedDescription="已完成"
+          icon={<Cluster size={24} />}
+        >
+          基础配置内容
+        </TabStep>
+        <TabStep
+          label="高级配置"
+          description="未完成"
+          completedDescription="已完成"
+          icon={<Setting size={24} />}
+        >
+          高级配置内容
+        </TabStep>
+        <TabStep
+          label="确认信息"
+          description="未完成"
+          completedDescription="已完成"
+          icon={<CheckCircle size={24} />}
+        >
+          确认信息内容
+        </TabStep>
+      </Steps>
+    </div>
+  );
+}
+```
+
+### 自定义完成图标
+
+自定义步骤完成后的图标。
+
+```jsx live
+function Demo() {
+  const { Star } = KubedIcons;
+  const [active, setActive] = React.useState(2);
+
+  return (
+    <Steps active={active} onStepClick={setActive} completedIcon={<Star size={16} />}>
+      <Step label="第一步" description="已完成">
+        第一步内容
+      </Step>
+      <Step label="第二步" description="已完成">
+        第二步内容
+      </Step>
+      <Step label="第三步" description="进行中">
+        第三步内容
+      </Step>
+      <Step label="第四步" description="未开始">
+        第四步内容
+      </Step>
+    </Steps>
+  );
+}
+```
+
+### 完成状态
+
+所有步骤完成后显示完成内容。
+
+```jsx live
+function Demo() {
+  const [active, setActive] = React.useState(0);
+  const totalSteps = 3;
+
+  return (
+    <Group direction="column" spacing="md">
+      <Steps active={active} onStepClick={setActive}>
+        <Step label="填写信息" description="填写基本信息">
+          请填写您的基本信息
+        </Step>
+        <Step label="配置参数" description="配置系统参数">
+          配置系统运行参数
+        </Step>
+        <Step label="完成设置" description="完成所有设置">
+          确认所有配置
+        </Step>
+        <StepCompleted>
+          <Card style={{ padding: '24px', textAlign: 'center' }}>
+            <Text variant="h5" style={{ marginBottom: '8px' }}>
+              🎉 所有步骤已完成!
+            </Text>
+            <Text color="secondary">您已成功完成所有配置步骤</Text>
+          </Card>
+        </StepCompleted>
+      </Steps>
+      <Group spacing="xs">
+        <Button
+          size="sm"
+          onClick={() => setActive(Math.max(0, active - 1))}
+          disabled={active === 0}
+        >
+          上一步
+        </Button>
+        <Button
+          size="sm"
+          color="secondary"
+          onClick={() => setActive(Math.min(totalSteps, active + 1))}
+          disabled={active === totalSteps}
+        >
+          {active === totalSteps - 1 ? '完成' : '下一步'}
+        </Button>
+        {active === totalSteps && (
+          <Button size="sm" variant="outline" onClick={() => setActive(0)}>
+            重新开始
+          </Button>
+        )}
+      </Group>
+    </Group>
+  );
+}
+```
+
+### 表单向导
+
+在多步骤表单中使用步骤条。
+
+```jsx live
+function Demo() {
+  const [active, setActive] = React.useState(0);
+  const [formData, setFormData] = React.useState({
+    name: '',
+    email: '',
+    description: '',
+  });
+
+  return (
+    <Group direction="column" spacing="md">
+      <Steps active={active}>
+        <Step label="账户信息" description="设置账户">
+          <Card style={{ padding: '20px', marginTop: '16px' }}>
+            <Group direction="column" spacing="md">
+              <div>
+                <Text size="sm" style={{ marginBottom: '8px' }}>
+                  用户名:
+                </Text>
+                <Input
+                  placeholder="输入用户名"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                />
+              </div>
+              <div>
+                <Text size="sm" style={{ marginBottom: '8px' }}>
+                  邮箱:
+                </Text>
+                <Input
+                  placeholder="输入邮箱"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                />
+              </div>
+            </Group>
+          </Card>
+        </Step>
+        <Step label="个人信息" description="填写详情">
+          <Card style={{ padding: '20px', marginTop: '16px' }}>
+            <div>
+              <Text size="sm" style={{ marginBottom: '8px' }}>
+                个人简介:
+              </Text>
+              <Input
+                placeholder="输入个人简介"
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              />
+            </div>
+          </Card>
+        </Step>
+        <Step label="完成注册" description="确认信息">
+          <Card style={{ padding: '20px', marginTop: '16px' }}>
+            <Group direction="column" spacing="sm">
+              <Text variant="h6">请确认您的信息:</Text>
+              <Text size="sm">用户名: {formData.name || '未填写'}</Text>
+              <Text size="sm">邮箱: {formData.email || '未填写'}</Text>
+              <Text size="sm">简介: {formData.description || '未填写'}</Text>
+            </Group>
+          </Card>
+        </Step>
+      </Steps>
+      <Group spacing="xs">
+        <Button
+          size="sm"
+          onClick={() => setActive(Math.max(0, active - 1))}
+          disabled={active === 0}
+        >
+          上一步
+        </Button>
+        <Button
+          size="sm"
+          color="secondary"
+          onClick={() => setActive(Math.min(2, active + 1))}
+          disabled={active === 2}
+        >
+          {active === 2 ? '提交' : '下一步'}
+        </Button>
+      </Group>
+    </Group>
+  );
+}
+```
+
+### 不可点击的步骤
+
+禁用步骤点击,只能通过按钮导航。
+
+```jsx live
+function Demo() {
+  const [active, setActive] = React.useState(1);
+
+  return (
+    <Group direction="column" spacing="md">
+      <Steps active={active}>
+        <Step label="步骤 1" description="第一步">
+          第一步内容
+        </Step>
+        <Step label="步骤 2" description="第二步">
+          第二步内容
+        </Step>
+        <Step label="步骤 3" description="第三步">
+          第三步内容
+        </Step>
+      </Steps>
+      <Text size="sm" color="secondary">
+        提示: 此步骤条不支持点击跳转,请使用按钮导航
+      </Text>
+      <Group spacing="xs">
+        <Button
+          size="sm"
+          onClick={() => setActive(Math.max(0, active - 1))}
+          disabled={active === 0}
+        >
+          上一步
+        </Button>
+        <Button
+          size="sm"
+          color="secondary"
+          onClick={() => setActive(Math.min(2, active + 1))}
+          disabled={active === 2}
+        >
+          下一步
+        </Button>
+      </Group>
+    </Group>
+  );
+}
+```
+
+### 部署流程示例
+
+实际部署流程中的步骤条应用。
+
+```jsx live
+function Demo() {
+  const { Cluster, Docker, Start } = KubedIcons;
+  const [active, setActive] = React.useState(0);
+  const [loading, setLoading] = React.useState(false);
+
+  const handleNext = () => {
+    if (active < 2) {
+      setLoading(true);
+      setTimeout(() => {
+        setActive(active + 1);
+        setLoading(false);
+      }, 1000);
+    }
+  };
+
+  return (
+    <Group direction="column" spacing="md">
+      <Steps active={active} onStepClick={setActive}>
+        <Step label="选择镜像" description="选择容器镜像" icon={<Docker size={20} />}>
+          <Card style={{ padding: '16px', marginTop: '16px' }}>
+            <Text>镜像: nginx:latest</Text>
+          </Card>
+        </Step>
+        <Step
+          label="配置应用"
+          description="配置应用参数"
+          icon={<Setting size={20} />}
+          loading={loading && active === 0}
+        >
+          <Card style={{ padding: '16px', marginTop: '16px' }}>
+            <Text>副本数: 3</Text>
+            <Text>CPU: 1 Core</Text>
+            <Text>内存: 2 Gi</Text>
+          </Card>
+        </Step>
+        <Step
+          label="开始部署"
+          description="部署到集群"
+          icon={<Start size={20} />}
+          loading={loading && active === 1}
+        >
+          <Card style={{ padding: '16px', marginTop: '16px' }}>
+            <Text>准备部署到生产集群...</Text>
+          </Card>
+        </Step>
+      </Steps>
+      <Group spacing="xs">
+        <Button
+          size="sm"
+          onClick={() => setActive(Math.max(0, active - 1))}
+          disabled={active === 0 || loading}
+        >
+          上一步
+        </Button>
+        <Button
+          size="sm"
+          color="secondary"
+          onClick={handleNext}
+          disabled={active === 2}
+          loading={loading}
+        >
+          {loading ? '处理中...' : active === 2 ? '完成' : '下一步'}
+        </Button>
+      </Group>
+    </Group>
+  );
+}
+```
+
+## API
+
+### Steps
+
+| 属性           | 说明                   | 类型                                                                                   | 默认值             |
+| -------------- | ---------------------- | -------------------------------------------------------------------------------------- | ------------------ |
+| children       | Step 组件              | `ReactNode`                                                                            | **必需**           |
+| active         | 当前激活的步骤索引     | `number`                                                                               | **必需**           |
+| onStepClick    | 步骤点击回调           | `(stepIndex: number) => void`                                                          | -                  |
+| variant        | 步骤条变体             | `'default' \| 'tab'`                                                                   | `'default'`        |
+| orientation    | 步骤条方向             | `'horizontal' \| 'vertical'`                                                           | -                  |
+| completedIcon  | 完成步骤的图标         | `ReactNode`                                                                            | `<Check />`        |
+| progressIcon   | 进行中步骤的图标       | `ReactNode`                                                                            | -                  |
+| color          | 激活和进行中步骤的颜色 | `string \| 'default' \| 'primary' \| 'secondary' \| 'success' \| 'warning' \| 'error'` | -                  |
+| iconSize       | 图标大小(px)           | `number`                                                                               | 根据 size 自动计算 |
+| size           | 组件尺寸               | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                                                 | -                  |
+| radius         | 圆角大小               | `KubedNumberSize`                                                                      | -                  |
+| contentPadding | 内容顶部间距           | `KubedNumberSize`                                                                      | -                  |
+| iconPosition   | 图标位置               | `'left' \| 'right'`                                                                    | -                  |
+| breakpoint     | 响应式断点             | `KubedNumberSize`                                                                      | -                  |
+| className      | 自定义类名             | `string`                                                                               | -                  |
+| style          | 自定义样式             | `CSSProperties`                                                                        | -                  |
+
+### Step
+
+| 属性            | 说明             | 类型                                                                                   | 默认值                    |
+| --------------- | ---------------- | -------------------------------------------------------------------------------------- | ------------------------- |
+| label           | 步骤标题         | `ReactNode`                                                                            | -                         |
+| description     | 步骤描述         | `ReactNode`                                                                            | -                         |
+| icon            | 步骤图标         | `ReactNode`                                                                            | 步骤序号                  |
+| completedIcon   | 完成状态的图标   | `ReactNode`                                                                            | `<Check />`               |
+| progressIcon    | 进行中状态的图标 | `ReactNode`                                                                            | -                         |
+| color           | 步骤颜色         | `string \| 'default' \| 'primary' \| 'secondary' \| 'success' \| 'warning' \| 'error'` | -                         |
+| state           | 手动指定步骤状态 | `'stepInactive' \| 'stepProgress' \| 'stepCompleted'`                                  | 由 Steps 自动控制         |
+| loading         | 是否显示加载状态 | `boolean`                                                                              | `false`                   |
+| withIcon        | 是否显示图标     | `boolean`                                                                              | `true`                    |
+| allowStepSelect | 是否允许点击选择 | `boolean`                                                                              | 根据 onStepClick 自动设置 |
+| allowStepClick  | 是否可点击       | `boolean`                                                                              | `true`                    |
+| iconSize        | 图标大小(px)     | `number`                                                                               | 根据 size 自动计算        |
+| size            | 组件尺寸         | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                                                 | `'md'`                    |
+| radius          | 圆角大小         | `KubedNumberSize`                                                                      | -                         |
+| iconPosition    | 图标位置         | `'left' \| 'right'`                                                                    | -                         |
+| children        | 步骤内容         | `ReactNode`                                                                            | -                         |
+| className       | 自定义类名       | `string`                                                                               | -                         |
+| style           | 自定义样式       | `CSSProperties`                                                                        | -                         |
+
+### TabStep
+
+| 属性                 | 说明             | 类型                                                                                   | 默认值                    |
+| -------------------- | ---------------- | -------------------------------------------------------------------------------------- | ------------------------- |
+| label                | 步骤标题         | `ReactNode`                                                                            | -                         |
+| description          | 未激活时的描述   | `ReactNode`                                                                            | -                         |
+| completedDescription | 完成时的描述     | `ReactNode`                                                                            | description               |
+| progressDescription  | 进行中时的描述   | `ReactNode`                                                                            | description               |
+| icon                 | 步骤图标         | `ReactNode`                                                                            | 步骤序号                  |
+| completedIcon        | 完成状态的图标   | `ReactNode`                                                                            | `<Check size={24} />`     |
+| progressIcon         | 进行中状态的图标 | `ReactNode`                                                                            | -                         |
+| color                | 步骤颜色         | `string \| 'default' \| 'primary' \| 'secondary' \| 'success' \| 'warning' \| 'error'` | -                         |
+| state                | 手动指定步骤状态 | `'stepInactive' \| 'stepProgress' \| 'stepCompleted'`                                  | 由 Steps 自动控制         |
+| loading              | 是否显示加载状态 | `boolean`                                                                              | `false`                   |
+| withIcon             | 是否显示图标     | `boolean`                                                                              | `true`                    |
+| allowStepSelect      | 是否允许点击选择 | `boolean`                                                                              | 根据 onStepClick 自动设置 |
+| allowStepClick       | 是否可点击       | `boolean`                                                                              | `true`                    |
+| iconSize             | 图标大小(px)     | `number`                                                                               | 根据 size 自动计算        |
+| size                 | 组件尺寸         | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                                                 | `'md'`                    |
+| radius               | 圆角大小         | `KubedNumberSize`                                                                      | -                         |
+| iconPosition         | 图标位置         | `'left' \| 'right'`                                                                    | -                         |
+| children             | 步骤内容         | `ReactNode`                                                                            | -                         |
+| className            | 自定义类名       | `string`                                                                               | -                         |
+| style                | 自定义样式       | `CSSProperties`                                                                        | -                         |
+
+### StepCompleted
+
+| 属性     | 说明                     | 类型        | 默认值 |
+| -------- | ------------------------ | ----------- | ------ |
+| children | 所有步骤完成后显示的内容 | `ReactNode` | -      |
+
+:::info
+
+**关于步骤状态**:
+
+- 步骤有三种状态:`stepInactive`(未开始)、`stepProgress`(进行中)、`stepCompleted`(已完成)
+- 状态由 `active` 属性自动控制:当前步骤为进行中,之前的步骤为已完成,之后的步骤为未开始
+- 状态判断逻辑(Steps.tsx 第 87-89 行):
+  ```typescript
+  const itemState =
+    item.props.state ||
+    (active === index ? 'stepProgress' : active > index ? 'stepCompleted' : 'stepInactive');
+  ```
+- 可以通过 Step 的 `state` 属性手动覆盖状态
+
+**关于变体**:
+
+- `default`: 传统步骤条,带有连接线分隔符(StepsSeparator 组件)
+- `tab`: 标签页式步骤条,更适合突出显示当前步骤,没有连接线
+- variant 判断逻辑(Steps.tsx 第 114 行):只有 `variant === 'default'` 时才渲染分隔符
+
+**关于方向**:
+
+- `horizontal`: 水平布局,适合顶部导航
+- `vertical`: 垂直布局,适合侧边栏或较多步骤的场景
+- 通过 `orientation` 属性控制,传递给 Step 组件和 StepsSeparator 组件
+
+**关于步骤点击**:
+
+- 设置 `onStepClick` 属性后,步骤变为可点击
+- 可以通过 Step 的 `allowStepSelect` 属性单独控制某个步骤是否可点击
+- 点击判断逻辑(Steps.tsx 第 82-85 行):
+  ```typescript
+  const shouldAllowSelect =
+    typeof item.props.allowStepSelect === 'boolean'
+      ? item.props.allowStepSelect
+      : typeof onStepClick === 'function';
+  ```
+- 不设置 `onStepClick` 时,步骤不可点击,只能通过程序控制
+
+**关于内容显示**:
+
+- 每个 Step 的 `children` 会作为该步骤的内容
+- 当步骤激活时,对应的内容会显示在步骤条下方
+- 内容选择逻辑(Steps.tsx 第 128-130 行):
+  ```typescript
+  const stepContent = _children[active]?.props?.children;
+  const completedContent = completedStep?.props?.children;
+  const content = active > _children.length - 1 ? completedContent : stepContent;
+  ```
+- 使用 `StepCompleted` 可以定义所有步骤完成后的内容
+
+**关于图标大小**:
+
+- 不同尺寸的默认图标大小(Step.tsx 第 67-73 行):
+  - xs: 16px
+  - sm: 18px
+  - md: 20px
+  - lg: 22px
+  - xl: 24px
+- 可以通过 `iconSize` 属性自定义覆盖
+
+**关于 StepCompleted**:
+
+- StepCompleted 是占位符组件,本身渲染为 null
+- Steps 组件会过滤出 StepCompleted,在所有步骤完成时显示其内容
+- 过滤逻辑(Steps.tsx 第 78-79 行):
+  ```typescript
+  const _children = convertedChildren.filter((child) => child.type !== StepCompleted);
+  const completedStep = convertedChildren.find((item) => item.type === StepCompleted);
+  ```
+
+**关于 TabStep**:
+
+- TabStep 与 Step 的主要区别是支持动态描述:
+  - `completedDescription`: 步骤完成时显示
+  - `progressDescription`: 步骤进行中时显示
+  - `description`: 未激活时显示
+- 描述选择逻辑(TabStep.tsx 第 117-122 行):
+  ```typescript
+  const crtDescription =
+    state === 'stepCompleted'
+      ? completedDescription || description
+      : state === 'stepProgress'
+      ? progressDescription || description
+      : description;
+  ```
+
+**关于图标显示**:
+
+- Step 完成状态默认使用 Check 图标(Step.tsx 第 125 行)
+- TabStep 完成状态默认使用传入的 icon 或 Check 图标(TabStep.tsx 第 140 行,size 24)
+- 进行中状态可通过 `progressIcon` 自定义
+- 支持 loading 状态,显示 Loading 组件替代图标
+
+:::
+
+## 使用建议
+
+### 步骤数量适中
+
+保持步骤数量在合理范围内:
+
+```jsx
+// 推荐: 3-5 个步骤
+<Steps active={active}>
+  <Step label="步骤 1">...</Step>
+  <Step label="步骤 2">...</Step>
+  <Step label="步骤 3">...</Step>
+  <Step label="步骤 4">...</Step>
+</Steps>
+
+// 步骤过多: 考虑合并或使用垂直布局
+<Steps active={active} orientation="vertical">
+  {/* 6+ 个步骤 */}
+</Steps>
+```
+
+### 清晰的步骤描述
+
+为每个步骤提供清晰的标题和描述:
+
+```jsx
+<Steps active={active}>
+  <Step
+    label="创建集群" // 清晰的动作
+    description="配置集群基本信息" // 具体说明
+  >
+    ...
+  </Step>
+</Steps>
+```
+
+### 合理使用图标
+
+使用有意义的图标增强识别:
+
+```jsx
+import { Upload, Setting, CheckCircle } from '@kubed/icons';
+
+<Steps active={active}>
+  <Step label="上传文件" icon={<Upload />}>
+    ...
+  </Step>
+  <Step label="配置参数" icon={<Setting />}>
+    ...
+  </Step>
+  <Step label="完成" icon={<CheckCircle />}>
+    ...
+  </Step>
+</Steps>;
+```
+
+### 表单验证
+
+在步骤切换时进行验证:
+
+```jsx
+const [active, setActive] = useState(0);
+const [formData, setFormData] = useState({});
+
+const handleNext = () => {
+  // 验证当前步骤
+  if (validateCurrentStep(active, formData)) {
+    setActive(active + 1);
+  } else {
+    notify.error('请完成当前步骤的必填项');
+  }
+};
+
+<Steps active={active}>...</Steps>;
+```
+
+### 保存进度
+
+长流程需要保存用户进度:
+
+```jsx
+useEffect(() => {
+  // 保存当前步骤到 localStorage
+  localStorage.setItem('wizardStep', active.toString());
+}, [active]);
+
+useEffect(() => {
+  // 恢复上次的步骤
+  const savedStep = localStorage.getItem('wizardStep');
+  if (savedStep) {
+    setActive(parseInt(savedStep));
+  }
+}, []);
+```
+
+### 禁用已完成步骤的编辑
+
+根据业务需求控制步骤跳转:
+
+```jsx
+const handleStepClick = (step) => {
+  // 只允许跳转到已完成的步骤或下一步
+  if (step <= active + 1) {
+    setActive(step);
+  }
+};
+
+<Steps active={active} onStepClick={handleStepClick}>
+  ...
+</Steps>;
+```
+
+### 异步步骤处理
+
+处理需要异步操作的步骤:
+
+```jsx
+const [loading, setLoading] = useState(false);
+
+const handleNext = async () => {
+  setLoading(true);
+  try {
+    await saveStepData(active);
+    setActive(active + 1);
+  } catch (error) {
+    notify.error('保存失败');
+  } finally {
+    setLoading(false);
+  }
+};
+
+<Steps active={active}>
+  <Step label="步骤 1" loading={loading && active === 0}>
+    ...
+  </Step>
+</Steps>;
+```
+
+### 完成后的处理
+
+所有步骤完成后的友好提示:
+
+```jsx
+<Steps active={active}>
+  <Step label="步骤 1">...</Step>
+  <Step label="步骤 2">...</Step>
+  <Step label="步骤 3">...</Step>
+  <StepCompleted>
+    <Card>
+      <Text variant="h5">🎉 全部完成!</Text>
+      <Button onClick={handleFinish}>返回首页</Button>
+    </Card>
+  </StepCompleted>
+</Steps>
+```
+
+### 选择合适的变体
+
+根据场景选择变体:
+
+```jsx
+// 表单向导: 使用 default
+<Steps variant="default" orientation="horizontal">...</Steps>
+
+// 配置页面: 使用 tab
+<Steps variant="tab" orientation="vertical">...</Steps>
+```
+
+### 响应式布局
+
+移动端使用垂直布局:
+
+```jsx
+const isMobile = useMediaQuery('(max-width: 768px)');
+
+<Steps orientation={isMobile ? 'vertical' : 'horizontal'}>...</Steps>;
+```

@@ -1,0 +1,179 @@
+---
+sidebar_position: 1
+---
+
+# Icons
+
+Kube Design provides a comprehensive icon library with multiple styles and variants.
+
+## Installation
+
+Icons are included in the `@kubed/icons` package:
+
+```bash
+npm install @kubed/icons
+# or
+yarn add @kubed/icons
+# or
+pnpm add @kubed/icons
+```
+
+## Usage
+
+### Basic Usage
+
+Import and use icons directly:
+
+```jsx
+import { User, Settings, Download, Upload } from '@kubed/icons';
+
+function Demo() {
+  return (
+    <div>
+      <User />
+      <Settings />
+      <Download />
+      <Upload />
+    </div>
+  );
+}
+```
+
+### Icon Size
+
+Control icon size with the `size` prop:
+
+```jsx
+import { User } from '@kubed/icons';
+
+function Demo() {
+  return (
+    <div>
+      <User size={16} />
+      <User size={24} />
+      <User size={32} />
+      <User size={48} />
+    </div>
+  );
+}
+```
+
+### Icon Color
+
+Icons inherit the color from their parent element:
+
+```jsx
+import { User } from '@kubed/icons';
+
+function Demo() {
+  return (
+    <div>
+      <div style={{ color: 'red' }}>
+        <User size={24} />
+      </div>
+      <div style={{ color: 'blue' }}>
+        <User size={24} />
+      </div>
+      <div style={{ color: 'green' }}>
+        <User size={24} />
+      </div>
+    </div>
+  );
+}
+```
+
+### With Components
+
+Use icons with Kube Design components:
+
+```jsx
+import { Button } from '@kubed/components';
+import { Download, Upload, Settings } from '@kubed/icons';
+
+function Demo() {
+  return (
+    <div>
+      <Button leftIcon={<Download size={16} />}>
+        Download
+      </Button>
+      <Button leftIcon={<Upload size={16} />}>
+        Upload
+      </Button>
+      <Button leftIcon={<Settings size={16} />}>
+        Settings
+      </Button>
+    </div>
+  );
+}
+```
+
+## Available Icons
+
+The icon library includes hundreds of icons across multiple categories:
+
+- **UI Icons**: Common interface elements (arrows, checkmarks, etc.)
+- **File Icons**: File type indicators
+- **Social Icons**: Social media platforms
+- **Brand Icons**: Popular brand logos
+- **Action Icons**: User actions (download, upload, delete, etc.)
+
+## Icon Variants
+
+Icons are available in multiple styles:
+
+- **Outline**: Line-based icons (default)
+- **Filled**: Solid filled icons
+- **Duotone**: Two-tone icons
+
+## API
+
+### Icon Props
+
+All icons accept the following props:
+
+| Property | Description | Type | Default |
+|----------|-------------|------|---------|
+| size | Icon size in pixels | `number \| string` | `24` |
+| color | Icon color | `string` | inherited |
+| className | CSS class name | `string` | - |
+| style | Inline styles | `CSSProperties` | - |
+
+## Examples
+
+### Icon Grid
+
+```jsx
+import { 
+  User, Settings, Download, Upload, 
+  Delete, Edit, Search, Filter,
+  Home, File, Folder, Star
+} from '@kubed/icons';
+
+function IconGrid() {
+  const icons = [
+    { Icon: User, name: 'User' },
+    { Icon: Settings, name: 'Settings' },
+    { Icon: Download, name: 'Download' },
+    { Icon: Upload, name: 'Upload' },
+    { Icon: Delete, name: 'Delete' },
+    { Icon: Edit, name: 'Edit' },
+    { Icon: Search, name: 'Search' },
+    { Icon: Filter, name: 'Filter' },
+    { Icon: Home, name: 'Home' },
+    { Icon: File, name: 'File' },
+    { Icon: Folder, name: 'Folder' },
+    { Icon: Star, name: 'Star' },
+  ];
+
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
+      {icons.map(({ Icon, name }) => (
+        <div key={name} style={{ textAlign: 'center' }}>
+          <Icon size={32} />
+          <p>{name}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+```

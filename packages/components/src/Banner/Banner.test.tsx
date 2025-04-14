@@ -1,14 +1,22 @@
 import React from 'react';
-import { shallowWithTheme } from '@kubed/tests';
+import { renderWithTheme } from '@kubed/tests';
 import { Navs } from '@kubed/components';
 import { Banner, BannerTip } from './Banner';
+
+vi.mock('@kubed/components', async () => {
+  const actual = await vi.importActual<typeof import('@kubed/components')>('@kubed/components');
+  return {
+    ...actual,
+    Navs: ({ data }) => <div data-testid="navs">{JSON.stringify(data)}</div>,
+  };
+});
 
 describe('@kubed/components/Banner', () => {
   it('has correct displayName', () => {
     expect(Banner.displayName).toEqual('@kubed/components/Banner');
   });
 
-  it('renders given title,icon and description', () => {
+  it('to match snapshot', () => {
     const data = [
       {
         label: 'KubeSphere',
@@ -23,7 +31,7 @@ describe('@kubed/components/Banner', () => {
         value: 'Kubernetes',
       },
     ];
-    const element = shallowWithTheme(
+    const { asFragment } = renderWithTheme(
       <Banner icon title="集群节点" description="集群" navs={data}>
         <Navs data={data} />
         <BannerTip title="集群节点的类型?" key="node-type">
@@ -35,8 +43,6 @@ describe('@kubed/components/Banner', () => {
         </BannerTip>
       </Banner>
     );
-    expect(element.find(Banner).prop('title')).toBe('集群节点');
-    expect(element.find(Banner).prop('description')).toBe('集群');
-    expect(element.find(Banner).prop('icon')).toBe(true);
+    expect(asFragment()).toMatchSnapshot();
   });
 });

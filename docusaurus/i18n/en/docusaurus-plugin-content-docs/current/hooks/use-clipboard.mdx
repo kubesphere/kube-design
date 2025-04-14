@@ -1,0 +1,97 @@
+---
+sidebar_position: 1
+---
+
+# useClipboard
+
+Hook for copying text to clipboard.
+
+## Usage
+
+```jsx
+import { useClipboard } from '@kubed/hooks';
+import { Button, Group, Text } from '@kubed/components';
+
+function Demo() {
+  const clipboard = useClipboard();
+
+  return (
+    <Group>
+      <Button onClick={() => clipboard.copy('Hello, World!')}>
+        Copy to Clipboard
+      </Button>
+      <Text>{clipboard.copied ? 'Copied!' : 'Click to copy'}</Text>
+    </Group>
+  );
+}
+```
+
+## With Timeout
+
+Automatically reset copied state after timeout.
+
+```jsx
+import { useClipboard } from '@kubed/hooks';
+import { Button } from '@kubed/components';
+
+function Demo() {
+  const clipboard = useClipboard({ timeout: 2000 });
+
+  return (
+    <Button 
+      color={clipboard.copied ? 'success' : 'primary'}
+      onClick={() => clipboard.copy('Copied text')}
+    >
+      {clipboard.copied ? 'Copied!' : 'Copy'}
+    </Button>
+  );
+}
+```
+
+## API
+
+### Parameters
+
+```typescript
+interface UseClipboardOptions {
+  timeout?: number; // Reset timeout in ms (default: 1000)
+}
+```
+
+### Return Value
+
+```typescript
+interface UseClipboardReturn {
+  copy: (text: string) => void;  // Copy text to clipboard
+  copied: boolean;                // Whether text was copied
+  reset: () => void;              // Reset copied state
+  error: Error | null;            // Copy error if any
+}
+```
+
+## Example
+
+```jsx
+function ClipboardExample() {
+  const clipboard = useClipboard({ timeout: 3000 });
+
+  return (
+    <div>
+      <input 
+        type="text" 
+        id="copy-input" 
+        defaultValue="Text to copy" 
+      />
+      <button 
+        onClick={() => {
+          const input = document.getElementById('copy-input');
+          clipboard.copy(input.value);
+        }}
+      >
+        {clipboard.copied ? 'Copied!' : 'Copy'}
+      </button>
+      {clipboard.error && <p>Error: {clipboard.error.message}</p>}
+    </div>
+  );
+}
+```

@@ -1,0 +1,349 @@
+---
+sidebar_position: 1
+---
+
+# Empty 空状态
+
+空状态时的占位提示组件。
+
+## 何时使用
+
+- 当目前没有数据时，用于显式的用户提示
+- 数据为空或查询结果为空时的占位展示
+- 初始化场景时的引导操作
+- 列表、表格、卡片等容器的空状态提示
+
+## 示例
+
+### 基础用法
+
+最简单的空状态用法，默认显示图标和标题。
+
+```jsx live
+function Demo() {
+  return <Empty />;
+}
+```
+
+### 自定义标题
+
+通过 `title` 属性设置标题文本。
+
+```jsx live
+function Demo() {
+  return <Empty title="暂无数据" />;
+}
+```
+
+### 添加描述
+
+通过 `description` 属性添加详细描述信息。
+
+```jsx live
+function Demo() {
+  return <Empty title="未发现匹配的结果" description="您可以尝试刷新数据或清空搜索条件" />;
+}
+```
+
+### 自定义图标
+
+通过 `image` 属性自定义显示的图标。
+
+```jsx live
+function Demo() {
+  const { Cluster, Pod, Storage, Appcenter } = KubedIcons;
+
+  return (
+    <Group spacing={60}>
+      <Empty title="暂无集群" image={<Cluster size={48} />} />
+      <Empty title="暂无 Pod" image={<Pod size={48} />} />
+      <Empty title="暂无存储" image={<Storage size={48} />} />
+    </Group>
+  );
+}
+```
+
+### 隐藏标题
+
+将 `title` 设置为 `null` 可以隐藏标题。
+
+```jsx live
+function Demo() {
+  return <Empty title={null} description="暂无相关数据" />;
+}
+```
+
+### 添加操作按钮
+
+通过 `children` 添加操作按钮，引导用户进行下一步操作。
+
+```jsx live
+function Demo() {
+  const { Add } = KubedIcons;
+
+  return (
+    <Empty title="暂无工作负载" description="您可以创建一个新的工作负载来开始">
+      <Button style={{ marginTop: '20px' }} leftIcon={<Add />}>
+        创建工作负载
+      </Button>
+    </Empty>
+  );
+}
+```
+
+### 多个操作按钮
+
+可以添加多个操作按钮供用户选择。
+
+```jsx live
+function Demo() {
+  const { Add, Upload2Duotone } = KubedIcons;
+
+  return (
+    <Empty title="暂无应用" description="您可以创建新应用或从模板导入">
+      <Group style={{ marginTop: '20px' }}>
+        <Button leftIcon={<Add />}>创建应用</Button>
+        <Button variant="outline" leftIcon={<Upload2Duotone />}>
+          从模板导入
+        </Button>
+      </Group>
+    </Empty>
+  );
+}
+```
+
+### 自定义图标样式
+
+通过 `imageStyle` 和 `imageClassName` 自定义图标容器样式。
+
+```jsx live
+function Demo() {
+  const { Kubernetes } = KubedIcons;
+
+  return (
+    <Empty
+      title="暂无集群"
+      description="请先添加 Kubernetes 集群"
+      image={<Kubernetes size={48} />}
+      imageStyle={{ backgroundColor: '#e8f4ff', width: '80px', height: '80px' }}
+    />
+  );
+}
+```
+
+### 在卡片中使用
+
+空状态组件常用于卡片等容器中。
+
+```jsx live
+function Demo() {
+  const { Add } = KubedIcons;
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ padding: '40px 20px' }}>
+        <Empty title="暂无数据" description="当前列表为空">
+          <Button style={{ marginTop: '20px' }} leftIcon={<Add />}>
+            添加数据
+          </Button>
+        </Empty>
+      </Card>
+    </div>
+  );
+}
+```
+
+### 搜索结果为空
+
+搜索无结果时的提示场景。
+
+```jsx live
+function Demo() {
+  const { Magnifier } = KubedIcons;
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ padding: '40px 20px' }}>
+        <Empty
+          title="未找到匹配结果"
+          description="请尝试其他搜索关键词或清空搜索条件"
+          image={<Magnifier size={48} />}
+        >
+          <Button variant="outline" style={{ marginTop: '20px' }}>
+            清空搜索
+          </Button>
+        </Empty>
+      </Card>
+    </div>
+  );
+}
+```
+
+### 错误状态
+
+用于显示错误或异常状态。
+
+```jsx live
+function Demo() {
+  const { Warning } = KubedIcons;
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ padding: '40px 20px' }}>
+        <Empty
+          title="加载失败"
+          description="数据加载出现问题，请稍后重试"
+          image={<Warning size={48} />}
+        >
+          <Button style={{ marginTop: '20px' }}>重新加载</Button>
+        </Empty>
+      </Card>
+    </div>
+  );
+}
+```
+
+### 自定义描述内容
+
+描述支持任意 ReactNode，可以包含链接等复杂内容。
+
+```jsx live
+function Demo() {
+  return (
+    <Empty
+      title="暂无权限"
+      description={
+        <span>
+          您没有访问此资源的权限，请
+          <a href="#" style={{ color: '#329dce' }}>
+            联系管理员
+          </a>
+          申请权限
+        </span>
+      }
+    />
+  );
+}
+```
+
+## API
+
+### Empty
+
+| 属性           | 说明               | 类型            | 默认值                      |
+| -------------- | ------------------ | --------------- | --------------------------- |
+| title          | 标题               | `ReactNode`     | `'暂无数据'`（国际化文本）  |
+| description    | 描述信息           | `ReactNode`     | -                           |
+| image          | 自定义图标         | `ReactNode`     | `<Exclamation size={48} />` |
+| imageClassName | 图标容器类名       | `string`        | -                           |
+| imageStyle     | 图标容器样式       | `CSSProperties` | -                           |
+| children       | 底部内容（如按钮） | `ReactNode`     | -                           |
+
+:::info
+
+**关于标题**：
+
+- 默认标题使用国际化文本 `locales.Empty.noData`
+- 可以通过 `title` 属性自定义标题
+- 设置 `title={null}` 可以隐藏标题
+
+**关于图标**：
+
+- 默认使用 `Exclamation` 图标
+- 图标容器是一个 60x60 的圆角容器
+- 可以通过 `imageStyle` 调整容器大小和背景色
+
+**关于描述**：
+
+- `description` 支持字符串或 ReactNode
+- 可以包含链接、图标等复杂内容
+
+**关于底部内容**：
+
+- `children` 用于放置操作按钮等内容
+- 建议添加 `marginTop` 与上方内容保持间距
+
+:::
+
+## 使用建议
+
+### 提供明确的提示
+
+告诉用户为什么是空的，以及可以做什么：
+
+```jsx
+// 推荐：提供明确的描述和操作
+<Empty
+  title="暂无工作负载"
+  description="创建您的第一个工作负载来开始部署应用"
+>
+  <Button>创建工作负载</Button>
+</Empty>
+
+// 不推荐：只显示空状态，没有引导
+<Empty title="暂无数据" />
+```
+
+### 使用合适的图标
+
+根据场景选择合适的图标：
+
+```jsx
+// 列表为空
+<Empty title="暂无 Pod" image={<Pod size={48} />} />
+
+// 搜索无结果
+<Empty title="未找到结果" image={<Magnifier size={48} />} />
+
+// 加载错误
+<Empty title="加载失败" image={<Warning size={48} />} />
+
+// 无权限
+<Empty title="暂无权限" image={<SafeNotice size={48} />} />
+```
+
+### 在容器中居中显示
+
+Empty 组件使用 flex 布局居中，在容器中使用时注意设置容器高度：
+
+```jsx
+// 在固定高度容器中
+<Card style={{ height: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+  <Empty title="暂无数据" />
+</Card>
+
+// 在表格等组件中
+<Table
+  dataSource={[]}
+  emptyContent={<Empty title="暂无数据" />}
+/>
+```
+
+### 提供操作按钮
+
+空状态时提供操作按钮可以引导用户：
+
+```jsx
+<Empty title="暂无数据" description="点击下方按钮添加第一条数据">
+  <Group style={{ marginTop: '20px' }}>
+    <Button leftIcon={<Add />}>添加</Button>
+    <Button variant="outline" leftIcon={<Import />}>
+      导入
+    </Button>
+  </Group>
+</Empty>
+```
+
+### 响应式设计
+
+在移动端可能需要调整样式：
+
+```jsx
+<Empty
+  title="暂无数据"
+  imageStyle={{
+    width: window.innerWidth < 768 ? '48px' : '60px',
+    height: window.innerWidth < 768 ? '48px' : '60px',
+  }}
+/>
+```

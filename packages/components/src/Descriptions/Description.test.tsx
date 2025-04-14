@@ -2,7 +2,7 @@ import {
   itSupportsClassName,
   itRendersChildren,
   itSupportsStyle,
-  shallowWithTheme,
+  renderWithTheme,
 } from '@kubed/tests';
 import React from 'react';
 import { Description } from './Description';
@@ -18,14 +18,32 @@ describe('@kubed/components/Description', () => {
   itRendersChildren(Description, defaultProps);
   itSupportsStyle(Description, defaultProps);
 
-  it('passes label and variant to description component', () => {
-    const wrapper = shallowWithTheme(
-      <Description label="project" variant="unstyled">
+  const testId = 'test-id';
+  it('to match snapshot', () => {
+    const { asFragment } = renderWithTheme(
+      <Description data-testid={testId} label="project" variant="unstyled">
         KubeSphere
       </Description>
     );
-    expect(wrapper.find(Description).prop('label')).toBe('project');
-    expect(wrapper.find(Description).prop('variant')).toBe('unstyled');
+    expect(asFragment()).toMatchInlineSnapshot(`
+      <DocumentFragment>
+        <div
+          class="sc-dSCufp jBYTda"
+          data-testid="test-id"
+        >
+          <div
+            class="sc-fxwrCY dqJpPm desc-label"
+          >
+            project
+          </div>
+          <div
+            class="sc-hIUJlX fKsxPo desc-content"
+          >
+            KubeSphere
+          </div>
+        </div>
+      </DocumentFragment>
+    `);
   });
 
   it('has correct displayName', () => {

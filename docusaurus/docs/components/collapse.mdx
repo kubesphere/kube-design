@@ -1,0 +1,404 @@
+---
+sidebar_position: 1
+---
+
+# Collapse 折叠面板
+
+可以折叠/展开的内容区域组件。
+
+## 何时使用
+
+- 对复杂区域进行分组和隐藏，保持页面整洁
+- 手风琴模式，只允许展开一个面板
+- 需要展示可折叠的配置项或详情信息
+- FAQ 问答列表等场景
+
+## 示例
+
+### 基础用法
+
+可以同时展开多个面板。
+
+```jsx live
+function Demo() {
+  const { Panel } = Collapse;
+
+  return (
+    <Collapse defaultActiveKey={['1']}>
+      <Panel key="1" header="面板标题 1">
+        <p style={{ margin: 0 }}>这是面板 1 的内容。可以放置任意内容，包括文本、表单、列表等。</p>
+      </Panel>
+      <Panel key="2" header="面板标题 2">
+        <p style={{ margin: 0 }}>这是面板 2 的内容。折叠面板可以帮助组织和隐藏复杂的内容。</p>
+      </Panel>
+      <Panel key="3" header="面板标题 3">
+        <p style={{ margin: 0 }}>这是面板 3 的内容。用户可以按需展开查看详细信息。</p>
+      </Panel>
+    </Collapse>
+  );
+}
+```
+
+### 手风琴模式
+
+通过 `accordion` 属性设置手风琴模式，每次只能展开一个面板。
+
+```jsx live
+function Demo() {
+  const { Panel } = Collapse;
+
+  return (
+    <Collapse accordion defaultActiveKey="1">
+      <Panel key="1" header="Kubernetes 简介">
+        <p style={{ margin: 0 }}>
+          Kubernetes 是一个开源的容器编排平台，用于自动化部署、扩展和管理容器化应用程序。
+        </p>
+      </Panel>
+      <Panel key="2" header="Docker 简介">
+        <p style={{ margin: 0 }}>
+          Docker 是一个开源的应用容器引擎，让开发者可以打包应用及依赖到一个可移植的容器中。
+        </p>
+      </Panel>
+      <Panel key="3" header="Helm 简介">
+        <p style={{ margin: 0 }}>Helm 是 Kubernetes 的包管理器，帮助您管理 Kubernetes 应用程序。</p>
+      </Panel>
+    </Collapse>
+  );
+}
+```
+
+### 受控模式
+
+通过 `activeKey` 和 `onChange` 实现受控组件。
+
+```jsx live
+function Demo() {
+  const { Panel } = Collapse;
+  const [activeKey, setActiveKey] = React.useState(['1']);
+
+  return (
+    <div>
+      <Collapse activeKey={activeKey} onChange={setActiveKey}>
+        <Panel key="1" header="面板 1">
+          <p style={{ margin: 0 }}>面板 1 的内容</p>
+        </Panel>
+        <Panel key="2" header="面板 2">
+          <p style={{ margin: 0 }}>面板 2 的内容</p>
+        </Panel>
+        <Panel key="3" header="面板 3">
+          <p style={{ margin: 0 }}>面板 3 的内容</p>
+        </Panel>
+      </Collapse>
+      <Group style={{ marginTop: 16 }}>
+        <Button size="sm" onClick={() => setActiveKey(['1', '2', '3'])}>
+          全部展开
+        </Button>
+        <Button size="sm" onClick={() => setActiveKey([])}>
+          全部折叠
+        </Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+### 可折叠触发区域
+
+通过 `collapsible` 属性设置面板的可折叠触发区域。
+
+```jsx live
+function Demo() {
+  const { Panel } = Collapse;
+
+  return (
+    <Collapse accordion>
+      <Panel key="1" header="默认：点击整行可折叠">
+        <p style={{ margin: 0 }}>点击面板头部任意位置都可以触发折叠/展开。</p>
+      </Panel>
+      <Panel key="2" header="只有点击头部文字可折叠" collapsible="header">
+        <p style={{ margin: 0 }}>只有点击标题文字才能触发折叠/展开。</p>
+      </Panel>
+      <Panel key="3" header="只有点击图标可折叠" collapsible="icon">
+        <p style={{ margin: 0 }}>只有点击箭头图标才能触发折叠/展开。</p>
+      </Panel>
+      <Panel key="4" header="禁用折叠" collapsible="disabled">
+        <p style={{ margin: 0 }}>此面板无法折叠/展开。</p>
+      </Panel>
+    </Collapse>
+  );
+}
+```
+
+### 隐藏箭头图标
+
+通过 `showArrow={false}` 隐藏面板的箭头图标。
+
+```jsx live
+function Demo() {
+  const { Panel } = Collapse;
+
+  return (
+    <Collapse defaultActiveKey={['1']}>
+      <Panel key="1" header="显示箭头（默认）">
+        <p style={{ margin: 0 }}>这个面板显示箭头图标。</p>
+      </Panel>
+      <Panel key="2" header="隐藏箭头" showArrow={false}>
+        <p style={{ margin: 0 }}>这个面板隐藏了箭头图标。</p>
+      </Panel>
+    </Collapse>
+  );
+}
+```
+
+### 额外内容
+
+通过 `extra` 属性在面板头部右侧添加额外内容。
+
+```jsx live
+function Demo() {
+  const { Panel } = Collapse;
+  const { FolderSettingDuotone, Trash } = KubedIcons;
+
+  return (
+    <Collapse defaultActiveKey={['1']}>
+      <Panel
+        key="1"
+        header="配置项"
+        extra={
+          <Button variant="text" size="sm" radius="sm" onClick={(e) => e.stopPropagation()}>
+            <FolderSettingDuotone size={16} />
+          </Button>
+        }
+      >
+        <p style={{ margin: 0 }}>这个面板在右侧有一个设置按钮。</p>
+      </Panel>
+      <Panel
+        key="2"
+        header="可删除项"
+        extra={
+          <Button
+            variant="text"
+            size="sm"
+            color="error"
+            radius="sm"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Trash size={16} />
+          </Button>
+        }
+      >
+        <p style={{ margin: 0 }}>这个面板在右侧有一个删除按钮。</p>
+      </Panel>
+    </Collapse>
+  );
+}
+```
+
+### 自定义展开图标
+
+通过 `expandIcon` 属性自定义展开/折叠图标。
+
+```jsx live
+function Demo() {
+  const { Panel } = Collapse;
+  const { Add, Substract } = KubedIcons;
+
+  return (
+    <Collapse
+      defaultActiveKey={['1']}
+      expandIcon={({ isActive }) => (isActive ? <Substract size={16} /> : <Add size={16} />)}
+    >
+      <Panel key="1" header="自定义图标面板 1">
+        <p style={{ margin: 0 }}>使用加号/减号作为展开图标。</p>
+      </Panel>
+      <Panel key="2" header="自定义图标面板 2">
+        <p style={{ margin: 0 }}>展开时显示减号，折叠时显示加号。</p>
+      </Panel>
+    </Collapse>
+  );
+}
+```
+
+### 嵌套折叠面板
+
+折叠面板可以嵌套使用。
+
+```jsx live
+function Demo() {
+  const { Panel } = Collapse;
+
+  return (
+    <Collapse defaultActiveKey={['1']}>
+      <Panel key="1" header="外层面板 1">
+        <Collapse accordion>
+          <Panel key="1-1" header="内层面板 1-1">
+            <p style={{ margin: 0 }}>嵌套的面板内容 1-1</p>
+          </Panel>
+          <Panel key="1-2" header="内层面板 1-2">
+            <p style={{ margin: 0 }}>嵌套的面板内容 1-2</p>
+          </Panel>
+        </Collapse>
+      </Panel>
+      <Panel key="2" header="外层面板 2">
+        <p style={{ margin: 0 }}>外层面板 2 的内容</p>
+      </Panel>
+    </Collapse>
+  );
+}
+```
+
+## API
+
+### Collapse
+
+| 属性                 | 说明                     | 类型                                       | 默认值  |
+| -------------------- | ------------------------ | ------------------------------------------ | ------- |
+| activeKey            | 当前展开的面板 key       | `string \| string[] \| number \| number[]` | -       |
+| defaultActiveKey     | 默认展开的面板 key       | `string \| string[] \| number \| number[]` | -       |
+| accordion            | 是否为手风琴模式         | `boolean`                                  | `false` |
+| expandIcon           | 自定义展开图标           | `(panelProps) => ReactNode`                | -       |
+| collapsible          | 所有面板的可折叠触发区域 | `'header' \| 'icon' \| 'disabled'`         | -       |
+| destroyInactivePanel | 销毁折叠隐藏的面板       | `boolean`                                  | `false` |
+| onChange             | 切换面板时的回调         | `(key: string \| string[]) => void`        | -       |
+
+### Collapse.Panel
+
+| 属性        | 说明             | 类型                               | 默认值  |
+| ----------- | ---------------- | ---------------------------------- | ------- |
+| key         | 面板唯一标识     | `string \| number`                 | -       |
+| header      | 面板头部内容     | `ReactNode`                        | -       |
+| extra       | 头部右侧额外内容 | `ReactNode`                        | -       |
+| showArrow   | 是否显示箭头图标 | `boolean`                          | `true`  |
+| forceRender | 强制渲染面板内容 | `boolean`                          | `false` |
+| collapsible | 可折叠触发区域   | `'header' \| 'icon' \| 'disabled'` | -       |
+
+:::info
+
+**关于 activeKey**：
+
+- 非手风琴模式下，`activeKey` 为数组，可以同时展开多个面板
+- 手风琴模式下，`activeKey` 为单个值，只能展开一个面板
+- 使用 `defaultActiveKey` 设置初始展开状态（非受控）
+- 使用 `activeKey` + `onChange` 实现受控模式
+
+**关于 collapsible**：
+
+- `header`：只有点击头部文字才能触发折叠
+- `icon`：只有点击箭头图标才能触发折叠
+- `disabled`：禁用折叠功能
+- 可以在 Collapse 上统一设置，也可以在 Panel 上单独设置
+
+**关于 expandIcon**：
+
+- 函数接收 `panelProps` 参数，包含 `isActive` 属性
+- 可以根据 `isActive` 返回不同的图标
+
+:::
+
+## 使用建议
+
+### 手风琴 vs 多面板
+
+根据使用场景选择合适的模式：
+
+```jsx
+// 手风琴模式：内容互斥时使用
+<Collapse accordion>
+  <Panel key="1" header="选项 A">...</Panel>
+  <Panel key="2" header="选项 B">...</Panel>
+</Collapse>
+
+// 多面板模式：内容可以同时查看
+<Collapse>
+  <Panel key="1" header="基本信息">...</Panel>
+  <Panel key="2" header="高级配置">...</Panel>
+</Collapse>
+```
+
+### 额外操作按钮
+
+在面板头部添加操作按钮时，需要阻止事件冒泡：
+
+```jsx
+<Panel
+  header="标题"
+  extra={
+    <Button
+      onClick={(e) => {
+        e.stopPropagation(); // 阻止触发面板折叠
+        handleAction();
+      }}
+    >
+      操作
+    </Button>
+  }
+>
+  内容
+</Panel>
+```
+
+### 默认展开
+
+根据业务需求设置默认展开的面板：
+
+```jsx
+// 展开第一个面板
+<Collapse defaultActiveKey={['1']}>
+  ...
+</Collapse>
+
+// 展开多个面板
+<Collapse defaultActiveKey={['1', '3']}>
+  ...
+</Collapse>
+
+// 全部折叠
+<Collapse defaultActiveKey={[]}>
+  ...
+</Collapse>
+```
+
+### 动态面板
+
+动态生成折叠面板：
+
+```jsx
+const items = [
+  { key: '1', title: '面板 1', content: '内容 1' },
+  { key: '2', title: '面板 2', content: '内容 2' },
+];
+
+<Collapse>
+  {items.map((item) => (
+    <Panel key={item.key} header={item.title}>
+      {item.content}
+    </Panel>
+  ))}
+</Collapse>;
+```
+
+### 配置表单
+
+使用折叠面板组织复杂的配置表单：
+
+```jsx
+<Collapse defaultActiveKey={['basic']}>
+  <Panel key="basic" header="基本配置">
+    <Form>
+      <FormItem label="名称">
+        <Input />
+      </FormItem>
+      <FormItem label="描述">
+        <Textarea />
+      </FormItem>
+    </Form>
+  </Panel>
+  <Panel key="advanced" header="高级配置">
+    <Form>
+      <FormItem label="超时时间">
+        <InputNumber />
+      </FormItem>
+    </Form>
+  </Panel>
+</Collapse>
+```

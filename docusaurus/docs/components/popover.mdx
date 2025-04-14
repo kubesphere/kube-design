@@ -1,0 +1,660 @@
+---
+sidebar_position: 1
+---
+
+# Popover 气泡卡片
+
+点击/鼠标移入元素,弹出气泡式的卡片浮层。
+
+## 何时使用
+
+- 当目标元素有进一步的描述和相关操作时
+- 需要展示比 Tooltip 更复杂的内容时
+- 可以承载复杂内容,如链接、表单、图片等
+
+在 Kube Design 中,Popover 组件提供了丰富的气泡卡片功能:
+
+- **灵活定位**:支持 12 个方向的弹出位置
+- **可交互内容**:默认支持在气泡内进行交互操作
+- **多种触发方式**:支持点击、悬停等触发方式
+- **带标题**:可以添加标题和内容的组合展示
+
+## 示例
+
+### 基础用法
+
+最基本的气泡卡片用法。
+
+```jsx live
+function Demo() {
+  return (
+    <Popover title="标题" content="这是气泡卡片的内容">
+      <Button>悬停显示</Button>
+    </Popover>
+  );
+}
+```
+
+### 触发方式
+
+支持鼠标悬停和点击两种触发方式。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="md">
+      <Popover title="悬停触发" content="鼠标悬停时显示气泡卡片" trigger="mouseenter">
+        <Button>悬停触发</Button>
+      </Popover>
+      <Popover title="点击触发" content="点击按钮时显示气泡卡片" trigger="click">
+        <Button>点击触发</Button>
+      </Popover>
+    </Group>
+  );
+}
+```
+
+### 位置
+
+支持 12 个不同的弹出位置。
+
+```jsx live
+function Demo() {
+  const positions = [
+    'top-start',
+    'top',
+    'top-end',
+    'right-start',
+    'right',
+    'right-end',
+    'bottom-start',
+    'bottom',
+    'bottom-end',
+    'left-start',
+    'left',
+    'left-end',
+  ];
+
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+      {positions.map((pos) => (
+        <Popover key={pos} title="提示标题" content={`位置: ${pos}`} placement={pos}>
+          <Button size="sm">{pos}</Button>
+        </Popover>
+      ))}
+    </div>
+  );
+}
+```
+
+### 自定义宽度
+
+通过 `width` 属性设置气泡卡片的宽度。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="md">
+      <Popover title="小卡片" content="这是一个较窄的气泡卡片" width={180}>
+        <Button>宽度 180px</Button>
+      </Popover>
+      <Popover title="中等卡片" content="这是一个中等宽度的气泡卡片" width={300}>
+        <Button>宽度 300px</Button>
+      </Popover>
+      <Popover
+        title="大卡片"
+        content="这是一个较宽的气泡卡片,可以容纳更多内容"
+        width={400}
+      >
+        <Button>宽度 400px</Button>
+      </Popover>
+    </Group>
+  );
+}
+```
+
+### 仅内容
+
+不设置标题,只显示内容。
+
+```jsx live
+function Demo() {
+  return (
+    <Popover content="这是一个没有标题的气泡卡片,只显示内容部分">
+      <Button>仅内容</Button>
+    </Popover>
+  );
+}
+```
+
+### 复杂内容
+
+气泡卡片可以包含复杂的内容,如链接、列表等。
+
+```jsx live
+function Demo() {
+  const content = (
+    <div>
+      <p style={{ margin: '0 0 8px 0' }}>这是一段描述文字</p>
+      <Group direction="column" spacing="xs">
+        <a href="#" style={{ color: '#329dce' }}>
+          查看详情
+        </a>
+        <a href="#" style={{ color: '#329dce' }}>
+          编辑配置
+        </a>
+        <a href="#" style={{ color: '#329dce' }}>
+          删除资源
+        </a>
+      </Group>
+    </div>
+  );
+
+  return (
+    <Popover title="操作菜单" content={content} width={200}>
+      <Button>显示操作</Button>
+    </Popover>
+  );
+}
+```
+
+### 带图标的内容
+
+在气泡卡片中使用图标。
+
+```jsx live
+function Demo() {
+  const { Information, CheckCircle, CloseCircle } = KubedIcons;
+
+  const content = (
+    <Group direction="column" spacing="sm">
+      <Group spacing="xs">
+        <Information size={16} />
+        <span>这是一条提示信息</span>
+      </Group>
+      <Group spacing="xs">
+        <CheckCircle size={16} />
+        <span>操作执行成功</span>
+      </Group>
+      <Group spacing="xs">
+        <CloseCircle size={16} />
+        <span>发现 2 个错误</span>
+      </Group>
+    </Group>
+  );
+
+  return (
+    <Popover title="系统状态" content={content} width={220}>
+      <Button>查看状态</Button>
+    </Popover>
+  );
+}
+```
+
+### 受控模式
+
+通过 `visible` 属性控制气泡卡片的显示和隐藏。
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+
+  return (
+    <Group spacing="md">
+      <Popover
+        title="受控气泡"
+        content="通过外部状态控制显示和隐藏"
+        visible={visible}
+        onVisibleChange={setVisible}
+      >
+        <Button>受控气泡</Button>
+      </Popover>
+      <Button onClick={() => setVisible(!visible)}>
+        {visible ? '隐藏' : '显示'}气泡
+      </Button>
+    </Group>
+  );
+}
+```
+
+### 手动控制
+
+使用 ref 手动控制气泡卡片的显示和隐藏。
+
+```jsx live
+function Demo() {
+  const popoverRef = React.useRef(null);
+
+  return (
+    <Group spacing="md">
+      <Popover
+        title="手动控制"
+        content="使用 ref 控制气泡的显示和隐藏"
+        onMount={(instance) => {
+          popoverRef.current = instance;
+        }}
+      >
+        <Button>目标元素</Button>
+      </Popover>
+      <Button onClick={() => popoverRef.current?.show()}>显示</Button>
+      <Button onClick={() => popoverRef.current?.hide()}>隐藏</Button>
+    </Group>
+  );
+}
+```
+
+### 延迟显示
+
+设置鼠标悬停后延迟显示的时间。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="md">
+      <Popover title="立即显示" content="没有延迟" delay={0}>
+        <Button>无延迟</Button>
+      </Popover>
+      <Popover title="延迟 500ms" content="悬停 500ms 后显示" delay={500}>
+        <Button>延迟 500ms</Button>
+      </Popover>
+      <Popover title="延迟 1000ms" content="悬停 1 秒后显示" delay={1000}>
+        <Button>延迟 1s</Button>
+      </Popover>
+    </Group>
+  );
+}
+```
+
+### 信息展示
+
+展示资源的详细信息。
+
+```jsx live
+function Demo() {
+  const { Cluster } = KubedIcons;
+
+  const clusterInfo = (
+    <Group direction="column" spacing="sm">
+      <div>
+        <div style={{ color: '#79879c', fontSize: '12px' }}>集群名称</div>
+        <div>Production Cluster</div>
+      </div>
+      <div>
+        <div style={{ color: '#79879c', fontSize: '12px' }}>节点数量</div>
+        <div>5 个节点</div>
+      </div>
+      <div>
+        <div style={{ color: '#79879c', fontSize: '12px' }}>状态</div>
+        <div style={{ color: '#55bc8a' }}>运行中</div>
+      </div>
+    </Group>
+  );
+
+  return (
+    <Popover title="集群信息" content={clusterInfo} width={200}>
+      <Button leftIcon={<Cluster />}>查看集群</Button>
+    </Popover>
+  );
+}
+```
+
+### 表单输入
+
+气泡卡片中包含表单输入。
+
+```jsx live
+function Demo() {
+  const [name, setName] = React.useState('');
+
+  const formContent = (
+    <Group direction="column" spacing="sm">
+      <Input
+        placeholder="输入名称"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <Group spacing="xs">
+        <Button size="sm" color="secondary">
+          确定
+        </Button>
+        <Button size="sm" variant="outline">
+          取消
+        </Button>
+      </Group>
+    </Group>
+  );
+
+  return (
+    <Popover title="快速创建" content={formContent} width={240} trigger="click">
+      <Button>新建资源</Button>
+    </Popover>
+  );
+}
+```
+
+## API
+
+### Popover
+
+Popover 继承了 Tooltip 的所有属性,以下是常用属性列表:
+
+**核心属性**:
+
+| 属性             | 说明                 | 类型                                                          | 默认值          |
+| ---------------- | -------------------- | ------------------------------------------------------------- | --------------- |
+| title            | 气泡卡片标题         | `string`                                                      | -               |
+| content          | 气泡卡片内容         | `ReactNode`                                                   | -               |
+| width            | 气泡卡片宽度(像素)   | `number`                                                      | -               |
+| maxWidth         | 最大宽度             | `string \| number`                                            | `'264px'`       |
+| placement        | 气泡卡片弹出位置     | `'top' \| 'bottom' \| 'left' \| 'right' \| 'top-start' \| ...` | `'top'`         |
+| trigger          | 触发方式             | `string`                                                      | `'mouseenter focus'` |
+| visible          | 手动控制显示状态     | `boolean`                                                     | -               |
+| onVisibleChange  | 显示状态改变时的回调 | `(visible: boolean) => void`                                  | -               |
+| interactive      | 是否允许交互         | `boolean`                                                     | `true`          |
+| delay            | 延迟显示时间(毫秒)   | `number \| [number, number]`                                  | `0`             |
+| offset           | 偏移量 [skidding, distance] | `[number, number]`                                     | `[0, 10]`       |
+| duration         | 动画持续时间(毫秒)   | `number \| [number, number]`                                  | -               |
+| hideOnClick      | 点击时是否隐藏       | `boolean \| 'toggle'`                                         | `true`          |
+| disabled         | 是否禁用             | `boolean`                                                     | `false`         |
+| contentClassName | 内容自定义类名       | `string`                                                      | -               |
+| onMount          | 组件挂载时的回调     | `(instance: PopoverInstance) => void`                         | -               |
+| children         | 触发元素             | `ReactElement`                                                | **必需**        |
+
+**其他可用属性**:
+
+Popover 还继承了以下 Tooltip 属性:
+
+| 属性            | 说明                         | 类型                              | 默认值   |
+| --------------- | ---------------------------- | --------------------------------- | -------- |
+| appendTo        | 气泡挂载的 DOM 节点          | `'parent' \| Element \| Function` | -        |
+| showOnCreate    | 创建时是否立即显示           | `boolean`                         | `false`  |
+| className       | 气泡容器的自定义类名         | `string`                          | -        |
+| animation       | 动画效果名称                 | `string`                          | `'shift-toward-subtle'` |
+
+### PopoverInstance
+
+通过 `onMount` 回调获取的实例对象,提供手动控制方法:
+
+| 方法      | 说明           | 类型                    |
+| --------- | -------------- | ----------------------- |
+| show()    | 显示气泡卡片   | `() => void`            |
+| hide()    | 隐藏气泡卡片   | `() => void`            |
+| setProps() | 更新配置       | `(props: Partial<PopoverProps>) => void` |
+| destroy() | 销毁实例       | `() => void`            |
+
+### placement 可选值
+
+支持 12 个方向,另外还支持自动定位:
+
+**基础方向**:
+- `top`, `bottom`, `left`, `right`
+
+**扩展方向**:
+- `top-start`, `top-end`
+- `bottom-start`, `bottom-end`
+- `left-start`, `left-end`
+- `right-start`, `right-end`
+
+**自动定位**:
+- `auto`: 自动选择最佳位置
+- `auto-start`: 自动选择,起始对齐
+- `auto-end`: 自动选择,结束对齐
+
+:::info
+
+**关于 Popover 与 Tooltip**:
+
+- Popover 基于 Tooltip 实现
+- Popover 默认 `interactive={true}`,支持与内容交互
+- Popover 适合展示更复杂的内容
+- Tooltip 适合展示简单的文本提示
+
+**关于宽度**:
+
+- 默认 `maxWidth` 为 `264px`
+- 使用 `width` 属性可以设置固定宽度
+- 内容过长会自动换行
+
+**关于触发方式**:
+
+- `trigger` 是字符串类型,支持多个事件名,用空格分隔
+- 常用值:`'mouseenter'`(悬停)、`'click'`(点击)、`'focus'`(聚焦)
+- 默认值为 `'mouseenter focus'`,即悬停或聚焦时触发
+- 设置为 `'manual'` 时需要手动控制 `visible` 属性
+- 可以组合多个触发方式,如 `'mouseenter click'`
+
+**关于交互性**:
+
+- 默认 `interactive={true}`,鼠标可以移入气泡内
+- 设置为 `false` 时,鼠标移入气泡会立即隐藏
+- 交互模式适合包含链接、按钮等可点击元素的场景
+
+**关于延迟**:
+
+- `delay` 可以是单个数字或数组 `[显示延迟, 隐藏延迟]`
+- 单位为毫秒
+- 延迟显示可以避免误触发
+
+**关于偏移量**:
+
+- `offset` 接受数组 `[skidding, distance]`
+- `skidding`: 沿着参考元素的偏移(水平或垂直)
+- `distance`: 与参考元素的距离
+- 默认值为 `[0, 10]`,表示距离参考元素 10 像素
+
+**关于动画**:
+
+- `duration` 控制显示/隐藏动画的持续时间
+- 可以是单个数字或数组 `[显示时长, 隐藏时长]`
+- 单位为毫秒
+
+**关于隐藏行为**:
+
+- `hideOnClick`: 控制点击时是否隐藏
+- `true`: 点击参考元素或外部时隐藏
+- `false`: 点击时不隐藏
+- `'toggle'`: 点击参考元素时切换显示/隐藏状态
+
+:::
+
+## 使用建议
+
+### 选择合适的触发方式
+
+根据使用场景选择触发方式:
+
+```jsx
+// 信息展示: 使用悬停触发
+<Popover trigger="mouseenter" content="详细信息">
+  <Button>查看信息</Button>
+</Popover>
+
+// 表单操作: 使用点击触发
+<Popover trigger="click" content={<Form />}>
+  <Button>填写表单</Button>
+</Popover>
+
+// 组合触发: 悬停或聚焦
+<Popover trigger="mouseenter focus" content="提示信息">
+  <Input />
+</Popover>
+
+// 手动控制
+<Popover trigger="manual" visible={visible} content="手动控制">
+  <Button>按钮</Button>
+</Popover>
+```
+
+### 内容不要过于复杂
+
+保持内容简洁,避免嵌套过多:
+
+```jsx
+// 推荐: 简洁的内容
+<Popover
+  title="集群状态"
+  content={
+    <div>
+      <div>节点: 5</div>
+      <div>状态: 运行中</div>
+    </div>
+  }
+>
+
+// 不推荐: 过于复杂,考虑使用 Modal
+<Popover content={<ComplexForm />}>
+```
+
+### 设置合适的宽度
+
+根据内容设置合适的宽度:
+
+```jsx
+// 简短文本: 不设置或使用较小宽度
+<Popover content="简短提示" width={150}>
+
+// 详细信息: 使用中等宽度
+<Popover content={detailedInfo} width={300}>
+
+// 复杂内容: 使用较大宽度
+<Popover content={complexContent} width={400}>
+```
+
+### 避免嵌套 Popover
+
+不要在 Popover 内部嵌套另一个 Popover:
+
+```jsx
+// 不推荐: 嵌套 Popover
+<Popover content={
+  <Popover content="...">
+    <Button>...</Button>
+  </Popover>
+}>
+```
+
+### 表单场景使用点击触发
+
+包含表单输入时使用点击触发:
+
+```jsx
+<Popover
+  trigger="click"
+  title="快速创建"
+  content={
+    <div>
+      <Input placeholder="名称" />
+      <Button>创建</Button>
+    </div>
+  }
+>
+  <Button>新建</Button>
+</Popover>
+```
+
+### 信息展示使用悬停触发
+
+只读信息展示使用悬停触发:
+
+```jsx
+<Popover
+  trigger="mouseenter"
+  title="Pod 详情"
+  content={podDetails}
+>
+  <span>my-pod</span>
+</Popover>
+```
+
+### 长内容自动换行
+
+气泡会自动换行,但注意控制宽度:
+
+```jsx
+<Popover
+  content="这是一段很长的文字,会自动换行显示,确保用户能够看到所有内容"
+  width={200}
+>
+  <Button>查看</Button>
+</Popover>
+```
+
+### 使用受控模式
+
+需要编程控制时使用受控模式:
+
+```jsx
+const [visible, setVisible] = useState(false);
+
+const handleConfirm = () => {
+  // 执行操作
+  setVisible(false);
+};
+
+<Popover
+  visible={visible}
+  onVisibleChange={setVisible}
+  content={<ConfirmForm onConfirm={handleConfirm} />}
+>
+  <Button>操作</Button>
+</Popover>
+```
+
+### 使用实例方法
+
+通过 `onMount` 获取实例,手动控制显示/隐藏:
+
+```jsx
+const popoverRef = useRef(null);
+
+<Popover
+  onMount={(instance) => {
+    popoverRef.current = instance;
+  }}
+  content="内容"
+>
+  <Button>目标</Button>
+</Popover>
+
+// 手动显示
+popoverRef.current?.show();
+
+// 手动隐藏
+popoverRef.current?.hide();
+
+// 更新配置
+popoverRef.current?.setProps({ content: '新内容' });
+```
+
+### 移动端适配
+
+移动端建议使用点击触发:
+
+```jsx
+const isMobile = window.innerWidth < 768;
+
+<Popover
+  trigger={isMobile ? 'click' : 'mouseenter'}
+  content="提示内容"
+>
+  <Button>按钮</Button>
+</Popover>
+```
+
+### 位置选择
+
+根据元素位置选择合适的弹出方向:
+
+```jsx
+// 页面顶部的元素: 向下弹出
+<Popover placement="bottom" content="...">
+
+// 页面底部的元素: 向上弹出
+<Popover placement="top" content="...">
+
+// 左侧元素: 向右弹出
+<Popover placement="right" content="...">
+
+// 右侧元素: 向左弹出
+<Popover placement="left" content="...">
+```

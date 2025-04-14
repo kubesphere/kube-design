@@ -1,0 +1,469 @@
+---
+sidebar_position: 1
+---
+
+# TimePicker 时间选择器
+
+用于选择或输入时间。
+
+## 何时使用
+
+- 需要用户输入一个时间
+- 需要用户选择时间范围
+- 适用于表单中的时间输入场景
+- 当只需要选择时间而不需要日期时
+
+## 示例
+
+### 基础用法
+
+最简单的用法，通过 `onChange` 获取选中的时间。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  const handleChange = (time, timeString) => {
+    setValue(time);
+  };
+
+  return (
+    <div>
+      <TimePicker onChange={handleChange} style={{ width: 200 }} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        选择的时间: {value ? value.format('HH:mm:ss') : '未选择'}
+      </div>
+    </div>
+  );
+}
+```
+
+### 受控组件
+
+通过 `value` 属性控制时间选择器的值。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  const setCurrentTime = () => setValue(dayjs());
+  const setMorning = () => setValue(dayjs().hour(9).minute(0).second(0));
+  const setAfternoon = () => setValue(dayjs().hour(14).minute(0).second(0));
+
+  return (
+    <div>
+      <TimePicker value={value} onChange={setValue} style={{ width: 200 }} />
+      <Group style={{ marginTop: '16px' }}>
+        <Button onClick={setCurrentTime}>当前时间</Button>
+        <Button onClick={setMorning}>早上9点</Button>
+        <Button onClick={setAfternoon}>下午2点</Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+### 时间格式
+
+通过 `format` 属性自定义时间显示格式。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <TimePicker format="HH:mm:ss" placeholder="HH:mm:ss" style={{ width: 200 }} />
+      <TimePicker format="HH:mm" placeholder="HH:mm" style={{ width: 200 }} />
+      <TimePicker format="HH时mm分ss秒" placeholder="HH时mm分ss秒" style={{ width: 200 }} />
+    </Group>
+  );
+}
+```
+
+### 12小时制
+
+通过 `use12Hours` 属性启用12小时制。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <TimePicker use12Hours format="h:mm:ss A" placeholder="12小时制" style={{ width: 200 }} />
+      <TimePicker use12Hours format="h:mm A" placeholder="12小时制（无秒）" style={{ width: 200 }} />
+    </Group>
+  );
+}
+```
+
+### 禁用状态
+
+通过 `disabled` 属性禁用时间选择器。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <TimePicker disabled placeholder="禁用状态" style={{ width: 200 }} />
+      <TimePicker disabled defaultValue={dayjs().hour(12).minute(30).second(0)} style={{ width: 200 }} />
+    </Group>
+  );
+}
+```
+
+### 步长设置
+
+通过 `hourStep`、`minuteStep`、`secondStep` 设置时间间隔。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <TimePicker
+        hourStep={2}
+        minuteStep={15}
+        secondStep={30}
+        placeholder="时:2 分:15 秒:30"
+        style={{ width: 200 }}
+      />
+      <TimePicker
+        format="HH:mm"
+        minuteStep={30}
+        placeholder="整点和半点"
+        style={{ width: 200 }}
+      />
+    </Group>
+  );
+}
+```
+
+### 禁用部分时间
+
+通过 `disabledHours`、`disabledMinutes`、`disabledSeconds` 禁用特定时间。
+
+```jsx live
+function Demo() {
+  // 禁用0-8点和18点之后的时间
+  const disabledHours = () => {
+    return [...Array(9).keys(), ...Array(6).keys().map(i => i + 18)];
+  };
+
+  // 禁用15和45分钟
+  const disabledMinutes = () => {
+    return [15, 45];
+  };
+
+  return (
+    <TimePicker
+      disabledHours={disabledHours}
+      disabledMinutes={disabledMinutes}
+      placeholder="工作时间 9:00-18:00"
+      style={{ width: 200 }}
+    />
+  );
+}
+```
+
+### 附加内容
+
+通过 `renderExtraFooter` 在面板中添加额外的页脚。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  const setNow = () => {
+    setValue(dayjs());
+  };
+
+  return (
+    <TimePicker
+      value={value}
+      onChange={setValue}
+      renderExtraFooter={() => (
+        <div style={{ padding: '8px', textAlign: 'center' }}>
+          <Button size="sm" onClick={setNow}>
+            当前时间
+          </Button>
+        </div>
+      )}
+      style={{ width: 200 }}
+    />
+  );
+}
+```
+
+### 时间范围选择
+
+使用 `TimePicker.RangePicker` 选择时间范围。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  return (
+    <div>
+      <TimePicker.RangePicker onChange={setValue} style={{ width: 300 }} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        选择的时间范围:{' '}
+        {value && value[0] && value[1]
+          ? `${value[0].format('HH:mm:ss')} ~ ${value[1].format('HH:mm:ss')}`
+          : '未选择'}
+      </div>
+    </div>
+  );
+}
+```
+
+### 可清除
+
+通过 `allowClear` 属性控制是否显示清除按钮。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <TimePicker
+        defaultValue={dayjs().hour(12).minute(30).second(0)}
+        allowClear
+        placeholder="可清除"
+        style={{ width: 200 }}
+      />
+      <TimePicker
+        defaultValue={dayjs().hour(12).minute(30).second(0)}
+        allowClear={false}
+        placeholder="不可清除"
+        style={{ width: 200 }}
+      />
+    </Group>
+  );
+}
+```
+
+### 无边框
+
+通过 `bordered={false}` 移除边框。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <TimePicker bordered={false} placeholder="无边框时间选择器" style={{ width: 200 }} />
+      <TimePicker.RangePicker bordered={false} placeholder={['开始时间', '结束时间']} style={{ width: 300 }} />
+    </Group>
+  );
+}
+```
+
+## API
+
+### TimePicker
+
+| 属性               | 说明                     | 类型                                      | 默认值       |
+| ------------------ | ------------------------ | ----------------------------------------- | ------------ |
+| value              | 时间（受控）             | `dayjs`                                   | -            |
+| defaultValue       | 默认时间（非受控）       | `dayjs`                                   | -            |
+| format             | 展示的时间格式           | `string`                                  | `HH:mm:ss`   |
+| placeholder        | 输入框占位文本           | `string`                                  | -            |
+| disabled           | 禁用                     | `boolean`                                 | `false`      |
+| bordered           | 是否有边框               | `boolean`                                 | `true`       |
+| allowClear         | 是否显示清除按钮         | `boolean`                                 | `true`       |
+| use12Hours         | 使用12小时制             | `boolean`                                 | `false`      |
+| hourStep           | 小时选项间隔             | `number`                                  | `1`          |
+| minuteStep         | 分钟选项间隔             | `number`                                  | `1`          |
+| secondStep         | 秒选项间隔               | `number`                                  | `1`          |
+| showNow            | 是否显示"此刻"按钮       | `boolean`                                 | `false`      |
+| disabledHours      | 禁止选择部分小时选项     | `() => number[]`                          | -            |
+| disabledMinutes    | 禁止选择部分分钟选项     | `(selectedHour) => number[]`              | -            |
+| disabledSeconds    | 禁止选择部分秒选项       | `(selectedHour, selectedMinute) => number[]` | -         |
+| renderExtraFooter  | 选择框底部显示自定义内容 | `() => ReactNode`                         | -            |
+| onChange           | 时间发生变化的回调       | `(time: dayjs, timeString: string) => void` | -          |
+| onOpenChange       | 面板打开/关闭时的回调    | `(open: boolean) => void`                 | -            |
+| getPopupContainer  | 定义浮层的容器           | `(triggerNode: Element) => HTMLElement`   | -            |
+| popupClassName     | 弹出框的类名             | `string`                                  | -            |
+| 其他               | 原生属性                 | `HTMLAttributes<HTMLDivElement>`          | -            |
+
+:::info
+
+TimePicker 使用 [Day.js](https://day.js.org/) 作为时间处理库。
+
+**关于时间值**：
+- TimePicker 内部使用 dayjs 对象处理时间
+- `value` 和 `defaultValue` 可以接受 `Date` 对象或 `dayjs` 对象
+- `onChange` 回调返回 dayjs 对象，可以使用 `.toDate()` 转换为原生 Date 对象
+- 在实际项目中，推荐使用 dayjs 进行时间操作
+
+**关于 format**：
+- 默认格式为 `HH:mm:ss`（24小时制）
+- 12小时制格式：`h:mm:ss A` 或 `hh:mm:ss a`
+- 只显示小时和分钟：`HH:mm`
+- 完整格式参考：[Day.js 格式化文档](https://day.js.org/docs/en/display/format)
+
+**关于步长**：
+- `hourStep`、`minuteStep`、`secondStep` 用于设置时间间隔
+- 例如 `minuteStep={15}` 表示分钟选项为 0、15、30、45
+- 适用于只需要选择特定时间间隔的场景
+
+**关于禁用时间**：
+- `disabledHours` 返回禁用的小时数组（0-23）
+- `disabledMinutes` 返回禁用的分钟数组（0-59），可以根据选中的小时动态返回
+- `disabledSeconds` 返回禁用的秒数组（0-59），可以根据选中的小时和分钟动态返回
+
+:::
+
+### TimePicker.RangePicker
+
+| 属性          | 说明                         | 类型                                                | 默认值      |
+| ------------- | ---------------------------- | --------------------------------------------------- | ----------- |
+| value         | 时间范围（受控）             | `[dayjs, dayjs]`                                    | -           |
+| defaultValue  | 默认时间范围（非受控）       | `[dayjs, dayjs]`                                    | -           |
+| format        | 展示的时间格式               | `string`                                            | `HH:mm:ss`  |
+| placeholder   | 输入框占位文本               | `[string, string]`                                  | -           |
+| onChange      | 时间发生变化的回调           | `(times: [dayjs, dayjs], timeStrings: [string, string]) => void` | - |
+| 其他          | 其他属性同 TimePicker        | -                                                   | -           |
+
+:::info
+
+**关于 RangePicker**：
+- `value` 和 `defaultValue` 都是长度为 2 的数组，分别表示开始时间和结束时间
+- `placeholder` 是一个数组，可以分别设置开始和结束输入框的占位符
+- RangePicker 会自动验证时间范围的有效性（结束时间不能早于开始时间）
+
+:::
+
+## 使用建议
+
+### 时间格式化
+
+根据业务需求选择合适的时间格式：
+
+```jsx
+// 24小时制（默认）
+<TimePicker format="HH:mm:ss" />
+
+// 12小时制
+<TimePicker use12Hours format="h:mm:ss A" />
+
+// 只显示小时和分钟
+<TimePicker format="HH:mm" />
+
+// 自定义格式
+<TimePicker format="HH时mm分ss秒" />
+
+// 使用 format 方法格式化
+const formattedTime = value.format('HH:mm:ss');
+```
+
+### 禁用时间
+
+常用的时间禁用场景：
+
+```jsx
+// 禁用工作时间以外的小时
+const disabledHours = () => {
+  // 禁用0-8点和18-23点
+  return [...Array(9).keys(), ...Array(6).keys().map(i => i + 18)];
+};
+
+// 禁用特定分钟
+const disabledMinutes = () => {
+  // 只允许选择0分、15分、30分、45分
+  const minutes = [];
+  for (let i = 0; i < 60; i++) {
+    if (i % 15 !== 0) {
+      minutes.push(i);
+    }
+  }
+  return minutes;
+};
+
+<TimePicker
+  disabledHours={disabledHours}
+  disabledMinutes={disabledMinutes}
+/>
+```
+
+### 表单集成
+
+在表单中使用 TimePicker：
+
+```jsx
+const [form, setForm] = React.useState({
+  startTime: null,
+  endTime: null,
+});
+
+const handleTimeChange = (time) => {
+  setForm({ ...form, startTime: time });
+};
+
+<TimePicker value={form.startTime} onChange={handleTimeChange} />
+```
+
+### 时间范围验证
+
+RangePicker 使用时的验证：
+
+```jsx
+const [timeRange, setTimeRange] = React.useState(null);
+
+const handleRangeChange = (times) => {
+  if (!times || !times[0] || !times[1]) {
+    setTimeRange(null);
+    return;
+  }
+
+  // 验证时间范围不超过8小时
+  const duration = times[1].diff(times[0], 'hour');
+  if (duration > 8) {
+    console.warn('时间范围不能超过8小时');
+    return;
+  }
+
+  setTimeRange(times);
+};
+
+<TimePicker.RangePicker onChange={handleRangeChange} />
+```
+
+
+### 与 DatePicker 配合
+
+当需要同时选择日期和时间时，建议使用 DatePicker 的 `showTime` 属性：
+
+```jsx
+// 不推荐：分别使用 DatePicker 和 TimePicker
+<Group>
+  <DatePicker />
+  <TimePicker />
+</Group>
+
+// 推荐：使用 DatePicker 的 showTime 属性
+<DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
+```
+
+### 步长优化
+
+使用步长提升用户体验：
+
+```jsx
+// 会议时间选择器：半小时间隔
+<TimePicker
+  format="HH:mm"
+  minuteStep={30}
+  placeholder="选择会议时间"
+/>
+
+// 考勤打卡：整点和半点
+<TimePicker
+  format="HH:mm"
+  hourStep={1}
+  minuteStep={30}
+  placeholder="打卡时间"
+/>
+
+// 预约时间：15分钟间隔
+<TimePicker
+  format="HH:mm"
+  minuteStep={15}
+  placeholder="预约时间"
+/>
+```

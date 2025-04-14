@@ -1,0 +1,682 @@
+---
+sidebar_position: 1
+---
+
+# Modal 对话框
+
+模态对话框。
+
+## 何时使用
+
+- 需要用户处理事务,又不希望跳转页面以致打断工作流程时
+- 需要向用户展示重要信息或者获取用户确认时
+- 当需要一个简洁的承载信息的容器时
+
+在 Kube Design 中,Modal 组件提供了灵活的对话框功能:
+
+- **双重模式**:支持声明式组件和命令式 API 两种使用方式
+- **丰富配置**:支持自定义标题、描述、图标、页脚等
+- **异步处理**:内置异步操作和加载状态支持
+- **嵌套使用**:支持多层对话框嵌套
+
+## 示例
+
+### 基础用法
+
+最基本的对话框用法,通过 `visible` 属性控制显示和隐藏。
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+  const openModal = () => {
+    setVisible(true);
+  };
+
+  const closeModal = () => {
+    setVisible(false);
+  };
+
+  return (
+    <>
+      <Button onClick={openModal}>打开对话框</Button>
+      <Modal
+        visible={visible}
+        title="Modal demo"
+        description="Modal description"
+        titleIcon={null}
+        onCancel={closeModal}
+      >
+        Modal content
+      </Modal>
+    </>
+  );
+}
+```
+
+### 自定义宽度
+
+使用 `width` 属性设置对话框的宽度。
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState('');
+
+  const widths = [
+    { key: '400', label: '小尺寸 (400px)', width: 400 },
+    { key: '600', label: '默认尺寸 (600px)', width: 600 },
+    { key: '800', label: '大尺寸 (800px)', width: 800 },
+  ];
+
+  return (
+    <>
+      <Group spacing="xs">
+        {widths.map(({ key, label }) => (
+          <Button key={key} onClick={() => setVisible(key)}>
+            {label}
+          </Button>
+        ))}
+      </Group>
+
+      {widths.map(({ key, width }) => (
+        <Modal
+          key={key}
+          visible={visible === key}
+          title={`宽度: ${width}px`}
+          width={width}
+          onCancel={() => setVisible('')}
+        >
+          <div style={{ padding: '20px 0' }}>这是 {width}px 宽度的对话框</div>
+        </Modal>
+      ))}
+    </>
+  );
+}
+```
+
+### 带图标的标题
+
+使用 `titleIcon` 属性为对话框标题添加图标。
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+  const { Cluster } = KubedIcons;
+
+  return (
+    <>
+      <Button onClick={() => setVisible(true)}>带图标的对话框</Button>
+      <Modal
+        visible={visible}
+        title="集群信息"
+        description="查看集群的详细信息"
+        titleIcon={<Cluster size={40} />}
+        onCancel={() => setVisible(false)}
+      >
+        <div style={{ padding: '20px 0' }}>
+          <p>集群名称: Production Cluster</p>
+          <p>节点数量: 5</p>
+          <p>状态: 运行中</p>
+        </div>
+      </Modal>
+    </>
+  );
+}
+```
+
+### 确认加载状态
+
+使用 `confirmLoading` 属性显示确认按钮的加载状态。
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+
+  const handleOk = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setVisible(false);
+    }, 2000);
+  };
+
+  return (
+    <>
+      <Button onClick={() => setVisible(true)}>确认加载状态</Button>
+      <Modal
+        visible={visible}
+        title="提交确认"
+        description="请确认您的操作"
+        confirmLoading={loading}
+        onOk={handleOk}
+        onCancel={() => setVisible(false)}
+      >
+        <div style={{ padding: '20px 0' }}>点击确定按钮将会显示加载状态 2 秒</div>
+      </Modal>
+    </>
+  );
+}
+```
+
+### 自定义按钮文字
+
+使用 `okText` 和 `cancelText` 属性自定义按钮文字。
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setVisible(true)}>自定义按钮文字</Button>
+      <Modal
+        visible={visible}
+        title="删除确认"
+        description="此操作不可撤销"
+        okText="确认删除"
+        cancelText="取消操作"
+        onOk={() => setVisible(false)}
+        onCancel={() => setVisible(false)}
+      >
+        <div style={{ padding: '20px 0' }}>确定要删除这个项目吗?</div>
+      </Modal>
+    </>
+  );
+}
+```
+
+### 自定义页脚
+
+使用 `footer` 属性自定义对话框的页脚内容。设置为 `null` 可以隐藏页脚。
+
+```jsx live
+function Demo() {
+  const [visible1, setVisible1] = React.useState(false);
+  const [visible2, setVisible2] = React.useState(false);
+
+  return (
+    <>
+      <Group spacing="xs">
+        <Button onClick={() => setVisible1(true)}>无页脚对话框</Button>
+        <Button onClick={() => setVisible2(true)}>自定义页脚</Button>
+      </Group>
+
+      <Modal
+        visible={visible1}
+        title="无页脚对话框"
+        footer={null}
+        onCancel={() => setVisible1(false)}
+      >
+        <div style={{ padding: '20px 0' }}>
+          <p>这个对话框没有页脚</p>
+          <Button onClick={() => setVisible1(false)} style={{ marginTop: '12px' }}>
+            关闭
+          </Button>
+        </div>
+      </Modal>
+
+      <Modal
+        visible={visible2}
+        title="自定义页脚"
+        footer={
+          <Group spacing="xs">
+            <Button onClick={() => setVisible2(false)}>取消</Button>
+            <Button color="error" onClick={() => setVisible2(false)}>
+              删除
+            </Button>
+            <Button color="secondary" onClick={() => setVisible2(false)}>
+              确定
+            </Button>
+          </Group>
+        }
+        onCancel={() => setVisible2(false)}
+      >
+        <div style={{ padding: '20px 0' }}>这个对话框使用了自定义页脚</div>
+      </Modal>
+    </>
+  );
+}
+```
+
+### 遮罩控制
+
+通过 `mask` 和 `maskClosable` 属性控制遮罩层的显示和点击行为。
+
+```jsx live
+function Demo() {
+  const [visible1, setVisible1] = React.useState(false);
+  const [visible2, setVisible2] = React.useState(false);
+
+  return (
+    <>
+      <Group spacing="xs">
+        <Button onClick={() => setVisible1(true)}>点击遮罩可关闭</Button>
+        <Button onClick={() => setVisible2(true)}>点击遮罩不可关闭</Button>
+      </Group>
+
+      <Modal
+        visible={visible1}
+        title="点击遮罩可关闭"
+        maskClosable
+        onCancel={() => setVisible1(false)}
+      >
+        <div style={{ padding: '20px 0' }}>maskClosable=true,点击遮罩区域可以关闭对话框</div>
+      </Modal>
+
+      <Modal
+        visible={visible2}
+        title="点击遮罩不可关闭"
+        maskClosable={false}
+        onCancel={() => setVisible2(false)}
+      >
+        <div style={{ padding: '20px 0' }}>
+          maskClosable=false,点击遮罩区域无法关闭,只能通过按钮关闭
+        </div>
+      </Modal>
+    </>
+  );
+}
+```
+
+### 命令式调用
+
+使用 `useModal` hook 通过命令式 API 调用对话框,无需管理 visible 状态。
+
+```jsx live
+function Demo() {
+  const modal = useModal();
+
+  const openModal = () => {
+    const modalId = modal.open({
+      title: '命令式对话框',
+      description: '通过 useModal hook 调用',
+      content: <div style={{ padding: '20px 0' }}>这是通过命令式 API 打开的对话框</div>,
+      onOk: () => {
+        modal.close(modalId);
+      },
+    });
+  };
+
+  return <Button onClick={openModal}>命令式调用对话框</Button>;
+}
+```
+
+### 异步确认
+
+使用 `onAsyncOk` 属性处理异步操作,对话框会自动显示加载状态。
+
+```jsx live
+function Demo() {
+  const modal = useModal();
+
+  const openAsyncModal = () => {
+    modal.open({
+      title: '异步操作',
+      description: '模拟异步提交',
+      content: <div style={{ padding: '20px 0' }}>点击确定按钮将执行 2 秒异步操作</div>,
+      onAsyncOk: async () => {
+        await new Promise((resolve) => {
+          setTimeout(() => {
+            console.log('异步操作完成');
+            resolve(true);
+          }, 2000);
+        });
+        return true;
+      },
+    });
+  };
+
+  return <Button onClick={openAsyncModal}>异步确认对话框</Button>;
+}
+```
+
+### 嵌套对话框
+
+对话框支持嵌套使用。
+
+```jsx live
+function Demo() {
+  const [visible1, setVisible1] = React.useState(false);
+  const [visible2, setVisible2] = React.useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setVisible1(true)}>打开第一层对话框</Button>
+
+      <Modal
+        visible={visible1}
+        title="第一层对话框"
+        width={700}
+        onCancel={() => setVisible1(false)}
+      >
+        <div style={{ padding: '20px 0' }}>
+          <p>这是第一层对话框的内容</p>
+          <Button onClick={() => setVisible2(true)}>打开第二层对话框</Button>
+        </div>
+      </Modal>
+
+      <Modal
+        visible={visible2}
+        title="第二层对话框"
+        width={500}
+        onOk={() => setVisible2(false)}
+        onCancel={() => setVisible2(false)}
+      >
+        <div style={{ padding: '20px 0' }}>
+          <p>这是嵌套的第二层对话框</p>
+          <Button
+            onClick={() => {
+              setVisible2(false);
+              setVisible1(false);
+            }}
+          >
+            关闭所有对话框
+          </Button>
+        </div>
+      </Modal>
+    </>
+  );
+}
+```
+
+### 确认对话框
+
+使用 `useModal` 的 `confirm` 方法创建确认对话框。
+
+```jsx live
+function Demo() {
+  const modal = useModal();
+
+  const showConfirm = () => {
+    const modalId = modal.confirm({
+      title: '确认操作',
+      content: '您确定要执行此操作吗?此操作不可撤销。',
+      onOk: () => {
+        console.log('确认操作');
+        modal.close(modalId);
+      },
+    });
+  };
+
+  return <Button onClick={showConfirm}>确认对话框</Button>;
+}
+```
+
+## API
+
+### Modal
+
+| 属性                   | 说明                     | 类型                                        | 默认值          |
+| ---------------------- | ------------------------ | ------------------------------------------- | --------------- |
+| visible                | 是否显示对话框           | `boolean`                                   | `false`         |
+| title                  | 对话框标题               | `ReactNode`                                 | -               |
+| description            | 对话框描述               | `ReactNode`                                 | -               |
+| titleIcon              | 标题图标                 | `ReactNode`                                 | -               |
+| width                  | 对话框宽度               | `string \| number`                          | `600`           |
+| centered               | 是否垂直居中显示         | `boolean`                                   | `true`          |
+| closable               | 是否显示关闭按钮         | `boolean`                                   | `true`          |
+| closeIcon              | 自定义关闭图标           | `ReactNode`                                 | `<Close />`     |
+| header                 | 自定义头部内容           | `ReactNode`                                 | -               |
+| headerExtra            | 头部额外内容             | `ReactNode`                                 | -               |
+| footer                 | 自定义底部内容           | `ReactNode`                                 | 默认按钮组      |
+| okText                 | 确认按钮文字             | `ReactNode`                                 | `'确定'`        |
+| cancelText             | 取消按钮文字             | `ReactNode`                                 | `'取消'`        |
+| okButtonProps          | 确认按钮的 props         | `ButtonProps`                               | -               |
+| cancelButtonProps      | 取消按钮的 props         | `ButtonProps`                               | -               |
+| confirmLoading         | 确认按钮加载状态         | `boolean`                                   | `false`         |
+| onOk                   | 点击确定按钮的回调       | `(e: React.MouseEvent) => void`             | -               |
+| onCancel               | 点击取消按钮或遮罩的回调 | `(e: React.MouseEvent) => void`             | -               |
+| onAsyncOk              | 异步确认操作             | `() => Promise<any>`                        | -               |
+| afterClose             | 对话框完全关闭后的回调   | `() => void`                                | -               |
+| mask                   | 是否展示遮罩             | `boolean`                                   | `true`          |
+| maskClosable           | 点击遮罩是否关闭         | `boolean`                                   | `true`          |
+| maskStyle              | 遮罩样式                 | `CSSProperties`                             | -               |
+| keyboard               | 是否支持 ESC 键关闭      | `boolean`                                   | `true`          |
+| destroyOnClose         | 关闭时销毁子元素         | `boolean`                                   | `true`          |
+| forceRender            | 强制渲染                 | `boolean`                                   | `false`         |
+| getContainer           | 指定挂载的 HTML 节点     | `HTMLElement \| () => HTMLElement \| false` | `document.body` |
+| zIndex                 | z-index 值               | `number`                                    | -               |
+| bodyStyle              | 内容区域样式             | `CSSProperties`                             | -               |
+| className              | 自定义类名               | `string`                                    | -               |
+| style                  | 自定义样式               | `CSSProperties`                             | -               |
+| wrapClassName          | 包裹层类名               | `string`                                    | -               |
+| focusTriggerAfterClose | 关闭后是否聚焦触发元素   | `boolean`                                   | `true`          |
+| children               | 对话框内容               | `ReactNode`                                 | -               |
+
+### useModal Hook
+
+useModal hook 返回一个对象,包含以下方法:
+
+| 方法    | 说明             | 类型                                |
+| ------- | ---------------- | ----------------------------------- |
+| open    | 打开对话框       | `(props: ModalFuncProps) => string` |
+| confirm | 打开确认对话框   | `(props: ModalFuncProps) => string` |
+| close   | 关闭指定的对话框 | `(id: string) => void`              |
+
+### ModalFuncProps
+
+命令式调用时的属性配置,继承 Modal 的大部分属性,额外包括:
+
+| 属性    | 说明          | 类型        | 默认值   |
+| ------- | ------------- | ----------- | -------- |
+| content | 对话框内容    | `ReactNode` | -        |
+| icon    | 对话框图标    | `ReactNode` | -        |
+| id      | 对话框唯一 ID | `string`    | 自动生成 |
+
+:::info
+
+**关于宽度**:
+
+- 默认宽度为 600px
+- 支持数字或字符串格式
+- 最大宽度为 `calc(100vw - 32px)`
+
+**关于标题**:
+
+- 支持同时设置 `title`、`description` 和 `titleIcon`
+- `header` 属性可以完全自定义头部内容
+- `headerExtra` 用于在标题右侧添加额外内容
+
+**关于页脚**:
+
+- 默认显示"取消"和"确定"两个按钮
+- 设置 `footer={null}` 可以隐藏页脚
+- `footer` 支持自定义 ReactNode
+
+**关于异步操作**:
+
+- 使用 `onAsyncOk` 时,对话框会自动显示加载状态
+- `onAsyncOk` 返回 `true` 时对话框会自动关闭
+- 返回 `false` 或抛出错误时保持打开状态
+
+**关于命令式调用**:
+
+- 使用 `useModal` hook 时,需要确保组件被 `ModalProvider` 包裹
+- `modal.open()` �� `modal.confirm()` 会返回对话框 ID
+- 使用返回的 ID 可以通过 `modal.close(id)` 关闭特定对话框
+
+**关于销毁**:
+
+- 默认 `destroyOnClose={true}`,关闭时会销毁内部组件
+- 这可以避免状态残留,确保每次打开都是新状态
+- 如需保留状态,可设置为 `false`
+
+:::
+
+## 使用建议
+
+### 声明式 vs 命令式
+
+根据使用场景选择合适的方式:
+
+```jsx
+// 声明式：适合固定位置的对话框
+const [visible, setVisible] = useState(false);
+
+<Modal visible={visible} onCancel={() => setVisible(false)}>
+  内容
+</Modal>;
+
+// 命令式：适合动态调用的对话框
+const modal = useModal();
+
+modal.open({
+  title: '动态对话框',
+  content: '内容',
+});
+```
+
+### 异步操作处理
+
+使用 `onAsyncOk` 处理异步操作:
+
+```jsx
+<Modal
+  visible={visible}
+  title="提交数据"
+  onAsyncOk={async () => {
+    try {
+      await submitData();
+      message.success('提交成功');
+      return true; // 返回 true 关闭对话框
+    } catch (error) {
+      message.error('提交失败');
+      return false; // 返回 false 保持打开
+    }
+  }}
+  onCancel={() => setVisible(false)}
+>
+  表单内容
+</Modal>
+```
+
+### 确认操作
+
+重要操作前显示确认对话框:
+
+```jsx
+const modal = useModal();
+
+const handleDelete = () => {
+  modal.confirm({
+    title: '确认删除',
+    content: '删除后数据将无法恢复,确定要删除吗?',
+    okText: '确认删除',
+    okButtonProps: { color: 'error' },
+    onOk: () => {
+      // 执行删除操作
+      deleteData();
+      modal.close(modalId);
+    },
+  });
+};
+```
+
+### 自定义按钮
+
+根据操作类型自定义按钮:
+
+```jsx
+// 危险操作：红色确认按钮
+<Modal
+  okText="确认删除"
+  okButtonProps={{ color: 'error' }}
+>
+
+// 禁用确认按钮
+<Modal
+  okButtonProps={{ disabled: !isValid }}
+>
+
+// 多个操作按钮
+<Modal
+  footer={
+    <Group spacing="xs">
+      <Button onClick={handleCancel}>取消</Button>
+      <Button onClick={handleSaveDraft}>保存草稿</Button>
+      <Button color="secondary" onClick={handleSubmit}>提交</Button>
+    </Group>
+  }
+>
+```
+
+### 表单对话框
+
+在对话框中使用表单:
+
+```jsx
+const [visible, setVisible] = useState(false);
+const [formData, setFormData] = useState({});
+
+<Modal
+  visible={visible}
+  title="创建项目"
+  okText="创建"
+  onOk={() => {
+    // 提交表单
+    createProject(formData);
+    setVisible(false);
+  }}
+  onCancel={() => setVisible(false)}
+  destroyOnClose // 关闭时清空表单状态
+>
+  <Form data={formData} onChange={setFormData}>
+    {/* 表单字段 */}
+  </Form>
+</Modal>;
+```
+
+### 嵌套对话框管理
+
+管理多层嵌套的对话框:
+
+```jsx
+const [level1, setLevel1] = useState(false);
+const [level2, setLevel2] = useState(false);
+
+// 关闭所有对话框
+const closeAll = () => {
+  setLevel2(false);
+  setLevel1(false);
+};
+
+<Modal visible={level1} width={700}>
+  第一层内容
+  <Button onClick={() => setLevel2(true)}>打开第二层</Button>
+  <Modal visible={level2} width={500}>
+    第二层内容
+    <Button onClick={closeAll}>关闭所有</Button>
+  </Modal>
+</Modal>;
+```
+
+### 对话框尺寸
+
+根据内容选择合适的宽度:
+
+```jsx
+// 小对话框：简单确认
+<Modal width={400} title="确认">
+
+// 中等对话框：表单输入
+<Modal width={600} title="编辑">  // 默认值
+
+// 大对话框：详细信息
+<Modal width={800} title="详情">
+
+// 超大对话框：复杂内容
+<Modal width={1000} title="高级设置">
+```
+
+### 无页脚对话框
+
+只展示信息,不需要确认操作:
+
+```jsx
+<Modal visible={visible} title="信息提示" footer={null} onCancel={() => setVisible(false)}>
+  <div>
+    <p>这是一些信息内容</p>
+    <Button onClick={() => setVisible(false)}>知道了</Button>
+  </div>
+</Modal>
+```

@@ -1,17 +1,28 @@
 import React from 'react';
-import { shallowWithTheme } from '@kubed/tests';
+import { renderWithTheme } from '@kubed/tests';
 import { Tooltip, Button } from '../index';
+import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 
 describe('@kubed/components/Tooltip', () => {
-  it('passes content and placement props to Tooltip component', () => {
-    const wrapper = shallowWithTheme(
+  it('passes content and placement props to Tooltip component', async () => {
+    const user = userEvent.setup();
+    renderWithTheme(
       <Tooltip content="tooltip content" placement="top" maxWidth={120}>
         <Button style={{ minWidth: '100px' }}>top</Button>
       </Tooltip>
     );
-    expect(wrapper.find(Tooltip).prop('content')).toBe('tooltip content');
-    expect(wrapper.find(Tooltip).prop('placement')).toBe('top');
-    expect(wrapper.find(Tooltip).prop('maxWidth')).toBe(120);
+
+    const button = screen.getByRole('button', { name: 'top' });
+    expect(screen.queryByText('tooltip content')).not.toBeInTheDocument();
+
+    await user.hover(button);
+
+    const tooltipElement = await screen.getByRole('tooltip');
+    expect(tooltipElement).toBeInTheDocument();
+    expect(tooltipElement).toHaveTextContent('tooltip content');
+    expect(tooltipElement).toHaveStyle('max-width: 120px');
+    expect(tooltipElement).toHaveAttribute('data-placement', 'top');
   });
 
   it('has correct displayName', () => {

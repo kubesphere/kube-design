@@ -1,0 +1,58 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.guideSidebar.category.Guide": {
+    "message": "Guide",
+    "description": "The label for category 'Guide' in sidebar 'guideSidebar'"
+  },
+  "sidebar.componentsSidebar.category.General": {
+    "message": "General",
+    "description": "The label for category 'General' in sidebar 'componentsSidebar'"
+  },
+  "sidebar.componentsSidebar.category.Layout": {
+    "message": "Layout",
+    "description": "The label for category 'Layout' in sidebar 'componentsSidebar'"
+  },
+  "sidebar.componentsSidebar.category.Data Entry": {
+    "message": "Data Entry",
+    "description": "The label for category 'Data Entry' in sidebar 'componentsSidebar'"
+  },
+  "sidebar.componentsSidebar.category.Data Display": {
+    "message": "Data Display",
+    "description": "The label for category 'Data Display' in sidebar 'componentsSidebar'"
+  },
+  "sidebar.componentsSidebar.category.Feedback": {
+    "message": "Feedback",
+    "description": "The label for category 'Feedback' in sidebar 'componentsSidebar'"
+  },
+  "sidebar.componentsSidebar.category.Navigation": {
+    "message": "Navigation",
+    "description": "The label for category 'Navigation' in sidebar 'componentsSidebar'"
+  },
+  "sidebar.componentsSidebar.category.Other": {
+    "message": "Other",
+    "description": "The label for category 'Other' in sidebar 'componentsSidebar'"
+  },
+  "sidebar.hooksSidebar.category.State Management": {
+    "message": "State Management",
+    "description": "The label for category 'State Management' in sidebar 'hooksSidebar'"
+  },
+  "sidebar.hooksSidebar.category.UI & Interactions": {
+    "message": "UI & Interactions",
+    "description": "The label for category 'UI & Interactions' in sidebar 'hooksSidebar'"
+  },
+  "sidebar.hooksSidebar.category.Lifecycle": {
+    "message": "Lifecycle",
+    "description": "The label for category 'Lifecycle' in sidebar 'hooksSidebar'"
+  },
+  "sidebar.hooksSidebar.category.Utilities": {
+    "message": "Utilities",
+    "description": "The label for category 'Utilities' in sidebar 'hooksSidebar'"
+  },
+  "sidebar.iconsSidebar.category.Icons": {
+    "message": "Icons",
+    "description": "The label for category 'Icons' in sidebar 'iconsSidebar'"
+  }
+}

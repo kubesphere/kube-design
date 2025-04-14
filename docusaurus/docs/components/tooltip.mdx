@@ -1,0 +1,661 @@
+---
+sidebar_position: 1
+---
+
+# Tooltip 文字提示
+
+简单的文字提示气泡框。
+
+## 何时使用
+
+- 鼠标移入则显示提示,移出消失,气泡浮层不承载复杂文本和操作
+- 可用来代替系统默认的 title 提示,提供一个更好的视觉和用户体验
+- 当某个元素需要更进一步的描述说明时
+
+在 Kube Design 中,Tooltip 组件基于 @tippyjs/react 封装,提供了灵活的文字提示功能:
+
+- **多种位置**:支持 12 个方向的弹出位置,以及自动定位
+- **多种触发方式**:支持悬停、点击、聚焦等触发方式
+- **可交互**:支持鼠标移入气泡内容
+- **灵活控制**:支持受控模式和手动控制
+
+## 示例
+
+### 基础用法
+
+最简单的用法,鼠标移入显示提示,移出隐藏。
+
+```jsx live
+function Demo() {
+  return (
+    <Tooltip content="这是提示文字">
+      <Button>悬停显示</Button>
+    </Tooltip>
+  );
+}
+```
+
+### 位置
+
+支持 12 个不同的弹出位置。
+
+```jsx live
+function Demo() {
+  const positions = [
+    'top-start',
+    'top',
+    'top-end',
+    'right-start',
+    'right',
+    'right-end',
+    'bottom-start',
+    'bottom',
+    'bottom-end',
+    'left-start',
+    'left',
+    'left-end',
+  ];
+
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+      {positions.map((pos) => (
+        <Tooltip key={pos} content={`位置: ${pos}`} placement={pos}>
+          <Button size="sm">{pos}</Button>
+        </Tooltip>
+      ))}
+    </div>
+  );
+}
+```
+
+### 触发方式
+
+支持鼠标移入、点击和聚焦三种触发方式。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="md">
+      <Tooltip content="鼠标移入时显示" trigger="mouseenter focus">
+        <Button>悬停触发(默认)</Button>
+      </Tooltip>
+      <Tooltip content="点击按钮时显示" trigger="click">
+        <Button>点击触发</Button>
+      </Tooltip>
+      <Tooltip content="聚焦时显示" trigger="focus">
+        <Button>聚焦触发</Button>
+      </Tooltip>
+    </Group>
+  );
+}
+```
+
+### 延迟显示
+
+设置鼠标移入后延迟显示的时间。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="md">
+      <Tooltip content="无延迟" delay={0}>
+        <Button>无延迟</Button>
+      </Tooltip>
+      <Tooltip content="延迟 500ms" delay={500}>
+        <Button>延迟 500ms</Button>
+      </Tooltip>
+      <Tooltip content="延迟 1 秒" delay={1000}>
+        <Button>延迟 1s</Button>
+      </Tooltip>
+      <Tooltip content="显示延迟 500ms,隐藏延迟 200ms" delay={[500, 200]}>
+        <Button>不同延迟</Button>
+      </Tooltip>
+    </Group>
+  );
+}
+```
+
+### 禁用状态
+
+使用 `disabled` 属性禁用提示。
+
+```jsx live
+function Demo() {
+  const [disabled, setDisabled] = React.useState(false);
+
+  return (
+    <>
+      <Group spacing="md" style={{ marginBottom: '16px' }}>
+        <Tooltip content="这是提示文字" disabled={disabled}>
+          <Button>目标元素</Button>
+        </Tooltip>
+        <Button onClick={() => setDisabled(!disabled)}>
+          {disabled ? '启用' : '禁用'} Tooltip
+        </Button>
+      </Group>
+    </>
+  );
+}
+```
+
+### 自定义最大宽度
+
+通过 `maxWidth` 属性设置提示的最大宽度。
+
+```jsx live
+function Demo() {
+  const longText = '这是一段很长的提示文字,用于展示不同最大宽度的效果。当文本超过最大宽度时,会自动换行显示。';
+
+  return (
+    <Group spacing="md">
+      <Tooltip content={longText} maxWidth={150}>
+        <Button>最大宽度 150px</Button>
+      </Tooltip>
+      <Tooltip content={longText} maxWidth={200}>
+        <Button>最大宽度 200px(默认)</Button>
+      </Tooltip>
+      <Tooltip content={longText} maxWidth={300}>
+        <Button>最大宽度 300px</Button>
+      </Tooltip>
+      <Tooltip content={longText} maxWidth="none">
+        <Button>无限制</Button>
+      </Tooltip>
+    </Group>
+  );
+}
+```
+
+### 隐藏箭头
+
+使用 `arrow={false}` 隐藏指向箭头。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="md">
+      <Tooltip content="带箭头的提示" arrow>
+        <Button>带箭头(默认)</Button>
+      </Tooltip>
+      <Tooltip content="无箭头的提示" arrow={false}>
+        <Button>无箭头</Button>
+      </Tooltip>
+    </Group>
+  );
+}
+```
+
+### 可交互内容
+
+设置 `interactive={true}` 允许鼠标移入提示内容,适合包含链接等可交互元素的场景。
+
+```jsx live
+function Demo() {
+  const interactiveContent = (
+    <div>
+      <p style={{ margin: '0 0 8px 0' }}>提示内容</p>
+      <a href="#" style={{ color: '#329dce' }}>
+        查看详情
+      </a>
+    </div>
+  );
+
+  return (
+    <Group spacing="md">
+      <Tooltip content="鼠标移入会立即隐藏" interactive={false}>
+        <Button>不可交互(默认)</Button>
+      </Tooltip>
+      <Tooltip content={interactiveContent} interactive>
+        <Button>可交互</Button>
+      </Tooltip>
+    </Group>
+  );
+}
+```
+
+### 受控模式
+
+通过 `visible` 属性控制提示的显示和隐藏。
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+
+  return (
+    <Group spacing="md">
+      <Tooltip content="受控的提示内容" visible={visible}>
+        <Button>目标元素</Button>
+      </Tooltip>
+      <Button onClick={() => setVisible(!visible)}>
+        {visible ? '隐藏' : '显示'}提示
+      </Button>
+    </Group>
+  );
+}
+```
+
+### 手动控制
+
+使用 ref 手动控制提示的显示和隐藏。
+
+```jsx live
+function Demo() {
+  const tooltipRef = React.useRef(null);
+
+  return (
+    <Group spacing="md">
+      <Tooltip
+        content="手动控制的提示"
+        onMount={(instance) => {
+          tooltipRef.current = instance;
+        }}
+      >
+        <Button>目标元素</Button>
+      </Tooltip>
+      <Button onClick={() => tooltipRef.current?.show()}>显示</Button>
+      <Button onClick={() => tooltipRef.current?.hide()}>隐藏</Button>
+    </Group>
+  );
+}
+```
+
+### 不同场景应用
+
+展示 Tooltip 在不同场景下的应用。
+
+```jsx live
+function Demo() {
+  const { Information } = KubedIcons;
+
+  return (
+    <Group direction="column" spacing="md">
+      <Group spacing="xs" align="center">
+        <Text>用户名:</Text>
+        <Tooltip content="请输入 3-20 个字符">
+          <Information size={16} style={{ cursor: 'pointer' }} />
+        </Tooltip>
+      </Group>
+
+      <Group spacing="xs">
+        <Text>Pod 状态:</Text>
+        <Tooltip content="Pod 运行正常,资源使用率 45%">
+          <Badge variant="dot" color="success">
+            Running
+          </Badge>
+        </Tooltip>
+      </Group>
+
+      <Tooltip content="复制代码片段">
+        <Button variant="text" size="sm">
+          复制
+        </Button>
+      </Tooltip>
+
+      <Tooltip content="配置项已被管理员锁定">
+        <Button disabled>已锁定</Button>
+      </Tooltip>
+    </Group>
+  );
+}
+```
+
+### 长文本提示
+
+提示内容较长时会自动换行。
+
+```jsx live
+function Demo() {
+  const longContent =
+    '这是一段很长的提示文字。Tooltip 会根据 maxWidth 设置自动换行显示,确保用户能够看到所有内容。建议提示内容保持简洁,避免过长的文本影响阅读体验。';
+
+  return (
+    <Group spacing="md">
+      <Tooltip content={longContent}>
+        <Button>长文本提示</Button>
+      </Tooltip>
+    </Group>
+  );
+}
+```
+
+## API
+
+### Tooltip
+
+| 属性         | 说明                   | 类型                                                                         | 默认值                  |
+| ------------ | ---------------------- | ---------------------------------------------------------------------------- | ----------------------- |
+| content      | 提示内容               | `ReactNode`                                                                  | -                       |
+| visible      | 手动控制显示状态       | `boolean`                                                                    | -                       |
+| placement    | 气泡框位置             | `'top' \| 'bottom' \| 'left' \| 'right' \| 'top-start' \| 'auto' \| ...`     | `'top'`                 |
+| trigger      | 触发方式               | `string`                                                                     | `'mouseenter focus'`    |
+| disabled     | 是否禁用               | `boolean`                                                                    | `false`                 |
+| delay        | 延迟显示时间(毫秒)     | `number \| [number \| null, number \| null]`                                 | `0`                     |
+| duration     | 动画持续时间(毫秒)     | `number \| [number \| null, number \| null]`                                 | -                       |
+| maxWidth     | 最大宽度               | `number \| string`                                                           | `200`                   |
+| interactive  | 是否允许交互           | `boolean`                                                                    | `false`                 |
+| arrow        | 是否显示箭头           | `boolean`                                                                    | `true`                  |
+| hideOnClick  | 点击时是否隐藏         | `boolean \| 'toggle'`                                                        | `true`                  |
+| showOnCreate | 创建时是否显示         | `boolean`                                                                    | `false`                 |
+| appendTo     | 挂载的容器             | `'parent' \| Element \| ((ref: Element) => Element)`                         | `document.body`         |
+| animation    | 动画效果名称           | `string`                                                                     | `'shift-toward-subtle'` |
+| className    | 自定义类名             | `string`                                                                     | -                       |
+| offset       | 偏移量 [skidding, distance] | `[number, number]`                                                      | `[0, 10]`               |
+| onMount      | 组件挂载时的回调       | `(instance: TooltipInstance) => void`                                        | -                       |
+| children     | 触发元素               | `ReactElement`                                                               | **必需**                |
+
+### placement 可选值
+
+支持 12 个方向,另外还支持自动定位:
+
+**基础方向**:
+- `top`, `bottom`, `left`, `right`
+
+**扩展方向**:
+- `top-start`, `top-end`
+- `bottom-start`, `bottom-end`
+- `left-start`, `left-end`
+- `right-start`, `right-end`
+
+**自动定位**:
+- `auto`: 自动选择最佳位置
+- `auto-start`: 自动选择,起始对齐
+- `auto-end`: 自动选择,结束对齐
+
+### trigger 可选值
+
+触发方式支持以下事件,多个事件用空格分隔:
+
+- `mouseenter` - 鼠标移入(默认)
+- `focus` - 获得焦点
+- `click` - 点击
+- `manual` - 手动控制
+
+### TooltipInstance
+
+通过 `onMount` 回调获取的实例对象,提供手动控制方法:
+
+| 方法      | 说明           | 类型                    |
+| --------- | -------------- | ----------------------- |
+| show()    | 显示提示       | `() => void`            |
+| hide()    | 隐藏提示       | `() => void`            |
+| setProps() | 更新配置       | `(props: Partial<TooltipProps>) => void` |
+| destroy() | 销毁实例       | `() => void`            |
+
+:::info
+
+**关于位置**:
+
+- 默认位置为 `top`
+- Tooltip 会根据可用空间自动调整位置,确保内容可见
+- 使用 `-start` 和 `-end` 后缀可以控制对齐方式
+
+**关于触发方式**:
+
+- 默认触发方式为 `'mouseenter focus'`,即鼠标移入和聚焦时都会显示
+- 可以组合多个触发方式,用空格分隔
+- 使用 `manual` 时需要通过 `visible` 属性或 ref 手动控制
+
+**关于延迟**:
+
+- `delay` 可以是单个数字或数组 `[显示延迟, 隐藏延迟]`
+- 单位为毫秒
+- 延迟显示可以避免鼠标快速划过时频繁显示提示
+
+**关于交互性**:
+
+- 默认 `interactive={false}`,鼠标移入提示会立即隐藏
+- 设置为 `true` 时,鼠标可以移入提示内容
+- 交互模式适合包含链接、按钮等可点击元素的场景
+
+**关于最大宽度**:
+
+- 默认 `maxWidth={200}`
+- 可以设置为数字(像素)或字符串(如 `'300px'`, `'none'`)
+- 内容超过最大宽度会自动换行
+
+**关于动画**:
+
+- 默认动画为 `'shift-toward-subtle'`,提供微妙的位移效果
+- 另外支持 `'shift-away'` 等动画效果
+- `duration` 控制动画的持续时间,可以分别设置显示和隐藏的时长
+
+**关于箭头**:
+
+- 默认显示指向箭头 (`arrow={true}`)
+- 设置 `arrow={false}` 可隐藏箭头
+- 箭头会根据 tooltip 位置自动调整方向
+
+**关于偏移量**:
+
+- `offset` 接受数组 `[skidding, distance]`
+- `skidding`: 沿着参考元素的偏移(水平或垂直)
+- `distance`: 与参考元素的距离
+- 默认值为 `[0, 10]`,表示距离参考元素 10 像素
+
+:::
+
+## 使用建议
+
+### 保持内容简洁
+
+Tooltip 应该包含简短的描述性文字:
+
+```jsx
+// 推荐: 简洁明了
+<Tooltip content="删除文件">
+  <Button icon={<Delete />} />
+</Tooltip>
+
+// 不推荐: 内容过长,应该使用 Popover
+<Tooltip content="这是一段很长的说明文字,包含了很多详细信息...">
+  <Button>操作</Button>
+</Tooltip>
+```
+
+### 选择合适的触发方式
+
+根据使用场景选择触发方式:
+
+```jsx
+// 信息提示: 使用默认的 hover
+<Tooltip content="用户名必须唯一">
+  <Input />
+</Tooltip>
+
+// 图标按钮: 使用 hover
+<Tooltip content="删除">
+  <IconButton icon={<Delete />} />
+</Tooltip>
+
+// 需要点击才显示: 使用 click
+<Tooltip content="详细信息" trigger="click">
+  <Button>更多</Button>
+</Tooltip>
+```
+
+### 禁用元素的提示
+
+禁用的元素无法触发事件,需要包装:
+
+```jsx
+// 不推荐: 禁用按钮无法触发 tooltip
+<Tooltip content="按钮已禁用">
+  <Button disabled>禁用</Button>
+</Tooltip>
+
+// 推荐: 使用 span 包装
+<Tooltip content="按钮已禁用">
+  <span>
+    <Button disabled>禁用</Button>
+  </span>
+</Tooltip>
+```
+
+### 设置合适的延迟
+
+避免鼠标快速划过时频繁显示:
+
+```jsx
+// 列表项: 设置延迟避免误触
+<Tooltip content="点击查看详情" delay={300}>
+  <ListItem>项目 1</ListItem>
+</Tooltip>
+
+// 重要操作: 立即显示
+<Tooltip content="删除后无法恢复" delay={0}>
+  <Button color="error">删除</Button>
+</Tooltip>
+```
+
+### Tooltip vs Popover
+
+根据内容复杂度选择:
+
+```jsx
+// 简单文本: 使用 Tooltip
+<Tooltip content="这是提示文字">
+  <Button>按钮</Button>
+</Tooltip>
+
+// 复杂内容: 使用 Popover
+<Popover
+  title="标题"
+  content={
+    <div>
+      <p>详细信息</p>
+      <Button>操作</Button>
+    </div>
+  }
+>
+  <Button>按钮</Button>
+</Popover>
+```
+
+### 位置选择
+
+根据元素位置选择合适的弹出方向:
+
+```jsx
+// 页面顶部的元素: 向下弹出
+<Tooltip placement="bottom" content="提示">
+  <Button>顶部按钮</Button>
+</Tooltip>
+
+// 页面底部的元素: 向上弹出
+<Tooltip placement="top" content="提示">
+  <Button>底部按钮</Button>
+</Tooltip>
+
+// 让 Tooltip 自动选择位置
+<Tooltip placement="auto" content="提示">
+  <Button>自动定位</Button>
+</Tooltip>
+```
+
+### 移动端适配
+
+移动端建议使用点击触发:
+
+```jsx
+const isMobile = window.innerWidth < 768;
+
+<Tooltip trigger={isMobile ? 'click' : 'mouseenter focus'} content="提示内容">
+  <Button>按钮</Button>
+</Tooltip>;
+```
+
+### 避免嵌套 Tooltip
+
+不要在 Tooltip 内部嵌套另一个 Tooltip:
+
+```jsx
+// 不推荐: 嵌套 Tooltip
+<Tooltip content="外层提示">
+  <div>
+    <Tooltip content="内层提示">
+      <Button>按钮</Button>
+    </Tooltip>
+  </div>
+</Tooltip>
+```
+
+### 信息图标的提示
+
+为信息图标添加提示:
+
+```jsx
+import { Information } from '@kubed/icons';
+
+<Group align="center" spacing="xs">
+  <Text>配置项</Text>
+  <Tooltip content="此配置项影响所有用户" placement="right">
+    <Information size={16} style={{ cursor: 'pointer' }} />
+  </Tooltip>
+</Group>;
+```
+
+### 受控模式的使用场景
+
+需要编程控制时使用受控模式:
+
+```jsx
+const [showTip, setShowTip] = useState(false);
+
+// 表单验证失败时显示提示
+const handleSubmit = () => {
+  if (!isValid) {
+    setShowTip(true);
+    setTimeout(() => setShowTip(false), 3000);
+  }
+};
+
+<Tooltip content="请填写必填项" visible={showTip}>
+  <Input />
+</Tooltip>;
+```
+
+### 使用实例方法
+
+通过 `onMount` 获取实例,手动控制显示/隐藏:
+
+```jsx
+const tooltipRef = useRef(null);
+
+<Tooltip
+  onMount={(instance) => {
+    tooltipRef.current = instance;
+  }}
+  content="提示内容"
+>
+  <Button>目标</Button>
+</Tooltip>
+
+// 手动显示
+tooltipRef.current?.show();
+
+// 手动隐藏
+tooltipRef.current?.hide();
+
+// 更新配置
+tooltipRef.current?.setProps({ content: '新内容' });
+```
+
+### 自定义动画效果
+
+使用不同的动画效果:
+
+```jsx
+// 微妙位移动画(默认)
+<Tooltip animation="shift-toward-subtle" content="提示">
+  <Button>微妙动画</Button>
+</Tooltip>
+
+// 远离动画
+<Tooltip animation="shift-away" content="提示">
+  <Button>远离动画</Button>
+</Tooltip>
+
+// 自定义动画时长
+<Tooltip duration={[300, 200]} content="提示">
+  <Button>自定义时长</Button>
+</Tooltip>
+```

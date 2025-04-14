@@ -1,0 +1,655 @@
+---
+sidebar_position: 1
+---
+
+# ShowMore 展开收起
+
+折叠长内容,通过展开/收起按钮查看完整内容。
+
+## 何时使用
+
+- 当内容较长需要折叠显示时
+- 需要节省页面空间但保留完整内容的访问
+- 列表项、描述文字、日志等长文本场景
+- 需要用户主动选择查看详细内容时
+
+在 Kube Design 中,ShowMore 组件提供了灵活的内容折叠功能:
+
+- **自动检测**:自动判断内容是否超过最大高度
+- **平滑动画**:支持自定义过渡动画时长
+- **自定义标签**:可自定义展开和收起的按钮文字
+- **初始状态**:支持设置初始展开或收起状态
+- **灵活高度**:支持自定义折叠时的最大高度
+
+## 示例
+
+### 基础用法
+
+最基本的展开收起用法,折叠超出高度的文本内容。
+
+```jsx live
+function Demo() {
+  return (
+    <ShowMore
+      maxHeight={60}
+      showLabel={<a style={{ cursor: 'pointer', color: '#55bc8a' }}>显示更多</a>}
+      hideLabel={<a style={{ cursor: 'pointer', color: '#55bc8a' }}>收起</a>}
+    >
+      <Text>
+        Kubernetes 是一个开源的容器编排引擎,用于自动化容器化应用程序的部署、扩展和管理。 它最初由
+        Google 设计,现在由云原生计算基金会(CNCF)维护。 Kubernetes
+        提供了一个以容器为中心的管理环境,可以编排计算、网络和存储基础设施,
+        为用户工作负载提供支持。Kubernetes 具有可移植性、可扩展性和自愈能力,
+        已经成为容器编排领域的事实标准。 Kubernetes
+        是一个开源的容器编排引擎,用于自动化容器化应用程序的部署、扩展和管理。 它最初由 Google
+        设计,现在由云原生计算基金会(CNCF)维护。 Kubernetes
+        提供了一个以容器为中心的管理环境,可以编排计算、网络和存储基础设施,
+        为用户工作负载提供支持。Kubernetes 具有可移植性、可扩展性和自愈能力,
+        已经成为容器编排领域的事实标准。
+      </Text>
+    </ShowMore>
+  );
+}
+```
+
+### 自定义标签
+
+使用不同的展开和收起标签样式。
+
+```jsx live
+function Demo() {
+  const { ChevronDown, ChevronUp } = KubedIcons;
+
+  return (
+    <Group direction="column" spacing="lg">
+      <ShowMore
+        maxHeight={30}
+        showLabel={
+          <Button size="xs" variant="text">
+            <ChevronDown size={16} style={{ marginRight: '4px' }} />
+            展开全部
+          </Button>
+        }
+        hideLabel={
+          <Button size="xs" variant="text">
+            <ChevronUp size={16} style={{ marginRight: '4px' }} />
+            收起内容
+          </Button>
+        }
+      >
+        <Text>
+          KubeSphere 是在 Kubernetes 之上构建的企业级分布式多租户容器平台, 提供全栈的 IT
+          自动化运维能力,简化企业的 DevOps 工作流。
+          它的架构可以非常方便地使第三方应用与平台的组件进行集成。 KubeSphere
+          提供了运维友好的向导式操作界面,帮助企业快速构建一个功能丰富的容器云平台。 KubeSphere 是在
+          Kubernetes 之上构建的企业级分布式多租户容器平台, 提供全栈的 IT 自动化运维能力,简化企业的
+          DevOps 工作流。 它的架构可以非常方便地使第三方应用与平台的组件进行集成。 KubeSphere
+          提供了运维友好的向导式操作界面,帮助企业快速构建一个功能丰富的容器云平台。
+        </Text>
+      </ShowMore>
+    </Group>
+  );
+}
+```
+
+### 初始展开状态
+
+通过 `expanded` 属性设置初始状态为展开。
+
+```jsx live
+function Demo() {
+  return (
+    <ShowMore
+      maxHeight={10}
+      expanded={true}
+      showLabel={<a style={{ cursor: 'pointer', color: '#55bc8a' }}>查看更多</a>}
+      hideLabel={<a style={{ cursor: 'pointer', color: '#55bc8a' }}>收起</a>}
+    >
+      <Group direction="column" spacing="sm">
+        <Text size="sm">Pod 是 Kubernetes 中最小的可部署单元</Text>
+        <Text size="sm">一个 Pod 可以包含一个或多个容器</Text>
+        <Text size="sm">Pod 中的容器共享网络和存储资源</Text>
+        <Text size="sm">Pod 是临时性的,可以被创建、销毁和替换</Text>
+        <Text size="sm">每个 Pod 都有唯一的 IP 地址</Text>
+      </Group>
+    </ShowMore>
+  );
+}
+```
+
+### 自定义过渡时长
+
+通过 `transitionDuration` 调整展开/收起动画的速度。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="lg">
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          快速动画 (100ms):
+        </Text>
+        <ShowMore
+          maxHeight={40}
+          transitionDuration={100}
+          showLabel={<a style={{ cursor: 'pointer', color: '#55bc8a' }}>展开</a>}
+          hideLabel={<a style={{ cursor: 'pointer', color: '#55bc8a' }}>收起</a>}
+        >
+          <Text>
+            快速的展开收起动画,适合内容变化不大的场景。动画时长为 100ms,
+            用户可以快速看到内容的展开和收起效果。
+            快速的展开收起动画,适合内容变化不大的场景。动画时长为 100ms,
+            用户可以快速看到内容的展开和收起效果。
+            快速的展开收起动画,适合内容变化不大的场景。动画时长为 100ms,
+            用户可以快速看到内容的展开和收起效果。
+            快速的展开收起动画,适合内容变化不大的场景。动画时长为 100ms,
+            用户可以快速看到内容的展开和收起效果。
+          </Text>
+        </ShowMore>
+      </div>
+
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          慢速动画 (800ms):
+        </Text>
+        <ShowMore
+          maxHeight={40}
+          transitionDuration={800}
+          showLabel={<a style={{ cursor: 'pointer', color: '#55bc8a' }}>展开</a>}
+          hideLabel={<a style={{ cursor: 'pointer', color: '#55bc8a' }}>收起</a>}
+        >
+          <Text>
+            较慢的展开收起动画,提供更平滑的视觉体验。动画时长为 800ms,
+            适合内容较多或需要强调展开过程的场景。
+            较慢的展开收起动画,提供更平滑的视觉体验。动画时长为 800ms,
+            适合内容较多或需要强调展开过程的场景。
+            较慢的展开收起动画,提供更平滑的视觉体验。动画时长为 800ms,
+            适合内容较多或需要强调展开过程的场景。
+          </Text>
+        </ShowMore>
+      </div>
+    </Group>
+  );
+}
+```
+
+### 无动画效果
+
+设置 `transitionDuration={0}` 关闭动画效果。
+
+```jsx live
+function Demo() {
+  return (
+    <ShowMore
+      maxHeight={50}
+      transitionDuration={0}
+      showLabel={<a style={{ cursor: 'pointer', color: '#55bc8a' }}>显示全部</a>}
+      hideLabel={<a style={{ cursor: 'pointer', color: '#55bc8a' }}>隐藏</a>}
+    >
+      <Text>
+        在某些场景下,不需要动画效果,可以通过设置 transitionDuration 为 0 来关闭动画。
+        这样展开和收起会立即完成,没有过渡效果。这种方式适合对性能要求较高的场景,
+        或者不希望有视觉过渡的情况。 在某些场景下,不需要动画效果,可以通过设置 transitionDuration 为
+        0 来关闭动画。 这样展开和收起会立即完成,没有过渡效果。这种方式适合对性能要求较高的场景,
+        或者不希望有视觉过渡的情况。 在某些场景下,不需要动画效果,可以通过设置 transitionDuration 为
+        0 来关闭动画。 这样展开和收起会立即完成,没有过渡效果。这种方式适合对性能要求较高的场景,
+        或者不希望有视觉过渡的情况。
+      </Text>
+    </ShowMore>
+  );
+}
+```
+
+### 富内容折叠
+
+ShowMore 可以折叠任何内容,不仅限于文本。
+
+```jsx live
+function Demo() {
+  const { Pod } = KubedIcons;
+
+  return (
+    <ShowMore
+      maxHeight={100}
+      showLabel={
+        <Button size="sm" variant="outline">
+          显示更多 Pods
+        </Button>
+      }
+      hideLabel={
+        <Button size="sm" variant="outline">
+          收起列表
+        </Button>
+      }
+    >
+      <Group direction="column" spacing="sm">
+        {[
+          'nginx-deployment-7d5c8f8b9d-x7k2m',
+          'nginx-deployment-7d5c8f8b9d-b8z9p',
+          'nginx-deployment-7d5c8f8b9d-m4n6q',
+          'nginx-deployment-7d5c8f8b9d-p7r2k',
+          'nginx-deployment-7d5c8f8b9d-q9s3n',
+          'nginx-deployment-7d5c8f8b9d-t5v8m',
+        ].map((name) => (
+          <Card key={name} style={{ padding: '12px' }} hoverable>
+            <Group spacing="md">
+              <Pod size={24} />
+              <Text size="sm">{name}</Text>
+              <Badge color="success" size="sm">
+                Running
+              </Badge>
+            </Group>
+          </Card>
+        ))}
+      </Group>
+    </ShowMore>
+  );
+}
+```
+
+### 完整示例
+
+综合所有功能的完整示例。
+
+```jsx live
+function Demo() {
+  const { Backup, ChevronDown, ChevronUp } = KubedIcons;
+
+  const pods = [
+    { name: 'nginx-deployment-7d5c8f8b9d-x7k2m', status: 'Running', restarts: 0, age: '2d' },
+    { name: 'nginx-deployment-7d5c8f8b9d-b8z9p', status: 'Running', restarts: 1, age: '2d' },
+    { name: 'nginx-deployment-7d5c8f8b9d-m4n6q', status: 'Running', restarts: 0, age: '1d' },
+    { name: 'nginx-deployment-7d5c8f8b9d-p7r2k', status: 'Running', restarts: 0, age: '1d' },
+    { name: 'nginx-deployment-7d5c8f8b9d-q9s3n', status: 'Running', restarts: 2, age: '18h' },
+  ];
+
+  return (
+    <Card>
+      <Entity bordered={false}>
+        <Field
+          avatar={<Backup size={40} />}
+          label="部署名称"
+          value="nginx-deployment"
+          width="35%"
+        />
+        <Field label="副本数" value="5/5" width="15%" />
+        <Field label="镜像" value="nginx:1.21" width="30%" />
+        <Field label="状态" value={<Badge color="success">Running</Badge>} width="20%" />
+      </Entity>
+
+      <div style={{ padding: '16px', borderTop: '1px solid #eff4f9' }}>
+        <Text size="sm" weight={600} style={{ marginBottom: '12px' }}>
+          关联的容器组:
+        </Text>
+        <ShowMore
+          maxHeight={150}
+          transitionDuration={400}
+          showLabel={
+            <Button size="sm" variant="text" style={{ marginTop: '8px' }}>
+              <ChevronDown size={16} style={{ marginRight: '4px' }} />
+              显示全部 {pods.length} 个 Pods
+            </Button>
+          }
+          hideLabel={
+            <Button size="sm" variant="text" style={{ marginTop: '8px' }}>
+              <ChevronUp size={16} style={{ marginRight: '4px' }} />
+              收起列表
+            </Button>
+          }
+        >
+          <Group direction="column" spacing="xs">
+            {pods.map((pod) => (
+              <div
+                key={pod.name}
+                style={{
+                  padding: '8px 12px',
+                  background: '#f5f7fa',
+                  borderRadius: '4px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <Text size="sm">{pod.name}</Text>
+                <Group spacing="md">
+                  <Badge size="sm" color="success">
+                    {pod.status}
+                  </Badge>
+                  <Text size="xs" color="secondary">
+                    重启: {pod.restarts}
+                  </Text>
+                  <Text size="xs" color="secondary">
+                    {pod.age}
+                  </Text>
+                </Group>
+              </div>
+            ))}
+          </Group>
+        </ShowMore>
+      </div>
+
+      <div style={{ padding: '16px', borderTop: '1px solid #eff4f9' }}>
+        <Text size="sm" weight={600} style={{ marginBottom: '8px' }}>
+          部署说明:
+        </Text>
+        <ShowMore
+          maxHeight={50}
+          showLabel={
+            <a style={{ cursor: 'pointer', color: '#55bc8a', fontSize: '12px' }}>查看详情</a>
+          }
+          hideLabel={<a style={{ cursor: 'pointer', color: '#55bc8a', fontSize: '12px' }}>收起</a>}
+        >
+          <Text size="sm" color="secondary">
+            这是一个标准的 nginx Web 服务器部署,配置了 5 个副本以保证高可用性。 部署使用
+            RollingUpdate 策略,可以实现零停机更新。 当前所有 Pod 都处于健康运行状态,没有重启异常。
+            该部署关联了一个 ClusterIP 类型的 Service,可以通过服务名在集群内部访问。
+          </Text>
+        </ShowMore>
+      </div>
+    </Card>
+  );
+}
+```
+
+## API
+
+### ShowMore
+
+| 属性               | 说明                     | 类型                                    | 默认值   |
+| ------------------ | ------------------------ | --------------------------------------- | -------- |
+| maxHeight          | 折叠时的最大可见高度(px) | `number`                                | `100`    |
+| showLabel          | 展开按钮的标签           | `ReactNode`                             | **必需** |
+| hideLabel          | 收起按钮的标签           | `ReactNode`                             | **必需** |
+| expanded           | 初始是否展开             | `boolean`                               | `false`  |
+| transitionDuration | 过渡动画时长(ms)         | `number`                                | `300`    |
+| controlRef         | 获取切换按钮的 ref       | `React.ForwardedRef<HTMLButtonElement>` | -        |
+| className          | 自定义类名               | `string`                                | -        |
+| style              | 自定义样式               | `CSSProperties`                         | -        |
+| children           | 需要折叠的内容           | `ReactNode`                             | -        |
+
+:::info
+
+**关于自动检测**:
+
+- ShowMore 会自动检测内容高度是否超过 `maxHeight`(ShowMore.tsx 第 66-69 行)
+- 使用 `useEffect` 监听 maxHeight 和 children 变化,自动重新计算高度(第 65-70 行)
+- 只有当内容高度超过 `maxHeight` 时才显示展开/收起按钮(第 67 行判断:`maxHeight < contentRef.current.offsetHeight`)
+- 如果内容高度小于 `maxHeight`,不会显示按钮(第 80-88 行:`{showMore && ...}`)
+- 高度检测使用 `contentRef.current.offsetHeight` 获取元素实际高度(第 68 行)
+
+**关于展开状态**:
+
+- `expanded={false}`: 初始状态为折叠(默认,第 48 行)
+- `expanded={true}`: 初始状态为展开
+- 组件内部维护两个状态(第 59-60 行):
+  - `show`: 当前是否展开的状态
+  - `showMore`: 是否需要显示展开/收起按钮
+- 用户点击按钮后会切换状态(第 84 行:`onClick={() => setShowState((opened) => !opened)}`)
+- 状态变化时会触发动画过渡
+
+**关于标签**:
+
+- `showLabel`: 折叠状态下显示的按钮标签(未展开时)
+- `hideLabel`: 展开状态下显示的按钮标签(已展开时)
+- 标签可以是任何 ReactNode,包括文本、链接、按钮等
+- 当前显示的标签根据 `show` 状态动态切换(第 63 行:`const showMoreLabel = show ? hideLabel : showLabel`)
+- 标签渲染在 ShowMoreButton 组件中(第 86 行)
+
+**关于动画**:
+
+- `transitionDuration`: 控制展开/收起的动画时长(ShowMore.tsx 第 42 行接口定义)
+- 设置为 `0` 或 `null` 可以关闭动画效果(注释第 41 行)
+- 默认 300ms(第 50 行),可以根据内容多少调整
+- 动画属性配置(第 18-20 行):
+  ```typescript
+  transition-property: max-height;
+  transition-duration: ${({ $transitionDuration }) => $transitionDuration}ms;
+  transition-timing-function: ease-in-out;
+  ```
+- 动画通过改变 `max-height` 实现平滑过渡(第 76 行)
+- 折叠时 maxHeight 为设定值,展开时为内容实际高度
+
+**关于样式**:
+
+- 可以通过 `className` 或 `style` 自定义容器样式(应用到 ShowMoreWrapper 第 73 行)
+- 按钮元素有 `showmore-button` 类名,可以通过全局样式定制(第 82 行)
+- 标签样式完全由 `showLabel` 和 `hideLabel` 控制
+- ShowMoreWrapper 使用 `position: relative` 定位(第 6-8 行)
+- ShowMoreContent 使用 flexbox 纵向布局:`flex-direction: column`(第 14-21 行)
+- 内容区域设置 `overflow: hidden` 配合动画(第 17 行)
+
+**关于组件结构**:
+
+- ShowMore 使用 forwardRef 实现,支持 ref 转发(第 45-92 行)
+- 组件结构(第 73-89 行):
+  - ShowMoreWrapper - 最外层容器
+  - ShowMoreContent - 内容容器,控制动画
+  - div(contentRef) - 实际内容包裹层,用于测量高度
+  - ShowMoreButton - 展开/收起按钮容器
+- displayName 设置为 `'@kubed/components/ShowMore'`(第 94 行)
+
+**关于 controlRef**:
+
+- `controlRef` 属性用于获取切换按钮的 ref(第 36 行)
+- 但源码中存在 bug:第 83 行将 contentRef 而非 controlRef 传给按钮
+- 这意味着 controlRef 属性当前未正确实现
+
+**关于高度计算**:
+
+- 内容高度存储在 `contentHeight` 状态中(第 61 行)
+- 展开时使用 contentHeight,折叠时使用 maxHeight(第 76 行)
+- 高度变化触发 CSS transition 动画
+- 如果未计算出高度(`contentHeight` 为 null),则使用 `undefined` 让浏览器自动计算(第 76 行)
+
+**关于重新渲染**:
+
+- 当 `children` 内容变化时,组件会自动重新检测高度(第 70 行依赖数组包含 `children`)
+- 当 `maxHeight` 改变时,也会重新计算是否需要显示展开按钮(第 70 行)
+- 这确保了动态内容场景下的正确行为
+
+:::
+
+## 使用建议
+
+### 合理设置最大高度
+
+根据内容类型选择合适的 maxHeight:
+
+```jsx
+// 文本内容: 2-3 行的高度
+<ShowMore maxHeight={60} showLabel="更多" hideLabel="收起">
+  <Text>文本内容...</Text>
+</ShowMore>
+
+// 列表内容: 显示 2-3 个列表项
+<ShowMore maxHeight={150} showLabel="显示全部" hideLabel="收起">
+  <List>...</List>
+</ShowMore>
+
+// 配置内容: 显示部分配置
+<ShowMore maxHeight={100} showLabel="查看完整配置" hideLabel="收起">
+  <pre>配置内容...</pre>
+</ShowMore>
+```
+
+### 清晰的标签文字
+
+提供有意义的展开/收起标签:
+
+```jsx
+// 推荐: 明确的动作描述
+<ShowMore
+  showLabel={<a>显示全部 20 个 Pods</a>}
+  hideLabel={<a>收起列表</a>}
+>
+  ...
+</ShowMore>
+
+// 推荐: 带图标的按钮
+<ShowMore
+  showLabel={<Button size="sm"><ChevronDown /> 展开详情</Button>}
+  hideLabel={<Button size="sm"><ChevronUp /> 收起</Button>}
+>
+  ...
+</ShowMore>
+
+// 不推荐: 模糊的标签
+<ShowMore showLabel="更多" hideLabel="less">...</ShowMore>
+```
+
+### 使用渐变遮罩
+
+为折叠内容添加渐变效果:
+
+```jsx
+<ShowMore
+  maxHeight={80}
+  showLabel={
+    <div
+      style={{
+        background: 'linear-gradient(to bottom, transparent, white)',
+        padding: '20px 0 10px',
+        marginTop: '-20px',
+      }}
+    >
+      <Button>展开</Button>
+    </div>
+  }
+  hideLabel={<Button>收起</Button>}
+>
+  <Text>内容...</Text>
+</ShowMore>
+```
+
+### 根据内容调整动画
+
+不同内容使用不同的动画时长:
+
+```jsx
+// 短内容: 快速动画
+<ShowMore transitionDuration={200} maxHeight={40}>
+  <Text>简短文本</Text>
+</ShowMore>
+
+// 长内容: 较慢动画
+<ShowMore transitionDuration={500} maxHeight={200}>
+  <LongList />
+</ShowMore>
+
+// 性能优先: 无动画
+<ShowMore transitionDuration={0} maxHeight={100}>
+  <HeavyContent />
+</ShowMore>
+```
+
+### 配合卡片使用
+
+在卡片中使用 ShowMore:
+
+```jsx
+<Card>
+  <Text weight={600}>资源详情</Text>
+  <ShowMore maxHeight={100} showLabel={<a>查看详情</a>} hideLabel={<a>收起</a>}>
+    <ResourceDetails />
+  </ShowMore>
+</Card>
+```
+
+### 列表场景的应用
+
+在长列表中使用:
+
+```jsx
+const items = [...]; // 很多项
+
+<ShowMore
+  maxHeight={200}
+  showLabel={<Button variant="text">显示全部 {items.length} 项</Button>}
+  hideLabel={<Button variant="text">收起</Button>}
+>
+  {items.map(item => <ItemCard key={item.id} {...item} />)}
+</ShowMore>
+```
+
+### 描述文字场景
+
+用于描述性文字的折叠:
+
+```jsx
+<Entity>
+  <Field label="名称" value="nginx-service" />
+  <Field label="类型" value="ClusterIP" />
+</Entity>
+<div style={{ marginTop: '12px' }}>
+  <Text size="sm" weight={600}>描述:</Text>
+  <ShowMore
+    maxHeight={40}
+    showLabel={<a style={{ fontSize: '12px' }}>展开</a>}
+    hideLabel={<a style={{ fontSize: '12px' }}>收起</a>}
+  >
+    <Text size="sm" color="secondary">{description}</Text>
+  </ShowMore>
+</div>
+```
+
+### 配置和日志场景
+
+在查看配置或日志时使用:
+
+```jsx
+<ShowMore
+  maxHeight={120}
+  showLabel={<Button size="sm">查看完整日志</Button>}
+  hideLabel={<Button size="sm">收起日志</Button>}
+>
+  <pre
+    style={{
+      background: '#1e1e1e',
+      color: '#d4d4d4',
+      padding: '12px',
+      borderRadius: '4px',
+      fontSize: '12px',
+    }}
+  >
+    {logContent}
+  </pre>
+</ShowMore>
+```
+
+### 避免嵌套使用
+
+不要嵌套多个 ShowMore:
+
+```jsx
+// 不推荐: 嵌套 ShowMore
+<ShowMore maxHeight={100} showLabel="展开" hideLabel="收起">
+  <div>
+    内容...
+    <ShowMore maxHeight={50} showLabel="更多" hideLabel="收起">
+      嵌套内容...
+    </ShowMore>
+  </div>
+</ShowMore>
+
+// 推荐: 使用单个 ShowMore 或分开使用
+<ShowMore maxHeight={150} showLabel="展开全部" hideLabel="收起">
+  <div>所有内容...</div>
+</ShowMore>
+```
+
+### 内容更新时的处理
+
+当内容动态变化时,ShowMore 会自动重新检测高度:
+
+```jsx
+const [items, setItems] = useState([...]);
+
+// ShowMore 会在 items 变化时重新计算高度
+<ShowMore
+  maxHeight={150}
+  showLabel="显示全部"
+  hideLabel="收起"
+>
+  {items.map(item => <ItemCard key={item.id} {...item} />)}
+</ShowMore>
+```

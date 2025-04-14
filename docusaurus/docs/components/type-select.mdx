@@ -1,0 +1,635 @@
+---
+sidebar_position: 1
+---
+
+# TypeSelect 类型选择器
+
+卡片式选择器,支持图标、标题和描述的丰富展示。
+
+## 何时使用
+
+- 需要用户从多个选项中选择一种类型或策略
+- 每个选项需要详细的说明和图标展示
+- 选项数量较少(3-6 个)但信息量较大
+- 配置工作负载、调度策略、部署方式等场景
+
+在 Kube Design 中,TypeSelect 组件提供了丰富的类型选择功能:
+
+- **卡片式展示**:每个选项以卡片形式展示,包含图标、标题和描述
+- **受控模式**:支持受控和非受控两种使用方式
+- **可搜索**:支持搜索过滤选项
+- **禁用状态**:支持整体禁用和单个选项禁用
+- **点击外部关闭**:点击外部自动收起下拉列表
+
+## 示例
+
+### 基础用法
+
+最基本的类型选择器用法。
+
+```jsx live
+function Demo() {
+  const { Cluster } = KubedIcons;
+
+  const options = [
+    {
+      label: '默认调度',
+      value: 'default',
+      description: '按照默认规则将容器组调度到节点',
+      icon: <Cluster size={40} />,
+    },
+    {
+      label: '集中调度',
+      value: 'concentrated',
+      description: '尽可能将容器组调度到同一节点',
+      icon: <Cluster size={40} />,
+    },
+    {
+      label: '分散调度',
+      value: 'spread',
+      description: '尽可能将容器组调度到不同节点',
+      icon: <Cluster size={40} />,
+    },
+  ];
+
+  return (
+    <div style={{ height: '280px' }}>
+      <TypeSelect options={options} onChange={(value) => console.log('选择:', value)} />
+    </div>
+  );
+}
+```
+
+### 受控模式
+
+使用 `value` 和 `onChange` 进行受控。
+
+```jsx live
+function Demo() {
+  const { Backup } = KubedIcons;
+  const [value, setValue] = React.useState('rolling');
+
+  const options = [
+    {
+      label: '滚动更新',
+      value: 'rolling',
+      description: '逐步替换旧版本的容器组,确保服务不中断',
+      icon: <Backup size={40} />,
+    },
+    {
+      label: '重新创建',
+      value: 'recreate',
+      description: '先删除所有旧容器组,再创建新容器组',
+      icon: <Backup size={40} />,
+    },
+  ];
+
+  return (
+    <Group direction="column" spacing="md">
+      <Text size="sm">当前选择: {value}</Text>
+      <div style={{ height: '120px' }}>
+        <TypeSelect options={options} value={value} onChange={(v) => setValue(v)} />
+      </div>
+    </Group>
+  );
+}
+```
+
+### 默认值
+
+使用 `defaultValue` 设置初始选中项。
+
+```jsx live
+function Demo() {
+  const { Backup } = KubedIcons;
+
+  const options = [
+    {
+      label: 'ClusterIP',
+      value: 'ClusterIP',
+      description: '集群内部访问,不对外暴露',
+      icon: <Backup size={40} />,
+    },
+    {
+      label: 'NodePort',
+      value: 'NodePort',
+      description: '通过节点端口对外暴露服务',
+      icon: <Backup size={40} />,
+    },
+    {
+      label: 'LoadBalancer',
+      value: 'LoadBalancer',
+      description: '通过负载均衡器对外暴露服务',
+      icon: <Backup size={40} />,
+    },
+  ];
+
+  return (
+    <div style={{ height: '280px' }}>
+      <TypeSelect
+        options={options}
+        defaultValue="NodePort"
+        onChange={(value) => console.log('选择:', value)}
+      />
+    </div>
+  );
+}
+```
+
+### 可搜索
+
+启用 `searchable` 属性可以搜索过滤选项。
+
+```jsx live
+function Demo() {
+  const { Cluster } = KubedIcons;
+
+  const options = [
+    {
+      label: '开发环境',
+      value: 'dev',
+      description: '用于开发和测试的环境配置',
+      icon: <Cluster size={40} />,
+    },
+    {
+      label: '测试环境',
+      value: 'test',
+      description: '用于集成测试和QA的环境配置',
+      icon: <Cluster size={40} />,
+    },
+    {
+      label: '预发布环境',
+      value: 'staging',
+      description: '模拟生产环境的预发布配置',
+      icon: <Cluster size={40} />,
+    },
+    {
+      label: '生产环境',
+      value: 'production',
+      description: '正式生产环境配置',
+      icon: <Cluster size={40} />,
+    },
+  ];
+
+  return (
+    <div style={{ height: '300px' }}>
+      <TypeSelect options={options} searchable onChange={(value) => console.log('选择:', value)} />
+    </div>
+  );
+}
+```
+
+### 禁用状态
+
+禁用整个选择器。
+
+```jsx live
+function Demo() {
+  const { Pod } = KubedIcons;
+
+  const options = [
+    {
+      label: 'Always',
+      value: 'Always',
+      description: '容器退出后总是重启',
+      icon: <Pod size={40} />,
+    },
+    {
+      label: 'OnFailure',
+      value: 'OnFailure',
+      description: '容器失败时重启',
+      icon: <Pod size={40} />,
+    },
+    {
+      label: 'Never',
+      value: 'Never',
+      description: '容器退出后不重启',
+      icon: <Pod size={40} />,
+    },
+  ];
+
+  return (
+    <div style={{ height: '280px' }}>
+      <TypeSelect options={options} disabled defaultValue="Always" />
+    </div>
+  );
+}
+```
+
+### 禁用特定选项
+
+禁用某些特定的选项。
+
+```jsx live
+function Demo() {
+  const { Storage } = KubedIcons;
+
+  const options = [
+    {
+      label: '本地存储',
+      value: 'local',
+      description: '使用节点本地磁盘存储',
+      icon: <Storage size={40} />,
+    },
+    {
+      label: 'NFS',
+      value: 'nfs',
+      description: '使用网络文件系统存储',
+      icon: <Storage size={40} />,
+    },
+    {
+      label: '云存储',
+      value: 'cloud',
+      description: '使用云服务商提供的存储服务(需要配置)',
+      icon: <Storage size={40} />,
+      disabled: true,
+    },
+  ];
+
+  return (
+    <div style={{ height: '280px' }}>
+      <TypeSelect options={options} onChange={(value) => console.log('选择:', value)} />
+    </div>
+  );
+}
+```
+
+## API
+
+### TypeSelect
+
+| 属性         | 说明               | 类型                                        | 默认值   |
+| ------------ | ------------------ | ------------------------------------------- | -------- |
+| options      | 选项列表           | `OptionProps[]`                             | **必需** |
+| value        | 当前选中的值(受控) | `any`                                       | -        |
+| defaultValue | 默认选中的值       | `any`                                       | -        |
+| disabled     | 是否禁用           | `boolean`                                   | `false`  |
+| searchable   | 是否可搜索         | `boolean`                                   | `false`  |
+| onChange     | 选择变化时的回调   | `(value: any, option: OptionProps) => void` | -        |
+| className    | 自定义类名         | `string`                                    | -        |
+
+### OptionProps
+
+| 属性        | 说明       | 类型        | 默认值   |
+| ----------- | ---------- | ----------- | -------- |
+| value       | 选项的值   | `ReactNode` | **必需** |
+| label       | 选项的标题 | `ReactNode` | **必需** |
+| description | 选项的描述 | `ReactNode` | -        |
+| icon        | 选项的图标 | `ReactNode` | -        |
+| disabled    | 是否禁用   | `boolean`   | `false`  |
+
+:::info
+
+**关于组件结构**:
+
+- TypeSelect 使用 forwardRef 实现,支持 ref 转发(TypeSelect.tsx 第 44-178 行)
+- 组件由多个样式化子组件组成:
+  - TypeSelectWrapper - 最外层容器,控制整体透明度和鼠标样式(第 29-34 行)
+  - ControlWrapper - 控制器容器,显示当前选中项(第 36-48 行)
+  - FieldWrapper - Field 包裹层,处理点击事件(第 96-98 行)
+  - InputWrapper - 搜索框容器(第 90-94 行)
+  - DropdownWrapper - 下拉菜单容器(第 62-77 行)
+  - DropdownOption - 下拉选项(第 79-88 行)
+  - DropdownArrow - 下拉箭头图标(第 50-60 行)
+- displayName 设置为 `'@kubed/components/TypeSelect'`(第 180 行)
+
+**关于选项展示**:
+
+- 每个选项以卡片形式展示,包含图标、标题和描述
+- 使用 Entity 组件的 Field 来渲染选项内容(TypeSelect.tsx 第 116、155 行)
+- Field 组件接收 3 个 props:
+  - `avatar={icon}` - 图标(建议 40px 大小)
+  - `value={label}` - 标题(显示在上方,字重 700)
+  - `label={description}` - 描述(显示在下方,浅色)
+- 图标建议使用 40px 大小的 @kubed/icons 图标
+- 描述文字应该简洁明了,说明该选项的用途
+
+**关于值的处理**:
+
+- 组件支持受控和非受控两种模式
+- 初始值获取优先级(第 61-69 行):
+  1. 受控 `value` 属性(如果有效)
+  2. 非受控 `defaultValue` 属性(如果有效)
+  3. `options[0]?.value` - 第一个选项的值
+- 值有效性验证(第 54-59 行):
+  - 使用 `isUndefined` 检查是否为 undefined
+  - 检查值是否在 options 中存在:`options.some((option) => option.value === v)`
+- 受控模式下,内部状态会跟随 `value` prop 更新(第 73-77 行)
+- `onChange` 回调返回两个参数(第 128 行):
+  - 第一个参数:选中的值 `option.value`
+  - 第二个参数:完整的选项对象 `option`
+
+**关于搜索功能**:
+
+- `searchable={true}` 启用搜索功能(TypeSelect.tsx 第 41、45 行,默认 false)
+- 搜索框仅在下拉展开时显示(第 80-81 行判断)
+- 搜索框使用 Input 组件,支持 `allowClear`(第 84-92 行)
+- 搜索匹配逻辑(第 132-140 行):
+  - 搜索会匹配 `label`、`description` 和 `value` 三个字段
+  - 只检查字符串类型的值:`typeof item === 'string'`
+  - 使用 `includes` 方法进行包含匹配
+  - 无关键词时显示所有选项
+- 当前选中的选项会从下拉列表中过滤掉(第 141 行)
+- 搜索框位置在控制器顶部(第 108 行)
+
+**关于展开/收起状态**:
+
+- 使用 `expanded` 状态控制下拉菜单显示(TypeSelect.tsx 第 46 行)
+- 展开/收起切换(第 110-114 行):
+  - 点击 FieldWrapper 切换状态
+  - 禁用时不响应点击
+- 点击外部自动收起(第 49-51 行):
+  - 使用 `useClickOutside` hook 监听外部点击
+  - 使用 `useMergedRef` 合并 ref(第 52 行)
+- 选择选项后自动收起(第 127 行)
+- 展开时下拉箭头隐藏(第 170-174 行)
+
+**关于控制器样式**:
+
+- ControlWrapper 高度(TypeSelect.styles.ts 第 39 行):
+  - 搜索模式展开时:`110px`(包含搜索框)
+  - 普通模式:`64px`(仅显示 Field)
+- 展开时样式变化(第 15-27 行):
+  - 边框颜色变为 `accents_5`(第 18 行)
+  - 底部边框移除:`border-bottom: 0`(第 19 行)
+  - 底部圆角移除(第 20-21 行)
+  - 背景色变为 `accents_1`(第 23 行)
+  - 过渡动画禁用:`transition: none`(第 22 行)
+- 悬停效果(第 43-45 行):
+  - 非禁用时边框颜色变为 `accents_5`
+- 边框样式:`1px solid border`(第 38 行)
+- 圆角:`4px`(第 37 行)
+
+**关于下拉菜单样式**:
+
+- DropdownWrapper 定位(TypeSelect.styles.ts 第 62-77 行):
+  - 绝对定位:`position: absolute`(第 65 行)
+  - 顶部位置:搜索模式 `109px`,普通模式 `63px`(第 66 行)
+  - 左侧位置:`0px`(第 67 行)
+  - 宽度:`100%`(第 68 行)
+  - z-index: `9999`(第 75 行)
+- 边框样式(第 69-73 行):
+  - 边框颜色:`accents_5`
+  - 圆角:`4px`,但顶部圆角为 0
+  - 顶部边框移除:`border-top: 0`
+- 背景色:`theme.palette.background`(第 74 行)
+- 每个选项高度固定 64px(第 80 行)
+
+**关于选项样式**:
+
+- DropdownOption 样式(TypeSelect.styles.ts 第 79-88 行):
+  - 高度:`64px`(第 80 行)
+  - 内边距:`12px 64px 12px 12px`(第 81 行,右侧留 64px 空间)
+  - 禁用时透明度:`0.5`(第 82 行)
+  - 禁用时鼠标样式:`not-allowed`(第 83 行)
+  - 悬停背景:`accents_0`(第 86 行,仅非禁用时)
+- FieldWrapper 内边距与 DropdownOption 一致(第 97 行)
+
+**关于下拉箭头**:
+
+- DropdownArrow 样式(TypeSelect.styles.ts 第 50-60 行):
+  - 绝对定位在右侧中间(第 51-55 行)
+  - 右侧距离:`12px`(第 54 行)
+  - 高度:`16px`(第 52 行)
+  - 垂直居中:`top: 50%; transform: translateY(-50%)`
+  - z-index: `999`(第 59 行)
+  - 悬停背景:`accents_1`(第 56-58 行)
+- 使用 `@kubed/icons` 的 ChevronDown 图标(TypeSelect.tsx 第 4、172 行)
+- 仅在未展开时显示(第 170 行判断)
+
+**关于禁用状态**:
+
+- `disabled` 属性禁用整个选择器(TypeSelect.tsx 第 39、45 行)
+- 选项中的 `disabled` 属性禁用单个选项(第 32、143 行)
+- 禁用效果(TypeSelect.styles.ts):
+  - 整体禁用:透明度 0.5,鼠标样式 not-allowed(第 32-33 行)
+  - 单个选项禁用:透明度 0.5,鼠标样式 not-allowed,无悬停效果(第 82-86 行)
+- 禁用时点击无效(TypeSelect.tsx 第 111、149 行判断)
+- 禁用的选项仍然显示但无法选择
+
+**关于点击行为**:
+
+- 点击控制器展开/收起下拉列表(TypeSelect.tsx 第 110-114 行)
+- 点击选项触发 `onOptionClick`(第 148-152 行):
+  - 非受控模式:更新内部状态(第 124-126 行)
+  - 受控模式:不更新内部状态,由父组件通过 `value` prop 控制
+  - 总是关闭下拉菜单(第 127 行)
+  - 触发 `onChange` 回调(第 128 行)
+- 点击外部区域关闭下拉列表(第 49-51 行)
+- 禁用状态下点击无效
+
+**关于搜索框样式**:
+
+- InputWrapper 样式(TypeSelect.styles.ts 第 90-94 行):
+  - 内边距:`6px`(第 91 行)
+  - 背景色:`#fff` 白色(第 92 行)
+  - 顶部圆角:`4px 4px 0 0`(第 93 行)
+- 搜索框与控制器无缝连接
+
+**关于过渡动画**:
+
+- 控制器过渡:`all 0.3s ease-in-out`(TypeSelect.styles.ts 第 40 行)
+- 展开时禁用过渡:`transition: none`(第 22 行)
+- 这确保了边框颜色、高度等变化的平滑过渡
+
+**关于 Hooks 使用**:
+
+- `useClickOutside`:监听外部点击事件(TypeSelect.tsx 第 49-51 行)
+- `useMergedRef`:合并多个 ref(第 52 行)
+- `useState`:管理 expanded 和 keyword 状态(第 46-47、71 行)
+- `useEffect`:同步受控 value(第 73-77 行)
+- 这些 hooks 来自 `@kubed/hooks` 包(第 5 行)
+
+**关于依赖项**:
+
+- `lodash`:使用 `isUndefined` 工具函数(第 2、55、124 行)
+- `classnames`:使用 `cx` 合并类名(第 3、164 行)
+- `@kubed/icons`:ChevronDown 图标(第 4 行)
+- `@kubed/hooks`:useClickOutside、useMergedRef(第 5 行)
+- Entity/Field:用于渲染选项内容(第 8、116、155 行)
+
+**关于使用场景**:
+
+- 工作负载类型选择:Deployment、StatefulSet、DaemonSet 等
+- 调度策略选择:默认调度、集中调度、分散调度等
+- 网络策略选择:ClusterIP、NodePort、LoadBalancer 等
+- 更新策略选择:滚动更新、重新创建等
+- 存储类型选择:本地存储、NFS、云存储等
+- 适合 3-6 个选项的场景,每个选项需要详细说明
+
+:::
+
+## 使用建议
+
+### 提供清晰的描述
+
+每个选项都应该有清晰的描述:
+
+```jsx
+// 推荐: 描述说明用途和特点
+const options = [
+  {
+    label: 'Deployment',
+    value: 'Deployment',
+    description: '无状态工作负载,支持弹性伸缩和滚动更新',
+    icon: <Deployment size={40} />,
+  },
+];
+
+// 不推荐: 描述过于简单或缺失
+const options = [
+  {
+    label: 'Deployment',
+    value: 'Deployment',
+    // 没有描述,用户不知道这是什么
+  },
+];
+```
+
+### 使用适当的图标
+
+为每个选项配置相关图标:
+
+```jsx
+import { Deployment, StatefulSet, DaemonSet } from '@kubed/icons';
+
+const options = [
+  {
+    label: 'Deployment',
+    value: 'Deployment',
+    description: '...',
+    icon: <Deployment size={40} />, // 使用对应的图标
+  },
+  {
+    label: 'StatefulSet',
+    value: 'StatefulSet',
+    description: '...',
+    icon: <StatefulSet size={40} />, // 保持图标大小一致
+  },
+];
+```
+
+### 选项数量适中
+
+TypeSelect 适合 3-6 个选项:
+
+```jsx
+// 推荐: 3-6 个选项
+const options = [
+  { label: '选项1', value: '1', ... },
+  { label: '选项2', value: '2', ... },
+  { label: '选项3', value: '3', ... },
+];
+
+// 不推荐: 选项过多
+// 超过 6 个选项时考虑使用 Select 组件或分类展示
+```
+
+### 使用受控模式
+
+在表单中使用受控模式:
+
+```jsx
+const [value, setValue] = useState('default');
+
+<TypeSelect options={options} value={value} onChange={(v) => setValue(v)} />;
+```
+
+### 预留足够高度
+
+确保容器有足够高度显示下拉列表:
+
+```jsx
+// 推荐: 给容器设置足够高度
+<div style={{ height: '280px' }}>
+  <TypeSelect options={options} />
+</div>
+
+// 或使用 min-height
+<div style={{ minHeight: '280px' }}>
+  <TypeSelect options={options} />
+</div>
+```
+
+### 选项数量多时启用搜索
+
+选项较多时启用搜索功能:
+
+```jsx
+// 4+ 个选项时建议启用搜索
+<TypeSelect options={manyOptions} searchable onChange={handleChange} />
+```
+
+### 配合 Card 使用
+
+在卡片中使用增强视觉效果:
+
+```jsx
+<Card>
+  <Text weight={600}>选择部署策略</Text>
+  <Text size="sm" color="secondary">
+    选择容器组的更新方式
+  </Text>
+  <div style={{ height: '280px', marginTop: '12px' }}>
+    <TypeSelect options={options} onChange={handleChange} />
+  </div>
+</Card>
+```
+
+### 获取完整选项信息
+
+`onChange` 的第二个参数返回完整选项:
+
+```jsx
+<TypeSelect
+  options={options}
+  onChange={(value, option) => {
+    console.log('值:', value);
+    console.log('标签:', option.label);
+    console.log('描述:', option.description);
+    // 可以使用完整选项信息
+  }}
+/>
+```
+
+### 合理使用禁用
+
+禁用不可用的选项并说明原因:
+
+```jsx
+const options = [
+  {
+    label: '本地存储',
+    value: 'local',
+    description: '使用节点本地磁盘',
+    icon: <Storage size={40} />,
+  },
+  {
+    label: '云存储',
+    value: 'cloud',
+    description: '需要先配置云服务商 (未配置)', // 说明禁用原因
+    icon: <Storage size={40} />,
+    disabled: true,
+  },
+];
+```
+
+### 在向导步骤中使用
+
+配合 Steps 组件使用:
+
+```jsx
+<Steps current={currentStep}>
+  <Step title="选择类型" />
+  <Step title="基本信息" />
+  <Step title="高级配置" />
+</Steps>;
+
+{
+  currentStep === 0 && (
+    <div style={{ height: '280px' }}>
+      <TypeSelect options={typeOptions} value={selectedType} onChange={setSelectedType} />
+    </div>
+  );
+}
+```

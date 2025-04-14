@@ -1,0 +1,768 @@
+---
+sidebar_position: 1
+---
+
+# Entity 实体卡片
+
+用于展示结构化数据的实体卡片组件。
+
+## 何时使用
+
+- 需要以卡片形式展示多个字段信息时
+- 展示资源的详细信息(如 Pod、Service 等)
+- 需要以列表形式展示多个实体对象
+- 需要可展开查看更多详细信息时
+
+在 Kube Design 中,Entity 组件提供了灵活的实体展示功能:
+
+- **字段组合**:使用 Field 组件组合展示多个字段
+- **悬停效果**:支持鼠标悬停高亮
+- **可展开**:支持展开查看更多详细信息
+- **页脚区域**:支持添加页脚内容
+- **灵活布局**:支持自定义字段宽度和间距
+
+## 示例
+
+### 基础 Field 用法
+
+Field 是 Entity 的基础组件,用于展示单个字段。
+
+```jsx live
+function Demo() {
+  const { Pod } = KubedIcons;
+
+  return (
+    <Card style={{ padding: '16px' }}>
+      <Field avatar={<Pod size={40} />} label="存储类型: rocksdb" value="rocksdbpvc" />
+    </Card>
+  );
+}
+```
+
+### 基础 Entity 用法
+
+使用 Entity 组合多个 Field 展示结构化数据。
+
+```jsx live
+function Demo() {
+  return (
+    <Entity>
+      <Field label="存储卷" value="rocksdbpvc" />
+      <Field label="容量" value="1Gi" />
+      <Field label="访问模式" value="ReadWriteOnce" />
+      <Field label="状态" value="Bound" />
+    </Entity>
+  );
+}
+```
+
+### 带图标的 Entity
+
+为 Field 添加图标增强识别性。
+
+```jsx live
+function Demo() {
+  const { Pod, BadgeAnchor, Tooltip, Error } = KubedIcons;
+
+  const avatar = (
+    <BadgeAnchor offset={[5, 5]}>
+      <Tooltip content="警告信息">
+        <Error className="badge" size={18} color="#fff" fill="#f5a623" />
+      </Tooltip>
+      <Pod size={40} />
+    </BadgeAnchor>
+  );
+
+  return (
+    <Entity>
+      <Field avatar={avatar} label="Pod: nginx-deployment-7d5c8f8b9d-x7k2m" value="nginx:1.21" />
+      <Field label="状态" value="Running" />
+      <Field label="节点" value="node-1" />
+      <Field label="IP" value="10.244.1.5" />
+    </Entity>
+  );
+}
+```
+
+### 自定义字段宽度
+
+通过 `width` 属性控制字段宽度。
+
+```jsx live
+function Demo() {
+  const { Pod } = KubedIcons;
+
+  return (
+    <Entity>
+      <Field avatar={<Pod size={40} />} label="存储类型" value="rocksdbpvc" width="30%" />
+      <Field label="存储卷" value="rocksdbpvc" width="20%" />
+      <Field label="容量" value="1Gi" width="30%" />
+      <Field label="访问模式" value="ReadWriteOnce" width="20%" />
+    </Entity>
+  );
+}
+```
+
+### 带页脚的 Entity
+
+使用 `footer` 属性添加页脚内容。
+
+```jsx live
+function Demo() {
+  const { Docker, Pod } = KubedIcons;
+
+  const footer = (
+    <>
+      <div style={{ display: 'inline-flex', minWidth: '200px', alignItems: 'center' }}>
+        <Docker size={20} style={{ marginRight: '8px' }} />
+        <Text weight={500}>moqlus-runtime</Text>
+      </div>
+      <div style={{ display: 'inline-flex', minWidth: '200px', alignItems: 'center' }}>
+        <Pod size={20} style={{ marginRight: '8px' }} />
+        <Text weight={500}>nginx-container</Text>
+      </div>
+    </>
+  );
+
+  return (
+    <Entity footer={footer}>
+      <Field label="镜像" value="nginx:1.21" />
+      <Field label="端口" value="80, 443" />
+      <Field label="环境" value="Production" />
+      <Field label="副本数" value="3" />
+    </Entity>
+  );
+}
+```
+
+### 悬停效果
+
+使用 `hoverable` 属性启用悬停高亮效果。
+
+```jsx live
+function Demo() {
+  const { MicroservicesDuotone } = KubedIcons;
+
+  return (
+    <Group direction="column" spacing="md">
+      <Entity hoverable>
+        <Field avatar={<MicroservicesDuotone size={40} />} label="服务名称" value="nginx-service" />
+        <Field label="类型" value="ClusterIP" />
+        <Field label="集群 IP" value="10.96.0.10" />
+        <Field label="端口" value="80:30080/TCP" />
+      </Entity>
+    </Group>
+  );
+}
+```
+
+### 可展开的 Entity
+
+使用 `expandable` 和 `expandContent` 实现可展开查看详情。
+
+```jsx live
+function Demo() {
+  const { Pod } = KubedIcons;
+
+  const expandContent = (
+    <Card sectionTitle="容器详情" padding={12}>
+      <Group direction="column" spacing="sm">
+        <Text size="sm">
+          <strong>镜像:</strong> nginx:1.21-alpine
+        </Text>
+        <Text size="sm">
+          <strong>命令:</strong> /bin/sh -c nginx -g 'daemon off;'
+        </Text>
+        <Text size="sm">
+          <strong>环境变量:</strong> NODE_ENV=production
+        </Text>
+        <Text size="sm">
+          <strong>资源限制:</strong> CPU: 500m, Memory: 512Mi
+        </Text>
+      </Group>
+    </Card>
+  );
+
+  return (
+    <Entity expandable hoverable expandContent={expandContent}>
+      <Field
+        avatar={<Pod size={40} />}
+        label="Pod: nginx-deployment-7d5c8f8b9d-x7k2m"
+        value="nginx:1.21"
+      />
+      <Field label="状态" value="Running" />
+      <Field label="节点" value="node-1" />
+      <Field label="IP" value="10.244.1.5" />
+    </Entity>
+  );
+}
+```
+
+### 无边框 Entity
+
+在 Card 中使用时,可以去除 Entity 的边框。
+
+```jsx live
+function Demo() {
+  const { ConfigMap } = KubedIcons;
+
+  return (
+    <Card hoverable>
+      <Entity bordered={false}>
+        <Field avatar={<ConfigMap size={40} />} label="配置字典" value="app-config" />
+        <Field label="键值对数" value="5" />
+        <Field label="创建时间" value="2024-01-15" />
+        <Field label="命名空间" value="default" />
+      </Entity>
+    </Card>
+  );
+}
+```
+
+### 自定义间距
+
+通过 `gap` 属性控制字段之间的间距。
+
+```jsx live
+function Demo() {
+  const { Cluster } = KubedIcons;
+
+  return (
+    <Group direction="column" spacing="xl">
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          默认间距(20px):
+        </Text>
+        <Entity>
+          <Field avatar={<Cluster size={40} />} label="集群" value="prod-cluster" />
+          <Field label="节点数" value="5" />
+          <Field label="版本" value="v1.24.0" />
+        </Entity>
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          较小间距(10px):
+        </Text>
+        <Entity gap={10}>
+          <Field avatar={<Cluster size={40} />} label="集群" value="dev-cluster" />
+          <Field label="节点数" value="3" />
+          <Field label="版本" value="v1.24.0" />
+        </Entity>
+      </div>
+    </Group>
+  );
+}
+```
+
+### Entity 列表
+
+展示多个 Entity 组成的列表。
+
+```jsx live
+function Demo() {
+  const { Pod } = KubedIcons;
+
+  const pods = [
+    {
+      name: 'nginx-deployment-7d5c8f8b9d-x7k2m',
+      status: 'Running',
+      node: 'node-1',
+      ip: '10.244.1.5',
+    },
+    {
+      name: 'nginx-deployment-7d5c8f8b9d-b8z9p',
+      status: 'Running',
+      node: 'node-2',
+      ip: '10.244.2.3',
+    },
+    { name: 'nginx-deployment-7d5c8f8b9d-m4n6q', status: 'Pending', node: '-', ip: '-' },
+  ];
+
+  return (
+    <Group direction="column" spacing="md">
+      {pods.map((pod) => (
+        <Entity key={pod.name} hoverable>
+          <Field
+            avatar={<Pod size={40} />}
+            label={`Pod: ${pod.name}`}
+            value="nginx:1.21"
+            width="40%"
+          />
+          <Field label="状态" value={pod.status} width="20%" />
+          <Field label="节点" value={pod.node} width="20%" />
+          <Field label="IP" value={pod.ip} width="20%" />
+        </Entity>
+      ))}
+    </Group>
+  );
+}
+```
+
+### 复杂页脚内容
+
+页脚可以包含更复杂的内容和交互。
+
+```jsx live
+function Demo() {
+  const { MicroservicesDuotone } = KubedIcons;
+
+  const footer = (
+    <Group spacing="md" style={{ width: '100%', justifyContent: 'space-between' }}>
+      <div>
+        <Text size="xs" color="secondary">
+          选择器: app=nginx
+        </Text>
+      </div>
+      <Group spacing="xs">
+        <Button size="xs" variant="outline">
+          编辑
+        </Button>
+        <Button size="xs" variant="outline">
+          查看 YAML
+        </Button>
+      </Group>
+    </Group>
+  );
+
+  return (
+    <Entity hoverable footer={footer}>
+      <Field avatar={<MicroservicesDuotone size={40} />} label="服务名称" value="nginx-service" />
+      <Field label="类型" value="ClusterIP" />
+      <Field label="端口" value="80:30080/TCP" />
+      <Field label="会话亲和性" value="None" />
+    </Entity>
+  );
+}
+```
+
+### 完整示例
+
+综合所有功能的完整示例。
+
+```jsx live
+function Demo() {
+  const { Backup } = KubedIcons;
+
+  const expandContent = (
+    <Card sectionTitle="副本详情" padding={12}>
+      <Entity bordered={false} gap={12}>
+        <Field label="期望副本数" value="3" />
+        <Field label="当前副本数" value="3" />
+        <Field label="可用副本数" value="3" />
+        <Field label="更新副本数" value="0" />
+      </Entity>
+      <Group direction="column" spacing="xs" style={{ marginTop: '12px' }}>
+        <Text size="sm" weight={600}>
+          更新策略:
+        </Text>
+        <Text size="sm">类型: RollingUpdate</Text>
+        <Text size="sm">最大不可用: 25%</Text>
+        <Text size="sm">最大增量: 25%</Text>
+      </Group>
+    </Card>
+  );
+
+  const footer = (
+    <Group spacing="md" style={{ width: '100%', justifyContent: 'space-between' }}>
+      <Text size="xs" color="secondary">
+        创建时间: 2024-01-15 10:30:00
+      </Text>
+      <Group spacing="xs">
+        <Button size="xs" variant="outline">
+          编辑
+        </Button>
+        <Button size="xs" variant="outline">
+          扩缩容
+        </Button>
+        <Button size="xs" variant="outline" color="error">
+          删除
+        </Button>
+      </Group>
+    </Group>
+  );
+
+  return (
+    <Entity expandable hoverable expandContent={expandContent} footer={footer}>
+      <Field
+        avatar={<Backup size={40} />}
+        label="部署: nginx-deployment"
+        value="nginx:1.21"
+        width="35%"
+      />
+      <Field label="副本数" value="3/3" width="15%" />
+      <Field label="状态" value="Running" width="20%" />
+      <Field label="命名空间" value="default" width="30%" />
+    </Entity>
+  );
+}
+```
+
+## API
+
+### Entity
+
+| 属性          | 说明                | 类型                              | 默认值  |
+| ------------- | ------------------- | --------------------------------- | ------- |
+| hoverable     | 是否启用悬停效果    | `boolean`                         | `false` |
+| expandable    | 是否可展开          | `boolean`                         | `false` |
+| expandContent | 展开的内容          | `ReactNode`                       | -       |
+| bordered      | 是否显示边框        | `boolean`                         | `true`  |
+| footer        | 页脚内容            | `ReactNode`                       | -       |
+| gap           | 字段之间的间距(px)  | `number`                          | `20`    |
+| expandProps   | Dropdown 组件的属性 | `Omit<DropdownProps, 'children'>` | -       |
+| className     | 自定义类名          | `string`                          | -       |
+| style         | 自定义样式          | `CSSProperties`                   | -       |
+| children      | 子元素(Field 组件)  | `ReactNode`                       | -       |
+
+### Field
+
+| 属性      | 说明          | 类型               | 默认值 |
+| --------- | ------------- | ------------------ | ------ |
+| label     | 字段标签      | `ReactNode`        | -      |
+| value     | 字段值        | `ReactNode`        | -      |
+| avatar    | 字段图标/头像 | `ReactNode`        | -      |
+| width     | 字段宽度      | `number \| string` | -      |
+| className | 自定义类名    | `string`           | -      |
+| style     | 自定义样式    | `CSSProperties`    | -      |
+
+:::info
+
+**关于 Entity 和 Field 的关系**:
+
+- Entity 是容器组件,用于组织多个 Field
+- Field 是字段组件,展示单个数据项
+- Entity 的 `children` 通常是多个 Field 组件
+- Field 可以单独使用,也可以在 Entity 中使用
+- Entity 从 Entity.tsx 中导出 Field:`export { Field }`(第 9 行)
+
+**关于 Entity 结构**:
+
+- Entity 使用 flexbox 纵向布局:`flex-direction: column`(Entity.tsx 第 32 行)
+- 默认内边距为 12px(第 34 行)
+- 背景色使用 `theme.palette.background`(第 35 行)
+- 边框圆角为 4px(第 37 行)
+- 所有样式变化都有 0.3s 过渡动画:`transition: all 0.3s ease-in-out`(第 38 行)
+- 主体容器(EntityContainer)使用 flexbox 横向布局,自动伸缩(第 48-51 行)
+
+**关于展开功能**:
+
+- 设置 `expandable={true}` 启用展开功能
+- 展开内容通过 `expandContent` 属性设置
+- 展开时使用 Dropdown 组件实现(Entity.tsx 第 110-127 行)
+- 可以通过 `expandProps` 自定义 Dropdown 行为
+- 展开时,Entity 会被 Wrapper 和 Dropdown 包裹(第 109-129 行)
+- 展开内容容器(ExpandContainer)样式(第 62-68 行):
+  - 内边距 12px
+  - 边框颜色 `accents_5`
+  - 顶部无边框 `border-top: 0`
+  - 底部圆角 `border-radius: 0 0 4px 4px`
+  - z-index: 1
+- Dropdown 配置(第 114-119 行):
+  - `appendTo="parent"` - 附加到父元素
+  - `maxWidth="100%"` - 最大宽度 100%
+  - `offset={[0, -3]}` - 偏移量 [0, -3]
+  - `placement="bottom"` - 底部弹出
+
+**关于 expandable 时的 cursor**:
+
+- 当 `expandable={true}` 时,cursor 自动设置为 `pointer`(Entity.tsx 第 39 行)
+- 非展开模式下 cursor 为默认值
+
+**关于字段宽度**:
+
+- Field 的 `width` 可以是数字(像素)或字符串(如 "30%")
+- 宽度处理逻辑(Field.tsx 第 16 行):
+  ```typescript
+  width ? `width: ${isNumber(width) ? `${width}px` : width};` : null;
+  ```
+- 数字类型会自动添加 `px` 单位
+- 字符串类型直接使用(支持 "%"、"em" 等单位)
+- 未设置 `width` 时,Field 会平均分配剩余空间(`flex-grow: 1; flex-shrink: 1`,第 14-15 行)
+- 建议为主要字段设置固定宽度,次要字段自适应
+
+**关于悬停效果**:
+
+- `hoverable={true}` 启用悬停高亮
+- 悬停时显示边框和阴影效果(Entity.tsx 第 11-20 行)
+- 悬停样式(第 15-17 行):
+  ```typescript
+  border-color: palette.accents_5;  // 边框颜色变深
+  box-shadow: 0 4px 8px 0 rgba(accents_8, 0.2);  // 添加阴影
+  ```
+- 悬停效果同时应用于 `:hover` 和 `[aria-expanded='true']` 状态(第 41-44 行)
+- 适合用于可交互的实体卡片
+
+**关于 bordered 边框**:
+
+- `bordered` 默认值为 `true`(Entity.tsx 第 99 行)
+- 边框样式(第 36 行):
+  ```typescript
+  bordered ? `1px solid ${theme.palette.border}` : null;
+  ```
+- 使用主题的 `palette.border` 颜色
+- 设置 `bordered={false}` 可完全移除边框
+
+**关于 gap 间距**:
+
+- `gap` 默认值为 20px(Entity.tsx 第 98 行)
+- 通过 CSS gap 属性控制 Field 之间的间距(第 51 行)
+- gap 使用 `$gap` 转义属性名,避免与 styled-components 冲突(第 47 行)
+
+**关于页脚**:
+
+- 页脚区域(EntityFooter)样式(Entity.tsx 第 54-60 行):
+  - flexbox 布局
+  - 圆角 4px
+  - 内边距 8px
+  - 顶部外边距 12px:`margin-top: 12px`
+  - 背景色为 `accents_1`(浅色背景)
+- 适合放置操作按钮、元数据等
+- 页脚内容可以是任何 ReactNode
+- 只有设置了 `footer` 属性时才会渲染(第 125、137 行判断)
+
+**关于 Field 结构**:
+
+- Field 使用 flexbox 横向布局:`flex-direction: row`(Field.tsx 第 12 行)
+- 垂直居中:`align-items: center`(第 13 行)
+- 自动伸缩:`flex-grow: 1; flex-shrink: 1`(第 14-15 行)
+- 包含三个部分:FieldAvatar、FieldContent(包含 FieldValue 和 FieldLabel)
+
+**关于 Field Avatar**:
+
+- Avatar 容器使用 inline-flex 布局(Field.tsx 第 20 行)
+- 右侧外边距 12px:`margin-right: 12px`(第 21 行)
+- 只有设置了 `avatar` 属性时才渲染(第 58 行判断)
+
+**关于 Field 内容样式**:
+
+- FieldContent 设置 `overflow: hidden` 防止溢出(Field.tsx 第 25 行)
+- FieldLabel 样式(第 28-34 行):
+  - 文本溢出省略:`text-overflow: ellipsis`
+  - 单行显示:`white-space: nowrap`
+  - 隐藏溢出:`overflow: hidden`
+  - 颜色为 `accents_5`(浅色,用于次要信息)
+- FieldValue 样式(第 36-39 行):
+  - 字体粗细 700:`font-weight: 700`
+  - 颜色为 `accents_8`(深色,用于主要信息)
+- 渲染顺序:先渲染 FieldValue,再渲染 FieldLabel(第 60-61 行)
+
+**关于字体**:
+
+- Field 使用自定义字体栈(Field.tsx 第 8-9 行):
+  ```
+  Roboto, PingFang SC, Lantinghei SC, Helvetica Neue, Helvetica, Arial,
+  Microsoft YaHei, 微软雅黑, STHeitiSC-Light, simsun, 宋体, WenQuanYi Zen Hei,
+  WenQuanYi Micro Hei, sans-serif
+  ```
+- 行高为 1.67(第 10 行)
+
+**关于 className**:
+
+- Entity 主容器 className: 自定义 className
+- Entity 内容容器 className: `entity-main`(Entity.tsx 第 122、134 行)
+- Entity 页脚 className: `entity-footer`(第 125、137 行)
+- Dropdown wrapper className: `entity-dropdown`(第 115 行)
+- 展开内容容器 className: `expand-container`(第 112 行)
+- Field avatar className: `field-avatar`(Field.tsx 第 58 行)
+- Field content className: `field-content`(第 59 行)
+- Field value className: `field-value`(第 60 行)
+- Field label className: `field-label`(第 61 行)
+
+:::
+
+## 使用建议
+
+### 字段数量适中
+
+保持字段数量在合理范围内:
+
+```jsx
+// 推荐: 3-6 个字段
+<Entity>
+  <Field label="名称" value="nginx-service" />
+  <Field label="类型" value="ClusterIP" />
+  <Field label="端口" value="80" />
+  <Field label="状态" value="Active" />
+</Entity>
+
+// 过多字段: 考虑使用展开功能
+<Entity expandable expandContent={<MoreFields />}>
+  <Field label="名称" value="nginx-service" />
+  <Field label="类型" value="ClusterIP" />
+  <Field label="端口" value="80" />
+  {/* 更多字段放在 expandContent 中 */}
+</Entity>
+```
+
+### 合理设置字段宽度
+
+为不同重要性的字段设置合适的宽度:
+
+```jsx
+<Entity>
+  {/* 主要字段: 较大宽度 */}
+  <Field label="资源名称" value="nginx-deployment" width="40%" />
+  {/* 次要字段: 较小宽度 */}
+  <Field label="状态" value="Running" width="20%" />
+  <Field label="副本数" value="3" width="20%" />
+  {/* 自适应宽度 */}
+  <Field label="其他" value="info" />
+</Entity>
+```
+
+### 使用图标增强识别
+
+为实体添加图标提升识别度:
+
+```jsx
+import { Pod, Service, ConfigMap } from '@kubed/icons';
+
+// 不同资源使用不同图标
+<Entity>
+  <Field avatar={<Pod size={40} />} label="容器组" value="nginx-pod" />
+  <Field label="状态" value="Running" />
+</Entity>
+
+<Entity>
+  <Field avatar={<Service size={40} />} label="服务" value="nginx-service" />
+  <Field label="类型" value="ClusterIP" />
+</Entity>
+```
+
+### 列表展示时使用悬停效果
+
+在列表中使用 `hoverable` 增强交互:
+
+```jsx
+{
+  items.map((item) => (
+    <Entity key={item.id} hoverable>
+      <Field label="名称" value={item.name} />
+      <Field label="状态" value={item.status} />
+    </Entity>
+  ));
+}
+```
+
+### 复杂信息使用展开
+
+对于包含大量信息的实体,使用展开功能:
+
+```jsx
+const detailsContent = (
+  <Card sectionTitle="详细信息" padding={12}>
+    <Entity bordered={false}>
+      <Field label="CPU" value="500m" />
+      <Field label="内存" value="512Mi" />
+      <Field label="磁盘" value="10Gi" />
+    </Entity>
+  </Card>
+);
+
+<Entity expandable expandContent={detailsContent}>
+  <Field label="名称" value="nginx-pod" />
+  <Field label="状态" value="Running" />
+</Entity>;
+```
+
+### Card 中去除边框
+
+在 Card 组件中使用 Entity 时去除边框:
+
+```jsx
+<Card hoverable>
+  <Entity bordered={false}>
+    <Field label="名称" value="nginx-service" />
+    <Field label="类型" value="ClusterIP" />
+  </Entity>
+</Card>
+```
+
+### 页脚添加操作按钮
+
+使用页脚提供快速操作:
+
+```jsx
+const footer = (
+  <Group spacing="xs" style={{ justifyContent: 'flex-end' }}>
+    <Button size="xs" variant="outline">
+      编辑
+    </Button>
+    <Button size="xs" variant="outline">
+      查看详情
+    </Button>
+    <Button size="xs" variant="outline" color="error">
+      删除
+    </Button>
+  </Group>
+);
+
+<Entity footer={footer}>
+  <Field label="名称" value="nginx-service" />
+  <Field label="状态" value="Active" />
+</Entity>;
+```
+
+### 统一字段布局
+
+在列表中保持字段宽度一致:
+
+```jsx
+// 所有 Entity 使用相同的宽度配置
+const widthConfig = {
+  name: '40%',
+  status: '20%',
+  replicas: '20%',
+  namespace: '20%',
+};
+
+{
+  items.map((item) => (
+    <Entity key={item.id}>
+      <Field label="名称" value={item.name} width={widthConfig.name} />
+      <Field label="状态" value={item.status} width={widthConfig.status} />
+      <Field label="副本" value={item.replicas} width={widthConfig.replicas} />
+      <Field label="命名空间" value={item.namespace} width={widthConfig.namespace} />
+    </Entity>
+  ));
+}
+```
+
+### 值可以是链接或其他组件
+
+Field 的 `value` 可以是任何 ReactNode:
+
+```jsx
+<Entity>
+  <Field label="服务名称" value={<a href="/services/nginx">nginx-service</a>} />
+  <Field label="状态" value={<Badge color="success">Active</Badge>} />
+  <Field
+    label="操作"
+    value={
+      <Button size="xs" variant="text">
+        查看详情
+      </Button>
+    }
+  />
+</Entity>
+```
+
+### 使用 BadgeAnchor 显示状态
+
+结合 BadgeAnchor 组件显示状态徽章:
+
+```jsx
+import { Pod, BadgeAnchor, Error } from '@kubed/icons';
+
+const avatar = (
+  <BadgeAnchor offset={[5, 5]}>
+    <Error size={18} color="#fff" fill="#f5a623" />
+    <Pod size={40} />
+  </BadgeAnchor>
+);
+
+<Entity>
+  <Field avatar={avatar} label="Pod 名称" value="nginx-pod" />
+  <Field label="状态" value="Warning" />
+</Entity>;
+```

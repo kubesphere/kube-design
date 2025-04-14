@@ -1,29 +1,93 @@
 import React from 'react';
-import {
-  itSupportsClassName,
-  itSupportsStyle,
-  shallowWithTheme,
-} from '@kubed/tests';
-import { Radio } from './Radio';
+import { describe, it, expect } from 'vitest';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
+import { Radio } from '@kubed/components';
+import { renderWithTheme, checkRTLAccessibility } from '@kubed/tests';
 
 const defaultProps = {
-  value: 'test-radio',
-  children: 'test-radio-label',
-  label: 'test',
+  name: 'test-group',
+  value: 'test-radio-value',
+  label: 'Test Radio Label',
 };
 
 describe('@kubed/components/Radio', () => {
-
-  it('connects input and label with given id', () => {
-    const element = shallowWithTheme(<Radio {...defaultProps} id="test-id" disabled={true} defaultChecked={false}/>);
-    expect(element.find(Radio).prop('id')).toBe('test-id');
-    expect(element.find(Radio).prop('value')).toBe('test-radio');
-    expect(element.find(Radio).prop('label')).toBe('test');
-    expect(element.find(Radio).prop('disabled')).toBe(true);
-    expect(element.find(Radio).prop('defaultChecked')).toBe(false);
-  });
-
   it('has correct displayName', () => {
     expect(Radio.displayName).toEqual('@kubed/components/Radio');
+  });
+
+  it('should render and set properties and states according to props', () => {
+    const testId = 'test-radio-id';
+    const testLabel = 'My Radio Button';
+    const testValue = 'option1';
+
+    renderWithTheme(
+      <Radio
+        id={testId}
+        label={testLabel}
+        value={testValue}
+        name="options"
+        disabled={true}
+        defaultChecked={true}
+      />
+    );
+
+    const radioInput = screen.getByLabelText(testLabel);
+
+    expect(radioInput).toBeInTheDocument();
+    expect(radioInput).toHaveAttribute('type', 'radio');
+    expect(radioInput).toHaveAttribute('id', testId);
+    expect(radioInput).toBeDisabled();
+    expect(radioInput).toBeChecked();
+  });
+
+  it('should render correctly when not checked and not disabled', () => {
+    renderWithTheme(<Radio label="Enabled Unchecked Radio" value="option2" name="options" />);
+
+    const radioInput = screen.getByLabelText('Enabled Unchecked Radio');
+    expect(radioInput).toBeInTheDocument();
+    expect(radioInput).not.toBeDisabled();
+    expect(radioInput).not.toBeChecked();
+  });
+
+  it('render correct style (snapshot)', () => {
+    const { asFragment } = renderWithTheme(
+      <Radio {...defaultProps} id="static-radio-for-snapshot" label="Snapshot Me" />
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  checkRTLAccessibility(renderWithTheme(<Radio {...defaultProps} label="Snapshot Me" />));
+
+  it('clickable radio should be checked(if not disabled)', async () => {
+    const user = userEvent.setup();
+    renderWithTheme(<Radio label="Clickable Radio" value="clickable" name="options" />);
+
+    const radioInput = screen.getByLabelText('Clickable Radio');
+    expect(radioInput).not.toBeChecked();
+
+    await user.click(screen.getByText('Clickable Radio'));
+
+    expect(radioInput).toBeChecked();
+  });
+
+  it('Clicking on a disabled radio or label should not change the state', async () => {
+    const user = userEvent.setup();
+    renderWithTheme(
+      <Radio label="Disabled Radio" value="disabled" name="options" disabled={true} />
+    );
+
+    const radioInput = screen.getByLabelText('Disabled Radio');
+    const labelElement = screen.getByText('Disabled Radio');
+
+    expect(radioInput).not.toBeChecked();
+    expect(radioInput).toBeDisabled();
+
+    await user.click(labelElement);
+    expect(radioInput).not.toBeChecked();
+
+    expect(radioInput).not.toBeChecked();
   });
 });

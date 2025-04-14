@@ -1,0 +1,529 @@
+---
+sidebar_position: 1
+---
+
+# Alert 警告提示
+
+警告提示，用于向用户展示重要信息。
+
+## 何时使用
+
+- 需要向用户显示警告、错误或成功信息时
+- 页面顶部全局提示信息
+- 非浮层的静态展现形式，始终展现，不会自动消失
+- 可以配合可关闭按钮，用户可以手动关闭
+
+## 示例
+
+### 基础用法
+
+最简单的用法，展示不同类型的提示信息。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Alert type="default">这是一条默认提示信息</Alert>
+      <Alert type="info">这是一条信息提示</Alert>
+      <Alert type="warning">这是一条警告提示</Alert>
+      <Alert type="error">这是一条错误提示</Alert>
+    </Group>
+  );
+}
+```
+
+### 带标题
+
+通过 `title` 属性添加标题。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Alert type="info" title="信息提示">
+        这是一条带标题的信息提示，可以包含更详细的说明内容。
+      </Alert>
+      <Alert type="warning" title="警告">
+        这是一条带标题的警告提示，请注意查看相关内容。
+      </Alert>
+      <Alert type="error" title="错误">
+        这是一条带标题的错误提示，操作失败，请重试。
+      </Alert>
+    </Group>
+  );
+}
+```
+
+### 可关闭
+
+通过 `closable` 属性添加关闭按钮。
+
+```jsx live
+function Demo() {
+  const [visible1, setVisible1] = React.useState(true);
+  const [visible2, setVisible2] = React.useState(true);
+  const [visible3, setVisible3] = React.useState(true);
+
+  return (
+    <Group direction="column">
+      {visible1 && (
+        <Alert type="info" closable onClose={() => setVisible1(false)}>
+          这是一条可关闭的信息提示
+        </Alert>
+      )}
+      {visible2 && (
+        <Alert type="warning" title="警告" closable onClose={() => setVisible2(false)}>
+          这是一条带标题的可关闭警告提示
+        </Alert>
+      )}
+      {visible3 && (
+        <Alert type="error" closable onClose={() => setVisible3(false)}>
+          这是一条可关闭的错误提示
+        </Alert>
+      )}
+      {!visible1 && !visible2 && !visible3 && (
+        <Button
+          onClick={() => {
+            setVisible1(true);
+            setVisible2(true);
+            setVisible3(true);
+          }}
+        >
+          重置所有提示
+        </Button>
+      )}
+    </Group>
+  );
+}
+```
+
+### 不显示图标
+
+通过 `showIcon={false}` 隐藏图标。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Alert type="info" showIcon={false}>
+        不显示图标的信息提示
+      </Alert>
+      <Alert type="warning" title="警告" showIcon={false}>
+        不显示图标的警告提示
+      </Alert>
+    </Group>
+  );
+}
+```
+
+### 自定义图标
+
+通过 `icon` 属性自定义图标。
+
+```jsx live
+function Demo() {
+  const { Cluster, Storage, Network } = KubedIcons;
+
+  return (
+    <Group direction="column">
+      <Alert type="info" icon={<Cluster size={20} />}>
+        集群状态正常，所有节点运行正常
+      </Alert>
+      <Alert type="warning" icon={<Storage size={20} />} title="存储警告">
+        存储空间不足，当前已使用 85%
+      </Alert>
+      <Alert type="error" icon={<Network size={20} />} title="网络错误">
+        网络连接失败，请检查网络配置
+      </Alert>
+    </Group>
+  );
+}
+```
+
+### 成功提示
+
+使用 info 类型展示成功信息。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Alert type="info">操作成功完成</Alert>
+      <Alert type="info" title="创建成功">
+        集群 "my-cluster" 已成功创建，可以开始部署应用。
+      </Alert>
+    </Group>
+  );
+}
+```
+
+### 复杂内容
+
+Alert 可以包含复杂的内容结构。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Alert type="warning" title="版本更新提醒">
+        <div>
+          <p style={{ marginBottom: '8px' }}>新版本 v2.0.0 已发布，包含以下更新：</p>
+          <ul style={{ paddingLeft: '20px', margin: 0 }}>
+            <li>新增集群监控功能</li>
+            <li>优化部署流程</li>
+            <li>修复已知问题</li>
+          </ul>
+          <Button variant="text" style={{ marginTop: '8px', padding: 0 }}>
+            查看更新详情
+          </Button>
+        </div>
+      </Alert>
+      <Alert type="info" title="温馨提示">
+        <div>
+          <p style={{ marginBottom: '8px' }}>系统将于今晚 23:00 - 02:00 进行维护升级。</p>
+          <p style={{ margin: 0 }}>维护期间服务可能短暂中断，请提前做好准备。</p>
+        </div>
+      </Alert>
+    </Group>
+  );
+}
+```
+
+### 页面顶部全局提示
+
+典型的页面顶部提示场景。
+
+```jsx live
+function Demo() {
+  const [showAlert, setShowAlert] = React.useState(true);
+
+  return (
+    <div>
+      {showAlert && (
+        <Alert
+          type="warning"
+          title="系统公告"
+          closable
+          onClose={() => setShowAlert(false)}
+          style={{ marginBottom: '16px' }}
+        >
+          为了提供更好的服务，系统将于 2024 年 1 月 1 日进行升级维护，届时部分功能可能暂时不可用。
+        </Alert>
+      )}
+      <div
+        style={{
+          padding: '20px',
+          border: '1px solid #e3e9ef',
+          borderRadius: '4px',
+          textAlign: 'center',
+        }}
+      >
+        <p>页面内容区域</p>
+      </div>
+    </div>
+  );
+}
+```
+
+### 操作反馈
+
+在操作后显示反馈信息。
+
+```jsx live
+function Demo() {
+  const [alerts, setAlerts] = React.useState([]);
+
+  const addAlert = (type, message) => {
+    const id = Date.now();
+    setAlerts([...alerts, { id, type, message }]);
+  };
+
+  const removeAlert = (id) => {
+    setAlerts(alerts.filter((alert) => alert.id !== id));
+  };
+
+  return (
+    <div>
+      <Group style={{ marginBottom: '16px' }}>
+        <Button onClick={() => addAlert('info', '操作成功完成')}>成功操作</Button>
+        <Button onClick={() => addAlert('warning', '请注意检查配置')}>警告操作</Button>
+        <Button onClick={() => addAlert('error', '操作失败，请重试')}>失败操作</Button>
+      </Group>
+      <Group direction="column">
+        {alerts.map((alert) => (
+          <Alert key={alert.id} type={alert.type} closable onClose={() => removeAlert(alert.id)}>
+            {alert.message}
+          </Alert>
+        ))}
+      </Group>
+    </div>
+  );
+}
+```
+
+### 表单验证提示
+
+在表单中使用 Alert 显示验证结果。
+
+```jsx live
+function Demo() {
+  const [formData, setFormData] = React.useState({ username: '', password: '' });
+  const [error, setError] = React.useState('');
+  const [success, setSuccess] = React.useState(false);
+
+  const handleSubmit = () => {
+    setError('');
+    setSuccess(false);
+
+    if (!formData.username || !formData.password) {
+      setError('请填写所有必填字段');
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError('密码长度不能少于 6 个字符');
+      return;
+    }
+
+    setSuccess(true);
+  };
+
+  return (
+    <div>
+      {error && (
+        <Alert type="error" closable onClose={() => setError('')} style={{ marginBottom: '16px' }}>
+          {error}
+        </Alert>
+      )}
+      {success && (
+        <Alert
+          type="info"
+          closable
+          onClose={() => setSuccess(false)}
+          style={{ marginBottom: '16px' }}
+        >
+          登录成功！
+        </Alert>
+      )}
+      <Group direction="column" spacing="md">
+        <Input
+          placeholder="用户名"
+          value={formData.username}
+          onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+        />
+        <InputPassword
+          placeholder="密码"
+          value={formData.password}
+          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+        />
+        <Button onClick={handleSubmit} variant="filled" color="primary">
+          登录
+        </Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+## API
+
+### Alert 属性
+
+| 属性     | 说明         | 类型                                          | 默认值      |
+| -------- | ------------ | --------------------------------------------- | ----------- |
+| type     | 警告类型     | `'default' \| 'info' \| 'warning' \| 'error'` | `'default'` |
+| title    | 标题         | `ReactNode`                                   | -           |
+| children | 提示内容     | `ReactNode`                                   | -           |
+| icon     | 自定义图标   | `ReactNode`                                   | -           |
+| showIcon | 是否显示图标 | `boolean`                                     | `true`      |
+| closable | 是否可关闭   | `boolean`                                     | `false`     |
+| onClose  | 关闭时的回调 | `() => void`                                  | -           |
+| 其他     | 原生属性     | `HTMLAttributes<HTMLDivElement>`              | -           |
+
+:::info
+
+**关于类型**：
+
+- `default`：默认提示，使用灰色主题
+- `info`：信息提示，使用蓝色主题，常用于成功消息
+- `warning`：警告提示，使用黄色主题
+- `error`：错误提示，使用红色主题
+
+**关于图标**：
+
+- 默认情况下会根据 `type` 显示对应的图标
+- 通过 `icon` 属性可以自定义图标
+- 通过 `showIcon={false}` 可以隐藏图标
+- 带标题时图标会变大
+
+**关于关闭**：
+
+- `closable` 属性控制是否显示关闭按钮
+- 点击关闭按钮会触发 `onClose` 回调
+- 组件本身不处理关闭逻辑，需要配合状态管理
+
+Alert 组件继承所有原生 HTML div 元素的属性。
+
+:::
+
+## 使用建议
+
+### 选择合适的类型
+
+根据消息的性质选择合适的类型：
+
+```jsx
+// 成功消息 - 使用 info 类型（带绿色对勾图标）
+<Alert type="info">
+  操作成功完成
+</Alert>
+
+// 一般信息 - 使用 default 类型
+<Alert type="default">
+  这是一条普通信息
+</Alert>
+
+// 警告信息 - 使用 warning 类型
+<Alert type="warning" title="警告">
+  配置可能导致问题，请仔细检查
+</Alert>
+
+// 错误信息 - 使用 error 类型
+<Alert type="error" title="错误">
+  操作失败，请重试
+</Alert>
+```
+
+### 可关闭的提示
+
+实现可关闭提示的推荐方式：
+
+```jsx
+const [visible, setVisible] = React.useState(true);
+
+{
+  visible && (
+    <Alert type="info" closable onClose={() => setVisible(false)}>
+      这是一条可关闭的提示
+    </Alert>
+  );
+}
+
+// 重置按钮（可选）
+{
+  !visible && <Button onClick={() => setVisible(true)}>显示提示</Button>;
+}
+```
+
+### Alert vs Notification
+
+选择使用 Alert 还是 notification：
+
+```jsx
+// Alert：静态展示，不会自动消失
+<Alert type="info">这条消息会一直显示，直到用户关闭</Alert>;
+
+// Notification：浮层提示，自动消失
+notification.success({
+  title: '操作成功',
+  content: '这条消息会在几秒后自动消失',
+  duration: 3000,
+});
+```
+
+### 页面级提示
+
+在页面顶部显示全局提示：
+
+```jsx
+function Page() {
+  const [showNotice, setShowNotice] = React.useState(true);
+
+  return (
+    <div>
+      {showNotice && (
+        <Alert
+          type="warning"
+          title="系统公告"
+          closable
+          onClose={() => setShowNotice(false)}
+          style={{ marginBottom: '20px' }}
+        >
+          系统维护通知内容...
+        </Alert>
+      )}
+      {/* 页面内容 */}
+    </div>
+  );
+}
+```
+
+### 表单验证
+
+在表单中使用 Alert：
+
+```jsx
+const [errors, setErrors] = React.useState([]);
+
+const validate = () => {
+  const newErrors = [];
+  if (!formData.name) newErrors.push('请输入名称');
+  if (!formData.email) newErrors.push('请输入邮箱');
+  setErrors(newErrors);
+  return newErrors.length === 0;
+};
+
+{
+  errors.length > 0 && (
+    <Alert type="error" title="表单验证失败">
+      <ul style={{ paddingLeft: '20px', margin: 0 }}>
+        {errors.map((error, index) => (
+          <li key={index}>{error}</li>
+        ))}
+      </ul>
+    </Alert>
+  );
+}
+```
+
+### 动态提示列表
+
+管理多个动态提示：
+
+```jsx
+const [alerts, setAlerts] = React.useState([]);
+
+const addAlert = (type, message) => {
+  const id = Date.now();
+  setAlerts([...alerts, { id, type, message }]);
+};
+
+const removeAlert = (id) => {
+  setAlerts(alerts.filter((alert) => alert.id !== id));
+};
+
+<>
+  {alerts.map((alert) => (
+    <Alert key={alert.id} type={alert.type} closable onClose={() => removeAlert(alert.id)}>
+      {alert.message}
+    </Alert>
+  ))}
+</>;
+```
+
+### 内容排版
+
+对于包含复杂内容的 Alert：
+
+```jsx
+<Alert type="info" title="标题">
+  <div>
+    <p>段落文本内容...</p>
+    <ul>
+      <li>列表项 1</li>
+      <li>列表项 2</li>
+    </ul>
+    <Button variant="text">操作按钮</Button>
+  </div>
+</Alert>
+```

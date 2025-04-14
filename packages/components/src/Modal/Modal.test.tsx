@@ -1,11 +1,19 @@
 import React from 'react';
-import { mountWithTheme } from '@kubed/tests';
+import { renderWithTheme, checkRTLAccessibility } from '@kubed/tests';
 import { Modal } from './Modal';
+import { ThemeProvider } from 'styled-components';
+import { themeUtils } from '@kubed/components';
+import { screen } from '@testing-library/react';
 
 describe('@kubed/components/Modal', () => {
-  // Clean up dom as jest does not do this automatically
+  let originalBodyOverflow;
+
+  beforeEach(() => {
+    originalBodyOverflow = document.body.style.overflow;
+  });
+
   afterEach(() => {
-    document.getElementsByTagName('body')[0].innerHTML = '';
+    document.body.style.overflow = originalBodyOverflow;
   });
 
   it('has correct displayName', () => {
@@ -16,19 +24,75 @@ describe('@kubed/components/Modal', () => {
     document.body.style.overflow = 'auto';
     expect(document.body.style.overflow).toBe('auto');
 
-    mountWithTheme(<Modal>test-modal</Modal>);
-    document.body.style.overflow = 'hidden';
-    expect(document.body.style.overflow).toBe('hidden');
-  });
-
-  it('renders width', () => {
-    const element = mountWithTheme(
-      <Modal visible title="Modal demo" description="Modal description">
-        Modal content
+    const { rerender, unmount } = renderWithTheme(
+      <Modal title="测试 Modal" visible={false}>
+        Modal 内容
       </Modal>
     );
-    expect(element.find(Modal).prop('visible')).toBe(true);
-    expect(element.find(Modal).prop('description')).toBe('Modal description');
-    expect(element.find(Modal).prop('title')).toBe('Modal demo');
+
+    const renderModal = (visible: boolean) => (
+      <ThemeProvider theme={themeUtils.getPresets()[0]}>
+        <Modal title="测试 Modal" visible={visible}>
+          Modal 内容
+        </Modal>
+      </ThemeProvider>
+    );
+
+    expect(document.body.style.overflow).toBe('auto');
+
+    rerender(renderModal(true));
+
+    expect(document.body).toHaveStyle('overflow: hidden');
+
+    rerender(renderModal(false));
+
+    expect(document.body.style.overflow).toBe('auto');
+
+    rerender(renderModal(true));
+    expect(document.body).toHaveStyle('overflow: hidden');
+
+    unmount();
+
+    expect(document.body.style.overflow).toBe('auto');
   });
+  it('when visible, render title, description and content', () => {
+    const titleText = 'Modal title';
+    const descriptionText = 'Modal description';
+    const contentText = 'Modal content';
+
+    renderWithTheme(
+      <Modal visible title={titleText} description={descriptionText}>
+        {contentText}
+      </Modal>
+    );
+
+    const modalDialog = screen.getByRole('dialog');
+
+    expect(modalDialog).toBeVisible();
+
+    expect(screen.getByText(titleText)).toBeVisible();
+
+    expect(screen.getByText(descriptionText)).toBeVisible();
+
+    expect(screen.getByText(contentText)).toBeVisible();
+  });
+
+  it('render correct style (snapshot)', () => {
+    renderWithTheme(
+      <Modal visible title="带样式的 Modal" description="带样式的描述">
+        带样式的内容
+      </Modal>
+    );
+
+    const modalDialog = screen.getByRole('dialog');
+
+    expect(modalDialog).toMatchSnapshot();
+  });
+  checkRTLAccessibility(
+    renderWithTheme(
+      <Modal visible title="带样式的 Modal" description="带样式的描述">
+        带样式的内容
+      </Modal>
+    )
+  );
 });

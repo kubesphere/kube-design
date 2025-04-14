@@ -1,0 +1,319 @@
+---
+sidebar_position: 2
+---
+
+# Group 组
+
+将元素水平或垂直排列的布局组件。
+
+## 何时使用
+
+- 需要快速将多个元素排成一行或一列
+- 需要控制元素之间的间距
+- 需要控制元素的对齐方式
+
+## 示例
+
+### 基础用法
+
+Group 默认将子元素水平排列，间距为 `md`。
+
+```jsx live
+function Demo() {
+  return (
+    <Group>
+      <Button variant="filled">按钮 1</Button>
+      <Button variant="filled">按钮 2</Button>
+      <Button variant="filled">按钮 3</Button>
+    </Group>
+  );
+}
+```
+
+### 位置对齐
+
+使用 `position` 属性控制子元素的对齐位置。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>左对齐 (默认)</h4>
+      <Group position="left" style={{ marginBottom: '24px' }}>
+        <Button variant="filled">按钮 1</Button>
+        <Button variant="filled">按钮 2</Button>
+        <Button variant="filled">按钮 3</Button>
+      </Group>
+
+      <h4 style={{ marginBottom: '12px' }}>居中对齐</h4>
+      <Group position="center" style={{ marginBottom: '24px' }}>
+        <Button variant="filled">按钮 1</Button>
+        <Button variant="filled">按钮 2</Button>
+        <Button variant="filled">按钮 3</Button>
+      </Group>
+
+      <h4 style={{ marginBottom: '12px' }}>右对齐</h4>
+      <Group position="right" style={{ marginBottom: '24px' }}>
+        <Button variant="filled">按钮 1</Button>
+        <Button variant="filled">按钮 2</Button>
+        <Button variant="filled">按钮 3</Button>
+      </Group>
+
+      <h4 style={{ marginBottom: '12px' }}>两端对齐</h4>
+      <Group position="apart">
+        <Button variant="filled">按钮 1</Button>
+        <Button variant="filled">按钮 2</Button>
+        <Button variant="filled">按钮 3</Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+### 间距控制
+
+使用 `spacing` 属性控制元素之间的间距。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>间距: xs</h4>
+      <Group spacing="xs" style={{ marginBottom: '24px' }}>
+        <Button variant="filled">按钮 1</Button>
+        <Button variant="filled">按钮 2</Button>
+        <Button variant="filled">按钮 3</Button>
+      </Group>
+
+      <h4 style={{ marginBottom: '12px' }}>间距: md (默认)</h4>
+      <Group spacing="md" style={{ marginBottom: '24px' }}>
+        <Button variant="filled">按钮 1</Button>
+        <Button variant="filled">按钮 2</Button>
+        <Button variant="filled">按钮 3</Button>
+      </Group>
+
+      <h4 style={{ marginBottom: '12px' }}>间距: xl</h4>
+      <Group spacing="xl" style={{ marginBottom: '24px' }}>
+        <Button variant="filled">按钮 1</Button>
+        <Button variant="filled">按钮 2</Button>
+        <Button variant="filled">按钮 3</Button>
+      </Group>
+
+      <h4 style={{ marginBottom: '12px' }}>自定义间距: 50px</h4>
+      <Group spacing={50}>
+        <Button variant="filled">按钮 1</Button>
+        <Button variant="filled">按钮 2</Button>
+        <Button variant="filled">按钮 3</Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+### 垂直方向
+
+使用 `direction="column"` 将元素垂直排列。
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ display: 'flex', gap: '40px' }}>
+      <div>
+        <h4 style={{ marginBottom: '12px' }}>垂直排列 - 左对齐</h4>
+        <Group direction="column" position="left">
+          <Button variant="filled" style={{ width: '120px' }}>
+            按钮 1
+          </Button>
+          <Button variant="filled" style={{ width: '160px' }}>
+            按钮 2
+          </Button>
+          <Button variant="filled" style={{ width: '100px' }}>
+            按钮 3
+          </Button>
+        </Group>
+      </div>
+
+      <div>
+        <h4 style={{ marginBottom: '12px' }}>垂直排列 - 居中</h4>
+        <Group direction="column" position="center">
+          <Button variant="filled" style={{ width: '120px' }}>
+            按钮 1
+          </Button>
+          <Button variant="filled" style={{ width: '160px' }}>
+            按钮 2
+          </Button>
+          <Button variant="filled" style={{ width: '100px' }}>
+            按钮 3
+          </Button>
+        </Group>
+      </div>
+
+      <div>
+        <h4 style={{ marginBottom: '12px' }}>垂直排列 - 右对齐</h4>
+        <Group direction="column" position="right">
+          <Button variant="filled" style={{ width: '120px' }}>
+            按钮 1
+          </Button>
+          <Button variant="filled" style={{ width: '160px' }}>
+            按钮 2
+          </Button>
+          <Button variant="filled" style={{ width: '100px' }}>
+            按钮 3
+          </Button>
+        </Group>
+      </div>
+    </div>
+  );
+}
+```
+
+### 自动增长
+
+设置 `grow` 属性后，所有子元素会平分容器宽度（或高度）。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>不使用 grow（默认）</h4>
+      <Group style={{ marginBottom: '24px' }}>
+        <Button variant="filled">按钮 1</Button>
+        <Button variant="filled">按钮 2</Button>
+        <Button variant="filled">按钮 3</Button>
+      </Group>
+
+      <h4 style={{ marginBottom: '12px' }}>使用 grow（等宽）</h4>
+      <Group grow>
+        <Button variant="filled">按钮 1</Button>
+        <Button variant="filled">按钮 2</Button>
+        <Button variant="filled">按钮 3</Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+### 禁止换行
+
+使用 `noWrap` 属性可以防止元素换行。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>允许换行（默认）</h4>
+      <Group
+        style={{
+          marginBottom: '24px',
+          width: '300px',
+          border: '1px dashed #d1d5de',
+          padding: '12px',
+        }}
+      >
+        <Button variant="filled">按钮 1</Button>
+        <Button variant="filled">按钮 2</Button>
+        <Button variant="filled">按钮 3</Button>
+        <Button variant="filled">按钮 4</Button>
+        <Button variant="filled">按钮 5</Button>
+      </Group>
+
+      <h4 style={{ marginBottom: '12px' }}>禁止换行</h4>
+      <Group
+        noWrap
+        style={{ width: '300px', border: '1px dashed #d1d5de', padding: '12px', overflow: 'auto' }}
+      >
+        <Button variant="filled">按钮 1</Button>
+        <Button variant="filled">按钮 2</Button>
+        <Button variant="filled">按钮 3</Button>
+        <Button variant="filled">按钮 4</Button>
+        <Button variant="filled">按钮 5</Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+### 与分隔线组合
+
+Group 常与 Divider 组件配合使用。
+
+```jsx live
+function Demo() {
+  return (
+    <Group>
+      <Button variant="text">操作 1</Button>
+      <Divider direction="vertical" />
+      <Button variant="text">操作 2</Button>
+      <Divider direction="vertical" />
+      <Button variant="text">操作 3</Button>
+    </Group>
+  );
+}
+```
+
+### 混合内容
+
+Group 可以包含任意类型的子元素。
+
+```jsx live
+function Demo() {
+  const { MagnifierDuotone, FilterDuotone, DownloadDuotone } = KubedIcons;
+
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>工具栏示例</h4>
+      <Group
+        position="apart"
+        style={{
+          padding: '12px 16px',
+          background: '#f7f8fa',
+          borderRadius: '4px',
+          marginBottom: '24px',
+        }}
+      >
+        <Group spacing="sm">
+          <MagnifierDuotone size={20} />
+          <span>搜索结果</span>
+        </Group>
+        <Group spacing="sm">
+          <Button variant="outline" size="xs" leftIcon={<FilterDuotone size={14} />}>
+            筛选
+          </Button>
+          <Button variant="outline" size="xs" leftIcon={<DownloadDuotone size={14} />}>
+            导出
+          </Button>
+        </Group>
+      </Group>
+
+      <h4 style={{ marginBottom: '12px' }}>表单操作示例</h4>
+      <Group position="right">
+        <Button variant="outline">取消</Button>
+        <Button variant="filled" color="primary">
+          确定
+        </Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+## API
+
+### Group 属性
+
+| 属性      | 说明               | 类型                                       | 默认值   |
+| --------- | ------------------ | ------------------------------------------ | -------- |
+| position  | 子元素对齐位置     | `'left' \| 'center' \| 'right' \| 'apart'` | `'left'` |
+| spacing   | 子元素间距         | `KubedNumberSize`                          | `'md'`   |
+| direction | 排列方向           | `'row' \| 'column'`                        | `'row'`  |
+| grow      | 子元素是否自动填充 | `boolean`                                  | `false`  |
+| noWrap    | 是否禁止换行       | `boolean`                                  | `false`  |
+| align     | 自定义 align-items | `React.CSSProperties['alignItems']`        | -        |
+| 其他      | 原生属性           | `HTMLAttributes<HTMLDivElement>`           | -        |
+
+:::info
+
+- `spacing` 的值可以是预设的尺寸名称（`'xs'`, `'sm'`, `'md'`, `'lg'`, `'xl'`）或具体的像素数值
+- `position="apart"` 等同于 CSS 的 `justify-content: space-between`
+- 在 `direction="column"` 模式下，`position` 控制的是 `align-items` 而非 `justify-content`
+  :::

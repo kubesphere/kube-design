@@ -1,0 +1,391 @@
+---
+sidebar_position: 1
+---
+
+# AutoComplete 自动完成
+
+输入框自动完成功能，提供输入建议。
+
+## 何时使用
+
+- 需要根据用户输入提供相关建议
+- 需要快速搜索和选择数据
+- 输入框需要智能提示功能
+
+## 示例
+
+### 基础用法
+
+基本使用，通过 `options` 设置自动完成的数据源。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+  const [options, setOptions] = React.useState([]);
+
+  const handleSearch = (searchText) => {
+    if (!searchText) {
+      setOptions([]);
+    } else {
+      setOptions([
+        { value: searchText },
+        { value: searchText + searchText },
+        { value: searchText + searchText + searchText },
+      ]);
+    }
+  };
+
+  const handleChange = (data) => {
+    setValue(data);
+  };
+
+  return (
+    <AutoComplete
+      value={value}
+      options={options}
+      style={{ width: 300 }}
+      onSearch={handleSearch}
+      onChange={handleChange}
+      placeholder="输入内容查看建议"
+    />
+  );
+}
+```
+
+### 自定义选项
+
+通过 `options` 配置不同的选项内容。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+  const [options, setOptions] = React.useState([]);
+
+  const searchResult = (query) => {
+    const results = [
+      { value: `${query}@gmail.com`, text: `${query}@gmail.com` },
+      { value: `${query}@163.com`, text: `${query}@163.com` },
+      { value: `${query}@qq.com`, text: `${query}@qq.com` },
+      { value: `${query}@outlook.com`, text: `${query}@outlook.com` },
+    ];
+    return results;
+  };
+
+  const handleSearch = (searchText) => {
+    setOptions(!searchText ? [] : searchResult(searchText));
+  };
+
+  return (
+    <AutoComplete
+      value={value}
+      options={options}
+      style={{ width: 300 }}
+      onSearch={handleSearch}
+      onChange={setValue}
+      placeholder="输入邮箱前缀"
+    />
+  );
+}
+```
+
+### 查询模式
+
+通过 `onSearch` 实现远程搜索功能。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+  const [options, setOptions] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+
+  const mockSearch = (query) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const data = ['Kubernetes', 'KubeSphere', 'Docker', 'Helm', 'Istio', 'Prometheus'].filter(
+          (item) => item.toLowerCase().includes(query.toLowerCase())
+        );
+        resolve(data.map((item) => ({ value: item })));
+      }, 300);
+    });
+  };
+
+  const handleSearch = async (searchText) => {
+    if (!searchText) {
+      setOptions([]);
+      return;
+    }
+
+    setLoading(true);
+    const results = await mockSearch(searchText);
+    setOptions(results);
+    setLoading(false);
+  };
+
+  return (
+    <AutoComplete
+      value={value}
+      options={options}
+      style={{ width: 300 }}
+      onSearch={handleSearch}
+      onChange={setValue}
+      placeholder="搜索云原生工具"
+    />
+  );
+}
+```
+
+### 选中回调
+
+使用 `onSelect` 获取选中的值。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+  const [options, setOptions] = React.useState([]);
+  const [selected, setSelected] = React.useState('');
+
+  const handleSearch = (searchText) => {
+    if (!searchText) {
+      setOptions([]);
+    } else {
+      setOptions(
+        [
+          { value: 'Kubernetes', text: 'Kubernetes - 容器编排' },
+          { value: 'Docker', text: 'Docker - 容器引擎' },
+          { value: 'Helm', text: 'Helm - 包管理器' },
+        ].filter((item) => item.value.toLowerCase().includes(searchText.toLowerCase()))
+      );
+    }
+  };
+
+  const handleSelect = (data) => {
+    setSelected(`您选择了: ${data}`);
+  };
+
+  return (
+    <div>
+      <AutoComplete
+        value={value}
+        options={options}
+        style={{ width: 300 }}
+        onSearch={handleSearch}
+        onChange={setValue}
+        onSelect={handleSelect}
+        placeholder="输入并选择一个选项"
+      />
+      {selected && <div style={{ marginTop: '12px', color: '#55bc8a' }}>{selected}</div>}
+    </div>
+  );
+}
+```
+
+### 不区分大小写
+
+实现不区分大小写的搜索功能。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+  const [options, setOptions] = React.useState([]);
+
+  const allOptions = ['JavaScript', 'TypeScript', 'Python', 'Java', 'Golang', 'Rust', 'C++', 'PHP'];
+
+  const handleSearch = (searchText) => {
+    if (!searchText) {
+      setOptions([]);
+    } else {
+      const filtered = allOptions.filter((item) =>
+        item.toLowerCase().includes(searchText.toLowerCase())
+      );
+      setOptions(filtered.map((item) => ({ value: item })));
+    }
+  };
+
+  return (
+    <AutoComplete
+      value={value}
+      options={options}
+      style={{ width: 300 }}
+      onSearch={handleSearch}
+      onChange={setValue}
+      placeholder="搜索编程语言（不区分大小写）"
+    />
+  );
+}
+```
+
+### 自定义输入框
+
+可以自定义输入框样式。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+  const [options, setOptions] = React.useState([]);
+
+  const handleSearch = (searchText) => {
+    if (!searchText) {
+      setOptions([]);
+    } else {
+      setOptions([
+        { value: `查找 "${searchText}"` },
+        { value: `搜索 "${searchText}" 相关内容` },
+        { value: `在文档中查找 "${searchText}"` },
+      ]);
+    }
+  };
+
+  return (
+    <AutoComplete
+      value={value}
+      options={options}
+      style={{ width: 400 }}
+      onSearch={handleSearch}
+      onChange={setValue}
+      placeholder="输入搜索内容"
+    />
+  );
+}
+```
+
+### 禁用状态
+
+禁用 AutoComplete。
+
+```jsx live
+function Demo() {
+  return (
+    <Group>
+      <AutoComplete disabled placeholder="禁用的自动完成" style={{ width: 300 }} />
+      <AutoComplete value="已选择的值" disabled placeholder="禁用且有值" style={{ width: 300 }} />
+    </Group>
+  );
+}
+```
+
+### 带清除按钮
+
+设置 `allowClear` 显示清除按钮。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+  const [options, setOptions] = React.useState([]);
+
+  const handleSearch = (searchText) => {
+    if (!searchText) {
+      setOptions([]);
+    } else {
+      setOptions([{ value: 'Option 1' }, { value: 'Option 2' }, { value: 'Option 3' }]);
+    }
+  };
+
+  return (
+    <AutoComplete
+      value={value}
+      options={options}
+      style={{ width: 300 }}
+      onSearch={handleSearch}
+      onChange={setValue}
+      allowClear
+      placeholder="可清除的自动完成"
+    />
+  );
+}
+```
+
+## API
+
+### AutoComplete 属性
+
+| 属性         | 说明                 | 类型                                      | 默认值  |
+| ------------ | -------------------- | ----------------------------------------- | ------- |
+| value        | 输入框的值           | `string`                                  | -       |
+| defaultValue | 默认值               | `string`                                  | -       |
+| options      | 数据源               | `Array<{ value: string; text?: string }>` | `[]`    |
+| placeholder  | 输入框占位符         | `string`                                  | -       |
+| disabled     | 是否禁用             | `boolean`                                 | `false` |
+| allowClear   | 是否显示清除按钮     | `boolean`                                 | `false` |
+| onSearch     | 搜索补全项时的回调   | `(value: string) => void`                 | -       |
+| onChange     | 输入框值变化时的回调 | `(value: string) => void`                 | -       |
+| onSelect     | 选中选项时的回调     | `(value: string) => void`                 | -       |
+| onFocus      | 获得焦点时的回调     | `() => void`                              | -       |
+| onBlur       | 失去焦点时的回调     | `() => void`                              | -       |
+| 其他         | 原生属性             | `React.HTMLAttributes<HTMLDivElement>`    | -       |
+
+:::info
+
+**options 数据格式**：
+
+- 简单格式：`[{ value: 'text' }]`
+- 完整格式：`[{ value: 'value', text: 'display text' }]`
+- 字符串数组会自动转换为 `{ value: string }` 格式
+
+**搜索逻辑**：
+
+- `onSearch` 在输入框值变化时触发
+- 通过 `onSearch` 更新 `options` 来显示建议列表
+- 建议在 `onSearch` 中实现防抖逻辑以优化性能
+
+AutoComplete 组件继承 Select 组件的大部分属性和方法。
+
+:::
+
+## 使用建议
+
+### 性能优化
+
+对于大量数据或远程搜索，建议实现防抖：
+
+```jsx
+import { useDebouncedValue } from '@kubed/hooks';
+
+function Demo() {
+  const [value, setValue] = React.useState('');
+  const [debouncedValue] = useDebouncedValue(value, 300);
+
+  React.useEffect(() => {
+    if (debouncedValue) {
+      // 执行搜索
+    }
+  }, [debouncedValue]);
+
+  return <AutoComplete value={value} onChange={setValue} />;
+}
+```
+
+### 数据过滤
+
+推荐的过滤逻辑：
+
+```jsx
+const filterOptions = (searchText, allOptions) => {
+  const query = searchText.toLowerCase().trim();
+  if (!query) return [];
+
+  return allOptions.filter((option) => option.value.toLowerCase().includes(query)).slice(0, 10); // 限制结果数量
+};
+```
+
+### 远程搜索
+
+实现远程搜索时的最佳实践：
+
+```jsx
+const handleSearch = async (searchText) => {
+  if (!searchText || searchText.length < 2) {
+    setOptions([]);
+    return;
+  }
+
+  setLoading(true);
+  try {
+    const results = await fetchSuggestions(searchText);
+    setOptions(results);
+  } catch (error) {
+    console.error('Search failed:', error);
+  } finally {
+    setLoading(false);
+  }
+};
+```

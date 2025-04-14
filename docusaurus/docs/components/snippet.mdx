@@ -1,0 +1,364 @@
+---
+sidebar_position: 1
+---
+
+# Snippet 代码片段
+
+用于展示可复制的代码片段或命令行。
+
+## 何时使用
+
+- 展示需要用户复制的命令行指令
+- 显示安装命令或配置代码
+- 需要一键复制的代码片段
+- 终端命令的展示
+
+## 示例
+
+### 基础用法
+
+最简单的代码片段用法，默认带有 `$` 前缀符号。
+
+```jsx live
+function Demo() {
+  return <Snippet>kubectl get pods</Snippet>;
+}
+```
+
+### 可复制
+
+通过 `valueToCopy` 属性启用复制功能，点击右侧图标即可复制内容。
+
+```jsx live
+function Demo() {
+  return <Snippet valueToCopy="kubectl get pods -n kubesphere-system">kubectl get pods -n kubesphere-system</Snippet>;
+}
+```
+
+### 自定义符号
+
+通过 `symbol` 属性自定义前缀符号。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Snippet symbol="$" valueToCopy="npm install @kubed/components">
+        npm install @kubed/components
+      </Snippet>
+      <Snippet symbol=">" valueToCopy="yarn add @kubed/components">
+        yarn add @kubed/components
+      </Snippet>
+      <Snippet symbol="#" valueToCopy="pnpm add @kubed/components">
+        pnpm add @kubed/components
+      </Snippet>
+    </Group>
+  );
+}
+```
+
+### 无符号
+
+将 `symbol` 设置为空字符串可以隐藏前缀符号。
+
+```jsx live
+function Demo() {
+  return (
+    <Snippet symbol="" valueToCopy="https://kubesphere.io">
+      https://kubesphere.io
+    </Snippet>
+  );
+}
+```
+
+### 自定义宽度
+
+通过 `width` 属性设置代码片段的宽度。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Snippet width={200} valueToCopy="kubectl">kubectl</Snippet>
+      <Snippet width={400} valueToCopy="kubectl get pods">kubectl get pods</Snippet>
+      <Snippet width={600} valueToCopy="kubectl get pods -n kubesphere-system -o wide">
+        kubectl get pods -n kubesphere-system -o wide
+      </Snippet>
+    </Group>
+  );
+}
+```
+
+### 圆角
+
+通过 `radius` 属性设置圆角大小。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Snippet radius="xs" valueToCopy="kubectl get pods">kubectl get pods</Snippet>
+      <Snippet radius="sm" valueToCopy="kubectl get pods">kubectl get pods</Snippet>
+      <Snippet radius="md" valueToCopy="kubectl get pods">kubectl get pods</Snippet>
+      <Snippet radius="lg" valueToCopy="kubectl get pods">kubectl get pods</Snippet>
+      <Snippet radius="xl" valueToCopy="kubectl get pods">kubectl get pods</Snippet>
+    </Group>
+  );
+}
+```
+
+### 安装命令
+
+常见的包安装命令展示。
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '500px' }}>
+        <div style={{ marginBottom: '12px', fontWeight: 600 }}>安装依赖</div>
+        <Group direction="column" spacing="sm">
+          <div style={{ fontSize: '12px', color: '#79879c' }}>使用 npm</div>
+          <Snippet symbol="$" width={440} valueToCopy="npm install @kubed/components">
+            npm install @kubed/components
+          </Snippet>
+          <div style={{ fontSize: '12px', color: '#79879c', marginTop: '8px' }}>使用 yarn</div>
+          <Snippet symbol="$" width={440} valueToCopy="yarn add @kubed/components">
+            yarn add @kubed/components
+          </Snippet>
+        </Group>
+      </Card>
+    </div>
+  );
+}
+```
+
+### Kubernetes 命令
+
+展示 Kubernetes 相关命令。
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '550px' }}>
+        <div style={{ marginBottom: '12px', fontWeight: 600 }}>常用命令</div>
+        <Group direction="column" spacing="sm">
+          <Snippet width={510} valueToCopy="kubectl get pods -A">
+            kubectl get pods -A
+          </Snippet>
+          <Snippet width={510} valueToCopy="kubectl get nodes -o wide">
+            kubectl get nodes -o wide
+          </Snippet>
+          <Snippet width={510} valueToCopy="kubectl describe pod nginx-deployment-xxx">
+            kubectl describe pod nginx-deployment-xxx
+          </Snippet>
+          <Snippet width={510} valueToCopy="kubectl logs -f nginx-deployment-xxx">
+            kubectl logs -f nginx-deployment-xxx
+          </Snippet>
+        </Group>
+      </Card>
+    </div>
+  );
+}
+```
+
+### 配置信息
+
+展示配置文件路径或环境变量。
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '500px' }}>
+        <div style={{ marginBottom: '12px', fontWeight: 600 }}>配置文件</div>
+        <Group direction="column" spacing="sm">
+          <div style={{ fontSize: '12px', color: '#79879c' }}>Kubeconfig 路径</div>
+          <Snippet symbol="" width={460} valueToCopy="~/.kube/config">
+            ~/.kube/config
+          </Snippet>
+          <div style={{ fontSize: '12px', color: '#79879c', marginTop: '8px' }}>设置环境变量</div>
+          <Snippet width={460} valueToCopy="export KUBECONFIG=~/.kube/config">
+            export KUBECONFIG=~/.kube/config
+          </Snippet>
+        </Group>
+      </Card>
+    </div>
+  );
+}
+```
+
+### Docker 命令
+
+展示 Docker 相关命令。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Snippet width={500} valueToCopy="docker pull kubesphere/ks-apiserver:latest">
+        docker pull kubesphere/ks-apiserver:latest
+      </Snippet>
+      <Snippet width={500} valueToCopy="docker run -d -p 8080:8080 nginx:latest">
+        docker run -d -p 8080:8080 nginx:latest
+      </Snippet>
+      <Snippet width={500} valueToCopy="docker exec -it container_id /bin/bash">
+        docker exec -it container_id /bin/bash
+      </Snippet>
+    </Group>
+  );
+}
+```
+
+### Git 命令
+
+展示 Git 相关命令。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Snippet width={450} valueToCopy="git clone https://github.com/kubesphere/kubesphere.git">
+        git clone https://github.com/kubesphere/kubesphere.git
+      </Snippet>
+      <Snippet width={450} valueToCopy="git checkout -b feature/new-feature">
+        git checkout -b feature/new-feature
+      </Snippet>
+      <Snippet width={450} valueToCopy="git push origin main">
+        git push origin main
+      </Snippet>
+    </Group>
+  );
+}
+```
+
+## API
+
+### Snippet
+
+| 属性        | 说明               | 类型                                             | 默认值 |
+| ----------- | ------------------ | ------------------------------------------------ | ------ |
+| symbol      | 前缀符号           | `string`                                         | `'$'`  |
+| width       | 宽度（单位 px）    | `number`                                         | `300`  |
+| radius      | 圆角大小           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number` | -      |
+| valueToCopy | 要复制到剪贴板的值 | `any`                                            | -      |
+| children    | 显示的内容         | `ReactNode`                                      | -      |
+
+:::info
+
+**关于复制功能**：
+
+- 当设置 `valueToCopy` 属性后，会在右侧显示复制图标
+- 点击复制图标后，图标会变成勾选状态表示复制成功
+- 复制的内容是 `valueToCopy` 的值，而不是 `children` 的内容
+- 这允许显示内容和复制内容不同
+
+**关于符号**：
+
+- 默认符号是 `$`，常用于 shell 命令
+- 可以设置为 `>` 表示 Windows 命令
+- 可以设置为 `#` 表示 root 用户命令
+- 设置为空字符串 `""` 可以隐藏符号
+
+**关于宽度**：
+
+- 默认宽度为 300px
+- 当内容较长时，建议增加宽度以避免换行
+- 宽度不包含复制按钮的空间
+
+**关于圆角**：
+
+- 预设圆角：`xs`（2px）、`sm`（4px）、`md`（8px）、`lg`（16px）、`xl`（32px）
+- 也可以直接传入数字值
+
+:::
+
+## 使用建议
+
+### 始终提供复制功能
+
+对于需要用户复制的命令，应该设置 `valueToCopy`：
+
+```jsx
+// 推荐：提供复制功能
+<Snippet valueToCopy="kubectl get pods">kubectl get pods</Snippet>
+
+// 不推荐：无法复制
+<Snippet>kubectl get pods</Snippet>
+```
+
+### 合适的符号
+
+根据命令类型选择合适的符号：
+
+```jsx
+// Shell 命令（普通用户）
+<Snippet symbol="$">npm install</Snippet>
+
+// Shell 命令（root 用户）
+<Snippet symbol="#">apt-get install</Snippet>
+
+// Windows 命令
+<Snippet symbol=">">dir</Snippet>
+
+// 无符号（URL、路径等）
+<Snippet symbol="">https://example.com</Snippet>
+```
+
+### 适当的宽度
+
+根据内容长度设置合适的宽度：
+
+```jsx
+// 短命令
+<Snippet width={250} valueToCopy="kubectl">kubectl</Snippet>
+
+// 中等命令
+<Snippet width={400} valueToCopy="kubectl get pods">kubectl get pods</Snippet>
+
+// 长命令
+<Snippet width={600} valueToCopy="kubectl get pods -n namespace -o wide">
+  kubectl get pods -n namespace -o wide
+</Snippet>
+```
+
+### 分组展示
+
+将相关命令分组展示：
+
+```jsx
+<Card>
+  <div style={{ marginBottom: '12px', fontWeight: 600 }}>安装步骤</div>
+  <Group direction="column" spacing="sm">
+    <Snippet valueToCopy="git clone ...">git clone ...</Snippet>
+    <Snippet valueToCopy="cd project">cd project</Snippet>
+    <Snippet valueToCopy="npm install">npm install</Snippet>
+    <Snippet valueToCopy="npm start">npm start</Snippet>
+  </Group>
+</Card>
+```
+
+### 添加说明文字
+
+为命令添加说明：
+
+```jsx
+<Group direction="column" spacing="sm">
+  <div style={{ fontSize: '12px', color: '#79879c' }}>克隆仓库</div>
+  <Snippet valueToCopy="git clone https://github.com/...">
+    git clone https://github.com/...
+  </Snippet>
+</Group>
+```
+
+### 显示与复制内容不同
+
+当需要显示简化内容但复制完整内容时：
+
+```jsx
+// 显示简化内容，复制完整内容
+<Snippet valueToCopy="kubectl get pods -n kubesphere-system -o wide --show-labels">
+  kubectl get pods -n kubesphere-system ...
+</Snippet>
+```

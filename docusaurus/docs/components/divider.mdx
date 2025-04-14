@@ -1,0 +1,345 @@
+---
+sidebar_position: 5
+---
+
+# Divider 分割线
+
+用于分隔内容的分割线组件。
+
+## 何时使用
+
+- 对不同章节的文本段落进行分割
+- 对行内文字/链接进行分割，例如表格的操作列
+- 需要在界面中添加视觉分隔
+
+## 示例
+
+### 基础用法
+
+默认为水平分割线。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <p>
+        Kube Design 是一个面向云原生应用的开源 React 组件库，
+        提供了丰富的组件和工具，帮助开发者快速构建现代化的用户界面。
+      </p>
+      <Divider />
+      <p>
+        组件库采用 TypeScript 开发，提供完整的类型定义，
+        支持按需加载，具有良好的可扩展性和主题定制能力。
+      </p>
+    </div>
+  );
+}
+```
+
+### 分割线样式
+
+通过 `variant` 属性设置分割线样式，支持 `solid`（实线）、`dashed`（虚线）、`dotted`（点线）。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <p>实线分割（默认）</p>
+      <Divider variant="solid" />
+      <p style={{ marginTop: '20px' }}>虚线分割</p>
+      <Divider variant="dashed" />
+      <p style={{ marginTop: '20px' }}>点线分割</p>
+      <Divider variant="dotted" />
+    </div>
+  );
+}
+```
+
+### 分割线粗细
+
+使用 `size` 属性控制分割线的粗细。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>粗细: xs (默认)</h4>
+      <Divider size="xs" />
+
+      <h4 style={{ marginBottom: '12px', marginTop: '20px' }}>粗细: sm</h4>
+      <Divider size="sm" />
+
+      <h4 style={{ marginBottom: '12px', marginTop: '20px' }}>粗细: md</h4>
+      <Divider size="md" />
+
+      <h4 style={{ marginBottom: '12px', marginTop: '20px' }}>粗细: lg</h4>
+      <Divider size="lg" />
+    </div>
+  );
+}
+```
+
+### 带文字的分割线
+
+在分割线中添加文字标签，使用 `label` 和 `labelPosition` 属性控制。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <p>上方内容</p>
+      <Divider label="左侧标签" labelPosition="left" />
+      <p>中间内容</p>
+      <Divider label="居中标签" labelPosition="center" />
+      <p>中间内容</p>
+      <Divider label="右侧标签" labelPosition="right" />
+      <p>下方内容</p>
+    </div>
+  );
+}
+```
+
+### 文字标签样式
+
+带文字的分割线可以使用不同的样式。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <Divider label="实线分割" labelPosition="center" variant="solid" />
+      <div style={{ marginTop: '20px' }}>
+        <Divider label="虚线分割" labelPosition="center" variant="dashed" />
+      </div>
+      <div style={{ marginTop: '20px' }}>
+        <Divider label="点线分割" labelPosition="center" variant="dotted" />
+      </div>
+    </div>
+  );
+}
+```
+
+### 分割线边距
+
+使用 `margins` 属性设置分割线的上下边距（水平方向）或左右边距（垂直方向）。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <p>无边距</p>
+      <Divider margins={0} />
+      <p>小边距</p>
+      <Divider margins="sm" />
+      <p>中等边距</p>
+      <Divider margins="md" />
+      <p>大边距</p>
+      <Divider margins="xl" />
+      <p>自定义边距 (30px)</p>
+      <Divider margins={30} />
+      <p>结束</p>
+    </div>
+  );
+}
+```
+
+### 垂直分割线
+
+设置 `direction="vertical"` 创建垂直分割线，常与其他组件配合使用。
+
+```jsx live
+function Demo() {
+  return (
+    <Group>
+      <Button variant="text">操作 1</Button>
+      <Divider direction="vertical" />
+      <Button variant="text">操作 2</Button>
+      <Divider direction="vertical" />
+      <Button variant="text">操作 3</Button>
+    </Group>
+  );
+}
+```
+
+### 垂直分割线高度
+
+使用 `height` 属性自定义垂直分割线的高度。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <div style={{ marginBottom: '24px' }}>
+        <span style={{ marginRight: '12px' }}>高度: 默认</span>
+        <Group style={{ display: 'inline-flex' }}>
+          <Button size="sm">按钮</Button>
+          <Divider direction="vertical" />
+          <Button size="sm">按钮</Button>
+        </Group>
+      </div>
+
+      <div style={{ marginBottom: '24px' }}>
+        <span style={{ marginRight: '12px' }}>高度: 20px</span>
+        <Group style={{ display: 'inline-flex' }}>
+          <Button size="sm">按钮</Button>
+          <Divider direction="vertical" height={20} />
+          <Button size="sm">按钮</Button>
+        </Group>
+      </div>
+
+      <div>
+        <span style={{ marginRight: '12px' }}>高度: 40px</span>
+        <Group style={{ display: 'inline-flex' }}>
+          <Button size="md">按钮</Button>
+          <Divider direction="vertical" height={40} />
+          <Button size="md">按钮</Button>
+        </Group>
+      </div>
+    </div>
+  );
+}
+```
+
+### 垂直分割线样式
+
+垂直分割线同样支持不同的样式。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <div style={{ marginBottom: '20px' }}>
+        <Group>
+          <span>实线</span>
+          <Divider direction="vertical" variant="solid" />
+          <span>分割</span>
+        </Group>
+      </div>
+
+      <div style={{ marginBottom: '20px' }}>
+        <Group>
+          <span>虚线</span>
+          <Divider direction="vertical" variant="dashed" />
+          <span>分割</span>
+        </Group>
+      </div>
+
+      <div>
+        <Group>
+          <span>点线</span>
+          <Divider direction="vertical" variant="dotted" />
+          <span>分割</span>
+        </Group>
+      </div>
+    </div>
+  );
+}
+```
+
+### 自定义颜色
+
+使用 `color` 属性自定义分割线颜色。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <p>默认颜色</p>
+      <Divider />
+      <p style={{ marginTop: '20px' }}>蓝色分割线</p>
+      <Divider color="#329dce" />
+      <p style={{ marginTop: '20px' }}>绿色分割线</p>
+      <Divider color="#55bc8a" />
+      <p style={{ marginTop: '20px' }}>红色分割线</p>
+      <Divider color="#ca2621" />
+    </div>
+  );
+}
+```
+
+### 实际应用场景
+
+展示 Divider 在实际场景中的应用。
+
+```jsx live
+function Demo() {
+  const { PencilDuotone, DeleteDuotone, CopyDuotone } = KubedIcons;
+
+  return (
+    <div>
+      {/* 卡片分隔 */}
+      <div style={{ border: '1px solid #d1d5de', borderRadius: '4px', padding: '16px', marginBottom: '24px' }}>
+        <h4 style={{ margin: '0 0 8px 0' }}>用户信息</h4>
+        <p style={{ margin: '0 0 16px 0', color: '#79879c', fontSize: '14px' }}>
+          张三 | 管理员
+        </p>
+        <Divider margins={0} />
+        <div style={{ marginTop: '16px' }}>
+          <h4 style={{ margin: '0 0 8px 0' }}>联系方式</h4>
+          <p style={{ margin: 0, color: '#79879c', fontSize: '14px' }}>
+            邮箱: zhangsan@example.com<br />
+            电话: 138-0000-0000
+          </p>
+        </div>
+      </div>
+
+      {/* 操作按钮分隔 */}
+      <div style={{ border: '1px solid #d1d5de', borderRadius: '4px', padding: '16px', marginBottom: '24px' }}>
+        <h4 style={{ margin: '0 0 12px 0' }}>资源操作</h4>
+        <Group spacing="xs">
+          <Button variant="text" size="sm" leftIcon={<PencilDuotone size={14} />}>
+            编辑
+          </Button>
+          <Divider direction="vertical" height={16} />
+          <Button variant="text" size="sm" leftIcon={<CopyDuotone size={14} />}>
+            复制
+          </Button>
+          <Divider direction="vertical" height={16} />
+          <Button variant="text" size="sm" color="error" leftIcon={<DeleteDuotone size={14} />}>
+            删除
+          </Button>
+        </Group>
+      </div>
+
+      {/* 分组内容 */}
+      <div>
+        <h3>项目列表</h3>
+        <Divider label="进行中" labelPosition="left" />
+        <p style={{ color: '#79879c' }}>• 项目 A - 开发阶段</p>
+        <p style={{ color: '#79879c' }}>• 项目 B - 测试阶段</p>
+        <Divider label="已完成" labelPosition="left" margins="lg" />
+        <p style={{ color: '#79879c' }}>• 项目 C - 已上线</p>
+        <p style={{ color: '#79879c' }}>• 项目 D - 已归档</p>
+      </div>
+    </div>
+  );
+}
+```
+
+## API
+
+### Divider 属性
+
+| 属性          | 说明                                       | 类型                              | 默认值         |
+| ------------- | ------------------------------------------ | --------------------------------- | -------------- |
+| direction     | 分割线方向                                 | `'horizontal' \| 'vertical'`      | `'horizontal'` |
+| variant       | 分割线样式                                 | `'solid' \| 'dashed' \| 'dotted'` | `'solid'`      |
+| size          | 分割线粗细                                 | `KubedNumberSize`                 | `'xs'`         |
+| color         | 分割线颜色                                 | `string`                          | -              |
+| label         | 文字标签（仅水平方向有效）                 | `ReactNode`                       | -              |
+| labelPosition | 文字标签位置（仅水平方向有效）             | `'left' \| 'center' \| 'right'`   | `'left'`       |
+| labelProps    | 传递给标签的属性                           | `Record<string, any>`             | -              |
+| margins       | 边距（水平时为上下边距，垂直时为左右边距） | `KubedNumberSize`                 | `0`            |
+| height        | 垂直分割线高度（仅 direction="vertical"）  | `number`                          | -              |
+| 其他          | 原生属性                                   | `HTMLAttributes<HTMLElement>`     | -              |
+
+:::info
+
+- `size` 和 `margins` 的值可以是预设的尺寸名称（`'xs'`, `'sm'`, `'md'`, `'lg'`, `'xl'`）或具体的像素数值
+- 水平分割线默认占满容器宽度
+- 垂直分割线需要配合其他组件（如 Group）使用，以确保正确的布局
+- 带标签的分割线仅在水平方向（`direction="horizontal"`）下有效
+
+Divider 组件继承所有原生 HTML hr 元素的属性（如 `onClick`、`className` 等）。
+
+:::

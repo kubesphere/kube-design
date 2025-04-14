@@ -1,0 +1,428 @@
+---
+sidebar_position: 1
+---
+
+# Skeleton 骨架屏
+
+在需要等待加载内容的位置提供占位图形。
+
+## 何时使用
+
+- 网络较慢时，数据加载需要较长时间
+- 页面初次渲染时，需要展示加载状态
+- 列表或卡片内容加载时
+- 提供更好的用户体验，避免页面闪烁
+
+## 示例
+
+### 基础用法
+
+最简单的骨架屏用法，默认宽度 100%。
+
+```jsx live
+function Demo() {
+  return <Skeleton height={16} />;
+}
+```
+
+### 不同尺寸
+
+通过 `width` 和 `height` 属性设置骨架屏尺寸。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <Skeleton height={8} style={{ marginBottom: '8px' }} />
+      <Skeleton height={12} style={{ marginBottom: '8px' }} />
+      <Skeleton height={16} style={{ marginBottom: '8px' }} />
+      <Skeleton height={24} style={{ marginBottom: '8px' }} />
+      <Skeleton height={32} />
+    </div>
+  );
+}
+```
+
+### 圆形骨架屏
+
+通过 `circle` 属性创建圆形骨架屏，常用于头像占位。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="md">
+      <Skeleton height={32} width={32} circle />
+      <Skeleton height={40} width={40} circle />
+      <Skeleton height={48} width={48} circle />
+      <Skeleton height={64} width={64} circle />
+    </Group>
+  );
+}
+```
+
+### 圆角
+
+通过 `radius` 属性设置圆角大小。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <Skeleton height={16} radius="xs" style={{ marginBottom: '8px' }} />
+      <Skeleton height={16} radius="sm" style={{ marginBottom: '8px' }} />
+      <Skeleton height={16} radius="md" style={{ marginBottom: '8px' }} />
+      <Skeleton height={16} radius="lg" style={{ marginBottom: '8px' }} />
+      <Skeleton height={16} radius="xl" />
+    </div>
+  );
+}
+```
+
+### 关闭动画
+
+通过 `animate={false}` 关闭动画效果。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <Skeleton height={16} animate={true} style={{ marginBottom: '8px' }} />
+      <Skeleton height={16} animate={false} />
+    </div>
+  );
+}
+```
+
+### 文本占位
+
+模拟多行文本的骨架屏。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <Skeleton height={12} radius="xl" style={{ marginBottom: '8px' }} />
+      <Skeleton height={12} radius="xl" style={{ marginBottom: '8px' }} />
+      <Skeleton height={12} radius="xl" style={{ marginBottom: '8px' }} />
+      <Skeleton height={12} width="70%" radius="xl" />
+    </div>
+  );
+}
+```
+
+### 带头像的内容
+
+常见的带头像和文本的骨架屏组合。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="md" style={{ alignItems: 'flex-start' }}>
+      <Skeleton height={48} width={48} circle />
+      <div style={{ flex: 1 }}>
+        <Skeleton height={12} width="40%" radius="xl" style={{ marginBottom: '8px' }} />
+        <Skeleton height={12} radius="xl" style={{ marginBottom: '8px' }} />
+        <Skeleton height={12} radius="xl" style={{ marginBottom: '8px' }} />
+        <Skeleton height={12} width="60%" radius="xl" />
+      </div>
+    </Group>
+  );
+}
+```
+
+### 卡片骨架屏
+
+在卡片中使用骨架屏。
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '350px' }}>
+        <Skeleton height={120} radius="sm" style={{ marginBottom: '12px' }} />
+        <Skeleton height={16} width="60%" radius="xl" style={{ marginBottom: '8px' }} />
+        <Skeleton height={12} radius="xl" style={{ marginBottom: '8px' }} />
+        <Skeleton height={12} radius="xl" style={{ marginBottom: '8px' }} />
+        <Skeleton height={12} width="80%" radius="xl" />
+      </Card>
+    </div>
+  );
+}
+```
+
+### 列表骨架屏
+
+列表项的骨架屏效果。
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '400px' }}>
+        {[1, 2, 3].map((item) => (
+          <Group
+            key={item}
+            spacing="md"
+            style={{
+              padding: '12px 0',
+              borderBottom: item < 3 ? '1px solid #d8dee5' : 'none',
+              alignItems: 'flex-start',
+            }}
+          >
+            <Skeleton height={40} width={40} circle />
+            <div style={{ flex: 1 }}>
+              <Skeleton height={12} width="50%" radius="xl" style={{ marginBottom: '8px' }} />
+              <Skeleton height={10} width="80%" radius="xl" />
+            </div>
+            <Skeleton height={24} width={60} radius="sm" />
+          </Group>
+        ))}
+      </Card>
+    </div>
+  );
+}
+```
+
+### 表格骨架屏
+
+表格加载时的骨架屏效果。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <Skeleton height={40} radius="sm" style={{ marginBottom: '8px' }} />
+      {[1, 2, 3, 4].map((item) => (
+        <Group
+          key={item}
+          style={{
+            padding: '12px 0',
+            borderBottom: '1px solid #d8dee5',
+          }}
+        >
+          <Skeleton height={16} width="15%" radius="sm" />
+          <Skeleton height={16} width="25%" radius="sm" />
+          <Skeleton height={16} width="20%" radius="sm" />
+          <Skeleton height={16} width="15%" radius="sm" />
+          <Skeleton height={16} width="10%" radius="sm" />
+        </Group>
+      ))}
+    </div>
+  );
+}
+```
+
+### 加载状态切换
+
+结合加载状态展示骨架屏。
+
+```jsx live
+function Demo() {
+  const [loading, setLoading] = React.useState(true);
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Button onClick={() => setLoading(!loading)} style={{ marginBottom: '16px' }}>
+        {loading ? '显示内容' : '显示骨架屏'}
+      </Button>
+      <Card style={{ width: '350px' }}>
+        {loading ? (
+          <Group spacing="md" style={{ alignItems: 'flex-start' }}>
+            <Skeleton height={48} width={48} circle />
+            <div style={{ flex: 1 }}>
+              <Skeleton height={14} width="60%" radius="xl" style={{ marginBottom: '8px' }} />
+              <Skeleton height={12} radius="xl" style={{ marginBottom: '8px' }} />
+              <Skeleton height={12} width="80%" radius="xl" />
+            </div>
+          </Group>
+        ) : (
+          <Group spacing="md" style={{ alignItems: 'flex-start' }}>
+            <div
+              style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '50%',
+                backgroundColor: '#329dce',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#fff',
+                fontWeight: 600,
+              }}
+            >
+              K
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontWeight: 600, marginBottom: '4px' }}>KubeSphere</div>
+              <div style={{ fontSize: '12px', color: '#79879c' }}>
+                面向云原生应用的容器混合云，支持多云与多集群管理
+              </div>
+            </div>
+          </Group>
+        )}
+      </Card>
+    </div>
+  );
+}
+```
+
+### 复杂布局
+
+复杂页面布局的骨架屏。
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '500px' }}>
+        <Group style={{ marginBottom: '16px' }}>
+          <Skeleton height={32} width={32} circle />
+          <div style={{ flex: 1 }}>
+            <Skeleton height={14} width="30%" radius="xl" />
+          </div>
+          <Skeleton height={24} width={80} radius="sm" />
+        </Group>
+        <Skeleton height={200} radius="sm" style={{ marginBottom: '12px' }} />
+        <Skeleton height={16} width="80%" radius="xl" style={{ marginBottom: '8px' }} />
+        <Skeleton height={12} radius="xl" style={{ marginBottom: '8px' }} />
+        <Skeleton height={12} radius="xl" style={{ marginBottom: '16px' }} />
+        <Group>
+          <Skeleton height={32} width={100} radius="sm" />
+          <Skeleton height={32} width={100} radius="sm" />
+        </Group>
+      </Card>
+    </div>
+  );
+}
+```
+
+## API
+
+### Skeleton
+
+| 属性    | 说明                     | 类型                                             | 默认值   |
+| ------- | ------------------------ | ------------------------------------------------ | -------- |
+| visible | 是否显示骨架屏           | `boolean`                                        | `true`   |
+| width   | 宽度                     | `number \| string`                               | `'100%'` |
+| height  | 高度                     | `number \| string`                               | `'auto'` |
+| circle  | 是否为圆形               | `boolean`                                        | `false`  |
+| radius  | 圆角大小                 | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number` | `'md'`   |
+| animate | 是否显示动画效果         | `boolean`                                        | `true`   |
+
+:::info
+
+**关于尺寸**：
+
+- `width` 和 `height` 支持数字（单位为 px）或字符串（如 '100%'、'auto'）
+- 当 `circle` 为 `true` 时，宽度会自动等于高度
+
+**关于圆角**：
+
+- 预设圆角：`xs`（2px）、`sm`（4px）、`md`（8px）、`lg`（16px）、`xl`（32px）
+- 也可以直接传入数字值
+- 文本类骨架屏推荐使用 `xl` 圆角
+
+**关于动画**：
+
+- 默认显示闪烁动画效果
+- 如果需要静态占位，可以设置 `animate={false}`
+
+**关于 visible**：
+
+- 当 `visible` 为 `false` 时，骨架屏不显示
+- 可以用于控制骨架屏的显示/隐藏
+
+:::
+
+## 使用建议
+
+### 合理的骨架屏布局
+
+骨架屏应该尽量还原真实内容的布局：
+
+```jsx
+// 推荐：布局与真实内容相似
+<Group spacing="md">
+  <Skeleton height={48} width={48} circle />
+  <div style={{ flex: 1 }}>
+    <Skeleton height={14} width="40%" radius="xl" style={{ marginBottom: '8px' }} />
+    <Skeleton height={12} radius="xl" />
+  </div>
+</Group>
+
+// 不推荐：与真实内容差异太大
+<Skeleton height={100} />
+```
+
+### 文本骨架屏
+
+模拟文本时使用圆角较大的骨架屏：
+
+```jsx
+// 模拟标题
+<Skeleton height={16} width="60%" radius="xl" style={{ marginBottom: '8px' }} />
+
+// 模拟正文
+<Skeleton height={12} radius="xl" style={{ marginBottom: '8px' }} />
+<Skeleton height={12} radius="xl" style={{ marginBottom: '8px' }} />
+<Skeleton height={12} width="80%" radius="xl" />
+```
+
+### 头像骨架屏
+
+使用圆形骨架屏模拟头像：
+
+```jsx
+// 圆形头像
+<Skeleton height={48} width={48} circle />
+
+// 圆角头像
+<Skeleton height={48} width={48} radius="md" />
+```
+
+### 按钮骨架屏
+
+按钮使用较小的圆角：
+
+```jsx
+<Skeleton height={32} width={100} radius="sm" />
+```
+
+### 结合加载状态
+
+根据加载状态切换显示：
+
+```jsx
+const [loading, setLoading] = React.useState(true);
+
+{loading ? (
+  <Skeleton height={16} radius="xl" />
+) : (
+  <div>实际内容</div>
+)}
+```
+
+### 列表骨架屏
+
+使用数组生成多个骨架屏项：
+
+```jsx
+{[1, 2, 3].map((item) => (
+  <Group key={item} style={{ marginBottom: '12px' }}>
+    <Skeleton height={40} width={40} circle />
+    <Skeleton height={12} width="60%" radius="xl" />
+  </Group>
+))}
+```
+
+### 避免过度使用
+
+骨架屏应该用于较长加载时间的内容，对于快速加载的内容可以不使用：
+
+```jsx
+// 推荐：用于需要网络请求的内容
+{loading ? <Skeleton height={200} /> : <DataTable data={data} />}
+
+// 不推荐：用于本地数据
+{loading ? <Skeleton height={20} /> : <span>{localData}</span>}
+```

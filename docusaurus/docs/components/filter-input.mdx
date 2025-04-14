@@ -1,0 +1,907 @@
+---
+sidebar_position: 1
+---
+
+# FilterInput 过滤输入框
+
+带过滤功能的智能搜索输入框。
+
+## 何时使用
+
+- 需要对列表或表格数据进行筛选时
+- 支持多条件组合搜索
+- 需要提供可选的过滤选项时
+- 快速搜索场景
+
+在 Kube Design 中,FilterInput 组件提供了强大的过滤搜索功能:
+
+- **两种模式**:支持过滤模式和简单搜索模式
+- **建议列表**:显示可用的过滤条件
+- **标签展示**:已选过滤条件以标签形式展示
+- **选项下拉**:支持预定义选项的下拉选择
+- **自定义下拉**:支持自定义下拉内容(如日期选择器)
+- **键盘支持**:支持回车键确认
+
+## 示例
+
+### 基础用法
+
+基本的过滤输入框用法。
+
+```jsx live
+function Demo() {
+  const [filters, setFilters] = React.useState({});
+
+  const suggestions = [
+    { label: '名称', key: 'name' },
+    { label: '命名空间', key: 'namespace' },
+    { label: '标签', key: 'label' },
+  ];
+
+  return (
+    <FilterInput
+      suggestions={suggestions}
+      filters={filters}
+      placeholder="输入过滤条件..."
+      onChange={setFilters}
+    />
+  );
+}
+```
+
+### 简单搜索模式
+
+使用 `simpleMode` 实现普通搜索框功能。
+
+```jsx live
+function Demo() {
+  return (
+    <FilterInput
+      simpleMode
+      placeholder="搜索..."
+      onChange={(keyword) => console.log('搜索:', keyword)}
+      onInputChange={(value) => console.log('输入:', value)}
+    />
+  );
+}
+```
+
+### 带默认过滤条件
+
+初始化时设置默认过滤条件。
+
+```jsx live
+function Demo() {
+  const [filters, setFilters] = React.useState({
+    status: 'Running',
+    namespace: 'default',
+  });
+
+  const suggestions = [
+    { label: '名称', key: 'name' },
+    { label: '命名空间', key: 'namespace' },
+    {
+      label: '状态',
+      key: 'status',
+      options: [
+        { label: '运行中', key: 'Running' },
+        { label: '等待中', key: 'Pending' },
+        { label: '失败', key: 'Failed' },
+      ],
+    },
+  ];
+
+  return (
+    <Group direction="column" spacing="md">
+      <Text size="sm">当前过滤条件: {JSON.stringify(filters)}</Text>
+      <FilterInput
+        suggestions={suggestions}
+        filters={filters}
+        placeholder="搜索 Pods..."
+        onChange={setFilters}
+      />
+    </Group>
+  );
+}
+```
+
+### 带图标的自定义标签
+
+使用 `customLabel` 为建议项添加图标。
+
+```jsx live
+function Demo() {
+  const { Pod, Cluster, Project } = KubedIcons;
+  const [filters, setFilters] = React.useState({});
+
+  const suggestions = [
+    {
+      label: 'Pod',
+      key: 'pod',
+      customLabel: (
+        <Group spacing="xs">
+          <Pod size={14} />
+          <span>Pod 名称</span>
+        </Group>
+      ),
+    },
+    {
+      label: '集群',
+      key: 'cluster',
+      customLabel: (
+        <Group spacing="xs">
+          <Cluster size={14} />
+          <span>集群</span>
+        </Group>
+      ),
+    },
+    {
+      label: '项目',
+      key: 'project',
+      customLabel: (
+        <Group spacing="xs">
+          <Project size={14} />
+          <span>项目</span>
+        </Group>
+      ),
+    },
+  ];
+
+  return (
+    <FilterInput
+      suggestions={suggestions}
+      filters={filters}
+      placeholder="选择过滤条件..."
+      onChange={setFilters}
+    />
+  );
+}
+```
+
+### 带选项下拉
+
+过滤条件包含预定义选项。
+
+```jsx live
+function Demo() {
+  const [filters, setFilters] = React.useState({});
+
+  const suggestions = [
+    {
+      label: '状态',
+      key: 'status',
+      options: [
+        { label: '运行中', key: 'Running' },
+        { label: '等待中', key: 'Pending' },
+        { label: '成功', key: 'Succeeded' },
+        { label: '失败', key: 'Failed' },
+        { label: '未知', key: 'Unknown' },
+      ],
+    },
+    {
+      label: '类型',
+      key: 'type',
+      options: [
+        { label: 'ClusterIP', key: 'ClusterIP' },
+        { label: 'NodePort', key: 'NodePort' },
+        { label: 'LoadBalancer', key: 'LoadBalancer' },
+      ],
+    },
+  ];
+
+  return (
+    <Group direction="column" spacing="md">
+      <Text size="sm">已选条件: {JSON.stringify(filters, null, 2)}</Text>
+      <FilterInput
+        suggestions={suggestions}
+        filters={filters}
+        placeholder="选择过滤条件..."
+        onChange={setFilters}
+      />
+    </Group>
+  );
+}
+```
+
+### 自定义下拉内容
+
+使用 `customDropdown` 自定义下拉内容。
+
+```jsx live
+function Demo() {
+  const [filters, setFilters] = React.useState({});
+
+  const customDropdown = (
+    <Card style={{ padding: '12px', width: '200px' }}>
+      <Text size="sm" weight={600} style={{ marginBottom: '8px' }}>
+        选择优先级:
+      </Text>
+      {['High', 'Medium', 'Low'].map((priority) => (
+        <div
+          key={priority}
+          style={{
+            padding: '8px',
+            cursor: 'pointer',
+            borderRadius: '4px',
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#f5f7fa')}
+          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+          onClick={() => setFilters({ ...filters, priority })}
+        >
+          <Text size="sm">{priority}</Text>
+        </div>
+      ))}
+    </Card>
+  );
+
+  const suggestions = [
+    { label: '名称', key: 'name' },
+    {
+      label: '优先级',
+      key: 'priority',
+      customDropdown,
+    },
+  ];
+
+  return (
+    <Group direction="column" spacing="md">
+      <Text size="sm">当前过滤: {JSON.stringify(filters)}</Text>
+      <FilterInput
+        suggestions={suggestions}
+        filters={filters}
+        placeholder="搜索..."
+        onChange={setFilters}
+      />
+    </Group>
+  );
+}
+```
+
+### 多个过滤条件
+
+组合使用多个过滤条件。
+
+```jsx live
+function Demo() {
+  const [filters, setFilters] = React.useState({});
+
+  const suggestions = [
+    { label: 'Pod 名称', key: 'pod' },
+    { label: '命名空间', key: 'namespace' },
+    { label: '节点', key: 'node' },
+    {
+      label: '状态',
+      key: 'status',
+      options: [
+        { label: '运行中', key: 'Running' },
+        { label: '等待中', key: 'Pending' },
+        { label: '失败', key: 'Failed' },
+      ],
+    },
+    {
+      label: '重启策略',
+      key: 'restartPolicy',
+      options: [
+        { label: 'Always', key: 'Always' },
+        { label: 'OnFailure', key: 'OnFailure' },
+        { label: 'Never', key: 'Never' },
+      ],
+    },
+  ];
+
+  return (
+    <Group direction="column" spacing="md">
+      <FilterInput
+        suggestions={suggestions}
+        filters={filters}
+        placeholder="搜索 Pods..."
+        onChange={setFilters}
+      />
+      <Card style={{ padding: '12px' }}>
+        <Text size="sm" weight={600} style={{ marginBottom: '8px' }}>
+          当前过滤条件:
+        </Text>
+        <Text size="sm" style={{ whiteSpace: 'pre-wrap' }}>
+          {Object.keys(filters).length > 0 ? JSON.stringify(filters, null, 2) : '无'}
+        </Text>
+      </Card>
+    </Group>
+  );
+}
+```
+
+### 受控模式
+
+完全控制过滤条件的变化。
+
+```jsx live
+function Demo() {
+  const [filters, setFilters] = React.useState({ status: 'Running' });
+
+  const suggestions = [
+    { label: 'Service 名称', key: 'name' },
+    {
+      label: '类型',
+      key: 'type',
+      options: [
+        { label: 'ClusterIP', key: 'ClusterIP' },
+        { label: 'NodePort', key: 'NodePort' },
+        { label: 'LoadBalancer', key: 'LoadBalancer' },
+      ],
+    },
+    {
+      label: '状态',
+      key: 'status',
+      options: [
+        { label: '运行中', key: 'Running' },
+        { label: '停止', key: 'Stopped' },
+      ],
+    },
+  ];
+
+  const handleChange = (newFilters) => {
+    console.log('过滤条件变化:', newFilters);
+    setFilters(newFilters);
+  };
+
+  const resetFilters = () => {
+    setFilters({});
+  };
+
+  return (
+    <Group direction="column" spacing="md">
+      <Group spacing="xs">
+        <Button size="sm" onClick={resetFilters}>
+          重置过滤
+        </Button>
+        <Button size="sm" variant="outline" onClick={() => setFilters({ type: 'ClusterIP' })}>
+          只看 ClusterIP
+        </Button>
+      </Group>
+      <FilterInput
+        suggestions={suggestions}
+        filters={filters}
+        placeholder="过滤 Services..."
+        onChange={handleChange}
+      />
+      <Text size="sm">过滤结果: {Object.keys(filters).length} 个条件</Text>
+    </Group>
+  );
+}
+```
+
+### 禁用状态
+
+禁用过滤输入框。
+
+```jsx live
+function Demo() {
+  const suggestions = [
+    { label: '名称', key: 'name' },
+    { label: '命名空间', key: 'namespace' },
+  ];
+
+  return (
+    <Group direction="column" spacing="md">
+      <FilterInput
+        suggestions={suggestions}
+        filters={{ name: 'nginx' }}
+        placeholder="搜索..."
+        disabled
+      />
+      <Text size="sm" color="secondary">
+        过滤输入框已禁用
+      </Text>
+    </Group>
+  );
+}
+```
+
+### Kubernetes 资源过滤
+
+实际场景中的 Kubernetes 资源过滤示例。
+
+```jsx live
+function Demo() {
+  const { Pod, Cluster } = KubedIcons;
+  const [filters, setFilters] = React.useState({ namespace: 'default' });
+
+  const suggestions = [
+    {
+      label: 'Pod',
+      key: 'pod',
+      customLabel: (
+        <Group spacing="xs">
+          <Pod size={14} />
+          <span>Pod 名称</span>
+        </Group>
+      ),
+    },
+    {
+      label: '命名空间',
+      key: 'namespace',
+      options: [
+        { label: 'default', key: 'default' },
+        { label: 'kube-system', key: 'kube-system' },
+        { label: 'kube-public', key: 'kube-public' },
+        { label: 'kubesphere-system', key: 'kubesphere-system' },
+      ],
+    },
+    {
+      label: '状态',
+      key: 'status',
+      options: [
+        { label: 'Running', key: 'Running' },
+        { label: 'Pending', key: 'Pending' },
+        { label: 'Succeeded', key: 'Succeeded' },
+        { label: 'Failed', key: 'Failed' },
+        { label: 'Unknown', key: 'Unknown' },
+      ],
+    },
+    { label: '节点', key: 'node' },
+    { label: '标签', key: 'label' },
+  ];
+
+  const mockPods = [
+    { name: 'nginx-deployment-7d5c8f8b9d-x7k2m', namespace: 'default', status: 'Running', node: 'node-1' },
+    { name: 'redis-master-0', namespace: 'default', status: 'Running', node: 'node-2' },
+    { name: 'coredns-565d847f94-8v9mk', namespace: 'kube-system', status: 'Running', node: 'node-1' },
+  ];
+
+  const filteredPods = mockPods.filter((pod) => {
+    if (filters.namespace && pod.namespace !== filters.namespace) return false;
+    if (filters.status && pod.status !== filters.status) return false;
+    if (filters.node && pod.node !== filters.node) return false;
+    if (filters.pod && !pod.name.includes(filters.pod)) return false;
+    return true;
+  });
+
+  return (
+    <Group direction="column" spacing="md">
+      <FilterInput
+        suggestions={suggestions}
+        filters={filters}
+        placeholder="过滤 Pods..."
+        onChange={setFilters}
+      />
+      <Card>
+        <Text size="sm" weight={600} style={{ marginBottom: '12px' }}>
+          找到 {filteredPods.length} 个 Pods:
+        </Text>
+        {filteredPods.map((pod) => (
+          <div
+            key={pod.name}
+            style={{
+              padding: '8px 0',
+              borderBottom: '1px solid #eff4f9',
+            }}
+          >
+            <Group spacing="md">
+              <Text size="sm" style={{ flex: 1 }}>
+                {pod.name}
+              </Text>
+              <Badge size="sm" color="default">
+                {pod.namespace}
+              </Badge>
+              <Badge size="sm" color="success">
+                {pod.status}
+              </Badge>
+            </Group>
+          </div>
+        ))}
+      </Card>
+    </Group>
+  );
+}
+```
+
+### 完整示例
+
+综合所有功能的完整示例。
+
+```jsx live
+function Demo() {
+  const { Service } = KubedIcons;
+  const [filters, setFilters] = React.useState({});
+  const [searchMode, setSearchMode] = React.useState('filter');
+
+  const suggestions = [
+    {
+      label: 'Service',
+      key: 'name',
+      customLabel: (
+        <Group spacing="xs">
+          <Service size={14} />
+          <span>Service 名称</span>
+        </Group>
+      ),
+    },
+    {
+      label: '类型',
+      key: 'type',
+      options: [
+        { label: 'ClusterIP', key: 'ClusterIP' },
+        { label: 'NodePort', key: 'NodePort' },
+        { label: 'LoadBalancer', key: 'LoadBalancer' },
+        { label: 'ExternalName', key: 'ExternalName' },
+      ],
+    },
+    {
+      label: '命名空间',
+      key: 'namespace',
+      options: [
+        { label: 'default', key: 'default' },
+        { label: 'kube-system', key: 'kube-system' },
+        { label: 'production', key: 'production' },
+      ],
+    },
+    { label: '端口', key: 'port' },
+  ];
+
+  const handleClear = () => {
+    setFilters({});
+  };
+
+  return (
+    <Group direction="column" spacing="md">
+      <Group spacing="xs">
+        <Button
+          size="sm"
+          variant={searchMode === 'filter' ? 'filled' : 'outline'}
+          onClick={() => setSearchMode('filter')}
+        >
+          过滤模式
+        </Button>
+        <Button
+          size="sm"
+          variant={searchMode === 'simple' ? 'filled' : 'outline'}
+          onClick={() => setSearchMode('simple')}
+        >
+          简单搜索
+        </Button>
+      </Group>
+
+      {searchMode === 'filter' ? (
+        <>
+          <FilterInput
+            suggestions={suggestions}
+            filters={filters}
+            placeholder="过滤 Services..."
+            onChange={setFilters}
+            onClear={handleClear}
+          />
+          <Card style={{ padding: '12px' }}>
+            <Group spacing="md" style={{ justifyContent: 'space-between' }}>
+              <Text size="sm">
+                已应用 {Object.keys(filters).length} 个过滤条件
+              </Text>
+              {Object.keys(filters).length > 0 && (
+                <Button size="xs" variant="text" onClick={handleClear}>
+                  清除全部
+                </Button>
+              )}
+            </Group>
+            {Object.keys(filters).length > 0 && (
+              <Text size="sm" style={{ marginTop: '8px', whiteSpace: 'pre-wrap' }}>
+                {JSON.stringify(filters, null, 2)}
+              </Text>
+            )}
+          </Card>
+        </>
+      ) : (
+        <FilterInput
+          simpleMode
+          placeholder="搜索 Services..."
+          onChange={(keyword) => console.log('搜索:', keyword)}
+        />
+      )}
+    </Group>
+  );
+}
+```
+
+## API
+
+### FilterInput
+
+| 属性           | 说明                       | 类型                         | 默认值  |
+| -------------- | -------------------------- | ---------------------------- | ------- |
+| suggestions    | 可用的过滤建议列表         | `Suggestion[]`               | `[]`    |
+| filters        | 当前过滤条件(受控)         | `Record<string, any>`        | `{}`    |
+| placeholder    | 输入框占位符               | `string`                     | -       |
+| onChange       | 过滤条件变化回调           | `(filters: Record<string, any>) => void` | -       |
+| onClear        | 清除回调                   | `() => void`                 | -       |
+| onInputChange  | 输入变化回调(简单模式)     | `(value: string) => void`    | -       |
+| simpleMode     | 是否使用简单搜索模式       | `boolean`                    | `false` |
+| initialKeyword | 初始关键词(简单模式)       | `string`                     | -       |
+| isMultiKeyword | 是否支持多关键词           | `boolean`                    | -       |
+| disabled       | 是否禁用                   | `boolean`                    | `false` |
+| className      | 自定义类名                 | `string`                     | -       |
+| style          | 自定义样式                 | `CSSProperties`              | -       |
+
+### Suggestion
+
+| 属性           | 说明                   | 类型           | 默认值 |
+| -------------- | ---------------------- | -------------- | ------ |
+| key            | 过滤字段的键           | `string`       | **必需**|
+| label          | 显示标签               | `string`       | **必需**|
+| options        | 预定义选项列表         | `Option[]`     | -      |
+| customLabel    | 自定义标签内容         | `ReactNode`    | -      |
+| customDropdown | 自定义下拉内容         | `ReactNode`    | -      |
+
+### Option
+
+| 属性  | 说明       | 类型     | 默认值   |
+| ----- | ---------- | -------- | -------- |
+| key   | 选项的值   | `string` | **必需** |
+| label | 选项的标签 | `string` | **必需** |
+
+:::info
+
+**关于两种模式**:
+
+- **过滤模式**(默认):支持多个过滤条件,以标签形式展示,适合复杂搜索
+- **简单模式**(`simpleMode={true}`):普通搜索框,只支持关键词搜索
+- 模式判断逻辑(FilterInput.tsx 第 64 行):`const initialValue = props.simpleMode ? props.initialKeyword : ''`
+
+**关于组件结构**:
+
+- 使用 `Wrapper` 包裹整个组件,包含搜索图标、输入区域和清除按钮(FilterInput.tsx 第 271-286 行)
+- 输入区域(`InputWrapper`)包含标签和输入框(第 281-284 行)
+- 搜索图标使用 `@kubed/icons` 的 `Magnifier` 组件(第 280 行)
+- 清除图标使用 `@kubed/icons` 的 `Close` 组件(第 285 行)
+
+**关于状态管理**:
+
+- 组件内部维护多个状态(第 65-69 行):
+  - `value`: 当前输入值
+  - `optionVisible`: 下拉菜单是否可见
+  - `activeSuggestion`: 当前选中的建议项
+  - `tags`: 已选过滤条件的标签列表
+  - `isFocused`: 输入框是否聚焦
+- 使用 `useClickOutside` hook 处理点击外部关闭菜单(第 70-72 行)
+
+**关于过滤建议**:
+
+- `suggestions` 定义了可用的过滤字段
+- 用户可以从建议中选择过滤条件
+- 已使用的过滤条件不会再出现在建议列表中
+- 过滤逻辑(第 203 行):`suggestions.filter((sg) => !tags.some((tag) => tag.filter === sg.key))`
+
+**关于选项下拉**:
+
+- 设置 `options` 属性后,选择该过滤条件时会显示下拉选项
+- 不设置 `options` 时,用户需要手动输入值并按回车确认
+- `customDropdown` 可以完全自定义下拉内容
+- 下拉内容优先级(第 220-232 行):customDropdown > options > 默认菜单
+- 下拉使用 `Dropdown` 组件,placement 为 `bottom-start`(第 258 行)
+
+**关于标签展示**:
+
+- 已选的过滤条件以标签形式展示在输入框中
+- 使用 `Tag` 组件显示标签,带有关闭图标(第 116-127 行)
+- 点击标签上的关闭图标可以删除该过滤条件
+- 标签格式为 "标签名:值"(第 124 行):`{tag.filterLabel}:{tag.valueLabel}`
+- 标签生成逻辑在 `getTags` 函数中(第 14-30 行)
+
+**关于键盘交互**:
+
+- 按回车键(keyCode === 13)确认输入的过滤值(第 150-163 行)
+- 简单模式下,回车直接触发 `onChange(value)`
+- 过滤模式下,回车会将值添加到过滤条件中
+- 点击输入框外部关闭建议菜单(通过 `useClickOutside`)
+- 支持点击建议项快速选择
+
+**关于 onChange 回调**:
+
+- 过滤模式:参数为 `Record<string, any>` 类型的过滤条件对象
+- 简单模式:参数为 `string` 类型的关键词
+- 清除时:过滤模式传 `{}`,简单模式传 `''`(第 104-105 行)
+
+**关于 onInputChange 回调**:
+
+- 只在简单模式下生效(第 143-144 行)
+- 每次输入变化都会触发,而 `onChange` 只在回车时触发
+- 用于实时搜索场景
+
+**关于 disabled 状态**:
+
+- 通过 CSS 类 `is-disabled` 控制(第 276 行)
+- 禁用时组件样式会变灰,但源码中未阻止输入
+
+**关于 CSS 类名**:
+
+- 容器类名:`has-value`(有值时)、`is-focused`(聚焦时)、`is-disabled`(禁用时)
+- 标签类名:`filter-tag`
+- 输入框类名:`filter-input`
+- 菜单类名:`suggestion-menu`
+- 菜单项类名:`menu-item`
+- 图标类名:`icon-search`、`icon-clear`、`icon-close-tag`
+
+**关于 filters 同步**:
+
+- 组件内部维护 filters 状态,与 props.filters 同步(第 75-81 行)
+- 使用 `isEqual` 比较避免不必要的更新
+
+:::
+
+## 使用建议
+
+### 合理设计过滤条件
+
+提供常用且必要的过滤条件:
+
+```jsx
+// 推荐: 提供最常用的 3-6 个过滤条件
+const suggestions = [
+  { label: '名称', key: 'name' },
+  { label: '状态', key: 'status', options: statusOptions },
+  { label: '命名空间', key: 'namespace', options: namespaceOptions },
+  { label: '标签', key: 'label' },
+];
+
+// 不推荐: 过多的过滤条件
+// 10+ 个过滤条件会让用户难以选择
+```
+
+### 选项列表优先
+
+对于有限的值使用选项列表:
+
+```jsx
+// 推荐: 使用选项列表
+{
+  label: '状态',
+  key: 'status',
+  options: [
+    { label: '运行中', key: 'Running' },
+    { label: '停止', key: 'Stopped' },
+  ],
+}
+
+// 不推荐: 让用户手动输入固定值
+{
+  label: '状态',
+  key: 'status',
+  // 用户可能输入错误的值
+}
+```
+
+### 使用图标增强识别
+
+为建议项添加图标:
+
+```jsx
+import { Pod, Service, ConfigMap } from '@kubed/icons';
+
+const suggestions = [
+  {
+    label: 'Pod',
+    key: 'pod',
+    customLabel: (
+      <Group spacing="xs">
+        <Pod size={14} />
+        <span>Pod 名称</span>
+      </Group>
+    ),
+  },
+];
+```
+
+### 受控模式管理状态
+
+使用受控模式管理过滤状态:
+
+```jsx
+const [filters, setFilters] = useState({});
+
+const handleChange = (newFilters) => {
+  setFilters(newFilters);
+  // 在这里进行数据过滤
+  fetchData(newFilters);
+};
+
+<FilterInput
+  filters={filters}
+  suggestions={suggestions}
+  onChange={handleChange}
+/>;
+```
+
+### 简单搜索场景使用 simpleMode
+
+不需要复杂过滤时使用简单模式:
+
+```jsx
+// 简单的关键词搜索
+<FilterInput
+  simpleMode
+  placeholder="搜索..."
+  onChange={(keyword) => search(keyword)}
+/>
+```
+
+### 自定义下拉内容
+
+需要特殊选择器时使用自定义下拉:
+
+```jsx
+const datePicker = (
+  <DatePicker onChange={(date) => setFilters({ ...filters, date })} />
+);
+
+const suggestions = [
+  {
+    label: '日期',
+    key: 'date',
+    customDropdown: datePicker,
+  },
+];
+```
+
+### 提供清除功能
+
+允许用户快速清除所有过滤:
+
+```jsx
+const handleClear = () => {
+  setFilters({});
+  // 重新加载数据
+  fetchData();
+};
+
+<FilterInput
+  filters={filters}
+  onChange={setFilters}
+  onClear={handleClear}
+/>;
+```
+
+### 配合数据过滤使用
+
+将过滤条件应用到数据上:
+
+```jsx
+const filteredData = data.filter((item) => {
+  if (filters.status && item.status !== filters.status) return false;
+  if (filters.namespace && item.namespace !== filters.namespace) return false;
+  if (filters.name && !item.name.includes(filters.name)) return false;
+  return true;
+});
+```
+
+### 保存和恢复过滤状态
+
+在需要时保存用户的过滤偏好:
+
+```jsx
+// 保存到 localStorage
+useEffect(() => {
+  localStorage.setItem('podFilters', JSON.stringify(filters));
+}, [filters]);
+
+// 从 localStorage 恢复
+useEffect(() => {
+  const saved = localStorage.getItem('podFilters');
+  if (saved) {
+    setFilters(JSON.parse(saved));
+  }
+}, []);
+```
+
+### 显示过滤结果统计
+
+告知用户当前过滤结果:
+
+```jsx
+<>
+  <FilterInput
+    filters={filters}
+    suggestions={suggestions}
+    onChange={setFilters}
+  />
+  <Text size="sm">
+    找到 {filteredData.length} 个结果
+  </Text>
+</>
+```

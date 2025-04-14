@@ -1,0 +1,526 @@
+---
+sidebar_position: 1
+---
+
+# Banner 横幅
+
+用于在页面顶部展示重要信息的横幅组件。
+
+## 何时使用
+
+- 在页面顶部展示页面标题和说明信息
+- 需要向用户展示相关提示或帮助信息
+- 在详情页面或列表页面提供上下文信息
+
+在 Kube Design 中,Banner 组件提供了丰富的横幅功能:
+
+- **图标支持**:可以添加图标增强视觉效果
+- **标题和描述**:展示页面标题和说明文字
+- **导航集成**:可以嵌入导航标签
+- **提示信息**:支持可折叠的 BannerTip 提示
+
+## 示例
+
+### 基础用法
+
+最基本的横幅用法,包含图标、标题和描述。
+
+```jsx live
+function Demo() {
+  const { Cluster } = KubedIcons;
+
+  return (
+    <Banner
+      icon={<Cluster size={48} />}
+      title="集群节点"
+      description="集群节点提供了当前集群下节点的运行状态,以及可以编辑删除节点"
+    />
+  );
+}
+```
+
+### 不同图标
+
+使用不同图标展示不同类型的页面。
+
+```jsx live
+function Demo() {
+  const { Pod, Service, ConfigMap, Project } = KubedIcons;
+
+  return (
+    <Group direction="column" spacing="md">
+      <Banner
+        icon={<Pod size={48} />}
+        title="容器组"
+        description="容器组 (Pod) 是 Kubernetes 应用程序的基本执行单元"
+      />
+      <Banner
+        icon={<Service size={48} />}
+        title="服务"
+        description="服务 (Service) 定义了访问一组 Pod 的方式"
+      />
+      <Banner
+        icon={<ConfigMap size={48} />}
+        title="配置字典"
+        description="配置字典 (ConfigMap) 用于保存非机密性的配置数据"
+      />
+    </Group>
+  );
+}
+```
+
+### 带导航
+
+在横幅中嵌入导航标签。
+
+```jsx live
+function Demo() {
+  const { Cluster } = KubedIcons;
+
+  const navData = [
+    { label: 'KubeSphere', value: 'kubesphere' },
+    { label: 'Kubernetes', value: 'kubernetes' },
+    { label: 'Jenkins', value: 'jenkins' },
+  ];
+
+  return (
+    <Banner
+      icon={<Cluster size={48} />}
+      title="集群管理"
+      description="管理和监控您的 Kubernetes 集群"
+    >
+      <Navs data={navData} />
+    </Banner>
+  );
+}
+```
+
+### 带提示信息
+
+使用 BannerTip 添加可折叠的提示信息。
+
+```jsx live
+function Demo() {
+  const { Cluster } = KubedIcons;
+
+  return (
+    <Banner
+      icon={<Cluster size={48} />}
+      title="集群节点"
+      description="集群节点提供了当前集群下节点的运行状态"
+    >
+      <BannerTip title="什么是集群节点?" key="node-intro">
+        集群节点是 Kubernetes 集群中的工作机器,可以是物理机或虚拟机。每个节点都由控制平面管理,包含运行 Pod 所需的服务。
+      </BannerTip>
+      <BannerTip title="节点有哪些类型?" key="node-type">
+        节点分为主控 (Master) 节点和工作 (Worker) 节点。Master 节点负责管理集群状态,Worker 节点负责运行应用负载。
+      </BannerTip>
+    </Banner>
+  );
+}
+```
+
+### 不可移除的提示
+
+设置 `removable={false}` 禁止移除提示。
+
+```jsx live
+function Demo() {
+  const { Information } = KubedIcons;
+
+  return (
+    <Banner
+      icon={<Information size={48} />}
+      title="系统公告"
+      description="重要的系统通知和公告"
+    >
+      <BannerTip title="系统维护通知" key="maintenance" removable={false}>
+        系统将于本周六凌晨 2:00-4:00 进行维护升级,届时服务将暂时不可用。请提前做好准备。
+      </BannerTip>
+    </Banner>
+  );
+}
+```
+
+### 带操作按钮的提示
+
+在提示中添加操作按钮。
+
+```jsx live
+function Demo() {
+  const { Cluster } = KubedIcons;
+
+  return (
+    <Banner
+      icon={<Cluster size={48} />}
+      title="集群节点"
+      description="集群节点提供了当前集群下节点的运行状态"
+    >
+      <BannerTip
+        title="如何添加新节点?"
+        key="add-node"
+        removable={false}
+        operations={<Button size="sm">查看文档</Button>}
+      >
+        您可以通过添加节点功能将新的机器加入到集群中,扩展集群的计算能力。
+      </BannerTip>
+      <BannerTip
+        title="如何管理节点污点?"
+        key="node-taint"
+        operations={<Button size="sm" variant="outline">了解更多</Button>}
+      >
+        节点污点 (Taints) 可以阻止某些容器组副本部署至该节点中,与容忍度 (Tolerations) 一起工作确保容器组不会被调度到不合适的节点上。
+      </BannerTip>
+    </Banner>
+  );
+}
+```
+
+### 导航和提示结合
+
+同时包含导航和提示信息。
+
+```jsx live
+function Demo() {
+  const { Project } = KubedIcons;
+
+  const navData = [
+    { label: '全部项目', value: 'all' },
+    { label: '我的项目', value: 'mine' },
+    { label: '已归档', value: 'archived' },
+  ];
+
+  return (
+    <Banner
+      icon={<Project size={48} />}
+      title="项目管理"
+      description="项目用于对资源进行分组管理,可以按项目对资源进行隔离"
+    >
+      <Navs data={navData} />
+      <BannerTip title="什么是项目?" key="project-intro">
+        项目 (Project) 是 KubeSphere 的基本资源隔离单元,对应 Kubernetes 的 Namespace。您可以在项目中创建工作负载、服务等资源。
+      </BannerTip>
+      <BannerTip title="如何创建项目?" key="create-project">
+        点击右上角的"创建"按钮,填写项目名称、描述等信息即可创建新项目。创建后可以设置资源配额和网络策略。
+      </BannerTip>
+    </Banner>
+  );
+}
+```
+
+### 多个提示
+
+展示多个提示信息。
+
+```jsx live
+function Demo() {
+  const { Pod } = KubedIcons;
+
+  return (
+    <Banner
+      icon={<Pod size={48} />}
+      title="容器组"
+      description="容器组是 Kubernetes 中最小的可部署单元"
+    >
+      <BannerTip title="什么是容器组?" key="pod-intro">
+        容器组 (Pod) 是一组共享存储和网络资源的容器集合。它是 Kubernetes 调度的最小单位。
+      </BannerTip>
+      <BannerTip title="容器组的生命周期" key="pod-lifecycle">
+        容器组有多种状态:Pending、Running、Succeeded、Failed、Unknown。了解这些状态有助于排查问题。
+      </BannerTip>
+      <BannerTip title="如何查看容器组日志?" key="pod-logs">
+        选择容器组,点击"日志"按钮即可查看容器的运行日志。也可以使用 kubectl logs 命令查看。
+      </BannerTip>
+      <BannerTip title="如何进入容器终端?" key="pod-terminal">
+        选择容器组,点击"终端"按钮可以进入容器的命令行终端,进行调试和排查问题。
+      </BannerTip>
+    </Banner>
+  );
+}
+```
+
+### 应用部署场景
+
+在应用部署页面的使用示例。
+
+```jsx live
+function Demo() {
+  const { Application } = KubedIcons;
+
+  const navData = [
+    { label: '应用模板', value: 'template' },
+    { label: '自制应用', value: 'custom' },
+    { label: '应用仓库', value: 'repo' },
+  ];
+
+  return (
+    <Banner
+      icon={<Application size={48} />}
+      title="应用管理"
+      description="使用应用模板或 Helm Chart 部署和管理应用"
+    >
+      <Navs data={navData} />
+      <BannerTip title="什么是应用模板?" key="app-template" removable={false}>
+        应用模板基于 Helm Chart 打包,包含了应用的所有 Kubernetes 资源定义和配置。您可以一键部署完整的应用栈。
+      </BannerTip>
+      <BannerTip
+        title="如何创建自制应用?"
+        key="custom-app"
+        operations={<Button size="sm">开始创建</Button>}
+      >
+        自制应用允许您从零开始构建应用,可以添加多个服务组件,配置路由和存储。
+      </BannerTip>
+    </Banner>
+  );
+}
+```
+
+### 自定义样式
+
+通过 className 自定义样式。
+
+```jsx live
+function Demo() {
+  const { Setting } = KubedIcons;
+
+  return (
+    <Banner
+      icon={<Setting size={48} />}
+      title="系统设置"
+      description="配置系统全局参数和偏好设置"
+      style={{ backgroundColor: '#f5f7fa' }}
+    >
+      <BannerTip title="如何修改系统语言?" key="language">
+        在系统设置中选择"语言"选项,选择您需要的语言即可。系统支持中文、英文等多种语言。
+      </BannerTip>
+    </Banner>
+  );
+}
+```
+
+## API
+
+### Banner
+
+| 属性        | 说明           | 类型            | 默认值 |
+| ----------- | -------------- | --------------- | ------ |
+| icon        | 横幅图标       | `ReactNode`     | -      |
+| title       | 横幅标题       | `ReactNode`     | -      |
+| description | 横幅描述       | `ReactNode`     | -      |
+| children    | 子元素(Navs 或 BannerTip) | `ReactNode`     | -      |
+| className   | 自定义类名     | `string`        | -      |
+| style       | 自定义样式     | `CSSProperties` | -      |
+
+### BannerTip
+
+| 属性       | 说明               | 类型                     | 默认值  |
+| ---------- | ------------------ | ------------------------ | ------- |
+| key        | 提示的唯一标识     | `string`                 | **必需**|
+| title      | 提示标题           | `ReactNode`              | -       |
+| children   | 提示内容           | `ReactNode`              | -       |
+| removable  | 是否可以移除       | `boolean`                | `true`  |
+| operations | 操作按钮           | `ReactNode`              | -       |
+
+:::info
+
+**关于 Banner 组成**:
+
+- Banner 基于 Card 组件构建(Banner.tsx 第 98 行),设置 `padding={0}`
+- Banner 由三部分组成:
+  - BannerTitle: 包含图标、标题和描述(第 99-107 行)
+  - BannerNavs: 导航区域,背景色为 `accents_1`(第 109 行)
+  - BannerExtra: 提示区域,包含所有 BannerTip(第 108-128 行)
+- 额外内容(children)会自动分类:BannerTip 和其他元素(如 Navs)
+- BannerTip 会自动排列在导航下方
+
+**关于图标区域**:
+
+- 图标容器尺寸固定为 60x60px(BannerIcon: 第 23-24 行)
+- 图标本身尺寸为 48x48px(第 27-30 行)
+- 特殊的圆角设计:`border-radius: 100px 0 100px 100px`(第 19 行,右上角为直角)
+- 背景色为 `accents_1`,内边距 6px
+- 与标题区域间距 12px(margin-right)
+
+**关于标题样式**:
+
+- 标题使用 Text 组件,variant="h3",size=24,color="accents_8"(第 102-103 行)
+- 标题有文字阴影效果:`text-shadow: 0 4px 8px rgba(accents_8, 0.1)`(第 38 行)
+- 描述文字颜色为 `accents_5`(第 105 行)
+- 标题区域内边距:`padding: 24px 20px 21px`(第 14 行)
+
+**关于 BannerTip**:
+
+- BannerTip 必须设置 `key` 属性作为唯一标识(第 62 行)
+- 点击 BannerTip 会展开/折叠内容(通过 onClick 回调)
+- 展开时显示向下箭头 ChevronDown,折叠时显示向右箭头 ChevronRight(BannerTip.tsx 第 97 行)
+- 默认可以通过关闭按钮移除,设置 `removable={false}` 禁用(第 85 行默认值为 true)
+- 可以通过 `operations` 添加自定义操作按钮,显示在右侧(第 102-104 行)
+
+**关于状态管理**:
+
+- Banner 使用 useState 管理活动的提示 key(Banner.tsx 第 68 行)
+- 同一时间只能有一个 BannerTip 处于展开状态(第 70-76 行逻辑)
+- 移除的 BannerTip 会被记录在 removedTipKeys 数组中(第 69、78-81 行)
+- 移除的提示通过 `removedTipKeys.indexOf(child.key) < 0` 过滤(第 89 行)
+- 状态在组件生命周期内持久化,刷新页面后重置
+
+**关于子元素处理**:
+
+- Banner 会遍历 children,将 BannerTip 类型的子元素单独提取(第 86-95 行)
+- 通过 `child.type === BannerTip` 判断是否为 BannerTip 组件(第 88 行)
+- 其他类型的子元素(如 Navs)放入 others 数组,渲染在 BannerNavs 中(第 109 行)
+- BannerTip 通过 map 渲染,传入 open、onClick、onRemove 等属性(第 110-127 行)
+
+**关于 BannerTip 样式**:
+
+- BannerTip 内边距:`padding: 12px 60px 12px 52px`(BannerTip.tsx 第 9 行)
+- 上边框:`border-top: 1px solid accents_2`(第 11 行)
+- hover 效果:背景变为 `accents_0`(第 15-17 行)
+- 图标位置:绝对定位 `left: 24px, top: 11px`(第 21-23 行)
+- 操作区域:绝对定位在右侧,垂直居中(第 36-42 行)
+- 关闭图标大小:20px(第 104 行)
+
+**关于展开动画**:
+
+- 展开时直接显示内容,无额外动画
+- 内容通过条件渲染:`{open && <Text>...</Text>}`(BannerTip.tsx 第 100 行)
+- 图标切换有 hover 效果,背景色变化(第 44-47 行)
+
+**关于移除操作**:
+
+- 点击关闭图标会触发 onRemove 回调,传入 tipKey(第 90-93 行)
+- 使用 stopPropagation 阻止事件冒泡,避免触发 onClick(第 91 行)
+- Banner 收到移除通知后更新 removedTipKeys 状态(Banner.tsx 第 78-81 行)
+- 移除后的 BannerTip 在重新渲染时被过滤掉
+
+:::
+
+
+## 使用建议
+
+### 保持描述简洁
+
+横幅描述应该简洁明了:
+
+```jsx
+// 推荐: 简洁描述
+<Banner
+  title="集群节点"
+  description="管理和监控集群中的所有节点"
+/>
+
+// 不推荐: 描述过长
+<Banner
+  title="集群节点"
+  description="集群节点提供了当前集群下节点的运行状态,以及可以编辑删除节点,同时还可以查看节点的详细信息..."
+/>
+```
+
+### 选择合适的图标
+
+使用与内容相关的图标:
+
+```jsx
+import { Pod, Service, Cluster, Setting } from '@kubed/icons';
+
+// 容器组页面
+<Banner icon={<Pod size={48} />} title="容器组" />
+
+// 服务页面
+<Banner icon={<Service size={48} />} title="服务" />
+
+// 集群页面
+<Banner icon={<Cluster size={48} />} title="集群" />
+```
+
+### 提示信息不宜过多
+
+保持提示数量在合理范围:
+
+```jsx
+// 推荐: 2-4 个提示
+<Banner>
+  <BannerTip key="tip1">...</BannerTip>
+  <BannerTip key="tip2">...</BannerTip>
+  <BannerTip key="tip3">...</BannerTip>
+</Banner>
+
+// 不推荐: 提示过多,考虑使用文档链接
+<Banner>
+  {/* 5+ 个提示 */}
+</Banner>
+```
+
+### 重要提示设为不可移除
+
+对于重要的系统通知,设置不可移除:
+
+```jsx
+<BannerTip
+  title="重要通知"
+  key="important"
+  removable={false}
+>
+  系统维护通知内容...
+</BannerTip>
+```
+
+### 添加操作按钮
+
+为用户提供快速操作入口:
+
+```jsx
+<BannerTip
+  title="如何开始?"
+  key="getting-started"
+  operations={<Button size="sm">查看教程</Button>}
+>
+  点击查看教程了解更多...
+</BannerTip>
+```
+
+### 配合导航使用
+
+在需要分类展示时添加导航:
+
+```jsx
+<Banner title="资源管理" description="...">
+  <Navs data={categories} />
+  <BannerTip key="tip">...</BannerTip>
+</Banner>
+```
+
+### 确保 key 唯一
+
+每个 BannerTip 必须有唯一的 key:
+
+```jsx
+<Banner>
+  <BannerTip key="tip-1">提示 1</BannerTip>
+  <BannerTip key="tip-2">提示 2</BannerTip>
+  <BannerTip key="tip-3">提示 3</BannerTip>
+</Banner>
+```
+
+### 页面级使用
+
+Banner 通常用于页面顶部:
+
+```jsx
+function PageComponent() {
+  return (
+    <div>
+      <Banner
+        icon={<Cluster />}
+        title="页面标题"
+        description="页面描述"
+      >
+        <BannerTip key="help">帮助信息</BannerTip>
+      </Banner>
+      <div className="page-content">
+        {/* 页面内容 */}
+      </div>
+    </div>
+  );
+}
+```

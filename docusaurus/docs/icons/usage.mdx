@@ -1,0 +1,107 @@
+---
+sidebar_position: 2
+---
+
+# 图标用法
+
+了解如何在 Kube Design 应用程序中使用图标。
+
+## 安装
+
+图标包含在 `@kubed/icons` 包中：
+
+```bash
+npm install @kubed/icons
+# or
+yarn add @kubed/icons
+# or
+pnpm add @kubed/icons
+```
+
+## 基本用法
+
+为了获得更好的摇树优化，逐个导入图标：
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="md">
+      <Add size={24} />
+      <Close size={24} />
+      <Check size={24} />
+      <Delete size={24} />
+    </Group>
+  );
+}
+```
+
+## 图标大小
+
+使用 `size` 属性控制图标大小：
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="lg">
+      <Add size={16} />
+      <Add size={24} />
+      <Add size={32} />
+      <Add size={48} />
+    </Group>
+  );
+}
+```
+
+## 图标颜色
+
+图标继承当前的文本颜色：
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="md">
+      <Add size={32} style={{ color: '#55bc8a' }} />
+      <Add size={32} style={{ color: '#329dce' }} />
+      <Add size={32} style={{ color: '#f5a623' }} />
+      <Add size={32} style={{ color: '#ca2621' }} />
+    </Group>
+  );
+}
+```
+
+## 在按钮中使用
+
+图标与 Button 组件完美配合使用：
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="md">
+      <Button leftIcon={<Add />} color="primary">
+        Add Item
+      </Button>
+      <Button rightIcon={<Delete />} color="error">
+        Delete
+      </Button>
+      <Button variant="outline">
+        <Check />
+      </Button>
+    </Group>
+  );
+}
+```
+
+## 可用图标
+
+Kube Design 包含数百个图标。查看 [概览](/docs/icons/overview) 了解完整列表。
+
+## API
+
+### 图标属性
+
+| Property | Description | Type | Default |
+|----------|-------------|------|---------|
+| size | 图标大小（像素） | `number \| string` | `16` |
+| color | 图标颜色（CSS 颜色值） | `string` | `'currentColor'` |
+| className | 额外的 CSS 类 | `string` | - |
+| style | 内联样式 | `CSSProperties` | - |

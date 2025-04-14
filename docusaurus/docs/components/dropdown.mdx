@@ -1,0 +1,711 @@
+---
+sidebar_position: 1
+---
+
+# Dropdown 下拉菜单
+
+向下弹出的列表。
+
+## 何时使用
+
+- 当页面上的操作命令过多时,用此组件可以收纳操作元素
+- 点击或移入触发器,会出现一个下拉菜单
+- 适用于在空间有限的情况下展示多个选项或操作
+
+在 Kube Design 中,Dropdown 组件基于 Tooltip 封装,提供了灵活的下拉菜单功能:
+
+- **结合 Menu 使用**:与 Menu 组件配合使用,轻松创建下拉菜单
+- **多种触发方式**:支持点击、悬停等触发方式
+- **灵活定位**:支持 12 个方向的弹出位置,以及自动定位
+- **受控模式**:支持通过 visible 属性控制显示隐藏
+
+## 示例
+
+### 基础用法
+
+最基本的下拉菜单,点击触发下拉列表。
+
+```jsx live
+function Demo() {
+  const { More } = KubedIcons;
+
+  const menu = (
+    <Menu>
+      <MenuItem icon={<More />}>选项 1</MenuItem>
+      <MenuItem icon={<More />}>选项 2</MenuItem>
+      <MenuItem icon={<More />}>选项 3</MenuItem>
+    </Menu>
+  );
+
+  return (
+    <Dropdown content={menu}>
+      <Button>下拉菜单</Button>
+    </Dropdown>
+  );
+}
+```
+
+### 带图标的菜单
+
+菜单项可以包含图标,提供更好的视觉效果。
+
+```jsx live
+function Demo() {
+  const { Add, Pen, Stop, Trash } = KubedIcons;
+
+  const menu = (
+    <Menu>
+      <MenuItem icon={<Add />}>创建</MenuItem>
+      <MenuItem icon={<Pen />}>编辑</MenuItem>
+      <MenuItem icon={<Stop />}>停止</MenuItem>
+      <MenuItem icon={<Trash />}>删除</MenuItem>
+    </Menu>
+  );
+
+  return (
+    <Dropdown content={menu}>
+      <Button>操作</Button>
+    </Dropdown>
+  );
+}
+```
+
+### 菜单分组
+
+使用 MenuLabel 和 Divider 对菜单项进行分组。
+
+```jsx live
+function Demo() {
+  const { Add, Pen, Stop, Trash, Download, Upload } = KubedIcons;
+
+  const menu = (
+    <Menu>
+      <MenuLabel>编辑操作</MenuLabel>
+      <MenuItem icon={<Add />}>创建</MenuItem>
+      <MenuItem icon={<Pen />}>编辑</MenuItem>
+      <Divider />
+      <MenuLabel>文件操作</MenuLabel>
+      <MenuItem icon={<Upload />}>上传</MenuItem>
+      <MenuItem icon={<Download />}>下载</MenuItem>
+      <Divider />
+      <MenuLabel>危险操作</MenuLabel>
+      <MenuItem icon={<Stop />}>停止</MenuItem>
+      <MenuItem icon={<Trash />}>删除</MenuItem>
+    </Menu>
+  );
+
+  return (
+    <Dropdown content={menu}>
+      <Button>更多操作</Button>
+    </Dropdown>
+  );
+}
+```
+
+### 弹出位置
+
+支持 12 个不同的弹出位置。
+
+```jsx live
+function Demo() {
+  const positions = [
+    'top-start',
+    'top',
+    'top-end',
+    'bottom-start',
+    'bottom',
+    'bottom-end',
+    'left-start',
+    'left',
+    'left-end',
+    'right-start',
+    'right',
+    'right-end',
+  ];
+
+  const menu = (
+    <Menu>
+      <MenuItem>选项 1</MenuItem>
+      <MenuItem>选项 2</MenuItem>
+      <MenuItem>选项 3</MenuItem>
+    </Menu>
+  );
+
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+      {positions.map((pos) => (
+        <Dropdown key={pos} content={menu} placement={pos}>
+          <Button size="sm">{pos}</Button>
+        </Dropdown>
+      ))}
+    </div>
+  );
+}
+```
+
+### 触发方式
+
+支持点击和悬停两种触发方式。
+
+```jsx live
+function Demo() {
+  const menu = (
+    <Menu>
+      <MenuItem>选项 1</MenuItem>
+      <MenuItem>选项 2</MenuItem>
+      <MenuItem>选项 3</MenuItem>
+    </Menu>
+  );
+
+  return (
+    <Group spacing="md">
+      <Dropdown content={menu} trigger="click">
+        <Button>点击触发</Button>
+      </Dropdown>
+      <Dropdown content={menu} trigger="mouseenter">
+        <Button>悬停触发</Button>
+      </Dropdown>
+    </Group>
+  );
+}
+```
+
+### 禁用菜单项
+
+菜单项可以设置为禁用状态。
+
+```jsx live
+function Demo() {
+  const { Add, Pen, Stop, Trash } = KubedIcons;
+
+  const menu = (
+    <Menu>
+      <MenuItem icon={<Add />}>创建</MenuItem>
+      <MenuItem icon={<Pen />} disabled>
+        编辑(禁用)
+      </MenuItem>
+      <MenuItem icon={<Stop />}>停止</MenuItem>
+      <MenuItem icon={<Trash />} disabled>
+        删除(禁用)
+      </MenuItem>
+    </Menu>
+  );
+
+  return (
+    <Dropdown content={menu}>
+      <Button>操作</Button>
+    </Dropdown>
+  );
+}
+```
+
+### 受控模式
+
+通过 `visible` 属性控制下拉菜单的显示和隐藏。
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+
+  const menu = (
+    <Menu>
+      <MenuItem onClick={() => setVisible(false)}>选项 1</MenuItem>
+      <MenuItem onClick={() => setVisible(false)}>选项 2</MenuItem>
+      <MenuItem onClick={() => setVisible(false)}>选项 3</MenuItem>
+    </Menu>
+  );
+
+  return (
+    <Group spacing="md">
+      <Dropdown content={menu} visible={visible}>
+        <Button>下拉菜单</Button>
+      </Dropdown>
+      <Button onClick={() => setVisible(!visible)}>
+        {visible ? '关闭' : '打开'}菜单
+      </Button>
+    </Group>
+  );
+}
+```
+
+### 图标按钮触发
+
+使用图标按钮作为触发器。
+
+```jsx live
+function Demo() {
+  const { More, Add, Pen, Stop, Trash } = KubedIcons;
+
+  const menu = (
+    <Menu>
+      <MenuItem icon={<Add />}>创建</MenuItem>
+      <MenuItem icon={<Pen />}>编辑</MenuItem>
+      <MenuItem icon={<Stop />}>停止</MenuItem>
+      <MenuItem icon={<Trash />}>删除</MenuItem>
+    </Menu>
+  );
+
+  return (
+    <Dropdown content={menu}>
+      <Button variant="text" size="sm">
+        <More size={16} />
+      </Button>
+    </Dropdown>
+  );
+}
+```
+
+### 自定义宽度
+
+通过 `maxWidth` 属性设置下拉菜单的宽度。
+
+```jsx live
+function Demo() {
+  const menu = (
+    <Menu width={300}>
+      <MenuItem>这是一个比较宽的下拉菜单</MenuItem>
+      <MenuItem>可以容纳更多内容</MenuItem>
+      <MenuItem>提供更好的阅读体验</MenuItem>
+    </Menu>
+  );
+
+  return (
+    <Dropdown content={menu} maxWidth={300}>
+      <Button>自定义宽度</Button>
+    </Dropdown>
+  );
+}
+```
+
+### 自定义内容
+
+下拉菜单的内容可以是任何 React 组件,不限于 Menu。
+
+```jsx live
+function Demo() {
+  const content = (
+    <div style={{ padding: '12px', width: '200px' }}>
+      <Text variant="h6" style={{ marginBottom: '8px' }}>
+        自定义内容
+      </Text>
+      <Text size="sm" color="secondary" style={{ marginBottom: '12px' }}>
+        这里可以放置任何自定义内容
+      </Text>
+      <Group spacing="xs">
+        <Button size="sm" color="secondary">
+          确定
+        </Button>
+        <Button size="sm" variant="outline">
+          取消
+        </Button>
+      </Group>
+    </div>
+  );
+
+  return (
+    <Dropdown content={content}>
+      <Button>自定义内容</Button>
+    </Dropdown>
+  );
+}
+```
+
+### 嵌套下拉菜单
+
+下拉菜单可以嵌套使用。
+
+```jsx live
+function Demo() {
+  const { More, Add, Pen } = KubedIcons;
+
+  const submenu = (
+    <Menu>
+      <MenuItem>子选项 1</MenuItem>
+      <MenuItem>子选项 2</MenuItem>
+      <MenuItem>子选项 3</MenuItem>
+    </Menu>
+  );
+
+  const menu = (
+    <Menu>
+      <MenuItem icon={<Add />}>创建</MenuItem>
+      <MenuItem icon={<Pen />}>编辑</MenuItem>
+      <Dropdown content={submenu} placement="right-start" trigger="mouseenter">
+        <MenuItem icon={<More />}>更多选项</MenuItem>
+      </Dropdown>
+    </Menu>
+  );
+
+  return (
+    <Dropdown content={menu}>
+      <Button>嵌套菜单</Button>
+    </Dropdown>
+  );
+}
+```
+
+### 不同场景应用
+
+展示 Dropdown 在不同场景下的应用。
+
+```jsx live
+function Demo() {
+  const { More, Start, Stop, Refresh, Trash } = KubedIcons;
+
+  const podMenu = (
+    <Menu>
+      <MenuLabel>Pod 操作</MenuLabel>
+      <MenuItem icon={<Start />}>启动</MenuItem>
+      <MenuItem icon={<Stop />}>停止</MenuItem>
+      <MenuItem icon={<Refresh />}>重启</MenuItem>
+      <Divider />
+      <MenuItem icon={<Trash />}>删除</MenuItem>
+    </Menu>
+  );
+
+  return (
+    <Group direction="column" spacing="md" align="start">
+      <Card style={{ padding: '16px', width: '300px' }}>
+        <Group position="apart">
+          <div>
+            <Text variant="h6">nginx-deployment</Text>
+            <Badge variant="dot" color="success" style={{ marginTop: '4px' }}>
+              Running
+            </Badge>
+          </div>
+          <Dropdown content={podMenu}>
+            <Button variant="text" size="sm">
+              <More size={16} />
+            </Button>
+          </Dropdown>
+        </Group>
+      </Card>
+    </Group>
+  );
+}
+```
+
+## API
+
+### Dropdown
+
+Dropdown 继承了 Tooltip 的所有属性,并针对下拉菜单场景进行了优化:
+
+| 属性      | 说明           | 类型                                                    | 默认值     |
+| --------- | -------------- | ------------------------------------------------------- | ---------- |
+| content   | 下拉菜单内容   | `ReactNode`                                             | -          |
+| trigger   | 触发方式       | `string`                                                | `'click'`  |
+| placement | 弹出位置       | `'top' \| 'bottom' \| 'left' \| 'right' \| 'top-start' \| 'auto' \| ...` | `'bottom'` |
+| visible   | 手动控制显示   | `boolean`                                               | -          |
+| hideOnClick | 点击菜单项后是否隐藏 | `boolean`                                       | `true`     |
+| maxWidth  | 最大宽度       | `number \| string`                                      | `210`      |
+| arrow     | 是否显示箭头   | `boolean`                                               | `false`    |
+| interactive | 是否可交互   | `boolean`                                               | `true`     |
+| animation | 动画效果       | `string`                                                | `'shift-away'` |
+| disabled  | 是否禁用       | `boolean`                                               | `false`    |
+| offset    | 偏移量 [skidding, distance] | `[number, number]`                                | `[0, 10]`  |
+| onMount   | 组件挂载时的回调 | `(instance: any) => void`                              | -          |
+| className | 自定义类名     | `string`                                                | -          |
+| children  | 触发元素       | `ReactElement`                                          | **必需**   |
+
+### placement 可选值
+
+支持 12 个方向,另外还支持自动定位:
+
+**基础方向**:
+- `top`, `bottom`, `left`, `right`
+
+**扩展方向**:
+- `top-start`, `top-end`
+- `bottom-start`, `bottom-end`
+- `left-start`, `left-end`
+- `right-start`, `right-end`
+
+**自动定位**:
+- `auto`: 自动选择最佳位置
+- `auto-start`: 自动选择,起始对齐
+- `auto-end`: 自动选择,结束对齐
+
+:::info
+
+**关于 Dropdown 与 Tooltip**:
+
+- Dropdown 基于 Tooltip 实现,但做了针对下拉菜单的优化
+- Dropdown 默认 `interactive={true}`,支持与菜单交互
+- Dropdown 默认 `arrow={false}`,不显示箭头
+- Dropdown 默认 `trigger='click'`,点击触发
+
+**关于 hideOnClick**:
+
+- 默认为 `true`,点击菜单项后自动隐藏下拉菜单
+- 设置为 `false` 时,点击菜单项不会隐藏菜单
+- 在受控模式下,需要手动控制菜单的隐藏
+
+**关于菜单宽度**:
+
+- Menu 组件的 `width` 属性控制菜单宽度
+- Dropdown 的 `maxWidth` 属性控制最大宽度
+- 两者需要配合使用以达到最佳效果
+
+**关于触发方式**:
+
+- `trigger` 是字符串类型,支持多个事件名,用空格分隔
+- 常用值:`'click'`(点击,默认)、`'mouseenter'`(悬停)、`'focus'`(聚焦)
+- 设置为 `'manual'` 时需要手动控制 `visible` 属性
+- 可以组合多个触发方式,如 `'click mouseenter'`
+
+**关于动画**:
+
+- 默认动画为 `'shift-away'`,适合下拉菜单场景
+- 与 Tooltip 的默认动画 `'shift-toward-subtle'` 不同
+- 可以设置其他动画效果
+
+**关于偏移量**:
+
+- `offset` 接受数组 `[skidding, distance]`
+- `skidding`: 沿着参考元素的偏移(水平或垂直)
+- `distance`: 与参考元素的距离
+- 默认值为 `[0, 10]`,表示距离参考元素 10 像素
+
+:::
+
+## 使用建议
+
+### 菜单项不要过多
+
+保持菜单项数量适中,避免滚动:
+
+```jsx
+// 推荐: 5-8 个菜单项
+<Dropdown content={
+  <Menu>
+    <MenuItem>选项 1</MenuItem>
+    <MenuItem>选项 2</MenuItem>
+    <MenuItem>选项 3</MenuItem>
+    <MenuItem>选项 4</MenuItem>
+    <MenuItem>选项 5</MenuItem>
+  </Menu>
+}>
+
+// 不推荐: 过多菜单项,考虑使用分组或分页
+<Dropdown content={
+  <Menu>
+    {/* 15+ 个菜单项 */}
+  </Menu>
+}>
+```
+
+### 使用分组组织菜单
+
+使用 MenuLabel 和 Divider 组织复杂菜单:
+
+```jsx
+<Dropdown
+  content={
+    <Menu>
+      <MenuLabel>基础操作</MenuLabel>
+      <MenuItem>创建</MenuItem>
+      <MenuItem>编辑</MenuItem>
+      <Divider />
+      <MenuLabel>危险操作</MenuLabel>
+      <MenuItem>删除</MenuItem>
+    </Menu>
+  }
+>
+  <Button>操作</Button>
+</Dropdown>
+```
+
+### 危险操作放在底部
+
+将删除等危险操作放在菜单底部:
+
+```jsx
+<Dropdown
+  content={
+    <Menu>
+      <MenuItem>查看</MenuItem>
+      <MenuItem>编辑</MenuItem>
+      <MenuItem>复制</MenuItem>
+      <Divider />
+      <MenuItem icon={<Trash />}>删除</MenuItem>
+    </Menu>
+  }
+>
+  <Button>操作</Button>
+</Dropdown>
+```
+
+### 禁用不可用的选项
+
+而不是隐藏它们:
+
+```jsx
+<Dropdown
+  content={
+    <Menu>
+      <MenuItem>启动</MenuItem>
+      <MenuItem disabled>停止(Pod 未运行)</MenuItem>
+      <MenuItem>重启</MenuItem>
+    </Menu>
+  }
+>
+  <Button>Pod 操作</Button>
+</Dropdown>
+```
+
+### 图标提供视觉辅助
+
+为菜单项添加图标提升可读性:
+
+```jsx
+import { Add, Pen, Trash } from '@kubed/icons';
+
+<Dropdown
+  content={
+    <Menu>
+      <MenuItem icon={<Add />}>创建</MenuItem>
+      <MenuItem icon={<Pen />}>编辑</MenuItem>
+      <MenuItem icon={<Trash />}>删除</MenuItem>
+    </Menu>
+  }
+>
+  <Button>操作</Button>
+</Dropdown>;
+```
+
+### 使用 rightSection 添加额外信息
+
+可以在菜单项右侧显示快捷键、徽章等:
+
+```jsx
+<Dropdown
+  content={
+    <Menu>
+      <MenuItem icon={<Add />} rightSection="⌘N">新建</MenuItem>
+      <MenuItem icon={<Pen />} rightSection="⌘E">编辑</MenuItem>
+      <MenuItem icon={<Save />} rightSection="⌘S">保存</MenuItem>
+    </Menu>
+  }
+>
+  <Button>文件</Button>
+</Dropdown>
+```
+
+### 按钮样式选择
+
+根据使用场景选择合适的按钮样式:
+
+```jsx
+// 卡片右上角: 使用图标按钮
+<Dropdown content={menu}>
+  <Button variant="text" size="sm">
+    <More />
+  </Button>
+</Dropdown>
+
+// 工具栏: 使用带文字的按钮
+<Dropdown content={menu}>
+  <Button>操作</Button>
+</Dropdown>
+
+// 表格行: 使用小号图标按钮
+<Dropdown content={menu}>
+  <Button variant="text" size="xs">
+    <More size={14} />
+  </Button>
+</Dropdown>
+```
+
+### 受控模式的使用
+
+需要编程控制时使用受控模式:
+
+```jsx
+const [visible, setVisible] = useState(false);
+
+const handleMenuClick = (action) => {
+  // 执行操作
+  executeAction(action);
+  // 关闭菜单
+  setVisible(false);
+};
+
+<Dropdown
+  visible={visible}
+  content={
+    <Menu>
+      <MenuItem onClick={() => handleMenuClick('create')}>创建</MenuItem>
+      <MenuItem onClick={() => handleMenuClick('edit')}>编辑</MenuItem>
+    </Menu>
+  }
+>
+  <Button onClick={() => setVisible(true)}>操作</Button>
+</Dropdown>;
+```
+
+### 嵌套菜单的使用
+
+对于复杂的菜单结构,可以使用嵌套:
+
+```jsx
+const submenu = (
+  <Menu>
+    <MenuItem>导出为 PDF</MenuItem>
+    <MenuItem>导出为 Excel</MenuItem>
+    <MenuItem>导出为 CSV</MenuItem>
+  </Menu>
+);
+
+<Dropdown
+  content={
+    <Menu>
+      <MenuItem>新建</MenuItem>
+      <MenuItem>编辑</MenuItem>
+      <Dropdown content={submenu} placement="right-start" trigger="mouseenter">
+        <MenuItem>导出</MenuItem>
+      </Dropdown>
+    </Menu>
+  }
+>
+  <Button>文件</Button>
+</Dropdown>;
+```
+
+### 自定义内容
+
+对于非标准菜单,可以使用自定义内容:
+
+```jsx
+<Dropdown
+  content={
+    <div style={{ padding: '12px', width: '250px' }}>
+      <Text variant="h6">用户信息</Text>
+      <Text size="sm">admin@example.com</Text>
+      <Divider style={{ margin: '8px 0' }} />
+      <Button size="sm" fullWidth>
+        退出登录
+      </Button>
+    </div>
+  }
+>
+  <Avatar>Admin</Avatar>
+</Dropdown>
+```
+
+### Dropdown vs Select
+
+选择合适的组件:
+
+```jsx
+// 操作菜单: 使用 Dropdown
+<Dropdown content={<Menu>...</Menu>}>
+  <Button>操作</Button>
+</Dropdown>
+
+// 表单选择: 使用 Select
+<Select>
+  <option>选项 1</option>
+  <option>选项 2</option>
+</Select>
+```

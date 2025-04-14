@@ -1,10 +1,10 @@
 import React from 'react';
-import { checkAccessibility, mountWithTheme } from '@kubed/tests';
+import { multipleCheckRTLAccessibility, renderWithTheme } from '@kubed/tests';
 import { Menu, MenuItem } from './Menu';
 
 describe('@kubed/components/Menu', () => {
-  checkAccessibility([
-    mountWithTheme(
+  multipleCheckRTLAccessibility([
+    renderWithTheme(
       <Menu>
         <MenuItem>test-1</MenuItem>
         <MenuItem>test-2</MenuItem>

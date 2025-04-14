@@ -1,15 +1,15 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import { ThemeProvider } from 'styled-components';
-import { themeUtils } from '@kubed/components';
+import { screen } from '@testing-library/react';
+import { renderWithTheme } from './renderWithTheme';
 
 export function itSupportsOthers(Component: React.ElementType, requiredProps: Record<string, any>) {
   it('supports ...others props', () => {
-    const element = shallow(
-      <ThemeProvider theme={themeUtils.getPresets()[0]}>
-        <Component {...requiredProps} data-other-attribute="test" />
-      </ThemeProvider>
+    const testId = 'test-component';
+    renderWithTheme(
+      <Component {...requiredProps} data-testid={testId} data-other-attribute="test" />
     );
-    expect(element.render().attr('data-other-attribute')).toBe('test');
+
+    const element = screen.getByTestId(testId);
+    expect(element).toHaveAttribute('data-other-attribute', 'test');
   });
 }

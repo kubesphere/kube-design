@@ -1,0 +1,671 @@
+---
+sidebar_position: 1
+---
+
+# Navs 导航标签
+
+选项卡切换组件。
+
+## 何时使用
+
+- 用于在同一个页面中在不同视图之间切换
+- 选项卡数量较少时(建议不超过 6 个)
+- 需要快速在内容区域之间切换
+
+在 Kube Design 中,Navs 组件提供了灵活的导航标签功能:
+
+- **两种样式**:提供 pills 和 line 两种样式
+- **流畅动画**:选项卡切换时带有流畅的过渡动画
+- **响应式**:支持自适应宽度和全宽模式
+- **可定制**:支持自定义颜色、尺寸和圆角
+
+## 示例
+
+### 基础用法
+
+最基本的导航标签用法。
+
+```jsx live
+function Demo() {
+  const data = [
+    { label: '容器组', value: 'pods' },
+    { label: '服务', value: 'services' },
+    { label: '配置', value: 'configs' },
+  ];
+
+  return <Navs data={data} />;
+}
+```
+
+### 样式变体
+
+Navs 提供两种样式:pills(胶囊)和 line(下划线)。
+
+```jsx live
+function Demo() {
+  const data = [
+    { label: '工作负载', value: 'workloads' },
+    { label: '网络', value: 'network' },
+    { label: '存储', value: 'storage' },
+  ];
+
+  return (
+    <Group direction="column" spacing="xl">
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Pills 样式(默认):
+        </Text>
+        <Navs data={data} variant="pills" />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Line 样式:
+        </Text>
+        <Navs data={data} variant="line" />
+      </div>
+    </Group>
+  );
+}
+```
+
+### 受控模式
+
+通过 `value` 和 `onChange` 属性控制选中的标签。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('pods');
+
+  const data = [
+    { label: 'Pods', value: 'pods' },
+    { label: 'Services', value: 'services' },
+    { label: 'ConfigMaps', value: 'configmaps' },
+  ];
+
+  return (
+    <Group direction="column" spacing="md">
+      <Navs data={data} value={value} onChange={setValue} />
+      <Text>当前选中: {value}</Text>
+    </Group>
+  );
+}
+```
+
+### 不同尺寸
+
+通过 `size` 属性设置导航标签的大小。
+
+```jsx live
+function Demo() {
+  const data = [
+    { label: 'KubeSphere', value: 'ks' },
+    { label: 'Kubernetes', value: 'k8s' },
+    { label: 'Jenkins', value: 'jenkins' },
+  ];
+
+  return (
+    <Group direction="column" spacing="xl">
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          小号(sm):
+        </Text>
+        <Navs data={data} size="sm" />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          中号(md):
+        </Text>
+        <Navs data={data} size="md" />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          大号(lg):
+        </Text>
+        <Navs data={data} size="lg" />
+      </div>
+    </Group>
+  );
+}
+```
+
+### 自定义颜色
+
+通过 `color` 属性设置激活状态的颜色。
+
+```jsx live
+function Demo() {
+  const data = [
+    { label: 'KubeSphere', value: 'ks' },
+    { label: 'Kubernetes', value: 'k8s' },
+    { label: 'Jenkins', value: 'jenkins' },
+  ];
+
+  return (
+    <Group direction="column" spacing="xl">
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Pills 样式 - Primary:
+        </Text>
+        <Navs data={data} variant="pills" color="primary" />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Line 样式 - Primary:
+        </Text>
+        <Navs data={data} variant="line" color="primary" />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Pills 样式 - Success:
+        </Text>
+        <Navs data={data} variant="pills" color="success" />
+      </div>
+    </Group>
+  );
+}
+```
+
+### 全宽模式
+
+使用 `fullWidth` 属性使导航标签占据容器的全部宽度。
+
+```jsx live
+function Demo() {
+  const data = [
+    { label: 'Pods', value: 'pods' },
+    { label: 'Services', value: 'services' },
+    { label: 'ConfigMaps', value: 'configmaps' },
+  ];
+
+  return (
+    <Group direction="column" spacing="xl">
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          自适应宽度(默认):
+        </Text>
+        <Navs data={data} />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          全宽模式:
+        </Text>
+        <Navs data={data} fullWidth />
+      </div>
+    </Group>
+  );
+}
+```
+
+### 自定义圆角
+
+通过 `radius` 属性设置圆角大小。
+
+```jsx live
+function Demo() {
+  const data = [
+    { label: 'KubeSphere', value: 'ks' },
+    { label: 'Kubernetes', value: 'k8s' },
+    { label: 'Jenkins', value: 'jenkins' },
+  ];
+
+  return (
+    <Group direction="column" spacing="xl">
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          小圆角(sm):
+        </Text>
+        <Navs data={data} radius="sm" />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          中圆角(md):
+        </Text>
+        <Navs data={data} radius="md" />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          大圆角(lg,默认):
+        </Text>
+        <Navs data={data} radius="lg" />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          超大圆角(xl):
+        </Text>
+        <Navs data={data} radius="xl" />
+      </div>
+    </Group>
+  );
+}
+```
+
+### 带徽标的导航
+
+标签可以包含徽标或其他元素。
+
+```jsx live
+function Demo() {
+  const data = [
+    {
+      label: (
+        <Group spacing="xs">
+          <span>运行中</span>
+          <Badge color="success" size="sm">
+            12
+          </Badge>
+        </Group>
+      ),
+      value: 'running',
+    },
+    {
+      label: (
+        <Group spacing="xs">
+          <span>警告</span>
+          <Badge color="warning" size="sm">
+            3
+          </Badge>
+        </Group>
+      ),
+      value: 'warning',
+    },
+    {
+      label: (
+        <Group spacing="xs">
+          <span>错误</span>
+          <Badge color="error" size="sm">
+            1
+          </Badge>
+        </Group>
+      ),
+      value: 'error',
+    },
+  ];
+
+  return <Navs data={data} />;
+}
+```
+
+### 带图标的导航
+
+标签可以包含图标。
+
+```jsx live
+function Demo() {
+  const { Pod, Service, ConfigMap } = KubedIcons;
+
+  const data = [
+    {
+      label: (
+        <Group spacing="xs">
+          <Pod size={16} />
+          <span>容器组</span>
+        </Group>
+      ),
+      value: 'pods',
+    },
+    {
+      label: (
+        <Group spacing="xs">
+          <Service size={16} />
+          <span>服务</span>
+        </Group>
+      ),
+      value: 'services',
+    },
+    {
+      label: (
+        <Group spacing="xs">
+          <ConfigMap size={16} />
+          <span>配置</span>
+        </Group>
+      ),
+      value: 'configmaps',
+    },
+  ];
+
+  return <Navs data={data} />;
+}
+```
+
+### 切换内容区域
+
+配合内容区域使用,实现选项卡功能。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('overview');
+
+  const data = [
+    { label: '概览', value: 'overview' },
+    { label: '详情', value: 'details' },
+    { label: '配置', value: 'config' },
+  ];
+
+  const content = {
+    overview: (
+      <div>
+        <Text variant="h4" style={{ marginBottom: '8px' }}>
+          概览信息
+        </Text>
+        <Text size="sm">这是概览页面的内容</Text>
+      </div>
+    ),
+    details: (
+      <div>
+        <Text variant="h4" style={{ marginBottom: '8px' }}>
+          详细信息
+        </Text>
+        <Text size="sm">这是详情页面的内容</Text>
+      </div>
+    ),
+    config: (
+      <div>
+        <Text variant="h4" style={{ marginBottom: '8px' }}>
+          配置信息
+        </Text>
+        <Text size="sm">这是配置页面的内容</Text>
+      </div>
+    ),
+  };
+
+  return (
+    <Group direction="column" spacing="md">
+      <Navs data={data} value={value} onChange={setValue} />
+      <Card style={{ padding: '20px' }}>{content[value]}</Card>
+    </Group>
+  );
+}
+```
+
+### 动态标签
+
+动态渲染导航标签。
+
+```jsx live
+function Demo() {
+  const [tabs, setTabs] = React.useState([
+    { label: 'Tab 1', value: 'tab1' },
+    { label: 'Tab 2', value: 'tab2' },
+    { label: 'Tab 3', value: 'tab3' },
+  ]);
+  const [value, setValue] = React.useState('tab1');
+
+  const addTab = () => {
+    const newTab = {
+      label: `Tab ${tabs.length + 1}`,
+      value: `tab${tabs.length + 1}`,
+    };
+    setTabs([...tabs, newTab]);
+    setValue(newTab.value);
+  };
+
+  const removeTab = () => {
+    if (tabs.length > 1) {
+      const newTabs = tabs.slice(0, -1);
+      setTabs(newTabs);
+      if (value === tabs[tabs.length - 1].value) {
+        setValue(newTabs[newTabs.length - 1].value);
+      }
+    }
+  };
+
+  return (
+    <Group direction="column" spacing="md">
+      <Group spacing="xs">
+        <Button size="sm" onClick={addTab}>
+          添加标签
+        </Button>
+        <Button size="sm" variant="outline" onClick={removeTab} disabled={tabs.length <= 1}>
+          删除标签
+        </Button>
+      </Group>
+      <Navs data={tabs} value={value} onChange={setValue} />
+    </Group>
+  );
+}
+```
+
+## API
+
+### Navs
+
+| 属性                      | 说明                   | 类型                                                        | 默认值     |
+| ------------------------- | ---------------------- | ----------------------------------------------------------- | ---------- |
+| data                      | 导航标签数据           | `NavItem[]`                                                 | **必需**   |
+| variant                   | 样式变体               | `'pills' \| 'line'`                                         | `'pills'`  |
+| value                     | 当前选中的值(受控)     | `string`                                                    | -          |
+| defaultValue              | 默认选中的值(非受控)   | `string`                                                    | -          |
+| onChange                  | 值改变时的回调         | `(value: string) => void`                                   | -          |
+| fullWidth                 | 是否占据全部宽度       | `boolean`                                                   | `false`    |
+| color                     | 激活状态的颜色         | `string \| 'default' \| 'primary' \| 'secondary' \| 'success' \| 'warning' \| 'error'` | -          |
+| size                      | 尺寸大小               | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                      | `'sm'`     |
+| radius                    | 圆角大小               | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number`            | `'lg'`     |
+| transitionDuration        | 过渡动画时长(毫秒)     | `number`                                                    | `150`      |
+| transitionTimingFunction  | 过渡动画函数           | `string`                                                    | -          |
+| name                      | radio group 的 name    | `string`                                                    | 随机 ID    |
+| className                 | 自定义类名             | `string`                                                    | -          |
+| style                     | 自定义样式             | `CSSProperties`                                             | -          |
+
+### NavItem
+
+| 属性  | 说明           | 类型        | 默认值   |
+| ----- | -------------- | ----------- | -------- |
+| value | 选项的值       | `string`    | **必需** |
+| label | 选项的显示内容 | `ReactNode` | **必需** |
+
+:::info
+
+**关于样式变体**:
+
+- `pills`: 胶囊样式,带背景色的激活状态,使用 PillsBg 组件渲染
+- `line`: 下划线样式,底部显示下划线指示激活状态,使用 LineBg 组件渲染
+- 两种样式都有流畅的滑动动画效果
+
+**关于受控与非受控**:
+
+- 使用 `value` 和 `onChange` 实现受控模式
+- 使用 `defaultValue` 实现非受控模式
+- 不设置 `value` 和 `defaultValue` 时,默认选中第一项(通过 `finalValue: Array.isArray(data) ? data[0].value : null` 实现)
+
+**关于颜色**:
+
+- 可以使用主题颜色:`default`、`primary`、`secondary`、`success`、`warning`、`error`
+- 也可以使用自定义颜色值(任意有效的 CSS 颜色值)
+- 不设置时使用默认样式
+
+**关于动画**:
+
+- 导航标签切换时会有流畅的滑动动画(通过 ResizeObserver 和 transform 实现)
+- 可以通过 `transitionDuration` 控制动画时长,默认 150 毫秒
+- 设置为 0 可以关闭动画
+- `transitionTimingFunction` 可自定义动画缓动函数
+- 组件会自动检测系统的 `prefers-reduced-motion` 设置
+
+**关于实现原理**:
+
+- 使用 radio input 实现单选逻辑
+- 通过 `useUncontrolled` hook 管理受控/非受控状态
+- 使用 ResizeObserver 监听尺寸变化,动态计算激活指示器的位置和宽度
+- 初始渲染时禁用动画,4ms 后启用,避免首次加载时的动画闪烁
+
+**关于 name 属性**:
+
+- 用于 radio group,确保同一组内只能选中一个
+- 不设置时使用随机生成的 ID(通过 `useId` hook)
+- 同一页面有多个 Navs 时建议手动设置不同的 name
+
+:::
+
+## 使用建议
+
+### 标签数量
+
+保持标签数量适中:
+
+```jsx
+// 推荐: 3-6 个标签
+const data = [
+  { label: 'Tab 1', value: '1' },
+  { label: 'Tab 2', value: '2' },
+  { label: 'Tab 3', value: '3' },
+  { label: 'Tab 4', value: '4' },
+];
+
+// 标签过多时,考虑使用其他导航方式
+// 如下拉菜单或侧边导航
+```
+
+### 标签文字长度
+
+保持标签文字简洁:
+
+```jsx
+// 推荐: 简短的标签
+const data = [
+  { label: '概览', value: 'overview' },
+  { label: '详情', value: 'details' },
+  { label: '设置', value: 'settings' },
+];
+
+// 不推荐: 过长的标签
+const data = [
+  { label: '应用程序概览信息', value: 'overview' },
+  { label: '详细配置信息', value: 'details' },
+];
+```
+
+### 样式选择
+
+根据使用场景选择合适的样式:
+
+```jsx
+// 内容区域切换: 使用 pills 样式
+<Navs data={data} variant="pills" />
+
+// 页面标签页: 使用 line 样式
+<Navs data={data} variant="line" />
+```
+
+### 使用受控模式
+
+需要控制选中状态时使用受控模式:
+
+```jsx
+const [activeTab, setActiveTab] = useState('overview');
+
+// 可以在其他地方改变 activeTab
+const handleAction = () => {
+  setActiveTab('details');
+};
+
+<Navs data={data} value={activeTab} onChange={setActiveTab} />;
+```
+
+### 添加图标增强识别
+
+为标签添加图标提升可读性:
+
+```jsx
+const data = [
+  {
+    label: (
+      <Group spacing="xs">
+        <HomeIcon />
+        <span>首页</span>
+      </Group>
+    ),
+    value: 'home',
+  },
+  {
+    label: (
+      <Group spacing="xs">
+        <SettingIcon />
+        <span>设置</span>
+      </Group>
+    ),
+    value: 'settings',
+  },
+];
+```
+
+### 显示状态信息
+
+使用徽标显示数量或状态:
+
+```jsx
+const data = [
+  {
+    label: (
+      <Group spacing="xs">
+        <span>待处理</span>
+        <Badge color="warning">{pendingCount}</Badge>
+      </Group>
+    ),
+    value: 'pending',
+  },
+  {
+    label: (
+      <Group spacing="xs">
+        <span>已完成</span>
+        <Badge color="success">{completedCount}</Badge>
+      </Group>
+    ),
+    value: 'completed',
+  },
+];
+```
+
+### 全宽布局
+
+容器空间充足时使用全宽:
+
+```jsx
+// 卡片或容器中使用
+<Card>
+  <Navs data={data} fullWidth />
+  <div>{content}</div>
+</Card>
+```
+
+### 配合内容区域
+
+导航标签应该配合内容区域使用:
+
+```jsx
+const [tab, setTab] = useState('overview');
+
+<div>
+  <Navs data={tabs} value={tab} onChange={setTab} />
+  <div style={{ marginTop: '16px' }}>{contentMap[tab]}</div>
+</div>;
+```
+
+### 禁用动画
+
+在性能敏感的场景可以禁用动画:
+
+```jsx
+<Navs data={data} transitionDuration={0} />
+```
+
+### 动态标签管理
+
+需要动态添加/删除标签时:
+
+```jsx
+const [tabs, setTabs] = useState(initialTabs);
+const [active, setActive] = useState(initialTabs[0].value);
+
+const addTab = (newTab) => {
+  setTabs([...tabs, newTab]);
+  setActive(newTab.value);
+};
+
+const removeTab = (value) => {
+  const newTabs = tabs.filter((t) => t.value !== value);
+  setTabs(newTabs);
+  if (active === value) {
+    setActive(newTabs[0]?.value);
+  }
+};
+```

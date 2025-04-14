@@ -1,0 +1,316 @@
+---
+sidebar_position: 1
+---
+
+# Loading 加载中
+
+用于页面和区块的加载中状态。
+
+## 何时使用
+
+- 页面局部处于等待异步数据或正在渲染过程时
+- 需要向用户显示等待状态时
+- 适用于轻量级的加载提示
+
+在 Kube Design 中,Loading 组件提供了简洁的加载动画:
+
+- **两种变体**:circle1 和 circle2 两种不同的圆形加载动画
+- **多种尺寸**:支持 xs、sm、md、lg、xl 五种尺寸
+- **自定义颜色**:支持主题中的所有颜色
+- **轻量级**:体积小,性能好
+
+## 示例
+
+### 基础用法
+
+最基本的加载动画,使用默认的 circle1 变体。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="lg">
+      <Loading />
+    </Group>
+  );
+}
+```
+
+### 尺寸
+
+Loading 支持五种预设尺寸:xs、sm、md、lg、xl。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="lg" align="center">
+      <Loading size="xs" />
+      <Loading size="sm" />
+      <Loading size="md" />
+      <Loading size="lg" />
+      <Loading size="xl" />
+    </Group>
+  );
+}
+```
+
+### 变体
+
+Loading 提供了两种加载动画变体。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="lg">
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          Circle1 变体:
+        </Text>
+        <Group spacing="lg" align="center">
+          <Loading size="xs" variant="circle1" />
+          <Loading size="sm" variant="circle1" />
+          <Loading size="md" variant="circle1" />
+          <Loading size="lg" variant="circle1" />
+        </Group>
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          Circle2 变体:
+        </Text>
+        <Group spacing="lg" align="center">
+          <Loading size="xs" variant="circle2" />
+          <Loading size="sm" variant="circle2" />
+          <Loading size="md" variant="circle2" />
+          <Loading size="lg" variant="circle2" />
+        </Group>
+      </div>
+    </Group>
+  );
+}
+```
+
+### 颜色
+
+不同变体支持的颜色选项不同。circle1 变体只支持 `dark` 和 `light`,circle2 变体支持主题中的所有颜色。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="lg">
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          Circle1 (仅支持 dark/light):
+        </Text>
+        <Group spacing="lg" align="center">
+          <div>
+            <Loading size="md" variant="circle1" color="dark" />
+            <Text size="xs" style={{ textAlign: 'center', marginTop: '4px' }}>
+              dark
+            </Text>
+          </div>
+          <div style={{ backgroundColor: '#1a1a1a', padding: '8px', borderRadius: '4px' }}>
+            <Loading size="md" variant="circle1" color="light" />
+            <Text size="xs" style={{ textAlign: 'center', marginTop: '4px', color: '#fff' }}>
+              light
+            </Text>
+          </div>
+        </Group>
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          Circle2 (支持所有主题颜色):
+        </Text>
+        <Group spacing="lg" align="center">
+          <div>
+            <Loading size="md" variant="circle2" color="primary" />
+            <Text size="xs" style={{ textAlign: 'center', marginTop: '4px' }}>
+              primary
+            </Text>
+          </div>
+          <div>
+            <Loading size="md" variant="circle2" color="success" />
+            <Text size="xs" style={{ textAlign: 'center', marginTop: '4px' }}>
+              success
+            </Text>
+          </div>
+          <div>
+            <Loading size="md" variant="circle2" color="warning" />
+            <Text size="xs" style={{ textAlign: 'center', marginTop: '4px' }}>
+              warning
+            </Text>
+          </div>
+          <div>
+            <Loading size="md" variant="circle2" color="error" />
+            <Text size="xs" style={{ textAlign: 'center', marginTop: '4px' }}>
+              error
+            </Text>
+          </div>
+        </Group>
+      </div>
+    </Group>
+  );
+}
+```
+
+### 自定义尺寸
+
+除了预设尺寸,还可以使用数字指定具体的像素值。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="lg" align="center">
+      <div>
+        <Loading size={24} />
+        <Text size="xs" style={{ textAlign: 'center', marginTop: '4px' }}>
+          24px
+        </Text>
+      </div>
+      <div>
+        <Loading size={40} variant="circle2" color="primary" />
+        <Text size="xs" style={{ textAlign: 'center', marginTop: '4px' }}>
+          40px
+        </Text>
+      </div>
+      <div>
+        <Loading size={64} variant="circle2" color="success" />
+        <Text size="xs" style={{ textAlign: 'center', marginTop: '4px' }}>
+          64px
+        </Text>
+      </div>
+    </Group>
+  );
+}
+```
+
+### 内联使用
+
+在文本或按钮中内联使用加载动画。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Group spacing="xs" align="center">
+        <Loading size="xs" />
+        <Text size="sm">正在加载...</Text>
+      </Group>
+      <Group spacing="xs" align="center">
+        <Text>处理中</Text>
+        <Loading size={16} variant="circle2" color="primary" />
+      </Group>
+      <Button disabled>
+        <Group spacing="xs" align="center">
+          <Loading size="sm" color="light" />
+          <span>提交中...</span>
+        </Group>
+      </Button>
+    </Group>
+  );
+}
+```
+
+### 列表加载
+
+在列表底部显示更多数据加载中的状态。
+
+```jsx live
+function Demo() {
+  const [loading, setLoading] = React.useState(false);
+
+  const handleLoadMore = () => {
+    setLoading(true);
+    setTimeout(() => setLoading(false), 1500);
+  };
+
+  return (
+    <div style={{ width: '100%', maxWidth: '400px' }}>
+      <div style={{ border: '1px solid #e0e0e0', borderRadius: '4px' }}>
+        {[1, 2, 3, 4, 5].map((item) => (
+          <div
+            key={item}
+            style={{
+              padding: '12px 16px',
+              borderBottom: '1px solid #e0e0e0',
+            }}
+          >
+            列表项 {item}
+          </div>
+        ))}
+        {loading ? (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: '16px',
+            }}
+          >
+            <Loading size="sm" variant="circle2" color="primary" />
+            <Text size="sm" style={{ marginLeft: '8px' }}>
+              加载更多...
+            </Text>
+          </div>
+        ) : (
+          <div style={{ padding: '12px', textAlign: 'center' }}>
+            <Button size="sm" variant="text" onClick={handleLoadMore}>
+              加载更多
+            </Button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+```
+
+## API
+
+### Loading 属性
+
+| 属性      | 说明           | 类型                                             | 默认值      |
+| --------- | -------------- | ------------------------------------------------ | ----------- |
+| size      | 加载动画的尺寸 | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number` | `'md'`      |
+| color     | 加载动画的颜色 | `string`                                         | `'dark'`    |
+| variant   | 加载动画的变体 | `'circle1' \| 'circle2'`                         | `'circle1'` |
+| className | 自定义类名     | `string`                                         | -           |
+| style     | 自定义样式     | `CSSProperties`                                  | -           |
+
+### 尺寸对应像素值
+
+| 尺寸 | 像素值 |
+| ---- | ------ |
+| xs   | 16px   |
+| sm   | 20px   |
+| md   | 32px   |
+| lg   | 48px   |
+| xl   | 52px   |
+
+:::info
+
+**关于变体**:
+
+- `circle1`: 渐变圆形加载动画,只支持 `dark` 和 `light` 两种颜色
+- `circle2`: 单色圆形加载动画,支持主题中的所有颜色(primary、success、warning、error 等)
+
+**关于颜色**:
+
+- circle1 变体:
+  - `dark` (默认): 深色渐变,适合浅色背景
+  - `light`: 浅色渐变,适合深色背景
+- circle2 变体:
+  - 支持所有主题颜色: `primary`、`success`、`warning`、`error` 等
+  - 也支持自定义颜色值,如 `#1890ff`
+
+**关于尺寸**:
+
+- 可以使用预设尺寸(xs/sm/md/lg/xl)
+- 也可以使用数字指定具体像素值,如 `size={24}` 表示 24px
+- 推荐使用预设尺寸以保持一致性
+
+**继承属性**:
+
+- Loading 组件基于 SVG 元素实现
+- 继承所有原生 SVG 元素的属性
+- 可以通过 `style` 或 `className` 进一步自定义样式
+
+  :::

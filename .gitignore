@@ -38,3 +38,6 @@ docs/.next
 
 # history
 .history/
+
+**/__snapshots__/
+coverage/

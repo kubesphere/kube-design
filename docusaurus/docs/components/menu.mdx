@@ -1,0 +1,596 @@
+---
+sidebar_position: 1
+---
+
+# Menu 菜单
+
+为页面和功能提供导航的菜单列表。
+
+## 何时使用
+
+- 导航菜单是一个网站的灵魂,用户依赖导航在各个页面中进行跳转
+- 一般分为顶部导航和侧边导航,顶部导航提供全局性的类目和功能,侧边导航提供多级结构来收纳和排列网站架构
+- Menu 可以单独使用,也可以配合 Dropdown 组件使用
+
+在 Kube Design 中,Menu 组件提供了灵活的菜单功能:
+
+- **图标支持**:菜单项可以包含图标
+- **分组标签**:使用 MenuLabel 对菜单项进行分组
+- **禁用状态**:支持禁用单个菜单项
+- **链接支持**:菜单项可以作为链接使用
+- **主题切换**:支持浅色和深色主题
+
+## 示例
+
+### 基础用法
+
+最基本的菜单用法。
+
+```jsx live
+function Demo() {
+  const { Add, Stop, Pen, Trash } = KubedIcons;
+
+  return (
+    <Card style={{ width: '220px' }}>
+      <Menu>
+        <MenuItem icon={<Add />}>创建</MenuItem>
+        <MenuItem icon={<Stop />}>停止</MenuItem>
+        <MenuItem icon={<Pen />}>编辑</MenuItem>
+        <MenuItem icon={<Trash />}>删除</MenuItem>
+      </Menu>
+    </Card>
+  );
+}
+```
+
+### 带标签分组
+
+使用 MenuLabel 对菜单项进行分组。
+
+```jsx live
+function Demo() {
+  const { Add, Pen, Stop, Trash, Download, Upload } = KubedIcons;
+
+  return (
+    <Card style={{ width: '220px' }}>
+      <Menu>
+        <MenuLabel>编辑操作</MenuLabel>
+        <MenuItem icon={<Add />}>创建</MenuItem>
+        <MenuItem icon={<Pen />}>编辑</MenuItem>
+        <Divider />
+        <MenuLabel>文件操作</MenuLabel>
+        <MenuItem icon={<Upload />}>上传</MenuItem>
+        <MenuItem icon={<Download />}>下载</MenuItem>
+        <Divider />
+        <MenuLabel>危险操作</MenuLabel>
+        <MenuItem icon={<Stop />}>停止</MenuItem>
+        <MenuItem icon={<Trash />}>删除</MenuItem>
+      </Menu>
+    </Card>
+  );
+}
+```
+
+### 禁用菜单项
+
+菜单项可以设置为禁用状态。
+
+```jsx live
+function Demo() {
+  const { Add, Stop, Pen, Trash } = KubedIcons;
+
+  return (
+    <Card style={{ width: '220px' }}>
+      <Menu>
+        <MenuItem icon={<Add />}>创建</MenuItem>
+        <MenuItem icon={<Pen />} disabled>
+          编辑(禁用)
+        </MenuItem>
+        <MenuItem icon={<Stop />}>停止</MenuItem>
+        <MenuItem icon={<Trash />} disabled>
+          删除(禁用)
+        </MenuItem>
+      </Menu>
+    </Card>
+  );
+}
+```
+
+### 点击事件
+
+菜单项支持点击事件。
+
+```jsx live
+function Demo() {
+  const { Add, Stop, Pen, Trash } = KubedIcons;
+  const [action, setAction] = React.useState('');
+
+  return (
+    <Group direction="column" spacing="md">
+      {action && <Text>您点击了: {action}</Text>}
+      <Card style={{ width: '220px' }}>
+        <Menu>
+          <MenuItem icon={<Add />} onClick={() => setAction('创建')}>
+            创建
+          </MenuItem>
+          <MenuItem icon={<Pen />} onClick={() => setAction('编辑')}>
+            编辑
+          </MenuItem>
+          <MenuItem icon={<Stop />} onClick={() => setAction('停止')}>
+            停止
+          </MenuItem>
+          <MenuItem icon={<Trash />} onClick={() => setAction('删除')}>
+            删除
+          </MenuItem>
+        </Menu>
+      </Card>
+    </Group>
+  );
+}
+```
+
+### 链接菜单项
+
+菜单项可以作为链接使用。
+
+```jsx live
+function Demo() {
+  const { Home, User, Setting, Logout } = KubedIcons;
+
+  return (
+    <Card style={{ width: '220px' }}>
+      <Menu>
+        <MenuItem icon={<Home />} as="a" href="#home">
+          首页
+        </MenuItem>
+        <MenuItem icon={<User />} as="a" href="#profile">
+          个人信息
+        </MenuItem>
+        <MenuItem icon={<Setting />} as="a" href="#settings">
+          设置
+        </MenuItem>
+        <Divider />
+        <MenuItem icon={<Logout />} as="a" href="#logout">
+          退出登录
+        </MenuItem>
+      </Menu>
+    </Card>
+  );
+}
+```
+
+### 自定义宽度
+
+通过 `width` 属性设置菜单宽度。
+
+```jsx live
+function Demo() {
+  const { Add, Pen, Trash } = KubedIcons;
+
+  return (
+    <Group spacing="md">
+      <Card style={{ width: '180px' }}>
+        <Menu width={180}>
+          <MenuLabel>宽度 180px</MenuLabel>
+          <MenuItem icon={<Add />}>创建</MenuItem>
+          <MenuItem icon={<Pen />}>编辑</MenuItem>
+          <MenuItem icon={<Trash />}>删除</MenuItem>
+        </Menu>
+      </Card>
+      <Card style={{ width: '260px' }}>
+        <Menu width={260}>
+          <MenuLabel>宽度 260px</MenuLabel>
+          <MenuItem icon={<Add />}>创建资源</MenuItem>
+          <MenuItem icon={<Pen />}>编辑配置</MenuItem>
+          <MenuItem icon={<Trash />}>删除资源</MenuItem>
+        </Menu>
+      </Card>
+    </Group>
+  );
+}
+```
+
+### 仅图标
+
+菜单项可以只显示图标,不显示文字。
+
+```jsx live
+function Demo() {
+  const { Add, Stop, Pen, Trash } = KubedIcons;
+
+  return (
+    <Card style={{ width: '60px' }}>
+      <Menu width={60}>
+        <MenuItem icon={<Add />} />
+        <MenuItem icon={<Pen />} />
+        <MenuItem icon={<Stop />} />
+        <MenuItem icon={<Trash />} />
+      </Menu>
+    </Card>
+  );
+}
+```
+
+### 侧边导航菜单
+
+作为侧边导航使用的菜单。
+
+```jsx live
+function Demo() {
+  const { Cluster, Project, Pod, Service, ConfigMap } = KubedIcons;
+  const [active, setActive] = React.useState('clusters');
+
+  return (
+    <Card style={{ width: '240px' }}>
+      <Menu width={240}>
+        <MenuLabel>工作负载</MenuLabel>
+        <MenuItem
+          icon={<Pod />}
+          onClick={() => setActive('pods')}
+          style={{
+            backgroundColor: active === 'pods' ? '#e8f4ff' : 'transparent',
+          }}
+        >
+          容器组 (Pods)
+        </MenuItem>
+        <MenuItem
+          icon={<Service />}
+          onClick={() => setActive('services')}
+          style={{
+            backgroundColor: active === 'services' ? '#e8f4ff' : 'transparent',
+          }}
+        >
+          服务 (Services)
+        </MenuItem>
+        <Divider />
+        <MenuLabel>配置</MenuLabel>
+        <MenuItem
+          icon={<ConfigMap />}
+          onClick={() => setActive('configmaps')}
+          style={{
+            backgroundColor: active === 'configmaps' ? '#e8f4ff' : 'transparent',
+          }}
+        >
+          配置字典 (ConfigMaps)
+        </MenuItem>
+      </Menu>
+    </Card>
+  );
+}
+```
+
+### 深色主题
+
+Menu 支持深色主题。
+
+```jsx live
+function Demo() {
+  const { Add, Stop, Pen, Trash } = KubedIcons;
+
+  return (
+    <Card style={{ width: '220px', backgroundColor: '#242e42' }}>
+      <Menu themeType="dark">
+        <MenuLabel>菜单标题</MenuLabel>
+        <MenuItem icon={<Add />}>创建</MenuItem>
+        <MenuItem icon={<Pen />}>编辑</MenuItem>
+        <MenuItem icon={<Stop />}>停止</MenuItem>
+        <Divider />
+        <MenuItem icon={<Trash />}>删除</MenuItem>
+      </Menu>
+    </Card>
+  );
+}
+```
+
+### 紧凑模式
+
+减小菜单项间距,适合空间有限的场景。
+
+```jsx live
+function Demo() {
+  const { Add, Pen, Stop, Trash } = KubedIcons;
+
+  return (
+    <Card style={{ width: '200px' }}>
+      <Menu width={200} style={{ padding: '4px 0' }}>
+        <MenuItem icon={<Add />} style={{ padding: '6px 12px' }}>
+          创建
+        </MenuItem>
+        <MenuItem icon={<Pen />} style={{ padding: '6px 12px' }}>
+          编辑
+        </MenuItem>
+        <MenuItem icon={<Stop />} style={{ padding: '6px 12px' }}>
+          停止
+        </MenuItem>
+        <MenuItem icon={<Trash />} style={{ padding: '6px 12px' }}>
+          删除
+        </MenuItem>
+      </Menu>
+    </Card>
+  );
+}
+```
+
+### 结合 Dropdown 使用
+
+Menu 最常见的用法是配合 Dropdown 组件使用。
+
+```jsx live
+function Demo() {
+  const { More, Add, Pen, Stop, Trash } = KubedIcons;
+
+  const menu = (
+    <Menu>
+      <MenuLabel>操作</MenuLabel>
+      <MenuItem icon={<Add />}>创建</MenuItem>
+      <MenuItem icon={<Pen />}>编辑</MenuItem>
+      <MenuItem icon={<Stop />}>停止</MenuItem>
+      <Divider />
+      <MenuItem icon={<Trash />}>删除</MenuItem>
+    </Menu>
+  );
+
+  return (
+    <Dropdown content={menu}>
+      <Button>
+        <More size={16} style={{ marginRight: '4px' }} />
+        更多操作
+      </Button>
+    </Dropdown>
+  );
+}
+```
+
+## API
+
+### Menu
+
+| 属性      | 说明           | 类型                     | 默认值  |
+| --------- | -------------- | ------------------------ | ------- |
+| width     | 菜单宽度       | `number`                 | `210`   |
+| themeType | 主题类型       | `'light' \| 'dark'`      | -       |
+| className | 自定义类名     | `string`                 | -       |
+| style     | 自定义样式     | `CSSProperties`          | -       |
+| children  | 菜单项         | `ReactNode`              | -       |
+
+### MenuItem
+
+MenuItem 实际上是一个占位符组件,真正的渲染由 MenuButton 完成。以下是可用的属性:
+
+| 属性         | 说明                     | 类型                       | 默认值    |
+| ------------ | ------------------------ | -------------------------- | --------- |
+| icon         | 菜单项图标               | `ReactNode`                | -         |
+| disabled     | 是否禁用                 | `boolean`                  | `false`   |
+| color        | 菜单项颜色               | `string`                   | -         |
+| rightSection | 右侧内容区域(如快捷键)   | `ReactNode`                | -         |
+| as           | 渲染为指定的 HTML 元素   | `any`                      | `'button'`|
+| onClick      | 点击事件回调             | `(e: MouseEvent) => void`  | -         |
+| className    | 自定义类名               | `string`                   | -         |
+| style        | 自定义样式               | `CSSProperties`            | -         |
+| themeType    | 主题类型                 | `'light' \| 'dark'`        | -         |
+| children     | 菜单项内容               | `ReactNode`                | -         |
+
+### MenuLabel
+
+MenuLabel 是一个占位符组件,实际渲染为 Text 组件。
+
+| 属性      | 说明       | 类型            | 默认值 |
+| --------- | ---------- | --------------- | ------ |
+| children  | 标签内容   | `ReactNode`     | -      |
+| className | 自定义类名 | `string`        | -      |
+| style     | 自定义样式 | `CSSProperties` | -      |
+| themeType | 主题类型   | `'light' \| 'dark'` | -  |
+
+:::info
+
+**关于菜单组成**:
+
+- Menu 是菜单容器,包含 MenuItem、MenuLabel 和 Divider
+- MenuItem 是占位符组件,实际由 MenuButton 渲染
+- MenuLabel 是占位符组件,实际渲染为 Text 组件,用于分组标签
+- Divider 是分隔线,用于分隔不同的菜单组
+- Menu 组件内部会过滤并只渲染 MenuItem、MenuLabel 和 Divider 类型的子元素
+
+**关于主题**:
+
+- 默认使用浅色主题
+- 设置 `themeType="dark"` 使用深色主题
+- 深色主题适合暗色背景下使用
+- `themeType` 会从 Menu 传递到 MenuItem 和 MenuLabel
+
+**关于菜单项类型**:
+
+- 默认 `as="button"`,渲染为按钮元素
+- 设置 `as="a"` 可以渲染为链接,需配合 `href` 属性使用
+- 可以使用其他 HTML 元素,如 `div`、`span` 等
+- `as` 属性通过 MenuButton 组件的 styled-components 实现
+
+**关于宽度**:
+
+- Menu 的 `width` 属性控制整个菜单的宽度
+- 所有菜单项会继承这个宽度
+- 默认宽度为 210px
+
+**关于 rightSection**:
+
+- `rightSection` 可用于显示快捷键、徽章、图标等额外内容
+- 内容会显示在菜单项的右侧
+- 常用于显示键盘快捷键提示(如 ⌘K)或状态标识
+
+:::
+
+## 使用建议
+
+### 菜单项数量
+
+保持菜单项数量适中:
+
+```jsx
+// 推荐: 5-8 个菜单项
+<Menu>
+  <MenuItem>选项 1</MenuItem>
+  <MenuItem>选项 2</MenuItem>
+  <MenuItem>选项 3</MenuItem>
+  <MenuItem>选项 4</MenuItem>
+  <MenuItem>选项 5</MenuItem>
+</Menu>
+
+// 如果菜单项过多,考虑使用分组
+<Menu>
+  <MenuLabel>第一组</MenuLabel>
+  <MenuItem>选项 1-1</MenuItem>
+  <MenuItem>选项 1-2</MenuItem>
+  <Divider />
+  <MenuLabel>第二组</MenuLabel>
+  <MenuItem>选项 2-1</MenuItem>
+  <MenuItem>选项 2-2</MenuItem>
+</Menu>
+```
+
+### 使用图标增强识别
+
+为菜单项添加图标:
+
+```jsx
+import { Add, Pen, Trash } from '@kubed/icons';
+
+<Menu>
+  <MenuItem icon={<Add />}>创建</MenuItem>
+  <MenuItem icon={<Pen />}>编辑</MenuItem>
+  <MenuItem icon={<Trash />}>删除</MenuItem>
+</Menu>;
+```
+
+### 分组组织菜单
+
+使用 MenuLabel 和 Divider 组织菜单:
+
+```jsx
+<Menu>
+  <MenuLabel>基础操作</MenuLabel>
+  <MenuItem>创建</MenuItem>
+  <MenuItem>编辑</MenuItem>
+  <Divider />
+  <MenuLabel>危险操作</MenuLabel>
+  <MenuItem>删除</MenuItem>
+</Menu>
+```
+
+### 危险操作的位置
+
+将危险操作放在菜单底部:
+
+```jsx
+<Menu>
+  <MenuItem>查看</MenuItem>
+  <MenuItem>编辑</MenuItem>
+  <MenuItem>复制</MenuItem>
+  <Divider />
+  <MenuItem icon={<Trash />}>删除</MenuItem>
+</Menu>
+```
+
+### 禁用而非隐藏
+
+禁用不可用的菜单项,而不是隐藏:
+
+```jsx
+<Menu>
+  <MenuItem>启动</MenuItem>
+  <MenuItem disabled>停止(Pod 未运行)</MenuItem>
+  <MenuItem>重启</MenuItem>
+</Menu>
+```
+
+### 作为导航菜单
+
+作为侧边导航时,突出显示当前选中项:
+
+```jsx
+const [active, setActive] = useState('pods');
+
+<Menu>
+  <MenuItem
+    icon={<Pod />}
+    onClick={() => setActive('pods')}
+    style={{
+      backgroundColor: active === 'pods' ? '#e8f4ff' : 'transparent',
+      fontWeight: active === 'pods' ? 600 : 400,
+    }}
+  >
+    容器组
+  </MenuItem>
+  <MenuItem
+    icon={<Service />}
+    onClick={() => setActive('services')}
+    style={{
+      backgroundColor: active === 'services' ? '#e8f4ff' : 'transparent',
+      fontWeight: active === 'services' ? 600 : 400,
+    }}
+  >
+    服务
+  </MenuItem>
+</Menu>;
+```
+
+### 链接菜单项
+
+使用链接时指定 href 属性:
+
+```jsx
+<Menu>
+  <MenuItem as="a" href="/home">
+    首页
+  </MenuItem>
+  <MenuItem as="a" href="/profile">
+    个人中心
+  </MenuItem>
+  <MenuItem as="a" href="/settings">
+    设置
+  </MenuItem>
+</Menu>
+```
+
+### 配合 Dropdown 使用
+
+Menu 常与 Dropdown 配合使用:
+
+```jsx
+<Dropdown content={<Menu>...</Menu>}>
+  <Button>操作</Button>
+</Dropdown>
+```
+
+### 主题选择
+
+根据背景选择合适的主题:
+
+```jsx
+// 浅色背景: 使用默认主题
+<Card>
+  <Menu>...</Menu>
+</Card>
+
+// 深色背景: 使用深色主题
+<Card style={{ backgroundColor: '#242e42' }}>
+  <Menu themeType="dark">...</Menu>
+</Card>
+```
+
+### 菜单宽度设置
+
+根据内容设置合适的宽度:
+
+```jsx
+// 短文本: 较小宽度
+<Menu width={180}>
+  <MenuItem>创建</MenuItem>
+  <MenuItem>编辑</MenuItem>
+</Menu>
+
+// 长文本: 较大宽度
+<Menu width={260}>
+  <MenuItem>创建 Kubernetes 资源</MenuItem>
+  <MenuItem>编辑 YAML 配置</MenuItem>
+</Menu>
+```

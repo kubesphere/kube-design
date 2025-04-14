@@ -1,0 +1,361 @@
+---
+sidebar_position: 1
+---
+
+# LoadingOverlay 加载覆盖层
+
+在内容区域上方显示加载遮罩层。
+
+## 何时使用
+
+- 需要对特定区域进行加载遮罩时
+- 在数据加载过程中需要阻止用户交互时
+- 局部内容正在更新,需要显示加载状态时
+
+在 Kube Design 中,LoadingOverlay 组 ��� 提供了灵活的加载遮罩功能:
+
+- **自动定位**:自动覆盖父容器的全部内容
+- **可配置遮罩**:支持自定义遮罩颜色和透明度
+- **多种尺寸**:支持不同尺寸的加载动画
+- **简单易用**:只需一个 visible 属性控制显示隐藏
+
+## 示例
+
+### 基础用法
+
+最基本的加载覆盖层用法。LoadingOverlay 会自动覆盖其第一个设置了 `position: relative` 的父容器。
+
+```jsx live
+function Demo() {
+  return (
+    <div
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '200px',
+        border: '1px solid #ccc',
+        padding: '20px',
+      }}
+    >
+      <LoadingOverlay visible />
+      <div>
+        <h3>内容标题</h3>
+        <p>这是一些被覆盖的内容</p>
+      </div>
+    </div>
+  );
+}
+```
+
+### 控制显示隐藏
+
+通过 `visible` 属性控制加载覆盖层的显示和隐藏。
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setVisible(!visible)} style={{ marginBottom: '16px' }}>
+        {visible ? '隐藏' : '显示'} 加载覆盖层
+      </Button>
+      <div
+        style={{
+          position: 'relative',
+          width: '100%',
+          height: '200px',
+          border: '1px solid #ccc',
+          padding: '20px',
+        }}
+      >
+        <LoadingOverlay visible={visible} />
+        <div>
+          <h3>内容标题</h3>
+          <p>点击上方按钮切换加载状态</p>
+          <p>加载时内容会被遮罩覆盖</p>
+        </div>
+      </div>
+    </>
+  );
+}
+```
+
+### 不同尺寸
+
+通过 `size` 属性设置加载动画的尺寸。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      {['xs', 'sm', 'md', 'lg', 'xl'].map((size) => (
+        <div
+          key={size}
+          style={{
+            position: 'relative',
+            width: '100%',
+            height: '120px',
+            border: '1px solid #ccc',
+            padding: '16px',
+          }}
+        >
+          <LoadingOverlay visible size={size} />
+          <Text>尺寸: {size}</Text>
+        </div>
+      ))}
+    </Group>
+  );
+}
+```
+
+### 自定义遮罩颜色
+
+使用 `overlayColor` 属性自定义遮罩层的背景颜色。
+
+```jsx live
+function Demo() {
+  const colors = [
+    { color: '#fff', label: '白色遮罩' },
+    { color: '#f0f0f0', label: '浅灰遮罩' },
+    { color: '#000', label: '黑色遮罩' },
+    { color: '#1890ff', label: '蓝色遮罩' },
+  ];
+
+  return (
+    <Group direction="column" spacing="md">
+      {colors.map(({ color, label }) => (
+        <div
+          key={color}
+          style={{
+            position: 'relative',
+            width: '100%',
+            height: '120px',
+            border: '1px solid #ccc',
+            padding: '16px',
+          }}
+        >
+          <LoadingOverlay visible overlayColor={color} />
+          <Text>{label}</Text>
+        </div>
+      ))}
+    </Group>
+  );
+}
+```
+
+### 自定义透明度
+
+使用 `overlayOpacity` 属性设置遮罩层的透明度。
+
+```jsx live
+function Demo() {
+  const opacities = [0.3, 0.5, 0.7, 0.9];
+
+  return (
+    <Group direction="column" spacing="md">
+      {opacities.map((opacity) => (
+        <div
+          key={opacity}
+          style={{
+            position: 'relative',
+            width: '100%',
+            height: '120px',
+            border: '1px solid #ccc',
+            padding: '16px',
+            backgroundImage:
+              'linear-gradient(45deg, #f0f0f0 25%, transparent 25%, transparent 75%, #f0f0f0 75%)',
+          }}
+        >
+          <LoadingOverlay visible overlayOpacity={opacity} />
+          <Text>透明度: {opacity}</Text>
+        </div>
+      ))}
+    </Group>
+  );
+}
+```
+
+### 在卡片中使用
+
+在卡片组件中使用加载覆盖层。
+
+```jsx live
+function Demo() {
+  const [loading, setLoading] = React.useState(false);
+
+  const handleRefresh = () => {
+    setLoading(true);
+    setTimeout(() => setLoading(false), 2000);
+  };
+
+  return (
+    <Card style={{ width: '400px' }}>
+      <div style={{ position: 'relative', minHeight: '200px' }}>
+        <LoadingOverlay visible={loading} />
+        <div style={{ padding: '20px' }}>
+          <Text variant="h4" style={{ marginBottom: '12px' }}>
+            卡片标题
+          </Text>
+          <Text size="sm" color="secondary" style={{ marginBottom: '16px' }}>
+            这是卡片的内容区域。点击刷新按钮查看加载效果。
+          </Text>
+          <Button onClick={handleRefresh} disabled={loading}>
+            刷新数据
+          </Button>
+        </div>
+      </div>
+    </Card>
+  );
+}
+```
+
+## API
+
+### LoadingOverlay 属性
+
+| 属性           | 说明               | 类型                                             | 默认值      |
+| -------------- | ------------------ | ------------------------------------------------ | ----------- |
+| visible        | 是否显示加载覆盖层 | `boolean`                                        | **必需**    |
+| size           | 加载动画的尺寸     | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number` | `'md'`      |
+| overlayColor   | 遮罩层的背景颜色   | `string`                                         | `'#eff4f9'` |
+| overlayOpacity | 遮罩层的透明度     | `number`                                         | `0.7`       |
+| zIndex         | z-index 值         | `number`                                         | -           |
+| className      | 自定义类名         | `string`                                         | -           |
+| style          | 自定义样式         | `CSSProperties`                                  | -           |
+
+:::info
+
+- LoadingOverlay 会自动覆盖第一个设置了 `position: relative` 的父容器
+- **重要**:确保父容器设置了 `position: relative`,否则遮罩层可能无法正确定位
+- 遮罩层使用 `position: absolute`,会完全覆盖父容器的内容区域
+- 加载动画的 z-index 为 1000,遮罩层的 z-index 为 999
+- `overlayOpacity` 的值范围为 0-1,0 表示完全透明,1 表示完全不透明
+
+**关于定位**:
+
+- LoadingOverlay 使用 `position: absolute`,会相对于最近的 `position: relative/absolute/fixed` 父元素定位
+- 推荐在需要覆盖的内容外层添加一个设置了 `position: relative` 的容器
+- 容器应该有明确的宽高,避免加载层高度塌陷
+
+**关于遮罩颜色**:
+
+- 默认 `overlayColor` 为 `#eff4f9` (浅灰蓝色)
+- 可以使用任何有效的 CSS 颜色值
+- 建议使用接近背景色的颜色,保持视觉一致性
+
+**关于透明度**:
+
+- 默认 `overlayOpacity` 为 `0.7`
+- 值越大,遮罩越不透明,内容越模糊
+- 建议范围: 0.5-0.8,既能看到内容又能明确表示加载状态
+
+**关于 Loading 组件**:
+
+- LoadingOverlay 内部使用默认的 `Loading` 组件
+- 使用 circle1 变体,dark 颜色
+- 不支持自定义 variant 和 color 属性
+- 只能通过 `size` 属性调整加载动画大小
+
+  :::
+
+## 使用建议
+
+### 确保正确定位
+
+务必设置父容器的 position:
+
+```jsx
+// 正确: 父容器设置 position: relative
+<div style={{ position: 'relative', minHeight: '200px' }}>
+  <LoadingOverlay visible={loading} />
+  <Content />
+</div>
+
+// 错误: 父容器没有设置 position,遮罩层会相对于 body 定位
+<div>
+  <LoadingOverlay visible={loading} />
+  <Content />
+</div>
+```
+
+### 设置合适的容器高度
+
+避免内容高度塌陷:
+
+```jsx
+// 推荐: 设置 minHeight
+<div style={{ position: 'relative', minHeight: '200px' }}>
+  <LoadingOverlay visible={loading} />
+  {data && <Content data={data} />}
+</div>
+
+// 不推荐: 加载时内容为空,容器高度为 0
+<div style={{ position: 'relative' }}>
+  <LoadingOverlay visible={loading} />
+  {!loading && <Content />}
+</div>
+```
+
+### 选择合适的遮罩颜色
+
+根据背景选择遮罩颜色:
+
+```jsx
+// 浅色背景: 使用浅色遮罩
+<div style={{ position: 'relative', backgroundColor: '#fff' }}>
+  <LoadingOverlay visible overlayColor="#ffffff" overlayOpacity={0.7} />
+  <Content />
+</div>
+
+// 深色背景: 使用深色遮罩
+<div style={{ position: 'relative', backgroundColor: '#1a1a1a' }}>
+  <LoadingOverlay visible overlayColor="#000000" overlayOpacity={0.6} />
+  <Content />
+</div>
+```
+
+### 自定义 z-index
+
+处理层级冲突:
+
+```jsx
+// 如果页面有固定的头部或侧边栏
+<div style={{ position: 'relative', zIndex: 10 }}>
+  <LoadingOverlay visible zIndex={20} />
+  <Content />
+</div>
+```
+
+### 避免嵌套使用
+
+不要嵌套多个 LoadingOverlay:
+
+```jsx
+// 不推荐: 嵌套遮罩层
+<div style={{ position: 'relative' }}>
+  <LoadingOverlay visible={loading1} />
+  <div style={{ position: 'relative' }}>
+    <LoadingOverlay visible={loading2} />
+    <Content />
+  </div>
+</div>
+
+// 推荐: 使用单一加载状态
+<div style={{ position: 'relative' }}>
+  <LoadingOverlay visible={loading1 || loading2} />
+  <Content />
+</div>
+```
+
+### 性能优化
+
+避免不必要的渲染:
+
+```jsx
+// 推荐: visible 为 false 时不渲染
+<LoadingOverlay visible={loading} />
+
+// LoadingOverlay 内部已处理: 当 visible=false 时返回 null
+// 无需额外的条件渲染
+```

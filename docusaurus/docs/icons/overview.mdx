@@ -1,0 +1,179 @@
+---
+sidebar_position: 1
+---
+
+# 图标
+
+Kube Design 提供了一个全面的图标库，包含多种样式和变体。
+
+## 安装
+
+图标包含在 `@kubed/icons` 包中：
+
+```bash
+npm install @kubed/icons
+# or
+yarn add @kubed/icons
+# or
+pnpm add @kubed/icons
+```
+
+## 使用方法
+
+### 基本用法
+
+直接导入和使用图标：
+
+```jsx
+import { User, Settings, Download, Upload } from '@kubed/icons';
+
+function Demo() {
+  return (
+    <div>
+      <User />
+      <Settings />
+      <Download />
+      <Upload />
+    </div>
+  );
+}
+```
+
+### 图标大小
+
+使用 `size` 属性控制图标大小：
+
+```jsx
+import { User } from '@kubed/icons';
+
+function Demo() {
+  return (
+    <div>
+      <User size={16} />
+      <User size={24} />
+      <User size={32} />
+      <User size={48} />
+    </div>
+  );
+}
+```
+
+### 图标颜色
+
+图标继承其父元素的颜色：
+
+```jsx
+import { User } from '@kubed/icons';
+
+function Demo() {
+  return (
+    <div>
+      <div style={{ color: 'red' }}>
+        <User size={24} />
+      </div>
+      <div style={{ color: 'blue' }}>
+        <User size={24} />
+      </div>
+      <div style={{ color: 'green' }}>
+        <User size={24} />
+      </div>
+    </div>
+  );
+}
+```
+
+### 与组件一起使用
+
+将图标与 Kube Design 组件一起使用：
+
+```jsx
+import { Button } from '@kubed/components';
+import { Download, Upload, Settings } from '@kubed/icons';
+
+function Demo() {
+  return (
+    <div>
+      <Button leftIcon={<Download size={16} />}>
+        Download
+      </Button>
+      <Button leftIcon={<Upload size={16} />}>
+        Upload
+      </Button>
+      <Button leftIcon={<Settings size={16} />}>
+        Settings
+      </Button>
+    </div>
+  );
+}
+```
+
+## 可用图标
+
+图标库包含数百个跨越多个类别的图标：
+
+- **UI 图标**：常见的界面元素（箭头、复选框等）
+- **文件图标**：文件类型指示器
+- **社交图标**：社交媒体平台
+- **品牌图标**：流行的品牌标志
+- **操作图标**：用户操作（下载、上传、删除等）
+
+## 图标变体
+
+图标有多种样式可用：
+
+- **轮廓**：基于线条的图标（默认）
+- **填充**：纯色填充的图标
+- **双色调**：双色调图标
+
+## API
+
+### 图标属性
+
+所有图标接受以下属性：
+
+| Property | Description | Type | Default |
+|----------|-------------|------|---------|
+| size | 图标大小（像素） | `number \| string` | `24` |
+| color | 图标颜色 | `string` | 继承 |
+| className | CSS 类名 | `string` | - |
+| style | 内联样式 | `CSSProperties` | - |
+
+## 示例
+
+### 图标网格
+
+```jsx
+import { 
+  User, Settings, Download, Upload, 
+  Delete, Edit, Search, Filter,
+  Home, File, Folder, Star
+} from '@kubed/icons';
+
+function IconGrid() {
+  const icons = [
+    { Icon: User, name: 'User' },
+    { Icon: Settings, name: 'Settings' },
+    { Icon: Download, name: 'Download' },
+    { Icon: Upload, name: 'Upload' },
+    { Icon: Delete, name: 'Delete' },
+    { Icon: Edit, name: 'Edit' },
+    { Icon: Search, name: 'Search' },
+    { Icon: Filter, name: 'Filter' },
+    { Icon: Home, name: 'Home' },
+    { Icon: File, name: 'File' },
+    { Icon: Folder, name: 'Folder' },
+    { Icon: Star, name: 'Star' },
+  ];
+
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
+      {icons.map(({ Icon, name }) => (
+        <div key={name} style={{ textAlign: 'center' }}>
+          <Icon size={32} />
+          <p>{name}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+```

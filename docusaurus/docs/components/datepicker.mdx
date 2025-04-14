@@ -1,0 +1,536 @@
+---
+sidebar_position: 1
+---
+
+# DatePicker 日期选择器
+
+用于选择日期或日期范围。
+
+## 何时使用
+
+- 需要用户输入一个日期
+- 需要用户选择日期范围
+- 需要同时选择日期和时间
+- 适用于表单中的日期输入场景
+
+## 示例
+
+### 基础用法
+
+最简单的用法，通过 `onChange` 获取选中的日期。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  const handleChange = (date, dateString) => {
+    setValue(date);
+  };
+
+  return (
+    <div>
+      <DatePicker onChange={handleChange} style={{ width: 300 }} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        选择的日期: {value ? value.format('YYYY-MM-DD') : '未选择'}
+      </div>
+    </div>
+  );
+}
+```
+
+### 受控组件
+
+通过 `value` 属性控制日期选择器的值。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  const setToday = () => setValue(dayjs());
+  const setTomorrow = () => setValue(dayjs().add(1, 'day'));
+  const setNextWeek = () => setValue(dayjs().add(7, 'day'));
+
+  return (
+    <div>
+      <DatePicker value={value} onChange={setValue} style={{ width: 300 }} />
+      <Group style={{ marginTop: '16px' }}>
+        <Button onClick={setToday}>今天</Button>
+        <Button onClick={setTomorrow}>明天</Button>
+        <Button onClick={setNextWeek}>下周</Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+### 日期格式
+
+通过 `format` 属性自定义日期显示格式。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <DatePicker format="YYYY-MM-DD" placeholder="YYYY-MM-DD" style={{ width: 300 }} />
+      <DatePicker format="YYYY/MM/DD" placeholder="YYYY/MM/DD" style={{ width: 300 }} />
+      <DatePicker format="DD-MM-YYYY" placeholder="DD-MM-YYYY" style={{ width: 300 }} />
+      <DatePicker format="YYYY年MM月DD日" placeholder="YYYY年MM月DD日" style={{ width: 300 }} />
+    </Group>
+  );
+}
+```
+
+### 日期时间选择
+
+通过 `showTime` 属性启用时间选择功能。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  return (
+    <div>
+      <DatePicker
+        showTime
+        format="YYYY-MM-DD HH:mm:ss"
+        placeholder="选择日期时间"
+        onChange={setValue}
+        style={{ width: 300 }}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        选择的时间: {value ? value.format('YYYY-MM-DD HH:mm:ss') : '未选择'}
+      </div>
+    </div>
+  );
+}
+```
+
+### 禁用状态
+
+通过 `disabled` 属性禁用日期选择器。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <DatePicker disabled placeholder="禁用状态" style={{ width: 300 }} />
+      <DatePicker disabled defaultValue={dayjs()} style={{ width: 300 }} />
+    </Group>
+  );
+}
+```
+
+### 禁用日期
+
+通过 `disabledDate` 函数禁用特定日期。
+
+```jsx live
+function Demo() {
+  // 禁用今天之前的日期
+  const disabledDate = (current) => {
+    return current && current < dayjs().startOf('day');
+  };
+
+  return (
+    <div>
+      <DatePicker
+        disabledDate={disabledDate}
+        placeholder="只能选择今天及以后的日期"
+        style={{ width: 300 }}
+      />
+    </div>
+  );
+}
+```
+
+### 周选择器
+
+使用 `DatePicker.WeekPicker` 选择周。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  return (
+    <div>
+      <DatePicker.WeekPicker onChange={setValue} style={{ width: 300 }} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        选择的周: {value ? `${value.year()}年 第${value.week()}周` : '未选择'}
+      </div>
+    </div>
+  );
+}
+```
+
+### 月选择器
+
+使用 `DatePicker.MonthPicker` 选择月份。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  return (
+    <div>
+      <DatePicker.MonthPicker onChange={setValue} style={{ width: 300 }} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        选择的月份: {value ? value.format('YYYY年MM月') : '未选择'}
+      </div>
+    </div>
+  );
+}
+```
+
+### 年选择器
+
+使用 `DatePicker.YearPicker` 选择年份。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  return (
+    <div>
+      <DatePicker.YearPicker onChange={setValue} style={{ width: 300 }} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        选择的年份: {value ? value.format('YYYY年') : '未选择'}
+      </div>
+    </div>
+  );
+}
+```
+
+### 季度选择器
+
+使用 `DatePicker.QuarterPicker` 选择季度。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  const getQuarter = (date) => {
+    if (!date) return '';
+    const month = date.month();
+    const quarter = Math.floor(month / 3) + 1;
+    return `${date.year()}年 第${quarter}季度`;
+  };
+
+  return (
+    <div>
+      <DatePicker.QuarterPicker onChange={setValue} style={{ width: 300 }} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        选择的季度: {value ? getQuarter(value) : '未选择'}
+      </div>
+    </div>
+  );
+}
+```
+
+### 日期范围选择
+
+使用 `DatePicker.RangePicker` 选择日期范围。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  return (
+    <div>
+      <DatePicker.RangePicker onChange={setValue} style={{ width: 400 }} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        选择的范围:{' '}
+        {value && value[0] && value[1]
+          ? `${value[0].format('YYYY-MM-DD')} ~ ${value[1].format('YYYY-MM-DD')}`
+          : '未选择'}
+      </div>
+    </div>
+  );
+}
+```
+
+### 日期时间范围
+
+RangePicker 也支持选择日期时间范围。
+
+```jsx live
+function Demo() {
+  return (
+    <DatePicker.RangePicker
+      showTime
+      format="YYYY-MM-DD HH:mm:ss"
+      placeholder={['开始时间', '结束时间']}
+      style={{ width: 500 }}
+    />
+  );
+}
+```
+
+### 预设范围
+
+为 RangePicker 添加快捷选择。
+
+```jsx live
+function Demo() {
+  const { RangePicker } = DatePicker;
+
+  const ranges = {
+    '今天': [dayjs(), dayjs()],
+    '本周': [dayjs().startOf('week'), dayjs().endOf('week')],
+    '本月': [dayjs().startOf('month'), dayjs().endOf('month')],
+    '最近7天': [dayjs().subtract(6, 'day'), dayjs()],
+    '最近30天': [dayjs().subtract(29, 'day'), dayjs()],
+  };
+
+  return (
+    <div>
+      <RangePicker ranges={ranges} style={{ width: 400 }} />
+    </div>
+  );
+}
+```
+
+### 无边框
+
+通过 `bordered={false}` 移除边框。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <DatePicker bordered={false} placeholder="无边框日期选择器" style={{ width: 300 }} />
+      <DatePicker.RangePicker bordered={false} style={{ width: 400 }} />
+    </Group>
+  );
+}
+```
+
+### 尺寸
+
+通过 `size` 属性设置选择器尺寸。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <DatePicker size="sm" placeholder="小尺寸" style={{ width: 300 }} />
+      <DatePicker size="md" placeholder="中等尺寸（默认）" style={{ width: 300 }} />
+      <DatePicker size="lg" placeholder="大尺寸" style={{ width: 300 }} />
+    </Group>
+  );
+}
+```
+
+### 禁用特定日期范围
+
+限制只能选择特定范围内的日期。
+
+```jsx live
+function Demo() {
+  // 只能选择未来30天内的日期
+  const disabledDate = (current) => {
+    const today = dayjs().startOf('day');
+    const maxDate = dayjs().add(30, 'day').endOf('day');
+    return current && (current < today || current > maxDate);
+  };
+
+  return (
+    <DatePicker
+      disabledDate={disabledDate}
+      placeholder="只能选择未来30天"
+      style={{ width: 300 }}
+    />
+  );
+}
+```
+
+### RangePicker 禁用日期
+
+限制日期范围选择的起止日期。
+
+```jsx live
+function Demo() {
+  // 禁用今天之前的日期
+  const disabledDate = (current) => {
+    return current && current < dayjs().startOf('day');
+  };
+
+  return (
+    <DatePicker.RangePicker
+      disabledDate={disabledDate}
+      placeholder={['开始日期', '结束日期']}
+      style={{ width: 400 }}
+    />
+  );
+}
+```
+
+## API
+
+### 共同的 API
+
+以下 API 为 DatePicker、MonthPicker、YearPicker、WeekPicker、QuarterPicker 共享的 API。
+
+| 属性           | 说明                           | 类型                                      | 默认值       |
+| -------------- | ------------------------------ | ----------------------------------------- | ------------ |
+| value          | 日期（受控）                   | `dayjs`                                   | -            |
+| defaultValue   | 默认日期（非受控）             | `dayjs`                                   | -            |
+| format         | 展示的日期格式                 | `string`                                  | `YYYY-MM-DD` |
+| placeholder    | 输入框占位文本                 | `string`                                  | -            |
+| disabled       | 禁用                           | `boolean`                                 | `false`      |
+| bordered       | 是否有边框                     | `boolean`                                 | `true`       |
+| allowClear     | 是否显示清除按钮               | `boolean`                                 | `true`       |
+| size           | 输入框大小                     | `'sm' \| 'md' \| 'lg'`                    | `'md'`       |
+| picker         | 设置选择器类型                 | `'date' \| 'week' \| 'month' \| 'quarter' \| 'year'` | `'date'`       |
+| disabledDate   | 不可选择的日期                 | `(currentDate: dayjs) => boolean`         | -            |
+| onChange       | 时间发生变化的回调             | `(date: dayjs, dateString: string) => void` | -          |
+| onOpenChange   | 弹出日历和关闭日历的回调       | `(open: boolean) => void`                 | -            |
+| getPopupContainer | 定义浮层的容器                 | `(triggerNode: Element) => HTMLElement`   | -            |
+| 其他           | 原生属性                       | `HTMLAttributes<HTMLDivElement>`          | -            |
+
+:::info
+
+DatePicker 使用 [Day.js](https://day.js.org/) 作为日期处理库。
+
+**关于日期值**：
+- DatePicker 内部使用 dayjs 对象处理日期
+- `value` 和 `defaultValue` 可以接受 `Date` 对象或 `dayjs` 对象
+- `onChange` 回调返回 dayjs 对象，可以使用 `.toDate()` 转换为原生 Date 对象
+- 在实际项目中，推荐使用 dayjs 进行日期操作
+
+**关于 format**：
+- 默认格式为 `YYYY-MM-DD`
+- 常用格式：`YYYY-MM-DD`、`YYYY/MM/DD`、`DD-MM-YYYY` 等
+- 完整格式参考：[Day.js 格式化文档](https://day.js.org/docs/en/display/format)
+
+**关于 disabledDate**：
+- 函数接收当前日期（dayjs 对象）作为参数，返回 `true` 表示禁用该日期
+- 可以使用 `current.toDate()` 转换为原生 Date 对象进行比较
+- 常用于禁用过去的日期、未来的日期等场景
+
+:::
+
+### DatePicker
+
+| 属性     | 说明                 | 类型                    | 默认值  |
+| -------- | -------------------- | ----------------------- | ------- |
+| showTime | 增加时间选择功能     | `boolean \| object`     | `false` |
+| showToday| 是否展示"今天"按钮   | `boolean`               | `true`  |
+
+### DatePicker.RangePicker
+
+| 属性         | 说明                         | 类型                                                | 默认值 |
+| ------------ | ---------------------------- | --------------------------------------------------- | ------ |
+| value        | 日期范围（受控）             | `[dayjs, dayjs]`                                    | -      |
+| defaultValue | 默认日期范围（非受控）       | `[dayjs, dayjs]`                                    | -      |
+| format       | 展示的日期格式               | `string`                                            | `YYYY-MM-DD` |
+| placeholder  | 输入框占位文本               | `[string, string]`                                  | -      |
+| ranges       | 预设时间范围快捷选择         | `{ [range: string]: [dayjs, dayjs] }`               | -      |
+| separator    | 设置分隔符                   | `ReactNode`                                         | `~`    |
+| showTime     | 增加时间选择功能             | `boolean \| object`                                 | `false`|
+| onChange     | 时间发生变化的回调           | `(dates: [dayjs, dayjs], dateStrings: [string, string]) => void` | - |
+| 其他         | 其他属性同 DatePicker        | -                                                   | -      |
+
+:::info
+
+**关于 RangePicker**：
+- `value` 和 `defaultValue` 都是长度为 2 的数组，分别表示开始时间和结束时间
+- `placeholder` 是一个数组，可以分别设置开始和结束输入框的占位符
+- `ranges` 可以设置预设的时间范围，方便快速选择
+
+:::
+
+### DatePicker.MonthPicker
+
+选择月份的选择器，API 与 DatePicker 相同，默认 `format` 为 `YYYY-MM`。
+
+### DatePicker.WeekPicker
+
+选择周的选择器，API 与 DatePicker 相同，默认 `format` 为 `YYYY-wo`。
+
+### DatePicker.YearPicker
+
+选择年的选择器，API 与 DatePicker 相同，默认 `format` 为 `YYYY`。
+
+### DatePicker.QuarterPicker
+
+选择季度的选择器，API 与 DatePicker 相同，默认 `format` 为 `YYYY-[Q]Q`。
+
+## 使用建议
+
+### 日期格式化
+
+根据业务需求选择合适的日期格式：
+
+```jsx
+// 标准格式
+<DatePicker format="YYYY-MM-DD" />
+
+// 带时间
+<DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
+
+// 自定义格式
+<DatePicker format="YYYY年MM月DD日" />
+
+// 使用 formatDate 方法格式化
+const formattedDate = value.format('YYYY-MM-DD');
+```
+
+### 禁用日期
+
+常用的日期禁用场景：
+
+```jsx
+// 禁用今天之前的日期
+const disabledDate = (current) => {
+  return current && current < dayjs().startOf('day');
+};
+
+// 禁用今天之后的日期
+const disabledDate = (current) => {
+  return current && current > dayjs().endOf('day');
+};
+
+// 禁用指定范围外的日期
+const disabledDate = (current) => {
+  const start = dayjs('2024-01-01');
+  const end = dayjs('2024-12-31');
+  return current && (current < start || current > end);
+};
+```
+
+### 表单集成
+
+在表单中使用 DatePicker：
+
+```jsx
+const [form, setForm] = React.useState({
+  startDate: null,
+  endDate: null,
+});
+
+const handleDateChange = (date) => {
+  setForm({ ...form, startDate: date });
+};
+
+<DatePicker value={form.startDate} onChange={handleDateChange} />
+```
+
+### RangePicker 预设范围
+
+为用户提供常用的日期范围快捷选择：
+
+```jsx
+const ranges = {
+  今天: [dayjs(), dayjs()],
+  昨天: [dayjs().subtract(1, 'day'), dayjs().subtract(1, 'day')],
+  最近7天: [dayjs().subtract(7, 'day'), dayjs()],
+  最近30天: [dayjs().subtract(30, 'day'), dayjs()],
+  本月: [dayjs().startOf('month'), dayjs().endOf('month')],
+  上月: [
+    dayjs().subtract(1, 'month').startOf('month'),
+    dayjs().subtract(1, 'month').endOf('month'),
+  ],
+};
+
+<DatePicker.RangePicker ranges={ranges} />
+```

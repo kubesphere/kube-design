@@ -5,8 +5,9 @@ import {
   itSupportsClassName,
   itSupportsOthers,
   itSupportsRef,
-  shallowWithTheme,
+  renderWithTheme,
 } from '@kubed/tests';
+import { screen } from '@testing-library/react';
 import { ThemeProvider } from 'styled-components';
 import { themeUtils } from '@kubed/components';
 import { Text } from './Text';
@@ -23,24 +24,26 @@ describe('@kubed/components/Text', () => {
   });
 
   it('sets font-weight, test-transform and text-align based on props', () => {
-    const withWeight = shallowWithTheme(
+    renderWithTheme(
       <ThemeProvider theme={themeUtils.getPresets()[0]}>
-        <Text weight={600} />
+        <Text data-testid="text-weight" weight={600} />
       </ThemeProvider>
     );
-    const withTransform = shallowWithTheme(
+    expect(screen.getByTestId('text-weight')).toHaveStyle('font-weight: 600');
+
+    renderWithTheme(
       <ThemeProvider theme={themeUtils.getPresets()[0]}>
-        <Text transform="uppercase" />
+        <Text data-testid="text-transform" transform="uppercase" />
       </ThemeProvider>
     );
-    const withAlign = shallowWithTheme(
+    expect(screen.getByTestId('text-transform')).toHaveStyle('text-transform: uppercase');
+
+    renderWithTheme(
       <ThemeProvider theme={themeUtils.getPresets()[0]}>
-        <Text align="right" />
+        <Text data-testid="text-align" align="right" />
       </ThemeProvider>
     );
 
-    expect(withWeight.render().css('font-weight')).toBe('600');
-    expect(withTransform.render().css('text-transform')).toBe('uppercase');
-    expect(withAlign.render().css('text-align')).toBe('right');
+    expect(screen.getByTestId('text-align')).toHaveStyle('text-align: right');
   });
 });

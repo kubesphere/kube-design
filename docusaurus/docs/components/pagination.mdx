@@ -1,0 +1,663 @@
+---
+sidebar_position: 1
+---
+
+# Pagination 分页
+
+采用分页的形式分隔长列表,每次只加载一个页面。
+
+## 何时使用
+
+- 当加载/渲染所有数据将花费很多时间时
+- 可切换页面浏览数据
+- 用于表格、列表等数据展示场景
+
+在 Kube Design 中,Pagination 组件提供了简洁的分页功能:
+
+- **简洁设计**:只显示当前页和总页数,界面简洁清晰
+- **图标导航**:使用前进/后退图标进行页面切换
+- **总数显示**:可选显示数据总数
+- **受控模式**:支持通过 page 属性控制当前页
+
+## 示例
+
+### 基础用法
+
+最基本的分页器。
+
+```jsx live
+function Demo() {
+  return <Pagination totalCount={100} />;
+}
+```
+
+### 页面切换同步
+
+通过回调函数同步页面状态到外部。
+
+```jsx live
+function Demo() {
+  const [page, setPage] = React.useState(0);
+
+  return (
+    <Group direction="column" spacing="md">
+      <Text>当前页: {page + 1}</Text>
+      <Pagination totalCount={100} page={page} onNextPage={setPage} onPreviousPage={setPage} />
+    </Group>
+  );
+}
+```
+
+### 不同每页数量
+
+通过 `pageSize` 属性设置每页显示的数量。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="xl">
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          每页 10 条:
+        </Text>
+        <Pagination totalCount={100} pageSize={10} />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          每页 20 条:
+        </Text>
+        <Pagination totalCount={100} pageSize={20} />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          每页 50 条:
+        </Text>
+        <Pagination totalCount={100} pageSize={50} />
+      </div>
+    </Group>
+  );
+}
+```
+
+### 隐藏总数
+
+使用 `showTotal={false}` 隐藏总数显示。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="xl">
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          显示总数(默认):
+        </Text>
+        <Pagination totalCount={100} showTotal />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          隐藏总数:
+        </Text>
+        <Pagination totalCount={100} showTotal={false} />
+      </div>
+    </Group>
+  );
+}
+```
+
+### 数据加载
+
+配合数据加载使用。
+
+```jsx live
+function Demo() {
+  const [page, setPage] = React.useState(0);
+  const [loading, setLoading] = React.useState(false);
+  const pageSize = 10;
+
+  const loadData = (newPage) => {
+    setLoading(true);
+    // 模拟数据加载
+    setTimeout(() => {
+      setPage(newPage);
+      setLoading(false);
+    }, 500);
+  };
+
+  const items = Array.from({ length: pageSize }, (_, i) => ({
+    id: page * pageSize + i + 1,
+    name: `Item ${page * pageSize + i + 1}`,
+  }));
+
+  return (
+    <Group direction="column" spacing="md">
+      <Card style={{ padding: '16px', minHeight: '200px' }}>
+        {loading ? (
+          <Loading />
+        ) : (
+          <Group direction="column" spacing="xs">
+            {items.map((item) => (
+              <Text key={item.id} size="sm">
+                {item.name}
+              </Text>
+            ))}
+          </Group>
+        )}
+      </Card>
+      <Pagination
+        totalCount={100}
+        page={page}
+        pageSize={pageSize}
+        onNextPage={loadData}
+        onPreviousPage={loadData}
+      />
+    </Group>
+  );
+}
+```
+
+### 列表分页
+
+在列表中使用分页。
+
+```jsx live
+function Demo() {
+  const [page, setPage] = React.useState(0);
+  const pageSize = 5;
+
+  const allPods = Array.from({ length: 27 }, (_, i) => ({
+    id: i + 1,
+    name: `nginx-deployment-${i + 1}`,
+    status: i % 3 === 0 ? 'Running' : i % 3 === 1 ? 'Pending' : 'Error',
+  }));
+
+  const startIndex = page * pageSize;
+  const currentPods = allPods.slice(startIndex, startIndex + pageSize);
+
+  return (
+    <Group direction="column" spacing="md">
+      <Card>
+        {currentPods.map((pod) => (
+          <div
+            key={pod.id}
+            style={{
+              padding: '12px 16px',
+              borderBottom: '1px solid #eff4f9',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Text>{pod.name}</Text>
+            <Badge
+              variant="dot"
+              color={
+                pod.status === 'Running'
+                  ? 'success'
+                  : pod.status === 'Pending'
+                  ? 'warning'
+                  : 'error'
+              }
+            >
+              {pod.status}
+            </Badge>
+          </div>
+        ))}
+      </Card>
+      <Pagination
+        totalCount={allPods.length}
+        page={page}
+        pageSize={pageSize}
+        onNextPage={setPage}
+        onPreviousPage={setPage}
+      />
+    </Group>
+  );
+}
+```
+
+### 卡片分页
+
+在卡片列表中使用分页。
+
+```jsx live
+function Demo() {
+  const [page, setPage] = React.useState(0);
+  const pageSize = 4;
+
+  const allProjects = Array.from({ length: 15 }, (_, i) => ({
+    id: i + 1,
+    name: `Project ${i + 1}`,
+    description: `项目描述 ${i + 1}`,
+  }));
+
+  const startIndex = page * pageSize;
+  const currentProjects = allProjects.slice(startIndex, startIndex + pageSize);
+
+  return (
+    <Group direction="column" spacing="md">
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+        {currentProjects.map((project) => (
+          <Card key={project.id} style={{ padding: '16px' }}>
+            <Text variant="h6" style={{ marginBottom: '8px' }}>
+              {project.name}
+            </Text>
+            <Text size="sm" color="secondary">
+              {project.description}
+            </Text>
+          </Card>
+        ))}
+      </div>
+      <Pagination
+        totalCount={allProjects.length}
+        page={page}
+        pageSize={pageSize}
+        onNextPage={setPage}
+        onPreviousPage={setPage}
+      />
+    </Group>
+  );
+}
+```
+
+### 自定义样式
+
+通过 `style` 属性自定义样式。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="xl">
+      <Pagination totalCount={100} />
+      <Pagination
+        totalCount={100}
+        style={{
+          padding: '12px',
+          backgroundColor: '#f5f7fa',
+          borderRadius: '4px',
+        }}
+      />
+      <Pagination
+        totalCount={100}
+        style={{
+          padding: '12px',
+          border: '1px solid #d8dee5',
+          borderRadius: '4px',
+        }}
+      />
+    </Group>
+  );
+}
+```
+
+### 边界情况
+
+处理边界情况:只有一页、没有数据等。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="xl">
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          只有一页:
+        </Text>
+        <Pagination totalCount={5} pageSize={10} />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          数据较少:
+        </Text>
+        <Pagination totalCount={25} pageSize={10} />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          大量数据:
+        </Text>
+        <Pagination totalCount={10000} pageSize={20} />
+      </div>
+    </Group>
+  );
+}
+```
+
+### 完整示例
+
+综合示例:带搜索和排序的列表分页。
+
+```jsx live
+function Demo() {
+  const [page, setPage] = React.useState(0);
+  const [filter, setFilter] = React.useState('all');
+  const pageSize = 5;
+
+  const allData = Array.from({ length: 23 }, (_, i) => ({
+    id: i + 1,
+    name: `Service ${i + 1}`,
+    type: i % 2 === 0 ? 'ClusterIP' : 'NodePort',
+    status: i % 3 === 0 ? 'Active' : 'Inactive',
+  }));
+
+  const filteredData = filter === 'all' ? allData : allData.filter((item) => item.type === filter);
+
+  const startIndex = page * pageSize;
+  const currentData = filteredData.slice(startIndex, startIndex + pageSize);
+
+  const handleFilterChange = (newFilter) => {
+    setFilter(newFilter);
+    setPage(0); // 重置到第一页
+  };
+
+  return (
+    <Group direction="column" spacing="md">
+      <Group spacing="xs">
+        <Button
+          size="sm"
+          variant={filter === 'all' ? 'filled' : 'outline'}
+          onClick={() => handleFilterChange('all')}
+        >
+          全部
+        </Button>
+        <Button
+          size="sm"
+          variant={filter === 'ClusterIP' ? 'filled' : 'outline'}
+          onClick={() => handleFilterChange('ClusterIP')}
+        >
+          ClusterIP
+        </Button>
+        <Button
+          size="sm"
+          variant={filter === 'NodePort' ? 'filled' : 'outline'}
+          onClick={() => handleFilterChange('NodePort')}
+        >
+          NodePort
+        </Button>
+      </Group>
+      <Card>
+        {currentData.map((item) => (
+          <div
+            key={item.id}
+            style={{
+              padding: '12px 16px',
+              borderBottom: '1px solid #eff4f9',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <div>
+              <Text>{item.name}</Text>
+              <Text size="xs" color="secondary" style={{ marginTop: '4px' }}>
+                {item.type}
+              </Text>
+            </div>
+            <Badge variant="dot" color={item.status === 'Active' ? 'success' : 'secondary'}>
+              {item.status}
+            </Badge>
+          </div>
+        ))}
+      </Card>
+      <Pagination
+        totalCount={filteredData.length}
+        page={page}
+        pageSize={pageSize}
+        onNextPage={setPage}
+        onPreviousPage={setPage}
+      />
+    </Group>
+  );
+}
+```
+
+## API
+
+### Pagination
+
+| 属性           | 说明                | 类型                     | 默认值   |
+| -------------- | ------------------- | ------------------------ | -------- |
+| totalCount     | 数据总数            | `number`                 | **必需** |
+| page           | 初始页码(从 0 开始) | `number`                 | `0`      |
+| pageSize       | 每页条数            | `number`                 | `10`     |
+| showTotal      | 是否显示总数        | `boolean`                | `true`   |
+| onNextPage     | 下一页回调          | `(page: number) => void` | -        |
+| onPreviousPage | 上一页回调          | `(page: number) => void` | -        |
+| className      | 自定义类名          | `string`                 | -        |
+| style          | 自定义样式          | `CSSProperties`          | -        |
+
+:::info
+
+**关于页码**:
+
+- `page` 属性从 0 开始计数(0 表示第一页)
+- `page` 属性仅作为初始值,组件内部使用 useState 维护当前页状态
+- 显示时会自动加 1 显示为 "1 / 10" 的形式
+- 总页数通过 `Math.ceil(totalCount / pageSize)` 自动计算
+
+**关于组件状态**:
+
+- Pagination 组件使用内部状态管理当前页码
+- `page` prop 只在组件初始化时使用,后续不会同步
+- 如需外部控制页码,应在 `onNextPage`/`onPreviousPage` 回调中更新数据展示
+- 这是一种半受控模式:页码由组件内部管理,数据由外部管理
+
+**关于回调函数**:
+
+- `onNextPage` 和 `onPreviousPage` 接收新的页码作为参数
+- 回调函数中的页码也是从 0 开始
+- 可以在回调中进行数据加载、状态更新等操作
+- 默认值为 `noop`(空函数),不传入时不会报错
+
+**关于边界处理**:
+
+- 在第一页(page === 0)时,"上一页"按钮会自动禁用
+- 在最后一页(page + 1 === pageCount)时,"下一页"按钮会自动禁用
+- 边界检查逻辑:上一页不会小于 0,下一页不会超过 pageCount
+- 当只有一页时,两个按钮都会被禁用
+
+**关于总数显示**:
+
+- 默认显示 `totalItems` 文本和数量(如 "总计 100")
+- 可以通过 `showTotal={false}` 隐藏
+- 文字内容通过 LocaleProvider 的 `Pagination.totalItems` 配置
+- 隐藏时会渲染空 div 保持布局
+
+**关于图标**:
+
+- 使用 `@kubed/icons` 的 `Previous` 和 `Next` 图标
+- 图标大小为 20px
+- 按钮使用 `variant="text"` 和 `radius="sm"` 样式
+
+:::
+
+## 使用建议
+
+### 合理设置每页数量
+
+根据使用场景设置合适的 pageSize:
+
+```jsx
+// 列表项较大: 使用较小的 pageSize
+<Pagination totalCount={100} pageSize={5} />
+
+// 列表项较小: 使用较大的 pageSize
+<Pagination totalCount={100} pageSize={20} />
+
+// 移动端: 使用更小的 pageSize
+<Pagination totalCount={100} pageSize={10} />
+```
+
+### 数据加载时的处理
+
+在数据加载过程中提供加载状态:
+
+```jsx
+const [loading, setLoading] = useState(false);
+
+const handlePageChange = (newPage) => {
+  setLoading(true);
+  fetchData(newPage).then(() => {
+    setPage(newPage);
+    setLoading(false);
+  });
+};
+
+<>
+  {loading ? <Loading /> : <DataList data={currentData} />}
+  <Pagination
+    totalCount={total}
+    page={page}
+    onNextPage={handlePageChange}
+    onPreviousPage={handlePageChange}
+  />
+</>;
+```
+
+### 过滤时重置页码
+
+当数据被过滤时,应该重置到第一页:
+
+```jsx
+const handleFilterChange = (filter) => {
+  setFilter(filter);
+  setPage(0); // 重置到第一页
+};
+```
+
+### 保持总数显示一致
+
+确保 totalCount 是过滤后的数据总数:
+
+```jsx
+const filteredData = data.filter(filterFn);
+
+<Pagination totalCount={filteredData.length} pageSize={10} />;
+```
+
+### 理解组件的状态管理
+
+Pagination 使用半受控模式:
+
+```jsx
+// 组件内部管理页码状态
+// page prop 仅用于初始化
+const [page, setPage] = useState(0);
+
+// 在回调中更新要显示的数据
+const handlePageChange = (newPage) => {
+  // 组件内部已经更新了页码
+  // 这里只需要更新数据展示
+  const start = newPage * pageSize;
+  const end = start + pageSize;
+  setCurrentData(allData.slice(start, end));
+};
+
+<Pagination
+  totalCount={100}
+  page={0} // 仅用于初始化
+  pageSize={10}
+  onNextPage={handlePageChange}
+  onPreviousPage={handlePageChange}
+/>;
+```
+
+### 配合表格使用
+
+在表格底部使用分页器:
+
+```jsx
+<>
+  <Table data={currentPageData} />
+  <div style={{ marginTop: '16px' }}>
+    <Pagination
+      totalCount={totalCount}
+      page={page}
+      onNextPage={handleNext}
+      onPreviousPage={handlePrev}
+    />
+  </div>
+</>
+```
+
+### 处理边界情况
+
+正确处理只有一页或没有数据的情况:
+
+```jsx
+// 当没有数据时,不显示分页器
+{
+  totalCount > 0 && <Pagination totalCount={totalCount} pageSize={pageSize} />;
+}
+
+// 当只有一页时,分页器会自动禁用按钮
+<Pagination totalCount={5} pageSize={10} />;
+```
+
+### 样式自定义
+
+根据使用场景自定义样式:
+
+```jsx
+// 卡片内的分页器
+<Pagination
+  totalCount={100}
+  style={{
+    padding: '12px 16px',
+    borderTop: '1px solid #eff4f9',
+  }}
+/>
+
+// 突出显示的分页器
+<Pagination
+  totalCount={100}
+  style={{
+    padding: '12px',
+    backgroundColor: '#f5f7fa',
+    borderRadius: '4px',
+  }}
+/>
+```
+
+### URL 同步
+
+在需要时将页码同步到 URL:
+
+```jsx
+const [searchParams, setSearchParams] = useSearchParams();
+const page = parseInt(searchParams.get('page') || '0');
+
+const handlePageChange = (newPage) => {
+  setSearchParams({ page: newPage.toString() });
+};
+
+<Pagination
+  totalCount={100}
+  page={page}
+  onNextPage={handlePageChange}
+  onPreviousPage={handlePageChange}
+/>;
+```
+
+### 服务端分页
+
+配合 API 请求使用:
+
+```jsx
+const [page, setPage] = useState(0);
+const [data, setData] = useState([]);
+const [total, setTotal] = useState(0);
+const pageSize = 10;
+
+useEffect(() => {
+  fetchData(page, pageSize).then((res) => {
+    setData(res.items);
+    setTotal(res.total);
+  });
+}, [page]);
+
+<Pagination
+  totalCount={total}
+  page={page}
+  pageSize={pageSize}
+  onNextPage={setPage}
+  onPreviousPage={setPage}
+/>;
+```
