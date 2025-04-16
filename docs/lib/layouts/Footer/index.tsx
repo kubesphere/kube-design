@@ -12,5 +12,5 @@ const Foot = styled.div`
 `;
 
 export default function Footer() {
-  return <Foot>© 2021 KubeSphere.io</Foot>;
+  return <Foot>© 2025 KubeSphere.io</Foot>;
 }
