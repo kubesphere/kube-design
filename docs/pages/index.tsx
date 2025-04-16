@@ -142,7 +142,7 @@ export default function Home() {
           </Snippet>
         </HeroInner>
       </HeroWrapper>
-      <Footer>© 2021 KubeSphere.io</Footer>
+      <Footer>© 2025 KubeSphere.io</Footer>
     </HomeWrapper>
   );
 }
