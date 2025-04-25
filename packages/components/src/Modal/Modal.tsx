@@ -131,6 +131,7 @@ export const Modal = forwardRef<ModalProps, any>((props, ref) => {
     wrapClassName,
     confirmLoading,
     destroyOnClose = true,
+    maskClosable = false,
     ...restProps
   } = props;
   const [internalVisible, setInternalVisible] = useState(visible);
@@ -215,6 +216,7 @@ export const Modal = forwardRef<ModalProps, any>((props, ref) => {
   return (
     <StyledDialog
       {...restProps}
+      maskClosable={maskClosable}
       prefixCls="kubed-modal"
       wrapClassName={cx(wrapClassName, { 'kubed-modal-centered': centered })}
       focusTriggerAfterClose={focusTriggerAfterClose}
