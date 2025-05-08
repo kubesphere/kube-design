@@ -1,11 +1,13 @@
-name: Release
+name: Release Legacy
 on:
   push:
     branches:
-      - master
+      - legacy
 
   # Run build for any PRs.
   pull_request:
+
+  workflow_dispatch:
 
 jobs:
   release:
