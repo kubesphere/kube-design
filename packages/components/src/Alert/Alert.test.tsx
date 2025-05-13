@@ -41,7 +41,7 @@ describe('@kubed/components/Alert', () => {
     ),
   ]);
 
-  it('renders given hasTitle, closable and showIcon',() => {
+  it('renders given hasTitle, closable and showIcon', () => {
     const wrapper = shallowWithTheme(
       <Alert title="KubeSphere" type="info" closable>
         Kubesphere.io is an upstream project of the KubeSphere container management platform.
