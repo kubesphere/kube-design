@@ -1,14 +1,104 @@
 import * as React from 'react';
-import { Meta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { Storage, Pod, Error } from '@kubed/icons';
 import { Badge, BadgeAnchor, Group, Tooltip } from '../index';
 
 export default {
   title: 'Components/Badge',
   component: Badge,
-} as Meta;
+  args: {
+    children: '3',
+    color: 'success',
+    shadow: false,
+    dot: false,
+    motion: false,
+  },
+  argTypes: {
+    children: {
+      name: 'children',
+      description: 'Badge content',
+      defaultValue: '3',
+      control: { type: 'text' },
+    },
+    color: {
+      name: 'color',
+      description: 'Badge color from theme',
+      defaultValue: 'success',
+      options: ['default', 'primary', 'secondary', 'success', 'warning', 'error', 'blue'],
+      control: { type: 'select' },
+    },
+    shadow: {
+      name: 'shadow',
+      description: 'Display shadow or not',
+      defaultValue: false,
+      control: { type: 'boolean' },
+    },
+    dot: {
+      name: 'dot',
+      description: 'Display Dot or not',
+      defaultValue: false,
+      control: { type: 'boolean' },
+    },
+    motion: {
+      name: 'motion',
+      description: 'Disable animation status or not, only affect when dot is true',
+      defaultValue: false,
+      control: { type: 'boolean' },
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ padding: '20px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+} as Meta<typeof Badge>;
 
-export const basic = () => (
+type Story = StoryObj<typeof Badge>;
+
+export const Explame: Story = {
+  render: (args) => {
+    const [visible, setVisible] = React.useState(true);
+
+    React.useEffect(() => {
+      if (args.dot && args.motion) {
+        const timer = setInterval(() => {
+          setVisible((prev) => !prev);
+        }, 2000);
+        return () => clearInterval(timer);
+      }
+      return undefined;
+    }, [args.dot, args.motion]);
+
+    const safeColor = [
+      'default',
+      'primary',
+      'secondary',
+      'success',
+      'warning',
+      'error',
+      'blue',
+    ].includes(args.color || '')
+      ? args.color
+      : 'success';
+
+    return (
+      <Group>
+        {args.dot ? (
+          <BadgeAnchor offset={[5, 5]}>
+            <Badge {...args} color={safeColor} motion={args.motion && visible} />
+            <Pod size={40} />
+          </BadgeAnchor>
+        ) : (
+          <Badge {...args} color={safeColor} />
+        )}
+      </Group>
+    );
+  },
+};
+
+export const Basic = () => (
   <Group>
     <Badge>3</Badge>
     <Badge color="warning">12</Badge>

@@ -1,12 +1,8 @@
 import * as React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
 import { Error, Pod } from '@kubed/icons';
 import Collapse from './Collapse';
 import { BadgeAnchor, Entity, Field, Tooltip } from '../index';
-
-export default {
-  title: 'Components/Collapse',
-  component: Collapse,
-};
 
 const { Panel } = Collapse;
 
@@ -19,7 +15,105 @@ const Avatar = (
   </BadgeAnchor>
 );
 
-export const basic = () => (
+export default {
+  title: 'Components/Collapse',
+  component: Collapse,
+  args: {
+    accordion: true,
+    destroyInactivePanel: false,
+    defaultActiveKey: ['1'],
+    collapsible: undefined,
+  },
+  argTypes: {
+    accordion: {
+      name: 'accordion',
+      description: 'If true, only one panel can be expanded at a time',
+      defaultValue: true,
+      control: { type: 'boolean' },
+    },
+    destroyInactivePanel: {
+      name: 'destroyInactivePanel',
+      description: 'Destroy inactive panel when collapsed',
+      defaultValue: false,
+      control: { type: 'boolean' },
+    },
+    defaultActiveKey: {
+      name: 'defaultActiveKey',
+      description: 'Key of the initial active panel',
+      defaultValue: ['1'],
+      control: 'object',
+    },
+    collapsible: {
+      name: 'collapsible',
+      description: 'Specify the collapsible mode',
+      options: [undefined, 'header', 'icon', 'disabled'],
+      control: { type: 'select' },
+    },
+    onChange: {
+      name: 'onChange',
+      description: 'Callback when active panel changes',
+      action: 'select',
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ padding: '20px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+} as Meta<typeof Collapse>;
+
+type Story = StoryObj<typeof Collapse>;
+
+export const Explame: Story = {
+  render: (args) => {
+    const [activeKey, setActiveKey] = React.useState<string | string[]>(
+      (args.defaultActiveKey as string | string[]) || []
+    );
+
+    const handleChange = (key: string | string[]) => {
+      setActiveKey(key);
+      if (args.onChange) {
+        args.onChange(key);
+      }
+    };
+
+    return (
+      <Collapse
+        {...args}
+        activeKey={args.activeKey !== undefined ? (args.activeKey as string | string[]) : activeKey}
+        onChange={handleChange}
+      >
+        <Panel key="1" header="This is panel header 1">
+          <p>Panel content 1 Panel content 1 Panel content 1</p>
+        </Panel>
+        <Panel
+          key="2"
+          header='This is panel header 2, collapsible is "header"'
+          collapsible="header"
+        >
+          <p>Panel content 2 Panel content 1 Panel content 2</p>
+        </Panel>
+        <Panel key="3" header='This is panel header 3, collapsible is "icon"' collapsible="icon">
+          <p>Panel content 3 Panel content 3 Panel content 3</p>
+        </Panel>
+        <Panel
+          key="4"
+          header='This is panel header 4, collapsible is "disabled"'
+          collapsible="disabled"
+        >
+          <p>Panel content 4 Panel content 4 Panel content 4</p>
+        </Panel>
+        <Panel key="5" header='This is panel header 5, showArrow is "false"' showArrow={false}>
+          <p>Panel content 5 Panel content 5 Panel content 5</p>
+        </Panel>
+      </Collapse>
+    );
+  },
+};
+
+export const Basic = () => (
   <Collapse accordion>
     <Panel key="1" header="This is panel header 1">
       <p>Panel content 1 Panel content 1 Panel content 1</p>
