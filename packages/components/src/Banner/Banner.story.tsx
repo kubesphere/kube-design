@@ -38,18 +38,26 @@ export default {
         true: <Cluster />,
         false: null,
       },
-      defaultValue: true,
+      table: {
+        defaultValue: { summary: 'true' },
+      },
     },
     title: {
       name: 'title',
       description: 'Title of banner',
       defaultValue: '集群节点',
+      table: {
+        defaultValue: { summary: '集群节点' },
+      },
       control: { type: 'text' },
     },
     description: {
       name: 'description',
       description: 'Description of banner',
       defaultValue: '集群节点提供了当前集群下节点的运行状态，以及可以编辑删除节点',
+      table: {
+        defaultValue: { summary: '集群节点提供了当前集群下节点的运行状态，以及可以编辑删除节点' },
+      },
       control: { type: 'text' },
     },
   },

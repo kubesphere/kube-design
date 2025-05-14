@@ -13,7 +13,9 @@ export default {
     children: {
       name: 'children',
       description: 'Content that should be centered vertically and horizontally',
-      defaultValue: 'Center child element in both horizontal and vertical',
+      table: {
+        defaultValue: { summary: 'Center child element in both horizontal and vertical' },
+      },
       control: { type: 'text' },
     },
     style: {

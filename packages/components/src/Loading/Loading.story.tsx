@@ -15,21 +15,27 @@ export default {
     size: {
       name: 'size',
       description: 'Size of the loading indicator',
-      defaultValue: 'md',
+      table: {
+        defaultValue: { summary: 'md' },
+      },
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
       control: { type: 'select' },
     },
     color: {
       name: 'color',
       description: 'Color of the loading indicator',
-      defaultValue: 'dark',
+      table: {
+        defaultValue: { summary: 'dark' },
+      },
       options: ['dark', 'light', 'primary', 'success', 'warning', 'danger'],
       control: { type: 'select' },
     },
     variant: {
       name: 'variant',
       description: 'Style variant of the loading indicator',
-      defaultValue: 'circle1',
+      table: {
+        defaultValue: { summary: 'circle1' },
+      },
       options: ['circle1', 'circle2'],
       control: { type: 'radio' },
     },

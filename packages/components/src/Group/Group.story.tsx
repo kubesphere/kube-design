@@ -17,34 +17,44 @@ export default {
     position: {
       name: 'position',
       description: 'Defines justify-content property',
-      defaultValue: 'left',
+      table: {
+        defaultValue: { summary: 'left' },
+      },
       options: ['left', 'center', 'right', 'apart'],
       control: { type: 'select' },
     },
     spacing: {
       name: 'spacing',
       description: 'Space between elements',
-      defaultValue: 'md',
+      table: {
+        defaultValue: { summary: 'md' },
+      },
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
       control: { type: 'select' },
     },
     direction: {
       name: 'direction',
       description: 'Defines flex-direction property, row for horizontal, column for vertical',
-      defaultValue: 'row',
+      table: {
+        defaultValue: { summary: 'row' },
+      },
       options: ['row', 'column'],
       control: { type: 'radio' },
     },
     grow: {
       name: 'grow',
       description: 'Defines flex-grow property for each element, true -> 1, false -> 0',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: 'false' },
+      },
       control: 'boolean',
     },
     noWrap: {
       name: 'noWrap',
       description: 'Defined flex-wrap property',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: 'false' },
+      },
       control: 'boolean',
     },
   },

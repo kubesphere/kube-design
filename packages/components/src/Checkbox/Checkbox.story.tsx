@@ -12,46 +12,58 @@ export default {
     label: 'Checkbox Label',
     value: 'checkbox-value',
     checked: false,
-    defaultChecked: false,
     indeterminate: false,
     disabled: false,
+    defaultChecked: false,
   },
   argTypes: {
     label: {
       name: 'label',
       description: 'Checkbox label',
-      defaultValue: 'Checkbox Label',
+      table: {
+        defaultValue: { summary: 'Checkbox Label' },
+      },
       control: { type: 'text' },
     },
     value: {
       name: 'value',
       description: 'Checkbox value',
-      defaultValue: 'checkbox-value',
+      table: {
+        defaultValue: { summary: 'checkbox-value' },
+      },
       control: { type: 'text' },
     },
     checked: {
       name: 'checked',
       description: 'Whether the Checkbox is checked (controlled)',
-      defaultValue: false,
-      control: { type: 'boolean' },
-    },
-    defaultChecked: {
-      name: 'defaultChecked',
-      description: 'Default checked state (uncontrolled)',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: 'false' },
+      },
       control: { type: 'boolean' },
     },
     indeterminate: {
       name: 'indeterminate',
       description: 'Indeterminate state of checkbox, overwrites checked',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: 'false' },
+      },
       control: { type: 'boolean' },
     },
     disabled: {
       name: 'disabled',
       description: 'Whether the Checkbox is disabled',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: 'false' },
+      },
       control: { type: 'boolean' },
+    },
+    defaultChecked: {
+      name: 'defaultChecked',
+      description: 'Default checked state (uncontrolled)',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
+      control: { type: 'select' },
     },
     onChange: {
       name: 'onChange',

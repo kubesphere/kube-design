@@ -17,25 +17,34 @@ export default {
     type: {
       name: 'type',
       description: 'Types of warnings',
-      defaultValue: 'default',
-      control: { type: 'select', options: ['default', 'info', 'warning', 'error'] },
+      table: {
+        defaultValue: { summary: 'default' },
+      },
+      options: ['default', 'info', 'warning', 'error'],
+      control: { type: 'select' },
     },
     title: {
       name: 'title',
       description: 'Title of the warning',
-      defaultValue: 'KubeSphere',
+      table: {
+        defaultValue: { summary: 'KubeSphere' },
+      },
       control: { type: 'text' },
     },
     showIcon: {
       name: 'showIcon',
       description: 'Whether to display the icon',
-      defaultValue: true,
+      table: {
+        defaultValue: { summary: true },
+      },
       control: { type: 'boolean' },
     },
     closable: {
       name: 'closable',
       description: 'Whether to closeable',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: false },
+      },
       control: { type: 'boolean' },
     },
     children: {
@@ -61,17 +70,13 @@ export const Explame: Story = {
   render: (args) => {
     const [visible, setVisible] = React.useState(true);
 
-    // 使用 closable 属性来控制关闭行为
     React.useEffect(() => {
       if (args.closable) {
-        // 这里可以添加关闭逻辑
         const handleClose = () => {
           setVisible(false);
-          // 5秒后重新显示，方便演示
           setTimeout(() => setVisible(true), 5000);
         };
 
-        // 模拟点击关闭按钮
         const closeButton = document.querySelector('.kubed-alert-close');
         if (closeButton) {
           closeButton.addEventListener('click', handleClose);

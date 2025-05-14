@@ -25,24 +25,18 @@ export default {
     visible: {
       name: 'visible',
       description: 'Controls whether the confirmation box is visible',
-      defaultValue: true,
+      table: {
+        defaultValue: { summary: true },
+      },
       control: 'boolean',
     },
     confirmLoading: {
       name: 'confirmLoading',
       description: 'The loading state of the confirm button',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: false },
+      },
       control: 'boolean',
-    },
-    onOk: {
-      name: 'onOk',
-      description: 'Callback function when the confirm button is clicked',
-      action: 'clicked',
-    },
-    onCancel: {
-      name: 'onCancel',
-      description: 'Callback function when the cancel button is clicked',
-      action: 'cancelled',
     },
     okText: {
       name: 'okText',
@@ -55,6 +49,16 @@ export default {
       description: 'The text content of the cancel button',
       defaultValue: undefined,
       control: 'text',
+    },
+    onOk: {
+      name: 'onOk',
+      description: 'Callback function when the confirm button is clicked',
+      action: 'clicked',
+    },
+    onCancel: {
+      name: 'onCancel',
+      description: 'Callback function when the cancel button is clicked',
+      action: 'cancelled',
     },
   } as any,
   decorators: [

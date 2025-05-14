@@ -23,67 +23,86 @@ export default {
     disabled: {
       name: 'disabled',
       description: 'Disable files capturing',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: 'false' },
+      },
       control: 'boolean',
     },
     loading: {
       name: 'loading',
       description: 'Display loading overlay over dropzone',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: 'false' },
+      },
       control: 'boolean',
     },
     multiple: {
       name: 'multiple',
       description: 'Allow selection of multiple files',
-      defaultValue: true,
+      table: {
+        defaultValue: { summary: 'true' },
+      },
       control: 'boolean',
     },
     maxSize: {
       name: 'maxSize',
       description: 'Set maximum file size in bytes',
-      defaultValue: 5242880, // 5MB
+      table: {
+        defaultValue: { summary: '5242880' },
+      },
       control: 'number',
     },
     accept: {
       name: 'accept',
       description: 'File types to accept',
-      defaultValue: ['image/jpeg', 'image/png', 'application/pdf'],
       control: 'object',
     },
     activateOnClick: {
       name: 'activateOnClick',
       description: 'If false, disables click to open the native file selection dialog',
-      defaultValue: true,
+      table: {
+        defaultValue: { summary: 'true' },
+      },
       control: 'boolean',
     },
     activateOnDrag: {
       name: 'activateOnDrag',
       description: 'If false, disables drag n drop',
-      defaultValue: true,
+      table: {
+        defaultValue: { summary: 'true' },
+      },
       control: 'boolean',
     },
     activateOnKeyboard: {
       name: 'activateOnKeyboard',
       description: 'If false, disables Space/Enter to open the native file selection dialog',
-      defaultValue: true,
+      table: {
+        defaultValue: { summary: 'true' },
+      },
       control: 'boolean',
     },
     dragEventsBubbling: {
       name: 'dragEventsBubbling',
       description: 'If false, stops drag event propagation to parents',
-      defaultValue: true,
+      table: {
+        defaultValue: { summary: 'true' },
+      },
       control: 'boolean',
     },
     preventDropOnDocument: {
       name: 'preventDropOnDocument',
       description: 'If false, allow dropped items to take over the current browser window',
-      defaultValue: true,
+      table: {
+        defaultValue: { summary: 'true' },
+      },
       control: 'boolean',
     },
     useFsAccessApi: {
       name: 'useFsAccessApi',
       description: 'Set to true to use the File System Access API to open the file picker',
-      defaultValue: true,
+      table: {
+        defaultValue: { summary: 'true' },
+      },
       control: 'boolean',
     },
     onDrop: {

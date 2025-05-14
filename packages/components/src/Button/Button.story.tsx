@@ -16,79 +16,99 @@ export default {
     shadow: true,
     disabled: false,
     loading: false,
+    block: false,
     leftIcon: null,
     rightIcon: null,
-    block: false,
   },
   argTypes: {
     children: {
       name: 'children',
       description: 'Button content',
-      defaultValue: 'KubeSphere',
+      table: {
+        defaultValue: { summary: 'KubeSphere' },
+      },
       control: { type: 'text' },
     },
     variant: {
       name: 'variant',
       description: 'Controls button appearance',
-      defaultValue: 'filled',
+      table: {
+        defaultValue: { summary: 'filled' },
+      },
       options: ['filled', 'outline', 'text', 'link'],
       control: { type: 'select' },
     },
     color: {
       name: 'color',
       description: 'Button color from theme',
-      defaultValue: 'secondary',
+      table: {
+        defaultValue: { summary: 'secondary' },
+      },
       options: ['default', 'primary', 'secondary', 'success', 'warning', 'error'],
       control: { type: 'select' },
     },
     size: {
       name: 'size',
       description: 'Predefined button size',
-      defaultValue: 'sm',
+      table: {
+        defaultValue: { summary: 'sm' },
+      },
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
       control: { type: 'select' },
     },
     radius: {
       name: 'radius',
       description: 'Button border-radius from theme or number to set border-radius in px',
-      defaultValue: 'xl',
+      table: {
+        defaultValue: { summary: 'xl' },
+      },
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
       control: { type: 'select' },
     },
     shadow: {
       name: 'shadow',
       description: 'Display shadow or not',
-      defaultValue: true,
+      table: {
+        defaultValue: { summary: 'true' },
+      },
       control: { type: 'boolean' },
     },
     disabled: {
       name: 'disabled',
       description: 'Disable button or not',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: 'false' },
+      },
       control: { type: 'boolean' },
     },
     loading: {
       name: 'loading',
       description: 'Display loading indicator',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: 'false' },
+      },
+      control: { type: 'boolean' },
+    },
+    block: {
+      name: 'block',
+      description: 'Display block or inline-block',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
       control: { type: 'boolean' },
     },
     leftIcon: {
       name: 'leftIcon',
       description: 'Adds icon before button label',
-      defaultValue: null,
+      table: {
+        defaultValue: { summary: 'none' },
+      },
       options: ['none', 'add'],
       mapping: {
         none: null,
         add: <Add size={16} />,
       },
       control: { type: 'select' },
-    },
-    block: {
-      name: 'block',
-      description: 'Display block or inline-block',
-      defaultValue: false,
-      control: { type: 'boolean' },
     },
   },
   parameters: {

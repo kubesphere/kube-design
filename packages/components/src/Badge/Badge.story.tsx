@@ -17,32 +17,42 @@ export default {
     children: {
       name: 'children',
       description: 'Badge content',
-      defaultValue: '3',
+      table: {
+        defaultValue: { summary: '3' },
+      },
       control: { type: 'text' },
     },
     color: {
       name: 'color',
       description: 'Badge color from theme',
-      defaultValue: 'success',
+      table: {
+        defaultValue: { summary: 'success' },
+      },
       options: ['default', 'primary', 'secondary', 'success', 'warning', 'error', 'blue'],
       control: { type: 'select' },
     },
     shadow: {
       name: 'shadow',
       description: 'Display shadow or not',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: 'false' },
+      },
       control: { type: 'boolean' },
     },
     dot: {
       name: 'dot',
       description: 'Display Dot or not',
-      defaultValue: false,
       control: { type: 'boolean' },
+      table: {
+        defaultValue: { summary: 'false' },
+      },
     },
     motion: {
       name: 'motion',
       description: 'Disable animation status or not, only affect when dot is true',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: 'false' },
+      },
       control: { type: 'boolean' },
     },
   },

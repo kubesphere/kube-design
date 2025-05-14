@@ -1,119 +1,113 @@
 import * as React from 'react';
-import { Tabs, Tab } from '../index';
+import { Meta } from '@storybook/react';
+import { Tabs } from '../index';
+import { Explame } from './Examples/Explame';
+import { Basic } from './Examples/Basic';
+import { Variant } from './Examples/Variant';
+import { Direction } from './Examples/Direction';
+import { Position } from './Examples/Position';
+import { Grow } from './Examples/Grow';
 
 export default {
   title: 'Components/Tabs',
   component: Tabs,
-};
+  args: {
+    variant: 'line',
+    direction: 'horizontal',
+    position: 'left',
+    grow: false,
+    size: 'md',
+    color: 'primary',
+    defaultActiveKey: 'one',
+    activeKey: 'one',
+  },
+  argTypes: {
+    variant: {
+      name: 'variant',
+      description: 'Tab style variant',
+      control: { type: 'select' },
+      options: ['line', 'outline'],
+      table: {
+        defaultValue: { summary: 'line' },
+      },
+    },
+    direction: {
+      name: 'direction',
+      description: 'Tab layout direction',
+      control: { type: 'select' },
+      options: ['horizontal', 'vertical'],
+      table: {
+        defaultValue: { summary: 'horizontal' },
+      },
+    },
+    position: {
+      name: 'position',
+      description: 'Tab header position',
+      control: { type: 'select' },
+      options: ['left', 'center', 'right'],
+      table: {
+        defaultValue: { summary: 'left' },
+      },
+    },
+    grow: {
+      name: 'grow',
+      description: 'Whether tabs should grow to fill available space',
+      control: 'boolean',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
+    },
+    size: {
+      name: 'size',
+      description: 'Size of the tabs',
+      control: { type: 'select' },
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+      table: {
+        defaultValue: { summary: 'md' },
+      },
+    },
+    color: {
+      name: 'color',
+      description: 'Color of the active tab',
+      control: { type: 'select' },
+      options: ['primary', 'secondary', 'success', 'warning', 'danger'],
+      table: {
+        defaultValue: { summary: 'primary' },
+      },
+    },
+    defaultActiveKey: {
+      name: 'defaultActiveKey',
+      description: 'Default active tab key',
+      control: 'text',
+      table: {
+        defaultValue: { summary: 'one' },
+      },
+    },
+    activeKey: {
+      name: 'activeKey',
+      description: 'Controlled active tab key',
+      control: 'text',
+      type: 'string',
+      table: {
+        defaultValue: { summary: 'one' },
+      },
+    },
+    onTabChange: {
+      name: 'onTabChange',
+      description: 'Called when tab control is clicked with tab key',
+      table: {
+        type: { summary: '(tabKey: string) => void' },
+      },
+      control: 'select',
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ padding: '20px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+} as Meta<typeof Tabs>;
 
-export const Basic = () => (
-  <Tabs>
-    <Tab label="One" key="one">
-      one
-    </Tab>
-    <Tab label="Two" key="two">
-      Two
-    </Tab>
-    <Tab label="Three" key="three">
-      Three
-    </Tab>
-  </Tabs>
-);
-
-export const Variant = () => (
-  <>
-    <Tabs variant="line" size="md" color="primary">
-      <Tab label="One" key="one">
-        one
-      </Tab>
-      <Tab label="Two" key="two">
-        Two
-      </Tab>
-      <Tab label="Three" key="three">
-        Three
-      </Tab>
-    </Tabs>
-
-    <Tabs variant="outline" style={{ marginTop: '50px' }}>
-      <Tab label="One" key="one">
-        one
-      </Tab>
-      <Tab label="Two" key="two">
-        Two
-      </Tab>
-      <Tab label="Three" key="three">
-        Three
-      </Tab>
-    </Tabs>
-  </>
-);
-
-export const Direction = () => (
-  <>
-    <Tabs variant="line" direction="vertical">
-      <Tab label="One" key="one">
-        one
-      </Tab>
-      <Tab label="Two" key="two">
-        Two
-      </Tab>
-      <Tab label="Three" key="three">
-        Three
-      </Tab>
-    </Tabs>
-
-    <Tabs variant="outline" direction="vertical" style={{ marginTop: '50px' }}>
-      <Tab label="One" key="one">
-        one
-      </Tab>
-      <Tab label="Two" key="two">
-        Two
-      </Tab>
-      <Tab label="Three" key="three">
-        Three
-      </Tab>
-    </Tabs>
-  </>
-);
-
-export const Position = () => (
-  <>
-    <Tabs variant="line" position="center">
-      <Tab label="One" key="one">
-        one
-      </Tab>
-      <Tab label="Two" key="two">
-        Two
-      </Tab>
-      <Tab label="Three" key="three">
-        Three
-      </Tab>
-    </Tabs>
-
-    <Tabs variant="outline" position="right" style={{ marginTop: '50px' }}>
-      <Tab label="One" key="one">
-        one
-      </Tab>
-      <Tab label="Two" key="two">
-        Two
-      </Tab>
-      <Tab label="Three" key="three">
-        Three
-      </Tab>
-    </Tabs>
-  </>
-);
-
-export const Grow = () => (
-  <Tabs grow variant="line">
-    <Tab label="One" key="one">
-      one
-    </Tab>
-    <Tab label="Two" key="two">
-      Two
-    </Tab>
-    <Tab label="Three" key="three">
-      Three
-    </Tab>
-  </Tabs>
-);
+export { Explame, Basic, Variant, Direction, Position, Grow };

@@ -23,7 +23,9 @@ export default {
     variant: {
       name: 'variant',
       description: 'Descriptions Variant',
-      defaultValue: 'default',
+      table: {
+        defaultValue: { summary: 'default' },
+      },
       options: ['default', 'unstyled'],
       control: { type: 'select' },
     },

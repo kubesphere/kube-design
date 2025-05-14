@@ -26,45 +26,59 @@ export default {
     placement: {
       name: 'placement',
       description: 'The placement of the dropdown',
-      defaultValue: 'bottom',
+      table: {
+        defaultValue: { summary: 'bottom' },
+      },
       options: ['top', 'right', 'bottom', 'left'],
       control: { type: 'select' },
     },
     interactive: {
       name: 'interactive',
       description: 'Whether the dropdown is interactive',
-      defaultValue: true,
+      table: {
+        defaultValue: { summary: 'true' },
+      },
       control: 'boolean',
     },
     trigger: {
       name: 'trigger',
       description: 'How to trigger the dropdown',
-      defaultValue: 'click',
+      table: {
+        defaultValue: { summary: 'click' },
+      },
       options: ['click', 'hover', 'focus', 'manual'],
       control: { type: 'select' },
     },
     hideOnClick: {
       name: 'hideOnClick',
       description: 'Whether to hide the dropdown when clicking on it',
-      defaultValue: true,
+      table: {
+        defaultValue: { summary: 'true' },
+      },
       control: 'boolean',
     },
     arrow: {
       name: 'arrow',
       description: 'Whether to show an arrow',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: 'false' },
+      },
       control: 'boolean',
     },
     maxWidth: {
       name: 'maxWidth',
       description: 'Maximum width of the dropdown',
-      defaultValue: 210,
+      table: {
+        defaultValue: { summary: '210' },
+      },
       control: { type: 'number' },
     },
     animation: {
       name: 'animation',
       description: 'Animation type',
-      defaultValue: 'shift-away',
+      table: {
+        defaultValue: { summary: 'shift-away' },
+      },
       options: ['shift-away', 'shift-toward', 'scale', 'perspective', 'fade'],
       control: { type: 'select' },
     },

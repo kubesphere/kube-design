@@ -1,13 +1,54 @@
 import * as React from 'react';
+import { Meta } from '@storybook/react';
 import styled from 'styled-components';
 import { Skeleton } from './Skeleton';
 
 export default {
   title: 'Components/Skeleton',
   component: Skeleton,
-};
+  args: {
+    height: 50,
+    width: '100%',
+    radius: 'md',
+    circle: false,
+    animate: true,
+    visible: true,
+  },
+  argTypes: {
+    height: {
+      name: 'height',
+      description: 'Skeleton height in pixels',
+      control: 'select',
+    },
+    width: {
+      name: 'width',
+      description: 'Skeleton width (px or %)',
+      control: 'select',
+    },
+    radius: {
+      name: 'radius',
+      description: 'Border radius size',
+      control: 'select',
+    },
+    circle: {
+      name: 'circle',
+      description: 'If true, skeleton will be circular',
+      control: 'select',
+    },
+    animate: {
+      name: 'animate',
+      description: 'Whether to show animation effect',
+      control: 'select',
+    },
+    visible: {
+      name: 'visible',
+      description: 'Should skeleton overlay be displayed',
+      control: 'select',
+    },
+  },
+} as Meta<typeof Skeleton>;
 
-export const basic = () => {
+export const Basic = () => {
   return (
     <>
       <Skeleton height={50} circle style={{ marginBottom: '8px' }} />
@@ -18,7 +59,7 @@ export const basic = () => {
   );
 };
 
-export const tableSkeleton = () => {
+export const TableSkeleton = () => {
   const Wrapper = styled.div`
     display: flex;
     width: 100%;

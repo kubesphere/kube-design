@@ -20,13 +20,17 @@ export default {
     style: {
       name: 'style',
       description: 'Style of the component',
-      defaultValue: { width: 200 },
       control: 'object',
+      table: {
+        defaultValue: { summary: '{ width: 200 }' },
+      },
     },
     placeholder: {
       name: 'placeholder',
       description: 'Placeholder text of input',
-      defaultValue: 'input here',
+      table: {
+        defaultValue: { summary: 'input here' },
+      },
       control: 'text',
     },
     options: {
@@ -39,6 +43,9 @@ export default {
       description: 'Whether the component is disabled',
       defaultValue: false,
       control: 'boolean',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
     },
     onSelect: {
       name: 'onSelect',

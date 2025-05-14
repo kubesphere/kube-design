@@ -20,39 +20,51 @@ export default {
     placeholder: {
       name: 'placeholder',
       description: 'Placeholder text of input',
-      defaultValue: 'Please input content',
+      table: {
+        defaultValue: { summary: 'Please input content' },
+      },
       control: 'text',
     },
     width: {
       name: 'width',
       description: 'Width of input',
-      defaultValue: 360,
+      table: {
+        defaultValue: { summary: '360' },
+      },
       control: { type: 'number', min: 100, max: 600 },
     },
     disabled: {
       name: 'disabled',
       description: 'Whether the input is disabled',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: 'false' },
+      },
       control: 'boolean',
     },
     size: {
       name: 'size',
       description: 'Size of input',
-      defaultValue: 'sm',
+      table: {
+        defaultValue: { summary: 'sm' },
+      },
       options: ['xs', 'sm', 'md', 'lg'],
       control: { type: 'select' },
     },
     prefix: {
       name: 'prefix',
       description: 'Prefix element',
-      defaultValue: 'none',
+      table: {
+        defaultValue: { summary: 'none' },
+      },
       options: ['none', 'icon', 'text'],
       control: { type: 'select' },
     },
     suffix: {
       name: 'suffix',
       description: 'Suffix element',
-      defaultValue: 'none',
+      table: {
+        defaultValue: { summary: 'none' },
+      },
       options: ['none', 'icon', 'tooltip'],
       control: { type: 'select' },
     },

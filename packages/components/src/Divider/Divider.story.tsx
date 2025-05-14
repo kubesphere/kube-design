@@ -19,53 +19,70 @@ export default {
     direction: {
       name: 'direction',
       description: 'Line direction',
-      defaultValue: 'horizontal',
+      table: {
+        defaultValue: { summary: 'horizontal' },
+      },
       options: ['horizontal', 'vertical'],
       control: { type: 'select' },
     },
     variant: {
       name: 'variant',
       description: 'Divider borderStyle',
-      defaultValue: 'solid',
+      table: {
+        defaultValue: { summary: 'solid' },
+      },
       options: ['solid', 'dashed', 'dotted'],
       control: { type: 'select' },
     },
     margins: {
       name: 'margins',
       description: 'Top and bottom margins for horizontal variant, left and right for vertical',
-      defaultValue: 0,
+      table: {
+        defaultValue: { summary: '0' },
+      },
       control: { type: 'number' },
     },
     labelPosition: {
       name: 'labelPosition',
       description: 'Label position',
-      defaultValue: 'left',
+      table: {
+        defaultValue: { summary: 'left' },
+      },
       options: ['left', 'center', 'right'],
       control: { type: 'select' },
     },
     size: {
       name: 'size',
       description: 'Sets height in horizontal orientation and with in vertical',
-      defaultValue: 'xs',
+      table: {
+        defaultValue: { summary: 'xs' },
+      },
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
       control: { type: 'select' },
     },
     label: {
       name: 'label',
       description: 'Adds text after line in horizontal orientation',
-      defaultValue: '',
+      table: {
+        defaultValue: { summary: '' },
+      },
       control: { type: 'text' },
     },
     color: {
       name: 'color',
       description:
         'Line color - use color name (e.g. "red", "blue"), hex code (e.g. "#ff0000"), or theme color (e.g. "primary")',
-      defaultValue: '',
+      table: {
+        defaultValue: { summary: '' },
+      },
       control: { type: 'text' },
     },
     height: {
       name: 'height',
       description: 'Divider height in pixels, only available if direction is vertical',
+      table: {
+        defaultValue: { summary: undefined },
+      },
       control: { type: 'number' },
     },
   },

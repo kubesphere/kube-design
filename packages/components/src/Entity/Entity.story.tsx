@@ -18,25 +18,33 @@ export default {
     hoverable: {
       name: 'hoverable',
       description: 'Add effect on hover',
-      defaultValue: true,
+      table: {
+        defaultValue: { summary: 'true' },
+      },
       control: 'boolean',
     },
     expandable: {
       name: 'expandable',
       description: 'Whether Entity can expand',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: 'false' },
+      },
       control: 'boolean',
     },
     bordered: {
       name: 'bordered',
       description: 'Whether Entity has border',
-      defaultValue: true,
+      table: {
+        defaultValue: { summary: 'true' },
+      },
       control: 'boolean',
     },
     gap: {
       name: 'gap',
       description: 'Gap between children',
-      defaultValue: 20,
+      table: {
+        defaultValue: { summary: '20' },
+      },
       control: { type: 'number', min: 0, max: 50 },
     },
     footer: {

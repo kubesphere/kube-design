@@ -1,11 +1,67 @@
 import * as React from 'react';
-import { Meta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { StatusDot, Group, Tooltip } from '../index';
 
 export default {
   title: 'Components/StatusDot',
   component: StatusDot,
-} as Meta;
+  args: {
+    color: 'success',
+    motion: false,
+    shadow: true,
+    children: 'Status Text',
+  },
+  argTypes: {
+    color: {
+      name: 'color',
+      description: 'Status point color',
+      table: {
+        defaultValue: { summary: 'success' },
+      },
+      options: ['default', 'success', 'warning', 'error'],
+      control: { type: 'select' },
+    },
+    motion: {
+      name: 'motion',
+      description: 'Whether to enable animation effect',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
+      control: 'boolean',
+    },
+    shadow: {
+      name: 'shadow',
+      description: 'Whether to show shadow effect',
+      table: {
+        defaultValue: { summary: 'true' },
+      },
+      control: 'boolean',
+    },
+    children: {
+      name: 'children',
+      description: 'Status point text label',
+      table: {
+        defaultValue: { summary: 'Status Text' },
+      },
+      control: 'text',
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ padding: '20px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+} as Meta<typeof StatusDot>;
+
+type Story = StoryObj<typeof StatusDot>;
+
+export const Explame: Story = {
+  render: (args) => {
+    return <StatusDot {...args} />;
+  },
+};
 
 export const basic = () => (
   <Group>
@@ -26,7 +82,7 @@ export const withoutLabel = () => (
   </Group>
 );
 
-export const Motion = () => (
+export const motion = () => (
   <Group spacing={30}>
     <StatusDot motion />
     <StatusDot motion color="warning" />

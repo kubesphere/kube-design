@@ -24,63 +24,83 @@ export default {
     picker: {
       name: 'picker',
       description: 'Selector Type',
-      defaultValue: 'date',
+      table: {
+        defaultValue: { summary: 'date' },
+      },
       options: ['date', 'week', 'month', 'quarter', 'year', 'time'],
       control: { type: 'select' },
     },
     format: {
       name: 'format',
       description: 'Date Format',
-      defaultValue: 'YYYY-MM-DD',
+      table: {
+        defaultValue: { summary: 'YYYY-MM-DD' },
+      },
       control: { type: 'text' },
     },
     allowClear: {
       name: 'allowClear',
       description: 'Show Clear Button',
-      defaultValue: true,
+      table: {
+        defaultValue: { summary: 'true' },
+      },
       control: { type: 'boolean' },
     },
     autoFocus: {
       name: 'autoFocus',
       description: 'Auto Focus',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: 'false' },
+      },
       control: { type: 'boolean' },
     },
     bordered: {
       name: 'bordered',
       description: 'Has Border',
-      defaultValue: true,
+      table: {
+        defaultValue: { summary: 'true' },
+      },
       control: { type: 'boolean' },
     },
     disabled: {
       name: 'disabled',
       description: 'Disabled',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: 'false' },
+      },
       control: { type: 'boolean' },
     },
     inputReadOnly: {
       name: 'inputReadOnly',
       description: 'Set Input Read Only',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: 'false' },
+      },
       control: { type: 'boolean' },
     },
     placeholder: {
       name: 'placeholder',
       description: 'Input Placeholder',
-      defaultValue: 'Please Select Date',
+      table: {
+        defaultValue: { summary: '请选择日期' },
+      },
       control: { type: 'text' },
     },
     size: {
       name: 'size',
       description: 'Input Size',
-      defaultValue: 'md',
+      table: {
+        defaultValue: { summary: 'md' },
+      },
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
       control: { type: 'select' },
     },
     showToday: {
       name: 'showToday',
       description: 'Show Today Button',
-      defaultValue: true,
+      table: {
+        defaultValue: { summary: 'true' },
+      },
       control: { type: 'boolean' },
     },
     onChange: {

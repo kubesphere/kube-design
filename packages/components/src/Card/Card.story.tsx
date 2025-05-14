@@ -17,33 +17,45 @@ export default {
     children: {
       name: 'children',
       description: 'Card content',
-      defaultValue:
-        'Kubesphere.io is an upstream project of the KubeSphere container management platform.',
+      table: {
+        defaultValue: {
+          summary:
+            'Kubesphere.io is an upstream project of the KubeSphere container management platform.',
+        },
+      },
       control: { type: 'text' },
     },
     sectionTitle: {
       name: 'sectionTitle',
       description: 'Section title of the card',
-      defaultValue: '',
+      table: {
+        defaultValue: { summary: '' },
+      },
       control: { type: 'text' },
     },
     padding: {
       name: 'padding',
       description: 'Controls card content padding',
-      defaultValue: 'sm',
+      table: {
+        defaultValue: { summary: 'sm' },
+      },
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
       control: { type: 'select' },
     },
     hoverable: {
       name: 'hoverable',
       description: 'Add effect on hover',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: 'false' },
+      },
       control: { type: 'boolean' },
     },
     shadow: {
       name: 'shadow',
       description: 'Display shadow or not',
-      defaultValue: true,
+      table: {
+        defaultValue: { summary: 'true' },
+      },
       control: { type: 'boolean' },
     },
   },

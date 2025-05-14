@@ -17,13 +17,17 @@ export default {
     title: {
       name: 'title',
       description: 'Title of Empty component',
-      defaultValue: 'No data found',
+      table: {
+        defaultValue: { summary: 'No data found' },
+      },
       control: 'text',
     },
     description: {
       name: 'description',
       description: 'Description of Empty component',
-      defaultValue: 'Try refreshing or clearing your search filters',
+      table: {
+        defaultValue: { summary: 'Try refreshing or clearing your search filters' },
+      },
       control: 'text',
     },
     image: {

@@ -8,13 +8,12 @@ export default {
   component: Row,
 } as Meta;
 
-// TODO:麻烦
 // eslint-disable-next-line react/prop-types
 const PlaceHolder = ({ children }) => (
   <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>{children}</div>
 );
 
-export const Basic = () => (
+export const basic = () => (
   <Row>
     <Col span={4}>
       <PlaceHolder>1</PlaceHolder>
@@ -28,7 +27,7 @@ export const Basic = () => (
   </Row>
 );
 
-export const Gutter = () => (
+export const gutter = () => (
   <Row gutter={[50, 20]}>
     <Col span={4}>
       <PlaceHolder>1</PlaceHolder>
@@ -42,7 +41,7 @@ export const Gutter = () => (
   </Row>
 );
 
-export const MultiRows = () => (
+export const multiRows = () => (
   <Row gutter={[20, 50]}>
     <Col span={4}>
       <PlaceHolder>1</PlaceHolder>
@@ -59,7 +58,7 @@ export const MultiRows = () => (
   </Row>
 );
 
-export const Grow = () => (
+export const grow = () => (
   <Row grow>
     <Col span={4}>
       <PlaceHolder>1</PlaceHolder>
@@ -76,7 +75,7 @@ export const Grow = () => (
   </Row>
 );
 
-export const Offset = () => (
+export const offset = () => (
   <Row>
     <Col span={3}>
       <PlaceHolder>1</PlaceHolder>
@@ -90,7 +89,7 @@ export const Offset = () => (
   </Row>
 );
 
-export const ColumnCount = () => (
+export const columnCount = () => (
   <Row columns={24}>
     <Col span={12}>
       <PlaceHolder>1</PlaceHolder>

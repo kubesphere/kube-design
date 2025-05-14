@@ -20,49 +20,65 @@ export default {
     width: {
       name: 'width',
       description: 'Width of input number',
-      defaultValue: 120,
+      table: {
+        defaultValue: { summary: '120' },
+      },
       control: { type: 'number', min: 80, max: 300 },
     },
     min: {
       name: 'min',
       description: 'Minimal possible value',
-      defaultValue: -10,
+      table: {
+        defaultValue: { summary: '-10' },
+      },
       control: 'number',
     },
     max: {
       name: 'max',
       description: 'Maximum possible value',
-      defaultValue: 100,
+      table: {
+        defaultValue: { summary: '100' },
+      },
       control: 'number',
     },
     step: {
       name: 'step',
       description: 'The step used to increment or decrement the value',
-      defaultValue: 1,
+      table: {
+        defaultValue: { summary: '1' },
+      },
       control: 'number',
     },
     disabled: {
       name: 'disabled',
       description: 'Whether the input is disabled',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: 'false' },
+      },
       control: 'boolean',
     },
     controls: {
       name: 'controls',
       description: 'Whether to show +- controls',
-      defaultValue: true,
+      table: {
+        defaultValue: { summary: 'true' },
+      },
       control: 'boolean',
     },
     precision: {
       name: 'precision',
       description: 'Config precision of display',
-      defaultValue: 0,
+      table: {
+        defaultValue: { summary: '0' },
+      },
       control: { type: 'number', min: 0, max: 5 },
     },
     stringMode: {
       name: 'stringMode',
       description: 'Value will show as string',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: 'false' },
+      },
       control: 'boolean',
     },
     placeholder: {

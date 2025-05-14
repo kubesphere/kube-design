@@ -28,24 +28,33 @@ export default {
     accordion: {
       name: 'accordion',
       description: 'If true, only one panel can be expanded at a time',
-      defaultValue: true,
+      table: {
+        defaultValue: { summary: 'true' },
+      },
       control: { type: 'boolean' },
     },
     destroyInactivePanel: {
       name: 'destroyInactivePanel',
       description: 'Destroy inactive panel when collapsed',
-      defaultValue: false,
+      table: {
+        defaultValue: { summary: 'false' },
+      },
       control: { type: 'boolean' },
     },
     defaultActiveKey: {
       name: 'defaultActiveKey',
       description: 'Key of the initial active panel',
-      defaultValue: ['1'],
+      table: {
+        defaultValue: { summary: '1' },
+      },
       control: 'object',
     },
     collapsible: {
       name: 'collapsible',
       description: 'Specify the collapsible mode',
+      table: {
+        defaultValue: { summary: 'undefined' },
+      },
       options: [undefined, 'header', 'icon', 'disabled'],
       control: { type: 'select' },
     },
