@@ -13,7 +13,7 @@ const PlaceHolder = ({ children }) => (
   <div style={{ height: '50px', textAlign: 'center', background: 'papayawhip' }}>{children}</div>
 );
 
-export const basic = () => (
+export const Basic = () => (
   <Row>
     <Col span={4}>
       <PlaceHolder>1</PlaceHolder>
@@ -27,7 +27,7 @@ export const basic = () => (
   </Row>
 );
 
-export const gutter = () => (
+export const Gutter = () => (
   <Row gutter={[50, 20]}>
     <Col span={4}>
       <PlaceHolder>1</PlaceHolder>
@@ -41,7 +41,7 @@ export const gutter = () => (
   </Row>
 );
 
-export const multiRows = () => (
+export const MultiRows = () => (
   <Row gutter={[20, 50]}>
     <Col span={4}>
       <PlaceHolder>1</PlaceHolder>
@@ -58,7 +58,7 @@ export const multiRows = () => (
   </Row>
 );
 
-export const grow = () => (
+export const Grow = () => (
   <Row grow>
     <Col span={4}>
       <PlaceHolder>1</PlaceHolder>
@@ -75,7 +75,7 @@ export const grow = () => (
   </Row>
 );
 
-export const offset = () => (
+export const Offset = () => (
   <Row>
     <Col span={3}>
       <PlaceHolder>1</PlaceHolder>
@@ -89,7 +89,7 @@ export const offset = () => (
   </Row>
 );
 
-export const columnCount = () => (
+export const ColumnCount = () => (
   <Row columns={24}>
     <Col span={12}>
       <PlaceHolder>1</PlaceHolder>

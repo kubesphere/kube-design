@@ -72,7 +72,7 @@ export default {
 
 type Story = StoryObj<typeof Radio>;
 
-export const explame: Story = {
+export const Explame: Story = {
   render: (args) => {
     const [checkedState, setCheckedState] = React.useState<boolean | undefined>(undefined);
 
@@ -101,11 +101,11 @@ export const explame: Story = {
   },
 };
 
-export const basic = () => <Radio value="China" label="China" />;
+export const Basic = () => <Radio value="China" label="China" />;
 
-export const defaultValue = () => <Radio value="China" defaultChecked label="China" />;
+export const DefaultValue = () => <Radio value="China" defaultChecked label="China" />;
 
-export const groupDemo = () => {
+export const GroupDemo = () => {
   const onChange = (val) => {
     console.log(val);
   };
@@ -119,7 +119,7 @@ export const groupDemo = () => {
   );
 };
 
-export const groupControlDemo = () => {
+export const GroupControlDemo = () => {
   const [value, setValue] = useState('China');
   const toggle = () => {
     if (value === 'USA') {

@@ -118,7 +118,7 @@ const onFinish = (values) => {
   console.log(values);
 };
 
-export const basic = () => (
+export const Basic = () => (
   <Form onFinish={onFinish}>
     <Row gutter={[10, 40]}>
       <Col span={6}>
@@ -172,7 +172,7 @@ export const basic = () => (
   </Form>
 );
 
-export const dynamicForm = () => {
+export const DynamicForm = () => {
   const [form] = useForm();
   const getFieldErrors = () => {
     console.log(form.validateFields());

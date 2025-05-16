@@ -63,7 +63,7 @@ export const Explame: Story = {
   },
 };
 
-export const basic = () => (
+export const Basic = () => (
   <Group>
     <StatusDot color="success">Ready</StatusDot>
     <StatusDot color="warning">Warning</StatusDot>
@@ -73,7 +73,7 @@ export const basic = () => (
   </Group>
 );
 
-export const withoutLabel = () => (
+export const WithoutLabel = () => (
   <Group>
     <StatusDot />
     <StatusDot color="warning" />
@@ -82,7 +82,7 @@ export const withoutLabel = () => (
   </Group>
 );
 
-export const motion = () => (
+export const Motion = () => (
   <Group spacing={30}>
     <StatusDot motion />
     <StatusDot motion color="warning" />
@@ -95,7 +95,7 @@ export const motion = () => (
   </Group>
 );
 
-export const withoutShadow = () => (
+export const WithoutShadow = () => (
   <Group>
     <StatusDot shadow={false} />
     <StatusDot color="warning" shadow={false} />

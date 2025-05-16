@@ -93,7 +93,7 @@ export default {
 
 type Story = StoryObj<typeof Drawer>;
 
-export const explame: Story = {
+export const Explame: Story = {
   render: (args) => {
     const [visible, setVisible] = React.useState(false);
     const ref = createRef();
