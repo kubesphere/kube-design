@@ -5,21 +5,22 @@ import { TypeSelect } from '../TypeSelect';
 export const Searchable = () => {
   const options = [
     {
-      label: '默认规则',
+      label: 'Default Rule',
       value: 'test1',
-      description: '按照默认的规则将容器组副本调度到节点。',
+      description:
+        'Schedule the container group replicas to the node according to the default rule.',
       icon: <Cluster size={40} />,
     },
     {
-      label: '同时更新',
+      label: 'Update at the same time',
       value: 'test2',
-      description: '尽可能将容器组副本调度到同一节点上。',
+      description: 'Schedule the container group replicas to the same node as much as possible.',
       icon: <Cluster size={40} />,
     },
     {
-      label: '分散调度',
+      label: 'Distribute scheduling',
       value: 'test3',
-      description: '尽可能将容器组副本调度到不同的节点上。',
+      description: 'Schedule the container group replicas to different nodes as much as possible.',
       icon: <Cluster size={40} />,
     },
   ];

@@ -92,10 +92,10 @@ export const Explame: Story = {
     const [selectProps, setSelectProps] = useState(args);
     const [selectedValue, setSelectedValue] = useState<string | string[] | undefined>(undefined);
     const options = [
-      { value: 'China', label: '按 CPU 平均负载排行' },
-      { value: 'USA', label: '按内存用量排行' },
-      { value: 'Russian', label: '按磁盘用量排行' },
-      { value: 'France', label: '按磁盘用量排行2' },
+      { value: 'China', label: 'Ranking by CPU Load Average' },
+      { value: 'USA', label: 'Ranking by Memory Usage' },
+      { value: 'Russian', label: 'Ranking by Disk Usage' },
+      { value: 'France', label: 'Ranking by Disk Usage2' },
     ];
 
     useEffect(() => {
