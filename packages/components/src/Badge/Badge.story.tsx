@@ -28,7 +28,7 @@ export default {
       table: {
         defaultValue: { summary: 'success' },
       },
-      options: ['default', 'primary', 'secondary', 'success', 'warning', 'error', 'blue'],
+      options: ['primary', 'secondary', 'success', 'warning', 'error', 'blue'],
       control: { type: 'select' },
     },
     shadow: {
@@ -81,15 +81,9 @@ export const Explame: Story = {
       return undefined;
     }, [args.dot, args.motion]);
 
-    const safeColor = [
-      'default',
-      'primary',
-      'secondary',
-      'success',
-      'warning',
-      'error',
-      'blue',
-    ].includes(args.color || '')
+    const safeColor = ['primary', 'secondary', 'success', 'warning', 'error', 'blue'].includes(
+      args.color || ''
+    )
       ? args.color
       : 'success';
 

@@ -89,7 +89,7 @@ export const Explame: Story = {
     return (
       <div>
         <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center' }}>
-          <div style={{ marginRight: '10px' }}>按钮数量:</div>
+          <div style={{ marginRight: '10px' }}>Button Count:</div>
           <input
             type="number"
             min="1"

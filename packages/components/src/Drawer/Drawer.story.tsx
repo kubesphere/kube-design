@@ -136,7 +136,6 @@ export const basic = () => {
   };
 
   const closeDrawer = () => {
-    console.log(ref.current);
     setVisible(false);
   };
 
@@ -170,7 +169,6 @@ export const left = () => {
   };
 
   const closeDrawer = () => {
-    console.log(ref.current);
     setVisible(false);
   };
 

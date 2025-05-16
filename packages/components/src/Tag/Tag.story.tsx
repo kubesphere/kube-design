@@ -121,10 +121,8 @@ export const Explame: Story = {
 
     const handleClose = () => {
       setVisible(false);
-      console.log('Tag closed');
     };
 
-    // 当控制面板中的 visible 变化时，更新状态
     React.useEffect(() => {
       if (args.visible !== undefined) {
         setVisible(args.visible);

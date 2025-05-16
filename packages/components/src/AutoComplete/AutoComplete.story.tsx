@@ -99,7 +99,6 @@ export const Explame: Story = {
       }
     };
 
-    // 当控件面板中的 options 变化时，更新状态
     React.useEffect(() => {
       if (args.options) {
         setOptions(args.options);

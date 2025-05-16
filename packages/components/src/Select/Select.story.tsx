@@ -10,7 +10,7 @@ export default {
   component: Select,
   args: {
     style: { width: '250px' },
-    placeholder: '请选择',
+    placeholder: 'Please select',
     allowClear: true,
     showArrow: true,
     disabled: false,
@@ -30,7 +30,7 @@ export default {
       name: 'placeholder',
       description: 'Placeholder text',
       table: {
-        defaultValue: { summary: '请选择' },
+        defaultValue: { summary: 'Please select' },
       },
       control: 'text',
     },
@@ -132,16 +132,16 @@ export const Explame: Story = {
 };
 
 export const Basic = () => (
-  <Select style={{ width: '180px' }} placeholder="请选择" allowClear>
-    <Option value="China">按 CPU 平均负载排行</Option>
-    <Option value="USA">按内存用量排行</Option>
-    <Option value="Russian">按磁盘用量排行</Option>
-    <Option value="France">按磁盘用量排行2</Option>
+  <Select style={{ width: '180px' }} placeholder="Please select" allowClear>
+    <Option value="China">Ranking by CPU Load Average</Option>
+    <Option value="USA">Ranking by Memory Usage</Option>
+    <Option value="Russian">Ranking by Disk Usage</Option>
+    <Option value="France">Ranking by Disk Usage2</Option>
   </Select>
 );
 
 export const Search = () => (
-  <Select allowClear style={{ width: '120px' }} placeholder="请选择">
+  <Select allowClear style={{ width: '120px' }} placeholder="Please select">
     <Option value="China">China</Option>
     <Option value="USA">USA</Option>
     <Option value="Russian">Russian</Option>
@@ -149,18 +149,24 @@ export const Search = () => (
 );
 
 export const Multiple = () => (
-  <Select style={{ width: '300px' }} placeholder="请选择" allowClear mode="multiple">
-    <Option value="China">按 CPU 平均负载排行</Option>
-    <Option value="USA">按内存用量排行</Option>
-    <Option value="Russian">按磁盘用量排行</Option>
+  <Select style={{ width: '300px' }} placeholder="Please select" allowClear mode="multiple">
+    <Option value="China">Ranking by CPU Load Average</Option>
+    <Option value="USA">Ranking by Memory Usage</Option>
+    <Option value="Russian">Ranking by Disk Usage</Option>
   </Select>
 );
 
 export const HasArrow = () => (
-  <Select style={{ width: '300px' }} placeholder="请选择" allowClear mode="multiple" showArrow>
-    <Option value="China">按 CPU 平均负载排行</Option>
-    <Option value="USA">按内存用量排行</Option>
-    <Option value="Russian">按磁盘用量排行</Option>
+  <Select
+    style={{ width: '300px' }}
+    placeholder="Please select"
+    allowClear
+    mode="multiple"
+    showArrow
+  >
+    <Option value="China">Ranking by CPU Load Average</Option>
+    <Option value="USA">Ranking by Memory Usage</Option>
+    <Option value="Russian">Ranking by Disk Usage</Option>
   </Select>
 );
 
@@ -192,8 +198,8 @@ export const HasLoading = () => {
   return (
     <Select
       style={{ width: '300px' }}
-      placeholder="请选择"
-      prefix="集群"
+      placeholder="Please select"
+      prefix="Cluster"
       allowClear
       showArrow
       showSearch

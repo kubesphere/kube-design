@@ -83,7 +83,7 @@ export const Explame: Story = {
           return () => closeButton.removeEventListener('click', handleClose);
         }
       }
-      return undefined; // 添加返回值以解决 linter 错误
+      return undefined;
     }, [args.closable]);
 
     if (!visible) {

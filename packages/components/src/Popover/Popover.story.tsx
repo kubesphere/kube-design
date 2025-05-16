@@ -112,8 +112,6 @@ export const Explame: Story = {
       }
     };
 
-    console.log('Current trigger:', popoverProps.trigger);
-
     return (
       <div>
         <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
@@ -121,7 +119,6 @@ export const Explame: Story = {
             {...popoverProps}
             onMount={(instance) => {
               popoverRef.current = instance;
-              console.log('Popover mounted with trigger:', popoverProps.trigger);
             }}
           >
             <Button radius="xl">Interact With Me</Button>

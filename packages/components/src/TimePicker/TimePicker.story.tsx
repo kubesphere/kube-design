@@ -14,7 +14,7 @@ export default {
     bordered: true,
     disabled: false,
     inputReadOnly: false,
-    placeholder: '请选择时间',
+    placeholder: 'Please select time',
     size: 'md',
     use12Hours: false,
     hourStep: 1,
@@ -74,7 +74,7 @@ export default {
       name: 'placeholder',
       description: 'Input placeholder',
       table: {
-        defaultValue: { summary: '请选择时间' },
+        defaultValue: { summary: 'Please select time' },
       },
       control: { type: 'text' },
     },

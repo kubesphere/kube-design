@@ -87,10 +87,10 @@ export const motion = () => (
     <StatusDot motion />
     <StatusDot motion color="warning" />
     <StatusDot motion color="success">
-      启动中
+      Starting
     </StatusDot>
     <StatusDot motion color="error">
-      重启中
+      Restarting
     </StatusDot>
   </Group>
 );

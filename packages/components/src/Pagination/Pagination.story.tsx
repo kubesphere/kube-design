@@ -62,21 +62,16 @@ export const Explame: Story = {
     const [currentPage, setCurrentPage] = useState(args.page || 0);
     const [paginationProps, setPaginationProps] = useState(args);
 
-    // 处理页面变化
     const handleNextPage = (page: number) => {
       setCurrentPage(page);
-      console.log('Next page:', page);
     };
 
     const handlePreviousPage = (page: number) => {
       setCurrentPage(page);
-      console.log('Previous page:', page);
     };
 
-    // 当控件面板中的参数变化时，更新状态
     useEffect(() => {
       setPaginationProps(args);
-      // 如果在控制面板中更改了页码，则更新当前页码状态
       if (args.page !== undefined && args.page !== currentPage) {
         setCurrentPage(args.page);
       }

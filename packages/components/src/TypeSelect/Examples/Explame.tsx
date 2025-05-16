@@ -13,10 +13,8 @@ export const Explame: Story = {
       if (args.onChange) {
         args.onChange(val, option);
       }
-      console.log('Selected:', val, option);
     };
 
-    // 当控制面板中的 value 变化时，更新状态
     React.useEffect(() => {
       if (args.value) {
         setValue(args.value);

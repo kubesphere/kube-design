@@ -117,9 +117,7 @@ export const Example: Story = {
       setVisible(false);
     };
 
-    useEffect(() => {
-      // 当控件面板中的参数变化时，可以在这里处理
-    }, [args]);
+    useEffect(() => {}, [args]);
 
     return (
       <>

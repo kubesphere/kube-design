@@ -16,7 +16,7 @@ export default {
     bordered: true,
     disabled: false,
     inputReadOnly: false,
-    placeholder: '请选择日期',
+    placeholder: 'Select Date',
     size: 'md',
     showToday: true,
   },
@@ -82,7 +82,7 @@ export default {
       name: 'placeholder',
       description: 'Input Placeholder',
       table: {
-        defaultValue: { summary: '请选择日期' },
+        defaultValue: { summary: 'Select Date' },
       },
       control: { type: 'text' },
     },
@@ -142,27 +142,27 @@ export const Range = () => <RangePicker />;
 export const DatePickerTypes = () => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
     <div>
-      <h4>日期选择器</h4>
+      <h4>Date Picker</h4>
       <DatePicker />
     </div>
     <div>
-      <h4>周选择器</h4>
+      <h4>Week Picker</h4>
       <DatePicker picker="week" />
     </div>
     <div>
-      <h4>月份选择器</h4>
+      <h4>Month Picker</h4>
       <DatePicker picker="month" />
     </div>
     <div>
-      <h4>季度选择器</h4>
+      <h4>Quarter Picker</h4>
       <DatePicker picker="quarter" />
     </div>
     <div>
-      <h4>年份选择器</h4>
+      <h4>Year Picker</h4>
       <DatePicker picker="year" />
     </div>
     <div>
-      <h4>时间选择器</h4>
+      <h4>Time Picker</h4>
       <DatePicker.TimePicker />
     </div>
   </div>
@@ -171,26 +171,25 @@ export const DatePickerTypes = () => (
 export const RangePickerExample = () => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
     <div>
-      <h4>日期范围选择器</h4>
+      <h4>Date Range Picker</h4>
       <RangePicker />
     </div>
     <div>
-      <h4>周范围选择器</h4>
+      <h4>Week Range Picker</h4>
       <RangePicker picker="week" />
     </div>
     <div>
-      <h4>月份范围选择器</h4>
+      <h4>Month Range Picker</h4>
       <RangePicker picker="month" />
     </div>
     <div>
-      <h4>年份范围选择器</h4>
+      <h4>Year Range Picker</h4>
       <RangePicker picker="year" />
     </div>
   </div>
 );
 
 export const DisabledDate = () => {
-  // 禁用今天之前的日期
   const disabledDate = (current: any) => {
     return current && current < dayjs().startOf('day');
   };

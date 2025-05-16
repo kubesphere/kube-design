@@ -91,7 +91,6 @@ export const Explame: Story = {
       }
     };
 
-    // 当控制面板中的 checked 变化时，更新状态
     React.useEffect(() => {
       setChecked(args.checked);
     }, [args.checked]);

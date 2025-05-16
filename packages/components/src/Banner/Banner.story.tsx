@@ -26,8 +26,9 @@ export default {
   component: Banner,
   args: {
     icon: <Cluster />,
-    title: '集群节点',
-    description: '集群节点提供了当前集群下节点的运行状态，以及可以编辑删除节点',
+    title: 'Cluster Node    ',
+    description:
+      'Cluster node provides the running status of nodes in the current cluster, and allows editing and deleting nodes',
   },
   argTypes: {
     icon: {
@@ -45,18 +46,22 @@ export default {
     title: {
       name: 'title',
       description: 'Title of banner',
-      defaultValue: '集群节点',
+      defaultValue: 'Cluster Node',
       table: {
-        defaultValue: { summary: '集群节点' },
+        defaultValue: { summary: 'Cluster Node' },
       },
       control: { type: 'text' },
     },
     description: {
       name: 'description',
       description: 'Description of banner',
-      defaultValue: '集群节点提供了当前集群下节点的运行状态，以及可以编辑删除节点',
+      defaultValue:
+        'Cluster node provides the running status of nodes in the current cluster, and allows editing and deleting nodes',
       table: {
-        defaultValue: { summary: '集群节点提供了当前集群下节点的运行状态，以及可以编辑删除节点' },
+        defaultValue: {
+          summary:
+            'Cluster node provides the running status of nodes in the current cluster, and allows editing and deleting nodes',
+        },
       },
       control: { type: 'text' },
     },
@@ -92,15 +97,15 @@ export const Explame: Story = {
     const tipData = [
       {
         key: 'node-type',
-        title: '集群节点的类型?',
-        content: '节点分为主控 (Master) 节点和工作 (Worker) 节点',
+        title: 'What is the type of cluster node?',
+        content: 'Nodes are divided into master (Master) and worker (Worker) nodes',
         removable: true,
       },
       {
         key: 'node-dirty',
-        title: '什么是节点污点?',
+        title: 'What is node taint?',
         content:
-          '节点污点 (Taints) 可以阻止某些容器组 (Pod) 副本部署至该节点中, 与容忍度 (Tolerations) 一起工作确保容器组不会被调度到不合适的节点上',
+          'Node taint (Taints) can prevent certain container group (Pod) replicas from being deployed to the node, and work with tolerance (Tolerations) to ensure that the container group is not scheduled to an unsuitable node',
         removable: true,
         operations: <Button>Action</Button>,
       },
@@ -134,17 +139,18 @@ export const Basic = () => (
   <div style={{ height: '300px', width: '100%', backgroundColor: '#eff4f9', padding: '20px' }}>
     <Banner
       icon={<Cluster />}
-      title="集群节点"
-      description="集群节点提供了当前集群下节点的运行状态，以及可以编辑删除节点"
+      title="Cluster Node"
+      description="Cluster node provides the running status of nodes in the current cluster, and allows editing and deleting nodes"
       navs={data}
     >
       <Navs data={data} />
-      <BannerTip title="集群节点的类型?" key="node-type">
-        节点分为主控 (Master) 节点和工作 (Worker) 节点
+      <BannerTip title="What is the type of cluster node?" key="node-type">
+        Nodes are divided into master (Master) and worker (Worker) nodes
       </BannerTip>
-      <BannerTip title="什么是节点污点?" key="node-dirty">
-        节点污点 (Taints) 可以阻止某些容器组 (Pod) 副本部署至该节点中, 与容忍度 (Tolerations)
-        一起工作确保容器组不会被调度到不合适的节点上
+      <BannerTip title="What is node taint?" key="node-dirty">
+        Node taint (Taints) can prevent certain container group (Pod) replicas from being deployed
+        to the node, and work with tolerance (Tolerations) to ensure that the container group is not
+        scheduled to an unsuitable node
       </BannerTip>
     </Banner>
   </div>
@@ -154,22 +160,23 @@ export const Operations = () => (
   <div style={{ height: '300px', width: '100%', backgroundColor: '#eff4f9', padding: '20px' }}>
     <Banner
       icon={<Cluster />}
-      title="集群节点"
-      description="集群节点提供了当前集群下节点的运行状态，以及可以编辑删除节点"
+      title="Cluster Node"
+      description="Cluster node provides the running status of nodes in the current cluster, and allows editing and deleting nodes"
       navs={data}
     >
       <Navs data={data} />
       <BannerTip
-        title="集群节点的类型?"
+        title="What is the type of cluster node?"
         key="node-type"
         removable={false}
         operations={<Button>Action</Button>}
       >
-        节点分为主控 (Master) 节点和工作 (Worker) 节点
+        Nodes are divided into master (Master) and worker (Worker) nodes
       </BannerTip>
-      <BannerTip title="什么是节点污点?" key="node-dirty">
-        节点污点 (Taints) 可以阻止某些容器组 (Pod) 副本部署至该节点中, 与容忍度 (Tolerations)
-        一起工作确保容器组不会被调度到不合适的节点上
+      <BannerTip title="What is node taint?" key="node-dirty">
+        Node taint (Taints) can prevent certain container group (Pod) replicas from being deployed
+        to the node, and work with tolerance (Tolerations) to ensure that the container group is not
+        scheduled to an unsuitable node
       </BannerTip>
     </Banner>
   </div>

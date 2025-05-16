@@ -101,7 +101,6 @@ export const Explame: Story = {
       console.log('Selected value:', newValue);
     };
 
-    // 当控件面板中的 data 变化时，更新状态
     useEffect(() => {
       if (args.data) {
         setNavsData(args.data);

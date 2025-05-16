@@ -70,29 +70,29 @@ export const DescriptionMeta: Meta<typeof Description> = {
   argTypes: {
     label: {
       name: 'label',
-      description: '标签文本',
+      description: 'Label Text',
       control: 'text',
     },
     children: {
       name: 'children',
-      description: '内容',
+      description: 'Content',
       control: 'text',
     },
     variant: {
       name: 'variant',
-      description: '样式变体',
+      description: 'Variant',
       defaultValue: 'default',
       options: ['default', 'unstyled'],
       control: { type: 'select' },
     },
     labelStyle: {
       name: 'labelStyle',
-      description: '标签样式',
+      description: 'Label Style',
       control: 'object',
     },
     contentStyle: {
       name: 'contentStyle',
-      description: '内容样式',
+      description: 'Content Style',
       control: 'object',
     },
   },

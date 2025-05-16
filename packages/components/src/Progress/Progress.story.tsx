@@ -77,7 +77,6 @@ export const Explame: Story = {
     );
     const [useSections, setUseSections] = useState(false);
 
-    // 当控件面板中的参数变化时，更新状态
     useEffect(() => {
       setProgressProps(args);
     }, [args]);
