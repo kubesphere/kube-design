@@ -1,13 +1,69 @@
 import * as React from 'react';
-import { Meta } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { StatusDot, Group, Tooltip } from '../index';
 
 export default {
   title: 'Components/StatusDot',
   component: StatusDot,
-} as Meta;
+  args: {
+    color: 'success',
+    motion: false,
+    shadow: true,
+    children: 'Status Text',
+  },
+  argTypes: {
+    color: {
+      name: 'color',
+      description: 'Status point color',
+      table: {
+        defaultValue: { summary: 'success' },
+      },
+      options: ['default', 'success', 'warning', 'error'],
+      control: { type: 'select' },
+    },
+    motion: {
+      name: 'motion',
+      description: 'Whether to enable animation effect',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
+      control: 'boolean',
+    },
+    shadow: {
+      name: 'shadow',
+      description: 'Whether to show shadow effect',
+      table: {
+        defaultValue: { summary: 'true' },
+      },
+      control: 'boolean',
+    },
+    children: {
+      name: 'children',
+      description: 'Status point text label',
+      table: {
+        defaultValue: { summary: 'Status Text' },
+      },
+      control: 'text',
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ padding: '20px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+} as Meta<typeof StatusDot>;
 
-export const basic = () => (
+type Story = StoryObj<typeof StatusDot>;
+
+export const Explame: Story = {
+  render: (args) => {
+    return <StatusDot {...args} />;
+  },
+};
+
+export const Basic = () => (
   <Group>
     <StatusDot color="success">Ready</StatusDot>
     <StatusDot color="warning">Warning</StatusDot>
@@ -17,7 +73,7 @@ export const basic = () => (
   </Group>
 );
 
-export const withoutLabel = () => (
+export const WithoutLabel = () => (
   <Group>
     <StatusDot />
     <StatusDot color="warning" />
@@ -31,15 +87,15 @@ export const Motion = () => (
     <StatusDot motion />
     <StatusDot motion color="warning" />
     <StatusDot motion color="success">
-      启动中
+      Starting
     </StatusDot>
     <StatusDot motion color="error">
-      重启中
+      Restarting
     </StatusDot>
   </Group>
 );
 
-export const withoutShadow = () => (
+export const WithoutShadow = () => (
   <Group>
     <StatusDot shadow={false} />
     <StatusDot color="warning" shadow={false} />

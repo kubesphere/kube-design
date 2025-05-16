@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
+import { Meta, StoryObj } from '@storybook/react';
 import { Group, Button } from '../index';
 import { Checkbox } from './Checkbox';
 import { CheckboxGroup } from './CheckboxGroup';
@@ -7,6 +8,107 @@ import { CheckboxGroup } from './CheckboxGroup';
 export default {
   title: 'Components/Checkbox',
   component: Checkbox,
+  args: {
+    label: 'Checkbox Label',
+    value: 'checkbox-value',
+    checked: false,
+    indeterminate: false,
+    disabled: false,
+    defaultChecked: false,
+  },
+  argTypes: {
+    label: {
+      name: 'label',
+      description: 'Checkbox label',
+      table: {
+        defaultValue: { summary: 'Checkbox Label' },
+      },
+      control: { type: 'text' },
+    },
+    value: {
+      name: 'value',
+      description: 'Checkbox value',
+      table: {
+        defaultValue: { summary: 'checkbox-value' },
+      },
+      control: { type: 'text' },
+    },
+    checked: {
+      name: 'checked',
+      description: 'Whether the Checkbox is checked (controlled)',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
+      control: { type: 'boolean' },
+    },
+    indeterminate: {
+      name: 'indeterminate',
+      description: 'Indeterminate state of checkbox, overwrites checked',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
+      control: { type: 'boolean' },
+    },
+    disabled: {
+      name: 'disabled',
+      description: 'Whether the Checkbox is disabled',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
+      control: { type: 'boolean' },
+    },
+    defaultChecked: {
+      name: 'defaultChecked',
+      description: 'Default checked state (uncontrolled)',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
+      control: { type: 'select' },
+    },
+    onChange: {
+      name: 'onChange',
+      description: 'Callback when checkbox state changes',
+      action: 'changed',
+      control: 'select',
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ padding: '20px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+} as Meta<typeof Checkbox>;
+
+type Story = StoryObj<typeof Checkbox>;
+
+export const Explame: Story = {
+  render: (args) => {
+    const [isChecked, setIsChecked] = React.useState(args.checked || args.defaultChecked || false);
+
+    React.useEffect(() => {
+      setIsChecked(args.checked);
+    }, [args.checked]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (!args.checked) {
+        // Only update internal state if it's uncontrolled
+        setIsChecked(e.target.checked);
+      }
+      if (args.onChange) {
+        args.onChange(e);
+      }
+    };
+
+    return (
+      <Checkbox
+        {...args}
+        checked={args.checked !== undefined ? args.checked : isChecked}
+        onChange={handleChange}
+      />
+    );
+  },
 };
 
 export const Basic = () => {

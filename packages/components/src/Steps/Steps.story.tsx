@@ -49,28 +49,28 @@ export const TabSteps = () => {
     <>
       <Steps active={active} onStepClick={setActive} variant="tab">
         <TabStep
-          label="步骤1"
-          description="未设置"
-          completedDescription="已设置"
-          progressDescription="设置中"
+          label="Step 1"
+          description="Not set"
+          completedDescription="Set"
+          progressDescription="Setting"
           icon={<Cluster size={24} />}
         >
           First step
         </TabStep>
         <TabStep
-          label="步骤2"
-          description="未设置"
-          completedDescription="已设置"
-          progressDescription="设置中"
+          label="Step 2"
+          description="Not set"
+          completedDescription="Set"
+          progressDescription="Setting"
           icon={<Kubernetes size={24} />}
         >
           Second step
         </TabStep>
         <TabStep
-          label="步骤3"
-          description="未设置"
-          completedDescription="已设置"
-          progressDescription="设置中"
+          label="Step 3"
+          description="Not set"
+          completedDescription="Set"
+          progressDescription="Setting"
           icon={<Kubesphere size={24} />}
         >
           Third step
@@ -98,28 +98,28 @@ export const VerticalStep = () => {
     <>
       <Steps active={active} onStepClick={setActive} orientation="vertical">
         <Step
-          label="步骤1"
-          description="未设置"
-          completedDescription="已设置"
-          progressDescription="设置中"
+          label="Step 1"
+          description="Not set"
+          completedDescription="Set"
+          progressDescription="Setting"
           icon={<Cluster size={24} />}
         >
           First step
         </Step>
         <Step
-          label="步骤2"
-          description="未设置"
-          completedDescription="已设置"
-          progressDescription="设置中"
+          label="Step 2"
+          description="Not set"
+          completedDescription="Set"
+          progressDescription="Setting"
           icon={<Kubernetes size={24} />}
         >
           Second step
         </Step>
         <Step
-          label="步骤3"
-          description="未设置"
-          completedDescription="已设置"
-          progressDescription="设置中"
+          label="Step 3"
+          description="Not set"
+          completedDescription="Set"
+          progressDescription="Setting"
           icon={<Kubesphere size={24} />}
         >
           Third step
@@ -147,28 +147,28 @@ export const VerticalTabStep = () => {
     <>
       <Steps active={active} onStepClick={setActive} variant="tab" orientation="vertical">
         <TabStep
-          label="步骤1"
-          description="未设置"
-          completedDescription="已设置"
-          progressDescription="设置中"
+          label="Step 1"
+          description="Not set"
+          completedDescription="Set"
+          progressDescription="Setting"
           icon={<Cluster size={24} />}
         >
           First step
         </TabStep>
         <TabStep
-          label="步骤2"
-          description="未设置"
-          completedDescription="已设置"
-          progressDescription="设置中"
+          label="Step 2"
+          description="Not set"
+          completedDescription="Set"
+          progressDescription="Setting"
           icon={<Kubernetes size={24} />}
         >
           Second step
         </TabStep>
         <TabStep
-          label="步骤3"
-          description="未设置"
-          completedDescription="已设置"
-          progressDescription="设置中"
+          label="Step 3"
+          description="Not set"
+          completedDescription="Set"
+          progressDescription="Setting"
           icon={<Kubesphere size={24} />}
         >
           Third step

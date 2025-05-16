@@ -1,9 +1,89 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
+import { Meta, StoryObj } from '@storybook/react';
 import { Loading, Group } from '../index';
 
 export default {
   title: 'Components/Loading',
   component: Loading,
+  args: {
+    size: 'md',
+    color: 'dark',
+    variant: 'circle1',
+  },
+  argTypes: {
+    size: {
+      name: 'size',
+      description: 'Size of the loading indicator',
+      table: {
+        defaultValue: { summary: 'md' },
+      },
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+      control: { type: 'select' },
+    },
+    color: {
+      name: 'color',
+      description: 'Color of the loading indicator',
+      table: {
+        defaultValue: { summary: 'dark' },
+      },
+      options: ['dark', 'light', 'primary', 'success', 'warning', 'danger'],
+      control: { type: 'select' },
+    },
+    variant: {
+      name: 'variant',
+      description: 'Style variant of the loading indicator',
+      table: {
+        defaultValue: { summary: 'circle1' },
+      },
+      options: ['circle1', 'circle2'],
+      control: { type: 'radio' },
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ padding: '20px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+} as Meta<typeof Loading>;
+
+type Story = StoryObj<typeof Loading>;
+
+export const Explame: Story = {
+  render: (args) => {
+    const [loadingProps, setLoadingProps] = useState(args);
+    const [background, setBackground] = useState('#ffffff');
+
+    // Update loading properties when args change
+    useEffect(() => {
+      setLoadingProps(args);
+
+      // Set appropriate background color for light variant
+      if (args.color === 'light') {
+        setBackground('#333333');
+      } else {
+        setBackground('#ffffff');
+      }
+    }, [args]);
+
+    return (
+      <div>
+        <div
+          style={{
+            padding: '30px',
+            backgroundColor: background,
+            display: 'inline-flex',
+            borderRadius: '4px',
+            transition: 'background-color 0.3s',
+          }}
+        >
+          <Loading {...loadingProps} />
+        </div>
+      </div>
+    );
+  },
 };
 
 export const Basic = () => (

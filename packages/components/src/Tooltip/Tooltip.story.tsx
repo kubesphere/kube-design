@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import type { TooltipInstance } from '../index';
 import { Tooltip, Button, Col, Row, Group } from '../index';
@@ -6,6 +7,85 @@ import { Tooltip, Button, Col, Row, Group } from '../index';
 export default {
   title: 'Components/Tooltip',
   component: Tooltip,
+  args: {
+    content: 'Tooltip content',
+    placement: 'top',
+    trigger: 'click',
+    arrow: true,
+    interactive: true,
+  },
+  argTypes: {
+    content: {
+      name: 'content',
+      description: 'Tooltip content',
+      control: 'text',
+      table: {
+        defaultValue: { summary: 'Tooltip content' },
+      },
+    },
+    placement: {
+      name: 'placement',
+      description: 'Tooltip placement',
+      control: { type: 'select' },
+      options: [
+        'top',
+        'top-start',
+        'top-end',
+        'right',
+        'right-start',
+        'right-end',
+        'bottom',
+        'bottom-start',
+        'bottom-end',
+        'left',
+        'left-start',
+        'left-end',
+      ],
+      table: {
+        defaultValue: { summary: 'top' },
+      },
+    },
+    trigger: {
+      name: 'trigger',
+      description: 'Trigger',
+      control: { type: 'select' },
+    },
+    arrow: {
+      name: 'arrow',
+      description: 'Display arrow or not',
+      control: 'boolean',
+      table: {
+        defaultValue: { summary: 'true' },
+      },
+    },
+    interactive: {
+      name: 'interactive',
+      description: 'Interactive',
+      control: 'boolean',
+      table: {
+        defaultValue: { summary: 'true' },
+      },
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ padding: '40px', display: 'flex', justifyContent: 'center' }}>
+        <Story />
+      </div>
+    ),
+  ],
+} as Meta<typeof Tooltip>;
+
+type Story = StoryObj<typeof Tooltip>;
+
+export const Explame: Story = {
+  render: (args) => {
+    return (
+      <Tooltip {...args}>
+        <Button>Click me</Button>
+      </Tooltip>
+    );
+  },
 };
 
 export const Basic = () => (

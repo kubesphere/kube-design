@@ -1,3 +1,4 @@
+
 # os
 .DS_Store
 
@@ -34,3 +35,6 @@ dist
 # nextjs
 docs/.next
 !docs/lib
+
+# history
+.history/

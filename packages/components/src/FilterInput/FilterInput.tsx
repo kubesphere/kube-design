@@ -106,7 +106,7 @@ export const FilterInput = forwardRef<FilterInputProps, null>((props, ref) => {
   };
 
   const handleTagDelete = (tag) => {
-    const { onChange, filters } = props;
+    const { onChange } = props;
     onChange(omit(filters, tag.filter));
   };
 
@@ -149,7 +149,7 @@ export const FilterInput = forwardRef<FilterInputProps, null>((props, ref) => {
 
   const handleKeyUp = (e) => {
     if (e.keyCode === 13) {
-      const { onChange = () => {}, filters, suggestions, simpleMode } = props;
+      const { onChange = () => {}, suggestions, simpleMode } = props;
       if (simpleMode) {
         onChange(value);
       } else if (!isEmpty(value)) {
@@ -172,7 +172,7 @@ export const FilterInput = forwardRef<FilterInputProps, null>((props, ref) => {
   };
 
   const handleSuggestionMenuClick = (option: Option) => {
-    const { onChange = () => {}, filters } = props;
+    const { onChange = () => {} } = props;
     onChange({
       ...filters,
       [activeSuggestion.key]: option.key,

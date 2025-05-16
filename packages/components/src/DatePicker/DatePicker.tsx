@@ -19,4 +19,3 @@ export type RangePickerProps = BaseRangePickerProps<Dayjs>;
 export const DatePicker = generatePicker<Dayjs>(dayjsGenerateConfig);
 
 DatePicker.displayName = '@kubed/components/DatePicker';
-

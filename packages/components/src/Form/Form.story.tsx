@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Meta } from '@storybook/react';
 import { Add, Trash } from '@kubed/icons';
 import {
   Form,
@@ -18,7 +19,100 @@ import {
 export default {
   title: 'Components/Form',
   component: Form,
-};
+  argTypes: {
+    initialValues: {
+      description: 'Default values of form',
+      table: {
+        type: { summary: 'Store' },
+      },
+      control: 'select',
+    },
+    form: {
+      description: 'Form instance created by useForm()',
+      table: {
+        type: { summary: 'FormInstance<Values>' },
+      },
+      control: 'select',
+    },
+    children: {
+      description: 'Form content',
+      table: {
+        type: { summary: 'RenderProps | React.ReactNode' },
+      },
+      control: 'select',
+    },
+    component: {
+      description: 'Set the Form rendering element',
+      table: {
+        type: { summary: 'false | string | React.FC<any> | React.ComponentClass<any>' },
+      },
+      control: 'select',
+    },
+    fields: {
+      description: 'Control form fields through state management',
+      table: {
+        type: { summary: 'FieldData[]' },
+      },
+      control: 'select',
+    },
+    name: {
+      description: 'Form name',
+      table: {
+        type: { summary: 'string' },
+      },
+      control: 'select',
+    },
+    validateMessages: {
+      description: 'Validation prompt message template',
+      table: {
+        type: { summary: 'ValidateMessages' },
+      },
+      control: 'select',
+    },
+    onValuesChange: {
+      description: 'Callback when field values change',
+      table: {
+        type: { summary: "Callbacks<Values>['onValuesChange']" },
+      },
+      control: 'select',
+    },
+    onFieldsChange: {
+      description: 'Callback when fields change',
+      table: {
+        type: { summary: "Callbacks<Values>['onFieldsChange']" },
+      },
+      control: 'select',
+    },
+    onFinish: {
+      description: 'Callback when form is submitted and validation is successful',
+      table: {
+        type: { summary: "Callbacks<Values>['onFinish']" },
+      },
+      control: 'select',
+    },
+    onFinishFailed: {
+      description: 'Callback when form validation fails',
+      table: {
+        type: { summary: "Callbacks<Values>['onFinishFailed']" },
+      },
+      control: 'select',
+    },
+    validateTrigger: {
+      description: 'Set validation trigger timing for all fields',
+      table: {
+        type: { summary: 'string | string[] | false' },
+      },
+      control: 'select',
+    },
+    preserve: {
+      description: 'Keep field value when field is removed',
+      table: {
+        type: { summary: 'boolean' },
+      },
+      control: 'select',
+    },
+  },
+} as Meta<typeof Form>;
 
 const onFinish = (values) => {
   console.log(values);
@@ -42,7 +136,7 @@ export const Basic = () => (
         <FormItem
           className="layout-horizontal"
           name="password"
-          label="密码"
+          label="Password"
           help="help content"
           rules={[{ required: true, message: 'Please input your uid!' }]}
         >
@@ -50,7 +144,7 @@ export const Basic = () => (
         </FormItem>
       </Col>
       <Col span={6}>
-        <FormItem name="group" label="Group" help="help content" tooltip="tooltip 内容 content">
+        <FormItem name="group" label="Group" help="help content" tooltip="tooltip content">
           <Input />
         </FormItem>
       </Col>
@@ -59,7 +153,7 @@ export const Basic = () => (
           name="description"
           label="Descripton"
           help="desc content"
-          tooltip="tooltip 内容 content"
+          tooltip="tooltip content"
           rules={[{ required: true, message: 'Please input desc!' }]}
         >
           <Textarea autosize />
