@@ -1,5 +1,7 @@
 # @kubed/tests
 
+## 0.2.33
+
 ## 0.2.32
 
 ### Patch Changes

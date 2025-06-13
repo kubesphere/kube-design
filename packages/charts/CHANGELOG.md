@@ -1,5 +1,15 @@
 # @kubed/charts
 
+## 0.2.33
+
+### Patch Changes
+
+- [#350](https://github.com/kubesphere/kube-design/pull/350) [`bc4cd6e`](https://github.com/kubesphere/kube-design/commit/bc4cd6e4aa58bdb7bd4912238b23886c55dc46f7) Thanks [@fuchunlan](https://github.com/fuchunlan)! - feat: Support strokeDasharray and fillOpacity on AreaChart
+
+- Updated dependencies []:
+  - @kubed/hooks@0.2.33
+  - @kubed/icons@0.2.33
+
 ## 0.2.32
 
 ### Patch Changes

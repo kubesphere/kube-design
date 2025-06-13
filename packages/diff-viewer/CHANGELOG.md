@@ -1,5 +1,13 @@
 # @kubed/diff-view
 
+## 0.2.33
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @kubed/hooks@0.2.33
+  - @kubed/icons@0.2.33
+
 ## 0.2.32
 
 ### Patch Changes
