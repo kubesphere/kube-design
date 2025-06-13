@@ -37,3 +37,11 @@ export const removeValueFromArray = (value: any, array: any[]): any[] => {
   }
   return array;
 };
+
+export const getCategoryMap = (categories: string[], array: string[] = []): Map<string, string> => {
+  const categoryMap = new Map<string, string>();
+  categories.forEach((category, idx) => {
+    categoryMap.set(category, array[idx]);
+  });
+  return categoryMap;
+};
