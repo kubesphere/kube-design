@@ -15,7 +15,12 @@ import { AxisDomain } from 'recharts/types/util/types';
 import { remove } from 'lodash';
 
 import { ChartBaseProps } from '../../types';
-import { defaultValueFormatter, getYAxisDomain, getCategoryColors } from '../../utils';
+import {
+  defaultValueFormatter,
+  getYAxisDomain,
+  getCategoryColors,
+  getCategoryMap,
+} from '../../utils';
 import { Legend as LegendContent } from '../../components/Legend';
 import { Tooltip as TooltipContent } from '../../components/Tooltip';
 
@@ -23,6 +28,8 @@ export interface AreaChartProps extends ChartBaseProps {
   stack?: boolean;
   xAxisProps?: XAxisProps;
   yAxisProps?: YAxisProps;
+  strokeDasharrays?: any[];
+  fillOpacitys?: any[];
 }
 
 export const AreaChart = ({
@@ -53,12 +60,16 @@ export const AreaChart = ({
   maxActiveCategories = 50,
   xAxisProps = {},
   yAxisProps = {},
+  strokeDasharrays,
+  fillOpacitys,
   ...rest
 }: AreaChartProps) => {
   const initialActiveCats = categories.slice(0, maxActiveCategories);
   const [activeCategories, setActiveCategories] = useState(initialActiveCats);
   const yAxisDomain = getYAxisDomain(autoMinValue, minValue, maxValue);
   const categoryColors = getCategoryColors(categories, colors);
+  const categoryStrokeDasharrays = getCategoryMap(categories, strokeDasharrays);
+  const categoryFillOpacitys = getCategoryMap(categories, fillOpacitys);
 
   const handleLegendClick = (category) => {
     const newActiveCategories = [...activeCategories];
@@ -131,16 +142,17 @@ export const AreaChart = ({
         {showTooltip ? (
           <Tooltip
             wrapperStyle={{ outline: 'none' }}
-            content={({ active, payload, label }) => (
-              customTooltip && customTooltip(payload)) || (
-              <TooltipContent
-                active={active}
-                payload={payload}
-                label={label}
-                valueFormatter={valueFormatter}
-                legendFormatter={legendFormatter}
-              />
-            )}
+            content={({ active, payload, label }) =>
+              (customTooltip && customTooltip(payload)) || (
+                <TooltipContent
+                  active={active}
+                  payload={payload}
+                  label={label}
+                  valueFormatter={valueFormatter}
+                  legendFormatter={legendFormatter}
+                />
+              )
+            }
           />
         ) : null}
         {categories.map((category) => (
@@ -165,6 +177,8 @@ export const AreaChart = ({
             dataKey={category}
             stroke={categoryColors.get(category)}
             fill={`url(#${categoryColors.get(category)})`}
+            strokeDasharray={categoryStrokeDasharrays.get(category)}
+            fillOpacity={categoryFillOpacitys.get(category)}
             strokeWidth={1}
             dot={false}
             isAnimationActive={showAnimation}
