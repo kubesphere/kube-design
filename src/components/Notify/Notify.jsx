@@ -1,8 +1,6 @@
 import React from "react";
 import { includes, omit, isString } from "lodash";
-
 import Icon from "../Icon";
-
 import NotifyManager from "./NotifyManager";
 import { generateUUID } from "./utils";
 
@@ -101,7 +99,12 @@ const open = (args) => {
     });
   };
 
-  if (notifyInstance[cacheKey]) {
+  const checkHasInstance = (cacheKey) => {
+    if (!cacheKey || !notifyInstance[cacheKey]) return false;
+    return document.getElementsByClassName(cacheKey).length > 0;
+  };
+
+  if (checkHasInstance(cacheKey)) {
     createNotice(notifyInstance[cacheKey]);
   } else {
     NotifyManager.newInstance(
