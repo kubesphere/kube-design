@@ -1,5 +1,11 @@
 # @kubed/icons
 
+## 0.2.34
+
+### Patch Changes
+
+- [#361](https://github.com/kubesphere/kube-design/pull/361) [`dfaa86d`](https://github.com/kubesphere/kube-design/commit/dfaa86dc607eb373433974f616656beac4d555f2) Thanks [@Jun1911](https://github.com/Jun1911)! - feat: Add task_duotone icon
+
 ## 0.2.33
 
 ## 0.2.32
