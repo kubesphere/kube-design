@@ -1,5 +1,13 @@
 # @kubed/charts
 
+## 0.2.35
+
+### Patch Changes
+
+- Updated dependencies [[`a2f9454`](https://github.com/kubesphere/kube-design/commit/a2f94547dd77bbec1140699b5d88e04aa8900f66)]:
+  - @kubed/icons@0.2.35
+  - @kubed/hooks@0.2.35
+
 ## 0.2.34
 
 ### Patch Changes
