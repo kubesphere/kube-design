@@ -1,5 +1,11 @@
 # @kubed/icons
 
+## 0.2.35
+
+### Patch Changes
+
+- [#364](https://github.com/kubesphere/kube-design/pull/364) [`a2f9454`](https://github.com/kubesphere/kube-design/commit/a2f94547dd77bbec1140699b5d88e04aa8900f66) Thanks [@Jun1911](https://github.com/Jun1911)! - feat: Add task-setting icon
+
 ## 0.2.34
 
 ### Patch Changes
