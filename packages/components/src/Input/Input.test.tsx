@@ -1,7 +1,7 @@
 import React from 'react';
 import { itSupportsClassName, renderWithTheme } from '@kubed/tests';
-import { Input } from './Input';
 import { screen } from '@testing-library/react';
+import { Input } from './Input';
 
 describe('@kubed/components/Input', () => {
   // itSupportsClassName(Input, {});

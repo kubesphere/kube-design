@@ -175,16 +175,17 @@ export const BarChart = ({
         {showTooltip ? (
           <Tooltip
             wrapperStyle={{ outline: 'none' }}
-            content={({ active, payload, label }) =>  (
-              customTooltip && customTooltip(payload)) || (
-              <TooltipContent
-                active={active}
-                payload={payload}
-                label={label}
-                valueFormatter={valueFormatter}
-                legendFormatter={legendFormatter}
-              />
-            )}
+            content={({ active, payload, label }) =>
+              (customTooltip && customTooltip(payload)) || (
+                <TooltipContent
+                  active={active}
+                  payload={payload}
+                  label={label}
+                  valueFormatter={valueFormatter}
+                  legendFormatter={legendFormatter}
+                />
+              )
+            }
           />
         ) : null}
         {categories.map((category) => (

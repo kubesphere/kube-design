@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderWithTheme } from '@kubed/tests';
-import { Badge } from './Badge';
 import { screen } from '@testing-library/react';
+import { Badge } from './Badge';
 
 describe('@kubed/components/Badge', () => {
   it('has correct displayName', () => {

@@ -6,11 +6,11 @@ import {
   renderWithTheme,
 } from '@kubed/tests';
 import * as React from 'react';
-import { Container } from './Container';
 import { screen } from '@testing-library/react';
+import { Container, sizes } from './Container';
 import { themeUtils } from '../theme';
+
 const { getSizeValue } = themeUtils;
-import { sizes } from './Container';
 
 describe('@kubd/components/Container', () => {
   itSupportsClassName(Container, {});

@@ -2,9 +2,9 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { itSupportsClassName, itSupportsStyle, renderWithTheme } from '@kubed/tests'; // Keep renderWithTheme for now
-import { Switch } from './Switch';
 import { themeUtils } from '@kubed/components';
 import { ThemeProvider } from 'styled-components';
+import { Switch } from './Switch';
 
 const defaultProps = {
   onChange: vi.fn(),

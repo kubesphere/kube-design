@@ -6,8 +6,9 @@ import {
   itSupportsRef,
   renderWithTheme,
 } from '@kubed/tests';
-import { Divider } from './Divider';
 import { screen } from '@testing-library/react';
+import { Divider } from './Divider';
+
 describe('@kubed/components/Divider', () => {
   itSupportsClassName(Divider, {});
   itSupportsStyle(Divider, {});

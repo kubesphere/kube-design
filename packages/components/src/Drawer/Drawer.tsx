@@ -20,10 +20,10 @@ type getContainerFunc = () => HTMLElement;
 type ILevelMove = number | [number, number];
 
 const PlacementTypes = tuple('top', 'right', 'bottom', 'left');
-type placementType = typeof PlacementTypes[number];
+type placementType = (typeof PlacementTypes)[number];
 
 const SizeTypes = tuple('default', 'large');
-type sizeType = typeof SizeTypes[number];
+type sizeType = (typeof SizeTypes)[number];
 
 export interface PushState {
   distance: string | number;

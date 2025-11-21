@@ -1,10 +1,10 @@
 import React from 'react';
 import { renderWithTheme } from '@kubed/tests';
+import { screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { AutoComplete, DataSourceObject } from './AutoComplete';
 import { Input } from '../Input/Input';
 import { Select } from '../Select/Select'; // Import Select
-import { screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 
 const mockDataSource = [
   { value: 'apple', text: 'Apple' },

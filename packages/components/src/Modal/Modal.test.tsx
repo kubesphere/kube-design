@@ -1,9 +1,9 @@
 import React from 'react';
 import { renderWithTheme, checkRTLAccessibility } from '@kubed/tests';
-import { Modal } from './Modal';
 import { ThemeProvider } from 'styled-components';
 import { themeUtils } from '@kubed/components';
 import { screen } from '@testing-library/react';
+import { Modal } from './Modal';
 
 describe('@kubed/components/Modal', () => {
   let originalBodyOverflow;

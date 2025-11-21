@@ -1,8 +1,8 @@
 import React from 'react';
 import { renderWithTheme } from '@kubed/tests';
-import { Tooltip, Button } from '../index';
 import userEvent from '@testing-library/user-event';
 import { screen } from '@testing-library/react';
+import { Tooltip, Button } from '../index';
 
 describe('@kubed/components/Tooltip', () => {
   it('passes content and placement props to Tooltip component', async () => {

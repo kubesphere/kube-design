@@ -1,9 +1,9 @@
 import { renderWithTheme } from '@kubed/tests';
 import { Button } from '@kubed/components';
 import React from 'react';
-import { Popover } from './Popover';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Popover } from './Popover';
 
 describe('@kubed/components/Popover', () => {
   it('render title correctly', async () => {

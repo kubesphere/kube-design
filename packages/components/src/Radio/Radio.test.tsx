@@ -28,8 +28,8 @@ describe('@kubed/components/Radio', () => {
         label={testLabel}
         value={testValue}
         name="options"
-        disabled={true}
-        defaultChecked={true}
+        disabled
+        defaultChecked
       />
     );
 
@@ -75,9 +75,7 @@ describe('@kubed/components/Radio', () => {
 
   it('Clicking on a disabled radio or label should not change the state', async () => {
     const user = userEvent.setup();
-    renderWithTheme(
-      <Radio label="Disabled Radio" value="disabled" name="options" disabled={true} />
-    );
+    renderWithTheme(<Radio label="Disabled Radio" value="disabled" name="options" disabled />);
 
     const radioInput = screen.getByLabelText('Disabled Radio');
     const labelElement = screen.getByText('Disabled Radio');

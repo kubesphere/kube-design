@@ -7,8 +7,8 @@ import {
   itSupportsStyle,
   renderWithTheme,
 } from '@kubed/tests';
-import { Card } from './Card';
 import { screen } from '@testing-library/react';
+import { Card } from './Card';
 import 'jest-styled-components';
 
 const testId = 'test-card';

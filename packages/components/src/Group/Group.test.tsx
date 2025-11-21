@@ -10,7 +10,7 @@ describe('@kubed/components/Group', () => {
   itSupportsClassName(Group, {});
   itSupportsOthers(Group, {});
   itSupportsStyle(Group, {});
-  itRendersChildren(Group,{});
+  itRendersChildren(Group, {});
 
   it('has correct displayName', () => {
     expect(Group.displayName).toEqual('@kubed/components/Group');

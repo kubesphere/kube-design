@@ -1,8 +1,8 @@
 import React from 'react';
 import { renderWithTheme } from '@kubed/tests';
-import { DatePicker } from './DatePicker';
 import userEvent from '@testing-library/user-event';
 import { screen } from '@testing-library/react';
+import { DatePicker } from './DatePicker';
 
 describe('@kubed/components/DatePicker', () => {
   it('should support className and style', async () => {

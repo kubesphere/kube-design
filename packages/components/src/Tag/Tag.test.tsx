@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
-import { Tag } from './Tag';
 import { renderWithTheme } from '@kubed/tests';
+import { Tag } from './Tag';
 
 describe('@kubed/components/Tag', () => {
   const testContent = 'KubeSphere';

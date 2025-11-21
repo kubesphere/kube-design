@@ -1,7 +1,8 @@
 import React from 'react';
 import { multipleCheckRTLAccessibility, itSupportsRef, renderWithTheme } from '@kubed/tests';
-import { Checkbox } from './Checkbox';
 import { screen } from '@testing-library/react';
+import { Checkbox } from './Checkbox';
+
 const defaultProps = {
   checked: true,
   onChange: () => {},

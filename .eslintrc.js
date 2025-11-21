@@ -3,7 +3,8 @@ module.exports = {
   extends: ['airbnb-typescript', 'plugin:jest/recommended', 'plugin:prettier/recommended'],
   plugins: ['prettier', '@typescript-eslint', 'jest'],
   parserOptions: {
-    project: true,
+    project: ['./packages/*/tsconfig.json'],
+    tsconfigRootDir: __dirname,
   },
 
   env: {
@@ -11,6 +12,27 @@ module.exports = {
     node: true,
     'jest/globals': true,
   },
+
+  settings: {
+    jest: {
+      version: 27,
+    },
+  },
+
+  overrides: [
+    {
+      files: ['*.story.tsx', '*.story.ts'],
+      parserOptions: {
+        project: null,
+      },
+      rules: {
+        '@typescript-eslint/dot-notation': 'off',
+        '@typescript-eslint/no-implied-eval': 'off',
+        '@typescript-eslint/no-throw-literal': 'off',
+        '@typescript-eslint/return-await': 'off',
+      },
+    },
+  ],
 
   rules: {
     'max-len': [
