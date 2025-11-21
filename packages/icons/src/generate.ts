@@ -1,7 +1,7 @@
 // https://github.dev/geist-org/react-icons/blob/master/src/generate.ts
 import fs from 'fs-extra';
 import path from 'path';
-import SVGO from 'svgo';
+import { optimize } from 'svgo';
 import { transform } from '@babel/core';
 import svgoConfig from './svgo.config';
 import {
@@ -37,7 +37,6 @@ const parseSvg = (svg: string) => {
 
 export default (async () => {
   await fs.remove(outputDir);
-  const svgo = new SVGO(svgoConfig);
 
   let exports = '';
   let definition = makeBasicDefinition();
@@ -53,9 +52,9 @@ export default (async () => {
           const componentName = toComponentName(file.split('.')[0]);
           iconSet[dir].push(componentName);
           const fileName = toHumpName(file.split('.')[0]);
-          const fileContent = fs.readFileSync(`${sourceDir}/${dir}/${file}`);
-          const { data } = await svgo.optimize(fileContent);
-          const optimizedSvgString = data.replace(
+          const fileContent = fs.readFileSync(`${sourceDir}/${dir}/${file}`, 'utf-8');
+          const result = optimize(fileContent, svgoConfig);
+          const optimizedSvgString = result.data.replace(
             new RegExp(`${primaryColor}`, 'g'),
             'currentColor'
           );

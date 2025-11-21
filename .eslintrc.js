@@ -35,6 +35,11 @@ module.exports = {
   ],
 
   rules: {
+    // Disable deprecated rules
+    'react/jsx-filename-extension': 'off',
+    'import/extensions': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
+
     'max-len': [
       'error',
       100,
@@ -74,6 +79,11 @@ module.exports = {
 
     // disabled for condition && someFunc()
     'no-unused-expressions': 'off',
+
+    // Disable deprecated/removed rules in newer ESLint versions
+    'react/prop-types': 'off',
+    'react/no-unused-prop-types': 'off',
+    'react/button-has-type': 'off',
 
     // backend developers like _, no need to transform data all the time
     camelcase: 'off',
