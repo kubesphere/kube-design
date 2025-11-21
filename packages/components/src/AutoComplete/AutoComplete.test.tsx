@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderWithTheme } from '@kubed/tests';
 import { AutoComplete, DataSourceObject } from './AutoComplete';
-import { Input } from '../input/Input';
+import { Input } from '../Input/Input';
 import { Select } from '../Select/Select'; // Import Select
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';

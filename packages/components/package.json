@@ -11,7 +11,7 @@
   "sideEffects": false,
   "main": "cjs/index.js",
   "module": "esm/index.js",
-  "types": "lib/src/index.d.ts",
+  "types": "lib/index.d.ts",
   "files": [
     "cjs",
     "esm",
