@@ -2,15 +2,13 @@
   "extends": "../../tsconfig.base.json",
   "include": ["./src"],
   "compilerOptions": {
-    "rootDir": "src",
     "baseUrl": ".",
-    "outDir": "lib",
-    "esModuleInterop": true,
-    "module": "commonjs",
-    "target": "es2015",
-    "declaration": true,
-    "declarationMap": true,
-    "declarationDir": "lib",
-    "composite": true
+    "noEmit": true,
+    "paths": {
+      "@kubed/log-viewer": ["./src"],
+      "@kubed/hooks": ["../hooks/src"],
+      "@kubed/icons": ["../icons/src"],
+      "@kubed/tests": ["../tests/src"]
+    }
   }
 }

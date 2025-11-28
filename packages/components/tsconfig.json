@@ -2,14 +2,14 @@
   "extends": "../../tsconfig.base.json",
   "include": ["./src"],
   "compilerOptions": {
-    "rootDir": "src",
     "baseUrl": ".",
-    "outDir": "lib",
-    "declaration": true,
-    "declarationMap": true,
-    "declarationDir": "lib",
-    "composite": true,
-    "types": ["vitest/globals", "@testing-library/jest-dom"]
-  },
-  "references": [{ "path": "../hooks" }, { "path": "../tests" }]
+    "noEmit": true,
+    "types": ["vitest/globals", "@testing-library/jest-dom"],
+    "paths": {
+      "@kubed/components": ["./src"],
+      "@kubed/hooks": ["../hooks/src"],
+      "@kubed/icons": ["../icons/src"],
+      "@kubed/tests": ["../tests/src"]
+    }
+  }
 }
