@@ -36,11 +36,11 @@ describe('@kubed/components/Entity', () => {
     expect(asFragment()).toMatchInlineSnapshot(`
       <DocumentFragment>
         <div
-          class="sc-ggpjZQ jrEILZ"
+          class="sc-kAkpmW bZJYZr"
           data-testid="test-entity"
         >
           <div
-            class="sc-cmaqmh QwBKf entity-main"
+            class="sc-gFVvzn kTrnAZ entity-main"
           >
             <div
               class="sc-dhKdcB cyNtQj"
@@ -62,7 +62,7 @@ describe('@kubed/components/Entity', () => {
             </div>
           </div>
           <div
-            class="sc-kAkpmW kkePXk entity-footer"
+            class="sc-brPLxw eUJNrc entity-footer"
           >
             null
           </div>

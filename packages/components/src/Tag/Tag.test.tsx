@@ -50,7 +50,7 @@ describe('@kubed/components/Tag', () => {
     expect(asFragment()).toMatchInlineSnapshot(`
       <DocumentFragment>
         <div
-          class="sc-aXZVg iCWTFz"
+          class="sc-hCPjZK heIndB"
         >
           <span
             class="tag-content"

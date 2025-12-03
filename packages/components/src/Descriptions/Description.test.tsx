@@ -28,16 +28,16 @@ describe('@kubed/components/Description', () => {
     expect(asFragment()).toMatchInlineSnapshot(`
       <DocumentFragment>
         <div
-          class="sc-dSCufp jBYTda"
+          class="sc-hIUJlX ffJGsP"
           data-testid="test-id"
         >
           <div
-            class="sc-fxwrCY dqJpPm desc-label"
+            class="sc-jnOGJG isnJDC desc-label"
           >
             project
           </div>
           <div
-            class="sc-hIUJlX fKsxPo desc-content"
+            class="sc-dZoequ sAOlm desc-content"
           >
             KubeSphere
           </div>

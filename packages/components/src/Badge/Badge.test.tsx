@@ -27,7 +27,7 @@ describe('@kubed/components/Badge', () => {
     expect(asFragment()).toMatchInlineSnapshot(`
       <DocumentFragment>
         <div
-          class="sc-Nxspf jRRSF badge"
+          class="sc-gFAWRd gbxOUv badge"
           color="warning"
         >
           test
