@@ -4,22 +4,387 @@ sidebar_position: 1
 
 # Checkbox
 
-> Component documentation is being migrated. Check back soon!
+Used for multiple selections among several options.
 
-## Overview
+## When to Use
 
-Checkbox component from Kube Design library.
+- Making multiple selections in a set of options
+- Can be used individually to toggle between two states
+- For multi-select scenarios in forms
+- When complex interactions like select all or indeterminate state are needed
 
 ## Examples
 
 ### Basic Usage
 
+Basic checkbox usage, set text content using `label` prop.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  const [checked, setChecked] = React.useState(false);
+
+  const handleChange = (e) => {
+    setChecked(e.target.checked);
+  };
+
+  return (
+    <Group direction="column">
+      <Checkbox label="Option A" onChange={handleChange} />
+      <Checkbox label="Option B" defaultChecked />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        Option A status: {checked ? 'Checked' : 'Unchecked'}
+      </div>
+    </Group>
+  );
+}
+```
+
+### Controlled Component
+
+Control the checked state of the checkbox through the `checked` property.
+
+```jsx live
+function Demo() {
+  const [checked, setChecked] = React.useState(true);
+
+  const toggle = () => {
+    setChecked(!checked);
+  };
+
+  return (
+    <Center>
+      <Checkbox
+        label="Controlled Checkbox"
+        checked={checked}
+        onChange={(e) => setChecked(e.target.checked)}
+      />
+      <Button onClick={toggle}>Toggle State (Current: {checked ? 'Checked' : 'Unchecked'})</Button>
+    </Center>
+  );
+}
+```
+
+### Disabled State
+
+Disable the checkbox using the `disabled` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Checkbox label="Unchecked - Disabled" disabled />
+      <Checkbox label="Checked - Disabled" defaultChecked disabled />
+    </Group>
+  );
+}
+```
+
+### Indeterminate State
+
+Use the `indeterminate` property to represent a partially selected state, commonly used in select-all scenarios.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Checkbox label="Indeterminate State" indeterminate />
+      <Checkbox label="Checked State" defaultChecked />
+      <Checkbox label="Unchecked State" />
+    </Group>
+  );
+}
+```
+
+### Checkbox Group
+
+Use the `CheckboxGroup` component to manage a group of checkboxes.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(['kubernetes']);
+
+  const handleChange = (values) => {
+    setValue(values);
+  };
+
+  return (
+    <div>
+      <CheckboxGroup value={value} onChange={handleChange}>
+        <Checkbox label="Kubernetes" value="kubernetes" />
+        <Checkbox label="Docker" value="docker" />
+        <Checkbox label="Istio" value="istio" />
+        <Checkbox label="Helm" value="helm" />
+      </CheckboxGroup>
+      <div style={{ marginTop: '16px', color: '#79879c', fontSize: '14px' }}>
+        Selected: {value.length > 0 ? value.join(', ') : 'None'}
+      </div>
+    </div>
+  );
+}
+```
+
+### Checkbox Group - Disabled
+
+CheckboxGroup can disable all child options uniformly.
+
+```jsx live
+function Demo() {
+  return (
+    <CheckboxGroup defaultValue={['option1']} disabled>
+      <Checkbox label="Option 1" value="option1" />
+      <Checkbox label="Option 2" value="option2" />
+      <Checkbox label="Option 3" value="option3" />
+    </CheckboxGroup>
+  );
+}
+```
+
+### Vertical Layout
+
+CheckboxGroup uses the Group component for horizontal layout by default, but can be customized using `unstyled`.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(['frontend']);
+
+  return (
+    <CheckboxGroup value={value} onChange={setValue} unstyled>
+      <Group direction="column">
+        <Checkbox label="Frontend Development" value="frontend" />
+        <Checkbox label="Backend Development" value="backend" />
+        <Checkbox label="DevOps" value="devops" />
+        <Checkbox label="QA Development" value="qa" />
+      </Group>
+    </CheckboxGroup>
+  );
+}
+```
+
+### Select All Functionality
+
+Implement select all, indeterminate, and deselect all interactions.
+
+```jsx live
+function Demo() {
+  const allOptions = [
+    { label: 'Kubernetes', value: 'k8s' },
+    { label: 'Docker', value: 'docker' },
+    { label: 'Istio', value: 'istio' },
+    { label: 'Prometheus', value: 'prometheus' },
+  ];
+
+  const [checkedList, setCheckedList] = React.useState(['k8s', 'docker']);
+
+  const allValues = allOptions.map((item) => item.value);
+  const checkAll = checkedList.length === allOptions.length;
+  const indeterminate = checkedList.length > 0 && checkedList.length < allOptions.length;
+
+  const onCheckAllChange = (e) => {
+    setCheckedList(e.target.checked ? allValues : []);
+  };
+
+  return (
+    <div>
+      <Checkbox
+        label="Select All"
+        checked={checkAll}
+        indeterminate={indeterminate}
+        onChange={onCheckAllChange}
+      />
+      <Divider margins="sm" />
+      <CheckboxGroup value={checkedList} onChange={setCheckedList}>
+        {allOptions.map((option) => (
+          <Checkbox key={option.value} label={option.label} value={option.value} />
+        ))}
+      </CheckboxGroup>
+      <div style={{ marginTop: '16px', color: '#79879c', fontSize: '14px' }}>
+        {checkedList.length} items selected
+      </div>
+    </div>
+  );
+}
+```
+
+### Without Label
+
+Checkbox can be used without the `label` property, showing only the checkbox.
+
+```jsx live
+function Demo() {
+  return (
+    <Group>
+      <Checkbox />
+      <Checkbox defaultChecked />
+      <Checkbox indeterminate />
+    </Group>
+  );
+}
+```
+
+### Dynamic Options
+
+Generate checkbox list dynamically based on data.
+
+```jsx live
+function Demo() {
+  const options = [
+    { label: 'Cluster Management', value: 'cluster', disabled: false },
+    { label: 'App Deployment', value: 'app', disabled: false },
+    { label: 'Monitoring & Alerts', value: 'monitor', disabled: false },
+    { label: 'Log Analysis', value: 'log', disabled: true },
+    { label: 'Permission Management', value: 'auth', disabled: false },
+  ];
+
+  const [selectedValues, setSelectedValues] = React.useState(['cluster', 'app']);
+
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>Select Permissions:</h4>
+      <CheckboxGroup value={selectedValues} onChange={setSelectedValues} unstyled>
+        <Group direction="column">
+          {options.map((option) => (
+            <Checkbox
+              key={option.value}
+              label={option.label}
+              value={option.value}
+              disabled={option.disabled}
+            />
+          ))}
+        </Group>
+      </CheckboxGroup>
+      <div
+        style={{
+          marginTop: '16px',
+          padding: '12px',
+          background: '#f7f8fa',
+          borderRadius: '4px',
+          fontSize: '14px',
+        }}
+      >
+        <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>Selected Permissions:</div>
+        <div style={{ color: '#79879c' }}>
+          {selectedValues.length > 0
+            ? options
+                .filter((opt) => selectedValues.includes(opt.value))
+                .map((opt) => opt.label)
+                .join(', ')
+            : 'None selected'}
+        </div>
+      </div>
+    </div>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Checkbox Props
+
+| Property       | Description                                    | Type                               | Default |
+| -------------- | ---------------------------------------------- | ---------------------------------- | ------- |
+| label          | Checkbox text label                            | `ReactNode`                        | -       |
+| value          | Checkbox value (used in CheckboxGroup)         | `string`                           | -       |
+| checked        | Whether checked (controlled)                   | `boolean`                          | -       |
+| defaultChecked | Whether checked by default (uncontrolled)      | `boolean`                          | `false` |
+| indeterminate  | Indeterminate state, higher priority than checked | `boolean`                       | `false` |
+| disabled       | Whether disabled                               | `boolean`                          | `false` |
+| id             | ID of input element, used to bind label        | `string`                           | -       |
+| onChange       | Callback when value changes                    | `(e: Event) => void`               | -       |
+| others         | Native attributes                              | `HTMLAttributes<HTMLInputElement>` | -       |
+
+:::info
+
+Checkbox component inherits all native HTML input[type="checkbox"] element attributes (such as `onClick`, `onFocus`, etc.).
+
+**About indeterminate**:
+
+- The `indeterminate` state is used to represent "partially checked", typically used in select-all scenarios
+- When `indeterminate` is `true`, the checkbox displays as half-selected (horizontal line)
+- `indeterminate` has higher priority than `checked`; when set to `true`, it overrides the effect of `checked`
+
+**Using in CheckboxGroup**:
+
+- In CheckboxGroup, don't use the `checked` property; instead control via CheckboxGroup's `value`
+- Must set the `value` property to identify each option
+
+:::
+
+### CheckboxGroup Props
+
+| Property     | Description                                | Type                          | Default |
+| ------------ | ------------------------------------------ | ----------------------------- | ------- |
+| value        | Specify selected options (controlled)      | `string[]`                    | -       |
+| defaultValue | Default selected options (uncontrolled)    | `string[]`                    | `[]`    |
+| disabled     | Whether to disable all checkboxes          | `boolean`                     | `false` |
+| onChange     | Callback when value changes                | `(values: string[]) => void`  | -       |
+| unstyled     | Remove default styling (no Group wrapper)  | `boolean`                     | `false` |
+| others       | Native attributes                          | `HTMLAttributes<HTMLElement>` | -       |
+
+:::info
+
+**About Layout**:
+
+- CheckboxGroup uses the Group component for horizontal layout of child elements by default
+- Setting `unstyled={true}` removes the Group wrapper, allowing custom layout
+- For custom layouts, combine with Group component's `direction="column"` for vertical arrangement
+
+**Controlled vs Uncontrolled**:
+
+- Use `value` + `onChange` for controlled component
+- Use `defaultValue` for uncontrolled component
+- CheckboxGroup's `value` is a string array containing all selected items' `value` values
+
+:::
+
+## Usage Guidelines
+
+### Controlled vs Uncontrolled
+
+Choose the appropriate usage based on scenario:
+
+```jsx
+// Uncontrolled: suitable for simple scenarios that don't need external state control
+<Checkbox label="Agree to Terms" defaultChecked />;
+
+// Controlled: suitable for scenarios requiring external control or complex interactions
+const [checked, setChecked] = React.useState(false);
+<Checkbox label="Agree to Terms" checked={checked} onChange={(e) => setChecked(e.target.checked)} />;
+```
+
+### Implementing Select All
+
+Recommended approach for implementing select all functionality:
+
+```jsx
+const allChecked = checkedList.length === allOptions.length;
+const indeterminate = checkedList.length > 0 && checkedList.length < allOptions.length;
+
+<Checkbox
+  label="Select All"
+  checked={allChecked}
+  indeterminate={indeterminate}
+  onChange={(e) => setCheckedList(e.target.checked ? allValues : [])}
+/>;
+```
+
+### CheckboxGroup Layout
+
+Customize CheckboxGroup layout:
+
+```jsx
+// Vertical layout
+<CheckboxGroup value={value} onChange={setValue} unstyled>
+  <Group direction="column">
+    <Checkbox label="Option 1" value="1" />
+    <Checkbox label="Option 2" value="2" />
+  </Group>
+</CheckboxGroup>
+
+// Grid layout
+<CheckboxGroup value={value} onChange={setValue} unstyled>
+  <Row gutter={[12, 12]}>
+    <Col span={12}><Checkbox label="Option 1" value="1" /></Col>
+    <Col span={12}><Checkbox label="Option 2" value="2" /></Col>
+  </Row>
+</CheckboxGroup>
+```

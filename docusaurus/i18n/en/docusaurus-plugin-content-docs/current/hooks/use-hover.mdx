@@ -1,25 +1,176 @@
 ---
-sidebar_position: 1
+sidebar_position: 4
 ---
 
-# UseHover
+# useHover
 
-> Hook documentation is being migrated. Check back soon!
+A Hook for detecting element hover state, returning a ref and hover status.
 
-## Overview
+## Basic Usage
 
-`UseHover` hook from Kube Design.
+```jsx live
+function Demo() {
+  const { ref, isHovered } = useHover();
 
-## Usage
+  return (
+    <div
+      ref={ref}
+      style={{
+        padding: '40px',
+        backgroundColor: isHovered ? 'var(--ifm-color-primary)' : 'var(--ifm-color-emphasis-200)',
+        color: isHovered ? 'white' : 'var(--ifm-font-color-base)',
+        borderRadius: '8px',
+        textAlign: 'center',
+        transition: 'all 0.3s',
+        cursor: 'pointer',
+      }}
+    >
+      {isHovered ? 'Mouse hovering ✓' : 'Move mouse here'}
+    </div>
+  );
+}
+```
 
-```tsx
-import { UseHover } from '@kubed/hooks';
+## Card Hover Effect
 
-function Component() {
-  // Documentation coming soon
+```jsx live
+function Demo() {
+  const { ref, isHovered } = useHover();
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        padding: '30px',
+        backgroundColor: 'var(--ifm-background-surface-color)',
+        border: '1px solid var(--ifm-color-emphasis-300)',
+        borderRadius: '12px',
+        transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
+        boxShadow: isHovered ? '0 8px 24px rgba(0,0,0,0.12)' : '0 2px 8px rgba(0,0,0,0.04)',
+        transition: 'all 0.3s',
+        cursor: 'pointer',
+      }}
+    >
+      <h4>Interactive Card</h4>
+      <p>Hover to see the effect</p>
+      <div style={{ color: 'var(--ifm-color-primary)' }}>
+        {isHovered && '✨ Hovering'}
+      </div>
+    </div>
+  );
+}
+```
+
+## Image Preview
+
+```jsx live
+function Demo() {
+  const { ref, isHovered } = useHover();
+
+  return (
+    <div style={{ position: 'relative', display: 'inline-block' }}>
+      <div
+        ref={ref}
+        style={{
+          width: '200px',
+          height: '150px',
+          backgroundColor: 'var(--ifm-color-emphasis-200)',
+          borderRadius: '8px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          transition: 'opacity 0.3s',
+          opacity: isHovered ? 0.8 : 1,
+        }}
+      >
+        Image Area
+      </div>
+      {isHovered && (
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            pointerEvents: 'none',
+            color: 'white',
+            backgroundColor: 'rgba(0,0,0,0.7)',
+            padding: '8px 16px',
+            borderRadius: '4px',
+            fontSize: '14px',
+          }}
+        >
+          Click to view larger
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## Show More Information
+
+```jsx live
+function Demo() {
+  const { ref, isHovered } = useHover();
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        padding: '24px',
+        backgroundColor: 'var(--ifm-background-surface-color)',
+        border: '1px solid var(--ifm-color-emphasis-300)',
+        borderRadius: '8px',
+        cursor: 'pointer',
+      }}
+    >
+      <h4>Product Name</h4>
+      <p>Basic description information</p>
+      {isHovered && (
+        <div
+          style={{
+            marginTop: '16px',
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-primary-lightest)',
+            borderRadius: '4px',
+            fontSize: '14px',
+          }}
+        >
+          <strong>Detailed Information:</strong>
+          <p style={{ margin: '8px 0 0 0' }}>More detailed content shown on hover</p>
+        </div>
+      )}
+    </div>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Parameters
+
+```ts
+function useHover<T extends HTMLElement = HTMLElement>(): {
+  ref: RefObject<T>;
+  isHovered: boolean;
+}
+```
+
+No parameters.
+
+### Return Values
+
+| Property | Description | Type |
+|----------|-------------|------|
+| ref | Ref to bind to target element | `RefObject<T>` |
+| isHovered | Whether element is hovered | `boolean` |
+
+## Usage Scenarios
+
+- **Card Interactions**: Show shadow or lift effect on hover
+- **Tooltips**: Display additional information on hover
+- **Button Effects**: Change button style on hover
+- **Image Preview**: Show zoom or action buttons on hover
+- **List Items**: Highlight current item on hover

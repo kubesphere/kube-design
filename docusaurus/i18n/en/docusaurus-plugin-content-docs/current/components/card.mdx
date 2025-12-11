@@ -4,22 +4,358 @@ sidebar_position: 1
 
 # Card
 
-> Component documentation is being migrated. Check back soon!
+A general-purpose content container component for displaying information and grouping content.
 
-## Overview
+## When to Use
 
-Card component from Kube Design library.
+- Need to organize related content together for display
+- Need a container with shadow effects to highlight content
+- Display overview information, statistical data, etc.
+- As a container for list items or grid items
 
 ## Examples
 
 ### Basic Usage
 
+The simplest card usage.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card>
+        <p style={{ margin: 0 }}>
+          KubeSphere is an open-source container platform that provides full-stack IT automation operations capabilities,
+          simplifying enterprise DevOps workflows.
+        </p>
+      </Card>
+    </div>
+  );
+}
+```
+
+### With Title
+
+Add a card title through the `sectionTitle` property.
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card sectionTitle="Platform Overview">
+        <p style={{ margin: 0 }}>
+          KubeSphere is a distributed operating system for cloud-native applications built on top of Kubernetes,
+          fully open source, supporting multi-cloud and multi-cluster management, providing full-stack IT automation operations capabilities.
+        </p>
+      </Card>
+    </div>
+  );
+}
+```
+
+### Hover Effect
+
+Add shadow effect on mouse hover through the `hoverable` property.
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card sectionTitle="Interactive Card" hoverable>
+        <p style={{ margin: 0 }}>
+          A deeper shadow effect will be displayed when hovering over the card,
+          suitable for clickable or interactive card scenarios.
+        </p>
+      </Card>
+    </div>
+  );
+}
+```
+
+### Padding
+
+Control the padding of card content through the `padding` property.
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Group direction="column" spacing="lg">
+        <Card sectionTitle="Small Padding" padding="xs">
+          <p style={{ margin: 0 }}>padding: xs</p>
+        </Card>
+        <Card sectionTitle="Default Padding" padding="sm">
+          <p style={{ margin: 0 }}>padding: sm (default)</p>
+        </Card>
+        <Card sectionTitle="Medium Padding" padding="md">
+          <p style={{ margin: 0 }}>padding: md</p>
+        </Card>
+        <Card sectionTitle="Large Padding" padding="lg">
+          <p style={{ margin: 0 }}>padding: lg</p>
+        </Card>
+        <Card sectionTitle="Custom Padding" padding={32}>
+          <p style={{ margin: 0 }}>padding: 32px</p>
+        </Card>
+      </Group>
+    </div>
+  );
+}
+```
+
+### Card List
+
+Create card list layout using the Grid component.
+
+```jsx live
+function Demo() {
+  const { Kubernetes, Docker, Cluster } = KubedIcons;
+
+  const items = [
+    { icon: Kubernetes, title: 'Kubernetes', desc: 'Container orchestration platform' },
+    { icon: Docker, title: 'Docker', desc: 'Container runtime' },
+    { icon: Cluster, title: 'Cluster Management', desc: 'Multi-cluster management' },
+  ];
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Group spacing="lg">
+        {items.map((item) => (
+          <Card key={item.title} hoverable padding="md" style={{ width: 200 }}>
+            <Group direction="column" spacing="sm">
+              <item.icon size={32} />
+              <div>
+                <div style={{ fontWeight: 600, marginBottom: 4 }}>{item.title}</div>
+                <div style={{ fontSize: 12, color: '#79879c' }}>{item.desc}</div>
+              </div>
+            </Group>
+          </Card>
+        ))}
+      </Group>
+    </div>
+  );
+}
+```
+
+### Statistics Card
+
+Card example for displaying statistical data.
+
+```jsx live
+function Demo() {
+  const stats = [
+    { label: 'Running', value: 128, color: '#55bc8a' },
+    { label: 'Stopped', value: 23, color: '#ca2621' },
+    { label: 'Pending', value: 45, color: '#f5a623' },
+  ];
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Group spacing="lg">
+        {stats.map((stat) => (
+          <Card key={stat.label} padding="md" style={{ width: 150, textAlign: 'center' }}>
+            <div style={{ fontSize: 32, fontWeight: 600, color: stat.color }}>
+              {stat.value}
+            </div>
+            <div style={{ fontSize: 14, color: '#79879c', marginTop: 8 }}>
+              {stat.label}
+            </div>
+          </Card>
+        ))}
+      </Group>
+    </div>
+  );
+}
+```
+
+### Card with Actions
+
+Card containing action buttons.
+
+```jsx live
+function Demo() {
+  const { Pen, Trash } = KubedIcons;
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card sectionTitle="Project Configuration" padding="md" style={{ width: 350 }}>
+        <Group direction="column" spacing="md">
+          <p style={{ margin: 0 }}>
+            This is a card example with action buttons, you can add operations like edit and delete at the bottom of the card.
+          </p>
+          <Divider />
+          <Group spacing="sm">
+            <Button variant="text" size="sm" leftIcon={<Pen />}>
+              Edit
+            </Button>
+            <Button variant="text" size="sm" color="error" leftIcon={<Trash />}>
+              Delete
+            </Button>
+          </Group>
+        </Group>
+      </Card>
+    </div>
+  );
+}
+```
+
+### Custom Styles
+
+Customize card content styles through `contentStyle` and `contentClassName`.
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Group spacing="lg">
+        <Card
+          sectionTitle="Custom Background"
+          contentStyle={{ backgroundColor: '#f0f7ff' }}
+          padding="md"
+          style={{ width: 200 }}
+        >
+          <p style={{ margin: 0 }}>Light blue background</p>
+        </Card>
+        <Card
+          sectionTitle="Custom Border"
+          contentStyle={{ border: '2px solid #329dce' }}
+          padding="md"
+          style={{ width: 200 }}
+        >
+          <p style={{ margin: 0 }}>Card with border</p>
+        </Card>
+      </Group>
+    </div>
+  );
+}
+```
+
+### Nested Cards
+
+Cards can be nested.
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card sectionTitle="Outer Card" padding="md">
+        <Group direction="column" spacing="md">
+          <p style={{ margin: 0 }}>Outer card content</p>
+          <Card contentStyle={{ backgroundColor: '#f9fbfd' }} padding="sm">
+            <p style={{ margin: 0, fontSize: 14 }}>Nested inner card</p>
+          </Card>
+        </Group>
+      </Card>
+    </div>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Card
+
+| Property         | Description                  | Type                                             | Default |
+| ---------------- | ---------------------------- | ------------------------------------------------ | ------- |
+| sectionTitle     | Card title                   | `ReactNode`                                      | -       |
+| padding          | Content padding              | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number` | `'sm'`  |
+| hoverable        | Whether to show hover effect | `boolean`                                        | `false` |
+| contentStyle     | Content area styles          | `CSSProperties`                                  | -       |
+| contentClassName | Content area class name      | `string`                                         | -       |
+| children         | Card content                 | `ReactNode`                                      | -       |
+
+:::info
+
+**About Padding**:
+- Supports preset sizes: `xs`, `sm`, `md`, `lg`, `xl`
+- Also supports passing numeric values (unit is px)
+- Default value is `sm`
+
+**About Title**:
+- `sectionTitle` will be displayed above the card content
+- Title uses darker color and bold font
+- Suitable for categorizing or naming card content
+
+**About Hover Effect**:
+- After setting `hoverable`, the card shadow will deepen on mouse hover
+- Suitable for clickable, selectable card scenarios
+- Can be combined with `onClick` event to make the card interactive
+
+:::
+
+## Usage Recommendations
+
+### Card Layout
+
+Use Grid or Group components to create card grid layouts:
+
+```jsx
+// Use Group for horizontal arrangement
+<Group spacing="lg">
+  <Card>Card 1</Card>
+  <Card>Card 2</Card>
+  <Card>Card 3</Card>
+</Group>
+
+// Use Grid to create responsive grid
+<Grid columns={3} gutter="lg">
+  <Card>Card 1</Card>
+  <Card>Card 2</Card>
+  <Card>Card 3</Card>
+</Grid>
+```
+
+### Clickable Card
+
+Create clickable cards:
+
+```jsx
+<Card
+  hoverable
+  onClick={() => handleClick()}
+  style={{ cursor: 'pointer' }}
+>
+  Click this card
+</Card>
+```
+
+### Card Background
+
+Card component has white background and shadow by default, suitable for placing in gray or other colored containers:
+
+```jsx
+// Recommended: Use in gray background
+<div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+  <Card>Content</Card>
+</div>
+
+// Not recommended: Use directly in white background (shadow effect is not obvious)
+<div style={{ backgroundColor: '#fff' }}>
+  <Card>Content</Card>
+</div>
+```
+
+### Content Organization
+
+Organize card content properly:
+
+```jsx
+<Card sectionTitle="User Information" padding="md">
+  <Group direction="column" spacing="sm">
+    <div>Name: John Doe</div>
+    <div>Email: john@example.com</div>
+    <Divider />
+    <Button size="sm">Edit Information</Button>
+  </Group>
+</Card>
+```
+
+### Statistics Display
+
+Use for displaying statistical data:
+
+```jsx
+<Card padding="md" style={{ textAlign: 'center' }}>
+  <div style={{ fontSize: 36, fontWeight: 600 }}>1,234</div>
+  <div style={{ color: '#79879c' }}>Total Users</div>
+</Card>
+```

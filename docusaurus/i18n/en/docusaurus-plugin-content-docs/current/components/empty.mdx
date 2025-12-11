@@ -4,22 +4,346 @@ sidebar_position: 1
 
 # Empty
 
-> Component documentation is being migrated. Check back soon!
+A placeholder component for displaying empty states.
 
-## Overview
+## When to Use
 
-Empty component from Kube Design library.
+- When there is no data to display
+- When data is empty or search results are empty
+- For initialization scenarios that require user guidance
+- For empty state prompts in lists, tables, cards, and other containers
 
 ## Examples
 
 ### Basic Usage
 
+The simplest empty state usage, displaying an icon and title by default.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  return <Empty />;
+}
+```
+
+### Custom Title
+
+Set the title text through the `title` property.
+
+```jsx live
+function Demo() {
+  return <Empty title="No Data" />;
+}
+```
+
+### Adding Description
+
+Add detailed description information through the `description` property.
+
+```jsx live
+function Demo() {
+  return <Empty title="No Matching Results Found" description="You can try refreshing the data or clearing the search criteria" />;
+}
+```
+
+### Custom Icon
+
+Customize the displayed icon through the `image` property.
+
+```jsx live
+function Demo() {
+  const { Cluster, Pod, Storage, Appcenter } = KubedIcons;
+
+  return (
+    <Group spacing={60}>
+      <Empty title="No Clusters" image={<Cluster size={48} />} />
+      <Empty title="No Pods" image={<Pod size={48} />} />
+      <Empty title="No Storage" image={<Storage size={48} />} />
+    </Group>
+  );
+}
+```
+
+### Hide Title
+
+Setting `title` to `null` hides the title.
+
+```jsx live
+function Demo() {
+  return <Empty title={null} description="No relevant data" />;
+}
+```
+
+### Adding Action Buttons
+
+Add action buttons through `children` to guide users to the next step.
+
+```jsx live
+function Demo() {
+  const { Add } = KubedIcons;
+
+  return (
+    <Empty title="No Workloads" description="You can create a new workload to get started">
+      <Button style={{ marginTop: '20px' }} leftIcon={<Add />}>
+        Create Workload
+      </Button>
+    </Empty>
+  );
+}
+```
+
+### Multiple Action Buttons
+
+Multiple action buttons can be added for users to choose from.
+
+```jsx live
+function Demo() {
+  const { Add, Upload2Duotone } = KubedIcons;
+
+  return (
+    <Empty title="No Applications" description="You can create a new application or import from template">
+      <Group style={{ marginTop: '20px' }}>
+        <Button leftIcon={<Add />}>Create Application</Button>
+        <Button variant="outline" leftIcon={<Upload2Duotone />}>
+          Import from Template
+        </Button>
+      </Group>
+    </Empty>
+  );
+}
+```
+
+### Custom Icon Styles
+
+Customize icon container styles through `imageStyle` and `imageClassName`.
+
+```jsx live
+function Demo() {
+  const { Kubernetes } = KubedIcons;
+
+  return (
+    <Empty
+      title="No Clusters"
+      description="Please add a Kubernetes cluster first"
+      image={<Kubernetes size={48} />}
+      imageStyle={{ backgroundColor: '#e8f4ff', width: '80px', height: '80px' }}
+    />
+  );
+}
+```
+
+### Using in Cards
+
+The Empty component is commonly used in containers like cards.
+
+```jsx live
+function Demo() {
+  const { Add } = KubedIcons;
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ padding: '40px 20px' }}>
+        <Empty title="No Data" description="The current list is empty">
+          <Button style={{ marginTop: '20px' }} leftIcon={<Add />}>
+            Add Data
+          </Button>
+        </Empty>
+      </Card>
+    </div>
+  );
+}
+```
+
+### Empty Search Results
+
+Prompt scenario when search yields no results.
+
+```jsx live
+function Demo() {
+  const { Magnifier } = KubedIcons;
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ padding: '40px 20px' }}>
+        <Empty
+          title="No Matching Results"
+          description="Please try other search keywords or clear the search criteria"
+          image={<Magnifier size={48} />}
+        >
+          <Button variant="outline" style={{ marginTop: '20px' }}>
+            Clear Search
+          </Button>
+        </Empty>
+      </Card>
+    </div>
+  );
+}
+```
+
+### Error State
+
+Used to display error or exception states.
+
+```jsx live
+function Demo() {
+  const { Warning } = KubedIcons;
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ padding: '40px 20px' }}>
+        <Empty
+          title="Loading Failed"
+          description="There was a problem loading the data, please try again later"
+          image={<Warning size={48} />}
+        >
+          <Button style={{ marginTop: '20px' }}>Reload</Button>
+        </Empty>
+      </Card>
+    </div>
+  );
+}
+```
+
+### Custom Description Content
+
+Description supports any ReactNode, can include links and other complex content.
+
+```jsx live
+function Demo() {
+  return (
+    <Empty
+      title="No Permission"
+      description={
+        <span>
+          You don't have permission to access this resource, please
+          <a href="#" style={{ color: '#329dce' }}>
+            contact the administrator
+          </a>
+          to request permission
+        </span>
+      }
+    />
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Empty
+
+| Property | Description | Type | Default |
+| --- | --- | --- | --- |
+| title | Title | `ReactNode` | `'No Data'` (i18n text) |
+| description | Description information | `ReactNode` | - |
+| image | Custom icon | `ReactNode` | `<Exclamation size={48} />` |
+| imageClassName | Icon container class name | `string` | - |
+| imageStyle | Icon container styles | `CSSProperties` | - |
+| children | Bottom content (such as buttons) | `ReactNode` | - |
+
+:::info
+
+**About title**:
+
+- Default title uses internationalized text `locales.Empty.noData`
+- You can customize the title through the `title` property
+- Set `title={null}` to hide the title
+
+**About icon**:
+
+- Uses `Exclamation` icon by default
+- Icon container is a 60x60 rounded container
+- Container size and background color can be adjusted through `imageStyle`
+
+**About description**:
+
+- `description` supports strings or ReactNode
+- Can include links, icons, and other complex content
+
+**About bottom content**:
+
+- `children` is used to place content like action buttons
+- It's recommended to add `marginTop` to maintain spacing from content above
+
+:::
+
+## Usage Recommendations
+
+### Provide Clear Prompts
+
+Tell users why it's empty and what they can do:
+
+```jsx
+// Recommended: Provide clear description and actions
+<Empty
+  title="No Workloads"
+  description="Create your first workload to start deploying applications"
+>
+  <Button>Create Workload</Button>
+</Empty>
+
+// Not recommended: Only show empty state without guidance
+<Empty title="No Data" />
+```
+
+### Use Appropriate Icons
+
+Choose appropriate icons based on the scenario:
+
+```jsx
+// Empty list
+<Empty title="No Pods" image={<Pod size={48} />} />
+
+// No search results
+<Empty title="No Results Found" image={<Magnifier size={48} />} />
+
+// Loading error
+<Empty title="Loading Failed" image={<Warning size={48} />} />
+
+// No permission
+<Empty title="No Permission" image={<SafeNotice size={48} />} />
+```
+
+### Center Display in Containers
+
+Empty component uses flex layout for centering, be sure to set container height when using:
+
+```jsx
+// In fixed height container
+<Card style={{ height: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+  <Empty title="No Data" />
+</Card>
+
+// In components like tables
+<Table
+  dataSource={[]}
+  emptyContent={<Empty title="No Data" />}
+/>
+```
+
+### Provide Action Buttons
+
+Providing action buttons during empty states can guide users:
+
+```jsx
+<Empty title="No Data" description="Click the button below to add your first entry">
+  <Group style={{ marginTop: '20px' }}>
+    <Button leftIcon={<Add />}>Add</Button>
+    <Button variant="outline" leftIcon={<Import />}>
+      Import
+    </Button>
+  </Group>
+</Empty>
+```
+
+### Responsive Design
+
+Styles may need adjustment on mobile devices:
+
+```jsx
+<Empty
+  title="No Data"
+  imageStyle={{
+    width: window.innerWidth < 768 ? '48px' : '60px',
+    height: window.innerWidth < 768 ? '48px' : '60px',
+  }}
+/>
+```

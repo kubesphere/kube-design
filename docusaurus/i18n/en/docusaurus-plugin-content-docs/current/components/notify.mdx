@@ -4,22 +4,533 @@ sidebar_position: 1
 
 # Notify
 
-> Component documentation is being migrated. Check back soon!
+Display global notification messages at the top-right corner of the page.
 
-## Overview
+## When to Use
 
-Notify component from Kube Design library.
+- When you need to display global notification information to users
+- Feedback for asynchronous operation results
+- System proactively pushes messages to users
+- Need a lightweight prompt that doesn't interrupt user operations
+
+In Kube Design, the Notify component is built on react-hot-toast and provides flexible notification functionality:
+
+- **Multiple Types**: Supports blank, success, error, and loading notification types
+- **Function-based Calling**: No need to manually manage state, just call functions directly
+- **Updatable**: Supports updating already displayed notifications
+- **Auto Dismiss**: Configurable automatic close time
 
 ## Examples
 
 ### Basic Usage
 
+The most basic notification usage, including four types.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  const showInfo = () => notify('This is a regular notification');
+  const showSuccess = () => notify.success('Operation successful!');
+  const showError = () => notify.error('Operation failed, please try again');
+  const showLoading = () => notify.loading('Processing...');
+
+  return (
+    <>
+      <Group spacing="xs">
+        <Button onClick={showInfo}>Regular Notify</Button>
+        <Button onClick={showSuccess}>Success Notify</Button>
+        <Button onClick={showError}>Error Notify</Button>
+        <Button onClick={showLoading}>Loading Notify</Button>
+      </Group>
+      <Notify />
+    </>
+  );
+}
+```
+
+### Notification with Title
+
+Use the `Notify.WithTitle` component to add title and content.
+
+```jsx live
+function Demo() {
+  const { WithTitle } = Notify;
+
+  const showNotify = () => {
+    notify.success(<WithTitle title="Operation Successful" message="Your data has been successfully saved to the system" />);
+  };
+
+  const showError = () => {
+    notify.error(<WithTitle title="Operation Failed" message="Network connection error, please check your network and try again" />);
+  };
+
+  return (
+    <>
+      <Group spacing="xs">
+        <Button onClick={showNotify}>Success Notify (with title)</Button>
+        <Button onClick={showError}>Error Notify (with title)</Button>
+      </Group>
+      <Notify />
+    </>
+  );
+}
+```
+
+### Custom Duration
+
+Set the notification display duration (milliseconds) through the `duration` property.
+
+```jsx live
+function Demo() {
+  const show1s = () => notify.success('Auto close after 1 second', { duration: 1000 });
+  const show3s = () => notify.success('Auto close after 3 seconds', { duration: 3000 });
+  const show10s = () => notify.success('Auto close after 10 seconds', { duration: 10000 });
+  const showForever = () => notify('Will not auto close', { duration: Infinity });
+
+  return (
+    <>
+      <Group spacing="xs">
+        <Button onClick={show1s}>1 second</Button>
+        <Button onClick={show3s}>3 seconds</Button>
+        <Button onClick={show10s}>10 seconds</Button>
+        <Button onClick={showForever}>No auto close</Button>
+      </Group>
+      <Notify />
+    </>
+  );
+}
+```
+
+### Long Text Content
+
+Notifications support displaying longer text content with automatic line wrapping.
+
+```jsx live
+function Demo() {
+  const showLongContent = () => {
+    notify.success(
+      'This is a very long notification message. When notification content is long, it will automatically wrap to ensure all content is visible to users. It is recommended to keep notification content concise to avoid overly long text affecting user experience.'
+    );
+  };
+
+  return (
+    <>
+      <Button onClick={showLongContent}>Show Long Text Notify</Button>
+      <Notify />
+    </>
+  );
+}
+```
+
+### Update Notification
+
+You can dynamically update already displayed notification content, commonly used for status updates of asynchronous operations.
+
+```jsx live
+function Demo() {
+  let notifyId;
+
+  const startUpload = () => {
+    notifyId = notify.loading('Uploading file...');
+  };
+
+  const uploadSuccess = () => {
+    notify.success('File uploaded successfully!', { id: notifyId });
+  };
+
+  const uploadError = () => {
+    notify.error('File upload failed, please try again', { id: notifyId });
+  };
+
+  return (
+    <>
+      <Group spacing="xs">
+        <Button onClick={startUpload}>Start Upload</Button>
+        <Button onClick={uploadSuccess}>Upload Success</Button>
+        <Button onClick={uploadError}>Upload Failed</Button>
+      </Group>
+      <Notify />
+    </>
+  );
+}
+```
+
+### Manually Close Notification
+
+Use `notify.dismiss()` to manually close specific notifications.
+
+```jsx live
+function Demo() {
+  let notifyId;
+
+  const showNotify = () => {
+    notifyId = notify('This notification will not auto close', { duration: Infinity });
+  };
+
+  const closeNotify = () => {
+    notify.dismiss(notifyId);
+  };
+
+  const closeAll = () => {
+    notify.dismiss();
+  };
+
+  return (
+    <>
+      <Group spacing="xs">
+        <Button onClick={showNotify}>Show Notify</Button>
+        <Button onClick={closeNotify}>Close Notify</Button>
+        <Button onClick={closeAll}>Close All</Button>
+      </Group>
+      <Notify />
+    </>
+  );
+}
+```
+
+### Async Operation Feedback
+
+Use notifications to indicate operation results in asynchronous operations.
+
+```jsx live
+function Demo() {
+  const handleSave = async () => {
+    const toastId = notify.loading('Saving data...');
+
+    try {
+      // Simulate async operation
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      notify.success('Data saved successfully!', { id: toastId });
+    } catch (error) {
+      notify.error('Save failed, please try again', { id: toastId });
+    }
+  };
+
+  return (
+    <>
+      <Button onClick={handleSave}>Save Data</Button>
+      <Notify />
+    </>
+  );
+}
+```
+
+### Promise Notification
+
+Automatically update notification status based on Promise.
+
+```jsx live
+function Demo() {
+  const handleSubmit = () => {
+    const myPromise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        Math.random() > 0.5 ? resolve('Success') : reject('Failed');
+      }, 2000);
+    });
+
+    notify.promise(myPromise, {
+      loading: 'Submitting...',
+      success: 'Submitted successfully!',
+      error: 'Submission failed, please try again',
+    });
+  };
+
+  return (
+    <>
+      <Button onClick={handleSubmit}>Submit Form (Random success/failure)</Button>
+      <Notify />
+    </>
+  );
+}
+```
+
+### Notifications in Different Scenarios
+
+Display notification prompts for different business scenarios.
+
+```jsx live
+function Demo() {
+  const { WithTitle } = Notify;
+
+  const showCreateSuccess = () => {
+    notify.success(<WithTitle title="Created Successfully" message="Workload nginx-deployment has been created" />);
+  };
+
+  const showDeleteConfirm = () => {
+    notify.error(<WithTitle title="Deletion Failed" message="Cannot delete running Pod" />);
+  };
+
+  const showUpdateInfo = () => {
+    notify(<WithTitle title="Configuration Update" message="Cluster configuration will take effect in 5 minutes" />);
+  };
+
+  return (
+    <>
+      <Group spacing="xs">
+        <Button onClick={showCreateSuccess}>Create Success</Button>
+        <Button onClick={showDeleteConfirm}>Delete Failed</Button>
+        <Button onClick={showUpdateInfo}>Update Prompt</Button>
+      </Group>
+      <Notify />
+    </>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Notify Component
+
+The Notify component needs to be placed at the top level of the application to display notifications.
+
+| Property | Description              | Type                                                                         | Default      |
+| -------- | ------------------------ | ---------------------------------------------------------------------------- | ------------ |
+| position | Notification position    | `'top-left' \| 'top-center' \| 'top-right' \| 'bottom-left' \| 'bottom-center' \| 'bottom-right'` | `'top-right'` |
+| duration | Default duration (ms)    | `number`                                                                     | -            |
+| gutter   | Spacing between notifications (px) | `number`                                                      | `20`         |
+
+### notify Function
+
+Call notifications through the `notify()` function.
+
+```typescript
+// Basic call
+notify(message: string | ReactNode, options?: NotifyOptions): string
+
+// Typed calls
+notify.success(message: string | ReactNode, options?: NotifyOptions): string
+notify.error(message: string | ReactNode, options?: NotifyOptions): string
+notify.loading(message: string | ReactNode, options?: NotifyOptions): string
+
+// Promise call
+notify.promise(
+  promise: Promise,
+  messages: {
+    loading: string,
+    success: string,
+    error: string
+  },
+  options?: NotifyOptions
+): string
+
+// Close notification
+notify.dismiss(id?: string): void
+```
+
+### NotifyOptions
+
+Option configuration for notify function, these options are passed to each individual notification.
+
+| Property | Description                | Type     | Default |
+| -------- | -------------------------- | -------- | ------- |
+| id       | Unique identifier for notification, used to update or close specific notification | `string` | Auto-generated |
+| duration | Display duration for this notification (ms) | `number` | Inherits global setting or 4000 |
+| icon     | Custom icon                | `ReactNode` | -   |
+
+### Notify.WithTitle
+
+Used to create notification content with title.
+
+| Property | Description         | Type        | Default |
+| -------- | ------------------- | ----------- | ------- |
+| title    | Notification title  | `ReactNode` | -       |
+| message  | Notification content| `ReactNode` | -       |
+
+:::info
+
+**About position**:
+
+- Default position is top-right (`top-right`)
+- Notifications slide in from the specified position
+- Multiple notifications stack in chronological order
+
+**About duration**:
+
+- Uses react-hot-toast's default duration (4 seconds) by default
+- Can set global default through Notify component's duration property
+- Setting `duration: Infinity` prevents automatic closing
+- Loading type notifications do not auto close by default
+
+**About updating notifications**:
+
+- `notify()` function returns the notification ID
+- Using the same ID updates already displayed notifications
+- Suitable for status updates in asynchronous operations
+
+**About types**:
+
+- `notify()`: Regular info notification (blue)
+- `notify.success()`: Success notification (green)
+- `notify.error()`: Error notification (red)
+- `notify.loading()`: Loading notification (blue with loading animation)
+
+**About closing**:
+
+- Users can manually close by clicking the close button
+- Loading type notifications have no close button
+- Use `notify.dismiss()` to close all notifications
+- Use `notify.dismiss(id)` to close specific notification
+
+:::
+
+## Usage Recommendations
+
+### Place Notify Component
+
+Place Notify in the application root component:
+
+```jsx
+function App() {
+  return (
+    <div>
+      {/* Application content */}
+      <Notify position="top-right" />
+    </div>
+  );
+}
+```
+
+### Async Operation Feedback
+
+Use notifications to indicate asynchronous operation results:
+
+```jsx
+const handleDelete = async () => {
+  const toastId = notify.loading('Deleting...');
+
+  try {
+    await deleteResource(id);
+    notify.success('Deleted successfully', { id: toastId });
+  } catch (error) {
+    notify.error('Deletion failed: ' + error.message, { id: toastId });
+  }
+};
+```
+
+### Using Promise Method
+
+For Promise operations, using `notify.promise()` is more concise:
+
+```jsx
+const handleSubmit = () => {
+  notify.promise(
+    submitData(),
+    {
+      loading: 'Submitting...',
+      success: 'Submitted successfully!',
+      error: (err) => `Submission failed: ${err.message}`,
+    }
+  );
+};
+```
+
+### Notification with Title
+
+Use notifications with titles for important information:
+
+```jsx
+const { WithTitle } = Notify;
+
+notify.success(
+  <WithTitle
+    title="Deployment Successful"
+    message="Application my-app has been successfully deployed to production"
+  />
+);
+```
+
+### Duration Settings
+
+Set duration based on importance level:
+
+```jsx
+// General notification: 3 seconds
+notify('Operation completed', { duration: 3000 });
+
+// Important information: 6 seconds
+notify.success('Deployment successful', { duration: 6000 });
+
+// Error information: No auto close
+notify.error('Operation failed', { duration: Infinity });
+```
+
+### Don't Overuse
+
+Avoid displaying notifications too frequently:
+
+```jsx
+// Not recommended: Display notification for every operation
+onChange={() => {
+  notify('Value changed');
+}}
+
+// Recommended: Only display for important operations
+onSubmit={() => {
+  notify.success('Saved successfully');
+}}
+```
+
+### Keep Messages Concise
+
+Notification content should be concise:
+
+```jsx
+// Recommended: Concise and clear
+notify.success('File uploaded successfully');
+
+// Not recommended: Too verbose
+notify.success(
+  'The file you selected has been successfully uploaded to the server. The system is processing it and will automatically refresh the page to display the latest content when complete'
+);
+```
+
+### Error Handling
+
+Error notifications should provide useful information:
+
+```jsx
+try {
+  await saveData();
+  notify.success('Saved successfully');
+} catch (error) {
+  // Recommended: Provide specific error information
+  notify.error(`Save failed: ${error.message}`);
+
+  // Not recommended: Vague error message
+  notify.error('Operation failed');
+}
+```
+
+### Multi-step Operations
+
+For multi-step operations, update the same notification:
+
+```jsx
+const deployApp = async () => {
+  const toastId = notify.loading('Building image...');
+
+  await buildImage();
+  notify.loading('Pushing image...', { id: toastId });
+
+  await pushImage();
+  notify.loading('Deploying application...', { id: toastId });
+
+  await deploy();
+  notify.success('Deployment complete!', { id: toastId });
+};
+```
+
+### Choosing Between Notify and Modal
+
+Choose appropriate feedback method:
+
+```jsx
+// Use notification: Information that doesn't require user confirmation
+notify.success('Saved successfully');
+
+// Use Modal: Operations requiring user confirmation
+modal.confirm({
+  title: 'Confirm Deletion',
+  content: 'This operation cannot be undone',
+  onOk: handleDelete,
+});
+```

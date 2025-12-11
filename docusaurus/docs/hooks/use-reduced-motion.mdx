@@ -1,25 +1,280 @@
 ---
-sidebar_position: 1
+sidebar_position: 17
 ---
 
-# UseReducedMotion
+# useReducedMotion
 
-> Hook 文档正在迁移中，敬请期待！
+检测用户是否启用了"减少动画"偏好设置的 Hook。
 
-## 概述
+## 基本用法
 
-来自 Kube Design 的 `UseReducedMotion` hook。
+```jsx live
+function Demo() {
+  const reducedMotion = useReducedMotion();
 
-## 使用方法
+  return (
+    <div
+      style={{
+        padding: '24px',
+        backgroundColor: reducedMotion ? 'var(--ifm-color-warning-lightest)' : 'var(--ifm-color-success-lightest)',
+        borderRadius: '8px',
+        textAlign: 'center',
+      }}
+    >
+      <div style={{ fontSize: '48px', marginBottom: '12px' }}>
+        {reducedMotion ? '🐢' : '⚡'}
+      </div>
+      <div style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '8px' }}>
+        {reducedMotion ? '减少动画模式' : '正常动画模式'}
+      </div>
+      <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+        当前用户偏好: {reducedMotion ? '减少动画' : '允许动画'}
+      </div>
+    </div>
+  );
+}
+```
 
-```tsx
-import { UseReducedMotion } from '@kubed/hooks';
+## 条件动画
 
-function Component() {
-  // Documentation coming soon
+根据用户偏好启用或禁用动画：
+
+```jsx live
+function Demo() {
+  const reducedMotion = useReducedMotion();
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <Button onClick={() => setCount(count + 1)} style={{ marginBottom: '16px' }}>
+        点击增加 ({count})
+      </Button>
+      <div
+        style={{
+          padding: '40px',
+          backgroundColor: 'var(--ifm-color-primary-lightest)',
+          borderRadius: '8px',
+          textAlign: 'center',
+          transition: reducedMotion ? 'none' : 'all 0.5s ease',
+          transform: `scale(${1 + count * 0.05})`,
+        }}
+      >
+        <div style={{ fontSize: '48px' }}>🎯</div>
+        <div style={{ marginTop: '12px', fontSize: '14px' }}>
+          {reducedMotion ? '无动画缩放' : '平滑缩放动画'}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## 自适应过渡效果
+
+动态调整过渡时间：
+
+```jsx live
+function Demo() {
+  const reducedMotion = useReducedMotion();
+  const [visible, setVisible] = useState(true);
+
+  const transitionDuration = reducedMotion ? '0s' : '0.3s';
+
+  return (
+    <div>
+      <Button onClick={() => setVisible(!visible)} style={{ marginBottom: '12px' }}>
+        {visible ? '隐藏' : '显示'}
+      </Button>
+      <div
+        style={{
+          height: visible ? '200px' : '0',
+          opacity: visible ? 1 : 0,
+          overflow: 'hidden',
+          transition: `all ${transitionDuration}`,
+          backgroundColor: 'var(--ifm-background-surface-color)',
+          border: '1px solid var(--ifm-color-emphasis-300)',
+          borderRadius: '8px',
+        }}
+      >
+        <div style={{ padding: '20px' }}>
+          <h4>内容区域</h4>
+          <p style={{ marginBottom: 0 }}>
+            这个区域会根据用户的动画偏好设置显示或隐藏。
+            {reducedMotion ? '当前无过渡动画。' : '当前有平滑过渡动画。'}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## 加载动画适配
+
+为加载状态提供适配的动画效果：
+
+```jsx live
+function Demo() {
+  const reducedMotion = useReducedMotion();
+  const [loading, setLoading] = useState(false);
+
+  const handleLoad = () => {
+    setLoading(true);
+    setTimeout(() => setLoading(false), 2000);
+  };
+
+  return (
+    <div>
+      <Button onClick={handleLoad} disabled={loading} style={{ marginBottom: '16px' }}>
+        {loading ? '加载中...' : '开始加载'}
+      </Button>
+      {loading && (
+        <div
+          style={{
+            padding: '32px',
+            backgroundColor: 'var(--ifm-color-emphasis-100)',
+            borderRadius: '8px',
+            textAlign: 'center',
+          }}
+        >
+          <div
+            style={{
+              display: 'inline-block',
+              width: '40px',
+              height: '40px',
+              border: '4px solid var(--ifm-color-primary-lightest)',
+              borderTopColor: 'var(--ifm-color-primary)',
+              borderRadius: '50%',
+              animation: reducedMotion ? 'none' : 'spin 1s linear infinite',
+            }}
+          />
+          <div style={{ marginTop: '12px', fontSize: '14px' }}>
+            {reducedMotion ? '加载中（静态）' : '加载中（旋转动画）'}
+          </div>
+        </div>
+      )}
+      <style>{`
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
+    </div>
+  );
 }
 ```
 
 ## API
 
-文档编写中。
+### 参数
+
+```ts
+function useReducedMotion(): boolean
+```
+
+无参数。
+
+### 返回值
+
+返回一个布尔值，表示用户是否启用了"减少动画"偏好。
+
+```ts
+boolean
+```
+
+- `true`: 用户启用了减少动画
+- `false`: 用户允许正常动画
+
+## 工作原理
+
+通过媒体查询 `prefers-reduced-motion` 检测用户系统偏好设置：
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* 用户启用了减少动画 */
+}
+```
+
+## 特性
+
+- **可访问性**: 尊重用户的无障碍偏好
+- **自动响应**: 用户更改设置时自动更新
+- **零配置**: 无需额外配置即可使用
+- **性能友好**: 对于启用减少动画的用户，可以提升性能
+
+## 设置方法
+
+### macOS
+系统偏好设置 → 辅助功能 → 显示 → 减少动态效果
+
+### Windows
+设置 → 轻松使用 → 显示 → 在 Windows 中显示动画
+
+### iOS
+设置 → 辅助功能 → 动态效果 → 减少动态效果
+
+### Android
+设置 → 辅助功能 → 移除动画
+
+## 使用场景
+
+- **过渡动画**: 根据偏好禁用或减少过渡效果
+- **加载动画**: 提供静态替代方案
+- **视差效果**: 禁用可能引起不适的滚动效果
+- **自动播放**: 停止自动轮播和视频播放
+- **悬停效果**: 简化或移除复杂的悬停动画
+- **页面切换**: 使用即时切换替代淡入淡出
+
+## 最佳实践
+
+### 渐进增强
+
+```jsx
+const reducedMotion = useReducedMotion();
+
+const animationProps = reducedMotion
+  ? {}
+  : {
+      initial: { opacity: 0, y: 20 },
+      animate: { opacity: 1, y: 0 },
+      transition: { duration: 0.3 },
+    };
+
+return <motion.div {...animationProps}>内容</motion.div>;
+```
+
+### CSS-in-JS 集成
+
+```jsx
+const reducedMotion = useReducedMotion();
+
+const styles = {
+  transition: reducedMotion ? 'none' : 'all 0.3s ease',
+  animation: reducedMotion ? 'none' : 'fadeIn 0.5s',
+};
+```
+
+### 动画库配置
+
+```jsx
+// Framer Motion
+const reducedMotion = useReducedMotion();
+
+<MotionConfig reducedMotion={reducedMotion ? 'always' : 'never'}>
+  {/* 组件树 */}
+</MotionConfig>
+```
+
+## 注意事项
+
+- 不是所有动画都要禁用，只禁用可能引起不适的动画
+- 保留必要的状态反馈动画
+- 考虑提供静态替代方案
+- 测试在启用减少动画时的用户体验
+- 某些功能性动画（如进度条）可以保留
+
+## 可访问性
+
+遵循 WCAG 2.1 准则：
+- **Success Criterion 2.3.3**: 动画来自交互（AAA 级）
+- 尊重用户的系统偏好
+- 提供无动画的可用体验

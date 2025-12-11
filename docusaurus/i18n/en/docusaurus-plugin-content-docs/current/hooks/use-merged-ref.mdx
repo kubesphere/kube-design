@@ -1,25 +1,459 @@
 ---
-sidebar_position: 1
+sidebar_position: 5
 ---
 
-# UseMergedRef
+# useMergedRef
 
-> Hook documentation is being migrated. Check back soon!
+A Hook for merging multiple refs, commonly used in scenarios where you need to use both a forwarded ref and a custom Hook ref on the same element.
 
-## Overview
+## Basic Usage
 
-`UseMergedRef` hook from Kube Design.
+```jsx live
+function Demo() {
+  const inputRef = useRef(null);
+  const [value, setValue] = useState('');
 
-## Usage
+  // Simulate a custom hook that requires a ref
+  const customRef = useRef(null);
 
-```tsx
-import { UseMergedRef } from '@kubed/hooks';
+  // Merge two refs
+  const mergedRef = useMergedRef(inputRef, customRef);
 
-function Component() {
-  // Documentation coming soon
+  const handleFocus = () => {
+    inputRef.current?.focus();
+  };
+
+  const handleGetValue = () => {
+    alert(`Input value: ${inputRef.current?.value || '(empty)'}`);
+  };
+
+  return (
+    <div>
+      <Input
+        ref={mergedRef}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="Enter content"
+        style={{ marginBottom: '12px' }}
+      />
+      <Group spacing="md">
+        <Button onClick={handleFocus} size="small">
+          Focus Input
+        </Button>
+        <Button onClick={handleGetValue} size="small" variant="outline">
+          Get Value
+        </Button>
+      </Group>
+      <div
+        style={{
+          marginTop: '16px',
+          padding: '12px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '6px',
+          fontSize: '14px',
+        }}
+      >
+        Both refs can access the same input element
+      </div>
+    </div>
+  );
+}
+```
+
+## Merging Forwarded Refs
+
+Use with `forwardRef`:
+
+```jsx live
+function Demo() {
+  // Custom input component with forwardRef
+  const CustomInput = forwardRef((props, ref) => {
+    const innerRef = useRef(null);
+    const mergedRef = useMergedRef(ref, innerRef);
+
+    // Can use innerRef for internal logic
+    useDidMount(() => {
+      console.log('CustomInput mounted:', innerRef.current);
+    });
+
+    return (
+      <Input
+        ref={mergedRef}
+        {...props}
+        style={{
+          border: '2px solid var(--ifm-color-primary)',
+          ...props.style,
+        }}
+      />
+    );
+  });
+
+  const externalRef = useRef(null);
+  const [value, setValue] = useState('');
+
+  const handleExternalFocus = () => {
+    externalRef.current?.focus();
+  };
+
+  return (
+    <div>
+      <CustomInput
+        ref={externalRef}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="Custom input component"
+      />
+      <Button
+        onClick={handleExternalFocus}
+        style={{ marginTop: '12px' }}
+        size="small"
+      >
+        Focus via External Ref
+      </Button>
+      <div
+        style={{
+          marginTop: '12px',
+          padding: '12px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '6px',
+          fontSize: '14px',
+        }}
+      >
+        External ref and internal ref both work properly
+      </div>
+    </div>
+  );
+}
+```
+
+## Multiple Refs
+
+Merge three or more refs:
+
+```jsx live
+function Demo() {
+  const ref1 = useRef(null);
+  const ref2 = useRef(null);
+  const ref3 = useRef(null);
+
+  const mergedRef = useMergedRef(ref1, ref2, ref3);
+
+  const [logs, setLogs] = useState([]);
+
+  const checkRefs = () => {
+    const results = [
+      `ref1: ${ref1.current ? '✓ Available' : '✗ Unavailable'}`,
+      `ref2: ${ref2.current ? '✓ Available' : '✗ Unavailable'}`,
+      `ref3: ${ref3.current ? '✓ Available' : '✗ Unavailable'}`,
+    ];
+    setLogs(results);
+  };
+
+  useDidMount(() => {
+    checkRefs();
+  });
+
+  return (
+    <div>
+      <div
+        ref={mergedRef}
+        style={{
+          padding: '24px',
+          backgroundColor: 'var(--ifm-color-primary-lightest)',
+          borderRadius: '8px',
+          marginBottom: '12px',
+          textAlign: 'center',
+        }}
+      >
+        Element referenced by 3 refs simultaneously
+      </div>
+      <Button onClick={checkRefs} size="small">
+        Check Ref Status
+      </Button>
+      {logs.length > 0 && (
+        <div
+          style={{
+            marginTop: '12px',
+            padding: '12px',
+            backgroundColor: 'var(--ifm-background-surface-color)',
+            border: '1px solid var(--ifm-color-emphasis-300)',
+            borderRadius: '6px',
+            fontSize: '14px',
+          }}
+        >
+          {logs.map((log, index) => (
+            <div key={index}>{log}</div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## Combining Custom Hooks
+
+Use with custom hooks that require refs:
+
+```jsx live
+function Demo() {
+  // Custom hook for click outside detection
+  const useClickOutsideCustom = (handler) => {
+    const ref = useRef(null);
+
+    useDidMount(() => {
+      const handleClick = (event) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+          handler();
+        }
+      };
+
+      document.addEventListener('mousedown', handleClick);
+      return () => document.removeEventListener('mousedown', handleClick);
+    });
+
+    return ref;
+  };
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [clickCount, setClickCount] = useState(0);
+
+  // Own ref for manual operations
+  const menuRef = useRef(null);
+
+  // ref from custom hook
+  const outsideRef = useClickOutsideCustom(() => {
+    if (isOpen) {
+      setIsOpen(false);
+      setClickCount((c) => c + 1);
+    }
+  });
+
+  // Merge refs
+  const mergedRef = useMergedRef(menuRef, outsideRef);
+
+  return (
+    <div>
+      <Button onClick={() => setIsOpen(!isOpen)}>
+        {isOpen ? 'Close' : 'Open'} Menu
+      </Button>
+
+      {isOpen && (
+        <div
+          ref={mergedRef}
+          style={{
+            marginTop: '12px',
+            padding: '20px',
+            backgroundColor: 'var(--ifm-background-surface-color)',
+            border: '2px solid var(--ifm-color-primary)',
+            borderRadius: '8px',
+          }}
+        >
+          <h4 style={{ marginTop: 0 }}>Menu Content</h4>
+          <p>Click outside this area to close</p>
+          <Button
+            onClick={() => menuRef.current?.scrollIntoView({ behavior: 'smooth' })}
+            size="small"
+          >
+            Scroll to View (using menuRef)
+          </Button>
+        </div>
+      )}
+
+      {clickCount > 0 && (
+        <div
+          style={{
+            marginTop: '12px',
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-success-lightest)',
+            borderRadius: '6px',
+            fontSize: '14px',
+          }}
+        >
+          Closed by clicking outside {clickCount} time(s)
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## Dynamic Refs
+
+Handle null values and dynamically changing refs:
+
+```jsx live
+function Demo() {
+  const [showSecondRef, setShowSecondRef] = useState(false);
+  const ref1 = useRef(null);
+  const ref2 = useRef(null);
+
+  // Handle conditional refs
+  const mergedRef = useMergedRef(ref1, showSecondRef ? ref2 : null);
+
+  const [info, setInfo] = useState('');
+
+  const checkRefs = () => {
+    const ref1Status = ref1.current ? '✓' : '✗';
+    const ref2Status = ref2.current ? '✓' : '✗';
+    setInfo(`ref1: ${ref1Status} | ref2: ${ref2Status} (${showSecondRef ? 'enabled' : 'disabled'})`);
+  };
+
+  return (
+    <div>
+      <div
+        style={{
+          marginBottom: '12px',
+          padding: '12px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '6px',
+        }}
+      >
+        <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+          <input
+            type="checkbox"
+            checked={showSecondRef}
+            onChange={(e) => setShowSecondRef(e.target.checked)}
+            style={{ marginRight: '8px' }}
+          />
+          Enable second ref
+        </label>
+      </div>
+
+      <div
+        ref={mergedRef}
+        style={{
+          padding: '20px',
+          backgroundColor: 'var(--ifm-color-primary-lightest)',
+          borderRadius: '8px',
+          marginBottom: '12px',
+          textAlign: 'center',
+        }}
+      >
+        Element with dynamically merged refs
+      </div>
+
+      <Button onClick={checkRefs} size="small">
+        Check Ref Status
+      </Button>
+
+      {info && (
+        <div
+          style={{
+            marginTop: '12px',
+            padding: '12px',
+            backgroundColor: 'var(--ifm-background-surface-color)',
+            border: '1px solid var(--ifm-color-emphasis-300)',
+            borderRadius: '6px',
+            fontSize: '14px',
+          }}
+        >
+          {info}
+        </div>
+      )}
+    </div>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Parameters
+
+```ts
+function useMergedRef<T = any>(
+  ...refs: Array<React.MutableRefObject<T> | React.LegacyRef<T> | undefined | null>
+): (node: T) => void
+```
+
+| Parameter | Description | Type |
+|-----------|-------------|------|
+| ...refs | Refs to merge (supports indefinite number) | `Array<MutableRefObject \| LegacyRef \| undefined \| null>` |
+
+### Return Value
+
+Returns a callback ref that can be passed to the `ref` property.
+
+```ts
+(node: T) => void
+```
+
+## How It Works
+
+`useMergedRef` returns a callback ref that:
+1. Accepts a DOM node or component instance as parameter
+2. Assigns this node to all passed-in refs
+3. Supports ref object, callback ref, and forwarded ref
+
+## Supported Ref Types
+
+```tsx
+// 1. Ref Object
+const ref1 = useRef(null);
+
+// 2. Callback Ref
+const ref2 = (node) => {
+  console.log('Node:', node);
+};
+
+// 3. Forwarded Ref
+const MyComponent = forwardRef((props, ref3) => {
+  const mergedRef = useMergedRef(ref1, ref2, ref3);
+  return <div ref={mergedRef} />;
+});
+```
+
+## Notes
+
+- Supports merging any number of refs
+- Automatically handles `null` and `undefined` refs
+- Supports both ref objects and callback refs
+- Ref updates are synchronous
+- No memory leaks from event listener cleanup
+
+## Common Use Cases
+
+### 1. Custom Component with forwardRef
+
+```tsx
+const Input = forwardRef((props, ref) => {
+  const innerRef = useRef();
+  const mergedRef = useMergedRef(ref, innerRef);
+
+  // Can use innerRef for internal logic
+
+  return <input ref={mergedRef} {...props} />;
+});
+```
+
+### 2. Combining Multiple Custom Hooks
+
+```tsx
+function Component() {
+  const hoverRef = useHover();
+  const clickOutsideRef = useClickOutside(handler);
+  const mergedRef = useMergedRef(hoverRef, clickOutsideRef);
+
+  return <div ref={mergedRef}>Content</div>;
+}
+```
+
+### 3. Manual DOM Operations
+
+```tsx
+function Component() {
+  const ref1 = useRef(); // For scroll operations
+  const ref2 = useRef(); // For focus operations
+  const mergedRef = useMergedRef(ref1, ref2);
+
+  return <div ref={mergedRef}>Content</div>;
+}
+```
+
+## Usage Scenarios
+
+- **Component Encapsulation**: Expose ref to outside while maintaining internal ref
+- **Custom Hook Combination**: Merge refs from multiple custom hooks
+- **Complex Interactions**: Multiple features need to access the same element
+- **Conditional Refs**: Handle dynamically changing refs
+- **Third-party Library Integration**: Integrate library-required refs with your own refs

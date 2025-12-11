@@ -1,5 +1,5 @@
-import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
+import { themes as prismThemes } from 'prism-react-renderer';
+import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
@@ -42,8 +42,7 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/kubesphere/kube-design/tree/master/my-website/',
+          editUrl: 'https://github.com/kubesphere/kube-design/tree/master/my-website/',
         },
         blog: false, // Disable blog for component library docs
         theme: {
@@ -87,41 +86,44 @@ const config: Config = {
       return {
         name: 'custom-webpack-config',
         configureWebpack(_config, isServer) {
-          const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
+          const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
           return {
             plugins: [
               // Bundle analyzer (only in production)
-              process.env.ANALYZE === 'true' && new BundleAnalyzerPlugin({
-                analyzerMode: 'static',
-                reportFilename: 'bundle-analysis.html',
-                openAnalyzer: false,
-              }),
+              process.env.ANALYZE === 'true' &&
+                new BundleAnalyzerPlugin({
+                  analyzerMode: 'static',
+                  reportFilename: 'bundle-analysis.html',
+                  openAnalyzer: false,
+                }),
             ].filter(Boolean),
             optimization: {
-              splitChunks: isServer ? false : {
-                chunks: 'all',
-                cacheGroups: {
-                  // Vendor chunks for better caching
-                  vendor: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name: 'vendors',
-                    priority: 10,
+              splitChunks: isServer
+                ? false
+                : {
+                    chunks: 'all',
+                    cacheGroups: {
+                      // Vendor chunks for better caching
+                      vendor: {
+                        test: /[\\/]node_modules[\\/]/,
+                        name: 'vendors',
+                        priority: 10,
+                      },
+                      // Separate chunk for kubed components
+                      kubed: {
+                        test: /[\\/]node_modules[\\/]@kubed[\\/]/,
+                        name: 'kubed',
+                        priority: 20,
+                      },
+                      // Common code chunk
+                      common: {
+                        minChunks: 2,
+                        priority: 5,
+                        reuseExistingChunk: true,
+                      },
+                    },
                   },
-                  // Separate chunk for kubed components
-                  kubed: {
-                    test: /[\\/]node_modules[\\/]@kubed[\\/]/,
-                    name: 'kubed',
-                    priority: 20,
-                  },
-                  // Common code chunk
-                  common: {
-                    minChunks: 2,
-                    priority: 5,
-                    reuseExistingChunk: true,
-                  },
-                },
-              },
             },
           };
         },
@@ -133,12 +135,20 @@ const config: Config = {
     // Social card for better SEO
     image: 'img/kube-design-social-card.png',
     metadata: [
-      {name: 'keywords', content: 'kube design, kubesphere, react components, kubernetes ui, cloud native, component library'},
-      {name: 'description', content: 'A comprehensive React component library built for KubeSphere Console with 50+ production-ready components, TypeScript support, and accessibility-first design.'},
-      {property: 'og:type', content: 'website'},
-      {property: 'og:site_name', content: 'Kube Design'},
-      {name: 'twitter:card', content: 'summary_large_image'},
-      {name: 'twitter:site', content: '@KubeSphere'},
+      {
+        name: 'keywords',
+        content:
+          'kube design, kubesphere, react components, kubernetes ui, cloud native, component library',
+      },
+      {
+        name: 'description',
+        content:
+          'A comprehensive React component library built for KubeSphere Console with 50+ production-ready components, TypeScript support, and accessibility-first design.',
+      },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:site_name', content: 'Kube Design' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:site', content: '@KubeSphere' },
     ],
     colorMode: {
       respectPrefersColorScheme: true,
@@ -187,44 +197,7 @@ const config: Config = {
     },
     footer: {
       style: 'dark',
-      links: [
-        {
-          title: 'Documentation',
-          items: [
-            {
-              label: 'Getting Started',
-              to: '/docs/guide/introduction',
-            },
-            {
-              label: 'Components',
-              to: '/docs/components/button',
-            },
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'GitHub',
-              href: 'https://github.com/kubesphere/kube-design',
-            },
-            {
-              label: 'KubeSphere',
-              href: 'https://kubesphere.io',
-            },
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'KubeSphere Console',
-              href: 'https://github.com/kubesphere/console',
-            },
-          ],
-        },
-      ],
-      copyright: `Copyright © ${new Date().getFullYear()} KubeSphere. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} KubeSphere.io`,
     },
     prism: {
       theme: prismThemes.github,

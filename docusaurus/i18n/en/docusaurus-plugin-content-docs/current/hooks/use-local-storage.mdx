@@ -1,25 +1,293 @@
 ---
-sidebar_position: 1
+sidebar_position: 7
 ---
 
-# UseLocalStorage
+# useLocalStorage
 
-> Hook documentation is being migrated. Check back soon!
+A Hook for managing localStorage, providing type-safe local storage operations with cross-tab synchronization support.
 
-## Overview
+## Basic Usage
 
-`UseLocalStorage` hook from Kube Design.
+```jsx live
+function Demo() {
+  const [value, setValue] = useLocalStorage({ key: 'demo-value', defaultValue: '' });
 
-## Usage
+  return (
+    <div>
+      <Input
+        placeholder="Enter content (auto-saved)"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <div style={{ marginTop: '12px', fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+        Currently stored value: {value || '(empty)'}
+      </div>
+      <Button
+        onClick={() => setValue('')}
+        size="small"
+        style={{ marginTop: '12px' }}
+      >
+        Clear
+      </Button>
+    </div>
+  );
+}
+```
 
-```tsx
-import { UseLocalStorage } from '@kubed/hooks';
+## Theme Persistence
 
-function Component() {
-  // Documentation coming soon
+Save user theme preference:
+
+```jsx live
+function Demo() {
+  const [theme, setTheme] = useLocalStorage({
+    key: 'app-theme',
+    defaultValue: 'light'
+  });
+
+  return (
+    <div>
+      <Group spacing="md">
+        <Button
+          onClick={() => setTheme('light')}
+          variant={theme === 'light' ? 'filled' : 'outline'}
+        >
+          ☀️ Light
+        </Button>
+        <Button
+          onClick={() => setTheme('dark')}
+          variant={theme === 'dark' ? 'filled' : 'outline'}
+        >
+          🌙 Dark
+        </Button>
+        <Button
+          onClick={() => setTheme('auto')}
+          variant={theme === 'auto' ? 'filled' : 'outline'}
+        >
+          🔄 Auto
+        </Button>
+      </Group>
+      <div
+        style={{
+          marginTop: '20px',
+          padding: '24px',
+          backgroundColor:
+            theme === 'dark' ? '#1a1a1a' :
+            theme === 'light' ? '#ffffff' :
+            'var(--ifm-background-surface-color)',
+          color:
+            theme === 'dark' ? '#ffffff' :
+            theme === 'light' ? '#000000' :
+            'var(--ifm-font-color-base)',
+          border: '1px solid var(--ifm-color-emphasis-300)',
+          borderRadius: '8px',
+          transition: 'all 0.3s',
+        }}
+      >
+        <h4>Current theme: {theme}</h4>
+        <p>Theme persists after page refresh</p>
+      </div>
+    </div>
+  );
+}
+```
+
+## User Preferences
+
+Save complex user configuration:
+
+```jsx live
+function Demo() {
+  const [fontSize, setFontSize] = useLocalStorage({
+    key: 'font-size',
+    defaultValue: '16'
+  });
+  const [notifications, setNotifications] = useLocalStorage({
+    key: 'notifications',
+    defaultValue: 'true'
+  });
+
+  return (
+    <div>
+      <div style={{ marginBottom: '20px' }}>
+        <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
+          Font Size
+        </label>
+        <Group spacing="sm">
+          {['14', '16', '18', '20'].map((size) => (
+            <Button
+              key={size}
+              size="small"
+              variant={fontSize === size ? 'filled' : 'outline'}
+              onClick={() => setFontSize(size)}
+            >
+              {size}px
+            </Button>
+          ))}
+        </Group>
+      </div>
+
+      <div style={{ marginBottom: '20px' }}>
+        <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+          <input
+            type="checkbox"
+            checked={notifications === 'true'}
+            onChange={(e) => setNotifications(e.target.checked ? 'true' : 'false')}
+            style={{ marginRight: '8px' }}
+          />
+          <span>Enable notifications</span>
+        </label>
+      </div>
+
+      <div
+        style={{
+          padding: '20px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          fontSize: `${fontSize}px`,
+        }}
+      >
+        <h4 style={{ margin: '0 0 12px 0' }}>Preview Area</h4>
+        <p style={{ margin: 0 }}>
+          Font size: {fontSize}px {notifications === 'true' && '· Notifications enabled 🔔'}
+        </p>
+      </div>
+    </div>
+  );
+}
+```
+
+## Form Draft Auto-save
+
+Automatically save form input:
+
+```jsx live
+function Demo() {
+  const [title, setTitle] = useLocalStorage({ key: 'draft-title', defaultValue: '' });
+  const [content, setContent] = useLocalStorage({ key: 'draft-content', defaultValue: '' });
+
+  const handleClear = () => {
+    setTitle('');
+    setContent('');
+  };
+
+  return (
+    <div>
+      <div style={{ marginBottom: '12px' }}>
+        <Input
+          placeholder="Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+      </div>
+      <div style={{ marginBottom: '12px' }}>
+        <Textarea
+          placeholder="Content (auto-save draft)"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          rows={4}
+        />
+      </div>
+      <Group spacing="md">
+        <Button onClick={handleClear} variant="outline">
+          Clear Draft
+        </Button>
+      </Group>
+      {(title || content) && (
+        <div
+          style={{
+            marginTop: '16px',
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-success-lightest)',
+            borderRadius: '6px',
+            fontSize: '14px',
+          }}
+        >
+          ✓ Draft auto-saved locally
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## Functional Updates
+
+Supports updates based on current value:
+
+```jsx live
+function Demo() {
+  const [count, setCount] = useLocalStorage({ key: 'counter', defaultValue: '0' });
+
+  const increment = () => setCount((prev) => String(Number(prev) + 1));
+  const decrement = () => setCount((prev) => String(Number(prev) - 1));
+  const reset = () => setCount('0');
+
+  return (
+    <div style={{ textAlign: 'center' }}>
+      <div
+        style={{
+          fontSize: '48px',
+          fontWeight: 'bold',
+          marginBottom: '20px',
+          color: 'var(--ifm-color-primary)',
+        }}
+      >
+        {count}
+      </div>
+      <Group spacing="md">
+        <Button onClick={decrement}>-</Button>
+        <Button onClick={increment}>+</Button>
+        <Button onClick={reset} variant="outline">Reset</Button>
+      </Group>
+      <p style={{ marginTop: '16px', fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+        Count is saved to localStorage
+      </p>
+    </div>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Parameters
+
+```ts
+function useLocalStorage<T extends string>({
+  key,
+  defaultValue,
+}: {
+  key: string;
+  defaultValue?: T;
+}): [T, (val: T | ((prevState: T) => T)) => void]
+```
+
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| key | localStorage key name | `string` | - |
+| defaultValue | Default value | `T` | `undefined` |
+
+### Return Value
+
+Returns an array, similar to `useState`:
+
+| Index | Description | Type |
+|-------|-------------|------|
+| [0] | Current value | `T` |
+| [1] | Update function | `(val: T \| ((prevState: T) => T)) => void` |
+
+## Features
+
+- **Type Safe**: Provides TypeScript type support
+- **Cross-tab Sync**: Automatically syncs values across multiple tabs
+- **SSR Friendly**: Safely handles server-side rendering scenarios
+- **Default Value**: Supports setting default values
+- **Functional Updates**: Supports updates based on current value
+
+## Usage Scenarios
+
+- **User Preferences**: Save theme, language, and other user settings
+- **Form Drafts**: Automatically save form inputs
+- **Shopping Cart**: Persist shopping cart data
+- **Browse History**: Record user browsing history
+- **Temporary Data**: Store temporary data that doesn't need server sync

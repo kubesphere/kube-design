@@ -4,22 +4,765 @@ sidebar_position: 1
 
 # Entity
 
-> Component documentation is being migrated. Check back soon!
+An entity card component for displaying structured data.
 
-## Overview
+## When to Use
 
-Entity component from Kube Design library.
+- When displaying multiple field information in card form
+- Displaying detailed resource information (such as Pods, Services, etc.)
+- Displaying multiple entity objects in list form
+- When expandable view is needed for more detailed information
+
+In Kube Design, the Entity component provides flexible entity display functionality:
+
+- **Field Composition**: Use Field components to display multiple fields together
+- **Hover Effect**: Support hover highlighting
+- **Expandable**: Support expanding to view more detailed information
+- **Footer Area**: Support adding footer content
+- **Flexible Layout**: Support custom field width and spacing
 
 ## Examples
 
-### Basic Usage
+### Basic Field Usage
+
+Field is the basic component of Entity, used to display a single field.
 
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  const { Pod } = KubedIcons;
+
+  return (
+    <Card style={{ padding: '16px' }}>
+      <Field avatar={<Pod size={40} />} label="Storage type: rocksdb" value="rocksdbpvc" />
+    </Card>
+  );
+}
+```
+
+### Basic Entity Usage
+
+Use Entity to combine multiple Fields to display structured data.
+
+```jsx live
+function Demo() {
+  return (
+    <Entity>
+      <Field label="Storage Volume" value="rocksdbpvc" />
+      <Field label="Capacity" value="1Gi" />
+      <Field label="Access Mode" value="ReadWriteOnce" />
+      <Field label="Status" value="Bound" />
+    </Entity>
+  );
+}
+```
+
+### Entity with Icon
+
+Add icons to Fields to enhance recognition.
+
+```jsx live
+function Demo() {
+  const { Pod, BadgeAnchor, Tooltip, Error } = KubedIcons;
+
+  const avatar = (
+    <BadgeAnchor offset={[5, 5]}>
+      <Tooltip content="Warning message">
+        <Error className="badge" size={18} color="#fff" fill="#f5a623" />
+      </Tooltip>
+      <Pod size={40} />
+    </BadgeAnchor>
+  );
+
+  return (
+    <Entity>
+      <Field avatar={avatar} label="Pod: nginx-deployment-7d5c8f8b9d-x7k2m" value="nginx:1.21" />
+      <Field label="Status" value="Running" />
+      <Field label="Node" value="node-1" />
+      <Field label="IP" value="10.244.1.5" />
+    </Entity>
+  );
+}
+```
+
+### Custom Field Width
+
+Control field width through the `width` property.
+
+```jsx live
+function Demo() {
+  const { Pod } = KubedIcons;
+
+  return (
+    <Entity>
+      <Field avatar={<Pod size={40} />} label="Storage Type" value="rocksdbpvc" width="30%" />
+      <Field label="Storage Volume" value="rocksdbpvc" width="20%" />
+      <Field label="Capacity" value="1Gi" width="30%" />
+      <Field label="Access Mode" value="ReadWriteOnce" width="20%" />
+    </Entity>
+  );
+}
+```
+
+### Entity with Footer
+
+Add footer content using the `footer` property.
+
+```jsx live
+function Demo() {
+  const { Docker, Pod } = KubedIcons;
+
+  const footer = (
+    <>
+      <div style={{ display: 'inline-flex', minWidth: '200px', alignItems: 'center' }}>
+        <Docker size={20} style={{ marginRight: '8px' }} />
+        <Text weight={500}>moqlus-runtime</Text>
+      </div>
+      <div style={{ display: 'inline-flex', minWidth: '200px', alignItems: 'center' }}>
+        <Pod size={20} style={{ marginRight: '8px' }} />
+        <Text weight={500}>nginx-container</Text>
+      </div>
+    </>
+  );
+
+  return (
+    <Entity footer={footer}>
+      <Field label="Image" value="nginx:1.21" />
+      <Field label="Ports" value="80, 443" />
+      <Field label="Environment" value="Production" />
+      <Field label="Replicas" value="3" />
+    </Entity>
+  );
+}
+```
+
+### Hover Effect
+
+Enable hover highlighting effect using the `hoverable` property.
+
+```jsx live
+function Demo() {
+  const { MicroservicesDuotone } = KubedIcons;
+
+  return (
+    <Group direction="column" spacing="md">
+      <Entity hoverable>
+        <Field avatar={<MicroservicesDuotone size={40} />} label="Service Name" value="nginx-service" />
+        <Field label="Type" value="ClusterIP" />
+        <Field label="Cluster IP" value="10.96.0.10" />
+        <Field label="Port" value="80:30080/TCP" />
+      </Entity>
+    </Group>
+  );
+}
+```
+
+### Expandable Entity
+
+Implement expandable detail view using `expandable` and `expandContent`.
+
+```jsx live
+function Demo() {
+  const { Pod } = KubedIcons;
+
+  const expandContent = (
+    <Card sectionTitle="Container Details" padding={12}>
+      <Group direction="column" spacing="sm">
+        <Text size="sm">
+          <strong>Image:</strong> nginx:1.21-alpine
+        </Text>
+        <Text size="sm">
+          <strong>Command:</strong> /bin/sh -c nginx -g 'daemon off;'
+        </Text>
+        <Text size="sm">
+          <strong>Environment Variables:</strong> NODE_ENV=production
+        </Text>
+        <Text size="sm">
+          <strong>Resource Limits:</strong> CPU: 500m, Memory: 512Mi
+        </Text>
+      </Group>
+    </Card>
+  );
+
+  return (
+    <Entity expandable hoverable expandContent={expandContent}>
+      <Field
+        avatar={<Pod size={40} />}
+        label="Pod: nginx-deployment-7d5c8f8b9d-x7k2m"
+        value="nginx:1.21"
+      />
+      <Field label="Status" value="Running" />
+      <Field label="Node" value="node-1" />
+      <Field label="IP" value="10.244.1.5" />
+    </Entity>
+  );
+}
+```
+
+### Borderless Entity
+
+Remove Entity border when using inside Cards.
+
+```jsx live
+function Demo() {
+  const { ConfigMap } = KubedIcons;
+
+  return (
+    <Card hoverable>
+      <Entity bordered={false}>
+        <Field avatar={<ConfigMap size={40} />} label="ConfigMap" value="app-config" />
+        <Field label="Key-Value Pairs" value="5" />
+        <Field label="Created" value="2024-01-15" />
+        <Field label="Namespace" value="default" />
+      </Entity>
+    </Card>
+  );
+}
+```
+
+### Custom Spacing
+
+Control spacing between fields through the `gap` property.
+
+```jsx live
+function Demo() {
+  const { Cluster } = KubedIcons;
+
+  return (
+    <Group direction="column" spacing="xl">
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Default spacing (20px):
+        </Text>
+        <Entity>
+          <Field avatar={<Cluster size={40} />} label="Cluster" value="prod-cluster" />
+          <Field label="Nodes" value="5" />
+          <Field label="Version" value="v1.24.0" />
+        </Entity>
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Smaller spacing (10px):
+        </Text>
+        <Entity gap={10}>
+          <Field avatar={<Cluster size={40} />} label="Cluster" value="dev-cluster" />
+          <Field label="Nodes" value="3" />
+          <Field label="Version" value="v1.24.0" />
+        </Entity>
+      </div>
+    </Group>
+  );
+}
+```
+
+### Entity List
+
+Display a list composed of multiple Entities.
+
+```jsx live
+function Demo() {
+  const { Pod } = KubedIcons;
+
+  const pods = [
+    {
+      name: 'nginx-deployment-7d5c8f8b9d-x7k2m',
+      status: 'Running',
+      node: 'node-1',
+      ip: '10.244.1.5',
+    },
+    {
+      name: 'nginx-deployment-7d5c8f8b9d-b8z9p',
+      status: 'Running',
+      node: 'node-2',
+      ip: '10.244.2.3',
+    },
+    { name: 'nginx-deployment-7d5c8f8b9d-m4n6q', status: 'Pending', node: '-', ip: '-' },
+  ];
+
+  return (
+    <Group direction="column" spacing="md">
+      {pods.map((pod) => (
+        <Entity key={pod.name} hoverable>
+          <Field
+            avatar={<Pod size={40} />}
+            label={`Pod: ${pod.name}`}
+            value="nginx:1.21"
+            width="40%"
+          />
+          <Field label="Status" value={pod.status} width="20%" />
+          <Field label="Node" value={pod.node} width="20%" />
+          <Field label="IP" value={pod.ip} width="20%" />
+        </Entity>
+      ))}
+    </Group>
+  );
+}
+```
+
+### Complex Footer Content
+
+Footer can contain more complex content and interactions.
+
+```jsx live
+function Demo() {
+  const { MicroservicesDuotone } = KubedIcons;
+
+  const footer = (
+    <Group spacing="md" style={{ width: '100%', justifyContent: 'space-between' }}>
+      <div>
+        <Text size="xs" color="secondary">
+          Selector: app=nginx
+        </Text>
+      </div>
+      <Group spacing="xs">
+        <Button size="xs" variant="outline">
+          Edit
+        </Button>
+        <Button size="xs" variant="outline">
+          View YAML
+        </Button>
+      </Group>
+    </Group>
+  );
+
+  return (
+    <Entity hoverable footer={footer}>
+      <Field avatar={<MicroservicesDuotone size={40} />} label="Service Name" value="nginx-service" />
+      <Field label="Type" value="ClusterIP" />
+      <Field label="Port" value="80:30080/TCP" />
+      <Field label="Session Affinity" value="None" />
+    </Entity>
+  );
+}
+```
+
+### Complete Example
+
+Comprehensive example combining all features.
+
+```jsx live
+function Demo() {
+  const { Backup } = KubedIcons;
+
+  const expandContent = (
+    <Card sectionTitle="Replica Details" padding={12}>
+      <Entity bordered={false} gap={12}>
+        <Field label="Desired Replicas" value="3" />
+        <Field label="Current Replicas" value="3" />
+        <Field label="Available Replicas" value="3" />
+        <Field label="Updated Replicas" value="0" />
+      </Entity>
+      <Group direction="column" spacing="xs" style={{ marginTop: '12px' }}>
+        <Text size="sm" weight={600}>
+          Update Strategy:
+        </Text>
+        <Text size="sm">Type: RollingUpdate</Text>
+        <Text size="sm">Max Unavailable: 25%</Text>
+        <Text size="sm">Max Surge: 25%</Text>
+      </Group>
+    </Card>
+  );
+
+  const footer = (
+    <Group spacing="md" style={{ width: '100%', justifyContent: 'space-between' }}>
+      <Text size="xs" color="secondary">
+        Created: 2024-01-15 10:30:00
+      </Text>
+      <Group spacing="xs">
+        <Button size="xs" variant="outline">
+          Edit
+        </Button>
+        <Button size="xs" variant="outline">
+          Scale
+        </Button>
+        <Button size="xs" variant="outline" color="error">
+          Delete
+        </Button>
+      </Group>
+    </Group>
+  );
+
+  return (
+    <Entity expandable hoverable expandContent={expandContent} footer={footer}>
+      <Field
+        avatar={<Backup size={40} />}
+        label="Deployment: nginx-deployment"
+        value="nginx:1.21"
+        width="35%"
+      />
+      <Field label="Replicas" value="3/3" width="15%" />
+      <Field label="Status" value="Running" width="20%" />
+      <Field label="Namespace" value="default" width="30%" />
+    </Entity>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Entity
+
+| Property | Description | Type | Default |
+| --- | --- | --- | --- |
+| hoverable | Whether to enable hover effect | `boolean` | `false` |
+| expandable | Whether expandable | `boolean` | `false` |
+| expandContent | Content when expanded | `ReactNode` | - |
+| bordered | Whether to display border | `boolean` | `true` |
+| footer | Footer content | `ReactNode` | - |
+| gap | Spacing between fields (px) | `number` | `20` |
+| expandProps | Dropdown component properties | `Omit<DropdownProps, 'children'>` | - |
+| className | Custom class name | `string` | - |
+| style | Custom styles | `CSSProperties` | - |
+| children | Child elements (Field components) | `ReactNode` | - |
+
+### Field
+
+| Property | Description | Type | Default |
+| --- | --- | --- | --- |
+| label | Field label | `ReactNode` | - |
+| value | Field value | `ReactNode` | - |
+| avatar | Field icon/avatar | `ReactNode` | - |
+| width | Field width | `number \| string` | - |
+| className | Custom class name | `string` | - |
+| style | Custom styles | `CSSProperties` | - |
+
+:::info
+
+**About Entity and Field relationship**:
+
+- Entity is a container component for organizing multiple Fields
+- Field is a field component for displaying a single data item
+- Entity's `children` are typically multiple Field components
+- Field can be used independently or within Entity
+- Entity exports Field from Entity.tsx: `export { Field }` (line 9)
+
+**About Entity structure**:
+
+- Entity uses flexbox vertical layout: `flex-direction: column` (Entity.tsx line 32)
+- Default padding is 12px (line 34)
+- Background color uses `theme.palette.background` (line 35)
+- Border radius is 4px (line 37)
+- All style changes have 0.3s transition animation: `transition: all 0.3s ease-in-out` (line 38)
+- Main container (EntityContainer) uses flexbox horizontal layout with auto flex (lines 48-51)
+
+**About expand functionality**:
+
+- Set `expandable={true}` to enable expand functionality
+- Expand content is set through the `expandContent` property
+- Uses Dropdown component for expansion (Entity.tsx lines 110-127)
+- Can customize Dropdown behavior through `expandProps`
+- When expanded, Entity is wrapped by Wrapper and Dropdown (lines 109-129)
+- Expand content container (ExpandContainer) styles (lines 62-68):
+  - Padding 12px
+  - Border color `accents_5`
+  - No top border `border-top: 0`
+  - Bottom border radius `border-radius: 0 0 4px 4px`
+  - z-index: 1
+- Dropdown configuration (lines 114-119):
+  - `appendTo="parent"` - Append to parent element
+  - `maxWidth="100%"` - Max width 100%
+  - `offset={[0, -3]}` - Offset [0, -3]
+  - `placement="bottom"` - Bottom placement
+
+**About expandable cursor**:
+
+- When `expandable={true}`, cursor is automatically set to `pointer` (Entity.tsx line 39)
+- Non-expandable mode uses default cursor
+
+**About field width**:
+
+- Field's `width` can be a number (pixels) or string (like "30%")
+- Width handling logic (Field.tsx line 16):
+  ```typescript
+  width ? `width: ${isNumber(width) ? `${width}px` : width};` : null;
+  ```
+- Numbers automatically get `px` unit added
+- Strings are used directly (supports "%", "em", etc.)
+- Without `width` set, Field auto-distributes remaining space (`flex-grow: 1; flex-shrink: 1`, lines 14-15)
+- Recommended to set fixed width for main fields, let secondary fields adapt
+
+**About hover effect**:
+
+- `hoverable={true}` enables hover highlighting
+- Displays border and shadow effect on hover (Entity.tsx lines 11-20)
+- Hover styles (lines 15-17):
+  ```typescript
+  border-color: palette.accents_5;  // Darker border
+  box-shadow: 0 4px 8px 0 rgba(accents_8, 0.2);  // Add shadow
+  ```
+- Hover effect applies to both `:hover` and `[aria-expanded='true']` states (lines 41-44)
+- Suitable for interactive entity cards
+
+**About bordered border**:
+
+- `bordered` defaults to `true` (Entity.tsx line 99)
+- Border style (line 36):
+  ```typescript
+  bordered ? `1px solid ${theme.palette.border}` : null;
+  ```
+- Uses theme's `palette.border` color
+- Set `bordered={false}` to completely remove border
+
+**About gap spacing**:
+
+- `gap` defaults to 20px (Entity.tsx line 98)
+- Controlled through CSS gap property between Fields (line 51)
+- gap uses `$gap` escaped property name to avoid styled-components conflicts (line 47)
+
+**About footer**:
+
+- Footer area (EntityFooter) styles (Entity.tsx lines 54-60):
+  - Flexbox layout
+  - Border radius 4px
+  - Padding 8px
+  - Top margin 12px: `margin-top: 12px`
+  - Background color `accents_1` (light background)
+- Suitable for placing action buttons, metadata, etc.
+- Footer content can be any ReactNode
+- Only renders when `footer` property is set (lines 125, 137 checks)
+
+**About Field structure**:
+
+- Field uses flexbox horizontal layout: `flex-direction: row` (Field.tsx line 12)
+- Vertical center: `align-items: center` (line 13)
+- Auto flex: `flex-grow: 1; flex-shrink: 1` (lines 14-15)
+- Contains three parts: FieldAvatar, FieldContent (containing FieldValue and FieldLabel)
+
+**About Field Avatar**:
+
+- Avatar container uses inline-flex layout (Field.tsx line 20)
+- Right margin 12px: `margin-right: 12px` (line 21)
+- Only renders when `avatar` property is set (line 58 check)
+
+**About Field content styles**:
+
+- FieldContent sets `overflow: hidden` to prevent overflow (Field.tsx line 25)
+- FieldLabel styles (lines 28-34):
+  - Text overflow ellipsis: `text-overflow: ellipsis`
+  - Single line display: `white-space: nowrap`
+  - Hide overflow: `overflow: hidden`
+  - Color is `accents_5` (light color for secondary info)
+- FieldValue styles (lines 36-39):
+  - Font weight 700: `font-weight: 700`
+  - Color is `accents_8` (dark color for primary info)
+- Render order: FieldValue first, then FieldLabel (lines 60-61)
+
+**About font**:
+
+- Field uses custom font stack (Field.tsx lines 8-9):
+  ```
+  Roboto, PingFang SC, Lantinghei SC, Helvetica Neue, Helvetica, Arial,
+  Microsoft YaHei, 微软雅黑, STHeitiSC-Light, simsun, 宋体, WenQuanYi Zen Hei,
+  WenQuanYi Micro Hei, sans-serif
+  ```
+- Line height is 1.67 (line 10)
+
+**About className**:
+
+- Entity main container className: custom className
+- Entity content container className: `entity-main` (Entity.tsx lines 122, 134)
+- Entity footer className: `entity-footer` (lines 125, 137)
+- Dropdown wrapper className: `entity-dropdown` (line 115)
+- Expand content container className: `expand-container` (line 112)
+- Field avatar className: `field-avatar` (Field.tsx line 58)
+- Field content className: `field-content` (line 59)
+- Field value className: `field-value` (line 60)
+- Field label className: `field-label` (line 61)
+
+:::
+
+## Usage Recommendations
+
+### Moderate Number of Fields
+
+Keep the number of fields within a reasonable range:
+
+```jsx
+// Recommended: 3-6 fields
+<Entity>
+  <Field label="Name" value="nginx-service" />
+  <Field label="Type" value="ClusterIP" />
+  <Field label="Port" value="80" />
+  <Field label="Status" value="Active" />
+</Entity>
+
+// Too many fields: consider using expand functionality
+<Entity expandable expandContent={<MoreFields />}>
+  <Field label="Name" value="nginx-service" />
+  <Field label="Type" value="ClusterIP" />
+  <Field label="Port" value="80" />
+  {/* More fields in expandContent */}
+</Entity>
+```
+
+### Set Field Widths Appropriately
+
+Set appropriate widths for fields of different importance:
+
+```jsx
+<Entity>
+  {/* Main field: larger width */}
+  <Field label="Resource Name" value="nginx-deployment" width="40%" />
+  {/* Secondary fields: smaller width */}
+  <Field label="Status" value="Running" width="20%" />
+  <Field label="Replicas" value="3" width="20%" />
+  {/* Adaptive width */}
+  <Field label="Other" value="info" />
+</Entity>
+```
+
+### Use Icons to Enhance Recognition
+
+Add icons to entities to improve recognition:
+
+```jsx
+import { Pod, Service, ConfigMap } from '@kubed/icons';
+
+// Different resources use different icons
+<Entity>
+  <Field avatar={<Pod size={40} />} label="Pod" value="nginx-pod" />
+  <Field label="Status" value="Running" />
+</Entity>
+
+<Entity>
+  <Field avatar={<Service size={40} />} label="Service" value="nginx-service" />
+  <Field label="Type" value="ClusterIP" />
+</Entity>
+```
+
+### Use Hover Effect in Lists
+
+Use `hoverable` to enhance interaction in lists:
+
+```jsx
+{
+  items.map((item) => (
+    <Entity key={item.id} hoverable>
+      <Field label="Name" value={item.name} />
+      <Field label="Status" value={item.status} />
+    </Entity>
+  ));
+}
+```
+
+### Use Expand for Complex Information
+
+For entities containing lots of information, use expand functionality:
+
+```jsx
+const detailsContent = (
+  <Card sectionTitle="Details" padding={12}>
+    <Entity bordered={false}>
+      <Field label="CPU" value="500m" />
+      <Field label="Memory" value="512Mi" />
+      <Field label="Disk" value="10Gi" />
+    </Entity>
+  </Card>
+);
+
+<Entity expandable expandContent={detailsContent}>
+  <Field label="Name" value="nginx-pod" />
+  <Field label="Status" value="Running" />
+</Entity>;
+```
+
+### Remove Border in Cards
+
+Remove border when using Entity within Card components:
+
+```jsx
+<Card hoverable>
+  <Entity bordered={false}>
+    <Field label="Name" value="nginx-service" />
+    <Field label="Type" value="ClusterIP" />
+  </Entity>
+</Card>
+```
+
+### Add Action Buttons to Footer
+
+Use footer to provide quick actions:
+
+```jsx
+const footer = (
+  <Group spacing="xs" style={{ justifyContent: 'flex-end' }}>
+    <Button size="xs" variant="outline">
+      Edit
+    </Button>
+    <Button size="xs" variant="outline">
+      View Details
+    </Button>
+    <Button size="xs" variant="outline" color="error">
+      Delete
+    </Button>
+  </Group>
+);
+
+<Entity footer={footer}>
+  <Field label="Name" value="nginx-service" />
+  <Field label="Status" value="Active" />
+</Entity>;
+```
+
+### Unified Field Layout
+
+Maintain consistent field widths in lists:
+
+```jsx
+// All Entities use same width configuration
+const widthConfig = {
+  name: '40%',
+  status: '20%',
+  replicas: '20%',
+  namespace: '20%',
+};
+
+{
+  items.map((item) => (
+    <Entity key={item.id}>
+      <Field label="Name" value={item.name} width={widthConfig.name} />
+      <Field label="Status" value={item.status} width={widthConfig.status} />
+      <Field label="Replicas" value={item.replicas} width={widthConfig.replicas} />
+      <Field label="Namespace" value={item.namespace} width={widthConfig.namespace} />
+    </Entity>
+  ));
+}
+```
+
+### Values Can Be Links or Other Components
+
+Field's `value` can be any ReactNode:
+
+```jsx
+<Entity>
+  <Field label="Service Name" value={<a href="/services/nginx">nginx-service</a>} />
+  <Field label="Status" value={<Badge color="success">Active</Badge>} />
+  <Field
+    label="Action"
+    value={
+      <Button size="xs" variant="text">
+        View Details
+      </Button>
+    }
+  />
+</Entity>
+```
+
+### Use BadgeAnchor to Display Status
+
+Combine with BadgeAnchor component to display status badges:
+
+```jsx
+import { Pod, BadgeAnchor, Error } from '@kubed/icons';
+
+const avatar = (
+  <BadgeAnchor offset={[5, 5]}>
+    <Error size={18} color="#fff" fill="#f5a623" />
+    <Pod size={40} />
+  </BadgeAnchor>
+);
+
+<Entity>
+  <Field avatar={avatar} label="Pod Name" value="nginx-pod" />
+  <Field label="Status" value="Warning" />
+</Entity>;
+```

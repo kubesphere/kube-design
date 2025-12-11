@@ -4,22 +4,593 @@ sidebar_position: 1
 
 # Menu
 
-> Component documentation is being migrated. Check back soon!
+A menu list that provides navigation for pages and functions.
 
-## Overview
+## When to Use
 
-Menu component from Kube Design library.
+- Navigation menus are the soul of a website, users rely on navigation to jump between pages
+- Generally divided into top navigation and side navigation; top navigation provides global categories and functions, while side navigation provides multi-level structure to organize site architecture
+- Menu can be used alone or combined with Dropdown component
+
+In Kube Design, the Menu component provides flexible menu functionality:
+
+- **Icon Support**: Menu items can include icons
+- **Group Labels**: Use MenuLabel to group menu items
+- **Disabled State**: Support disabling individual menu items
+- **Link Support**: Menu items can be used as links
+- **Theme Switching**: Support light and dark themes
 
 ## Examples
 
 ### Basic Usage
 
+Most basic menu usage.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  const { Add, Stop, Pen, Trash } = KubedIcons;
+
+  return (
+    <Card style={{ width: '220px' }}>
+      <Menu>
+        <MenuItem icon={<Add />}>Create</MenuItem>
+        <MenuItem icon={<Stop />}>Stop</MenuItem>
+        <MenuItem icon={<Pen />}>Edit</MenuItem>
+        <MenuItem icon={<Trash />}>Delete</MenuItem>
+      </Menu>
+    </Card>
+  );
+}
+```
+
+### With Label Groups
+
+Use MenuLabel to group menu items.
+
+```jsx live
+function Demo() {
+  const { Add, Pen, Stop, Trash, Download, Upload } = KubedIcons;
+
+  return (
+    <Card style={{ width: '220px' }}>
+      <Menu>
+        <MenuLabel>Edit Operations</MenuLabel>
+        <MenuItem icon={<Add />}>Create</MenuItem>
+        <MenuItem icon={<Pen />}>Edit</MenuItem>
+        <Divider />
+        <MenuLabel>File Operations</MenuLabel>
+        <MenuItem icon={<Upload />}>Upload</MenuItem>
+        <MenuItem icon={<Download />}>Download</MenuItem>
+        <Divider />
+        <MenuLabel>Dangerous Operations</MenuLabel>
+        <MenuItem icon={<Stop />}>Stop</MenuItem>
+        <MenuItem icon={<Trash />}>Delete</MenuItem>
+      </Menu>
+    </Card>
+  );
+}
+```
+
+### Disabled Menu Items
+
+Menu items can be set to disabled state.
+
+```jsx live
+function Demo() {
+  const { Add, Stop, Pen, Trash } = KubedIcons;
+
+  return (
+    <Card style={{ width: '220px' }}>
+      <Menu>
+        <MenuItem icon={<Add />}>Create</MenuItem>
+        <MenuItem icon={<Pen />} disabled>
+          Edit (Disabled)
+        </MenuItem>
+        <MenuItem icon={<Stop />}>Stop</MenuItem>
+        <MenuItem icon={<Trash />} disabled>
+          Delete (Disabled)
+        </MenuItem>
+      </Menu>
+    </Card>
+  );
+}
+```
+
+### Click Events
+
+Menu items support click events.
+
+```jsx live
+function Demo() {
+  const { Add, Stop, Pen, Trash } = KubedIcons;
+  const [action, setAction] = React.useState('');
+
+  return (
+    <Group direction="column" spacing="md">
+      {action && <Text>You clicked: {action}</Text>}
+      <Card style={{ width: '220px' }}>
+        <Menu>
+          <MenuItem icon={<Add />} onClick={() => setAction('Create')}>
+            Create
+          </MenuItem>
+          <MenuItem icon={<Pen />} onClick={() => setAction('Edit')}>
+            Edit
+          </MenuItem>
+          <MenuItem icon={<Stop />} onClick={() => setAction('Stop')}>
+            Stop
+          </MenuItem>
+          <MenuItem icon={<Trash />} onClick={() => setAction('Delete')}>
+            Delete
+          </MenuItem>
+        </Menu>
+      </Card>
+    </Group>
+  );
+}
+```
+
+### Link Menu Items
+
+Menu items can be used as links.
+
+```jsx live
+function Demo() {
+  const { Home, User, Setting, Logout } = KubedIcons;
+
+  return (
+    <Card style={{ width: '220px' }}>
+      <Menu>
+        <MenuItem icon={<Home />} as="a" href="#home">
+          Home
+        </MenuItem>
+        <MenuItem icon={<User />} as="a" href="#profile">
+          Profile
+        </MenuItem>
+        <MenuItem icon={<Setting />} as="a" href="#settings">
+          Settings
+        </MenuItem>
+        <Divider />
+        <MenuItem icon={<Logout />} as="a" href="#logout">
+          Logout
+        </MenuItem>
+      </Menu>
+    </Card>
+  );
+}
+```
+
+### Custom Width
+
+Set menu width through the `width` property.
+
+```jsx live
+function Demo() {
+  const { Add, Pen, Trash } = KubedIcons;
+
+  return (
+    <Group spacing="md">
+      <Card style={{ width: '180px' }}>
+        <Menu width={180}>
+          <MenuLabel>Width 180px</MenuLabel>
+          <MenuItem icon={<Add />}>Create</MenuItem>
+          <MenuItem icon={<Pen />}>Edit</MenuItem>
+          <MenuItem icon={<Trash />}>Delete</MenuItem>
+        </Menu>
+      </Card>
+      <Card style={{ width: '260px' }}>
+        <Menu width={260}>
+          <MenuLabel>Width 260px</MenuLabel>
+          <MenuItem icon={<Add />}>Create Resource</MenuItem>
+          <MenuItem icon={<Pen />}>Edit Configuration</MenuItem>
+          <MenuItem icon={<Trash />}>Delete Resource</MenuItem>
+        </Menu>
+      </Card>
+    </Group>
+  );
+}
+```
+
+### Icon Only
+
+Menu items can display only icons without text.
+
+```jsx live
+function Demo() {
+  const { Add, Stop, Pen, Trash } = KubedIcons;
+
+  return (
+    <Card style={{ width: '60px' }}>
+      <Menu width={60}>
+        <MenuItem icon={<Add />} />
+        <MenuItem icon={<Pen />} />
+        <MenuItem icon={<Stop />} />
+        <MenuItem icon={<Trash />} />
+      </Menu>
+    </Card>
+  );
+}
+```
+
+### Sidebar Navigation Menu
+
+Menu used as sidebar navigation.
+
+```jsx live
+function Demo() {
+  const { Cluster, Project, Pod, Service, ConfigMap } = KubedIcons;
+  const [active, setActive] = React.useState('clusters');
+
+  return (
+    <Card style={{ width: '240px' }}>
+      <Menu width={240}>
+        <MenuLabel>Workloads</MenuLabel>
+        <MenuItem
+          icon={<Pod />}
+          onClick={() => setActive('pods')}
+          style={{
+            backgroundColor: active === 'pods' ? '#e8f4ff' : 'transparent',
+          }}
+        >
+          Pods
+        </MenuItem>
+        <MenuItem
+          icon={<Service />}
+          onClick={() => setActive('services')}
+          style={{
+            backgroundColor: active === 'services' ? '#e8f4ff' : 'transparent',
+          }}
+        >
+          Services
+        </MenuItem>
+        <Divider />
+        <MenuLabel>Configuration</MenuLabel>
+        <MenuItem
+          icon={<ConfigMap />}
+          onClick={() => setActive('configmaps')}
+          style={{
+            backgroundColor: active === 'configmaps' ? '#e8f4ff' : 'transparent',
+          }}
+        >
+          ConfigMaps
+        </MenuItem>
+      </Menu>
+    </Card>
+  );
+}
+```
+
+### Dark Theme
+
+Menu supports dark theme.
+
+```jsx live
+function Demo() {
+  const { Add, Stop, Pen, Trash } = KubedIcons;
+
+  return (
+    <Card style={{ width: '220px', backgroundColor: '#242e42' }}>
+      <Menu themeType="dark">
+        <MenuLabel>Menu Title</MenuLabel>
+        <MenuItem icon={<Add />}>Create</MenuItem>
+        <MenuItem icon={<Pen />}>Edit</MenuItem>
+        <MenuItem icon={<Stop />}>Stop</MenuItem>
+        <Divider />
+        <MenuItem icon={<Trash />}>Delete</MenuItem>
+      </Menu>
+    </Card>
+  );
+}
+```
+
+### Compact Mode
+
+Reduce menu item spacing, suitable for limited space scenarios.
+
+```jsx live
+function Demo() {
+  const { Add, Pen, Stop, Trash } = KubedIcons;
+
+  return (
+    <Card style={{ width: '200px' }}>
+      <Menu width={200} style={{ padding: '4px 0' }}>
+        <MenuItem icon={<Add />} style={{ padding: '6px 12px' }}>
+          Create
+        </MenuItem>
+        <MenuItem icon={<Pen />} style={{ padding: '6px 12px' }}>
+          Edit
+        </MenuItem>
+        <MenuItem icon={<Stop />} style={{ padding: '6px 12px' }}>
+          Stop
+        </MenuItem>
+        <MenuItem icon={<Trash />} style={{ padding: '6px 12px' }}>
+          Delete
+        </MenuItem>
+      </Menu>
+    </Card>
+  );
+}
+```
+
+### Combined with Dropdown
+
+Menu is most commonly used with the Dropdown component.
+
+```jsx live
+function Demo() {
+  const { More, Add, Pen, Stop, Trash } = KubedIcons;
+
+  const menu = (
+    <Menu>
+      <MenuLabel>Operations</MenuLabel>
+      <MenuItem icon={<Add />}>Create</MenuItem>
+      <MenuItem icon={<Pen />}>Edit</MenuItem>
+      <MenuItem icon={<Stop />}>Stop</MenuItem>
+      <Divider />
+      <MenuItem icon={<Trash />}>Delete</MenuItem>
+    </Menu>
+  );
+
+  return (
+    <Dropdown content={menu}>
+      <Button>
+        <More size={16} style={{ marginRight: '4px' }} />
+        More Actions
+      </Button>
+    </Dropdown>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Menu
+
+| Property  | Description | Type                | Default |
+| --------- | ----------- | ------------------- | ------- |
+| width     | Menu width  | `number`            | `210`   |
+| themeType | Theme type  | `'light' \| 'dark'` | -       |
+| className | Custom class name | `string`      | -       |
+| style     | Custom styles | `CSSProperties`   | -       |
+| children  | Menu items  | `ReactNode`         | -       |
+
+### MenuItem
+
+MenuItem is actually a placeholder component, the actual rendering is done by MenuButton. Here are the available properties:
+
+| Property     | Description                     | Type                       | Default    |
+| ------------ | ------------------------------- | -------------------------- | ---------- |
+| icon         | Menu item icon                  | `ReactNode`                | -          |
+| disabled     | Whether disabled                | `boolean`                  | `false`    |
+| color        | Menu item color                 | `string`                   | -          |
+| rightSection | Right content area (like shortcuts) | `ReactNode`            | -          |
+| as           | Render as specified HTML element | `any`                     | `'button'` |
+| onClick      | Click event callback            | `(e: MouseEvent) => void`  | -          |
+| className    | Custom class name               | `string`                   | -          |
+| style        | Custom styles                   | `CSSProperties`            | -          |
+| themeType    | Theme type                      | `'light' \| 'dark'`        | -          |
+| children     | Menu item content               | `ReactNode`                | -          |
+
+### MenuLabel
+
+MenuLabel is a placeholder component, actually rendered as a Text component.
+
+| Property  | Description       | Type                | Default |
+| --------- | ----------------- | ------------------- | ------- |
+| children  | Label content     | `ReactNode`         | -       |
+| className | Custom class name | `string`            | -       |
+| style     | Custom styles     | `CSSProperties`     | -       |
+| themeType | Theme type        | `'light' \| 'dark'` | -       |
+
+:::info
+
+**About menu composition**:
+
+- Menu is the menu container, containing MenuItem, MenuLabel and Divider
+- MenuItem is a placeholder component, actually rendered by MenuButton
+- MenuLabel is a placeholder component, actually rendered as Text component for group labels
+- Divider is a separator used to divide different menu groups
+- Menu component internally filters and only renders MenuItem, MenuLabel and Divider type children
+
+**About themes**:
+
+- Uses light theme by default
+- Set `themeType="dark"` for dark theme
+- Dark theme is suitable for dark backgrounds
+- `themeType` is passed from Menu to MenuItem and MenuLabel
+
+**About menu item types**:
+
+- Default `as="button"`, renders as button element
+- Set `as="a"` to render as link, needs `href` property
+- Can use other HTML elements like `div`, `span`, etc.
+- `as` property is implemented through MenuButton component's styled-components
+
+**About width**:
+
+- Menu's `width` property controls the entire menu width
+- All menu items inherit this width
+- Default width is 210px
+
+**About rightSection**:
+
+- `rightSection` can be used to display shortcuts, badges, icons, etc.
+- Content is displayed on the right side of menu item
+- Commonly used to display keyboard shortcuts (like ⌘K) or status indicators
+
+:::
+
+## Usage Recommendations
+
+### Number of Menu Items
+
+Keep menu items at a moderate number:
+
+```jsx
+// Recommended: 5-8 menu items
+<Menu>
+  <MenuItem>Option 1</MenuItem>
+  <MenuItem>Option 2</MenuItem>
+  <MenuItem>Option 3</MenuItem>
+  <MenuItem>Option 4</MenuItem>
+  <MenuItem>Option 5</MenuItem>
+</Menu>
+
+// If too many items, consider using groups
+<Menu>
+  <MenuLabel>Group 1</MenuLabel>
+  <MenuItem>Option 1-1</MenuItem>
+  <MenuItem>Option 1-2</MenuItem>
+  <Divider />
+  <MenuLabel>Group 2</MenuLabel>
+  <MenuItem>Option 2-1</MenuItem>
+  <MenuItem>Option 2-2</MenuItem>
+</Menu>
+```
+
+### Use Icons to Enhance Recognition
+
+Add icons to menu items:
+
+```jsx
+import { Add, Pen, Trash } from '@kubed/icons';
+
+<Menu>
+  <MenuItem icon={<Add />}>Create</MenuItem>
+  <MenuItem icon={<Pen />}>Edit</MenuItem>
+  <MenuItem icon={<Trash />}>Delete</MenuItem>
+</Menu>;
+```
+
+### Organize Menu with Groups
+
+Use MenuLabel and Divider to organize menu:
+
+```jsx
+<Menu>
+  <MenuLabel>Basic Operations</MenuLabel>
+  <MenuItem>Create</MenuItem>
+  <MenuItem>Edit</MenuItem>
+  <Divider />
+  <MenuLabel>Dangerous Operations</MenuLabel>
+  <MenuItem>Delete</MenuItem>
+</Menu>
+```
+
+### Dangerous Operations Placement
+
+Place dangerous operations at the bottom of menu:
+
+```jsx
+<Menu>
+  <MenuItem>View</MenuItem>
+  <MenuItem>Edit</MenuItem>
+  <MenuItem>Copy</MenuItem>
+  <Divider />
+  <MenuItem icon={<Trash />}>Delete</MenuItem>
+</Menu>
+```
+
+### Disable Rather Than Hide
+
+Disable unavailable menu items instead of hiding them:
+
+```jsx
+<Menu>
+  <MenuItem>Start</MenuItem>
+  <MenuItem disabled>Stop (Pod not running)</MenuItem>
+  <MenuItem>Restart</MenuItem>
+</Menu>
+```
+
+### As Navigation Menu
+
+When used as sidebar navigation, highlight current selected item:
+
+```jsx
+const [active, setActive] = useState('pods');
+
+<Menu>
+  <MenuItem
+    icon={<Pod />}
+    onClick={() => setActive('pods')}
+    style={{
+      backgroundColor: active === 'pods' ? '#e8f4ff' : 'transparent',
+      fontWeight: active === 'pods' ? 600 : 400,
+    }}
+  >
+    Pods
+  </MenuItem>
+  <MenuItem
+    icon={<Service />}
+    onClick={() => setActive('services')}
+    style={{
+      backgroundColor: active === 'services' ? '#e8f4ff' : 'transparent',
+      fontWeight: active === 'services' ? 600 : 400,
+    }}
+  >
+    Services
+  </MenuItem>
+</Menu>;
+```
+
+### Link Menu Items
+
+Specify href property when using links:
+
+```jsx
+<Menu>
+  <MenuItem as="a" href="/home">
+    Home
+  </MenuItem>
+  <MenuItem as="a" href="/profile">
+    Profile
+  </MenuItem>
+  <MenuItem as="a" href="/settings">
+    Settings
+  </MenuItem>
+</Menu>
+```
+
+### Combined with Dropdown
+
+Menu is commonly used with Dropdown:
+
+```jsx
+<Dropdown content={<Menu>...</Menu>}>
+  <Button>Actions</Button>
+</Dropdown>
+```
+
+### Theme Selection
+
+Choose appropriate theme based on background:
+
+```jsx
+// Light background: use default theme
+<Card>
+  <Menu>...</Menu>
+</Card>
+
+// Dark background: use dark theme
+<Card style={{ backgroundColor: '#242e42' }}>
+  <Menu themeType="dark">...</Menu>
+</Card>
+```
+
+### Menu Width Settings
+
+Set appropriate width based on content:
+
+```jsx
+// Short text: smaller width
+<Menu width={180}>
+  <MenuItem>Create</MenuItem>
+  <MenuItem>Edit</MenuItem>
+</Menu>
+
+// Long text: larger width
+<Menu width={260}>
+  <MenuItem>Create Kubernetes Resource</MenuItem>
+  <MenuItem>Edit YAML Configuration</MenuItem>
+</Menu>
+```

@@ -1,25 +1,459 @@
 ---
-sidebar_position: 1
+sidebar_position: 20
 ---
 
-# UseUncontrolled
+# useUncontrolled
 
-> Hook documentation is being migrated. Check back soon!
+A Hook for managing controlled and uncontrolled state, allowing components to support both controlled and uncontrolled modes.
 
-## Overview
+## Basic Usage
 
-`UseUncontrolled` hook from Kube Design.
+```jsx live
+function Demo() {
+  // Uncontrolled mode example
+  function UncontrolledInput() {
+    const [value, setValue] = useUncontrolled({
+      value: undefined,
+      defaultValue: '',
+      finalValue: '',
+      rule: (val) => val !== undefined,
+      onChange: (val) => console.log('Changed:', val),
+    });
 
-## Usage
+    return (
+      <div style={{ marginBottom: '16px' }}>
+        <Input
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder="Uncontrolled input (internal state)"
+        />
+        <div
+          style={{
+            marginTop: '8px',
+            padding: '8px',
+            backgroundColor: 'var(--ifm-color-emphasis-100)',
+            borderRadius: '4px',
+            fontSize: '14px',
+          }}
+        >
+          Current value: {value || '(empty)'}
+        </div>
+      </div>
+    );
+  }
 
-```tsx
-import { UseUncontrolled } from '@kubed/hooks';
+  return <UncontrolledInput />;
+}
+```
 
-function Component() {
-  // Documentation coming soon
+## Controlled vs Uncontrolled Toggle
+
+Support both controlled and uncontrolled modes:
+
+```jsx live
+function Demo() {
+  const [mode, setMode] = useState('uncontrolled');
+  const [controlledValue, setControlledValue] = useState('Controlled mode initial value');
+
+  function FlexibleInput({ value, defaultValue, onChange }) {
+    const [internalValue, setInternalValue] = useUncontrolled({
+      value,
+      defaultValue,
+      finalValue: '',
+      rule: (val) => val !== undefined,
+      onChange,
+    });
+
+    return (
+      <Input
+        value={internalValue}
+        onChange={(e) => setInternalValue(e.target.value)}
+        placeholder="Flexible input"
+      />
+    );
+  }
+
+  return (
+    <div>
+      <Group spacing="md" style={{ marginBottom: '12px' }}>
+        <Button
+          onClick={() => setMode('uncontrolled')}
+          variant={mode === 'uncontrolled' ? 'filled' : 'outline'}
+        >
+          Uncontrolled Mode
+        </Button>
+        <Button
+          onClick={() => setMode('controlled')}
+          variant={mode === 'controlled' ? 'filled' : 'outline'}
+        >
+          Controlled Mode
+        </Button>
+      </Group>
+
+      <div
+        style={{
+          padding: '16px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          marginBottom: '12px',
+        }}
+      >
+        {mode === 'uncontrolled' ? (
+          <FlexibleInput defaultValue="Uncontrolled initial value" />
+        ) : (
+          <>
+            <FlexibleInput
+              value={controlledValue}
+              onChange={setControlledValue}
+            />
+            <Button
+              onClick={() => setControlledValue('')}
+              size="sm"
+              style={{ marginTop: '8px' }}
+            >
+              Clear (external control)
+            </Button>
+          </>
+        )}
+      </div>
+
+      <div
+        style={{
+          padding: '12px',
+          backgroundColor: 'var(--ifm-background-surface-color)',
+          border: '1px solid var(--ifm-color-emphasis-300)',
+          borderRadius: '6px',
+          fontSize: '14px',
+        }}
+      >
+        <div><strong>Current mode:</strong> {mode === 'uncontrolled' ? 'Uncontrolled' : 'Controlled'}</div>
+        {mode === 'controlled' && (
+          <div><strong>External state:</strong> {controlledValue || '(empty)'}</div>
+        )}
+      </div>
+    </div>
+  );
+}
+```
+
+## Custom Component
+
+Create custom component supporting both controlled and uncontrolled modes:
+
+```jsx live
+function Demo() {
+  function CustomCounter({ value, defaultValue = 0, onChange }) {
+    const [count, setCount] = useUncontrolled({
+      value,
+      defaultValue,
+      finalValue: 0,
+      rule: (val) => val !== undefined,
+      onChange,
+    });
+
+    const increment = () => setCount(count + 1);
+    const decrement = () => setCount(count - 1);
+    const reset = () => setCount(0);
+
+    return (
+      <div
+        style={{
+          padding: '20px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          textAlign: 'center',
+        }}
+      >
+        <div
+          style={{
+            fontSize: '48px',
+            fontWeight: 'bold',
+            color: 'var(--ifm-color-primary)',
+            marginBottom: '16px',
+          }}
+        >
+          {count}
+        </div>
+        <Group spacing="md">
+          <Button onClick={decrement}>-</Button>
+          <Button onClick={reset} variant="outline">Reset</Button>
+          <Button onClick={increment}>+</Button>
+        </Group>
+      </div>
+    );
+  }
+
+  const [mode, setMode] = useState('uncontrolled');
+  const [externalCount, setExternalCount] = useState(10);
+
+  return (
+    <div>
+      <Group spacing="md" style={{ marginBottom: '12px' }}>
+        <Button
+          onClick={() => setMode('uncontrolled')}
+          variant={mode === 'uncontrolled' ? 'filled' : 'outline'}
+        >
+          Uncontrolled
+        </Button>
+        <Button
+          onClick={() => setMode('controlled')}
+          variant={mode === 'controlled' ? 'filled' : 'outline'}
+        >
+          Controlled
+        </Button>
+      </Group>
+
+      {mode === 'uncontrolled' ? (
+        <CustomCounter defaultValue={5} />
+      ) : (
+        <>
+          <CustomCounter value={externalCount} onChange={setExternalCount} />
+          <div
+            style={{
+              marginTop: '12px',
+              padding: '12px',
+              backgroundColor: 'var(--ifm-background-surface-color)',
+              border: '1px solid var(--ifm-color-emphasis-300)',
+              borderRadius: '6px',
+            }}
+          >
+            External state value: {externalCount}
+            <Button onClick={() => setExternalCount(0)} size="sm" style={{ marginLeft: '12px' }}>
+              External Reset
+            </Button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+```
+
+## Complex State Management
+
+Manage complex object state:
+
+```jsx live
+function Demo() {
+  function UserForm({ value, defaultValue, onChange }) {
+    const [formData, setFormData] = useUncontrolled({
+      value,
+      defaultValue: defaultValue || { name: '', email: '' },
+      finalValue: { name: '', email: '' },
+      rule: (val) => val !== undefined,
+      onChange,
+    });
+
+    const updateField = (field, val) => {
+      setFormData({ ...formData, [field]: val });
+    };
+
+    return (
+      <div>
+        <div style={{ marginBottom: '12px' }}>
+          <label style={{ display: 'block', marginBottom: '4px' }}>Name</label>
+          <Input
+            value={formData.name}
+            onChange={(e) => updateField('name', e.target.value)}
+            placeholder="Enter name"
+          />
+        </div>
+        <div>
+          <label style={{ display: 'block', marginBottom: '4px' }}>Email</label>
+          <Input
+            value={formData.email}
+            onChange={(e) => updateField('email', e.target.value)}
+            placeholder="Enter email"
+          />
+        </div>
+      </div>
+    );
+  }
+
+  const [isControlled, setIsControlled] = useState(false);
+  const [userData, setUserData] = useState({ name: 'John', email: 'john@example.com' });
+
+  return (
+    <div>
+      <Button onClick={() => setIsControlled(!isControlled)} style={{ marginBottom: '12px' }}>
+        Switch to {isControlled ? 'Uncontrolled' : 'Controlled'} Mode
+      </Button>
+
+      {isControlled ? (
+        <>
+          <UserForm value={userData} onChange={setUserData} />
+          <div
+            style={{
+              marginTop: '12px',
+              padding: '12px',
+              backgroundColor: 'var(--ifm-color-emphasis-100)',
+              borderRadius: '6px',
+              fontSize: '14px',
+            }}
+          >
+            <div><strong>External state:</strong></div>
+            <div>Name: {userData.name}</div>
+            <div>Email: {userData.email}</div>
+          </div>
+        </>
+      ) : (
+        <UserForm defaultValue={{ name: 'Guest', email: '' }} />
+      )}
+    </div>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Parameters
+
+```ts
+function useUncontrolled<T>({
+  value,
+  defaultValue,
+  finalValue,
+  rule,
+  onChange,
+  onValueUpdate
+}: UncontrolledOptions<T>): readonly [T | null, (value: T | null) => void, UncontrolledMode]
+```
+
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| value | Value for controlled mode | `T \| null \| undefined` | - |
+| defaultValue | Default value for uncontrolled mode | `T \| null \| undefined` | - |
+| finalValue | Final value when both value and defaultValue are undefined | `T \| null` | - |
+| rule | Function to determine if value is valid | `(value: T \| null \| undefined) => boolean` | - |
+| onChange | Callback when value changes | `(value: T \| null) => void` | - |
+| onValueUpdate | Callback when value updates (optional) | `(value: T \| null) => void` | - |
+
+### Return Value
+
+Returns a readonly array containing current value, update function, and mode.
+
+```ts
+readonly [T | null, (value: T | null) => void, UncontrolledMode]
+```
+
+- `[0]`: Current value
+- `[1]`: Function to update value
+- `[2]`: Current mode (`'initial'` | `'controlled'` | `'uncontrolled'`)
+
+#### UncontrolledMode
+
+```ts
+type UncontrolledMode = 'initial' | 'controlled' | 'uncontrolled';
+```
+
+- `'initial'`: Initial state
+- `'controlled'`: Controlled mode
+- `'uncontrolled'`: Uncontrolled mode
+
+## How It Works
+
+1. **Controlled Mode**: When `rule(value)` returns `true`, use externally passed value
+2. **Uncontrolled Mode**: When `rule(value)` returns `false`, use internal state
+3. **Default Value**: In uncontrolled mode, initialize with `defaultValue`
+4. **onChange**: Always call `onChange` callback when value changes
+5. **rule Function**: Usually checks `value !== undefined` to determine controlled mode
+
+## Controlled vs Uncontrolled
+
+| Feature | Controlled Mode | Uncontrolled Mode |
+|---------|----------------|-------------------|
+| State Management | External (parent component) | Internal (component itself) |
+| Initial Value | `value` prop | `defaultValue` prop |
+| Update Method | Via `onChange` + external setState | Internal component management |
+| Use Cases | Need external control, form validation | Simple scenarios, independent components |
+
+## Usage Scenarios
+
+- **Component Library Development**: Allow components to support both modes
+- **Form Components**: Input, Select, Checkbox, etc.
+- **Reusable Components**: Improve component flexibility and reusability
+- **Progressive Enhancement**: Migrate from uncontrolled to controlled
+- **Hybrid Mode**: Partially controlled, partially uncontrolled
+
+## Best Practices
+
+### Component Design
+
+```tsx
+interface MyComponentProps {
+  value?: string; // Controlled mode
+  defaultValue?: string; // Uncontrolled mode
+  onChange?: (value: string) => void;
+}
+
+function MyComponent({ value, defaultValue, onChange }: MyComponentProps) {
+  const [internalValue, setValue] = useUncontrolled({
+    value,
+    defaultValue,
+    finalValue: '',
+    rule: (val) => val !== undefined,
+    onChange,
+  });
+
+  return <input value={internalValue} onChange={(e) => setValue(e.target.value)} />;
+}
+```
+
+### Type Safety
+
+```tsx
+// Ensure type consistency
+const [count, setCount] = useUncontrolled<number>({
+  value: props.value,
+  defaultValue: props.defaultValue ?? 0,
+  finalValue: 0,
+  onChange: props.onChange,
+});
+```
+
+### Validate Props
+
+Validate correct props usage in development environment:
+
+```jsx
+if (process.env.NODE_ENV !== 'production') {
+  if (value !== undefined && defaultValue !== undefined) {
+    console.warn('Should not provide both value and defaultValue');
+  }
+}
+```
+
+## Notes
+
+- Don't pass both `value` and `defaultValue` simultaneously
+- In controlled mode, must provide `onChange`
+- Switching from controlled to uncontrolled (or vice versa) may cause issues
+- `onChange` is called in both modes
+
+## TypeScript
+
+```tsx
+type FormData = {
+  username: string;
+  email: string;
+};
+
+function MyForm({
+  value,
+  defaultValue,
+  onChange,
+}: {
+  value?: FormData;
+  defaultValue?: FormData;
+  onChange?: (value: FormData) => void;
+}) {
+  const [formData, setFormData] = useUncontrolled<FormData>({
+    value,
+    defaultValue,
+    finalValue: { username: '', email: '' },
+    onChange,
+  });
+
+  return (/* ... */);
+}
+```

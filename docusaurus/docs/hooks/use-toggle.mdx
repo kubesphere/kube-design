@@ -1,46 +1,35 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 # useToggle
 
-用于管理布尔状态并提供切换功能的 Hook。
+在两个值之间切换的 Hook，比 useState 更加便捷和语义化。
 
-## 使用方法
+## 基本用法
 
-```jsx
-import { useToggle } from '@kubed/hooks';
-import { Button, Text, Group } from '@kubed/components';
-
+```jsx live
 function Demo() {
-  const [value, toggle] = useToggle(false);
-
-  return (
-    <Group>
-      <Button onClick={() => toggle()}>
-        Toggle
-      </Button>
-      <Text>Status: {value ? 'ON' : 'OFF'}</Text>
-    </Group>
-  );
-}
-```
-
-## 设置初始值
-
-```jsx
-import { useToggle } from '@kubed/hooks';
-import { Button } from '@kubed/components';
-
-function Demo() {
-  const [visible, toggle] = useToggle(true);
+  const [value, toggle] = useToggle('blue', ['blue', 'orange']);
 
   return (
     <div>
       <Button onClick={() => toggle()}>
-        {visible ? 'Hide' : 'Show'}
+        切换颜色
       </Button>
-      {visible && <p>Visible content</p>}
+      <div
+        style={{
+          marginTop: '20px',
+          padding: '40px',
+          backgroundColor: value,
+          color: 'white',
+          borderRadius: '8px',
+          textAlign: 'center',
+          fontWeight: 'bold',
+        }}
+      >
+        当前颜色: {value}
+      </div>
     </div>
   );
 }
@@ -48,72 +37,132 @@ function Demo() {
 
 ## 设置特定值
 
-```jsx
-import { useToggle } from '@kubed/hooks';
-import { Button, Group } from '@kubed/components';
+可以直接设置为特定的值：
 
+```jsx live
 function Demo() {
-  const [value, toggle] = useToggle(false);
+  const [value, toggle] = useToggle('left', ['left', 'center', 'right']);
 
   return (
-    <Group>
-      <Button onClick={() => toggle()}>Toggle</Button>
-      <Button onClick={() => toggle(true)}>Set True</Button>
-      <Button onClick={() => toggle(false)}>Set False</Button>
-      <p>Value: {String(value)}</p>
-    </Group>
+    <div>
+      <Group spacing="md">
+        <Button onClick={() => toggle('left')}>左对齐</Button>
+        <Button onClick={() => toggle('center')}>居中对齐</Button>
+        <Button onClick={() => toggle('right')}>右对齐</Button>
+        <Button onClick={() => toggle()}>切换</Button>
+      </Group>
+      <div style={{ marginTop: '20px', textAlign: value }}>
+        当前对齐方式: <strong>{value}</strong>
+      </div>
+    </div>
+  );
+}
+```
+
+## 布尔值切换
+
+提供了 `useBooleanToggle` 专门用于布尔值切换：
+
+```jsx live
+function Demo() {
+  const [isActive, toggle] = useBooleanToggle(false);
+
+  return (
+    <div>
+      <Button onClick={() => toggle()}>切换状态</Button>
+      <div
+        style={{
+          marginTop: '20px',
+          padding: '20px',
+          backgroundColor: isActive ? 'var(--ifm-color-success-lightest)' : 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          border: `1px solid ${isActive ? 'var(--ifm-color-success)' : 'var(--ifm-color-emphasis-300)'}`,
+        }}
+      >
+        状态: {isActive ? '✓ 激活' : '✗ 未激活'}
+      </div>
+    </div>
+  );
+}
+```
+
+## 主题切换示例
+
+```jsx live
+function Demo() {
+  const [theme, toggleTheme] = useToggle('light', ['light', 'dark']);
+
+  return (
+    <div>
+      <Button onClick={() => toggleTheme()}>切换主题</Button>
+      <div
+        style={{
+          marginTop: '20px',
+          padding: '30px',
+          backgroundColor: theme === 'light' ? '#ffffff' : '#1a1a1a',
+          color: theme === 'light' ? '#000000' : '#ffffff',
+          borderRadius: '8px',
+          border: `1px solid ${theme === 'light' ? '#e0e0e0' : '#333333'}`,
+          transition: 'all 0.3s',
+        }}
+      >
+        <h4>当前主题: {theme}</h4>
+        <p>这是 {theme === 'light' ? '亮色' : '暗色'} 主题模式</p>
+      </div>
+    </div>
   );
 }
 ```
 
 ## API
 
-### 参数
+### useToggle
 
-```typescript
-function useToggle(
+```ts
+function useToggle<T>(
+  initialValue: T,
+  options: [T, T]
+): [T, (value?: React.SetStateAction<T>) => void]
+```
+
+#### 参数
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| initialValue | 初始值 | `T` | - |
+| options | 可切换的两个值 | `[T, T]` | - |
+
+#### 返回值
+
+返回一个数组，包含当前值和切换函数：
+
+| 索引 | 说明 | 类型 |
+|------|------|------|
+| [0] | 当前值 | `T` |
+| [1] | 切换函数 | `(value?: React.SetStateAction<T>) => void` |
+
+### useBooleanToggle
+
+```ts
+function useBooleanToggle(
   initialValue?: boolean
-): [boolean, (value?: boolean) => void]
+): [boolean, (value?: React.SetStateAction<boolean>) => void]
 ```
 
-- `initialValue` - 初始布尔值（默认值：`false`）
+#### 参数
 
-### 返回值
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| initialValue | 初始布尔值 | `boolean` | `false` |
 
-返回一个元组：
+#### 返回值
 
-1. `value` - 当前布尔值
-2. `toggle` - 切换或设置值的函数
-   - `toggle()` - 在 true/false 之间切换
-   - `toggle(true)` - 设置为 true
-   - `toggle(false)` - 设置为 false
+返回一个数组，包含当前布尔值和切换函数。
 
-## 示例 - 模态框切换
+## 使用场景
 
-```jsx
-import { useToggle } from '@kubed/hooks';
-import { Button, Modal } from '@kubed/components';
-
-function ModalExample() {
-  const [opened, toggle] = useToggle(false);
-
-  return (
-    <>
-      <Button onClick={() => toggle(true)}>
-        Open Modal
-      </Button>
-
-      <Modal 
-        opened={opened} 
-        onClose={() => toggle(false)}
-      >
-        <h2>Modal Content</h2>
-        <p>This is a modal dialog.</p>
-        <Button onClick={() => toggle(false)}>
-          Close
-        </Button>
-      </Modal>
-    </>
-  );
-}
-```
+- **主题切换**: 亮色/暗色主题切换
+- **视图模式**: 列表/网格视图切换
+- **语言切换**: 中文/英文语言切换
+- **状态切换**: 启用/禁用状态切换
+- **对齐方式**: 左/右对齐切换

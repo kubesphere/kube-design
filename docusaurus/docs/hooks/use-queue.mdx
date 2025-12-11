@@ -1,25 +1,459 @@
 ---
-sidebar_position: 1
+sidebar_position: 23
 ---
 
-# UseQueue
+# useQueue
 
-> Hook 文档正在迁移中，敬请期待！
+管理有限队列的 Hook，自动分离活动状态和等待队列。
 
-## 概述
+## 基本用法
 
-来自 Kube Design 的 `UseQueue` hook。
+```jsx live
+function Demo() {
+  const { state, queue, add } = useQueue({ initialValues: [], limit: 3 });
+  const [inputValue, setInputValue] = useState('');
 
-## 使用方法
+  const handleAdd = () => {
+    if (inputValue.trim()) {
+      add(inputValue);
+      setInputValue('');
+    }
+  };
 
-```tsx
-import { UseQueue } from '@kubed/hooks';
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+        <Input
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyPress={(e) => e.key === 'Enter' && handleAdd()}
+          placeholder="输入项目"
+          style={{ flex: 1 }}
+        />
+        <Button onClick={handleAdd}>添加</Button>
+      </div>
 
-function Component() {
-  // Documentation coming soon
+      <div style={{ marginBottom: '12px' }}>
+        <div
+          style={{
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-success-lightest)',
+            borderRadius: '6px',
+            marginBottom: '8px',
+          }}
+        >
+          <strong>活动项目 (最多 3 个):</strong>
+          {state.length === 0 ? (
+            <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>无</div>
+          ) : (
+            state.map((item, index) => (
+              <div key={index} style={{ padding: '4px 0' }}>
+                {index + 1}. {item}
+              </div>
+            ))
+          )}
+        </div>
+
+        <div
+          style={{
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-warning-lightest)',
+            borderRadius: '6px',
+          }}
+        >
+          <strong>等待队列:</strong>
+          {queue.length === 0 ? (
+            <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>无</div>
+          ) : (
+            queue.map((item, index) => (
+              <div key={index} style={{ padding: '4px 0' }}>
+                {index + 1}. {item}
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+
+      <div
+        style={{
+          padding: '8px 12px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '4px',
+          fontSize: '14px',
+        }}
+      >
+        总计: {state.length + queue.length} 项 ({state.length} 活动, {queue.length} 等待)
+      </div>
+    </div>
+  );
+}
+```
+
+## 通知队列
+
+管理有限的通知显示：
+
+```jsx live
+function Demo() {
+  const { state: notifications, queue, add, update } = useQueue({
+    initialValues: [],
+    limit: 3,
+  });
+
+  const addNotification = (type) => {
+    const notification = {
+      id: Date.now(),
+      type,
+      message: `${type} 通知 ${Date.now()}`,
+    };
+    add(notification);
+  };
+
+  const removeNotification = (id) => {
+    update((items) => items.filter((item) => item.id !== id));
+  };
+
+  return (
+    <div>
+      <Group spacing="md" style={{ marginBottom: '16px' }}>
+        <Button onClick={() => addNotification('信息')} size="sm">
+          添加信息
+        </Button>
+        <Button onClick={() => addNotification('警告')} size="sm" variant="outline">
+          添加警告
+        </Button>
+        <Button onClick={() => addNotification('错误')} size="sm" variant="outline">
+          添加错误
+        </Button>
+      </Group>
+
+      <div style={{ marginBottom: '12px' }}>
+        <strong>显示中的通知 (最多 3 个):</strong>
+        {notifications.length === 0 ? (
+          <div
+            style={{
+              padding: '20px',
+              backgroundColor: 'var(--ifm-color-emphasis-100)',
+              borderRadius: '6px',
+              textAlign: 'center',
+              marginTop: '8px',
+            }}
+          >
+            暂无通知
+          </div>
+        ) : (
+          <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {notifications.map((notif) => (
+              <div
+                key={notif.id}
+                style={{
+                  padding: '12px',
+                  backgroundColor:
+                    notif.type === '错误'
+                      ? 'var(--ifm-color-danger-lightest)'
+                      : notif.type === '警告'
+                      ? 'var(--ifm-color-warning-lightest)'
+                      : 'var(--ifm-color-info-lightest)',
+                  borderRadius: '6px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <span>{notif.message}</span>
+                <Button size="sm" onClick={() => removeNotification(notif.id)}>
+                  ✕
+                </Button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {queue.length > 0 && (
+        <div
+          style={{
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-emphasis-100)',
+            borderRadius: '6px',
+            fontSize: '14px',
+          }}
+        >
+          等待队列中还有 {queue.length} 个通知
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## 任务队列
+
+管理并发任务数量：
+
+```jsx live
+function Demo() {
+  const { state: runningTasks, queue: pendingTasks, add, update, cleanQueue } = useQueue({
+    initialValues: [],
+    limit: 2,
+  });
+
+  const addTask = () => {
+    const task = {
+      id: Date.now(),
+      name: `任务 ${Date.now()}`,
+      progress: 0,
+    };
+    add(task);
+  };
+
+  const completeTask = (id) => {
+    update((items) => items.filter((item) => item.id !== id));
+  };
+
+  return (
+    <div>
+      <Group spacing="md" style={{ marginBottom: '16px' }}>
+        <Button onClick={addTask}>添加任务</Button>
+        <Button onClick={cleanQueue} variant="outline" disabled={pendingTasks.length === 0}>
+          清空队列
+        </Button>
+      </Group>
+
+      <div style={{ marginBottom: '12px' }}>
+        <div
+          style={{
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-success-lightest)',
+            borderRadius: '6px',
+            marginBottom: '8px',
+          }}
+        >
+          <strong>正在执行 (最多 2 个并发):</strong>
+          {runningTasks.length === 0 ? (
+            <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+              无运行任务
+            </div>
+          ) : (
+            runningTasks.map((task) => (
+              <div
+                key={task.id}
+                style={{
+                  marginTop: '8px',
+                  padding: '8px',
+                  backgroundColor: 'var(--ifm-background-surface-color)',
+                  borderRadius: '4px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <span>{task.name}</span>
+                <Button size="sm" onClick={() => completeTask(task.id)}>
+                  完成
+                </Button>
+              </div>
+            ))
+          )}
+        </div>
+
+        <div
+          style={{
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-warning-lightest)',
+            borderRadius: '6px',
+          }}
+        >
+          <strong>等待执行:</strong>
+          {pendingTasks.length === 0 ? (
+            <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+              无等待任务
+            </div>
+          ) : (
+            pendingTasks.map((task, index) => (
+              <div key={task.id} style={{ padding: '4px 0' }}>
+                {index + 1}. {task.name}
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+
+      <div
+        style={{
+          padding: '8px 12px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '4px',
+          fontSize: '14px',
+        }}
+      >
+        总任务数: {runningTasks.length + pendingTasks.length}
+      </div>
+    </div>
+  );
 }
 ```
 
 ## API
 
-文档编写中。
+### 参数
+
+```ts
+function useQueue<T>({
+  initialValues,
+  limit
+}: UseQueueOptions<T>): UseQueueResult<T>
+```
+
+#### UseQueueOptions
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| initialValues | 初始值数组 | `T[]` | `[]` |
+| limit | 活动状态的最大项目数 | `number` | - |
+
+### 返回值
+
+返回一个对象，包含以下属性和方法：
+
+```ts
+interface UseQueueResult<T> {
+  state: T[];                           // 活动项目（限制数量内）
+  queue: T[];                           // 等待队列
+  add: (...items: T[]) => void;        // 添加项目
+  update: (fn: (state: T[]) => T[]) => void;  // 更新所有项目
+  cleanQueue: () => void;              // 清空等待队列
+}
+```
+
+| 属性/方法 | 说明 | 类型 |
+|----------|------|------|
+| state | 当前活动的项目（最多 limit 个） | `T[]` |
+| queue | 等待队列中的项目 | `T[]` |
+| add | 添加一个或多个项目 | `(...items: T[]) => void` |
+| update | 使用函数更新所有项目 | `(fn: (state: T[]) => T[]) => void` |
+| cleanQueue | 清空等待队列，保留活动项目 | `() => void` |
+
+## 工作原理
+
+1. 维护两个数组：`state`（活动）和 `queue`（等待）
+2. 添加项目时，先填满 `state` 到 `limit`，其余进入 `queue`
+3. 更新时重新分配项目到 `state` 和 `queue`
+4. `cleanQueue` 只清空队列，保留活动项目
+
+## 特性
+
+- **自动分离**: 自动管理活动和等待状态
+- **灵活更新**: 支持函数式更新
+- **类型安全**: 完整的 TypeScript 泛型支持
+- **批量操作**: 支持一次添加多个项目
+
+## 使用场景
+
+- **通知系统**: 限制同时显示的通知数量
+- **任务队列**: 管理并发任务执行
+- **下载管理**: 限制同时下载数量
+- **播放列表**: 管理播放队列
+- **聊天消息**: 限制可见消息数量
+- **上传队列**: 管理文件上传顺序
+
+## 实际应用
+
+### 下载队列管理器
+
+```jsx
+function DownloadManager() {
+  const { state: downloading, queue: pending, add, update } = useQueue({
+    initialValues: [],
+    limit: 3, // 最多同时下载 3 个
+  });
+
+  const startDownload = (file) => {
+    add({ id: Date.now(), name: file, progress: 0 });
+  };
+
+  const updateProgress = (id, progress) => {
+    update((items) =>
+      items.map((item) =>
+        item.id === id ? { ...item, progress } : item
+      )
+    );
+  };
+
+  const completeDownload = (id) => {
+    update((items) => items.filter((item) => item.id !== id));
+  };
+
+  return (/* UI */);
+}
+```
+
+### 消息队列
+
+```jsx
+function MessageQueue() {
+  const { state: visible, queue: hidden, add } = useQueue({
+    initialValues: [],
+    limit: 5, // 最多显示 5 条消息
+  });
+
+  const sendMessage = (text) => {
+    add({
+      id: Date.now(),
+      text,
+      timestamp: new Date(),
+    });
+  };
+
+  return (/* UI */);
+}
+```
+
+## 最佳实践
+
+### 添加唯一标识
+
+```jsx
+// ✅ 推荐 - 使用唯一 ID
+add({ id: uuid(), ...data });
+
+// ❌ 避免 - 没有唯一标识
+add(data);
+```
+
+### 更新特定项目
+
+```jsx
+// 更新特定项目
+update((items) =>
+  items.map((item) =>
+    item.id === targetId ? { ...item, ...updates } : item
+  )
+);
+
+// 删除特定项目
+update((items) => items.filter((item) => item.id !== targetId));
+```
+
+### 类型安全
+
+```tsx
+interface Task {
+  id: number;
+  name: string;
+  status: 'pending' | 'running' | 'completed';
+}
+
+const queue = useQueue<Task>({
+  initialValues: [],
+  limit: 3,
+});
+```
+
+## 注意事项
+
+- `limit` 决定了 `state` 的最大长度
+- 使用 `update` 时，要返回新数组
+- `add` 可以一次添加多个项目
+- `cleanQueue` 不影响 `state` 中的项目
+- 组件重新渲染不会重置队列状态

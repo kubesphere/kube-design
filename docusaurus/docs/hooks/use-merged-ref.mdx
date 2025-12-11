@@ -1,25 +1,316 @@
 ---
-sidebar_position: 1
+sidebar_position: 19
 ---
 
-# UseMergedRef
+# useMergedRef
 
-> Hook 文档正在迁移中，敬请期待！
+合并多个 ref 到单个 ref 的 Hook，用于需要将多个 ref 附加到同一元素的场景。
 
-## 概述
+## 基本用法
 
-来自 Kube Design 的 `UseMergedRef` hook。
+```jsx live
+function Demo() {
+  const [value, setValue] = useState('');
+  const inputRef = useRef(null);
+  const focusRef = useRef(null);
+  const mergedRef = useMergedRef(inputRef, focusRef);
 
-## 使用方法
+  const handleFocus = () => {
+    if (focusRef.current) {
+      focusRef.current.focus();
+    }
+  };
 
-```tsx
-import { UseMergedRef } from '@kubed/hooks';
+  const handleGetValue = () => {
+    if (inputRef.current) {
+      setValue(inputRef.current.value);
+    }
+  };
 
-function Component() {
-  // Documentation coming soon
+  return (
+    <div>
+      <Input ref={mergedRef} placeholder="输入文本" style={{ marginBottom: '12px' }} />
+      <Group spacing="md">
+        <Button onClick={handleFocus}>聚焦输入框</Button>
+        <Button onClick={handleGetValue}>获取值</Button>
+      </Group>
+      {value && (
+        <div
+          style={{
+            marginTop: '12px',
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-emphasis-100)',
+            borderRadius: '6px',
+          }}
+        >
+          <strong>输入值:</strong> {value}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## 与 Hook 配合
+
+结合自定义 Hook 使用：
+
+```jsx live
+function Demo() {
+  const hoverRef = useRef(null);
+  const { ref: hoverHookRef, isHovered } = useHover();
+
+  const mergedRef = useMergedRef(hoverRef, hoverHookRef);
+
+  return (
+    <div>
+      <div
+        ref={mergedRef}
+        style={{
+          padding: '32px',
+          backgroundColor: isHovered
+            ? 'var(--ifm-color-primary-lightest)'
+            : 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          textAlign: 'center',
+          cursor: 'pointer',
+          transition: 'background-color 0.2s',
+        }}
+      >
+        <div style={{ fontSize: '48px', marginBottom: '12px' }}>{isHovered ? '👆' : '👇'}</div>
+        <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>
+          {isHovered ? '鼠标悬停中' : '将鼠标悬停在这里'}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## 转发 ref
+
+在组件中转发多个 ref：
+
+```jsx live
+function Demo() {
+  const CustomInput = React.forwardRef((props, ref) => {
+    const internalRef = useRef(null);
+    const mergedRef = useMergedRef(ref, internalRef);
+
+    useDidMount(() => {
+      console.log('组件已挂载，ref 已合并');
+    });
+
+    return <Input ref={mergedRef} {...props} />;
+  });
+
+  const externalRef = useRef(null);
+
+  const handleFocus = () => {
+    if (externalRef.current) {
+      externalRef.current.focus();
+    }
+  };
+
+  return (
+    <div>
+      <CustomInput ref={externalRef} placeholder="自定义输入框" style={{ marginBottom: '12px' }} />
+      <Button onClick={handleFocus}>外部聚焦</Button>
+    </div>
+  );
+}
+```
+
+## 动态 ref 数量
+
+合并动态数量的 refs：
+
+```jsx live
+function Demo() {
+  const [count, setCount] = useState(1);
+  const refs = Array.from({ length: count }, () => useRef(null));
+  const mergedRef = useMergedRef(...refs);
+
+  const handleClick = () => {
+    refs.forEach((ref, index) => {
+      if (ref.current) {
+        console.log(`Ref ${index + 1}:`, ref.current);
+      }
+    });
+  };
+
+  return (
+    <div>
+      <div
+        style={{
+          marginBottom: '12px',
+          padding: '12px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '6px',
+        }}
+      >
+        <strong>当前合并了 {count} 个 refs</strong>
+      </div>
+      <Group spacing="md" style={{ marginBottom: '12px' }}>
+        <Button onClick={() => setCount(Math.max(1, count - 1))}>减少</Button>
+        <Button onClick={() => setCount(count + 1)}>增加</Button>
+        <Button onClick={handleClick}>日志输出</Button>
+      </Group>
+      <div
+        ref={mergedRef}
+        style={{
+          padding: '24px',
+          backgroundColor: 'var(--ifm-background-surface-color)',
+          border: '1px solid var(--ifm-color-emphasis-300)',
+          borderRadius: '8px',
+          textAlign: 'center',
+        }}
+      >
+        这个元素被 {count} 个 ref 引用
+      </div>
+    </div>
+  );
 }
 ```
 
 ## API
 
-文档编写中。
+### 参数
+
+```ts
+function useMergedRef<T = any>(
+  ...refs: Array<React.Ref<T> | undefined>
+): (instance: T | null) => void;
+```
+
+| 参数    | 说明              | 类型                               | 默认值 |
+| ------- | ----------------- | ---------------------------------- | ------ |
+| ...refs | 要合并的 ref 数组 | `Array<React.Ref<T> \| undefined>` | -      |
+
+### 返回值
+
+返回一个合并后的 ref 回调函数。
+
+```ts
+(instance: T | null) => void
+```
+
+## 支持的 ref 类型
+
+`useMergedRef` 支持所有类型的 React refs：
+
+### Ref 对象
+
+```jsx
+const ref = useRef(null);
+const mergedRef = useMergedRef(ref);
+```
+
+### Ref 回调
+
+```jsx
+const refCallback = (node) => {
+  console.log('Node:', node);
+};
+const mergedRef = useMergedRef(refCallback);
+```
+
+### 转发 Ref
+
+```jsx
+const Component = React.forwardRef((props, ref) => {
+  const internalRef = useRef(null);
+  const mergedRef = useMergedRef(ref, internalRef);
+  return <div ref={mergedRef} />;
+});
+```
+
+## 工作原理
+
+1. 接收任意数量的 refs（ref 对象或回调函数）
+2. 返回一个新的 ref 回调函数
+3. 当元素挂载或更新时，同时更新所有 refs
+4. 自动处理 `null` 和 `undefined` 的情况
+
+## 使用场景
+
+- **Hook 组合**: 多个需要 ref 的 Hook 一起使用
+- **转发 ref**: 组件内部需要 ref，同时对外暴露 ref
+- **第三方库**: 集成需要 ref 的第三方库
+- **测量元素**: 同时用于多个测量或监听目的
+- **动画库**: 多个动画库同时控制一个元素
+
+## 常见场景
+
+### 与 useClickOutside 结合
+
+```jsx
+function Dropdown() {
+  const internalRef = useRef(null);
+  const clickOutsideRef = useClickOutside(() => setOpened(false));
+  const mergedRef = useMergedRef(internalRef, clickOutsideRef);
+
+  return <div ref={mergedRef}>...</div>;
+}
+```
+
+### 与 useHover 结合
+
+```jsx
+function Card() {
+  const cardRef = useRef(null);
+  const { ref: hoverRef, isHovered } = useHover();
+  const mergedRef = useMergedRef(cardRef, hoverRef);
+
+  return <div ref={mergedRef}>...</div>;
+}
+```
+
+### 与 forwardRef 结合
+
+```jsx
+const Button = React.forwardRef((props, ref) => {
+  const internalRef = useRef(null);
+  const mergedRef = useMergedRef(ref, internalRef);
+
+  return <button ref={mergedRef} {...props} />;
+});
+```
+
+## 注意事项
+
+- 传入的 refs 可以是 `undefined` 或 `null`，会自动过滤
+- 返回的 ref 是稳定的，不会在每次渲染时改变
+- 支持任意数量的 refs 合并
+- 对性能影响极小
+
+## TypeScript 类型
+
+```tsx
+// 基本用法
+const ref1 = useRef<HTMLDivElement>(null);
+const ref2 = useRef<HTMLDivElement>(null);
+const mergedRef = useMergedRef<HTMLDivElement>(ref1, ref2);
+
+// 带可选 ref
+const mergedRef = useMergedRef<HTMLDivElement>(ref1, ref2, undefined);
+
+// 组件中使用
+type Props = {
+  customRef?: React.Ref<HTMLDivElement>;
+};
+
+const Component = ({ customRef }: Props) => {
+  const internalRef = useRef<HTMLDivElement>(null);
+  const mergedRef = useMergedRef(customRef, internalRef);
+
+  return <div ref={mergedRef} />;
+};
+```
+
+## 最佳实践
+
+- 在需要多个 ref 时使用，单个 ref 直接使用即可
+- 与 `forwardRef` 配合使用时特别有用
+- 确保传入的 refs 类型一致
+- 可以安全地传入 `undefined` 作为参数

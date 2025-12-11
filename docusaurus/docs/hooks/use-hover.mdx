@@ -1,25 +1,176 @@
 ---
-sidebar_position: 1
+sidebar_position: 4
 ---
 
-# UseHover
+# useHover
 
-> Hook 文档正在迁移中，敬请期待！
+检测元素悬停状态的 Hook，返回 ref 和悬停状态。
 
-## 概述
+## 基本用法
 
-来自 Kube Design 的 `UseHover` hook。
+```jsx live
+function Demo() {
+  const { ref, isHovered } = useHover();
 
-## 使用方法
+  return (
+    <div
+      ref={ref}
+      style={{
+        padding: '40px',
+        backgroundColor: isHovered ? 'var(--ifm-color-primary)' : 'var(--ifm-color-emphasis-200)',
+        color: isHovered ? 'white' : 'var(--ifm-font-color-base)',
+        borderRadius: '8px',
+        textAlign: 'center',
+        transition: 'all 0.3s',
+        cursor: 'pointer',
+      }}
+    >
+      {isHovered ? '鼠标悬停中 ✓' : '鼠标移到这里'}
+    </div>
+  );
+}
+```
 
-```tsx
-import { UseHover } from '@kubed/hooks';
+## 卡片悬停效果
 
-function Component() {
-  // Documentation coming soon
+```jsx live
+function Demo() {
+  const { ref, isHovered } = useHover();
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        padding: '30px',
+        backgroundColor: 'var(--ifm-background-surface-color)',
+        border: '1px solid var(--ifm-color-emphasis-300)',
+        borderRadius: '12px',
+        transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
+        boxShadow: isHovered ? '0 8px 24px rgba(0,0,0,0.12)' : '0 2px 8px rgba(0,0,0,0.04)',
+        transition: 'all 0.3s',
+        cursor: 'pointer',
+      }}
+    >
+      <h4>交互式卡片</h4>
+      <p>鼠标悬停查看效果</p>
+      <div style={{ color: 'var(--ifm-color-primary)' }}>
+        {isHovered && '✨ 悬停中'}
+      </div>
+    </div>
+  );
+}
+```
+
+## 图片预览
+
+```jsx live
+function Demo() {
+  const { ref, isHovered } = useHover();
+
+  return (
+    <div style={{ position: 'relative', display: 'inline-block' }}>
+      <div
+        ref={ref}
+        style={{
+          width: '200px',
+          height: '150px',
+          backgroundColor: 'var(--ifm-color-emphasis-200)',
+          borderRadius: '8px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          transition: 'opacity 0.3s',
+          opacity: isHovered ? 0.8 : 1,
+        }}
+      >
+        图片区域
+      </div>
+      {isHovered && (
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            pointerEvents: 'none',
+            color: 'white',
+            backgroundColor: 'rgba(0,0,0,0.7)',
+            padding: '8px 16px',
+            borderRadius: '4px',
+            fontSize: '14px',
+          }}
+        >
+          点击查看大图
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## 显示更多信息
+
+```jsx live
+function Demo() {
+  const { ref, isHovered } = useHover();
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        padding: '24px',
+        backgroundColor: 'var(--ifm-background-surface-color)',
+        border: '1px solid var(--ifm-color-emphasis-300)',
+        borderRadius: '8px',
+        cursor: 'pointer',
+      }}
+    >
+      <h4>产品名称</h4>
+      <p>基本描述信息</p>
+      {isHovered && (
+        <div
+          style={{
+            marginTop: '16px',
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-primary-lightest)',
+            borderRadius: '4px',
+            fontSize: '14px',
+          }}
+        >
+          <strong>详细信息：</strong>
+          <p style={{ margin: '8px 0 0 0' }}>悬停时显示更多详细内容</p>
+        </div>
+      )}
+    </div>
+  );
 }
 ```
 
 ## API
 
-文档编写中。
+### 参数
+
+```ts
+function useHover<T extends HTMLElement = HTMLElement>(): {
+  ref: RefObject<T>;
+  isHovered: boolean;
+}
+```
+
+无参数。
+
+### 返回值
+
+| 属性 | 说明 | 类型 |
+|------|------|------|
+| ref | 需要绑定到目标元素的 ref | `RefObject<T>` |
+| isHovered | 是否处于悬停状态 | `boolean` |
+
+## 使用场景
+
+- **卡片交互**: 鼠标悬停时显示阴影或提升效果
+- **工具提示**: 悬停时显示额外信息
+- **按钮效果**: 悬停时改变按钮样式
+- **图片预览**: 悬停时显示放大镜或操作按钮
+- **列表项**: 悬停时高亮当前项

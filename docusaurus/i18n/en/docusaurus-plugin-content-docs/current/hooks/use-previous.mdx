@@ -1,25 +1,212 @@
 ---
-sidebar_position: 1
+sidebar_position: 13
 ---
 
-# UsePrevious
+# usePrevious
 
-> Hook documentation is being migrated. Check back soon!
+A Hook for getting the value from the previous render.
 
-## Overview
+## Basic Usage
 
-`UsePrevious` hook from Kube Design.
+```jsx live
+function Demo() {
+  const [count, setCount] = useState(0);
+  const previousCount = usePrevious(count);
 
-## Usage
+  return (
+    <div>
+      <div
+        style={{
+          padding: '20px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          marginBottom: '12px',
+        }}
+      >
+        <div style={{ marginBottom: '8px' }}>
+          Current value: <strong style={{ fontSize: '24px', color: 'var(--ifm-color-primary)' }}>{count}</strong>
+        </div>
+        <div>
+          Previous value: <strong>{previousCount ?? 'None'}</strong>
+        </div>
+        {previousCount !== undefined && (
+          <div style={{ marginTop: '8px', color: 'var(--ifm-color-emphasis-700)' }}>
+            Change: {count - previousCount > 0 ? '+' : ''}{count - previousCount}
+          </div>
+        )}
+      </div>
+      <Group spacing="md">
+        <Button onClick={() => setCount(count + 1)}>+1</Button>
+        <Button onClick={() => setCount(count - 1)}>-1</Button>
+        <Button onClick={() => setCount(0)} variant="outline">Reset</Button>
+      </Group>
+    </div>
+  );
+}
+```
 
-```tsx
-import { UsePrevious } from '@kubed/hooks';
+## Comparing Input Changes
 
-function Component() {
-  // Documentation coming soon
+Detect changes in input value:
+
+```jsx live
+function Demo() {
+  const [input, setInput] = useState('');
+  const previousInput = usePrevious(input);
+
+  const hasChanged = input !== previousInput;
+
+  return (
+    <div>
+      <Input
+        placeholder="Enter text"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+      />
+      <div
+        style={{
+          marginTop: '12px',
+          padding: '12px',
+          backgroundColor: hasChanged ? 'var(--ifm-color-warning-lightest)' : 'var(--ifm-color-success-lightest)',
+          borderRadius: '6px',
+        }}
+      >
+        <div>Current input: <strong>{input || '(empty)'}</strong></div>
+        <div>Previous input: <strong>{previousInput || '(empty)'}</strong></div>
+        <div style={{ marginTop: '8px' }}>
+          {hasChanged ? '✏️ Content has changed' : '✓ Content unchanged'}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## Form State Tracking
+
+Track changes in form submission status:
+
+```jsx live
+function Demo() {
+  const [status, setStatus] = useState('idle');
+  const previousStatus = usePrevious(status);
+
+  const handleSubmit = () => {
+    setStatus('loading');
+    setTimeout(() => setStatus('success'), 1500);
+    setTimeout(() => setStatus('idle'), 3000);
+  };
+
+  const statusConfig = {
+    idle: { label: 'Idle', color: 'var(--ifm-color-emphasis-300)', icon: '⚪' },
+    loading: { label: 'Loading', color: 'var(--ifm-color-primary)', icon: '🔵' },
+    success: { label: 'Success', color: 'var(--ifm-color-success)', icon: '🟢' },
+  };
+
+  return (
+    <div>
+      <Button onClick={handleSubmit} disabled={status === 'loading'}>
+        Submit Form
+      </Button>
+      <div
+        style={{
+          marginTop: '16px',
+          padding: '16px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+        }}
+      >
+        <div style={{ marginBottom: '8px' }}>
+          {statusConfig[status].icon} Current status: <strong>{statusConfig[status].label}</strong>
+        </div>
+        {previousStatus && (
+          <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+            Changed from "{statusConfig[previousStatus].label}" to "{statusConfig[status].label}"
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+```
+
+## Animation Transitions
+
+Trigger animations based on value changes:
+
+```jsx live
+function Demo() {
+  const [value, setValue] = useState(50);
+  const previousValue = usePrevious(value);
+
+  const isIncreasing = previousValue !== undefined && value > previousValue;
+  const isDecreasing = previousValue !== undefined && value < previousValue;
+
+  return (
+    <div>
+      <div
+        style={{
+          marginBottom: '16px',
+          padding: '24px',
+          backgroundColor: 'var(--ifm-background-surface-color)',
+          border: '1px solid var(--ifm-color-emphasis-300)',
+          borderRadius: '8px',
+          textAlign: 'center',
+        }}
+      >
+        <div
+          style={{
+            fontSize: '48px',
+            fontWeight: 'bold',
+            color: isIncreasing ? 'var(--ifm-color-success)' : isDecreasing ? 'var(--ifm-color-danger)' : 'var(--ifm-color-primary)',
+            transition: 'all 0.3s',
+          }}
+        >
+          {value}
+          {isIncreasing && ' ↑'}
+          {isDecreasing && ' ↓'}
+        </div>
+      </div>
+      <Group spacing="md">
+        <Button onClick={() => setValue(value - 10)}>-10</Button>
+        <Button onClick={() => setValue(value + 10)}>+10</Button>
+      </Group>
+    </div>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Parameters
+
+```ts
+function usePrevious<T>(value: T): T | undefined
+```
+
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| value | Value to track | `T` | - |
+
+### Return Value
+
+Returns the value from the previous render. Returns `undefined` on the first render.
+
+```ts
+T | undefined
+```
+
+## How It Works
+
+Implemented using `useRef` and `useEffect`:
+1. After each render, save the current value to a ref
+2. On the next render, the ref contains the previous value
+
+## Usage Scenarios
+
+- **Value Change Detection**: Compare current value with previous value
+- **Animation Triggers**: Trigger animations based on value changes
+- **Form Validation**: Compare form field changes
+- **Undo Functionality**: Implement simple undo operations
+- **State Transitions**: Track state machine state changes
+- **Performance Optimization**: Avoid unnecessary calculations or requests

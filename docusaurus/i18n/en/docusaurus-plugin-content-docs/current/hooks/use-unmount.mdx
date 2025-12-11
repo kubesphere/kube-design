@@ -1,25 +1,228 @@
 ---
-sidebar_position: 1
+sidebar_position: 11
 ---
 
-# UseUnmount
+# useUnmount
 
-> Hook documentation is being migrated. Check back soon!
+A Hook for executing a callback when the component unmounts, equivalent to `componentWillUnmount` in class components.
 
-## Overview
+## Basic Usage
 
-`UseUnmount` hook from Kube Design.
+```jsx live
+function Demo() {
+  const [visible, setVisible] = useState(true);
 
-## Usage
+  const ChildComponent = () => {
+    useUnmount(() => {
+      console.log('Component unmounted');
+    });
 
-```tsx
-import { UseUnmount } from '@kubed/hooks';
+    return (
+      <div
+        style={{
+          padding: '20px',
+          backgroundColor: 'var(--ifm-color-success-lightest)',
+          borderRadius: '8px',
+          border: '1px solid var(--ifm-color-success)',
+        }}
+      >
+        This component will log to console when unmounted
+      </div>
+    );
+  };
 
-function Component() {
-  // Documentation coming soon
+  return (
+    <div>
+      <Button onClick={() => setVisible(!visible)}>
+        {visible ? 'Unmount Component' : 'Mount Component'}
+      </Button>
+      <div style={{ marginTop: '12px' }}>{visible && <ChildComponent />}</div>
+    </div>
+  );
+}
+```
+
+## Cleanup Timer
+
+Clear timer on component unmount:
+
+```jsx live
+function Demo() {
+  const [show, setShow] = useState(true);
+
+  const Timer = () => {
+    const [count, setCount] = useState(0);
+
+    useDidMount(() => {
+      const timer = setInterval(() => {
+        setCount((c) => c + 1);
+      }, 1000);
+
+      return () => clearInterval(timer);
+    });
+
+    useUnmount(() => {
+      console.log('Timer cleaned up, final count:', count);
+    });
+
+    return (
+      <div
+        style={{
+          padding: '20px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          textAlign: 'center',
+        }}
+      >
+        <div style={{ fontSize: '32px', fontWeight: 'bold' }}>{count}</div>
+        <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>Seconds</div>
+      </div>
+    );
+  };
+
+  return (
+    <div>
+      <Button onClick={() => setShow(!show)}>{show ? 'Stop Timer' : 'Start Timer'}</Button>
+      <div style={{ marginTop: '12px' }}>{show && <Timer />}</div>
+    </div>
+  );
+}
+```
+
+## Cancel API Request
+
+Cancel pending requests on component unmount:
+
+```jsx live
+function Demo() {
+  const [show, setShow] = useState(true);
+
+  const DataFetcher = () => {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const abortController = useRef(null);
+
+    useDidMount(() => {
+      abortController.current = new AbortController();
+
+      // Simulate API request
+      setTimeout(() => {
+        if (abortController.current && !abortController.current.signal.aborted) {
+          setData({ message: 'Data loaded successfully' });
+          setLoading(false);
+        }
+      }, 2000);
+    });
+
+    useUnmount(() => {
+      // Cancel request
+      if (abortController.current) {
+        abortController.current.abort();
+        console.log('API request cancelled');
+      }
+    });
+
+    if (loading) {
+      return <Loading />;
+    }
+
+    return (
+      <div
+        style={{
+          padding: '20px',
+          backgroundColor: 'var(--ifm-color-success-lightest)',
+          borderRadius: '8px',
+        }}
+      >
+        {data?.message}
+      </div>
+    );
+  };
+
+  return (
+    <div>
+      <Button onClick={() => setShow(!show)}>{show ? 'Unmount' : 'Mount'}</Button>
+      <div style={{ marginTop: '12px' }}>{show && <DataFetcher />}</div>
+    </div>
+  );
+}
+```
+
+## Save State
+
+Save component state on unmount:
+
+```jsx live
+function Demo() {
+  const [show, setShow] = useState(true);
+
+  const Editor = () => {
+    const [content, setContent] = useState('');
+
+    useUnmount(() => {
+      if (content) {
+        localStorage.setItem('editor-draft', content);
+        console.log('Draft saved:', content);
+      }
+    });
+
+    return (
+      <div>
+        <Textarea
+          placeholder="Enter content (auto-saved on unmount)"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          rows={4}
+        />
+        <div style={{ marginTop: '8px', fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+          Click "Unmount" button to save to localStorage
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div>
+      <Button onClick={() => setShow(!show)}>{show ? 'Unmount (Save)' : 'Mount'}</Button>
+      <div style={{ marginTop: '12px' }}>{show && <Editor />}</div>
+    </div>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Parameters
+
+```ts
+function useUnmount(fn: () => void): void;
+```
+
+| Parameter | Description                                       | Type         | Default |
+| --------- | ------------------------------------------------- | ------------ | ------- |
+| fn        | Callback function to execute on component unmount | `() => void` | -       |
+
+### Return Value
+
+No return value.
+
+## Features
+
+- **Stable Reference**: Correctly executes the latest function even if the callback changes
+- **Auto Cleanup**: Automatically executes on component unmount
+- **Simple to Use**: No need to manually manage useEffect cleanup function
+
+## Notes
+
+- Only executes once on component unmount
+- Callback function reference automatically updates to latest version
+- Don't execute operations that cause side effects (like setState) in the callback
+
+## Usage Scenarios
+
+- **Clear Timers**: Clean up setTimeout/setInterval
+- **Cancel Requests**: Cancel incomplete API requests
+- **Remove Listeners**: Remove event listeners
+- **Save State**: Save component state to localStorage
+- **Release Resources**: Release subscriptions, connections, and other resources
+- **Logging**: Record component lifecycle

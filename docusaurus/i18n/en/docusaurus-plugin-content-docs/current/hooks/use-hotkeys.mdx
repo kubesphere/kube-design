@@ -1,25 +1,288 @@
 ---
-sidebar_position: 1
+sidebar_position: 8
 ---
 
-# UseHotkeys
+# useHotkeys
 
-> Hook documentation is being migrated. Check back soon!
+A Hook for managing keyboard shortcuts, used to register and handle hotkey combinations.
 
-## Overview
+## Basic Usage
 
-`UseHotkeys` hook from Kube Design.
+```jsx live
+function Demo() {
+  const [count, setCount] = useState(0);
 
-## Usage
+  useHotkeys([
+    ['ctrl+k', () => setCount((c) => c + 1)],
+    ['ctrl+j', () => setCount((c) => c - 1)],
+    ['ctrl+r', () => setCount(0)],
+  ]);
 
-```tsx
-import { UseHotkeys } from '@kubed/hooks';
+  return (
+    <div style={{ textAlign: 'center' }}>
+      <div
+        style={{
+          fontSize: '48px',
+          fontWeight: 'bold',
+          marginBottom: '20px',
+          color: 'var(--ifm-color-primary)',
+        }}
+      >
+        {count}
+      </div>
+      <div
+        style={{
+          padding: '20px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+        }}
+      >
+        <h4 style={{ marginTop: 0 }}>Hotkeys</h4>
+        <div style={{ textAlign: 'left', display: 'inline-block' }}>
+          <div><kbd>Ctrl+K</kbd> Increment</div>
+          <div><kbd>Ctrl+J</kbd> Decrement</div>
+          <div><kbd>Ctrl+R</kbd> Reset</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
 
-function Component() {
-  // Documentation coming soon
+## Text Operations
+
+Common text editing shortcuts:
+
+```jsx live
+function Demo() {
+  const [text, setText] = useState('Use hotkeys to manipulate text');
+  const [action, setAction] = useState('');
+
+  useHotkeys([
+    ['ctrl+b', () => {
+      setText((t) => `**${t}**`);
+      setAction('Bold');
+    }],
+    ['ctrl+i', () => {
+      setText((t) => `*${t}*`);
+      setAction('Italic');
+    }],
+    ['ctrl+u', () => {
+      setText((t) => t.toUpperCase());
+      setAction('Uppercase');
+    }],
+    ['ctrl+l', () => {
+      setText((t) => t.toLowerCase());
+      setAction('Lowercase');
+    }],
+  ]);
+
+  return (
+    <div>
+      <Textarea
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        rows={4}
+      />
+      {action && (
+        <div
+          style={{
+            marginTop: '12px',
+            padding: '8px 12px',
+            backgroundColor: 'var(--ifm-color-success-lightest)',
+            borderRadius: '4px',
+            fontSize: '14px',
+          }}
+        >
+          ✓ Action executed: {action}
+        </div>
+      )}
+      <div
+        style={{
+          marginTop: '16px',
+          padding: '12px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '6px',
+          fontSize: '14px',
+        }}
+      >
+        <strong>Hotkeys:</strong>
+        <div><kbd>Ctrl+B</kbd> Bold</div>
+        <div><kbd>Ctrl+I</kbd> Italic</div>
+        <div><kbd>Ctrl+U</kbd> To Uppercase</div>
+        <div><kbd>Ctrl+L</kbd> To Lowercase</div>
+      </div>
+    </div>
+  );
+}
+```
+
+## Modal Control
+
+Control modals with hotkeys:
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = useState(false);
+
+  useHotkeys([
+    ['ctrl+m', () => setVisible((v) => !v)],
+    ['escape', () => setVisible(false)],
+  ]);
+
+  return (
+    <div>
+      <Button onClick={() => setVisible(true)}>
+        Open Modal
+      </Button>
+      <div
+        style={{
+          marginTop: '12px',
+          padding: '12px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '6px',
+          fontSize: '14px',
+        }}
+      >
+        <strong>Hotkeys:</strong>
+        <div><kbd>Ctrl+M</kbd> Open/Close Modal</div>
+        <div><kbd>Escape</kbd> Close Modal</div>
+      </div>
+      <Modal
+        visible={visible}
+        onCancel={() => setVisible(false)}
+        title="Hotkey Demo"
+      >
+        <p>Press <kbd>Escape</kbd> or <kbd>Ctrl+M</kbd> to close</p>
+      </Modal>
+    </div>
+  );
+}
+```
+
+## Search Functionality
+
+Trigger search with hotkeys:
+
+```jsx live
+function Demo() {
+  const [searchVisible, setSearchVisible] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+
+  useHotkeys([
+    ['ctrl+/', () => setSearchVisible(true)],
+    ['escape', () => setSearchVisible(false)],
+  ]);
+
+  return (
+    <div>
+      {!searchVisible ? (
+        <div
+          style={{
+            padding: '40px',
+            backgroundColor: 'var(--ifm-color-emphasis-100)',
+            borderRadius: '8px',
+            textAlign: 'center',
+          }}
+        >
+          <p>Press <kbd>Ctrl+/</kbd> to open search</p>
+        </div>
+      ) : (
+        <div>
+          <Input
+            autoFocus
+            placeholder="Search..."
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            suffix={<span style={{ fontSize: '12px', color: 'var(--ifm-color-emphasis-600)' }}>ESC</span>}
+          />
+          <Button
+            onClick={() => setSearchVisible(false)}
+            style={{ marginTop: '12px' }}
+            size="small"
+          >
+            Close (Escape)
+          </Button>
+        </div>
+      )}
+    </div>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Parameters
+
+```ts
+type HotkeyItem = [string, (event: KeyboardEvent) => void];
+
+function useHotkeys(hotkeys: HotkeyItem[]): void
+```
+
+| Parameter | Description | Type |
+|-----------|-------------|------|
+| hotkeys | Array of hotkey configurations | `HotkeyItem[]` |
+
+Each `HotkeyItem` is a two-element array:
+- `[0]`: Hotkey string
+- `[1]`: Callback function triggered when hotkey is pressed
+
+### Hotkey Format
+
+Supported modifier keys:
+- `ctrl` / `control`
+- `shift`
+- `alt` / `option`
+- `mod` (macOS: ⌘ Command, Windows/Linux: Ctrl)
+
+Combination format: Use `+` to connect, examples:
+- `'ctrl+k'` - Ctrl + K
+- `'ctrl+shift+p'` - Ctrl + Shift + P
+- `'mod+s'` - ⌘ + S (Mac) or Ctrl + S (Windows/Linux)
+- `'escape'` - Escape key
+- `'enter'` - Enter key
+- `'space'` - Space key
+
+## Common Hotkey Examples
+
+```ts
+// Save
+['mod+s', handleSave]
+
+// Open search
+['ctrl+k', openSearch]
+
+// Close/Cancel
+['escape', handleClose]
+
+// Toggle sidebar
+['ctrl+b', toggleSidebar]
+
+// Open command palette
+['ctrl+shift+p', openCommandPalette]
+
+// Quick navigation
+['ctrl+1', () => navigate('/home')]
+['ctrl+2', () => navigate('/dashboard')]
+
+// Text formatting
+['ctrl+b', makeBold]
+['ctrl+i', makeItalic]
+['ctrl+u', makeUnderline]
+```
+
+## Notes
+
+- Hotkeys automatically prevent browser default behavior
+- Hotkeys work globally within the document
+- Avoid conflicts with built-in browser shortcuts
+- Event listeners are automatically cleaned up on component unmount
+
+## Usage Scenarios
+
+- **Global Operations**: Save, search, refresh, and other global functions
+- **Navigation**: Quick page navigation and switching
+- **Editors**: Text editing and formatting
+- **Modals**: Open/close dialogs
+- **Developer Tools**: Quick access to developer features

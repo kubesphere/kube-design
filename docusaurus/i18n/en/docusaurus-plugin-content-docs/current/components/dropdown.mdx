@@ -4,22 +4,708 @@ sidebar_position: 1
 
 # Dropdown
 
-> Component documentation is being migrated. Check back soon!
+A downward-popping list.
 
-## Overview
+## When to Use
 
-Dropdown component from Kube Design library.
+- When there are too many action commands on the page, use this component to consolidate operational elements
+- A dropdown menu appears when clicking or hovering over the trigger
+- Suitable for displaying multiple options or actions in limited space
+
+In Kube Design, the Dropdown component is built on Tooltip and provides flexible dropdown menu functionality:
+
+- **Works with Menu**: Easily create dropdown menus in combination with the Menu component
+- **Multiple Trigger Methods**: Supports click, hover, and other trigger methods
+- **Flexible Positioning**: Supports 12 directional popup positions and auto-positioning
+- **Controlled Mode**: Supports controlling visibility through the visible property
 
 ## Examples
 
 ### Basic Usage
 
+The most basic dropdown menu, triggered by clicking.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  const { More } = KubedIcons;
+
+  const menu = (
+    <Menu>
+      <MenuItem icon={<More />}>Option 1</MenuItem>
+      <MenuItem icon={<More />}>Option 2</MenuItem>
+      <MenuItem icon={<More />}>Option 3</MenuItem>
+    </Menu>
+  );
+
+  return (
+    <Dropdown content={menu}>
+      <Button>Dropdown Menu</Button>
+    </Dropdown>
+  );
+}
+```
+
+### Menu with Icons
+
+Menu items can include icons for better visual effect.
+
+```jsx live
+function Demo() {
+  const { Add, Pen, Stop, Trash } = KubedIcons;
+
+  const menu = (
+    <Menu>
+      <MenuItem icon={<Add />}>Create</MenuItem>
+      <MenuItem icon={<Pen />}>Edit</MenuItem>
+      <MenuItem icon={<Stop />}>Stop</MenuItem>
+      <MenuItem icon={<Trash />}>Delete</MenuItem>
+    </Menu>
+  );
+
+  return (
+    <Dropdown content={menu}>
+      <Button>Actions</Button>
+    </Dropdown>
+  );
+}
+```
+
+### Menu Groups
+
+Group menu items using MenuLabel and Divider.
+
+```jsx live
+function Demo() {
+  const { Add, Pen, Stop, Trash, Download, Upload } = KubedIcons;
+
+  const menu = (
+    <Menu>
+      <MenuLabel>Edit Actions</MenuLabel>
+      <MenuItem icon={<Add />}>Create</MenuItem>
+      <MenuItem icon={<Pen />}>Edit</MenuItem>
+      <Divider />
+      <MenuLabel>File Actions</MenuLabel>
+      <MenuItem icon={<Upload />}>Upload</MenuItem>
+      <MenuItem icon={<Download />}>Download</MenuItem>
+      <Divider />
+      <MenuLabel>Dangerous Actions</MenuLabel>
+      <MenuItem icon={<Stop />}>Stop</MenuItem>
+      <MenuItem icon={<Trash />}>Delete</MenuItem>
+    </Menu>
+  );
+
+  return (
+    <Dropdown content={menu}>
+      <Button>More Actions</Button>
+    </Dropdown>
+  );
+}
+```
+
+### Popup Positions
+
+Supports 12 different popup positions.
+
+```jsx live
+function Demo() {
+  const positions = [
+    'top-start',
+    'top',
+    'top-end',
+    'bottom-start',
+    'bottom',
+    'bottom-end',
+    'left-start',
+    'left',
+    'left-end',
+    'right-start',
+    'right',
+    'right-end',
+  ];
+
+  const menu = (
+    <Menu>
+      <MenuItem>Option 1</MenuItem>
+      <MenuItem>Option 2</MenuItem>
+      <MenuItem>Option 3</MenuItem>
+    </Menu>
+  );
+
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+      {positions.map((pos) => (
+        <Dropdown key={pos} content={menu} placement={pos}>
+          <Button size="sm">{pos}</Button>
+        </Dropdown>
+      ))}
+    </div>
+  );
+}
+```
+
+### Trigger Methods
+
+Supports both click and hover trigger methods.
+
+```jsx live
+function Demo() {
+  const menu = (
+    <Menu>
+      <MenuItem>Option 1</MenuItem>
+      <MenuItem>Option 2</MenuItem>
+      <MenuItem>Option 3</MenuItem>
+    </Menu>
+  );
+
+  return (
+    <Group spacing="md">
+      <Dropdown content={menu} trigger="click">
+        <Button>Click Trigger</Button>
+      </Dropdown>
+      <Dropdown content={menu} trigger="mouseenter">
+        <Button>Hover Trigger</Button>
+      </Dropdown>
+    </Group>
+  );
+}
+```
+
+### Disabled Menu Items
+
+Menu items can be set to disabled state.
+
+```jsx live
+function Demo() {
+  const { Add, Pen, Stop, Trash } = KubedIcons;
+
+  const menu = (
+    <Menu>
+      <MenuItem icon={<Add />}>Create</MenuItem>
+      <MenuItem icon={<Pen />} disabled>
+        Edit (Disabled)
+      </MenuItem>
+      <MenuItem icon={<Stop />}>Stop</MenuItem>
+      <MenuItem icon={<Trash />} disabled>
+        Delete (Disabled)
+      </MenuItem>
+    </Menu>
+  );
+
+  return (
+    <Dropdown content={menu}>
+      <Button>Actions</Button>
+    </Dropdown>
+  );
+}
+```
+
+### Controlled Mode
+
+Control the display and hiding of the dropdown menu through the `visible` property.
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+
+  const menu = (
+    <Menu>
+      <MenuItem onClick={() => setVisible(false)}>Option 1</MenuItem>
+      <MenuItem onClick={() => setVisible(false)}>Option 2</MenuItem>
+      <MenuItem onClick={() => setVisible(false)}>Option 3</MenuItem>
+    </Menu>
+  );
+
+  return (
+    <Group spacing="md">
+      <Dropdown content={menu} visible={visible}>
+        <Button>Dropdown Menu</Button>
+      </Dropdown>
+      <Button onClick={() => setVisible(!visible)}>
+        {visible ? 'Close' : 'Open'} Menu
+      </Button>
+    </Group>
+  );
+}
+```
+
+### Icon Button Trigger
+
+Use an icon button as the trigger.
+
+```jsx live
+function Demo() {
+  const { More, Add, Pen, Stop, Trash } = KubedIcons;
+
+  const menu = (
+    <Menu>
+      <MenuItem icon={<Add />}>Create</MenuItem>
+      <MenuItem icon={<Pen />}>Edit</MenuItem>
+      <MenuItem icon={<Stop />}>Stop</MenuItem>
+      <MenuItem icon={<Trash />}>Delete</MenuItem>
+    </Menu>
+  );
+
+  return (
+    <Dropdown content={menu}>
+      <Button variant="text" size="sm">
+        <More size={16} />
+      </Button>
+    </Dropdown>
+  );
+}
+```
+
+### Custom Width
+
+Set the dropdown menu width using the `maxWidth` property.
+
+```jsx live
+function Demo() {
+  const menu = (
+    <Menu width={300}>
+      <MenuItem>This is a wider dropdown menu</MenuItem>
+      <MenuItem>It can accommodate more content</MenuItem>
+      <MenuItem>Providing a better reading experience</MenuItem>
+    </Menu>
+  );
+
+  return (
+    <Dropdown content={menu} maxWidth={300}>
+      <Button>Custom Width</Button>
+    </Dropdown>
+  );
+}
+```
+
+### Custom Content
+
+The dropdown menu content can be any React component, not limited to Menu.
+
+```jsx live
+function Demo() {
+  const content = (
+    <div style={{ padding: '12px', width: '200px' }}>
+      <Text variant="h6" style={{ marginBottom: '8px' }}>
+        Custom Content
+      </Text>
+      <Text size="sm" color="secondary" style={{ marginBottom: '12px' }}>
+        Any custom content can be placed here
+      </Text>
+      <Group spacing="xs">
+        <Button size="sm" color="secondary">
+          Confirm
+        </Button>
+        <Button size="sm" variant="outline">
+          Cancel
+        </Button>
+      </Group>
+    </div>
+  );
+
+  return (
+    <Dropdown content={content}>
+      <Button>Custom Content</Button>
+    </Dropdown>
+  );
+}
+```
+
+### Nested Dropdowns
+
+Dropdowns can be nested.
+
+```jsx live
+function Demo() {
+  const { More, Add, Pen } = KubedIcons;
+
+  const submenu = (
+    <Menu>
+      <MenuItem>Sub-option 1</MenuItem>
+      <MenuItem>Sub-option 2</MenuItem>
+      <MenuItem>Sub-option 3</MenuItem>
+    </Menu>
+  );
+
+  const menu = (
+    <Menu>
+      <MenuItem icon={<Add />}>Create</MenuItem>
+      <MenuItem icon={<Pen />}>Edit</MenuItem>
+      <Dropdown content={submenu} placement="right-start" trigger="mouseenter">
+        <MenuItem icon={<More />}>More Options</MenuItem>
+      </Dropdown>
+    </Menu>
+  );
+
+  return (
+    <Dropdown content={menu}>
+      <Button>Nested Menu</Button>
+    </Dropdown>
+  );
+}
+```
+
+### Different Scenarios
+
+Showcase Dropdown applications in different scenarios.
+
+```jsx live
+function Demo() {
+  const { More, Start, Stop, Refresh, Trash } = KubedIcons;
+
+  const podMenu = (
+    <Menu>
+      <MenuLabel>Pod Operations</MenuLabel>
+      <MenuItem icon={<Start />}>Start</MenuItem>
+      <MenuItem icon={<Stop />}>Stop</MenuItem>
+      <MenuItem icon={<Refresh />}>Restart</MenuItem>
+      <Divider />
+      <MenuItem icon={<Trash />}>Delete</MenuItem>
+    </Menu>
+  );
+
+  return (
+    <Group direction="column" spacing="md" align="start">
+      <Card style={{ padding: '16px', width: '300px' }}>
+        <Group position="apart">
+          <div>
+            <Text variant="h6">nginx-deployment</Text>
+            <Badge variant="dot" color="success" style={{ marginTop: '4px' }}>
+              Running
+            </Badge>
+          </div>
+          <Dropdown content={podMenu}>
+            <Button variant="text" size="sm">
+              <More size={16} />
+            </Button>
+          </Dropdown>
+        </Group>
+      </Card>
+    </Group>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Dropdown
+
+Dropdown inherits all properties from Tooltip and is optimized for dropdown menu scenarios:
+
+| Property    | Description                          | Type                                                    | Default        |
+| ----------- | ------------------------------------ | ------------------------------------------------------- | -------------- |
+| content     | Dropdown menu content                | `ReactNode`                                             | -              |
+| trigger     | Trigger method                       | `string`                                                | `'click'`      |
+| placement   | Popup position                       | `'top' \| 'bottom' \| 'left' \| 'right' \| 'top-start' \| 'auto' \| ...` | `'bottom'`     |
+| visible     | Manually control visibility          | `boolean`                                               | -              |
+| hideOnClick | Whether to hide after clicking item  | `boolean`                                               | `true`         |
+| maxWidth    | Maximum width                        | `number \| string`                                      | `210`          |
+| arrow       | Whether to show arrow                | `boolean`                                               | `false`        |
+| interactive | Whether interactive                  | `boolean`                                               | `true`         |
+| animation   | Animation effect                     | `string`                                                | `'shift-away'` |
+| disabled    | Whether disabled                     | `boolean`                                               | `false`        |
+| offset      | Offset [skidding, distance]          | `[number, number]`                                      | `[0, 10]`      |
+| onMount     | Callback when component mounted      | `(instance: any) => void`                               | -              |
+| className   | Custom class name                    | `string`                                                | -              |
+| children    | Trigger element                      | `ReactElement`                                          | **Required**   |
+
+### placement Options
+
+Supports 12 directions, plus auto-positioning:
+
+**Basic Directions**:
+- `top`, `bottom`, `left`, `right`
+
+**Extended Directions**:
+- `top-start`, `top-end`
+- `bottom-start`, `bottom-end`
+- `left-start`, `left-end`
+- `right-start`, `right-end`
+
+**Auto Positioning**:
+- `auto`: Automatically select the best position
+- `auto-start`: Auto-select with start alignment
+- `auto-end`: Auto-select with end alignment
+
+:::info
+
+**About Dropdown and Tooltip**:
+
+- Dropdown is based on Tooltip implementation but optimized for dropdown menus
+- Dropdown defaults to `interactive={true}`, supporting menu interaction
+- Dropdown defaults to `arrow={false}`, no arrow displayed
+- Dropdown defaults to `trigger='click'`, triggered by clicking
+
+**About hideOnClick**:
+
+- Defaults to `true`, automatically hides the dropdown menu after clicking a menu item
+- When set to `false`, clicking menu items won't hide the menu
+- In controlled mode, you need to manually control menu hiding
+
+**About Menu Width**:
+
+- Menu component's `width` property controls menu width
+- Dropdown's `maxWidth` property controls maximum width
+- Both need to be used together for best results
+
+**About Trigger Methods**:
+
+- `trigger` is a string type, supports multiple event names separated by spaces
+- Common values: `'click'` (click, default), `'mouseenter'` (hover), `'focus'` (focus)
+- When set to `'manual'`, you need to manually control the `visible` property
+- Can combine multiple trigger methods, e.g., `'click mouseenter'`
+
+**About Animation**:
+
+- Default animation is `'shift-away'`, suitable for dropdown menu scenarios
+- Different from Tooltip's default animation `'shift-toward-subtle'`
+- Can set other animation effects
+
+**About Offset**:
+
+- `offset` accepts an array `[skidding, distance]`
+- `skidding`: Offset along the reference element (horizontal or vertical)
+- `distance`: Distance from the reference element
+- Default value is `[0, 10]`, meaning 10 pixels from the reference element
+
+:::
+
+## Usage Guidelines
+
+### Don't Have Too Many Menu Items
+
+Keep menu items moderate to avoid scrolling:
+
+```jsx
+// Recommended: 5-8 menu items
+<Dropdown content={
+  <Menu>
+    <MenuItem>Option 1</MenuItem>
+    <MenuItem>Option 2</MenuItem>
+    <MenuItem>Option 3</MenuItem>
+    <MenuItem>Option 4</MenuItem>
+    <MenuItem>Option 5</MenuItem>
+  </Menu>
+}>
+
+// Not recommended: Too many menu items, consider using grouping or pagination
+<Dropdown content={
+  <Menu>
+    {/* 15+ menu items */}
+  </Menu>
+}>
+```
+
+### Use Grouping to Organize Menus
+
+Use MenuLabel and Divider to organize complex menus:
+
+```jsx
+<Dropdown
+  content={
+    <Menu>
+      <MenuLabel>Basic Actions</MenuLabel>
+      <MenuItem>Create</MenuItem>
+      <MenuItem>Edit</MenuItem>
+      <Divider />
+      <MenuLabel>Dangerous Actions</MenuLabel>
+      <MenuItem>Delete</MenuItem>
+    </Menu>
+  }
+>
+  <Button>Actions</Button>
+</Dropdown>
+```
+
+### Place Dangerous Actions at the Bottom
+
+Put dangerous actions like delete at the bottom of the menu:
+
+```jsx
+<Dropdown
+  content={
+    <Menu>
+      <MenuItem>View</MenuItem>
+      <MenuItem>Edit</MenuItem>
+      <MenuItem>Copy</MenuItem>
+      <Divider />
+      <MenuItem icon={<Trash />}>Delete</MenuItem>
+    </Menu>
+  }
+>
+  <Button>Actions</Button>
+</Dropdown>
+```
+
+### Disable Unavailable Options
+
+Rather than hiding them:
+
+```jsx
+<Dropdown
+  content={
+    <Menu>
+      <MenuItem>Start</MenuItem>
+      <MenuItem disabled>Stop (Pod Not Running)</MenuItem>
+      <MenuItem>Restart</MenuItem>
+    </Menu>
+  }
+>
+  <Button>Pod Actions</Button>
+</Dropdown>
+```
+
+### Icons Provide Visual Aids
+
+Add icons to menu items to improve readability:
+
+```jsx
+import { Add, Pen, Trash } from '@kubed/icons';
+
+<Dropdown
+  content={
+    <Menu>
+      <MenuItem icon={<Add />}>Create</MenuItem>
+      <MenuItem icon={<Pen />}>Edit</MenuItem>
+      <MenuItem icon={<Trash />}>Delete</MenuItem>
+    </Menu>
+  }
+>
+  <Button>Actions</Button>
+</Dropdown>;
+```
+
+### Use rightSection for Additional Information
+
+Display shortcuts, badges, etc. on the right side of menu items:
+
+```jsx
+<Dropdown
+  content={
+    <Menu>
+      <MenuItem icon={<Add />} rightSection="⌘N">New</MenuItem>
+      <MenuItem icon={<Pen />} rightSection="⌘E">Edit</MenuItem>
+      <MenuItem icon={<Save />} rightSection="⌘S">Save</MenuItem>
+    </Menu>
+  }
+>
+  <Button>File</Button>
+</Dropdown>
+```
+
+### Button Style Selection
+
+Choose appropriate button style based on usage scenario:
+
+```jsx
+// Card top right corner: use icon button
+<Dropdown content={menu}>
+  <Button variant="text" size="sm">
+    <More />
+  </Button>
+</Dropdown>
+
+// Toolbar: use button with text
+<Dropdown content={menu}>
+  <Button>Actions</Button>
+</Dropdown>
+
+// Table row: use small icon button
+<Dropdown content={menu}>
+  <Button variant="text" size="xs">
+    <More size={14} />
+  </Button>
+</Dropdown>
+```
+
+### Using Controlled Mode
+
+Use controlled mode when programmatic control is needed:
+
+```jsx
+const [visible, setVisible] = useState(false);
+
+const handleMenuClick = (action) => {
+  // Execute action
+  executeAction(action);
+  // Close menu
+  setVisible(false);
+};
+
+<Dropdown
+  visible={visible}
+  content={
+    <Menu>
+      <MenuItem onClick={() => handleMenuClick('create')}>Create</MenuItem>
+      <MenuItem onClick={() => handleMenuClick('edit')}>Edit</MenuItem>
+    </Menu>
+  }
+>
+  <Button onClick={() => setVisible(true)}>Actions</Button>
+</Dropdown>;
+```
+
+### Using Nested Menus
+
+For complex menu structures, use nesting:
+
+```jsx
+const submenu = (
+  <Menu>
+    <MenuItem>Export as PDF</MenuItem>
+    <MenuItem>Export as Excel</MenuItem>
+    <MenuItem>Export as CSV</MenuItem>
+  </Menu>
+);
+
+<Dropdown
+  content={
+    <Menu>
+      <MenuItem>New</MenuItem>
+      <MenuItem>Edit</MenuItem>
+      <Dropdown content={submenu} placement="right-start" trigger="mouseenter">
+        <MenuItem>Export</MenuItem>
+      </Dropdown>
+    </Menu>
+  }
+>
+  <Button>File</Button>
+</Dropdown>;
+```
+
+### Custom Content
+
+For non-standard menus, use custom content:
+
+```jsx
+<Dropdown
+  content={
+    <div style={{ padding: '12px', width: '250px' }}>
+      <Text variant="h6">User Information</Text>
+      <Text size="sm">admin@example.com</Text>
+      <Divider style={{ margin: '8px 0' }} />
+      <Button size="sm" fullWidth>
+        Logout
+      </Button>
+    </div>
+  }
+>
+  <Avatar>Admin</Avatar>
+</Dropdown>
+```
+
+### Dropdown vs Select
+
+Choose the appropriate component:
+
+```jsx
+// Action menu: use Dropdown
+<Dropdown content={<Menu>...</Menu>}>
+  <Button>Actions</Button>
+</Dropdown>
+
+// Form selection: use Select
+<Select>
+  <option>Option 1</option>
+  <option>Option 2</option>
+</Select>
+```

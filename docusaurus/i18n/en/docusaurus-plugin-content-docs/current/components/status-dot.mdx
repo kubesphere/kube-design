@@ -2,24 +2,438 @@
 sidebar_position: 1
 ---
 
-# Status Dot
+# StatusDot
 
-> Component documentation is being migrated. Check back soon!
+A circular dot indicator for displaying status.
 
-## Overview
+## When to Use
 
-Status Dot component from Kube Design library.
+- When displaying the running status of resources or services
+- Mark item status in lists or tables
+- Need visual display of online/offline, healthy/abnormal states
+- Indicate ongoing operations or processes
+
+In Kube Design, the StatusDot component provides rich status display functionality:
+
+- **Multiple Colors**: Supports theme colors like success, warning, error
+- **Animation Effects**: Supports blinking animation for in-progress states
+- **Shadow Effects**: Optional shadow for enhanced visual effect
+- **With Labels**: Can attach text labels to explain status
+- **Two-Layer Design**: Outer ring with low transparency, inner ring highlighted, clear hierarchy
 
 ## Examples
 
 ### Basic Usage
 
+The most basic status dot usage with label text.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  return (
+    <Group spacing="xl">
+      <StatusDot color="success">Running</StatusDot>
+      <StatusDot color="warning">Warning</StatusDot>
+      <StatusDot color="error">Error</StatusDot>
+      <StatusDot>Default</StatusDot>
+    </Group>
+  );
+}
+```
+
+### No Label
+
+Display status dot only, without text label.
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="md">
+      <StatusDot />
+      <StatusDot color="success" />
+      <StatusDot color="warning" />
+      <StatusDot color="error" />
+    </Group>
+  );
+}
+```
+
+### Animation Effect
+
+Use the `motion` property to enable blinking animation, indicating in-progress status.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Group spacing="xl">
+        <StatusDot motion>Processing</StatusDot>
+        <StatusDot motion color="warning">
+          Syncing
+        </StatusDot>
+        <StatusDot motion color="success">
+          Starting
+        </StatusDot>
+        <StatusDot motion color="error">
+          Restarting
+        </StatusDot>
+      </Group>
+      <Group spacing="md">
+        <StatusDot motion />
+        <StatusDot motion color="success" />
+        <StatusDot motion color="warning" />
+        <StatusDot motion color="error" />
+      </Group>
+    </Group>
+  );
+}
+```
+
+### No Shadow
+
+Set `shadow={false}` to disable shadow effect.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Text size="sm">With shadow (default):</Text>
+      <Group spacing="md">
+        <StatusDot color="success" />
+        <StatusDot color="warning" />
+        <StatusDot color="error" />
+      </Group>
+      <Text size="sm">No shadow:</Text>
+      <Group spacing="md">
+        <StatusDot color="success" shadow={false} />
+        <StatusDot color="warning" shadow={false} />
+        <StatusDot color="error" shadow={false} />
+      </Group>
+    </Group>
+  );
+}
+```
+
+### Used with Tooltip
+
+Add tooltip information for status dots.
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="xl">
+      <Tooltip content="Pod is running normally">
+        <StatusDot color="success">Running</StatusDot>
+      </Tooltip>
+      <Tooltip content="Pod is waiting for resource allocation">
+        <StatusDot color="warning" motion>
+          Pending
+        </StatusDot>
+      </Tooltip>
+      <Tooltip content="Pod failed to start, please check logs">
+        <StatusDot color="error">Failed</StatusDot>
+      </Tooltip>
+      <Tooltip content="Click to view details">
+        <StatusDot color="success" />
+      </Tooltip>
+    </Group>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### StatusDot
+
+| Property       | Description              | Type                                                       | Default     |
+| -------------- | ------------------------ | ---------------------------------------------------------- | ----------- |
+| color          | Status dot color         | `'default' \| 'success' \| 'warning' \| 'error' \| string` | `'default'` |
+| motion         | Enable blinking animation| `boolean`                                                  | `false`     |
+| shadow         | Show shadow              | `boolean`                                                  | `true`      |
+| labelClassName | Custom label class name  | `string`                                                   | -           |
+| children       | Label text               | `ReactNode`                                                | -           |
+
+:::info
+
+**About color system**:
+
+- StatusDot supports theme preset colors: default, success, warning, error
+- Can also pass other theme color names or custom color strings
+- Color resolution logic:
+  - First tries to get from `palette[color]` (like success, warning, etc.)
+  - Next tries to get from `palette.colors[color][2]` (takes the 3rd value in color array)
+  - If neither match, uses `palette.accents_5` as default color
+- Color automatically generates two-layer effect:
+  - Outer background: `addColorAlpha(colorHex, 0.1)` - 10% transparency
+  - Inner dot: `getColor(color, theme)` - full color
+- Shadow color uses RGB format: `rgb(${colorRgb} / 36%)`
+
+**About animation implementation**:
+
+- `motion={true}` enables blinking animation
+- Animation defined using keyframes:
+  ```typescript
+  0%: transform: scale(0.7); opacity: 0.2;
+  50%: transform: scale(1.2); opacity: 1;
+  100%: transform: scale(0.7); opacity: 0.2;
+  ```
+- Animation period is 1.5 seconds, linear playback, infinite loop: `1.5s linear infinite`
+- Animation applies to outer Dot element, inner `:before` pseudo-element does not animate
+- Suitable for in-progress states like Pending, Creating, Terminating
+- If `motion={false}`, `getAnimation` returns null, no animation applied
+
+**About shadow effect**:
+
+- `shadow` property defaults to `true`
+- Shadow effect only applies when `shadow={true}`
+- Shadow style: `box-shadow: 0 8px 16px 0 rgb(${colorRgb} / 36%)`
+- Shadow uses same color as status dot with 36% transparency
+- In lists or tables, can disable shadow to reduce visual distraction
+- Use `shadow={false}` to disable shadow
+
+**About two-layer dot design**:
+
+- StatusDot uses two-layer dot design for visual hierarchy
+- Outer dot (Dot):
+  - Size: 12px × 12px
+  - Border radius: `border-radius: 50%`
+  - Background: 10% transparency version of color
+  - Position: `position: relative`
+- Inner dot (`:before` pseudo-element):
+  - Size: 8.3px × 8.3px (approximately 69% of outer layer)
+  - Border radius: `border-radius: 50%`
+  - Background: full theme color
+  - Position: absolutely positioned, centered
+  - Centering method: `left: 50%; top: 50%; transform: translate(-50%, -50%)`
+- This design provides better visual effect and hierarchy
+
+**About label display**:
+
+- `children` is displayed as label text to the right of status dot
+- Label only renders when `children` is provided
+- Label styles:
+  - Left margin: 8px
+  - Color: `theme.palette.accents_8` (dark color)
+  - Font weight: 600
+  - Font stack: Roboto, PingFang SC, etc.
+- Without `children`, only status dot shows, suitable for compact scenarios like tables
+- Can customize label styles through `labelClassName`
+
+**About component structure**:
+
+- StatusDot uses forwardRef, supporting ref forwarding
+- Component hierarchy:
+  - DotWrapper - Outermost container, `inline-flex` layout, vertically centered
+  - Dot - Status dot body, contains animation and shadow
+  - Label - Label text (optional)
+- displayName set to `'@kubed/components/StatusDot'`
+
+**About defaults**:
+
+- `color`: When not set, uses `palette.accents_5`
+- `motion`: Defaults to `false`, animation not enabled
+- `shadow`: Defaults to `true`, shows shadow
+- `labelClassName`: No default value
+
+**About size specifications**:
+
+- Outer dot: 12px × 12px
+- Inner dot: 8.3px × 8.3px
+- Label spacing: 8px left
+- All sizes are fixed, not customizable through props
+
+**About color conversion**:
+
+- Uses `colorToRgbValues` function to convert hex colors to RGB value arrays
+- Uses `addColorAlpha` function to add transparency
+- These utility functions come from the `../utils/color` module
+
+**About accessibility**:
+
+- Component supports passing additional HTML attributes through `...rest`
+- Can add `aria-label`, `role` etc. attributes to enhance accessibility
+- Recommended to provide `aria-label` for label-less status dots to explain status meaning
+- Label text itself provides accessible status description
+
+**About use cases**:
+
+- Tables and lists: Quick status display, optional labels
+- Details pages: Use with labels for complete display
+- Dashboards: Use with animation to show real-time status
+- Statistic cards: As status indicators
+- Notification messages: Identify message importance
+
+:::
+
+## Usage Recommendations
+
+### Use Semantic Colors
+
+Choose colors based on status meaning:
+
+```jsx
+// Recommended: Semantic colors
+<StatusDot color="success">Running</StatusDot>     // Normal status
+<StatusDot color="warning">Pending</StatusDot>     // Warning status
+<StatusDot color="error">Error</StatusDot>         // Error status
+<StatusDot>Unknown</StatusDot>                     // Default status
+
+// Not recommended: Random color usage
+<StatusDot color="error">Running</StatusDot>       // Color doesn't match status
+```
+
+### Use Animation for In-Progress States
+
+Use animation for ongoing operations:
+
+```jsx
+// Recommended: In-progress states use animation
+<StatusDot color="warning" motion>Pending</StatusDot>
+<StatusDot color="warning" motion>Creating</StatusDot>
+<StatusDot color="error" motion>Terminating</StatusDot>
+
+// Not recommended: Stable states using animation
+<StatusDot color="success" motion>Running</StatusDot>  // Running is a stable state
+```
+
+### Maintain Consistency in Lists
+
+Use same display method in lists:
+
+```jsx
+// Recommended: All items consistent
+{
+  items.map((item) => (
+    <StatusDot key={item.id} color={item.statusColor} motion={item.isProgressing}>
+      {item.statusText}
+    </StatusDot>
+  ));
+}
+
+// Not recommended: Some with labels, some without
+```
+
+### Add Tooltip for More Information
+
+Add tooltip for label-less status dots:
+
+```jsx
+<Tooltip content="Pod is running normally, has been running for 24 hours">
+  <StatusDot color="success" />
+</Tooltip>
+
+// Or add detailed description for labeled status dots
+<Tooltip content="3 out of 5 containers are ready">
+  <StatusDot color="warning">Partially Ready</StatusDot>
+</Tooltip>
+```
+
+### Disable Shadow in Tables
+
+Can disable shadow in lists or tables to reduce visual distraction:
+
+```jsx
+<table>
+  {data.map((item) => (
+    <tr key={item.id}>
+      <td>{item.name}</td>
+      <td>
+        <StatusDot color={item.color} shadow={false}>
+          {item.status}
+        </StatusDot>
+      </td>
+    </tr>
+  ))}
+</table>
+```
+
+### Define Status Mapping
+
+Create unified status color mapping:
+
+```jsx
+const statusColorMap = {
+  Running: 'success',
+  Pending: 'warning',
+  Failed: 'error',
+  Unknown: 'default',
+};
+
+const statusMotionMap = {
+  Pending: true,
+  ContainerCreating: true,
+  Terminating: true,
+};
+
+<StatusDot color={statusColorMap[status]} motion={statusMotionMap[status]}>
+  {status}
+</StatusDot>;
+```
+
+### Use with Entity Component
+
+Display status in Entity component:
+
+```jsx
+<Entity>
+  <Field avatar={<Pod size={40} />} label="nginx-pod" value="nginx:1.21" />
+  <Field label="Status" value={<StatusDot color="success">Running</StatusDot>} />
+</Entity>
+```
+
+### Clear Status Descriptions
+
+Label text should clearly express status:
+
+```jsx
+// Recommended: Clear status descriptions
+<StatusDot color="success">Ready</StatusDot>
+<StatusDot color="warning">PartiallyAvailable</StatusDot>
+<StatusDot color="error">CrashLoopBackOff</StatusDot>
+
+// Not recommended: Vague descriptions
+<StatusDot color="success">OK</StatusDot>
+<StatusDot color="warning">?</StatusDot>
+```
+
+### Different Use Cases
+
+Adjust display based on scenario:
+
+```jsx
+// Details page: With label, with shadow
+<StatusDot color="success">Running</StatusDot>
+
+// Table list: With label, no shadow
+<StatusDot color="success" shadow={false}>Running</StatusDot>
+
+// Compact list: No label, no shadow, with Tooltip
+<Tooltip content="Running">
+  <StatusDot color="success" shadow={false} />
+</Tooltip>
+```
+
+### Handle Multiple States
+
+Organize display of multiple states properly:
+
+```jsx
+const getStatusProps = (status) => {
+  switch (status) {
+    case 'Running':
+      return { color: 'success', label: 'Running' };
+    case 'Pending':
+      return { color: 'warning', motion: true, label: 'Pending' };
+    case 'Failed':
+      return { color: 'error', label: 'Failed' };
+    case 'Succeeded':
+      return { color: 'success', label: 'Completed' };
+    default:
+      return { color: 'default', label: 'Unknown' };
+  }
+};
+
+const { color, motion, label } = getStatusProps(pod.status);
+<StatusDot color={color} motion={motion}>
+  {label}
+</StatusDot>;
+```

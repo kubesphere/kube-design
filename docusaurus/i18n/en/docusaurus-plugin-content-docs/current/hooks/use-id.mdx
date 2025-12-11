@@ -1,25 +1,215 @@
 ---
-sidebar_position: 1
+sidebar_position: 15
 ---
 
-# UseId
+# useId
 
-> Hook documentation is being migrated. Check back soon!
+Generates stable unique IDs for accessibility attributes and form element associations.
 
-## Overview
+## Basic Usage
 
-`UseId` hook from Kube Design.
+```jsx live
+function Demo() {
+  const id = useId();
 
-## Usage
+  return (
+    <div>
+      <div
+        style={{
+          padding: '20px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          marginBottom: '12px',
+        }}
+      >
+        <div style={{ marginBottom: '8px' }}>
+          Generated ID: <code style={{ color: 'var(--ifm-color-primary)' }}>{id}</code>
+        </div>
+        <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+          Stable across renders
+        </div>
+      </div>
+    </div>
+  );
+}
+```
 
-```tsx
-import { UseId } from '@kubed/hooks';
+## Form Label Association
 
-function Component() {
-  // Documentation coming soon
+Use ID to associate label and input:
+
+```jsx live
+function Demo() {
+  const id = useId();
+
+  return (
+    <div>
+      <div style={{ marginBottom: '12px' }}>
+        <label
+          htmlFor={id}
+          style={{
+            display: 'block',
+            marginBottom: '8px',
+            fontWeight: 'bold',
+          }}
+        >
+          Username
+        </label>
+        <Input id={id} placeholder="Enter username" />
+      </div>
+      <div
+        style={{
+          padding: '12px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '6px',
+          fontSize: '14px',
+        }}
+      >
+        <strong>Associated ID:</strong> <code>{id}</code>
+      </div>
+    </div>
+  );
+}
+```
+
+## ARIA Attributes
+
+Use IDs to connect ARIA attributes:
+
+```jsx live
+function Demo() {
+  const buttonId = useId();
+  const contentId = useId();
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <div>
+      <Button
+        id={buttonId}
+        aria-expanded={expanded}
+        aria-controls={contentId}
+        onClick={() => setExpanded(!expanded)}
+      >
+        {expanded ? 'Collapse' : 'Expand'} Content
+      </Button>
+      {expanded && (
+        <div
+          id={contentId}
+          role="region"
+          aria-labelledby={buttonId}
+          style={{
+            marginTop: '12px',
+            padding: '16px',
+            backgroundColor: 'var(--ifm-background-surface-color)',
+            border: '1px solid var(--ifm-color-emphasis-300)',
+            borderRadius: '8px',
+          }}
+        >
+          This is the expandable content region, associated with the button via ARIA attributes.
+        </div>
+      )}
+      <div
+        style={{
+          marginTop: '12px',
+          padding: '12px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '6px',
+          fontSize: '14px',
+        }}
+      >
+        <div>Button ID: <code>{buttonId}</code></div>
+        <div>Content ID: <code>{contentId}</code></div>
+      </div>
+    </div>
+  );
+}
+```
+
+## Multiple Inputs
+
+Generate unique IDs for multiple form fields:
+
+```jsx live
+function Demo() {
+  const nameId = useId();
+  const emailId = useId();
+  const phoneId = useId();
+
+  return (
+    <div>
+      <div style={{ marginBottom: '12px' }}>
+        <label htmlFor={nameId} style={{ display: 'block', marginBottom: '4px' }}>
+          Name
+        </label>
+        <Input id={nameId} placeholder="Enter name" />
+      </div>
+      <div style={{ marginBottom: '12px' }}>
+        <label htmlFor={emailId} style={{ display: 'block', marginBottom: '4px' }}>
+          Email
+        </label>
+        <Input id={emailId} type="email" placeholder="Enter email" />
+      </div>
+      <div style={{ marginBottom: '12px' }}>
+        <label htmlFor={phoneId} style={{ display: 'block', marginBottom: '4px' }}>
+          Phone
+        </label>
+        <Input id={phoneId} type="tel" placeholder="Enter phone" />
+      </div>
+    </div>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Parameters
+
+```ts
+function useId(staticId?: string): string
+```
+
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| staticId | Static ID (optional) | `string` | `undefined` |
+
+### Return Value
+
+Returns a stable unique ID string.
+
+```ts
+string
+```
+
+## Features
+
+- **Stability**: Remains constant throughout component lifecycle
+- **Uniqueness**: Guaranteed unique across the entire application
+- **SSR Compatible**: IDs generated on server and client are consistent
+- **Overridable**: Can provide custom ID via parameter
+
+## Notes
+
+- If `staticId` is provided, that ID will be used directly
+- Do not use generated IDs as React keys
+- IDs are not reused after component unmount
+- Suitable for scenarios requiring element associations
+
+## Usage Scenarios
+
+- **Form Labels**: Associate label and input elements
+- **ARIA Attributes**: `aria-labelledby`, `aria-describedby`, etc.
+- **Accessibility**: Enhance screen reader experience
+- **Element Association**: Any scenario requiring unique ID for element association
+- **Error Messages**: Associate form fields with error messages
+
+## Difference from React 18
+
+If you're using React 18+, you can use the built-in `useId` Hook directly. The `useId` from `@kubed/hooks` provides the same API as React 18 while being compatible with React 17 and earlier versions.
+
+```jsx
+// React 18+ built-in
+import { useId } from 'react';
+
+// @kubed/hooks version (compatible with React 17)
+import { useId } from '@kubed/hooks';
+```

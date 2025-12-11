@@ -1,25 +1,216 @@
 ---
-sidebar_position: 1
+sidebar_position: 5
 ---
 
-# UseDebouncedValue
+# useDebouncedValue
 
-> Hook 文档正在迁移中，敬请期待！
+对值进行防抖处理的 Hook，常用于搜索输入、窗口大小调整等需要延迟更新的场景。
 
-## 概述
+## 基本用法
 
-来自 Kube Design 的 `UseDebouncedValue` hook。
+```jsx live
+function Demo() {
+  const [value, setValue] = useState('');
+  const [debouncedValue] = useDebouncedValue(value, 500);
 
-## 使用方法
+  return (
+    <div>
+      <Input
+        placeholder="输入文字，500ms后更新"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <div style={{ marginTop: '20px' }}>
+        <div>实时值: {value || '(空)'}</div>
+        <div style={{ color: 'var(--ifm-color-primary)' }}>
+          防抖值: {debouncedValue || '(空)'}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
 
-```tsx
-import { UseDebouncedValue } from '@kubed/hooks';
+## 搜索输入
 
-function Component() {
-  // Documentation coming soon
+模拟搜索场景，减少 API 请求：
+
+```jsx live
+function Demo() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearch] = useDebouncedValue(searchTerm, 800);
+  const [searching, setSearching] = useState(false);
+
+  useEffect(() => {
+    if (debouncedSearch) {
+      setSearching(true);
+      // 模拟 API 请求
+      const timer = setTimeout(() => setSearching(false), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [debouncedSearch]);
+
+  return (
+    <div>
+      <Input
+        placeholder="搜索..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        suffix={searching && <span>🔍 搜索中...</span>}
+      />
+      <div style={{ marginTop: '20px' }}>
+        {debouncedSearch && (
+          <div
+            style={{
+              padding: '12px',
+              backgroundColor: 'var(--ifm-color-emphasis-100)',
+              borderRadius: '6px',
+            }}
+          >
+            搜索关键词: <strong>{debouncedSearch}</strong>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+```
+
+## Leading 模式
+
+立即执行第一次更新，之后进行防抖：
+
+```jsx live
+function Demo() {
+  const [value, setValue] = useState('');
+  const [debouncedValue] = useDebouncedValue(value, 500, { leading: true });
+
+  return (
+    <div>
+      <Input
+        placeholder="Leading 模式：立即更新第一次"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <div style={{ marginTop: '20px' }}>
+        <div>输入值: {value || '(空)'}</div>
+        <div style={{ color: 'var(--ifm-color-success)' }}>
+          防抖值（Leading）: {debouncedValue || '(空)'}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## 取消防抖
+
+可以手动取消pending的防抖更新：
+
+```jsx live
+function Demo() {
+  const [value, setValue] = useState('');
+  const [debouncedValue, cancel] = useDebouncedValue(value, 1000);
+
+  return (
+    <div>
+      <Input
+        placeholder="输入文字"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <Group spacing="md" style={{ marginTop: '10px' }}>
+        <Button onClick={cancel} size="small">
+          取消防抖更新
+        </Button>
+        <Button onClick={() => setValue('')} size="small" variant="outline">
+          清空
+        </Button>
+      </Group>
+      <div style={{ marginTop: '20px' }}>
+        <div>实时值: {value || '(空)'}</div>
+        <div style={{ color: 'var(--ifm-color-primary)' }}>
+          防抖值: {debouncedValue || '(空)'}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## 表单验证
+
+延迟验证用户输入：
+
+```jsx live
+function Demo() {
+  const [email, setEmail] = useState('');
+  const [debouncedEmail] = useDebouncedValue(email, 600);
+
+  const isValid = debouncedEmail && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(debouncedEmail);
+  const showValidation = debouncedEmail.length > 0;
+
+  return (
+    <div>
+      <Input
+        placeholder="输入邮箱地址"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      {showValidation && (
+        <div
+          style={{
+            marginTop: '10px',
+            padding: '8px 12px',
+            borderRadius: '4px',
+            backgroundColor: isValid 
+              ? 'var(--ifm-color-success-lightest)' 
+              : 'var(--ifm-color-danger-lightest)',
+            color: isValid 
+              ? 'var(--ifm-color-success-dark)' 
+              : 'var(--ifm-color-danger-dark)',
+          }}
+        >
+          {isValid ? '✓ 邮箱格式正确' : '✗ 邮箱格式不正确'}
+        </div>
+      )}
+    </div>
+  );
 }
 ```
 
 ## API
 
-文档编写中。
+### 参数
+
+```ts
+function useDebouncedValue<T = any>(
+  value: T,
+  wait: number,
+  options?: { leading?: boolean }
+): [T, () => void]
+```
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| value | 需要防抖的值 | `T` | - |
+| wait | 防抖延迟时间（毫秒） | `number` | - |
+| options | 配置选项 | `{ leading?: boolean }` | `{ leading: false }` |
+| options.leading | 是否在延迟开始时立即执行 | `boolean` | `false` |
+
+### 返回值
+
+返回一个数组：
+
+| 索引 | 说明 | 类型 |
+|------|------|------|
+| [0] | 防抖后的值 | `T` |
+| [1] | 取消pending更新的函数 | `() => void` |
+
+## 使用场景
+
+- **搜索输入**: 减少搜索 API 请求次数
+- **窗口调整**: 延迟处理窗口大小变化
+- **表单验证**: 延迟验证用户输入
+- **自动保存**: 延迟触发自动保存
+- **滚动事件**: 降低滚动事件处理频率

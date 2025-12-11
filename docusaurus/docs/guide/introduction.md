@@ -38,8 +38,3 @@ Kube Design 遵循以下原则：
 ## 许可证
 
 基于 [MIT 许可证](https://github.com/kubesphere/kube-design/blob/master/LICENSE)授权。
-
-## 社区
-
-- **GitHub**: [kubesphere/kube-design](https://github.com/kubesphere/kube-design)
-- **KubeSphere**: [kubesphere.io](https://kubesphere.io)

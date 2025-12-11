@@ -4,22 +4,540 @@ sidebar_position: 1
 
 # Textarea
 
-> Component documentation is being migrated. Check back soon!
+Multi-line text input component for users to input longer text content.
 
-## Overview
+## When to Use
 
-Textarea component from Kube Design library.
+- When you need to allow users to input multi-line text content
+- When input content may be longer, such as comments, descriptions, feedback, etc.
+- When you need automatic height adjustment functionality
+- When you need to count and limit the number of input characters
+
+In Kube Design, the Textarea component provides rich features:
+
+- **Automatic Height Adjustment**: Supports `autosize` feature, automatically adjusting height based on content
+- **Character Counting**: Supports displaying character count and maximum character limit
+- **Flexible Configuration**: Supports custom width, height, maximum height, and other size properties
+- **Complete States**: Supports disabled, read-only, error, and other states
+- **Controlled/Uncontrolled**: Supports both controlled and uncontrolled modes
 
 ## Examples
 
 ### Basic Usage
 
+The most basic multi-line text input box.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  return <Textarea placeholder="Please enter text" />;
+}
+```
+
+### Default Value
+
+Set the default value through the `defaultValue` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Textarea
+      defaultValue="This is the default text content that can be modified by the user"
+      placeholder="Please enter text"
+    />
+  );
+}
+```
+
+### Disabled State
+
+Disable the text box through the `disabled` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Textarea disabled placeholder="Disabled state" />
+      <Textarea
+        disabled
+        defaultValue="Disabled state with default value, content cannot be edited"
+        placeholder="Disabled state"
+      />
+    </Group>
+  );
+}
+```
+
+### Read-Only State
+
+Set the text box to read-only through the `readOnly` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Textarea
+      readOnly
+      defaultValue="Read-only state content, cannot be edited but can be selected and copied"
+      placeholder="Read-only state"
+    />
+  );
+}
+```
+
+### Custom Width
+
+Set text box width through the `width` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Textarea width="200px" placeholder="Width 200px" />
+      <Textarea width="400px" placeholder="Width 400px" />
+      <Textarea width="100%" placeholder="Width 100%" />
+    </Group>
+  );
+}
+```
+
+### Automatic Height Adjustment
+
+Enable automatic height adjustment through the `autosize` property, with height automatically expanding based on content.
+
+```jsx live
+function Demo() {
+  return (
+    <Textarea
+      autosize
+      placeholder="Try entering multi-line content, height will automatically adjust based on content"
+      defaultValue="This is the first line&#10;This is the second line&#10;This is the third line"
+    />
+  );
+}
+```
+
+### Maximum Height Limitation
+
+When using `autosize`, you can limit the maximum height through the `maxHeight` property. Content exceeding the maximum height will display a scrollbar.
+
+```jsx live
+function Demo() {
+  return (
+    <Textarea
+      autosize
+      maxHeight={150}
+      placeholder="Maximum height is 150px, try entering more content"
+      defaultValue="This is the first line&#10;This is the second line&#10;This is the third line&#10;This is the fourth line&#10;This is the fifth line&#10;This is the sixth line&#10;This is the seventh line&#10;This is the eighth line&#10;This is the ninth line&#10;This is the tenth line"
+    />
+  );
+}
+```
+
+### Controlled Component
+
+Control text box value through `value` and `onChange` properties.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+
+  return (
+    <div>
+      <Textarea
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="Please enter text"
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        Current content: {value || '(Empty)'}
+      </div>
+    </div>
+  );
+}
+```
+
+### Character Counting
+
+Implement character counting functionality, displaying current number of characters and remaining characters.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+  const maxLength = 200;
+
+  return (
+    <div>
+      <Textarea
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="Please enter feedback content"
+        autosize
+        maxHeight={150}
+      />
+      <div
+        style={{
+          marginTop: '8px',
+          textAlign: 'right',
+          color: value.length > maxLength ? '#ca2621' : '#79879c',
+          fontSize: '12px',
+        }}
+      >
+        {value.length}/{maxLength}
+      </div>
+    </div>
+  );
+}
+```
+
+### Content Validation
+
+Implement simple content validation that prohibits input when character count exceeds limit.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+  const maxLength = 100;
+
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+    if (newValue.length <= maxLength) {
+      setValue(newValue);
+    }
+  };
+
+  return (
+    <div>
+      <Textarea
+        value={value}
+        onChange={handleChange}
+        placeholder="Maximum 100 characters"
+        autosize
+        maxHeight={120}
+      />
+      <div
+        style={{
+          marginTop: '8px',
+          textAlign: 'right',
+          color: value.length >= maxLength ? '#ca2621' : '#79879c',
+          fontSize: '12px',
+        }}
+      >
+        {value.length}/{maxLength}
+        {value.length >= maxLength && ' (Character limit reached)'}
+      </div>
+    </div>
+  );
+}
+```
+
+### Focus Events
+
+Handle text box focus and blur events through `onFocus` and `onBlur` properties.
+
+```jsx live
+function Demo() {
+  const [focused, setFocused] = React.useState(false);
+
+  return (
+    <div>
+      <Textarea
+        placeholder="Please enter text"
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        style={{
+          borderColor: focused ? '#329dce' : undefined,
+        }}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        Current state: {focused ? 'Focused' : 'Unfocused'}
+      </div>
+    </div>
+  );
+}
+```
+
+### Comment Input Box
+
+A typical scenario for implementing comment functionality.
+
+```jsx live
+function Demo() {
+  const [comment, setComment] = React.useState('');
+  const maxLength = 500;
+
+  const handleSubmit = () => {
+    if (comment.trim()) {
+      alert(`Submitted comment: ${comment}`);
+      setComment('');
+    }
+  };
+
+  return (
+    <div style={{ backgroundColor: '#f7f8fa', padding: '16px', borderRadius: '4px' }}>
+      <div style={{ fontSize: '14px', fontWeight: 600, marginBottom: '12px' }}>Add a comment</div>
+      <Textarea
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
+        placeholder="Please enter your comment..."
+        autosize
+        maxHeight={200}
+      />
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginTop: '8px',
+        }}
+      >
+        <span
+          style={{
+            fontSize: '12px',
+            color: comment.length > maxLength ? '#ca2621' : '#79879c',
+          }}
+        >
+          {comment.length}/{maxLength}
+        </span>
+        <Button size="sm" onClick={handleSubmit} disabled={!comment.trim()}>
+          Submit Comment
+        </Button>
+      </div>
+    </div>
+  );
+}
+```
+
+### Form Scenario
+
+Use Textarea in a form to collect multi-line text information.
+
+```jsx live
+function Demo() {
+  const [formData, setFormData] = React.useState({
+    title: '',
+    description: '',
+  });
+
+  const handleSubmit = () => {
+    if (formData.title && formData.description) {
+      alert(`Title: ${formData.title}\nDescription: ${formData.description}`);
+    } else {
+      alert('Please fill in all required fields');
+    }
+  };
+
+  return (
+    <div style={{ backgroundColor: '#f7f8fa', padding: '20px', borderRadius: '4px' }}>
+      <div style={{ marginBottom: '16px' }}>
+        <div style={{ fontSize: '14px', fontWeight: 600, marginBottom: '8px' }}>
+          Title <span style={{ color: '#ca2621' }}>*</span>
+        </div>
+        <Input
+          value={formData.title}
+          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+          placeholder="Please enter title"
+        />
+      </div>
+      <div style={{ marginBottom: '16px' }}>
+        <div style={{ fontSize: '14px', fontWeight: 600, marginBottom: '8px' }}>
+          Description <span style={{ color: '#ca2621' }}>*</span>
+        </div>
+        <Textarea
+          value={formData.description}
+          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          placeholder="Please enter detailed description..."
+          autosize
+          maxHeight={200}
+        />
+        <div style={{ textAlign: 'right', fontSize: '12px', color: '#79879c', marginTop: '4px' }}>
+          {formData.description.length}/1000
+        </div>
+      </div>
+      <Button onClick={handleSubmit}>Submit</Button>
+    </div>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Textarea Properties
+
+| Property    | Description                      | Type                                         | Default |
+| ----------- | -------------------------------- | -------------------------------------------- | ------- |
+| value       | Current value (controlled mode)  | `string`                                     | -       |
+| defaultValue| Default value (uncontrolled mode)| `string`                                     | -       |
+| onChange    | Callback on content change       | `(e: ChangeEvent<HTMLTextAreaElement>) => void` | -    |
+| placeholder | Placeholder text                 | `string`                                     | -       |
+| disabled    | Whether disabled                 | `boolean`                                    | `false` |
+| readOnly    | Whether read-only                | `boolean`                                    | `false` |
+| rows        | Number of rows displayed         | `number`                                     | `3`     |
+| width       | Width                            | `string \| number`                           | `'100%'`|
+| maxHeight   | Maximum height (used with autosize) | `number`                                  | -       |
+| autosize    | Automatic height adjustment      | `boolean`                                    | `false` |
+| size        | Text box size                    | `'sm' \| 'md' \| 'lg'`                       | `'md'`  |
+| radius      | Border radius size               | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number` | `'md'` |
+| error       | Whether in error state           | `boolean`                                    | `false` |
+| onFocus     | Callback on focus                | `(e: FocusEvent<HTMLTextAreaElement>) => void` | -    |
+| onBlur      | Callback on blur                 | `(e: FocusEvent<HTMLTextAreaElement>) => void` | -    |
+| className   | Custom class name                | `string`                                     | -       |
+| style       | Custom styles                    | `CSSProperties`                              | -       |
+
+:::info
+
+**About controlled and uncontrolled modes**:
+
+- **Controlled mode**: Use `value` and `onChange` properties to fully control the component value
+- **Uncontrolled mode**: Only set `defaultValue`, the component manages its own internal state
+
+**About autosize**:
+
+- Setting `autosize={true}` enables automatic height adjustment
+- Use with `maxHeight` to limit maximum height and display scrollbar when exceeded
+- Without `maxHeight`, height grows infinitely with content
+
+**About size**:
+
+- `sm`: Small size, suitable for compact layouts
+- `md`: Medium size, default size
+- `lg`: Large size, suitable for scenarios requiring prominent input boxes
+
+**About character limit implementation**:
+
+- The component itself does not provide built-in character limit functionality
+- Character limit should be implemented through controlled components + `onChange` logic
+- Display character count and limit through external elements
+
+:::
+
+## Usage Recommendations
+
+### Choose Appropriate Mode
+
+Select controlled or uncontrolled mode based on requirements:
+
+```jsx
+// Controlled mode - Use when value needs external management
+const [value, setValue] = React.useState('');
+<Textarea value={value} onChange={(e) => setValue(e.target.value)} />
+
+// Uncontrolled mode - Use when only initial value is needed
+<Textarea defaultValue="Initial content" />
+```
+
+### Autosize Settings
+
+Use autosize appropriately and set maximum height limits:
+
+```jsx
+// Recommended: Set maximum height to prevent infinite growth
+<Textarea autosize maxHeight={200} />
+
+// Not recommended: No maximum height limit
+<Textarea autosize />
+```
+
+### Character Counting and Limiting
+
+Implement character counting and limiting functionality:
+
+```jsx
+const [value, setValue] = React.useState('');
+const maxLength = 200;
+
+const handleChange = (e) => {
+  const newValue = e.target.value;
+  if (newValue.length <= maxLength) {
+    setValue(newValue);
+  }
+};
+
+<>
+  <Textarea value={value} onChange={handleChange} />
+  <div style={{ textAlign: 'right', color: value.length >= maxLength ? 'red' : 'gray' }}>
+    {value.length}/{maxLength}
+  </div>
+</>
+```
+
+### Provide Clear Feedback
+
+Provide clear feedback on user input status:
+
+```jsx
+const [value, setValue] = React.useState('');
+const [error, setError] = React.useState('');
+
+const handleChange = (e) => {
+  const newValue = e.target.value;
+  setValue(newValue);
+
+  if (newValue.trim().length < 10) {
+    setError('Please enter at least 10 characters');
+  } else {
+    setError('');
+  }
+};
+
+<>
+  <Textarea value={value} onChange={handleChange} error={!!error} />
+  {error && <div style={{ color: 'red' }}>{error}</div>}
+</>
+```
+
+### Use Appropriate Placeholder Text
+
+Provide clear, helpful placeholder text:
+
+```jsx
+// Recommended: Clear, specific guidance
+<Textarea placeholder="Please describe your issue in detail, we will respond within 24 hours" />
+
+// Not recommended: Too vague
+<Textarea placeholder="Enter text" />
+```
+
+### Form Integration
+
+Use Textarea with forms:
+
+```jsx
+const [formData, setFormData] = React.useState({ description: '' });
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  if (!formData.description.trim()) {
+    alert('Please fill in the description');
+    return;
+  }
+  // Submit form data
+};
+
+<form onSubmit={handleSubmit}>
+  <Textarea
+    value={formData.description}
+    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+    placeholder="Please enter description"
+  />
+  <button type="submit">Submit</button>
+</form>
+```
+
+### Accessibility Considerations
+
+Ensure textarea accessibility:
+
+```jsx
+// Provide clear labels
+<>
+  <label htmlFor="feedback">Feedback</label>
+  <Textarea id="feedback" placeholder="Please enter your feedback" />
+</>
+
+// Mark required fields
+<>
+  <label htmlFor="description">
+    Description <span style={{ color: 'red' }}>*</span>
+  </label>
+  <Textarea id="description" placeholder="Please enter description" />
+</>
+```

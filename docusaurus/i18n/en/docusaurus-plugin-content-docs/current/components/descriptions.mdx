@@ -4,22 +4,363 @@ sidebar_position: 1
 
 # Descriptions
 
-> Component documentation is being migrated. Check back soon!
+A component for displaying multiple read-only fields in groups.
 
-## Overview
+## When to Use
 
-Descriptions component from Kube Design library.
+- Common for information display on detail pages
+- Display read-only information in key-value pairs
+- Need to display multiple attributes in cards or panels
+- Display resource metadata or configuration information
 
 ## Examples
 
 ### Basic Usage
 
+The simplest description list usage with default background and border styling.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Description label="Cluster Name">default</Description>
+    </div>
+  );
+}
+```
+
+### Multiple Description Items
+
+Use multiple Description components to display multiple pieces of information.
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Description label="Cluster Name">default</Description>
+      <Description label="Project Name">kubesphere-system</Description>
+      <Description label="Instance Name">ks-apiserver</Description>
+      <Description label="IP Address">10.233.74.19</Description>
+    </div>
+  );
+}
+```
+
+### Unstyled Variant
+
+Use the unstyled variant through `variant="unstyled"`, suitable for use within card containers.
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '350px' }}>
+        <Description label="Project" variant="unstyled">
+          KubeSphere
+        </Description>
+        <Description label="Cluster" variant="unstyled">
+          default
+        </Description>
+        <Description label="Workload" variant="unstyled">
+          ks-apiserver
+        </Description>
+        <Description label="Status" variant="unstyled">
+          Running
+        </Description>
+      </Card>
+    </div>
+  );
+}
+```
+
+### Using Data Array
+
+Use the `Descriptions` component with the `data` property to batch render description lists.
+
+```jsx live
+function Demo() {
+  const data = [
+    { label: 'Cluster', value: 'default' },
+    { label: 'Project', value: 'kubesphere-system' },
+    { label: 'Instance Name', value: 'ks-apiserver' },
+    { label: 'IP Address', value: '10.233.74.19' },
+  ];
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '350px' }}>
+        <Descriptions data={data} variant="unstyled" />
+      </Card>
+    </div>
+  );
+}
+```
+
+### Default Style with Data Array
+
+The default style description list is more suitable for independently displaying important information.
+
+```jsx live
+function Demo() {
+  const data = [
+    { label: 'Pod Name', value: 'nginx-deployment-7fb96c846b-8xmtv' },
+    { label: 'Pod IP', value: '10.233.74.19/32' },
+    { label: 'Node', value: 'node-01' },
+    { label: 'Namespace', value: 'default' },
+  ];
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Descriptions data={data} variant="default" />
+    </div>
+  );
+}
+```
+
+### Custom Label Styles
+
+Customize label styles through `labelStyle`.
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '350px' }}>
+        <Description
+          label="Cluster Name"
+          variant="unstyled"
+          labelStyle={{ color: '#329dce', fontWeight: 600 }}
+        >
+          default
+        </Description>
+        <Description
+          label="Project Name"
+          variant="unstyled"
+          labelStyle={{ color: '#329dce', fontWeight: 600 }}
+        >
+          kubesphere-system
+        </Description>
+      </Card>
+    </div>
+  );
+}
+```
+
+### Custom Content Styles
+
+Customize content styles through `contentStyle`.
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '350px' }}>
+        <Description
+          label="Status"
+          variant="unstyled"
+          contentStyle={{ color: '#55bc8a', fontWeight: 600 }}
+        >
+          Running
+        </Description>
+        <Description
+          label="Replicas"
+          variant="unstyled"
+          contentStyle={{ color: '#329dce', fontWeight: 600 }}
+        >
+          3/3
+        </Description>
+        <Description
+          label="Alerts"
+          variant="unstyled"
+          contentStyle={{ color: '#ca2621', fontWeight: 600 }}
+        >
+          2 pending
+        </Description>
+      </Card>
+    </div>
+  );
+}
+```
+
+### Complex Content
+
+Description list content can be any ReactNode.
+
+```jsx live
+function Demo() {
+  const { Kubernetes, Pod, Cluster } = KubedIcons;
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '400px' }}>
+        <Description label="Platform" variant="unstyled">
+          <Group spacing="xs" style={{ display: 'inline-flex' }}>
+            <Kubernetes size={16} />
+            <span>Kubernetes</span>
+          </Group>
+        </Description>
+        <Description label="Workload Type" variant="unstyled">
+          <Group spacing="xs" style={{ display: 'inline-flex' }}>
+            <Pod size={16} />
+            <span>Deployment</span>
+          </Group>
+        </Description>
+        <Description label="Cluster" variant="unstyled">
+          <Group spacing="xs" style={{ display: 'inline-flex' }}>
+            <Cluster size={16} />
+            <span>production</span>
+          </Group>
+        </Description>
+        <Description label="Labels" variant="unstyled">
+          <Group spacing="xs">
+            <Badge color="primary">app=nginx</Badge>
+            <Badge color="secondary">version=v1</Badge>
+          </Group>
+        </Description>
+      </Card>
+    </div>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Description
+
+| Property | Description | Type | Default |
+| --- | --- | --- | --- |
+| label | Label content | `ReactNode` | - |
+| variant | Appearance style | `'default' \| 'unstyled'` | `'default'` |
+| labelStyle | Custom label styles | `CSSProperties` | - |
+| contentStyle | Custom content styles | `CSSProperties` | - |
+| children | Description content | `ReactNode` | - |
+
+### Descriptions
+
+| Property | Description | Type | Default |
+| --- | --- | --- | --- |
+| data | Description list data | `Array<{ label: ReactNode; value: ReactNode }>` | `[]` |
+| variant | Appearance style | `'default' \| 'unstyled'` | `'default'` |
+
+:::info
+
+**About variant**:
+
+- `default`: Default style with background color, border and rounded corners, spacing between items, suitable for independently displaying important information
+- `unstyled`: Unstyled variant with only basic padding and colon separation, suitable for use within card containers
+
+**About Description vs Descriptions**:
+
+- `Description` is a single description item component, suitable for scenarios requiring custom styling for each item
+- `Descriptions` is a batch rendering component that quickly generates multiple description items through a `data` array
+
+**About content**:
+
+- Both `children` (Description) and `value` (Descriptions) support any ReactNode
+- Can contain text, icons, Badge, buttons, or any React component
+
+:::
+
+## Usage Recommendations
+
+### Choose Appropriate Variant
+
+Choose the appropriate style variant based on usage scenario:
+
+```jsx
+// Display details in a card, use unstyled
+<Card sectionTitle="Basic Information">
+  <Description label="Name" variant="unstyled">nginx</Description>
+  <Description label="Status" variant="unstyled">Running</Description>
+</Card>
+
+// Independently display important information, use default
+<Description label="Pod IP">10.233.74.19/32</Description>
+```
+
+### Using Data Arrays
+
+When you have multiple description items with the same structure, it's recommended to use data arrays:
+
+```jsx
+// Recommended: Use data array
+const data = [
+  { label: 'Name', value: 'nginx' },
+  { label: 'Status', value: 'Running' },
+  { label: 'IP', value: '10.233.74.19' },
+];
+<Descriptions data={data} variant="unstyled" />
+
+// Not recommended: Repeating multiple Descriptions
+<Description label="Name" variant="unstyled">nginx</Description>
+<Description label="Status" variant="unstyled">Running</Description>
+<Description label="IP" variant="unstyled">10.233.74.19</Description>
+```
+
+### Status Display
+
+Use colors to differentiate different statuses:
+
+```jsx
+<Description label="Status" variant="unstyled">
+  <span style={{ color: '#55bc8a' }}>Running</span>
+</Description>
+
+<Description label="Status" variant="unstyled">
+  <span style={{ color: '#ca2621' }}>Error</span>
+</Description>
+
+<Description label="Status" variant="unstyled">
+  <span style={{ color: '#f5a623' }}>Warning</span>
+</Description>
+```
+
+### Use with Card
+
+Organize description lists within cards:
+
+```jsx
+<Card sectionTitle="Resource Details">
+  <Descriptions data={resourceData} variant="unstyled" />
+</Card>
+```
+
+### Complex Content Combinations
+
+Display complex content with icons or badges:
+
+```jsx
+<Description label="Labels" variant="unstyled">
+  <Group spacing="xs">
+    <Badge color="primary">app=nginx</Badge>
+    <Badge color="secondary">env=prod</Badge>
+  </Group>
+</Description>
+
+<Description label="Type" variant="unstyled">
+  <Group spacing="xs" style={{ display: 'inline-flex' }}>
+    <Pod size={16} />
+    <span>Deployment</span>
+  </Group>
+</Description>
+```
+
+### Dynamic Data
+
+Display data fetched from API:
+
+```jsx
+const [data, setData] = React.useState([]);
+
+React.useEffect(() => {
+  fetchResourceDetails().then((res) => {
+    setData([
+      { label: 'Name', value: res.name },
+      { label: 'Status', value: res.status },
+      { label: 'Created', value: res.createTime },
+    ]);
+  });
+}, []);
+
+<Descriptions data={data} variant="unstyled" />;
+```

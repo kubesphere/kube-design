@@ -4,22 +4,452 @@ sidebar_position: 1
 
 # Dropzone
 
-> Component documentation is being migrated. Check back soon!
+A file selection area that supports drag-and-drop upload.
 
-## Overview
+## When to Use
 
-Dropzone component from Kube Design library.
+- When users need to upload files
+- Support drag-and-drop upload functionality
+- Need to restrict file types and sizes
+- Need to upload multiple files
 
 ## Examples
 
 ### Basic Usage
 
+The simplest usage - click or drag files to the area to trigger upload.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  const [files, setFiles] = React.useState([]);
+
+  const handleDrop = (acceptedFiles) => {
+    setFiles(acceptedFiles);
+  };
+
+  return (
+    <div>
+      <Dropzone onDrop={handleDrop}>
+        <div style={{ padding: '40px', textAlign: 'center' }}>
+          <div style={{ fontSize: '16px', marginBottom: '8px' }}>Drag files here or click to select files</div>
+          <div style={{ fontSize: '14px', color: '#79879c' }}>Supports uploading any file type</div>
+        </div>
+      </Dropzone>
+      {files.length > 0 && (
+        <div style={{ marginTop: '16px', color: '#79879c', fontSize: '14px' }}>
+          Selected files: {files.map((f) => f.name).join(', ')}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+### Status Display
+
+Use `Dropzone.Accept`, `Dropzone.Reject`, `Dropzone.Idle` to display different states.
+
+```jsx live
+function Demo() {
+  const { UploadDuotone, CheckDuotone, CloseDuotone } = KubedIcons;
+
+  return (
+    <Dropzone
+      onDrop={(files) => console.log('Accepted files:', files)}
+      onReject={(files) => console.log('Rejected files:', files)}
+      accept={['image/*']}
+    >
+      <Group position="center" spacing="xl" style={{ minHeight: 220, pointerEvents: 'none' }}>
+        <Dropzone.Accept>
+          <Center>
+            <div style={{ textAlign: 'center' }}>
+              <CheckDuotone size={50} color="#55bc8a" />
+              <div style={{ marginTop: '12px', fontSize: '16px', color: '#55bc8a' }}>
+                Release to upload files
+              </div>
+            </div>
+          </Center>
+        </Dropzone.Accept>
+
+        <Dropzone.Reject>
+          <Center>
+            <div style={{ textAlign: 'center' }}>
+              <CloseDuotone size={50} color="#ca2621" />
+              <div style={{ marginTop: '12px', fontSize: '16px', color: '#ca2621' }}>
+                This file type is not supported
+              </div>
+            </div>
+          </Center>
+        </Dropzone.Reject>
+
+        <Dropzone.Idle>
+          <Center>
+            <div style={{ textAlign: 'center' }}>
+              <UploadDuotone size={50} color="#79879c" />
+              <div style={{ marginTop: '12px', fontSize: '16px' }}>Drag images here</div>
+              <div style={{ marginTop: '8px', fontSize: '14px', color: '#79879c' }}>
+                Only image files are supported
+              </div>
+            </div>
+          </Center>
+        </Dropzone.Idle>
+      </Group>
+    </Dropzone>
+  );
+}
+```
+
+### Restrict File Types
+
+Restrict uploadable file types through the `accept` property.
+
+```jsx live
+function Demo() {
+  const [files, setFiles] = React.useState([]);
+
+  return (
+    <div>
+      <Dropzone onDrop={setFiles} accept={['image/png', 'image/jpeg', 'image/gif']}>
+        <div style={{ padding: '40px', textAlign: 'center' }}>
+          <div style={{ fontSize: '16px', marginBottom: '8px' }}>Upload Images</div>
+          <div style={{ fontSize: '14px', color: '#79879c' }}>
+            Only PNG, JPEG, GIF formats are supported
+          </div>
+        </div>
+      </Dropzone>
+      {files.length > 0 && (
+        <div style={{ marginTop: '16px', color: '#55bc8a', fontSize: '14px' }}>
+          Selected: {files.map((f) => f.name).join(', ')}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+### Restrict File Size
+
+Restrict file size through the `maxSize` property (unit: bytes).
+
+```jsx live
+function Demo() {
+  const [files, setFiles] = React.useState([]);
+  const [rejected, setRejected] = React.useState([]);
+
+  const handleDrop = (acceptedFiles) => {
+    setFiles(acceptedFiles);
+    setRejected([]);
+  };
+
+  const handleReject = (fileRejections) => {
+    setRejected(fileRejections);
+  };
+
+  return (
+    <div>
+      <Dropzone onDrop={handleDrop} onReject={handleReject} maxSize={1024 * 1024}>
+        <div style={{ padding: '40px', textAlign: 'center' }}>
+          <div style={{ fontSize: '16px', marginBottom: '8px' }}>Upload Files</div>
+          <div style={{ fontSize: '14px', color: '#79879c' }}>File size must not exceed 1MB</div>
+        </div>
+      </Dropzone>
+      {files.length > 0 && (
+        <div style={{ marginTop: '16px', color: '#55bc8a', fontSize: '14px' }}>
+          Selected: {files.map((f) => `${f.name} (${(f.size / 1024).toFixed(2)}KB)`).join(', ')}
+        </div>
+      )}
+      {rejected.length > 0 && (
+        <div style={{ marginTop: '16px', color: '#ca2621', fontSize: '14px' }}>
+          File too large: {rejected.map((f) => f.file.name).join(', ')}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+### Single File Upload
+
+Set `multiple={false}` to restrict selection to only one file.
+
+```jsx live
+function Demo() {
+  const [file, setFile] = React.useState(null);
+
+  const handleDrop = (files) => {
+    setFile(files[0]);
+  };
+
+  return (
+    <div>
+      <Dropzone onDrop={handleDrop} multiple={false}>
+        <div style={{ padding: '40px', textAlign: 'center' }}>
+          <div style={{ fontSize: '16px', marginBottom: '8px' }}>Upload Single File</div>
+          <div style={{ fontSize: '14px', color: '#79879c' }}>Can only select one file</div>
+        </div>
+      </Dropzone>
+      {file && (
+        <div style={{ marginTop: '16px', color: '#79879c', fontSize: '14px' }}>
+          Selected file: {file.name} ({(file.size / 1024).toFixed(2)}KB)
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+### Restrict Number of Files
+
+Restrict the maximum number of uploadable files through the `maxFiles` property.
+
+```jsx live
+function Demo() {
+  const [files, setFiles] = React.useState([]);
+
+  return (
+    <div>
+      <Dropzone onDrop={setFiles} maxFiles={3}>
+        <div style={{ padding: '40px', textAlign: 'center' }}>
+          <div style={{ fontSize: '16px', marginBottom: '8px' }}>Upload Files</div>
+          <div style={{ fontSize: '14px', color: '#79879c' }}>Upload up to 3 files</div>
+        </div>
+      </Dropzone>
+      {files.length > 0 && (
+        <div style={{ marginTop: '16px' }}>
+          <div style={{ fontSize: '14px', color: '#79879c', marginBottom: '8px' }}>
+            Selected {files.length} files:
+          </div>
+          {files.map((file, index) => (
+            <div key={index} style={{ fontSize: '14px', color: '#79879c' }}>
+              {index + 1}. {file.name}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+### Disabled State
+
+Disable file upload through the `disabled` property.
+
+```jsx live
+function Demo() {
+  const [disabled, setDisabled] = React.useState(true);
+
+  return (
+    <div>
+      <Dropzone onDrop={(files) => console.log(files)} disabled={disabled}>
+        <div style={{ padding: '40px', textAlign: 'center' }}>
+          <div style={{ fontSize: '16px', marginBottom: '8px' }}>
+            {disabled ? 'Disabled State' : 'Enabled State'}
+          </div>
+          <div style={{ fontSize: '14px', color: '#79879c' }}>
+            {disabled ? 'Cannot upload files' : 'Can upload files'}
+          </div>
+        </div>
+      </Dropzone>
+      <Button style={{ marginTop: '16px' }} onClick={() => setDisabled(!disabled)}>
+        {disabled ? 'Enable' : 'Disable'}
+      </Button>
+    </div>
+  );
+}
+```
+
+### Loading State
+
+Display loading state through the `loading` property.
+
+```jsx live
+function Demo() {
+  const [loading, setLoading] = React.useState(false);
+  const [files, setFiles] = React.useState([]);
+
+  const handleDrop = (acceptedFiles) => {
+    setLoading(true);
+    setFiles(acceptedFiles);
+    // Simulate upload
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  };
+
+  return (
+    <div>
+      <Dropzone onDrop={handleDrop} loading={loading}>
+        <div style={{ padding: '40px', textAlign: 'center' }}>
+          <div style={{ fontSize: '16px', marginBottom: '8px' }}>Upload Files</div>
+          <div style={{ fontSize: '14px', color: '#79879c' }}>
+            {loading ? 'Uploading...' : 'Drag files here'}
+          </div>
+        </div>
+      </Dropzone>
+      {files.length > 0 && !loading && (
+        <div style={{ marginTop: '16px', color: '#55bc8a', fontSize: '14px' }}>
+          Upload successful: {files.map((f) => f.name).join(', ')}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+### Disable Click
+
+Set `activateOnClick={false}` to disable click file selection, only support drag-and-drop.
+
+```jsx live
+function Demo() {
+  const [files, setFiles] = React.useState([]);
+
+  return (
+    <div>
+      <Dropzone onDrop={setFiles} activateOnClick={false}>
+        <div style={{ padding: '40px', textAlign: 'center' }}>
+          <div style={{ fontSize: '16px', marginBottom: '8px' }}>Drag-and-drop Only</div>
+          <div style={{ fontSize: '14px', color: '#79879c' }}>Clicking has no effect, only drag files</div>
+        </div>
+      </Dropzone>
+      {files.length > 0 && (
+        <div style={{ marginTop: '16px', color: '#79879c', fontSize: '14px' }}>
+          Selected: {files.map((f) => f.name).join(', ')}
+        </div>
+      )}
+    </div>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Dropzone Properties
+
+| Property | Description | Type | Default |
+| --- | --- | --- | --- |
+| onDrop | Callback when files are accepted | `(files: File[]) => void` | - |
+| onReject | Callback when files are rejected | `(fileRejections: FileRejection[]) => void` | - |
+| onDropAny | Callback when any files are dropped | `(files: File[], rejections: FileRejection[]) => void` | - |
+| accept | Accepted file types (MIME types) | `string[]` | - |
+| multiple | Whether to allow multiple file uploads | `boolean` | `true` |
+| maxSize | Maximum file size (bytes) | `number` | `Infinity` |
+| maxFiles | Maximum number of files | `number` | `0` |
+| disabled | Whether disabled | `boolean` | `false` |
+| loading | Whether to display loading state | `boolean` | `false` |
+| activateOnClick | Whether to allow click to select files | `boolean` | `true` |
+| activateOnDrag | Whether to allow drag-and-drop upload | `boolean` | `true` |
+| activateOnKeyboard | Whether to allow keyboard operations | `boolean` | `true` |
+| openRef | Get open function ref | `React.Ref<() => void>` | - |
+| name | Form control name | `string` | - |
+| validator | Custom file validation function | `(file: File) => FileError \| FileError[] \| null` | - |
+| onDragEnter | Callback when drag enters | `(event: DragEvent) => void` | - |
+| onDragLeave | Callback when drag leaves | `(event: DragEvent) => void` | - |
+| onDragOver | Callback when drag hovers | `(event: DragEvent) => void` | - |
+| onFileDialogOpen | Callback when file dialog opens | `() => void` | - |
+| onFileDialogCancel | Callback when file dialog is cancelled | `() => void` | - |
+| Others | Native attributes | `HTMLAttributes<HTMLDivElement>` | - |
+
+:::info
+
+**About accept**:
+- `accept` accepts an array of MIME types, e.g., `['image/*']`, `['image/png', 'image/jpeg']`
+- Common MIME types:
+  - Images: `'image/*'`, `'image/png'`, `'image/jpeg'`, `'image/gif'`
+  - Documents: `'application/pdf'`, `'application/msword'`
+  - Videos: `'video/*'`, `'video/mp4'`
+  - Audio: `'audio/*'`, `'audio/mp3'`
+
+**About file validation**:
+- `maxSize` is in bytes, 1MB = 1024 * 1024 bytes
+- `maxFiles` of 0 means no file count restriction
+- Rejected files are returned through the `onReject` callback, including rejection reason
+
+**About sub-components**:
+- `Dropzone.Accept`: Displayed when dragging valid files
+- `Dropzone.Reject`: Displayed when dragging invalid files
+- `Dropzone.Idle`: Displayed in default state
+
+:::
+
+### Dropzone.Accept / Reject / Idle
+
+| Property | Description | Type | Default |
+| --- | --- | --- | --- |
+| children | Child elements | `ReactNode` | - |
+
+## Usage Recommendations
+
+### File Type Restrictions
+
+Restrict file types based on business requirements:
+
+```jsx
+// Image files
+<Dropzone accept={['image/*']} />
+
+// Specific image formats
+<Dropzone accept={['image/png', 'image/jpeg']} />
+
+// Document files
+<Dropzone accept={['application/pdf', 'application/msword']} />
+
+// Multiple types
+<Dropzone accept={['image/*', 'application/pdf']} />
+```
+
+### File Size Handling
+
+Set reasonable file size restrictions:
+
+```jsx
+// 1MB
+<Dropzone maxSize={1024 * 1024} />
+
+// 5MB
+<Dropzone maxSize={5 * 1024 * 1024} />
+
+// 10MB
+<Dropzone maxSize={10 * 1024 * 1024} />
+```
+
+### Error Handling
+
+Handle file upload errors:
+
+```jsx
+const handleReject = (fileRejections) => {
+  fileRejections.forEach(({ file, errors }) => {
+    errors.forEach((error) => {
+      if (error.code === 'file-too-large') {
+        console.log(`${file.name} file is too large`);
+      }
+      if (error.code === 'file-invalid-type') {
+        console.log(`${file.name} file type is not supported`);
+      }
+      if (error.code === 'too-many-files') {
+        console.log('File count exceeds limit');
+      }
+    });
+  });
+};
+
+<Dropzone onReject={handleReject} />
+```
+
+### Programmatic Opening
+
+Use openRef to programmatically trigger file selection:
+
+```jsx
+const openRef = React.useRef(null);
+
+<Dropzone openRef={openRef} onDrop={handleDrop}>
+  ...
+</Dropzone>
+
+<Button onClick={() => openRef.current?.()}>
+  Select Files
+</Button>
+```

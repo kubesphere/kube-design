@@ -1,25 +1,259 @@
 ---
-sidebar_position: 1
+sidebar_position: 6
 ---
 
-# UseMediaQuery
+# useMediaQuery
 
-> Hook 文档正在迁移中，敬请期待！
+响应式媒体查询 Hook，用于根据屏幕尺寸或设备特性动态调整 UI。
 
-## 概述
+## 基本用法
 
-来自 Kube Design 的 `UseMediaQuery` hook。
+```jsx live
+function Demo() {
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
-## 使用方法
+  return (
+    <div
+      style={{
+        padding: '24px',
+        backgroundColor: 'var(--ifm-background-surface-color)',
+        border: '1px solid var(--ifm-color-emphasis-300)',
+        borderRadius: '8px',
+      }}
+    >
+      <h4>当前设备类型</h4>
+      <div
+        style={{
+          padding: '16px',
+          marginTop: '12px',
+          backgroundColor: isMobile 
+            ? 'var(--ifm-color-warning-lightest)' 
+            : 'var(--ifm-color-success-lightest)',
+          borderRadius: '6px',
+          textAlign: 'center',
+        }}
+      >
+        {isMobile ? '📱 移动设备' : '💻 桌面设备'}
+      </div>
+      <p style={{ marginTop: '12px', fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+        调整浏览器窗口大小查看变化
+      </p>
+    </div>
+  );
+}
+```
 
-```tsx
-import { UseMediaQuery } from '@kubed/hooks';
+## 响应式布局
 
-function Component() {
-  // Documentation coming soon
+根据屏幕尺寸显示不同的布局：
+
+```jsx live
+function Demo() {
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
+  const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1023px)');
+  const isMobile = useMediaQuery('(max-width: 767px)');
+
+  const getDeviceType = () => {
+    if (isDesktop) return { name: '桌面', icon: '💻', columns: 3 };
+    if (isTablet) return { name: '平板', icon: '📱', columns: 2 };
+    return { name: '手机', icon: '📱', columns: 1 };
+  };
+
+  const device = getDeviceType();
+
+  return (
+    <div>
+      <div
+        style={{
+          padding: '16px',
+          backgroundColor: 'var(--ifm-color-primary-lightest)',
+          borderRadius: '6px',
+          marginBottom: '20px',
+          textAlign: 'center',
+        }}
+      >
+        {device.icon} 当前: {device.name}视图（{device.columns} 列布局）
+      </div>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: `repeat(${device.columns}, 1fr)`,
+          gap: '12px',
+        }}
+      >
+        {[1, 2, 3].map((item) => (
+          <div
+            key={item}
+            style={{
+              padding: '20px',
+              backgroundColor: 'var(--ifm-background-surface-color)',
+              border: '1px solid var(--ifm-color-emphasis-300)',
+              borderRadius: '6px',
+              textAlign: 'center',
+            }}
+          >
+            项目 {item}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+## 暗色模式检测
+
+检测系统主题偏好：
+
+```jsx live
+function Demo() {
+  const prefersDark = useMediaQuery('(prefers-color-scheme: dark)');
+
+  return (
+    <div
+      style={{
+        padding: '24px',
+        backgroundColor: prefersDark ? '#1a1a1a' : '#ffffff',
+        color: prefersDark ? '#ffffff' : '#000000',
+        border: `1px solid ${prefersDark ? '#333' : '#e0e0e0'}`,
+        borderRadius: '8px',
+        transition: 'all 0.3s',
+      }}
+    >
+      <h4>系统主题偏好</h4>
+      <p>
+        {prefersDark ? '🌙 暗色模式' : '☀️ 亮色模式'}
+      </p>
+      <p style={{ fontSize: '14px', opacity: 0.7 }}>
+        根据系统设置自动适配主题
+      </p>
+    </div>
+  );
+}
+```
+
+## 横竖屏检测
+
+检测设备方向：
+
+```jsx live
+function Demo() {
+  const isPortrait = useMediaQuery('(orientation: portrait)');
+
+  return (
+    <div
+      style={{
+        padding: '24px',
+        backgroundColor: 'var(--ifm-color-emphasis-100)',
+        borderRadius: '8px',
+        textAlign: 'center',
+      }}
+    >
+      <div style={{ fontSize: '48px', marginBottom: '16px' }}>
+        {isPortrait ? '📱' : '💻'}
+      </div>
+      <h4>{isPortrait ? '竖屏模式' : '横屏模式'}</h4>
+      <p style={{ margin: '12px 0 0', fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+        {isPortrait ? '设备处于竖屏状态' : '设备处于横屏状态'}
+      </p>
+    </div>
+  );
+}
+```
+
+## 高分辨率屏幕
+
+检测高 DPI 显示屏：
+
+```jsx live
+function Demo() {
+  const isRetina = useMediaQuery('(min-resolution: 2dppx)');
+
+  return (
+    <div
+      style={{
+        padding: '20px',
+        backgroundColor: isRetina 
+          ? 'var(--ifm-color-success-lightest)' 
+          : 'var(--ifm-color-warning-lightest)',
+        borderRadius: '8px',
+      }}
+    >
+      <h4>显示屏分辨率</h4>
+      <p>
+        {isRetina 
+          ? '✨ 高分辨率显示屏（Retina）' 
+          : '📺 标准分辨率显示屏'}
+      </p>
+    </div>
+  );
 }
 ```
 
 ## API
 
-文档编写中。
+### 参数
+
+```ts
+function useMediaQuery(query: string): boolean
+```
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| query | CSS 媒体查询字符串 | `string` | - |
+
+### 返回值
+
+返回布尔值，表示媒体查询是否匹配。
+
+```ts
+boolean
+```
+
+## 常用媒体查询
+
+### 屏幕尺寸
+
+```ts
+// 移动设备
+'(max-width: 768px)'
+
+// 平板设备  
+'(min-width: 768px) and (max-width: 1023px)'
+
+// 桌面设备
+'(min-width: 1024px)'
+
+// 大屏桌面
+'(min-width: 1440px)'
+```
+
+### 设备特性
+
+```ts
+// 暗色模式
+'(prefers-color-scheme: dark)'
+
+// 亮色模式
+'(prefers-color-scheme: light)'
+
+// 横屏
+'(orientation: landscape)'
+
+// 竖屏
+'(orientation: portrait)'
+
+// 高分辨率（Retina）
+'(min-resolution: 2dppx)'
+
+// 减少动画
+'(prefers-reduced-motion: reduce)'
+```
+
+## 使用场景
+
+- **响应式布局**: 根据屏幕尺寸调整布局
+- **主题切换**: 检测系统主题偏好
+- **移动适配**: 针对移动设备优化 UI
+- **性能优化**: 在移动设备上降低复杂度
+- **可访问性**: 检测用户偏好设置（如减少动画）

@@ -2,24 +2,577 @@
 sidebar_position: 1
 ---
 
-# Loading Overlay
+# LoadingOverlay
 
-> Component documentation is being migrated. Check back soon!
+A loading mask overlay component that displays a loading indicator over content.
 
-## Overview
+## When to Use
 
-Loading Overlay component from Kube Design library.
+- When asynchronously loading page content
+- When performing operations that require waiting
+- Need to mask content areas and display loading state
+- When performing data requests that require waiting feedback
+
+In Kube Design, the LoadingOverlay component provides flexible loading overlay functionality:
+
+- **Visibility Control**: Control display/hide through the `visible` property
+- **Size Options**: Support multiple loading indicator sizes
+- **Customizable Overlay**: Support custom overlay color and opacity
+- **Position Control**: Support custom z-index
+- **Flexible Application**: Can be used in any container component
 
 ## Examples
 
 ### Basic Usage
 
+Basic loading mask usage, control display/hide through the `visible` property.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  const [visible, setVisible] = React.useState(true);
+
+  return (
+    <div>
+      <Button onClick={() => setVisible(!visible)} style={{ marginBottom: '16px' }}>
+        Toggle Loading
+      </Button>
+      <LoadingOverlay visible={visible}>
+        <Card style={{ padding: '40px', minHeight: '200px' }}>
+          <Text>This is the content area</Text>
+          <Text>Loading overlay will be displayed when visible is true</Text>
+        </Card>
+      </LoadingOverlay>
+    </div>
+  );
+}
+```
+
+### Control Visibility
+
+Control loading state in actual application scenarios.
+
+```jsx live
+function Demo() {
+  const [loading, setLoading] = React.useState(false);
+
+  const handleLoad = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  };
+
+  return (
+    <div>
+      <Button onClick={handleLoad} style={{ marginBottom: '16px' }}>
+        Simulate Loading (2 seconds)
+      </Button>
+      <LoadingOverlay visible={loading}>
+        <Card style={{ padding: '40px', minHeight: '200px' }}>
+          <Text weight={600} style={{ marginBottom: '8px' }}>
+            Data Display Area
+          </Text>
+          <Text size="sm">Click the button above to simulate data loading</Text>
+        </Card>
+      </LoadingOverlay>
+    </div>
+  );
+}
+```
+
+### Different Sizes
+
+Set loading indicator size through the `size` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          Small Size (xs):
+        </Text>
+        <LoadingOverlay visible size="xs">
+          <Card style={{ padding: '40px', minHeight: '150px' }}>
+            <Text>Content Area</Text>
+          </Card>
+        </LoadingOverlay>
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          Medium Size (md - Default):
+        </Text>
+        <LoadingOverlay visible size="md">
+          <Card style={{ padding: '40px', minHeight: '150px' }}>
+            <Text>Content Area</Text>
+          </Card>
+        </LoadingOverlay>
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          Large Size (xl):
+        </Text>
+        <LoadingOverlay visible size="xl">
+          <Card style={{ padding: '40px', minHeight: '150px' }}>
+            <Text>Content Area</Text>
+          </Card>
+        </LoadingOverlay>
+      </div>
+    </Group>
+  );
+}
+```
+
+### Custom Overlay Color
+
+Customize overlay background color through the `overlayColor` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          Default Color (white):
+        </Text>
+        <LoadingOverlay visible>
+          <Card style={{ padding: '40px', minHeight: '150px' }}>
+            <Text>Content Area</Text>
+          </Card>
+        </LoadingOverlay>
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          Dark Background:
+        </Text>
+        <LoadingOverlay visible overlayColor="#242e42">
+          <Card style={{ padding: '40px', minHeight: '150px' }}>
+            <Text>Content Area</Text>
+          </Card>
+        </LoadingOverlay>
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          Light Blue Background:
+        </Text>
+        <LoadingOverlay visible overlayColor="#e3f2fd">
+          <Card style={{ padding: '40px', minHeight: '150px' }}>
+            <Text>Content Area</Text>
+          </Card>
+        </LoadingOverlay>
+      </div>
+    </Group>
+  );
+}
+```
+
+### Custom Opacity
+
+Control overlay transparency through the `overlayOpacity` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          Low Opacity (0.3):
+        </Text>
+        <LoadingOverlay visible overlayOpacity={0.3}>
+          <Card style={{ padding: '40px', minHeight: '150px' }}>
+            <Text>You can partially see the background content</Text>
+          </Card>
+        </LoadingOverlay>
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          Medium Opacity (0.6 - Default):
+        </Text>
+        <LoadingOverlay visible overlayOpacity={0.6}>
+          <Card style={{ padding: '40px', minHeight: '150px' }}>
+            <Text>Default opacity effect</Text>
+          </Card>
+        </LoadingOverlay>
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          High Opacity (0.9):
+        </Text>
+        <LoadingOverlay visible overlayOpacity={0.9}>
+          <Card style={{ padding: '40px', minHeight: '150px' }}>
+            <Text>Background content almost completely hidden</Text>
+          </Card>
+        </LoadingOverlay>
+      </div>
+    </Group>
+  );
+}
+```
+
+### Use in Cards
+
+Commonly used with Card components to mask content areas.
+
+```jsx live
+function Demo() {
+  const [loading1, setLoading1] = React.useState(false);
+  const [loading2, setLoading2] = React.useState(false);
+
+  const handleLoad1 = () => {
+    setLoading1(true);
+    setTimeout(() => setLoading1(false), 1500);
+  };
+
+  const handleLoad2 = () => {
+    setLoading2(true);
+    setTimeout(() => setLoading2(false), 1500);
+  };
+
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+      <div>
+        <LoadingOverlay visible={loading1}>
+          <Card>
+            <Text weight={600} style={{ marginBottom: '12px' }}>
+              User Statistics
+            </Text>
+            <Text size="sm">Total Users: 1,234</Text>
+            <Text size="sm">Active Users: 567</Text>
+            <Text size="sm">New Users Today: 89</Text>
+            <Button size="sm" style={{ marginTop: '12px' }} onClick={handleLoad1}>
+              Refresh Data
+            </Button>
+          </Card>
+        </LoadingOverlay>
+      </div>
+      <div>
+        <LoadingOverlay visible={loading2}>
+          <Card>
+            <Text weight={600} style={{ marginBottom: '12px' }}>
+              System Status
+            </Text>
+            <Text size="sm">CPU Usage: 45%</Text>
+            <Text size="sm">Memory Usage: 62%</Text>
+            <Text size="sm">Disk Usage: 38%</Text>
+            <Button size="sm" style={{ marginTop: '12px' }} onClick={handleLoad2}>
+              Refresh Data
+            </Button>
+          </Card>
+        </LoadingOverlay>
+      </div>
+    </div>
+  );
+}
+```
+
+### Full Page Loading
+
+Use with full screen elements to create full page loading effect.
+
+```jsx live
+function Demo() {
+  const [loading, setLoading] = React.useState(false);
+
+  const handleLoad = () => {
+    setLoading(true);
+    setTimeout(() => setLoading(false), 2000);
+  };
+
+  return (
+    <div>
+      <Button onClick={handleLoad} style={{ marginBottom: '16px' }}>
+        Simulate Page Loading
+      </Button>
+      <LoadingOverlay visible={loading} zIndex={1000}>
+        <div style={{ minHeight: '300px', padding: '20px', background: '#f7f8fa', borderRadius: '4px' }}>
+          <Text weight={600} style={{ marginBottom: '16px' }}>
+            Page Content
+          </Text>
+          <Text>This is a simulated page content area</Text>
+          <Text>Loading overlay will cover the entire area when loading</Text>
+        </div>
+      </LoadingOverlay>
+    </div>
+  );
+}
+```
+
+### With Custom Loading Indicator
+
+Combine with different loading indicator variants.
+
+```jsx live
+function Demo() {
+  const [variant, setVariant] = React.useState('circle1');
+
+  return (
+    <div>
+      <Group spacing="xs" style={{ marginBottom: '16px' }}>
+        <Button size="sm" variant={variant === 'circle1' ? 'filled' : 'outline'} onClick={() => setVariant('circle1')}>
+          Circle 1
+        </Button>
+        <Button size="sm" variant={variant === 'circle2' ? 'filled' : 'outline'} onClick={() => setVariant('circle2')}>
+          Circle 2
+        </Button>
+      </Group>
+      <LoadingOverlay visible variant={variant}>
+        <Card style={{ padding: '40px', minHeight: '200px' }}>
+          <Text>Content area displays different loading animation styles</Text>
+        </Card>
+      </LoadingOverlay>
+    </div>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### LoadingOverlay Properties
+
+| Property | Description | Type | Default |
+| --- | --- | --- | --- |
+| visible | Whether to display loading overlay | `boolean` | `false` |
+| size | Loading indicator size | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` |
+| variant | Loading indicator variant | `'circle1' \| 'circle2'` | `'circle1'` |
+| overlayColor | Overlay background color | `string` | `'#fff'` |
+| overlayOpacity | Overlay opacity (0-1) | `number` | `0.6` |
+| zIndex | z-index value | `number` | `1` |
+| children | Content to be masked | `ReactNode` | - |
+
+:::info
+
+**About visible property**:
+
+- Controls whether to display the loading overlay
+- When `visible={false}`, only the children content is displayed
+- When `visible={true}`, displays loading indicator and mask layer over content
+- Commonly used with state management for dynamic control
+
+**About size**:
+
+- Supports size options: `xs`, `sm`, `md`, `lg`, `xl`
+- Default is `md`
+- Only affects loading indicator size, not overlay area size
+- Overlay area size is determined by children container size
+
+**About variant**:
+
+- `circle1`: Default circular loading animation
+- `circle2`: Alternative circular loading animation style
+- Both styles support all size options
+
+**About overlayColor**:
+
+- Sets the background color of the mask layer
+- Default is white `#fff`
+- Supports any valid CSS color value (hex, rgb, rgba, color names, etc.)
+- Light backgrounds commonly use white/light colors, dark backgrounds use dark colors
+
+**About overlayOpacity**:
+
+- Controls mask layer transparency
+- Value range: 0-1
+- Default is `0.6` (60% opacity)
+- `0` is completely transparent (not recommended, mask effect disappears)
+- `1` is completely opaque (background content completely hidden)
+
+**About zIndex**:
+
+- Controls the stacking order of the loading overlay
+- Default is `1`
+- Increase this value when needing to override other elements
+- For full page loading, set higher value (like 1000)
+
+**About position relationship**:
+
+- LoadingOverlay uses `position: relative` for wrapper (LoadingOverlay.tsx line 25)
+- Overlay uses `position: absolute` covering entire container (line 37)
+- Children content maintains normal document flow
+
+**About animation**:
+
+- Loading indicator uses Loading component (LoadingOverlay.tsx lines 50-52)
+- Supports all Loading component properties (size, variant, color)
+- Overlay layer has fade-in/fade-out transition animation
+
+:::
+
+## Usage Recommendations
+
+### Appropriate Use Scenarios
+
+Use loading overlay in appropriate scenarios:
+
+```jsx
+// Recommended: Use when loading data
+const [loading, setLoading] = React.useState(false);
+
+const fetchData = async () => {
+  setLoading(true);
+  try {
+    const data = await api.getData();
+    // Process data...
+  } finally {
+    setLoading(false);
+  }
+};
+
+<LoadingOverlay visible={loading}>
+  <DataDisplay />
+</LoadingOverlay>;
+
+// Not recommended: Don't use for very short operations (< 300ms)
+// Users may see brief flashing
+```
+
+### Set Appropriate Opacity
+
+Choose appropriate opacity based on scenario:
+
+```jsx
+// For important operations: higher opacity to prevent user interaction
+<LoadingOverlay visible={loading} overlayOpacity={0.8}>
+  <ImportantForm />
+</LoadingOverlay>
+
+// For background loading: lower opacity to allow viewing content
+<LoadingOverlay visible={loading} overlayOpacity={0.4}>
+  <DataList />
+</LoadingOverlay>
+```
+
+### Choose Appropriate Size
+
+Select loading indicator size based on container size:
+
+```jsx
+// Small containers use small indicators
+<LoadingOverlay visible={loading} size="xs">
+  <SmallCard />
+</LoadingOverlay>
+
+// Large areas use large indicators
+<LoadingOverlay visible={loading} size="xl">
+  <FullPageContent />
+</LoadingOverlay>
+```
+
+### Prevent Unnecessary Re-renders
+
+Use proper state management to avoid unnecessary re-renders:
+
+```jsx
+// Recommended: Loading state only affects necessary areas
+const [dataLoading, setDataLoading] = React.useState(false);
+
+<LoadingOverlay visible={dataLoading}>
+  <DataArea />
+</LoadingOverlay>
+
+// Not recommended: Entire page loading affects all components
+const [pageLoading, setPageLoading] = React.useState(false);
+```
+
+### Combine with Error Handling
+
+Provide proper error feedback:
+
+```jsx
+const [loading, setLoading] = React.useState(false);
+const [error, setError] = React.useState(null);
+
+const loadData = async () => {
+  setLoading(true);
+  setError(null);
+  try {
+    await fetchData();
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
+<>
+  <LoadingOverlay visible={loading}>
+    <DataDisplay />
+  </LoadingOverlay>
+  {error && <Alert type="error">{error}</Alert>}
+</>;
+```
+
+### Use with Skeleton Screens
+
+For first load, consider using skeleton screens:
+
+```jsx
+const [firstLoad, setFirstLoad] = React.useState(true);
+const [loading, setLoading] = React.useState(false);
+
+// First load shows skeleton screen
+if (firstLoad) {
+  return <SkeletonScreen />;
+}
+
+// Subsequent loads use loading overlay
+return (
+  <LoadingOverlay visible={loading}>
+    <DataDisplay />
+  </LoadingOverlay>
+);
+```
+
+### Set Appropriate z-index
+
+Set appropriate z-index based on context:
+
+```jsx
+// Regular content area
+<LoadingOverlay visible={loading} zIndex={1}>
+  <Content />
+</LoadingOverlay>
+
+// Modal loading
+<Modal>
+  <LoadingOverlay visible={loading} zIndex={1001}>
+    <ModalContent />
+  </LoadingOverlay>
+</Modal>
+
+// Full page loading
+<LoadingOverlay visible={loading} zIndex={9999}>
+  <PageContent />
+</LoadingOverlay>
+```
+
+### Coordinate Overlay Color with Theme
+
+Choose appropriate overlay color based on theme:
+
+```jsx
+// Light theme uses white background
+<LoadingOverlay visible={loading} overlayColor="#fff" overlayOpacity={0.6}>
+  <LightThemeContent />
+</LoadingOverlay>
+
+// Dark theme uses dark background
+<LoadingOverlay visible={loading} overlayColor="#242e42" overlayOpacity={0.7}>
+  <DarkThemeContent />
+</LoadingOverlay>
+```
+
+### Provide User Feedback
+
+Consider providing additional feedback for long operations:
+
+```jsx
+const [loading, setLoading] = React.useState(false);
+const [progress, setProgress] = React.useState(0);
+
+<>
+  <LoadingOverlay visible={loading}>
+    <DataArea />
+  </LoadingOverlay>
+  {loading && <Text size="sm">Loading... {progress}%</Text>}
+</>;
+```

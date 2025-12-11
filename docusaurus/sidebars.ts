@@ -32,7 +32,6 @@ const sidebars: SidebarsConfig = {
       label: 'General',
       items: [
         'components/button',
-        'components/icon',
       ],
     },
     {
@@ -184,7 +183,6 @@ const sidebars: SidebarsConfig = {
       label: 'Icons',
       items: [
         'icons/overview',
-        'icons/usage',
       ],
     },
   ],

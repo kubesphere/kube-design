@@ -4,22 +4,240 @@ sidebar_position: 1
 
 # Tag
 
-> Component documentation is being migrated. Check back soon!
+Small tags for marking and categorization.
 
-## Overview
+## When to Use
 
-Tag component from Kube Design library.
+- Used to mark properties and dimensions of things
+- For categorization and identification
+
+In Kube Design, the Tag component provides rich tag styles and interactive features:
+
+- **Multiple Colors**: Supports semantic colors like default, primary, secondary, success, warning, error, info
+- **Tags with Title**: Can add titles to distinguish tag types
+- **Closable**: Supports closable tags, suitable for filter scenarios
+- **Flexible Extension**: Supports adding icons, prefix and suffix elements
 
 ## Examples
 
 ### Basic Usage
 
+The most basic tag usage.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  return (
+    <Group spacing="xs">
+      <Tag>Default</Tag>
+      <Tag color="primary">Primary</Tag>
+      <Tag color="secondary">Secondary</Tag>
+    </Group>
+  );
+}
+```
+
+### Colors
+
+The Tag component provides seven semantic colors.
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="xs">
+      <Tag color="default">Default</Tag>
+      <Tag color="primary">Primary</Tag>
+      <Tag color="secondary">Secondary</Tag>
+      <Tag color="success">Success</Tag>
+      <Tag color="warning">Warning</Tag>
+      <Tag color="error">Error</Tag>
+      <Tag color="info">Info</Tag>
+    </Group>
+  );
+}
+```
+
+### Tags with Title
+
+Use the `title` property to add a prefix title to the tag for identifying the tag category.
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="xs">
+      <Tag title="Namespace" color="primary">
+        kube-system
+      </Tag>
+      <Tag title="Job Name" color="success">
+        job-sync-data
+      </Tag>
+      <Tag title="Status" color="warning">
+        Running
+      </Tag>
+      <Tag title="Label" color="secondary">
+        app=nginx
+      </Tag>
+    </Group>
+  );
+}
+```
+
+### Closable Tags
+
+Define a closable tag by setting the `closable` property. Closable tags are commonly used in filter scenarios.
+
+```jsx live
+function Demo() {
+  const [tags, setTags] = React.useState(['Apple', 'Banana', 'Orange', 'Grape']);
+
+  const handleClose = (tagToRemove) => {
+    setTags(tags.filter((tag) => tag !== tagToRemove));
+  };
+
+  return (
+    <Group spacing="xs">
+      {tags.map((tag) => (
+        <Tag key={tag} color="primary" closable onClose={() => handleClose(tag)}>
+          {tag}
+        </Tag>
+      ))}
+    </Group>
+  );
+}
+```
+
+### Tags with Icons
+
+Icons can be used in the `title` property, or prefix and suffix icons can be added through `prepend` and `append`.
+
+```jsx live
+function Demo() {
+  const { Add, Close, Kubernetes } = KubedIcons;
+
+  return (
+    <Group spacing="xs">
+      <Tag
+        color="success"
+        title={<Add variant="light" size={14} />}
+        titleStyle={{ backgroundColor: 'transparent', margin: '0', padding: '0 3px' }}
+      >
+        Add Tag
+      </Tag>
+      <Tag color="info" prepend={<Kubernetes size={14} style={{ marginRight: '4px' }} />}>
+        Kubernetes
+      </Tag>
+      <Tag
+        color="warning"
+        append={
+          <Close variant="light" size={14} style={{ marginLeft: '4px', cursor: 'pointer' }} />
+        }
+      >
+        Deletable
+      </Tag>
+    </Group>
+  );
+}
+```
+
+### Border Radius
+
+Use the `radius` property to set the tag border radius size.
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="xs">
+      <Tag radius="xs" color="primary">
+        XS Radius
+      </Tag>
+      <Tag radius="sm" color="success">
+        SM Radius
+      </Tag>
+      <Tag radius="md" color="warning">
+        MD Radius
+      </Tag>
+      <Tag radius="lg" color="error">
+        LG Radius
+      </Tag>
+      <Tag radius="xl" color="info">
+        XL Radius
+      </Tag>
+    </Group>
+  );
+}
+```
+
+### Custom Title Style
+
+Customize title style through the `titleStyle` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="xs">
+      <Tag
+        title="Custom"
+        color="primary"
+        titleStyle={{ backgroundColor: '#1890ff', color: '#fff' }}
+      >
+        Blue Title
+      </Tag>
+      <Tag
+        title="Style"
+        color="success"
+        titleStyle={{ backgroundColor: '#52c41a', color: '#fff', fontWeight: 'bold' }}
+      >
+        Green Bold Title
+      </Tag>
+    </Group>
+  );
+}
+```
+
+### Controlled Visibility
+
+Control tag display and hiding through the `visible` property.
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(true);
+
+  return (
+    <>
+      <Group spacing="xs" style={{ marginBottom: '12px' }}>
+        <Tag visible={visible} color="primary">
+          Controlled Tag
+        </Tag>
+        <Tag visible={!visible} color="success">
+          Another Tag
+        </Tag>
+      </Group>
+      <Button size="sm" onClick={() => setVisible(!visible)}>
+        Toggle Visibility
+      </Button>
+    </>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Tag Properties
+
+| Property   | Description          | Type                                                                                   | Default     |
+| ---------- | -------------------- | -------------------------------------------------------------------------------------- | ----------- |
+| title      | Tag prefix title     | `ReactNode`                                                                            | -           |
+| titleStyle | Custom title style   | `CSSProperties`                                                                        | -           |
+| color      | Tag color            | `'default' \| 'primary' \| 'secondary' \| 'success' \| 'warning' \| 'error' \| 'info'` | `'default'` |
+| prepend    | Tag prefix element   | `ReactNode`                                                                            | -           |
+| append     | Tag suffix element   | `ReactNode`                                                                            | -           |
+| radius     | Border radius        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number`                                       | -           |
+| visible    | Whether to show tag  | `boolean`                                                                              | `true`      |
+| closable   | Whether closable     | `boolean`                                                                              | `false`     |
+| onClose    | Callback on close    | `(e: React.MouseEvent<SVGElement>) => void`                                            | -           |
+| className  | Custom class name    | `string`                                                                               | -           |
+| style      | Custom styles        | `CSSProperties`                                                                        | -           |
+| children   | Tag content          | `ReactNode`                                                                            | -           |
+
+:::info
+The Tag component inherits all native HTML div element attributes. When `closable` is `true`, clicking the close icon triggers the `onClose` callback. If the `visible` property is not provided, the component automatically manages the close state internally.
+:::

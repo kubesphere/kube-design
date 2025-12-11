@@ -1,46 +1,35 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 # useToggle
 
-Hook for managing boolean state with toggle functionality.
+A Hook for toggling between two values, more convenient and semantic than useState.
 
-## Usage
+## Basic Usage
 
-```jsx
-import { useToggle } from '@kubed/hooks';
-import { Button, Text, Group } from '@kubed/components';
-
+```jsx live
 function Demo() {
-  const [value, toggle] = useToggle(false);
-
-  return (
-    <Group>
-      <Button onClick={() => toggle()}>
-        Toggle
-      </Button>
-      <Text>Status: {value ? 'ON' : 'OFF'}</Text>
-    </Group>
-  );
-}
-```
-
-## With Initial Value
-
-```jsx
-import { useToggle } from '@kubed/hooks';
-import { Button } from '@kubed/components';
-
-function Demo() {
-  const [visible, toggle] = useToggle(true);
+  const [value, toggle] = useToggle('blue', ['blue', 'orange']);
 
   return (
     <div>
       <Button onClick={() => toggle()}>
-        {visible ? 'Hide' : 'Show'}
+        Toggle Color
       </Button>
-      {visible && <p>Visible content</p>}
+      <div
+        style={{
+          marginTop: '20px',
+          padding: '40px',
+          backgroundColor: value,
+          color: 'white',
+          borderRadius: '8px',
+          textAlign: 'center',
+          fontWeight: 'bold',
+        }}
+      >
+        Current color: {value}
+      </div>
     </div>
   );
 }
@@ -48,72 +37,132 @@ function Demo() {
 
 ## Set Specific Value
 
-```jsx
-import { useToggle } from '@kubed/hooks';
-import { Button, Group } from '@kubed/components';
+Can directly set to a specific value:
 
+```jsx live
 function Demo() {
-  const [value, toggle] = useToggle(false);
+  const [value, toggle] = useToggle('left', ['left', 'center', 'right']);
 
   return (
-    <Group>
-      <Button onClick={() => toggle()}>Toggle</Button>
-      <Button onClick={() => toggle(true)}>Set True</Button>
-      <Button onClick={() => toggle(false)}>Set False</Button>
-      <p>Value: {String(value)}</p>
-    </Group>
+    <div>
+      <Group spacing="md">
+        <Button onClick={() => toggle('left')}>Align Left</Button>
+        <Button onClick={() => toggle('center')}>Align Center</Button>
+        <Button onClick={() => toggle('right')}>Align Right</Button>
+        <Button onClick={() => toggle()}>Toggle</Button>
+      </Group>
+      <div style={{ marginTop: '20px', textAlign: value }}>
+        Current alignment: <strong>{value}</strong>
+      </div>
+    </div>
+  );
+}
+```
+
+## Boolean Toggle
+
+`useBooleanToggle` is specifically provided for boolean value toggling:
+
+```jsx live
+function Demo() {
+  const [isActive, toggle] = useBooleanToggle(false);
+
+  return (
+    <div>
+      <Button onClick={() => toggle()}>Toggle State</Button>
+      <div
+        style={{
+          marginTop: '20px',
+          padding: '20px',
+          backgroundColor: isActive ? 'var(--ifm-color-success-lightest)' : 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          border: `1px solid ${isActive ? 'var(--ifm-color-success)' : 'var(--ifm-color-emphasis-300)'}`,
+        }}
+      >
+        Status: {isActive ? '✓ Active' : '✗ Inactive'}
+      </div>
+    </div>
+  );
+}
+```
+
+## Theme Toggle Example
+
+```jsx live
+function Demo() {
+  const [theme, toggleTheme] = useToggle('light', ['light', 'dark']);
+
+  return (
+    <div>
+      <Button onClick={() => toggleTheme()}>Toggle Theme</Button>
+      <div
+        style={{
+          marginTop: '20px',
+          padding: '30px',
+          backgroundColor: theme === 'light' ? '#ffffff' : '#1a1a1a',
+          color: theme === 'light' ? '#000000' : '#ffffff',
+          borderRadius: '8px',
+          border: `1px solid ${theme === 'light' ? '#e0e0e0' : '#333333'}`,
+          transition: 'all 0.3s',
+        }}
+      >
+        <h4>Current theme: {theme}</h4>
+        <p>This is {theme === 'light' ? 'light' : 'dark'} theme mode</p>
+      </div>
+    </div>
   );
 }
 ```
 
 ## API
 
-### Parameters
+### useToggle
 
-```typescript
-function useToggle(
+```ts
+function useToggle<T>(
+  initialValue: T,
+  options: [T, T]
+): [T, (value?: React.SetStateAction<T>) => void]
+```
+
+#### Parameters
+
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| initialValue | Initial value | `T` | - |
+| options | Two values to toggle between | `[T, T]` | - |
+
+#### Return Value
+
+Returns an array containing the current value and toggle function:
+
+| Index | Description | Type |
+|-------|-------------|------|
+| [0] | Current value | `T` |
+| [1] | Toggle function | `(value?: React.SetStateAction<T>) => void` |
+
+### useBooleanToggle
+
+```ts
+function useBooleanToggle(
   initialValue?: boolean
-): [boolean, (value?: boolean) => void]
+): [boolean, (value?: React.SetStateAction<boolean>) => void]
 ```
 
-- `initialValue` - Initial boolean value (default: `false`)
+#### Parameters
 
-### Return Value
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| initialValue | Initial boolean value | `boolean` | `false` |
 
-Returns a tuple:
+#### Return Value
 
-1. `value` - Current boolean value
-2. `toggle` - Function to toggle or set the value
-   - `toggle()` - Toggle between true/false
-   - `toggle(true)` - Set to true
-   - `toggle(false)` - Set to false
+Returns an array containing the current boolean value and toggle function.
 
-## Example - Modal Toggle
+## Usage Scenarios
 
-```jsx
-import { useToggle } from '@kubed/hooks';
-import { Button, Modal } from '@kubed/components';
-
-function ModalExample() {
-  const [opened, toggle] = useToggle(false);
-
-  return (
-    <>
-      <Button onClick={() => toggle(true)}>
-        Open Modal
-      </Button>
-
-      <Modal 
-        opened={opened} 
-        onClose={() => toggle(false)}
-      >
-        <h2>Modal Content</h2>
-        <p>This is a modal dialog.</p>
-        <Button onClick={() => toggle(false)}>
-          Close
-        </Button>
-      </Modal>
-    </>
-  );
-}
-```
+- **Theme Toggle**: Light/dark theme switching
+- **View Mode**: List/grid view toggle
+- **Language Switch**: English/Chinese language toggle
+- **State Toggle**: Enable/disable state toggle
+- **Alignment**: Left/right alignment toggle

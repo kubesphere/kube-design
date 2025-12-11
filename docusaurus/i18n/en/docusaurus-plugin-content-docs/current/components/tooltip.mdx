@@ -4,22 +4,658 @@ sidebar_position: 1
 
 # Tooltip
 
-> Component documentation is being migrated. Check back soon!
+A simple text hint bubble box.
 
-## Overview
+## When to Use
 
-Tooltip component from Kube Design library.
+- Show hint on mouse enter, hide on mouse leave, the bubble layer does not carry complex text and operations
+- Can be used to replace the system default title hint, providing better visual and user experience
+- When an element needs further description
+
+In Kube Design, the Tooltip component is encapsulated based on @tippyjs/react, providing flexible text hint functionality:
+
+- **Multiple positions**: Supports 12 popup directions, as well as automatic positioning
+- **Multiple trigger methods**: Supports hover, click, focus and other trigger methods
+- **Interactive**: Supports mouse entering bubble content
+- **Flexible control**: Supports controlled mode and manual control
 
 ## Examples
 
 ### Basic Usage
 
+The simplest usage, show hint on mouse enter, hide on mouse leave.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  return (
+    <Tooltip content="This is hint text">
+      <Button>Hover to display</Button>
+    </Tooltip>
+  );
+}
+```
+
+### Placement
+
+Supports 12 different popup positions.
+
+```jsx live
+function Demo() {
+  const positions = [
+    'top-start',
+    'top',
+    'top-end',
+    'right-start',
+    'right',
+    'right-end',
+    'bottom-start',
+    'bottom',
+    'bottom-end',
+    'left-start',
+    'left',
+    'left-end',
+  ];
+
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+      {positions.map((pos) => (
+        <Tooltip key={pos} content={`Position: ${pos}`} placement={pos}>
+          <Button size="sm">{pos}</Button>
+        </Tooltip>
+      ))}
+    </div>
+  );
+}
+```
+
+### Trigger Method
+
+Supports three trigger methods: mouse enter, click, and focus.
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="md">
+      <Tooltip content="Display on mouse enter" trigger="mouseenter focus">
+        <Button>Hover trigger (default)</Button>
+      </Tooltip>
+      <Tooltip content="Display on button click" trigger="click">
+        <Button>Click trigger</Button>
+      </Tooltip>
+      <Tooltip content="Display on focus" trigger="focus">
+        <Button>Focus trigger</Button>
+      </Tooltip>
+    </Group>
+  );
+}
+```
+
+### Delayed Display
+
+Set the delay time after mouse enter.
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="md">
+      <Tooltip content="No delay" delay={0}>
+        <Button>No delay</Button>
+      </Tooltip>
+      <Tooltip content="Delay 500ms" delay={500}>
+        <Button>Delay 500ms</Button>
+      </Tooltip>
+      <Tooltip content="Delay 1 second" delay={1000}>
+        <Button>Delay 1s</Button>
+      </Tooltip>
+      <Tooltip content="Show delay 500ms, hide delay 200ms" delay={[500, 200]}>
+        <Button>Different delays</Button>
+      </Tooltip>
+    </Group>
+  );
+}
+```
+
+### Disabled State
+
+Use the `disabled` prop to disable the tooltip.
+
+```jsx live
+function Demo() {
+  const [disabled, setDisabled] = React.useState(false);
+
+  return (
+    <>
+      <Group spacing="md" style={{ marginBottom: '16px' }}>
+        <Tooltip content="This is hint text" disabled={disabled}>
+          <Button>Target element</Button>
+        </Tooltip>
+        <Button onClick={() => setDisabled(!disabled)}>
+          {disabled ? 'Enable' : 'Disable'} Tooltip
+        </Button>
+      </Group>
+    </>
+  );
+}
+```
+
+### Custom Max Width
+
+Set the maximum width of the tooltip using the `maxWidth` prop.
+
+```jsx live
+function Demo() {
+  const longText = 'This is a long hint text to demonstrate the effect of different maximum widths. When text exceeds the maximum width, it will automatically wrap for display.';
+
+  return (
+    <Group spacing="md">
+      <Tooltip content={longText} maxWidth={150}>
+        <Button>Max width 150px</Button>
+      </Tooltip>
+      <Tooltip content={longText} maxWidth={200}>
+        <Button>Max width 200px (default)</Button>
+      </Tooltip>
+      <Tooltip content={longText} maxWidth={300}>
+        <Button>Max width 300px</Button>
+      </Tooltip>
+      <Tooltip content={longText} maxWidth="none">
+        <Button>Unlimited</Button>
+      </Tooltip>
+    </Group>
+  );
+}
+```
+
+### Hide Arrow
+
+Use `arrow={false}` to hide the pointing arrow.
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="md">
+      <Tooltip content="Hint with arrow" arrow>
+        <Button>With arrow (default)</Button>
+      </Tooltip>
+      <Tooltip content="Hint without arrow" arrow={false}>
+        <Button>Without arrow</Button>
+      </Tooltip>
+    </Group>
+  );
+}
+```
+
+### Interactive Content
+
+Set `interactive={true}` to allow mouse entering hint content, suitable for scenarios with interactive elements like links.
+
+```jsx live
+function Demo() {
+  const interactiveContent = (
+    <div>
+      <p style={{ margin: '0 0 8px 0' }}>Hint content</p>
+      <a href="#" style={{ color: '#329dce' }}>
+        View details
+      </a>
+    </div>
+  );
+
+  return (
+    <Group spacing="md">
+      <Tooltip content="Will hide immediately on mouse enter" interactive={false}>
+        <Button>Non-interactive (default)</Button>
+      </Tooltip>
+      <Tooltip content={interactiveContent} interactive>
+        <Button>Interactive</Button>
+      </Tooltip>
+    </Group>
+  );
+}
+```
+
+### Controlled Mode
+
+Control tooltip display and hide through the `visible` prop.
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+
+  return (
+    <Group spacing="md">
+      <Tooltip content="Controlled hint content" visible={visible}>
+        <Button>Target element</Button>
+      </Tooltip>
+      <Button onClick={() => setVisible(!visible)}>
+        {visible ? 'Hide' : 'Show'} hint
+      </Button>
+    </Group>
+  );
+}
+```
+
+### Manual Control
+
+Use ref to manually control tooltip display and hide.
+
+```jsx live
+function Demo() {
+  const tooltipRef = React.useRef(null);
+
+  return (
+    <Group spacing="md">
+      <Tooltip
+        content="Manually controlled hint"
+        onMount={(instance) => {
+          tooltipRef.current = instance;
+        }}
+      >
+        <Button>Target element</Button>
+      </Tooltip>
+      <Button onClick={() => tooltipRef.current?.show()}>Show</Button>
+      <Button onClick={() => tooltipRef.current?.hide()}>Hide</Button>
+    </Group>
+  );
+}
+```
+
+### Different Scenario Applications
+
+Demonstrate Tooltip applications in different scenarios.
+
+```jsx live
+function Demo() {
+  const { Information } = KubedIcons;
+
+  return (
+    <Group direction="column" spacing="md">
+      <Group spacing="xs" align="center">
+        <Text>Username:</Text>
+        <Tooltip content="Please enter 3-20 characters">
+          <Information size={16} style={{ cursor: 'pointer' }} />
+        </Tooltip>
+      </Group>
+
+      <Group spacing="xs">
+        <Text>Pod status:</Text>
+        <Tooltip content="Pod running normally, resource usage 45%">
+          <Badge variant="dot" color="success">
+            Running
+          </Badge>
+        </Tooltip>
+      </Group>
+
+      <Tooltip content="Copy code snippet">
+        <Button variant="text" size="sm">
+          Copy
+        </Button>
+      </Tooltip>
+
+      <Tooltip content="Configuration locked by administrator">
+        <Button disabled>Locked</Button>
+      </Tooltip>
+    </Group>
+  );
+}
+```
+
+### Long Text Hint
+
+Hint content will automatically wrap when it's long.
+
+```jsx live
+function Demo() {
+  const longContent =
+    'This is a long hint text. Tooltip will automatically wrap according to maxWidth setting to ensure users can see all content. It is recommended to keep hint content concise to avoid overly long text affecting reading experience.';
+
+  return (
+    <Group spacing="md">
+      <Tooltip content={longContent}>
+        <Button>Long text hint</Button>
+      </Tooltip>
+    </Group>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Tooltip
+
+| Property     | Description                  | Type                                                                         | Default                 |
+| ------------ | ---------------------------- | ---------------------------------------------------------------------------- | ----------------------- |
+| content      | Hint content                 | `ReactNode`                                                                  | -                       |
+| visible      | Manually control visibility  | `boolean`                                                                    | -                       |
+| placement    | Bubble position              | `'top' \| 'bottom' \| 'left' \| 'right' \| 'top-start' \| 'auto' \| ...`     | `'top'`                 |
+| trigger      | Trigger method               | `string`                                                                     | `'mouseenter focus'`    |
+| disabled     | Whether disabled             | `boolean`                                                                    | `false`                 |
+| delay        | Delay display time (ms)      | `number \| [number \| null, number \| null]`                                 | `0`                     |
+| duration     | Animation duration (ms)      | `number \| [number \| null, number \| null]`                                 | -                       |
+| maxWidth     | Maximum width                | `number \| string`                                                           | `200`                   |
+| interactive  | Whether to allow interaction | `boolean`                                                                    | `false`                 |
+| arrow        | Whether to show arrow        | `boolean`                                                                    | `true`                  |
+| hideOnClick  | Whether to hide on click     | `boolean \| 'toggle'`                                                        | `true`                  |
+| showOnCreate | Whether to show on create    | `boolean`                                                                    | `false`                 |
+| appendTo     | Mount container              | `'parent' \| Element \| ((ref: Element) => Element)`                         | `document.body`         |
+| animation    | Animation effect name        | `string`                                                                     | `'shift-toward-subtle'` |
+| className    | Custom class name            | `string`                                                                     | -                       |
+| offset       | Offset [skidding, distance]  | `[number, number]`                                                           | `[0, 10]`               |
+| onMount      | Callback on mount            | `(instance: TooltipInstance) => void`                                        | -                       |
+| children     | Trigger element              | `ReactElement`                                                               | **Required**            |
+
+### placement Options
+
+Supports 12 directions and automatic positioning:
+
+**Basic directions**:
+- `top`, `bottom`, `left`, `right`
+
+**Extended directions**:
+- `top-start`, `top-end`
+- `bottom-start`, `bottom-end`
+- `left-start`, `left-end`
+- `right-start`, `right-end`
+
+**Auto positioning**:
+- `auto`: Automatically select best position
+- `auto-start`: Auto select, start alignment
+- `auto-end`: Auto select, end alignment
+
+### trigger Options
+
+Trigger method supports the following events, multiple events separated by space:
+
+- `mouseenter` - Mouse enter (default)
+- `focus` - Get focus
+- `click` - Click
+- `manual` - Manual control
+
+### TooltipInstance
+
+Instance object obtained through `onMount` callback, provides manual control methods:
+
+| Method     | Description        | Type                    |
+| ---------- | ------------------ | ----------------------- |
+| show()     | Show tooltip       | `() => void`            |
+| hide()     | Hide tooltip       | `() => void`            |
+| setProps() | Update config      | `(props: Partial<TooltipProps>) => void` |
+| destroy()  | Destroy instance   | `() => void`            |
+
+:::info
+
+**About Position**:
+
+- Default position is `top`
+- Tooltip will automatically adjust position based on available space to ensure content is visible
+- Use `-start` and `-end` suffixes to control alignment
+
+**About Trigger Method**:
+
+- Default trigger method is `'mouseenter focus'`, which displays on both mouse enter and focus
+- Can combine multiple trigger methods, separated by space
+- When using `manual`, need to control manually through `visible` prop or ref
+
+**About Delay**:
+
+- `delay` can be a single number or array `[show delay, hide delay]`
+- Unit is milliseconds
+- Delay display can avoid frequent display when mouse quickly passes over
+
+**About Interactivity**:
+
+- Default `interactive={false}`, tooltip will hide immediately when mouse enters it
+- When set to `true`, mouse can enter tooltip content
+- Interactive mode is suitable for scenarios with clickable elements like links and buttons
+
+**About Max Width**:
+
+- Default `maxWidth={200}`
+- Can be set to number (pixels) or string (like `'300px'`, `'none'`)
+- Content will automatically wrap when exceeding maximum width
+
+**About Animation**:
+
+- Default animation is `'shift-toward-subtle'`, providing subtle shift effect
+- Also supports animations like `'shift-away'`
+- `duration` controls animation duration, can set show and hide duration separately
+
+**About Arrow**:
+
+- Shows pointing arrow by default (`arrow={true}`)
+- Set `arrow={false}` to hide arrow
+- Arrow will automatically adjust direction based on tooltip position
+
+**About Offset**:
+
+- `offset` accepts array `[skidding, distance]`
+- `skidding`: Offset along reference element (horizontal or vertical)
+- `distance`: Distance from reference element
+- Default value is `[0, 10]`, meaning 10 pixels distance from reference element
+
+:::
+
+## Usage Guidelines
+
+### Keep Content Concise
+
+Tooltip should contain brief descriptive text:
+
+```jsx
+// Recommended: Concise and clear
+<Tooltip content="Delete file">
+  <Button icon={<Delete />} />
+</Tooltip>
+
+// Not recommended: Too long, should use Popover instead
+<Tooltip content="This is a long description with many details...">
+  <Button>Action</Button>
+</Tooltip>
+```
+
+### Choose Appropriate Trigger Method
+
+Select trigger method based on use case:
+
+```jsx
+// Information hint: Use default hover
+<Tooltip content="Username must be unique">
+  <Input />
+</Tooltip>
+
+// Icon button: Use hover
+<Tooltip content="Delete">
+  <IconButton icon={<Delete />} />
+</Tooltip>
+
+// Need click to display: Use click
+<Tooltip content="Detailed information" trigger="click">
+  <Button>More</Button>
+</Tooltip>
+```
+
+### Hints for Disabled Elements
+
+Disabled elements cannot trigger events, need wrapping:
+
+```jsx
+// Not recommended: Disabled button cannot trigger tooltip
+<Tooltip content="Button is disabled">
+  <Button disabled>Disabled</Button>
+</Tooltip>
+
+// Recommended: Wrap with span
+<Tooltip content="Button is disabled">
+  <span>
+    <Button disabled>Disabled</Button>
+  </span>
+</Tooltip>
+```
+
+### Set Appropriate Delay
+
+Avoid frequent display when mouse quickly passes over:
+
+```jsx
+// List items: Set delay to avoid accidental triggers
+<Tooltip content="Click to view details" delay={300}>
+  <ListItem>Item 1</ListItem>
+</Tooltip>
+
+// Important actions: Display immediately
+<Tooltip content="Cannot recover after deletion" delay={0}>
+  <Button color="error">Delete</Button>
+</Tooltip>
+```
+
+### Tooltip vs Popover
+
+Select based on content complexity:
+
+```jsx
+// Simple text: Use Tooltip
+<Tooltip content="This is hint text">
+  <Button>Button</Button>
+</Tooltip>
+
+// Complex content: Use Popover
+<Popover
+  title="Title"
+  content={
+    <div>
+      <p>Detailed information</p>
+      <Button>Action</Button>
+    </div>
+  }
+>
+  <Button>Button</Button>
+</Popover>
+```
+
+### Position Selection
+
+Choose appropriate popup direction based on element position:
+
+```jsx
+// Elements at top of page: Popup downward
+<Tooltip placement="bottom" content="Hint">
+  <Button>Top button</Button>
+</Tooltip>
+
+// Elements at bottom of page: Popup upward
+<Tooltip placement="top" content="Hint">
+  <Button>Bottom button</Button>
+</Tooltip>
+
+// Let Tooltip auto select position
+<Tooltip placement="auto" content="Hint">
+  <Button>Auto positioning</Button>
+</Tooltip>
+```
+
+### Mobile Adaptation
+
+Recommend using click trigger on mobile:
+
+```jsx
+const isMobile = window.innerWidth < 768;
+
+<Tooltip trigger={isMobile ? 'click' : 'mouseenter focus'} content="Hint content">
+  <Button>Button</Button>
+</Tooltip>;
+```
+
+### Avoid Nesting Tooltips
+
+Don't nest another Tooltip inside a Tooltip:
+
+```jsx
+// Not recommended: Nested Tooltip
+<Tooltip content="Outer hint">
+  <div>
+    <Tooltip content="Inner hint">
+      <Button>Button</Button>
+    </Tooltip>
+  </div>
+</Tooltip>
+```
+
+### Information Icon Hints
+
+Add hints for information icons:
+
+```jsx
+import { Information } from '@kubed/icons';
+
+<Group align="center" spacing="xs">
+  <Text>Configuration</Text>
+  <Tooltip content="This configuration affects all users" placement="right">
+    <Information size={16} style={{ cursor: 'pointer' }} />
+  </Tooltip>
+</Group>;
+```
+
+### Controlled Mode Use Cases
+
+Use controlled mode when programmatic control is needed:
+
+```jsx
+const [showTip, setShowTip] = useState(false);
+
+// Show hint when form validation fails
+const handleSubmit = () => {
+  if (!isValid) {
+    setShowTip(true);
+    setTimeout(() => setShowTip(false), 3000);
+  }
+};
+
+<Tooltip content="Please fill required fields" visible={showTip}>
+  <Input />
+</Tooltip>;
+```
+
+### Using Instance Methods
+
+Get instance through `onMount` to manually control display/hide:
+
+```jsx
+const tooltipRef = useRef(null);
+
+<Tooltip
+  onMount={(instance) => {
+    tooltipRef.current = instance;
+  }}
+  content="Hint content"
+>
+  <Button>Target</Button>
+</Tooltip>
+
+// Manually show
+tooltipRef.current?.show();
+
+// Manually hide
+tooltipRef.current?.hide();
+
+// Update config
+tooltipRef.current?.setProps({ content: 'New content' });
+```
+
+### Custom Animation Effects
+
+Use different animation effects:
+
+```jsx
+// Subtle shift animation (default)
+<Tooltip animation="shift-toward-subtle" content="Hint">
+  <Button>Subtle animation</Button>
+</Tooltip>
+
+// Shift away animation
+<Tooltip animation="shift-away" content="Hint">
+  <Button>Shift away animation</Button>
+</Tooltip>
+
+// Custom animation duration
+<Tooltip duration={[300, 200]} content="Hint">
+  <Button>Custom duration</Button>
+</Tooltip>
+```

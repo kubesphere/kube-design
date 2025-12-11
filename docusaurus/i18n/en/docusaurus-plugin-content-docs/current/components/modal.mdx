@@ -4,22 +4,681 @@ sidebar_position: 1
 
 # Modal
 
-> Component documentation is being migrated. Check back soon!
+Modal dialogs.
 
-## Overview
+## When to Use
 
-Modal component from Kube Design library.
+- When you need users to handle tasks without jumping to a new page and interrupting their workflow
+- When you need to display important information or get user confirmation
+- When you need a simple container to present information
+
+In Kube Design, the Modal component provides flexible dialog functionality:
+
+- **Dual Modes**: Supports both declarative component and imperative API usage
+- **Rich Configuration**: Supports custom title, description, icon, footer, etc.
+- **Async Handling**: Built-in async operation and loading state support
+- **Nested Usage**: Supports multi-level modal nesting
 
 ## Examples
 
 ### Basic Usage
 
+The most basic modal usage, controlling visibility with the `visible` prop.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  const [visible, setVisible] = React.useState(false);
+  const openModal = () => {
+    setVisible(true);
+  };
+
+  const closeModal = () => {
+    setVisible(false);
+  };
+
+  return (
+    <>
+      <Button onClick={openModal}>Open Modal</Button>
+      <Modal
+        visible={visible}
+        title="Modal demo"
+        description="Modal description"
+        titleIcon={null}
+        onCancel={closeModal}
+      >
+        Modal content
+      </Modal>
+    </>
+  );
+}
+```
+
+### Custom Width
+
+Use the `width` prop to set the modal width.
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState('');
+
+  const widths = [
+    { key: '400', label: 'Small (400px)', width: 400 },
+    { key: '600', label: 'Default (600px)', width: 600 },
+    { key: '800', label: 'Large (800px)', width: 800 },
+  ];
+
+  return (
+    <>
+      <Group spacing="xs">
+        {widths.map(({ key, label }) => (
+          <Button key={key} onClick={() => setVisible(key)}>
+            {label}
+          </Button>
+        ))}
+      </Group>
+
+      {widths.map(({ key, width }) => (
+        <Modal
+          key={key}
+          visible={visible === key}
+          title={`Width: ${width}px`}
+          width={width}
+          onCancel={() => setVisible('')}
+        >
+          <div style={{ padding: '20px 0' }}>This modal is {width}px wide</div>
+        </Modal>
+      ))}
+    </>
+  );
+}
+```
+
+### Title with Icon
+
+Use the `titleIcon` prop to add an icon to the modal title.
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+  const { Cluster } = KubedIcons;
+
+  return (
+    <>
+      <Button onClick={() => setVisible(true)}>Modal with Icon</Button>
+      <Modal
+        visible={visible}
+        title="Cluster Information"
+        description="View detailed cluster information"
+        titleIcon={<Cluster size={40} />}
+        onCancel={() => setVisible(false)}
+      >
+        <div style={{ padding: '20px 0' }}>
+          <p>Cluster Name: Production Cluster</p>
+          <p>Node Count: 5</p>
+          <p>Status: Running</p>
+        </div>
+      </Modal>
+    </>
+  );
+}
+```
+
+### Confirm Loading
+
+Use the `confirmLoading` prop to display loading state on the confirm button.
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+
+  const handleOk = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setVisible(false);
+    }, 2000);
+  };
+
+  return (
+    <>
+      <Button onClick={() => setVisible(true)}>Confirm Loading</Button>
+      <Modal
+        visible={visible}
+        title="Submit Confirmation"
+        description="Please confirm your action"
+        confirmLoading={loading}
+        onOk={handleOk}
+        onCancel={() => setVisible(false)}
+      >
+        <div style={{ padding: '20px 0' }}>Clicking OK will show loading state for 2 seconds</div>
+      </Modal>
+    </>
+  );
+}
+```
+
+### Custom Button Text
+
+Use `okText` and `cancelText` props to customize button text.
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setVisible(true)}>Custom Button Text</Button>
+      <Modal
+        visible={visible}
+        title="Delete Confirmation"
+        description="This action cannot be undone"
+        okText="Confirm Delete"
+        cancelText="Cancel Action"
+        onOk={() => setVisible(false)}
+        onCancel={() => setVisible(false)}
+      >
+        <div style={{ padding: '20px 0' }}>Are you sure you want to delete this item?</div>
+      </Modal>
+    </>
+  );
+}
+```
+
+### Custom Footer
+
+Use the `footer` prop to customize the modal footer content. Set to `null` to hide the footer.
+
+```jsx live
+function Demo() {
+  const [visible1, setVisible1] = React.useState(false);
+  const [visible2, setVisible2] = React.useState(false);
+
+  return (
+    <>
+      <Group spacing="xs">
+        <Button onClick={() => setVisible1(true)}>Modal without Footer</Button>
+        <Button onClick={() => setVisible2(true)}>Custom Footer</Button>
+      </Group>
+
+      <Modal
+        visible={visible1}
+        title="Modal without Footer"
+        footer={null}
+        onCancel={() => setVisible1(false)}
+      >
+        <div style={{ padding: '20px 0' }}>
+          <p>This modal has no footer</p>
+          <Button onClick={() => setVisible1(false)} style={{ marginTop: '12px' }}>
+            Close
+          </Button>
+        </div>
+      </Modal>
+
+      <Modal
+        visible={visible2}
+        title="Custom Footer"
+        footer={
+          <Group spacing="xs">
+            <Button onClick={() => setVisible2(false)}>Cancel</Button>
+            <Button color="error" onClick={() => setVisible2(false)}>
+              Delete
+            </Button>
+            <Button color="secondary" onClick={() => setVisible2(false)}>
+              Confirm
+            </Button>
+          </Group>
+        }
+        onCancel={() => setVisible2(false)}
+      >
+        <div style={{ padding: '20px 0' }}>This modal uses a custom footer</div>
+      </Modal>
+    </>
+  );
+}
+```
+
+### Mask Control
+
+Control the mask layer display and click behavior with `mask` and `maskClosable` props.
+
+```jsx live
+function Demo() {
+  const [visible1, setVisible1] = React.useState(false);
+  const [visible2, setVisible2] = React.useState(false);
+
+  return (
+    <>
+      <Group spacing="xs">
+        <Button onClick={() => setVisible1(true)}>Closable by Mask Click</Button>
+        <Button onClick={() => setVisible2(true)}>Not Closable by Mask Click</Button>
+      </Group>
+
+      <Modal
+        visible={visible1}
+        title="Closable by Mask Click"
+        maskClosable
+        onCancel={() => setVisible1(false)}
+      >
+        <div style={{ padding: '20px 0' }}>
+          maskClosable=true, clicking the mask area will close the modal
+        </div>
+      </Modal>
+
+      <Modal
+        visible={visible2}
+        title="Not Closable by Mask Click"
+        maskClosable={false}
+        onCancel={() => setVisible2(false)}
+      >
+        <div style={{ padding: '20px 0' }}>
+          maskClosable=false, clicking the mask area won't close it, only buttons can
+        </div>
+      </Modal>
+    </>
+  );
+}
+```
+
+### Imperative API
+
+Use the `useModal` hook to invoke modals via imperative API without managing visible state.
+
+```jsx live
+function Demo() {
+  const modal = useModal();
+
+  const openModal = () => {
+    const modalId = modal.open({
+      title: 'Imperative Modal',
+      description: 'Invoked via useModal hook',
+      content: <div style={{ padding: '20px 0' }}>This modal was opened via imperative API</div>,
+      onOk: () => {
+        modal.close(modalId);
+      },
+    });
+  };
+
+  return <Button onClick={openModal}>Open Modal Imperatively</Button>;
+}
+```
+
+### Async Confirmation
+
+Use the `onAsyncOk` prop to handle async operations, and the modal will automatically show loading state.
+
+```jsx live
+function Demo() {
+  const modal = useModal();
+
+  const openAsyncModal = () => {
+    modal.open({
+      title: 'Async Operation',
+      description: 'Simulate async submission',
+      content: <div style={{ padding: '20px 0' }}>Clicking OK will execute a 2-second async operation</div>,
+      onAsyncOk: async () => {
+        await new Promise((resolve) => {
+          setTimeout(() => {
+            console.log('Async operation completed');
+            resolve(true);
+          }, 2000);
+        });
+        return true;
+      },
+    });
+  };
+
+  return <Button onClick={openAsyncModal}>Async Confirmation Modal</Button>;
+}
+```
+
+### Nested Modals
+
+Modals support nested usage.
+
+```jsx live
+function Demo() {
+  const [visible1, setVisible1] = React.useState(false);
+  const [visible2, setVisible2] = React.useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setVisible1(true)}>Open First Level Modal</Button>
+
+      <Modal
+        visible={visible1}
+        title="First Level Modal"
+        width={700}
+        onCancel={() => setVisible1(false)}
+      >
+        <div style={{ padding: '20px 0' }}>
+          <p>This is the content of the first level modal</p>
+          <Button onClick={() => setVisible2(true)}>Open Second Level Modal</Button>
+        </div>
+      </Modal>
+
+      <Modal
+        visible={visible2}
+        title="Second Level Modal"
+        width={500}
+        onOk={() => setVisible2(false)}
+        onCancel={() => setVisible2(false)}
+      >
+        <div style={{ padding: '20px 0' }}>
+          <p>This is the nested second level modal</p>
+          <Button
+            onClick={() => {
+              setVisible2(false);
+              setVisible1(false);
+            }}
+          >
+            Close All Modals
+          </Button>
+        </div>
+      </Modal>
+    </>
+  );
+}
+```
+
+### Confirm Dialog
+
+Use the `confirm` method of `useModal` to create confirmation dialogs.
+
+```jsx live
+function Demo() {
+  const modal = useModal();
+
+  const showConfirm = () => {
+    const modalId = modal.confirm({
+      title: 'Confirm Action',
+      content: 'Are you sure you want to perform this action? This action cannot be undone.',
+      onOk: () => {
+        console.log('Action confirmed');
+        modal.close(modalId);
+      },
+    });
+  };
+
+  return <Button onClick={showConfirm}>Confirm Dialog</Button>;
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Modal
+
+| Property               | Description                         | Type                                        | Default         |
+| ---------------------- | ----------------------------------- | ------------------------------------------- | --------------- |
+| visible                | Whether to display the modal        | `boolean`                                   | `false`         |
+| title                  | Modal title                         | `ReactNode`                                 | -               |
+| description            | Modal description                   | `ReactNode`                                 | -               |
+| titleIcon              | Title icon                          | `ReactNode`                                 | -               |
+| width                  | Modal width                         | `string \| number`                          | `600`           |
+| centered               | Whether to vertically center        | `boolean`                                   | `true`          |
+| closable               | Whether to show close button        | `boolean`                                   | `true`          |
+| closeIcon              | Custom close icon                   | `ReactNode`                                 | `<Close />`     |
+| header                 | Custom header content               | `ReactNode`                                 | -               |
+| headerExtra            | Extra header content                | `ReactNode`                                 | -               |
+| footer                 | Custom footer content               | `ReactNode`                                 | Default buttons |
+| okText                 | OK button text                      | `ReactNode`                                 | `'OK'`          |
+| cancelText             | Cancel button text                  | `ReactNode`                                 | `'Cancel'`      |
+| okButtonProps          | OK button props                     | `ButtonProps`                               | -               |
+| cancelButtonProps      | Cancel button props                 | `ButtonProps`                               | -               |
+| confirmLoading         | OK button loading state             | `boolean`                                   | `false`         |
+| onOk                   | Callback when OK button clicked     | `(e: React.MouseEvent) => void`             | -               |
+| onCancel               | Callback when Cancel/mask clicked   | `(e: React.MouseEvent) => void`             | -               |
+| onAsyncOk              | Async confirmation operation        | `() => Promise<any>`                        | -               |
+| afterClose             | Callback after modal fully closed   | `() => void`                                | -               |
+| mask                   | Whether to show mask                | `boolean`                                   | `true`          |
+| maskClosable           | Whether clicking mask closes modal  | `boolean`                                   | `true`          |
+| maskStyle              | Mask style                          | `CSSProperties`                             | -               |
+| keyboard               | Whether ESC key closes modal        | `boolean`                                   | `true`          |
+| destroyOnClose         | Destroy child elements when closed  | `boolean`                                   | `true`          |
+| forceRender            | Force render                        | `boolean`                                   | `false`         |
+| getContainer           | Specify mount HTML node             | `HTMLElement \| () => HTMLElement \| false` | `document.body` |
+| zIndex                 | z-index value                       | `number`                                    | -               |
+| bodyStyle              | Content area style                  | `CSSProperties`                             | -               |
+| className              | Custom class name                   | `string`                                    | -               |
+| style                  | Custom style                        | `CSSProperties`                             | -               |
+| wrapClassName          | Wrapper class name                  | `string`                                    | -               |
+| focusTriggerAfterClose | Focus trigger element after closing | `boolean`                                   | `true`          |
+| children               | Modal content                       | `ReactNode`                                 | -               |
+
+### useModal Hook
+
+The useModal hook returns an object containing the following methods:
+
+| Method  | Description          | Type                                |
+| ------- | -------------------- | ----------------------------------- |
+| open    | Open modal           | `(props: ModalFuncProps) => string` |
+| confirm | Open confirm dialog  | `(props: ModalFuncProps) => string` |
+| close   | Close specific modal | `(id: string) => void`              |
+
+### ModalFuncProps
+
+Configuration for imperative invocation, inheriting most Modal props, with additional:
+
+| Property | Description     | Type        | Default        |
+| -------- | --------------- | ----------- | -------------- |
+| content  | Modal content   | `ReactNode` | -              |
+| icon     | Modal icon      | `ReactNode` | -              |
+| id       | Unique modal ID | `string`    | Auto-generated |
+
+:::info
+
+**About Width**:
+
+- Default width is 600px
+- Supports number or string format
+- Maximum width is `calc(100vw - 32px)`
+
+**About Title**:
+
+- Supports setting `title`, `description`, and `titleIcon` simultaneously
+- The `header` prop can completely customize header content
+- `headerExtra` is used to add extra content to the right of the title
+
+**About Footer**:
+
+- Default footer shows "Cancel" and "OK" buttons
+- Set `footer={null}` to hide the footer
+- `footer` supports custom ReactNode
+
+**About Async Operations**:
+
+- When using `onAsyncOk`, the modal will automatically show loading state
+- When `onAsyncOk` returns `true`, the modal will automatically close
+- Returning `false` or throwing an error keeps the modal open
+
+**About Imperative API**:
+
+- When using the `useModal` hook, ensure the component is wrapped by `ModalProvider`
+- `modal.open()` and `modal.confirm()` return a modal ID
+- Use the returned ID to close specific modals via `modal.close(id)`
+
+**About Destruction**:
+
+- Default `destroyOnClose={true}`, internal components are destroyed when closed
+- This prevents state residue and ensures a fresh state each time it opens
+- Set to `false` to preserve state
+
+:::
+
+## Usage Guidelines
+
+### Declarative vs Imperative
+
+Choose the appropriate approach based on the use case:
+
+```jsx
+// Declarative: suitable for fixed position modals
+const [visible, setVisible] = useState(false);
+
+<Modal visible={visible} onCancel={() => setVisible(false)}>
+  Content
+</Modal>;
+
+// Imperative: suitable for dynamically invoked modals
+const modal = useModal();
+
+modal.open({
+  title: 'Dynamic Modal',
+  content: 'Content',
+});
+```
+
+### Async Operation Handling
+
+Use `onAsyncOk` to handle async operations:
+
+```jsx
+<Modal
+  visible={visible}
+  title="Submit Data"
+  onAsyncOk={async () => {
+    try {
+      await submitData();
+      message.success('Submit successful');
+      return true; // Return true to close modal
+    } catch (error) {
+      message.error('Submit failed');
+      return false; // Return false to keep open
+    }
+  }}
+  onCancel={() => setVisible(false)}
+>
+  Form content
+</Modal>
+```
+
+### Confirmation Actions
+
+Display confirmation modal before important actions:
+
+```jsx
+const modal = useModal();
+
+const handleDelete = () => {
+  modal.confirm({
+    title: 'Confirm Delete',
+    content: 'Data will be unrecoverable after deletion. Are you sure you want to delete?',
+    okText: 'Confirm Delete',
+    okButtonProps: { color: 'error' },
+    onOk: () => {
+      // Execute delete operation
+      deleteData();
+      modal.close(modalId);
+    },
+  });
+};
+```
+
+### Custom Buttons
+
+Customize buttons based on action type:
+
+```jsx
+// Dangerous action: red confirm button
+<Modal
+  okText="Confirm Delete"
+  okButtonProps={{ color: 'error' }}
+>
+
+// Disable confirm button
+<Modal
+  okButtonProps={{ disabled: !isValid }}
+>
+
+// Multiple action buttons
+<Modal
+  footer={
+    <Group spacing="xs">
+      <Button onClick={handleCancel}>Cancel</Button>
+      <Button onClick={handleSaveDraft}>Save Draft</Button>
+      <Button color="secondary" onClick={handleSubmit}>Submit</Button>
+    </Group>
+  }
+>
+```
+
+### Form Modal
+
+Using forms in modals:
+
+```jsx
+const [visible, setVisible] = useState(false);
+const [formData, setFormData] = useState({});
+
+<Modal
+  visible={visible}
+  title="Create Project"
+  okText="Create"
+  onOk={() => {
+    // Submit form
+    createProject(formData);
+    setVisible(false);
+  }}
+  onCancel={() => setVisible(false)}
+  destroyOnClose // Clear form state when closed
+>
+  <Form data={formData} onChange={setFormData}>
+    {/* Form fields */}
+  </Form>
+</Modal>;
+```
+
+### Nested Modal Management
+
+Managing multi-level nested modals:
+
+```jsx
+const [level1, setLevel1] = useState(false);
+const [level2, setLevel2] = useState(false);
+
+// Close all modals
+const closeAll = () => {
+  setLevel2(false);
+  setLevel1(false);
+};
+
+<Modal visible={level1} width={700}>
+  First level content
+  <Button onClick={() => setLevel2(true)}>Open Second Level</Button>
+  <Modal visible={level2} width={500}>
+    Second level content
+    <Button onClick={closeAll}>Close All</Button>
+  </Modal>
+</Modal>;
+```
+
+### Modal Sizing
+
+Choose appropriate width based on content:
+
+```jsx
+// Small modal: simple confirmation
+<Modal width={400} title="Confirm">
+
+// Medium modal: form input
+<Modal width={600} title="Edit">  // Default value
+
+// Large modal: detailed information
+<Modal width={800} title="Details">
+
+// Extra large modal: complex content
+<Modal width={1000} title="Advanced Settings">
+```
+
+### Modal without Footer
+
+Display information only, no confirmation needed:
+
+```jsx
+<Modal visible={visible} title="Information" footer={null} onCancel={() => setVisible(false)}>
+  <div>
+    <p>This is some informational content</p>
+    <Button onClick={() => setVisible(false)}>Got it</Button>
+  </div>
+</Modal>
+```

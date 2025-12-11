@@ -4,22 +4,1563 @@ sidebar_position: 1
 
 # Table
 
-> Component documentation is being migrated. Check back soon!
+Display tabular data in rows and columns.
 
-## Overview
+## When to Use
 
-Table component from Kube Design library.
+- When you have large amounts of structured data to display
+- When you need to sort, filter, or paginate data
+- Display resource lists, configuration items, and other information
 
 ## Examples
 
 ### Basic Usage
 
+Build simple tables using BaseTable components.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  const { Table, TableHead, TableBody, TableRow, TableCell } = BaseTable;
+
+  return (
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>Name</TableCell>
+          <TableCell>Status</TableCell>
+          <TableCell>Created Time</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        <TableRow>
+          <TableCell>nginx-deployment</TableCell>
+          <TableCell>Running</TableCell>
+          <TableCell>2024-01-15 10:30</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>redis-master</TableCell>
+          <TableCell>Running</TableCell>
+          <TableCell>2024-01-14 09:20</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>mysql-server</TableCell>
+          <TableCell>Stopped</TableCell>
+          <TableCell>2024-01-13 08:15</TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+  );
+}
+```
+
+### With Borders
+
+Add borders using the `hasBorder` prop.
+
+```jsx live
+function Demo() {
+  const { Table, TableHead, TableBody, TableRow, TableCell } = BaseTable;
+
+  return (
+    <Table>
+      <TableHead hasBorder>
+        <TableRow>
+          <TableCell>Pod Name</TableCell>
+          <TableCell>Namespace</TableCell>
+          <TableCell>Node</TableCell>
+          <TableCell>Status</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody hasBorder>
+        <TableRow>
+          <TableCell>nginx-7fb96c846b-8xmtv</TableCell>
+          <TableCell>default</TableCell>
+          <TableCell>node-01</TableCell>
+          <TableCell>Running</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>nginx-7fb96c846b-kj2nq</TableCell>
+          <TableCell>default</TableCell>
+          <TableCell>node-02</TableCell>
+          <TableCell>Running</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>nginx-7fb96c846b-lm9px</TableCell>
+          <TableCell>default</TableCell>
+          <TableCell>node-01</TableCell>
+          <TableCell>Pending</TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+  );
+}
+```
+
+### Selectable Rows
+
+Implement row selection functionality.
+
+```jsx live
+function Demo() {
+  const { Table, TableHead, TableBody, TableRow, TableCell } = BaseTable;
+  const [selectedIds, setSelectedIds] = React.useState([]);
+
+  const data = [
+    { id: '1', name: 'nginx-deployment', replicas: '3/3', status: 'Running' },
+    { id: '2', name: 'redis-master', replicas: '1/1', status: 'Running' },
+    { id: '3', name: 'mysql-server', replicas: '0/1', status: 'Stopped' },
+  ];
+
+  const handleSelect = (id) => {
+    setSelectedIds((ids) => {
+      if (ids.includes(id)) {
+        return ids.filter((i) => i !== id);
+      }
+      return [...ids, id];
+    });
+  };
+
+  const allSelected = selectedIds.length === data.length;
+  const someSelected = selectedIds.length > 0 && selectedIds.length < data.length;
+
+  return (
+    <Table>
+      <TableHead hasBorder>
+        <TableRow>
+          <TableCell style={{ width: '40px' }}>
+            <Checkbox
+              checked={allSelected}
+              indeterminate={someSelected}
+              onChange={() => {
+                if (selectedIds.length > 0) {
+                  setSelectedIds([]);
+                } else {
+                  setSelectedIds(data.map((d) => d.id));
+                }
+              }}
+            />
+          </TableCell>
+          <TableCell>Name</TableCell>
+          <TableCell>Replicas</TableCell>
+          <TableCell>Status</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody hasBorder>
+        {data.map((item) => (
+          <TableRow key={item.id} selected={selectedIds.includes(item.id)}>
+            <TableCell>
+              <Checkbox
+                checked={selectedIds.includes(item.id)}
+                onChange={() => handleSelect(item.id)}
+              />
+            </TableCell>
+            <TableCell>{item.name}</TableCell>
+            <TableCell>{item.replicas}</TableCell>
+            <TableCell>{item.status}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+}
+```
+
+### Sticky Header
+
+Use the `stickyHeader` prop to fix the header, suitable for displaying large amounts of data.
+
+```jsx live
+function Demo() {
+  const { Table, TableHead, TableBody, TableRow, TableCell } = BaseTable;
+
+  const data = Array.from({ length: 20 }, (_, i) => ({
+    name: `pod-${i + 1}`,
+    namespace: i % 2 === 0 ? 'default' : 'kubesphere-system',
+    node: `node-0${(i % 3) + 1}`,
+    status: i % 5 === 0 ? 'Pending' : 'Running',
+  }));
+
+  return (
+    <div style={{ height: '300px', overflow: 'auto' }}>
+      <Table stickyHeader>
+        <TableHead hasBorder>
+          <TableRow>
+            <TableCell>Pod Name</TableCell>
+            <TableCell>Namespace</TableCell>
+            <TableCell>Node</TableCell>
+            <TableCell>Status</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody hasBorder>
+          {data.map((item, index) => (
+            <TableRow key={index}>
+              <TableCell>{item.name}</TableCell>
+              <TableCell>{item.namespace}</TableCell>
+              <TableCell>{item.node}</TableCell>
+              <TableCell>{item.status}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
+```
+
+### Fixed Columns
+
+BaseTable supports fixed columns, suitable for wide tables.
+
+```jsx live
+function Demo() {
+  const { Table, TableHead, TableBody, TableRow, TableCell } = BaseTable;
+  const { Pen, Trash } = KubedIcons;
+
+  const data = [
+    {
+      name: 'nginx-deployment',
+      namespace: 'default',
+      status: 'Running',
+      cpu: '50m',
+      memory: '128Mi',
+      replicas: '3/3',
+    },
+    {
+      name: 'redis-master',
+      namespace: 'default',
+      status: 'Running',
+      cpu: '100m',
+      memory: '256Mi',
+      replicas: '1/1',
+    },
+    {
+      name: 'mysql-server',
+      namespace: 'database',
+      status: 'Pending',
+      cpu: '200m',
+      memory: '512Mi',
+      replicas: '0/1',
+    },
+  ];
+
+  return (
+    <div style={{ width: '600px', overflow: 'auto' }}>
+      <Table style={{ minWidth: '900px' }}>
+        <TableHead hasBorder>
+          <TableRow>
+            <TableCell fixed="left" fixedWidth={0} fixedLastLeft style={{ width: '150px' }}>
+              Name
+            </TableCell>
+            <TableCell style={{ width: '120px' }}>Namespace</TableCell>
+            <TableCell style={{ width: '100px' }}>Status</TableCell>
+            <TableCell style={{ width: '100px' }}>CPU</TableCell>
+            <TableCell style={{ width: '100px' }}>Memory</TableCell>
+            <TableCell style={{ width: '100px' }}>Replicas</TableCell>
+            <TableCell fixed="right" fixedWidth={0} fixedLastRight style={{ width: '100px' }}>
+              Actions
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody hasBorder>
+          {data.map((item, index) => (
+            <TableRow key={index}>
+              <TableCell fixed="left" fixedWidth={0} fixedLastLeft>
+                <span style={{ fontWeight: 600 }}>{item.name}</span>
+              </TableCell>
+              <TableCell>{item.namespace}</TableCell>
+              <TableCell>
+                <Badge color={item.status === 'Running' ? '#55bc8a' : '#f5a623'}>
+                  {item.status}
+                </Badge>
+              </TableCell>
+              <TableCell>{item.cpu}</TableCell>
+              <TableCell>{item.memory}</TableCell>
+              <TableCell>{item.replicas}</TableCell>
+              <TableCell fixed="right" fixedWidth={0} fixedLastRight>
+                <Group spacing="xs">
+                  <Button variant="text" size="sm" radius="sm">
+                    <Pen size={16} />
+                  </Button>
+                  <Button variant="text" size="sm" radius="sm" color="error">
+                    <Trash size={16} />
+                  </Button>
+                </Group>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
+```
+
+### Pagination
+
+Implement pagination using the Pagination component.
+
+```jsx live
+function Demo() {
+  const { Table, TableHead, TableBody, TableRow, TableCell, Pagination } = BaseTable;
+  const [pagination, setPagination] = React.useState({ page: 1, pageSize: 5 });
+
+  const allData = Array.from({ length: 23 }, (_, i) => ({
+    name: `deployment-${i + 1}`,
+    replicas: `${Math.floor(Math.random() * 3) + 1}/${Math.floor(Math.random() * 3) + 1}`,
+    status: i % 4 === 0 ? 'Stopped' : 'Running',
+  }));
+
+  const startIndex = (pagination.page - 1) * pagination.pageSize;
+  const data = allData.slice(startIndex, startIndex + pagination.pageSize);
+
+  return (
+    <div>
+      <Table>
+        <TableHead hasBorder>
+          <TableRow>
+            <TableCell>Name</TableCell>
+            <TableCell>Replicas</TableCell>
+            <TableCell>Status</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody hasBorder>
+          {data.map((item, index) => (
+            <TableRow key={index}>
+              <TableCell>{item.name}</TableCell>
+              <TableCell>{item.replicas}</TableCell>
+              <TableCell>{item.status}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <Pagination total={allData.length} pagination={pagination} onChange={setPagination} />
+    </div>
+  );
+}
+```
+
+### Toolbar
+
+Add a table toolbar using the Toolbar component.
+
+```jsx live
+function Demo() {
+  const { Table, TableHead, TableBody, TableRow, TableCell, Toolbar } = BaseTable;
+  const { Add, Refresh } = KubedIcons;
+
+  const data = [
+    { name: 'nginx-deployment', replicas: '3/3', status: 'Running' },
+    { name: 'redis-master', replicas: '1/1', status: 'Running' },
+    { name: 'mysql-server', replicas: '0/1', status: 'Stopped' },
+  ];
+
+  return (
+    <div>
+      <Toolbar
+        enableBatchActions={false}
+        enableFilters={false}
+        filterProps={{
+          suggestions: [],
+          onChange: () => {},
+        }}
+        toolbarRight={
+          <Group>
+            <Button variant="text" radius="sm">
+              <Refresh size={16} />
+            </Button>
+            <Button leftIcon={<Add />}>Create</Button>
+          </Group>
+        }
+      />
+      <Table>
+        <TableHead hasBorder>
+          <TableRow>
+            <TableCell>Name</TableCell>
+            <TableCell>Replicas</TableCell>
+            <TableCell>Status</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody hasBorder>
+          {data.map((item, index) => (
+            <TableRow key={index}>
+              <TableCell>{item.name}</TableCell>
+              <TableCell>{item.replicas}</TableCell>
+              <TableCell>{item.status}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
+```
+
+### Action Column
+
+Add action buttons to the table.
+
+```jsx live
+function Demo() {
+  const { Table, TableHead, TableBody, TableRow, TableCell } = BaseTable;
+  const { Pen, Trash, More } = KubedIcons;
+
+  const data = [
+    { name: 'nginx-deployment', replicas: '3/3', status: 'Running' },
+    { name: 'redis-master', replicas: '1/1', status: 'Running' },
+    { name: 'mysql-server', replicas: '0/1', status: 'Stopped' },
+  ];
+
+  return (
+    <Table>
+      <TableHead hasBorder>
+        <TableRow>
+          <TableCell>Name</TableCell>
+          <TableCell>Replicas</TableCell>
+          <TableCell>Status</TableCell>
+          <TableCell style={{ width: '120px' }}>Actions</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody hasBorder>
+        {data.map((item, index) => (
+          <TableRow key={index}>
+            <TableCell>{item.name}</TableCell>
+            <TableCell>{item.replicas}</TableCell>
+            <TableCell>{item.status}</TableCell>
+            <TableCell>
+              <Group spacing="xs">
+                <Button variant="text" size="sm" radius="sm">
+                  <Pen size={16} />
+                </Button>
+                <Button variant="text" size="sm" radius="sm" color="error">
+                  <Trash size={16} />
+                </Button>
+              </Group>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+}
+```
+
+### Status Styling
+
+Display different styles based on data status.
+
+```jsx live
+function Demo() {
+  const { Table, TableHead, TableBody, TableRow, TableCell } = BaseTable;
+
+  const data = [
+    { name: 'nginx-deployment', replicas: '3/3', status: 'Running', color: '#55bc8a' },
+    { name: 'redis-master', replicas: '1/1', status: 'Running', color: '#55bc8a' },
+    { name: 'mysql-server', replicas: '0/1', status: 'Stopped', color: '#ca2621' },
+    { name: 'api-gateway', replicas: '2/3', status: 'Updating', color: '#f5a623' },
+  ];
+
+  return (
+    <Table>
+      <TableHead hasBorder>
+        <TableRow>
+          <TableCell>Name</TableCell>
+          <TableCell>Replicas</TableCell>
+          <TableCell>Status</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody hasBorder>
+        {data.map((item, index) => (
+          <TableRow key={index}>
+            <TableCell>
+              <span style={{ fontWeight: 600 }}>{item.name}</span>
+            </TableCell>
+            <TableCell>{item.replicas}</TableCell>
+            <TableCell>
+              <Badge color={item.color}>{item.status}</Badge>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+}
+```
+
+### Empty State
+
+Display when table data is empty.
+
+```jsx live
+function Demo() {
+  const { Table, TableHead, TableBody, TableRow, TableCell } = BaseTable;
+
+  return (
+    <div>
+      <Table>
+        <TableHead hasBorder>
+          <TableRow>
+            <TableCell>Name</TableCell>
+            <TableCell>Replicas</TableCell>
+            <TableCell>Status</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody hasBorder>
+          <TableRow>
+            <TableCell colSpan={3}>
+              <Empty title="No Data" description="The current list is empty" />
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
+```
+
+### Resource List
+
+Typical Kubernetes resource list display.
+
+```jsx live
+function Demo() {
+  const { Table, TableHead, TableBody, TableRow, TableCell, Pagination } = BaseTable;
+  const { Pod, More } = KubedIcons;
+
+  const data = [
+    {
+      name: 'nginx-7fb96c846b-8xmtv',
+      status: 'Running',
+      restarts: 0,
+      age: '2d',
+      ip: '10.233.74.19',
+      node: 'node-01',
+    },
+    {
+      name: 'nginx-7fb96c846b-kj2nq',
+      status: 'Running',
+      restarts: 1,
+      age: '2d',
+      ip: '10.233.74.20',
+      node: 'node-02',
+    },
+    {
+      name: 'nginx-7fb96c846b-lm9px',
+      status: 'Pending',
+      restarts: 0,
+      age: '1h',
+      ip: '-',
+      node: '-',
+    },
+  ];
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ padding: 0 }}>
+        <Table>
+          <TableHead hasBorder>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Restarts</TableCell>
+              <TableCell>Age</TableCell>
+              <TableCell>IP</TableCell>
+              <TableCell>Node</TableCell>
+              <TableCell style={{ width: '60px' }}></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody hasBorder>
+            {data.map((item, index) => (
+              <TableRow key={index}>
+                <TableCell>
+                  <Group spacing="xs">
+                    <Pod size={20} />
+                    <span style={{ fontWeight: 600 }}>{item.name}</span>
+                  </Group>
+                </TableCell>
+                <TableCell>
+                  <Badge color={item.status === 'Running' ? '#55bc8a' : '#f5a623'}>
+                    {item.status}
+                  </Badge>
+                </TableCell>
+                <TableCell>{item.restarts}</TableCell>
+                <TableCell>{item.age}</TableCell>
+                <TableCell>{item.ip}</TableCell>
+                <TableCell>{item.node}</TableCell>
+                <TableCell>
+                  <Button variant="text" size="sm" radius="sm">
+                    <More size={16} />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Card>
+    </div>
+  );
+}
+```
+
+### DataTable Basic Usage
+
+Create a feature-complete data table using DataTable, with pagination and toolbar support.
+
+```jsx live
+function Demo() {
+  const columns = React.useMemo(
+    () => [
+      {
+        accessorKey: 'name',
+        header: 'Name',
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: 'status',
+        header: 'Status',
+        cell: (info) => (
+          <Badge color={info.getValue() === 'Running' ? '#55bc8a' : '#f5a623'}>
+            {info.getValue()}
+          </Badge>
+        ),
+      },
+      {
+        accessorKey: 'cpu',
+        header: 'CPU',
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: 'memory',
+        header: 'Memory',
+        cell: (info) => info.getValue(),
+      },
+    ],
+    []
+  );
+
+  const data = React.useMemo(
+    () =>
+      Array.from({ length: 25 }, (_, i) => ({
+        name: `workload-${i + 1}`,
+        status: i % 3 === 0 ? 'Pending' : 'Running',
+        cpu: `${Math.floor(Math.random() * 100)}%`,
+        memory: `${Math.floor(Math.random() * 1000)}Mi`,
+      })),
+    []
+  );
+
+  const defaultOptions = React.useMemo(
+    () =>
+      DataTable.getDefaultTableOptions({
+        tableName: 'demo-table',
+        manual: false,
+        enableToolbar: true,
+        enablePagination: true,
+        enableFilters: false,
+      }),
+    []
+  );
+
+  const table = DataTable.useTable({
+    ...defaultOptions,
+    data,
+    columns,
+    meta: {
+      ...defaultOptions.meta,
+      getProps: {
+        toolbar: () => ({
+          toolbarRight: <Button>Create</Button>,
+        }),
+      },
+    },
+  });
+
+  return <DataTable.DataTable table={table} />;
+}
+```
+
+### DataTable with Filters
+
+DataTable supports column filtering.
+
+```jsx live
+function Demo() {
+  const columns = React.useMemo(
+    () => [
+      {
+        accessorKey: 'name',
+        header: 'Name',
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: 'namespace',
+        header: 'Namespace',
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: 'status',
+        header: 'Status',
+        cell: (info) => (
+          <Badge color={info.getValue() === 'Running' ? '#55bc8a' : '#f5a623'}>
+            {info.getValue()}
+          </Badge>
+        ),
+      },
+    ],
+    []
+  );
+
+  const data = React.useMemo(
+    () =>
+      Array.from({ length: 30 }, (_, i) => ({
+        name: `pod-${i + 1}`,
+        namespace: i % 2 === 0 ? 'default' : 'kubesphere-system',
+        status: i % 4 === 0 ? 'Pending' : 'Running',
+      })),
+    []
+  );
+
+  const defaultOptions = React.useMemo(
+    () =>
+      DataTable.getDefaultTableOptions({
+        tableName: 'filter-demo',
+        manual: false,
+        enableToolbar: true,
+        enablePagination: true,
+        enableFilters: true,
+      }),
+    []
+  );
+
+  const table = DataTable.useTable({
+    ...defaultOptions,
+    data,
+    columns,
+    meta: {
+      ...defaultOptions.meta,
+      getProps: {
+        filters: () => ({
+          simpleMode: false,
+          suggestions: [
+            {
+              key: 'namespace',
+              label: 'Namespace',
+              options: [
+                { key: 'default', label: 'default' },
+                { key: 'kubesphere-system', label: 'kubesphere-system' },
+              ],
+            },
+            {
+              key: 'status',
+              label: 'Status',
+              options: [
+                { key: 'Running', label: 'Running' },
+                { key: 'Pending', label: 'Pending' },
+              ],
+            },
+          ],
+        }),
+      },
+    },
+  });
+
+  return <DataTable.DataTable table={table} />;
+}
+```
+
+### DataTable Server-side Pagination
+
+Use `manual: true` for server-side pagination, manually controlling data loading.
+
+```jsx live
+function Demo() {
+  const [data, setData] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+  const [pagination, setPagination] = React.useState({ pageIndex: 0, pageSize: 5 });
+  const [total, setTotal] = React.useState(50);
+
+  // Simulate server-side data
+  const allData = React.useMemo(
+    () =>
+      Array.from({ length: 50 }, (_, i) => ({
+        id: `${i + 1}`,
+        name: `workload-${i + 1}`,
+        status: i % 3 === 0 ? 'Pending' : 'Running',
+        cpu: `${Math.floor(Math.random() * 100)}%`,
+      })),
+    []
+  );
+
+  // Simulate data loading
+  React.useEffect(() => {
+    setLoading(true);
+    const timer = setTimeout(() => {
+      const start = pagination.pageIndex * pagination.pageSize;
+      const end = start + pagination.pageSize;
+      setData(allData.slice(start, end));
+      setLoading(false);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [pagination, allData]);
+
+  const columns = React.useMemo(
+    () => [
+      {
+        accessorKey: 'name',
+        header: 'Name',
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: 'status',
+        header: 'Status',
+        cell: (info) => (
+          <Badge color={info.getValue() === 'Running' ? '#55bc8a' : '#f5a623'}>
+            {info.getValue()}
+          </Badge>
+        ),
+      },
+      {
+        accessorKey: 'cpu',
+        header: 'CPU',
+        cell: (info) => info.getValue(),
+      },
+    ],
+    []
+  );
+
+  const defaultOptions = React.useMemo(
+    () =>
+      DataTable.getDefaultTableOptions({
+        tableName: 'server-pagination-demo',
+        manual: true,
+        enableToolbar: true,
+        enablePagination: true,
+      }),
+    []
+  );
+
+  const table = DataTable.useTable({
+    ...defaultOptions,
+    data,
+    columns,
+    rowCount: total,
+    state: {
+      pagination,
+    },
+    onPaginationChange: setPagination,
+    loading,
+  });
+
+  return <DataTable.DataTable table={table} />;
+}
+```
+
+### DataTable with Selection
+
+DataTable supports row selection.
+
+```jsx live
+function Demo() {
+  const [rowSelection, setRowSelection] = React.useState({});
+
+  const columns = React.useMemo(
+    () => [
+      {
+        id: 'select',
+        header: ({ table }) => (
+          <Checkbox
+            checked={table.getIsAllRowsSelected()}
+            indeterminate={table.getIsSomeRowsSelected()}
+            onChange={table.getToggleAllRowsSelectedHandler()}
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={row.getIsSelected()}
+            indeterminate={row.getIsSomeSelected()}
+            onChange={row.getToggleSelectedHandler()}
+          />
+        ),
+        meta: {
+          width: 40,
+        },
+      },
+      {
+        accessorKey: 'name',
+        header: 'Name',
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: 'replicas',
+        header: 'Replicas',
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: 'status',
+        header: 'Status',
+        cell: (info) => (
+          <Badge color={info.getValue() === 'Running' ? '#55bc8a' : '#ca2621'}>
+            {info.getValue()}
+          </Badge>
+        ),
+      },
+    ],
+    []
+  );
+
+  const data = React.useMemo(
+    () =>
+      Array.from({ length: 20 }, (_, i) => ({
+        name: `deployment-${i + 1}`,
+        replicas: `${Math.floor(Math.random() * 3) + 1}/3`,
+        status: i % 5 === 0 ? 'Stopped' : 'Running',
+      })),
+    []
+  );
+
+  const defaultOptions = React.useMemo(
+    () =>
+      DataTable.getDefaultTableOptions({
+        tableName: 'selection-demo',
+        manual: false,
+        enableToolbar: true,
+        enablePagination: true,
+        enableSelection: true,
+        enableMultiSelection: true,
+      }),
+    []
+  );
+
+  const table = DataTable.useTable({
+    ...defaultOptions,
+    data,
+    columns,
+    state: {
+      rowSelection,
+    },
+    onRowSelectionChange: setRowSelection,
+    getRowId: (row) => row.name,
+    meta: {
+      ...defaultOptions.meta,
+      getProps: {
+        toolbar: () => ({
+          batchActions: (
+            <Button
+              color="error"
+              onClick={() => alert(`Delete ${Object.keys(rowSelection).length} items`)}
+            >
+              Batch Delete
+            </Button>
+          ),
+        }),
+      },
+    },
+  });
+
+  return <DataTable.DataTable table={table} />;
 }
 ```
 
 ## API
 
-Documentation in progress.
+### BaseTable.Table
+
+| Property     | Description              | Type      | Default |
+| ------------ | ------------------------ | --------- | ------- |
+| stickyHeader | Whether to fix header    | `boolean` | `false` |
+| maxContext   | Use maximum context      | `boolean` | `false` |
+
+### BaseTable.TableHead
+
+| Property     | Description          | Type      | Default |
+| ------------ | -------------------- | --------- | ------- |
+| hasBorder    | Whether to show border | `boolean` | `false` |
+| hasBorderTop | Whether to show top border | `boolean` | `false` |
+
+### BaseTable.TableBody
+
+| Property  | Description          | Type      | Default |
+| --------- | -------------------- | --------- | ------- |
+| hasBorder | Whether to show border | `boolean` | `false` |
+
+### BaseTable.TableRow
+
+| Property | Description       | Type      | Default |
+| -------- | ----------------- | --------- | ------- |
+| selected | Whether selected  | `boolean` | `false` |
+
+### BaseTable.TableCell
+
+| Property       | Description                  | Type                | Default |
+| -------------- | ---------------------------- | ------------------- | ------- |
+| fixed          | Fixed column position        | `'left' \| 'right'` | -       |
+| fixedWidth     | Fixed column offset width    | `number`            | -       |
+| fixedLastLeft  | Last fixed column on left    | `boolean`           | `false` |
+| fixedLastRight | Last fixed column on right   | `boolean`           | `false` |
+| width          | Column width                 | `number`            | -       |
+| colSpan        | Number of columns to span    | `number`            | -       |
+
+### BaseTable.Pagination
+
+| Property   | Description         | Type                                                       | Default |
+| ---------- | ------------------- | ---------------------------------------------------------- | ------- |
+| total      | Total data count    | `number`                                                   | -       |
+| pagination | Pagination state    | `{ page: number; pageSize?: number }`                      | -       |
+| onChange   | Pagination callback | `(pagination: { page: number; pageSize: number }) => void` | -       |
+
+### BaseTable.Toolbar
+
+| Property              | Description                      | Type         | Default |
+| --------------------- | -------------------------------- | ------------ | ------- |
+| enableBatchActions    | Enable batch actions             | `boolean`    | `false` |
+| onDisableBatchActions | Cancel batch actions callback    | `() => void` | -       |
+| enableFilters         | Enable filters                   | `boolean`    | `false` |
+| filterProps           | Filter props                     | `object`     | -       |
+| toolbarRight          | Toolbar right content            | `ReactNode`  | -       |
+
+### DataTable.getDefaultTableOptions
+
+Get default configuration options for DataTable.
+
+| Parameter            | Description               | Type      | Default |
+| -------------------- | ------------------------- | --------- | ------- |
+| tableName            | Unique table identifier   | `string`  | -       |
+| manual               | Manual data control       | `boolean` | `false` |
+| enableToolbar        | Enable toolbar            | `boolean` | `true`  |
+| enablePagination     | Enable pagination         | `boolean` | `true`  |
+| enableFilters        | Enable filters            | `boolean` | `false` |
+| enableSelection      | Enable selection          | `boolean` | `false` |
+| enableMultiSelection | Enable multi-selection    | `boolean` | `false` |
+| enableSort           | Enable sorting            | `boolean` | `false` |
+| enableVisible        | Enable column visibility  | `boolean` | `false` |
+
+### DataTable.useTable
+
+Hook for creating DataTable instance, based on @tanstack/react-table.
+
+| Parameter            | Description                    | Type                    | Default |
+| -------------------- | ------------------------------ | ----------------------- | ------- |
+| data                 | Table data                     | `T[]`                   | -       |
+| columns              | Column definitions             | `ColumnDef<T>[]`        | -       |
+| state                | Table state                    | `Partial<TableState>`   | -       |
+| onRowSelectionChange | Selection change callback      | `(selection) => void`   | -       |
+| onParamsChange       | Parameters change callback     | `(params, key) => void` | -       |
+| getRowId             | Get row ID                     | `(row) => string`       | -       |
+| rowCount             | Total count (manual mode)      | `number`                | -       |
+| loading              | Whether loading                | `boolean`               | -       |
+| meta                 | Table metadata                 | `TableMeta`             | -       |
+
+### DataTable.DataTable
+
+Component for rendering DataTable.
+
+| Property  | Description    | Type       | Default |
+| --------- | -------------- | ---------- | ------- |
+| table     | Table instance | `Table<T>` | -       |
+| className | Custom class   | `string`   | -       |
+
+### useTable Extension Points
+
+DataTable's `useTable` Hook supports rich extension point configuration.
+
+#### options.meta
+
+Table metadata configuration for controlling table behavior and properties.
+
+```typescript
+interface TableMeta<T> {
+  // Unique table identifier
+  tableName: string;
+  // Manual data control (server-side pagination)
+  manual: boolean;
+  // Enable toolbar
+  enableToolbar: boolean;
+  // Enable pagination
+  enablePagination: boolean;
+  // Enable selection
+  enableSelection: boolean;
+  // Enable multi-selection
+  enableMultiSelection: boolean;
+  // Enable filters
+  enableFilters: boolean;
+  // Enable sorting
+  enableSort: boolean;
+  // Enable column visibility
+  enableVisible: boolean;
+  // Initialize state handlers
+  registerHandlers?: (handler: StateHandler) => void;
+  // Get props for components
+  getProps: {
+    // Table props
+    table?: () => TableProps;
+    // Toolbar props
+    toolbar?: () => ToolbarProps;
+    // Filters props
+    filters?: () => FilterProps;
+    // Pagination props
+    pagination?: () => PaginationProps;
+    // Empty state props
+    empty?: () => EmptyProps;
+    // Table header props
+    th?: (header: Header<T>) => TableCellProps;
+    // Table cell props
+    td?: (cell: Cell<T>) => TableCellProps;
+    // Table row props
+    tr?: (row: Row<T>) => TableRowProps;
+  };
+}
+```
+
+#### options.meta.registerHandlers
+
+Register state handlers for controlling table state externally.
+
+```typescript
+interface StateHandler {
+  // Set page index
+  setPageIndex: (index: number) => void;
+  // Set page size
+  setPageSize: (size: number) => void;
+  // Set filters
+  setFilters: (filters: ColumnFiltersState) => void;
+  // Set sorting
+  setSorting: (sorting: SortingState) => void;
+  // Set row selection
+  setRowSelection: (selection: RowSelectionState) => void;
+  // Refresh data
+  refresh: () => void;
+}
+```
+
+Usage example:
+
+```jsx
+const handlerRef = React.useRef < StateHandler > null;
+
+const table = DataTable.useTable({
+  ...defaultOptions,
+  data,
+  columns,
+  meta: {
+    ...defaultOptions.meta,
+    registerHandlers: (handler) => {
+      handlerRef.current = handler;
+    },
+  },
+});
+
+// Control table externally
+const handleRefresh = () => {
+  handlerRef.current?.refresh();
+};
+
+const handleResetFilters = () => {
+  handlerRef.current?.setFilters([]);
+};
+```
+
+#### options.columns column.meta
+
+Column metadata configuration for controlling column behavior and properties.
+
+```typescript
+interface ColumnMeta {
+  // Column description
+  description?: string;
+  // Select type (for filtering)
+  selectType?: 'single' | 'multiple';
+  // Whether sortable
+  sortable?: boolean;
+  // Search key
+  searchKey?: string;
+  // Column width
+  width?: number | string;
+  // Fixed position
+  fixed?: 'left' | 'right';
+}
+```
+
+Usage example:
+
+```jsx
+const columns = [
+  {
+    accessorKey: 'name',
+    header: 'Name',
+    meta: {
+      searchKey: 'name',
+      sortable: true,
+      width: 200,
+    },
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    meta: {
+      selectType: 'multiple',
+      description: 'Resource running status',
+    },
+  },
+];
+```
+
+### Status2StorageFeature
+
+DataTable provides `Status2StorageFeature` for persisting table state to localStorage.
+
+```jsx
+import { DataTable } from '@kubed/components';
+
+const defaultOptions = DataTable.getDefaultTableOptions({
+  tableName: 'my-table',
+  // Enable state persistence
+  enableStateToStorage: true,
+});
+
+const table = DataTable.useTable({
+  ...defaultOptions,
+  data,
+  columns,
+  // Configure states to persist
+  _features: [DataTable.Status2StorageFeature],
+});
+```
+
+Persisted states include:
+
+- Pagination state (pageIndex, pageSize)
+- Sorting state
+- Column filters state
+- Column visibility state
+
+:::info
+
+**About BaseTable vs DataTable**:
+
+- `BaseTable` is the basic table component providing fundamental table structure
+- `DataTable` is an advanced data table based on @tanstack/react-table, providing sorting, filtering, pagination, etc.
+- Recommended: Use `BaseTable` for simple scenarios, `DataTable` for complex data management
+
+**About Fixed Columns**:
+
+- Use `fixed` prop to set fixed column position
+- `fixedWidth` sets fixed column offset position
+- `fixedLastLeft` and `fixedLastRight` mark the last fixed column and display shadow effect
+
+**About Pagination**:
+
+- `Pagination` component supports page number and page size switching
+- `pagination` prop includes `page` (current page, starting from 1) and `pageSize` (items per page)
+
+**About Selection**:
+
+- Row selection requires self-managed selection state
+- Use `Checkbox` component for selection boxes
+- `TableRow`'s `selected` prop displays selected style
+
+**About DataTable**:
+
+- DataTable is built on @tanstack/react-table
+- Use `getDefaultTableOptions` to get default configuration
+- Use `useTable` Hook to create table instance
+- Supports toolbar, pagination, filters, selection, sorting, etc.
+- `manual: true` means manual data control (server-side pagination), `manual: false` means local data
+
+**About Column Definitions**:
+
+- `accessorKey`: Data field name
+- `header`: Table header content
+- `cell`: Cell render function, receives `info` parameter
+- `meta`: Column metadata for width, alignment, etc.
+
+**About meta.getProps**:
+
+- `toolbar`: Toolbar configuration like `toolbarRight`, `batchActions`
+- `filters`: Filters configuration like `suggestions`, `simpleMode`
+- `pagination`: Pagination configuration like `total`
+- `empty`: Empty state configuration
+- `table`: Table configuration like `stickyHeader`
+
+:::
+
+## Usage Guidelines
+
+### Use Borders Appropriately
+
+Choose whether to show borders based on scenario:
+
+```jsx
+// With borders: clearer for dense data
+<TableHead hasBorder>
+  ...
+</TableHead>
+<TableBody hasBorder>
+  ...
+</TableBody>
+
+// Without borders: clean style
+<TableHead>
+  ...
+</TableHead>
+<TableBody>
+  ...
+</TableBody>
+```
+
+### Sticky Header Handling
+
+When using sticky header, set container height and scrolling:
+
+```jsx
+<div style={{ height: '400px', overflow: 'auto' }}>
+  <Table stickyHeader>...</Table>
+</div>
+```
+
+### Empty State Handling
+
+Show friendly message when data is empty:
+
+```jsx
+{
+  data.length === 0 ? (
+    <TableRow>
+      <TableCell colSpan={columns.length}>
+        <Empty title="No Data" />
+      </TableCell>
+    </TableRow>
+  ) : (
+    data.map((item) => <TableRow key={item.id}>...</TableRow>)
+  );
+}
+```
+
+### Action Column Design
+
+Fix action column width and use icon buttons:
+
+```jsx
+<TableCell style={{ width: '120px' }}>
+  <Group spacing="xs">
+    <Button variant="text" size="sm">
+      <Pen size={16} />
+    </Button>
+    <Button variant="text" size="sm" color="error">
+      <Trash size={16} />
+    </Button>
+  </Group>
+</TableCell>
+```
+
+### Status Display
+
+Use Badge component to display status:
+
+```jsx
+<TableCell>
+  <Badge color={status === 'Running' ? '#55bc8a' : '#ca2621'}>{status}</Badge>
+</TableCell>
+```
+
+### Selection Functionality
+
+Implement select all and individual selection:
+
+```jsx
+// Header select all
+<Checkbox
+  checked={selectedIds.length === data.length}
+  indeterminate={selectedIds.length > 0 && selectedIds.length < data.length}
+  onChange={handleSelectAll}
+/>
+
+// Row selection
+<Checkbox
+  checked={selectedIds.includes(item.id)}
+  onChange={() => handleSelect(item.id)}
+/>
+```
+
+### DataTable Basic Usage
+
+Quickly create feature-complete tables with DataTable:
+
+```jsx
+const defaultOptions = DataTable.getDefaultTableOptions({
+  tableName: 'my-table',
+  manual: false,
+  enableToolbar: true,
+  enablePagination: true,
+});
+
+const table = DataTable.useTable({
+  ...defaultOptions,
+  data,
+  columns,
+});
+
+<DataTable.DataTable table={table} />;
+```
+
+### DataTable Custom Toolbar
+
+Configure toolbar via meta.getProps:
+
+```jsx
+meta: {
+  ...defaultOptions.meta,
+  getProps: {
+    toolbar: () => ({
+      toolbarLeft: <Select />,
+      toolbarRight: <Button>Create</Button>,
+      batchActions: <Button color="error">Batch Delete</Button>,
+    }),
+  },
+}
+```
+
+### DataTable Configure Filters
+
+Configure filter options:
+
+```jsx
+meta: {
+  ...defaultOptions.meta,
+  getProps: {
+    filters: () => ({
+      simpleMode: false,
+      suggestions: [
+        {
+          key: 'status',
+          label: 'Status',
+          options: [
+            { key: 'Running', label: 'Running' },
+            { key: 'Stopped', label: 'Stopped' },
+          ],
+        },
+      ],
+    }),
+  },
+}
+```
+
+### Server-side Pagination Configuration
+
+Use `manual: true` for server-side pagination:
+
+```jsx
+const [pagination, setPagination] = React.useState({ pageIndex: 0, pageSize: 10 });
+
+const defaultOptions = DataTable.getDefaultTableOptions({
+  tableName: 'server-table',
+  manual: true,
+  enablePagination: true,
+});
+
+const table = DataTable.useTable({
+  ...defaultOptions,
+  data,
+  columns,
+  rowCount: total, // Total from server
+  state: {
+    pagination,
+  },
+  onPaginationChange: setPagination,
+  onParamsChange: (params, key) => {
+    // Re-fetch data when params change
+    if (key === 'pagination') {
+      fetchData(params);
+    }
+  },
+});
+```
+
+### External Table State Control
+
+Use registerHandlers to control table externally:
+
+```jsx
+const handlerRef = React.useRef(null);
+
+const table = DataTable.useTable({
+  ...defaultOptions,
+  data,
+  columns,
+  meta: {
+    ...defaultOptions.meta,
+    registerHandlers: (handler) => {
+      handlerRef.current = handler;
+    },
+  },
+});
+
+// External data refresh
+<Button onClick={() => handlerRef.current?.refresh()}>Refresh</Button>
+
+// External filter reset
+<Button onClick={() => handlerRef.current?.setFilters([])}>Clear Filters</Button>
+```
+
+### Fixed Column Configuration
+
+Use fixed prop to fix columns:
+
+```jsx
+<TableCell fixed="left" fixedWidth={0} fixedLastLeft>
+  Left fixed column
+</TableCell>
+
+<TableCell fixed="right" fixedWidth={0} fixedLastRight>
+  Right fixed column
+</TableCell>
+```
+
+Note:
+
+- `fixedWidth` sets fixed column offset position
+- `fixedLastLeft` marks last left fixed column, displays shadow
+- `fixedLastRight` marks last right fixed column, displays shadow
+
+### Column Definition Best Practices
+
+```jsx
+const columns = [
+  {
+    accessorKey: 'name',
+    header: 'Name',
+    cell: (info) => <span style={{ fontWeight: 600 }}>{info.getValue()}</span>,
+    meta: {
+      searchKey: 'name',
+      sortable: true,
+      width: 200,
+    },
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    cell: (info) => (
+      <Badge color={info.getValue() === 'Running' ? '#55bc8a' : '#ca2621'}>{info.getValue()}</Badge>
+    ),
+    meta: {
+      selectType: 'multiple',
+      description: 'Resource running status',
+    },
+  },
+  {
+    id: 'actions',
+    header: 'Actions',
+    cell: ({ row }) => (
+      <Group spacing="xs">
+        <Button variant="text" size="sm" onClick={() => handleEdit(row.original)}>
+          Edit
+        </Button>
+        <Button variant="text" size="sm" color="error" onClick={() => handleDelete(row.original)}>
+          Delete
+        </Button>
+      </Group>
+    ),
+    meta: {
+      width: 120,
+    },
+  },
+];
+```

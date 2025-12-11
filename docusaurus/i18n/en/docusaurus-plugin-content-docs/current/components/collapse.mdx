@@ -4,22 +4,401 @@ sidebar_position: 1
 
 # Collapse
 
-> Component documentation is being migrated. Check back soon!
+A component for collapsible/expandable content areas.
 
-## Overview
+## When to Use
 
-Collapse component from Kube Design library.
+- Group and hide complex areas to keep pages tidy
+- Accordion mode, only allowing one panel to expand
+- Need to display collapsible configuration items or details
+- FAQ lists and similar scenarios
 
 ## Examples
 
 ### Basic Usage
 
+Multiple panels can be expanded simultaneously.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  const { Panel } = Collapse;
+
+  return (
+    <Collapse defaultActiveKey={['1']}>
+      <Panel key="1" header="Panel Title 1">
+        <p style={{ margin: 0 }}>This is the content of Panel 1. You can place any content including text, forms, lists, etc.</p>
+      </Panel>
+      <Panel key="2" header="Panel Title 2">
+        <p style={{ margin: 0 }}>This is the content of Panel 2. Collapse panels help organize and hide complex content.</p>
+      </Panel>
+      <Panel key="3" header="Panel Title 3">
+        <p style={{ margin: 0 }}>This is the content of Panel 3. Users can expand to view detailed information as needed.</p>
+      </Panel>
+    </Collapse>
+  );
+}
+```
+
+### Accordion Mode
+
+Set accordion mode through the `accordion` property, only one panel can be expanded at a time.
+
+```jsx live
+function Demo() {
+  const { Panel } = Collapse;
+
+  return (
+    <Collapse accordion defaultActiveKey="1">
+      <Panel key="1" header="Kubernetes Introduction">
+        <p style={{ margin: 0 }}>
+          Kubernetes is an open-source container orchestration platform for automating deployment, scaling, and management of containerized applications.
+        </p>
+      </Panel>
+      <Panel key="2" header="Docker Introduction">
+        <p style={{ margin: 0 }}>
+          Docker is an open-source application container engine that allows developers to package applications and dependencies into a portable container.
+        </p>
+      </Panel>
+      <Panel key="3" header="Helm Introduction">
+        <p style={{ margin: 0 }}>Helm is the package manager for Kubernetes, helping you manage Kubernetes applications.</p>
+      </Panel>
+    </Collapse>
+  );
+}
+```
+
+### Controlled Mode
+
+Implement controlled component through `activeKey` and `onChange`.
+
+```jsx live
+function Demo() {
+  const { Panel } = Collapse;
+  const [activeKey, setActiveKey] = React.useState(['1']);
+
+  return (
+    <div>
+      <Collapse activeKey={activeKey} onChange={setActiveKey}>
+        <Panel key="1" header="Panel 1">
+          <p style={{ margin: 0 }}>Panel 1 content</p>
+        </Panel>
+        <Panel key="2" header="Panel 2">
+          <p style={{ margin: 0 }}>Panel 2 content</p>
+        </Panel>
+        <Panel key="3" header="Panel 3">
+          <p style={{ margin: 0 }}>Panel 3 content</p>
+        </Panel>
+      </Collapse>
+      <Group style={{ marginTop: 16 }}>
+        <Button size="sm" onClick={() => setActiveKey(['1', '2', '3'])}>
+          Expand All
+        </Button>
+        <Button size="sm" onClick={() => setActiveKey([])}>
+          Collapse All
+        </Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+### Collapsible Trigger Area
+
+Set the collapsible trigger area of the panel through the `collapsible` property.
+
+```jsx live
+function Demo() {
+  const { Panel } = Collapse;
+
+  return (
+    <Collapse accordion>
+      <Panel key="1" header="Default: Click entire row to collapse">
+        <p style={{ margin: 0 }}>Clicking anywhere in the panel header can trigger collapse/expand.</p>
+      </Panel>
+      <Panel key="2" header="Only header text click to collapse" collapsible="header">
+        <p style={{ margin: 0 }}>Only clicking the title text can trigger collapse/expand.</p>
+      </Panel>
+      <Panel key="3" header="Only icon click to collapse" collapsible="icon">
+        <p style={{ margin: 0 }}>Only clicking the arrow icon can trigger collapse/expand.</p>
+      </Panel>
+      <Panel key="4" header="Collapse disabled" collapsible="disabled">
+        <p style={{ margin: 0 }}>This panel cannot collapse/expand.</p>
+      </Panel>
+    </Collapse>
+  );
+}
+```
+
+### Hide Arrow Icon
+
+Hide the panel's arrow icon through `showArrow={false}`.
+
+```jsx live
+function Demo() {
+  const { Panel } = Collapse;
+
+  return (
+    <Collapse defaultActiveKey={['1']}>
+      <Panel key="1" header="Show Arrow (default)">
+        <p style={{ margin: 0 }}>This panel shows the arrow icon.</p>
+      </Panel>
+      <Panel key="2" header="Hide Arrow" showArrow={false}>
+        <p style={{ margin: 0 }}>This panel hides the arrow icon.</p>
+      </Panel>
+    </Collapse>
+  );
+}
+```
+
+### Extra Content
+
+Add extra content to the right side of the panel header through the `extra` property.
+
+```jsx live
+function Demo() {
+  const { Panel } = Collapse;
+  const { FolderSettingDuotone, Trash } = KubedIcons;
+
+  return (
+    <Collapse defaultActiveKey={['1']}>
+      <Panel
+        key="1"
+        header="Configuration Item"
+        extra={
+          <Button variant="text" size="sm" radius="sm" onClick={(e) => e.stopPropagation()}>
+            <FolderSettingDuotone size={16} />
+          </Button>
+        }
+      >
+        <p style={{ margin: 0 }}>This panel has a settings button on the right side.</p>
+      </Panel>
+      <Panel
+        key="2"
+        header="Deletable Item"
+        extra={
+          <Button
+            variant="text"
+            size="sm"
+            color="error"
+            radius="sm"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Trash size={16} />
+          </Button>
+        }
+      >
+        <p style={{ margin: 0 }}>This panel has a delete button on the right side.</p>
+      </Panel>
+    </Collapse>
+  );
+}
+```
+
+### Custom Expand Icon
+
+Customize the expand/collapse icon through the `expandIcon` property.
+
+```jsx live
+function Demo() {
+  const { Panel } = Collapse;
+  const { Add, Substract } = KubedIcons;
+
+  return (
+    <Collapse
+      defaultActiveKey={['1']}
+      expandIcon={({ isActive }) => (isActive ? <Substract size={16} /> : <Add size={16} />)}
+    >
+      <Panel key="1" header="Custom Icon Panel 1">
+        <p style={{ margin: 0 }}>Using plus/minus as expand icons.</p>
+      </Panel>
+      <Panel key="2" header="Custom Icon Panel 2">
+        <p style={{ margin: 0 }}>Shows minus when expanded, plus when collapsed.</p>
+      </Panel>
+    </Collapse>
+  );
+}
+```
+
+### Nested Collapse Panels
+
+Collapse panels can be nested.
+
+```jsx live
+function Demo() {
+  const { Panel } = Collapse;
+
+  return (
+    <Collapse defaultActiveKey={['1']}>
+      <Panel key="1" header="Outer Panel 1">
+        <Collapse accordion>
+          <Panel key="1-1" header="Inner Panel 1-1">
+            <p style={{ margin: 0 }}>Nested panel content 1-1</p>
+          </Panel>
+          <Panel key="1-2" header="Inner Panel 1-2">
+            <p style={{ margin: 0 }}>Nested panel content 1-2</p>
+          </Panel>
+        </Collapse>
+      </Panel>
+      <Panel key="2" header="Outer Panel 2">
+        <p style={{ margin: 0 }}>Outer panel 2 content</p>
+      </Panel>
+    </Collapse>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Collapse
+
+| Property             | Description                        | Type                                       | Default |
+| -------------------- | ---------------------------------- | ------------------------------------------ | ------- |
+| activeKey            | Currently expanded panel key       | `string \| string[] \| number \| number[]` | -       |
+| defaultActiveKey     | Default expanded panel key         | `string \| string[] \| number \| number[]` | -       |
+| accordion            | Whether in accordion mode          | `boolean`                                  | `false` |
+| expandIcon           | Custom expand icon                 | `(panelProps) => ReactNode`                | -       |
+| collapsible          | Collapsible trigger area for all panels | `'header' \| 'icon' \| 'disabled'`   | -       |
+| destroyInactivePanel | Destroy inactive panel             | `boolean`                                  | `false` |
+| onChange             | Callback when panel is toggled     | `(key: string \| string[]) => void`        | -       |
+
+### Collapse.Panel
+
+| Property    | Description              | Type                               | Default |
+| ----------- | ------------------------ | ---------------------------------- | ------- |
+| key         | Panel unique identifier  | `string \| number`                 | -       |
+| header      | Panel header content     | `ReactNode`                        | -       |
+| extra       | Extra content on right   | `ReactNode`                        | -       |
+| showArrow   | Whether to show arrow    | `boolean`                          | `true`  |
+| forceRender | Force render panel content | `boolean`                        | `false` |
+| collapsible | Collapsible trigger area | `'header' \| 'icon' \| 'disabled'` | -       |
+
+:::info
+
+**About activeKey**:
+
+- In non-accordion mode, `activeKey` is an array, multiple panels can be expanded simultaneously
+- In accordion mode, `activeKey` is a single value, only one panel can be expanded
+- Use `defaultActiveKey` to set initial expanded state (uncontrolled)
+- Use `activeKey` + `onChange` to implement controlled mode
+
+**About collapsible**:
+
+- `header`: Only clicking the header text can trigger collapse
+- `icon`: Only clicking the arrow icon can trigger collapse
+- `disabled`: Disable collapse functionality
+- Can be set uniformly on Collapse or individually on Panel
+
+**About expandIcon**:
+
+- Function receives `panelProps` parameter containing `isActive` property
+- Can return different icons based on `isActive`
+
+:::
+
+## Usage Recommendations
+
+### Accordion vs Multiple Panels
+
+Choose the appropriate mode based on use case:
+
+```jsx
+// Accordion mode: Use when content is mutually exclusive
+<Collapse accordion>
+  <Panel key="1" header="Option A">...</Panel>
+  <Panel key="2" header="Option B">...</Panel>
+</Collapse>
+
+// Multiple panel mode: Content can be viewed simultaneously
+<Collapse>
+  <Panel key="1" header="Basic Information">...</Panel>
+  <Panel key="2" header="Advanced Configuration">...</Panel>
+</Collapse>
+```
+
+### Extra Action Buttons
+
+When adding action buttons to panel header, prevent event bubbling:
+
+```jsx
+<Panel
+  header="Title"
+  extra={
+    <Button
+      onClick={(e) => {
+        e.stopPropagation(); // Prevent triggering panel collapse
+        handleAction();
+      }}
+    >
+      Action
+    </Button>
+  }
+>
+  Content
+</Panel>
+```
+
+### Default Expansion
+
+Set default expanded panels based on business needs:
+
+```jsx
+// Expand first panel
+<Collapse defaultActiveKey={['1']}>
+  ...
+</Collapse>
+
+// Expand multiple panels
+<Collapse defaultActiveKey={['1', '3']}>
+  ...
+</Collapse>
+
+// All collapsed
+<Collapse defaultActiveKey={[]}>
+  ...
+</Collapse>
+```
+
+### Dynamic Panels
+
+Dynamically generate collapse panels:
+
+```jsx
+const items = [
+  { key: '1', title: 'Panel 1', content: 'Content 1' },
+  { key: '2', title: 'Panel 2', content: 'Content 2' },
+];
+
+<Collapse>
+  {items.map((item) => (
+    <Panel key={item.key} header={item.title}>
+      {item.content}
+    </Panel>
+  ))}
+</Collapse>;
+```
+
+### Configuration Form
+
+Use collapse panels to organize complex configuration forms:
+
+```jsx
+<Collapse defaultActiveKey={['basic']}>
+  <Panel key="basic" header="Basic Configuration">
+    <Form>
+      <FormItem label="Name">
+        <Input />
+      </FormItem>
+      <FormItem label="Description">
+        <Textarea />
+      </FormItem>
+    </Form>
+  </Panel>
+  <Panel key="advanced" header="Advanced Configuration">
+    <Form>
+      <FormItem label="Timeout">
+        <InputNumber />
+      </FormItem>
+    </Form>
+  </Panel>
+</Collapse>
+```

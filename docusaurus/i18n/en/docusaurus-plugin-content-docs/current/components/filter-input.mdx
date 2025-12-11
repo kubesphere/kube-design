@@ -2,24 +2,906 @@
 sidebar_position: 1
 ---
 
-# Filter Input
+# FilterInput
 
-> Component documentation is being migrated. Check back soon!
+A smart search input box with filtering functionality.
 
-## Overview
+## When to Use
 
-Filter Input component from Kube Design library.
+- When filtering list or table data
+- Support multi-condition combined search
+- When providing selectable filter options
+- Quick search scenarios
+
+In Kube Design, the FilterInput component provides powerful filter search functionality:
+
+- **Two Modes**: Support filter mode and simple search mode
+- **Suggestion List**: Display available filter conditions
+- **Tag Display**: Selected filter conditions displayed as tags
+- **Option Dropdown**: Support dropdown selection of predefined options
+- **Custom Dropdown**: Support custom dropdown content (such as date picker)
+- **Keyboard Support**: Support Enter key confirmation
 
 ## Examples
 
 ### Basic Usage
 
+Basic filter input box usage.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  const [filters, setFilters] = React.useState({});
+
+  const suggestions = [
+    { label: 'Name', key: 'name' },
+    { label: 'Namespace', key: 'namespace' },
+    { label: 'Label', key: 'label' },
+  ];
+
+  return (
+    <FilterInput
+      suggestions={suggestions}
+      filters={filters}
+      placeholder="Enter filter conditions..."
+      onChange={setFilters}
+    />
+  );
+}
+```
+
+### Simple Search Mode
+
+Use `simpleMode` to implement regular search box functionality.
+
+```jsx live
+function Demo() {
+  return (
+    <FilterInput
+      simpleMode
+      placeholder="Search..."
+      onChange={(keyword) => console.log('Search:', keyword)}
+      onInputChange={(value) => console.log('Input:', value)}
+    />
+  );
+}
+```
+
+### With Default Filter Conditions
+
+Set default filter conditions during initialization.
+
+```jsx live
+function Demo() {
+  const [filters, setFilters] = React.useState({
+    status: 'Running',
+    namespace: 'default',
+  });
+
+  const suggestions = [
+    { label: 'Name', key: 'name' },
+    { label: 'Namespace', key: 'namespace' },
+    {
+      label: 'Status',
+      key: 'status',
+      options: [
+        { label: 'Running', key: 'Running' },
+        { label: 'Pending', key: 'Pending' },
+        { label: 'Failed', key: 'Failed' },
+      ],
+    },
+  ];
+
+  return (
+    <Group direction="column" spacing="md">
+      <Text size="sm">Current filters: {JSON.stringify(filters)}</Text>
+      <FilterInput
+        suggestions={suggestions}
+        filters={filters}
+        placeholder="Search Pods..."
+        onChange={setFilters}
+      />
+    </Group>
+  );
+}
+```
+
+### Custom Labels with Icons
+
+Use `customLabel` to add icons to suggestion items.
+
+```jsx live
+function Demo() {
+  const { Pod, Cluster, Project } = KubedIcons;
+  const [filters, setFilters] = React.useState({});
+
+  const suggestions = [
+    {
+      label: 'Pod',
+      key: 'pod',
+      customLabel: (
+        <Group spacing="xs">
+          <Pod size={14} />
+          <span>Pod Name</span>
+        </Group>
+      ),
+    },
+    {
+      label: 'Cluster',
+      key: 'cluster',
+      customLabel: (
+        <Group spacing="xs">
+          <Cluster size={14} />
+          <span>Cluster</span>
+        </Group>
+      ),
+    },
+    {
+      label: 'Project',
+      key: 'project',
+      customLabel: (
+        <Group spacing="xs">
+          <Project size={14} />
+          <span>Project</span>
+        </Group>
+      ),
+    },
+  ];
+
+  return (
+    <FilterInput
+      suggestions={suggestions}
+      filters={filters}
+      placeholder="Select filter conditions..."
+      onChange={setFilters}
+    />
+  );
+}
+```
+
+### With Option Dropdown
+
+Filter conditions include predefined options.
+
+```jsx live
+function Demo() {
+  const [filters, setFilters] = React.useState({});
+
+  const suggestions = [
+    {
+      label: 'Status',
+      key: 'status',
+      options: [
+        { label: 'Running', key: 'Running' },
+        { label: 'Pending', key: 'Pending' },
+        { label: 'Succeeded', key: 'Succeeded' },
+        { label: 'Failed', key: 'Failed' },
+        { label: 'Unknown', key: 'Unknown' },
+      ],
+    },
+    {
+      label: 'Type',
+      key: 'type',
+      options: [
+        { label: 'ClusterIP', key: 'ClusterIP' },
+        { label: 'NodePort', key: 'NodePort' },
+        { label: 'LoadBalancer', key: 'LoadBalancer' },
+      ],
+    },
+  ];
+
+  return (
+    <Group direction="column" spacing="md">
+      <Text size="sm">Selected conditions: {JSON.stringify(filters, null, 2)}</Text>
+      <FilterInput
+        suggestions={suggestions}
+        filters={filters}
+        placeholder="Select filter conditions..."
+        onChange={setFilters}
+      />
+    </Group>
+  );
+}
+```
+
+### Custom Dropdown Content
+
+Use `customDropdown` to customize dropdown content.
+
+```jsx live
+function Demo() {
+  const [filters, setFilters] = React.useState({});
+
+  const customDropdown = (
+    <Card style={{ padding: '12px', width: '200px' }}>
+      <Text size="sm" weight={600} style={{ marginBottom: '8px' }}>
+        Select Priority:
+      </Text>
+      {['High', 'Medium', 'Low'].map((priority) => (
+        <div
+          key={priority}
+          style={{
+            padding: '8px',
+            cursor: 'pointer',
+            borderRadius: '4px',
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#f5f7fa')}
+          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+          onClick={() => setFilters({ ...filters, priority })}
+        >
+          <Text size="sm">{priority}</Text>
+        </div>
+      ))}
+    </Card>
+  );
+
+  const suggestions = [
+    { label: 'Name', key: 'name' },
+    {
+      label: 'Priority',
+      key: 'priority',
+      customDropdown,
+    },
+  ];
+
+  return (
+    <Group direction="column" spacing="md">
+      <Text size="sm">Current filter: {JSON.stringify(filters)}</Text>
+      <FilterInput
+        suggestions={suggestions}
+        filters={filters}
+        placeholder="Search..."
+        onChange={setFilters}
+      />
+    </Group>
+  );
+}
+```
+
+### Multiple Filter Conditions
+
+Combine multiple filter conditions.
+
+```jsx live
+function Demo() {
+  const [filters, setFilters] = React.useState({});
+
+  const suggestions = [
+    { label: 'Pod Name', key: 'pod' },
+    { label: 'Namespace', key: 'namespace' },
+    { label: 'Node', key: 'node' },
+    {
+      label: 'Status',
+      key: 'status',
+      options: [
+        { label: 'Running', key: 'Running' },
+        { label: 'Pending', key: 'Pending' },
+        { label: 'Failed', key: 'Failed' },
+      ],
+    },
+    {
+      label: 'Restart Policy',
+      key: 'restartPolicy',
+      options: [
+        { label: 'Always', key: 'Always' },
+        { label: 'OnFailure', key: 'OnFailure' },
+        { label: 'Never', key: 'Never' },
+      ],
+    },
+  ];
+
+  return (
+    <Group direction="column" spacing="md">
+      <FilterInput
+        suggestions={suggestions}
+        filters={filters}
+        placeholder="Search Pods..."
+        onChange={setFilters}
+      />
+      <Card style={{ padding: '12px' }}>
+        <Text size="sm" weight={600} style={{ marginBottom: '8px' }}>
+          Current filter conditions:
+        </Text>
+        <Text size="sm" style={{ whiteSpace: 'pre-wrap' }}>
+          {Object.keys(filters).length > 0 ? JSON.stringify(filters, null, 2) : 'None'}
+        </Text>
+      </Card>
+    </Group>
+  );
+}
+```
+
+### Controlled Mode
+
+Fully control filter condition changes.
+
+```jsx live
+function Demo() {
+  const [filters, setFilters] = React.useState({ status: 'Running' });
+
+  const suggestions = [
+    { label: 'Service Name', key: 'name' },
+    {
+      label: 'Type',
+      key: 'type',
+      options: [
+        { label: 'ClusterIP', key: 'ClusterIP' },
+        { label: 'NodePort', key: 'NodePort' },
+        { label: 'LoadBalancer', key: 'LoadBalancer' },
+      ],
+    },
+    {
+      label: 'Status',
+      key: 'status',
+      options: [
+        { label: 'Running', key: 'Running' },
+        { label: 'Stopped', key: 'Stopped' },
+      ],
+    },
+  ];
+
+  const handleChange = (newFilters) => {
+    console.log('Filter changed:', newFilters);
+    setFilters(newFilters);
+  };
+
+  const resetFilters = () => {
+    setFilters({});
+  };
+
+  return (
+    <Group direction="column" spacing="md">
+      <Group spacing="xs">
+        <Button size="sm" onClick={resetFilters}>
+          Reset Filters
+        </Button>
+        <Button size="sm" variant="outline" onClick={() => setFilters({ type: 'ClusterIP' })}>
+          ClusterIP Only
+        </Button>
+      </Group>
+      <FilterInput
+        suggestions={suggestions}
+        filters={filters}
+        placeholder="Filter Services..."
+        onChange={handleChange}
+      />
+      <Text size="sm">Filter results: {Object.keys(filters).length} conditions</Text>
+    </Group>
+  );
+}
+```
+
+### Disabled State
+
+Disable the filter input box.
+
+```jsx live
+function Demo() {
+  const suggestions = [
+    { label: 'Name', key: 'name' },
+    { label: 'Namespace', key: 'namespace' },
+  ];
+
+  return (
+    <Group direction="column" spacing="md">
+      <FilterInput
+        suggestions={suggestions}
+        filters={{ name: 'nginx' }}
+        placeholder="Search..."
+        disabled
+      />
+      <Text size="sm" color="secondary">
+        Filter input is disabled
+      </Text>
+    </Group>
+  );
+}
+```
+
+### Kubernetes Resource Filtering
+
+Practical Kubernetes resource filtering example.
+
+```jsx live
+function Demo() {
+  const { Pod, Cluster } = KubedIcons;
+  const [filters, setFilters] = React.useState({ namespace: 'default' });
+
+  const suggestions = [
+    {
+      label: 'Pod',
+      key: 'pod',
+      customLabel: (
+        <Group spacing="xs">
+          <Pod size={14} />
+          <span>Pod Name</span>
+        </Group>
+      ),
+    },
+    {
+      label: 'Namespace',
+      key: 'namespace',
+      options: [
+        { label: 'default', key: 'default' },
+        { label: 'kube-system', key: 'kube-system' },
+        { label: 'kube-public', key: 'kube-public' },
+        { label: 'kubesphere-system', key: 'kubesphere-system' },
+      ],
+    },
+    {
+      label: 'Status',
+      key: 'status',
+      options: [
+        { label: 'Running', key: 'Running' },
+        { label: 'Pending', key: 'Pending' },
+        { label: 'Succeeded', key: 'Succeeded' },
+        { label: 'Failed', key: 'Failed' },
+        { label: 'Unknown', key: 'Unknown' },
+      ],
+    },
+    { label: 'Node', key: 'node' },
+    { label: 'Label', key: 'label' },
+  ];
+
+  const mockPods = [
+    { name: 'nginx-deployment-7d5c8f8b9d-x7k2m', namespace: 'default', status: 'Running', node: 'node-1' },
+    { name: 'redis-master-0', namespace: 'default', status: 'Running', node: 'node-2' },
+    { name: 'coredns-565d847f94-8v9mk', namespace: 'kube-system', status: 'Running', node: 'node-1' },
+  ];
+
+  const filteredPods = mockPods.filter((pod) => {
+    if (filters.namespace && pod.namespace !== filters.namespace) return false;
+    if (filters.status && pod.status !== filters.status) return false;
+    if (filters.node && pod.node !== filters.node) return false;
+    if (filters.pod && !pod.name.includes(filters.pod)) return false;
+    return true;
+  });
+
+  return (
+    <Group direction="column" spacing="md">
+      <FilterInput
+        suggestions={suggestions}
+        filters={filters}
+        placeholder="Filter Pods..."
+        onChange={setFilters}
+      />
+      <Card>
+        <Text size="sm" weight={600} style={{ marginBottom: '12px' }}>
+          Found {filteredPods.length} Pods:
+        </Text>
+        {filteredPods.map((pod) => (
+          <div
+            key={pod.name}
+            style={{
+              padding: '8px 0',
+              borderBottom: '1px solid #eff4f9',
+            }}
+          >
+            <Group spacing="md">
+              <Text size="sm" style={{ flex: 1 }}>
+                {pod.name}
+              </Text>
+              <Badge size="sm" color="default">
+                {pod.namespace}
+              </Badge>
+              <Badge size="sm" color="success">
+                {pod.status}
+              </Badge>
+            </Group>
+          </div>
+        ))}
+      </Card>
+    </Group>
+  );
+}
+```
+
+### Complete Example
+
+Comprehensive example combining all features.
+
+```jsx live
+function Demo() {
+  const { Service } = KubedIcons;
+  const [filters, setFilters] = React.useState({});
+  const [searchMode, setSearchMode] = React.useState('filter');
+
+  const suggestions = [
+    {
+      label: 'Service',
+      key: 'name',
+      customLabel: (
+        <Group spacing="xs">
+          <Service size={14} />
+          <span>Service Name</span>
+        </Group>
+      ),
+    },
+    {
+      label: 'Type',
+      key: 'type',
+      options: [
+        { label: 'ClusterIP', key: 'ClusterIP' },
+        { label: 'NodePort', key: 'NodePort' },
+        { label: 'LoadBalancer', key: 'LoadBalancer' },
+        { label: 'ExternalName', key: 'ExternalName' },
+      ],
+    },
+    {
+      label: 'Namespace',
+      key: 'namespace',
+      options: [
+        { label: 'default', key: 'default' },
+        { label: 'kube-system', key: 'kube-system' },
+        { label: 'production', key: 'production' },
+      ],
+    },
+    { label: 'Port', key: 'port' },
+  ];
+
+  const handleClear = () => {
+    setFilters({});
+  };
+
+  return (
+    <Group direction="column" spacing="md">
+      <Group spacing="xs">
+        <Button
+          size="sm"
+          variant={searchMode === 'filter' ? 'filled' : 'outline'}
+          onClick={() => setSearchMode('filter')}
+        >
+          Filter Mode
+        </Button>
+        <Button
+          size="sm"
+          variant={searchMode === 'simple' ? 'filled' : 'outline'}
+          onClick={() => setSearchMode('simple')}
+        >
+          Simple Search
+        </Button>
+      </Group>
+
+      {searchMode === 'filter' ? (
+        <>
+          <FilterInput
+            suggestions={suggestions}
+            filters={filters}
+            placeholder="Filter Services..."
+            onChange={setFilters}
+            onClear={handleClear}
+          />
+          <Card style={{ padding: '12px' }}>
+            <Group spacing="md" style={{ justifyContent: 'space-between' }}>
+              <Text size="sm">
+                Applied {Object.keys(filters).length} filter conditions
+              </Text>
+              {Object.keys(filters).length > 0 && (
+                <Button size="xs" variant="text" onClick={handleClear}>
+                  Clear All
+                </Button>
+              )}
+            </Group>
+            {Object.keys(filters).length > 0 && (
+              <Text size="sm" style={{ marginTop: '8px', whiteSpace: 'pre-wrap' }}>
+                {JSON.stringify(filters, null, 2)}
+              </Text>
+            )}
+          </Card>
+        </>
+      ) : (
+        <FilterInput
+          simpleMode
+          placeholder="Search Services..."
+          onChange={(keyword) => console.log('Search:', keyword)}
+        />
+      )}
+    </Group>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### FilterInput
+
+| Property | Description | Type | Default |
+| --- | --- | --- | --- |
+| suggestions | Available filter suggestion list | `Suggestion[]` | `[]` |
+| filters | Current filter conditions (controlled) | `Record<string, any>` | `{}` |
+| placeholder | Input placeholder | `string` | - |
+| onChange | Filter condition change callback | `(filters: Record<string, any>) => void` | - |
+| onClear | Clear callback | `() => void` | - |
+| onInputChange | Input change callback (simple mode) | `(value: string) => void` | - |
+| simpleMode | Whether to use simple search mode | `boolean` | `false` |
+| initialKeyword | Initial keyword (simple mode) | `string` | - |
+| isMultiKeyword | Whether to support multiple keywords | `boolean` | - |
+| disabled | Whether disabled | `boolean` | `false` |
+| className | Custom class name | `string` | - |
+| style | Custom styles | `CSSProperties` | - |
+
+### Suggestion
+
+| Property | Description | Type | Default |
+| --- | --- | --- | --- |
+| key | Filter field key | `string` | **Required** |
+| label | Display label | `string` | **Required** |
+| options | Predefined option list | `Option[]` | - |
+| customLabel | Custom label content | `ReactNode` | - |
+| customDropdown | Custom dropdown content | `ReactNode` | - |
+
+### Option
+
+| Property | Description | Type | Default |
+| --- | --- | --- | --- |
+| key | Option value | `string` | **Required** |
+| label | Option label | `string` | **Required** |
+
+:::info
+
+**About the two modes**:
+
+- **Filter mode** (default): Support multiple filter conditions, displayed as tags, suitable for complex searches
+- **Simple mode** (`simpleMode={true}`): Regular search box, only supports keyword search
+- Mode determination logic (FilterInput.tsx line 64): `const initialValue = props.simpleMode ? props.initialKeyword : ''`
+
+**About component structure**:
+
+- Uses `Wrapper` to wrap entire component, including search icon, input area, and clear button (FilterInput.tsx lines 271-286)
+- Input area (`InputWrapper`) contains tags and input box (lines 281-284)
+- Search icon uses `Magnifier` component from `@kubed/icons` (line 280)
+- Clear icon uses `Close` component from `@kubed/icons` (line 285)
+
+**About state management**:
+
+- Component internally maintains multiple states (lines 65-69):
+  - `value`: Current input value
+  - `optionVisible`: Whether dropdown menu is visible
+  - `activeSuggestion`: Currently selected suggestion
+  - `tags`: Tag list of selected filter conditions
+  - `isFocused`: Whether input box is focused
+- Uses `useClickOutside` hook to handle clicking outside to close menu (lines 70-72)
+
+**About filter suggestions**:
+
+- `suggestions` define available filter fields
+- Users can select filter conditions from suggestions
+- Used filter conditions won't appear in suggestion list again
+- Filter logic (line 203): `suggestions.filter((sg) => !tags.some((tag) => tag.filter === sg.key))`
+
+**About option dropdown**:
+
+- Setting `options` property displays dropdown options when selecting that filter condition
+- Without `options`, users need to manually input value and press Enter to confirm
+- `customDropdown` can completely customize dropdown content
+- Dropdown content priority (lines 220-232): customDropdown > options > default menu
+- Dropdown uses `Dropdown` component, placement is `bottom-start` (line 258)
+
+**About tag display**:
+
+- Selected filter conditions displayed as tags in input box
+- Uses `Tag` component to display tags with close icon (lines 116-127)
+- Clicking tag close icon deletes that filter condition
+- Tag format is "label:value" (line 124): `{tag.filterLabel}:{tag.valueLabel}`
+- Tag generation logic in `getTags` function (lines 14-30)
+
+**About keyboard interaction**:
+
+- Press Enter key (keyCode === 13) to confirm input filter value (lines 150-163)
+- In simple mode, Enter directly triggers `onChange(value)`
+- In filter mode, Enter adds value to filter conditions
+- Click outside input box closes suggestion menu (via `useClickOutside`)
+- Supports clicking suggestion items for quick selection
+
+**About onChange callback**:
+
+- Filter mode: Parameter is `Record<string, any>` type filter condition object
+- Simple mode: Parameter is `string` type keyword
+- When clearing: Filter mode passes `{}`, simple mode passes `''` (lines 104-105)
+
+**About onInputChange callback**:
+
+- Only effective in simple mode (lines 143-144)
+- Triggered on every input change, while `onChange` only triggers on Enter
+- Used for real-time search scenarios
+
+**About disabled state**:
+
+- Controlled through CSS class `is-disabled` (line 276)
+- When disabled, component styles gray out, but source code doesn't prevent input
+
+**About CSS class names**:
+
+- Container class names: `has-value` (when has value), `is-focused` (when focused), `is-disabled` (when disabled)
+- Tag class name: `filter-tag`
+- Input box class name: `filter-input`
+- Menu class name: `suggestion-menu`
+- Menu item class name: `menu-item`
+- Icon class names: `icon-search`, `icon-clear`, `icon-close-tag`
+
+**About filters synchronization**:
+
+- Component internally maintains filters state, synchronized with props.filters (lines 75-81)
+- Uses `isEqual` comparison to avoid unnecessary updates
+
+:::
+
+## Usage Recommendations
+
+### Design Filter Conditions Appropriately
+
+Provide common and necessary filter conditions:
+
+```jsx
+// Recommended: Provide 3-6 most commonly used filter conditions
+const suggestions = [
+  { label: 'Name', key: 'name' },
+  { label: 'Status', key: 'status', options: statusOptions },
+  { label: 'Namespace', key: 'namespace', options: namespaceOptions },
+  { label: 'Label', key: 'label' },
+];
+
+// Not recommended: Too many filter conditions
+// 10+ filter conditions make it difficult for users to choose
+```
+
+### Prioritize Option Lists
+
+Use option lists for limited values:
+
+```jsx
+// Recommended: Use option list
+{
+  label: 'Status',
+  key: 'status',
+  options: [
+    { label: 'Running', key: 'Running' },
+    { label: 'Stopped', key: 'Stopped' },
+  ],
+}
+
+// Not recommended: Let users manually input fixed values
+{
+  label: 'Status',
+  key: 'status',
+  // Users might input incorrect values
+}
+```
+
+### Use Icons to Enhance Recognition
+
+Add icons to suggestion items:
+
+```jsx
+import { Pod, Service, ConfigMap } from '@kubed/icons';
+
+const suggestions = [
+  {
+    label: 'Pod',
+    key: 'pod',
+    customLabel: (
+      <Group spacing="xs">
+        <Pod size={14} />
+        <span>Pod Name</span>
+      </Group>
+    ),
+  },
+];
+```
+
+### Manage State with Controlled Mode
+
+Use controlled mode to manage filter state:
+
+```jsx
+const [filters, setFilters] = useState({});
+
+const handleChange = (newFilters) => {
+  setFilters(newFilters);
+  // Perform data filtering here
+  fetchData(newFilters);
+};
+
+<FilterInput
+  filters={filters}
+  suggestions={suggestions}
+  onChange={handleChange}
+/>;
+```
+
+### Use simpleMode for Simple Search
+
+Use simple mode when complex filtering is not needed:
+
+```jsx
+// Simple keyword search
+<FilterInput
+  simpleMode
+  placeholder="Search..."
+  onChange={(keyword) => search(keyword)}
+/>
+```
+
+### Custom Dropdown Content
+
+Use custom dropdown when special selectors are needed:
+
+```jsx
+const datePicker = (
+  <DatePicker onChange={(date) => setFilters({ ...filters, date })} />
+);
+
+const suggestions = [
+  {
+    label: 'Date',
+    key: 'date',
+    customDropdown: datePicker,
+  },
+];
+```
+
+### Provide Clear Functionality
+
+Allow users to quickly clear all filters:
+
+```jsx
+const handleClear = () => {
+  setFilters({});
+  // Reload data
+  fetchData();
+};
+
+<FilterInput
+  filters={filters}
+  onChange={setFilters}
+  onClear={handleClear}
+/>;
+```
+
+### Use with Data Filtering
+
+Apply filter conditions to data:
+
+```jsx
+const filteredData = data.filter((item) => {
+  if (filters.status && item.status !== filters.status) return false;
+  if (filters.namespace && item.namespace !== filters.namespace) return false;
+  if (filters.name && !item.name.includes(filters.name)) return false;
+  return true;
+});
+```
+
+### Save and Restore Filter State
+
+Save user filter preferences when needed:
+
+```jsx
+// Save to localStorage
+useEffect(() => {
+  localStorage.setItem('podFilters', JSON.stringify(filters));
+}, [filters]);
+
+// Restore from localStorage
+useEffect(() => {
+  const saved = localStorage.getItem('podFilters');
+  if (saved) {
+    setFilters(JSON.parse(saved));
+  }
+}, []);
+```
+
+### Display Filter Result Statistics
+
+Inform users of current filter results:
+
+```jsx
+<>
+  <FilterInput
+    filters={filters}
+    suggestions={suggestions}
+    onChange={setFilters}
+  />
+  <Text size="sm">
+    Found {filteredData.length} results
+  </Text>
+</>
+```

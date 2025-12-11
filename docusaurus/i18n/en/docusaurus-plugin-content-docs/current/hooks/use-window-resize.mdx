@@ -1,25 +1,337 @@
 ---
-sidebar_position: 1
+sidebar_position: 16
 ---
 
-# UseWindowResize
+# useWindowResize
 
-> Hook documentation is being migrated. Check back soon!
+A Hook for listening to window size changes.
 
-## Overview
+## Basic Usage
 
-`UseWindowResize` hook from Kube Design.
+```jsx live
+function Demo() {
+  const [size, setSize] = useState({ width: 0, height: 0 });
 
-## Usage
+  useWindowResize(() => {
+    setSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  });
 
-```tsx
-import { UseWindowResize } from '@kubed/hooks';
+  return (
+    <div>
+      <div
+        style={{
+          padding: '24px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          textAlign: 'center',
+        }}
+      >
+        <div style={{ fontSize: '48px', marginBottom: '16px' }}>📐</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+          <div
+            style={{
+              padding: '16px',
+              backgroundColor: 'var(--ifm-background-surface-color)',
+              borderRadius: '6px',
+            }}
+          >
+            <div style={{ fontSize: '32px', fontWeight: 'bold', color: 'var(--ifm-color-primary)' }}>
+              {size.width}
+            </div>
+            <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+              Width (px)
+            </div>
+          </div>
+          <div
+            style={{
+              padding: '16px',
+              backgroundColor: 'var(--ifm-background-surface-color)',
+              borderRadius: '6px',
+            }}
+          >
+            <div style={{ fontSize: '32px', fontWeight: 'bold', color: 'var(--ifm-color-primary)' }}>
+              {size.height}
+            </div>
+            <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+              Height (px)
+            </div>
+          </div>
+        </div>
+        <div style={{ marginTop: '12px', fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+          Resize browser window to see changes
+        </div>
+      </div>
+    </div>
+  );
+}
+```
 
-function Component() {
-  // Documentation coming soon
+## Responsive Layout
+
+Switch layout based on window size:
+
+```jsx live
+function Demo() {
+  const [layout, setLayout] = useState('desktop');
+
+  useWindowResize(() => {
+    const width = window.innerWidth;
+    if (width < 768) {
+      setLayout('mobile');
+    } else if (width < 1024) {
+      setLayout('tablet');
+    } else {
+      setLayout('desktop');
+    }
+  });
+
+  const layoutConfig = {
+    mobile: { icon: '📱', name: 'Mobile', color: 'var(--ifm-color-primary)' },
+    tablet: { icon: '📲', name: 'Tablet', color: 'var(--ifm-color-success)' },
+    desktop: { icon: '🖥️', name: 'Desktop', color: 'var(--ifm-color-info)' },
+  };
+
+  const config = layoutConfig[layout];
+
+  return (
+    <div
+      style={{
+        padding: '24px',
+        backgroundColor: 'var(--ifm-color-emphasis-100)',
+        borderRadius: '8px',
+        textAlign: 'center',
+      }}
+    >
+      <div style={{ fontSize: '64px', marginBottom: '12px' }}>{config.icon}</div>
+      <div style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px', color: config.color }}>
+        {config.name}
+      </div>
+      <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+        Current layout type
+      </div>
+    </div>
+  );
+}
+```
+
+## Auto-collapse Sidebar
+
+Automatically collapse sidebar on small screens:
+
+```jsx live
+function Demo() {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  useWindowResize(() => {
+    if (window.innerWidth < 1024) {
+      setSidebarOpen(false);
+    } else {
+      setSidebarOpen(true);
+    }
+  });
+
+  return (
+    <div>
+      <Button onClick={() => setSidebarOpen(!sidebarOpen)} style={{ marginBottom: '12px' }}>
+        {sidebarOpen ? 'Collapse' : 'Expand'} Sidebar
+      </Button>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: sidebarOpen ? '200px 1fr' : '1fr',
+          gap: '12px',
+          minHeight: '200px',
+        }}
+      >
+        {sidebarOpen && (
+          <div
+            style={{
+              padding: '16px',
+              backgroundColor: 'var(--ifm-color-emphasis-100)',
+              borderRadius: '8px',
+            }}
+          >
+            <div style={{ fontWeight: 'bold', marginBottom: '12px' }}>Sidebar</div>
+            <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+              Navigation menu items...
+            </div>
+          </div>
+        )}
+        <div
+          style={{
+            padding: '16px',
+            backgroundColor: 'var(--ifm-background-surface-color)',
+            border: '1px solid var(--ifm-color-emphasis-300)',
+            borderRadius: '8px',
+          }}
+        >
+          <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>Main Content Area</div>
+          <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+            Sidebar will auto-collapse when window width is less than 1024px
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## Calculate Grid Columns
+
+Dynamically adjust grid columns based on window width:
+
+```jsx live
+function Demo() {
+  const [columns, setColumns] = useState(4);
+
+  useWindowResize(() => {
+    const width = window.innerWidth;
+    if (width < 640) setColumns(1);
+    else if (width < 768) setColumns(2);
+    else if (width < 1024) setColumns(3);
+    else setColumns(4);
+  });
+
+  return (
+    <div>
+      <div
+        style={{
+          marginBottom: '12px',
+          padding: '12px',
+          backgroundColor: 'var(--ifm-color-primary-lightest)',
+          borderRadius: '6px',
+          textAlign: 'center',
+        }}
+      >
+        Current columns: <strong>{columns}</strong>
+      </div>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: `repeat(${columns}, 1fr)`,
+          gap: '12px',
+        }}
+      >
+        {Array.from({ length: 8 }, (_, i) => (
+          <div
+            key={i}
+            style={{
+              padding: '20px',
+              backgroundColor: 'var(--ifm-color-emphasis-100)',
+              borderRadius: '6px',
+              textAlign: 'center',
+            }}
+          >
+            {i + 1}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Parameters
+
+```ts
+function useWindowResize(
+  callback: () => void
+): void
+```
+
+| Parameter | Description | Type | Default |
+|------|------|------|--------|
+| callback | Callback function when window size changes | `() => void` | - |
+
+### Return Value
+
+No return value.
+
+## Features
+
+- **Auto Cleanup**: Automatically removes listener on component unmount
+- **Performance Optimized**: Internally debounced
+- **Type Safe**: Full TypeScript support
+
+## Difference from useWindowEvent
+
+| Feature | useWindowResize | useWindowEvent |
+|------|----------------|----------------|
+| Event Type | Resize only | Any window event |
+| Convenience | ✅ Specifically optimized | Need to specify event type |
+| Performance | Built-in debounce | Manual handling needed |
+
+```jsx
+// useWindowResize - Recommended for window size listening
+useWindowResize(() => {
+  console.log('resized');
+});
+
+// useWindowEvent - More general
+useWindowEvent('resize', () => {
+  console.log('resized');
+});
+```
+
+## Performance Optimization
+
+### Using Debounce
+
+While `useWindowResize` is already optimized internally, for complex calculations, combine with `useDebouncedValue`:
+
+```jsx
+function Demo() {
+  const [size, setSize] = useState({ width: 0, height: 0 });
+  const [debouncedSize] = useDebouncedValue(size, 300);
+
+  useWindowResize(() => {
+    setSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  });
+
+  // Use debouncedSize for complex calculations
+}
+```
+
+### Avoid Frequent Rendering
+
+Only update state when necessary:
+
+```jsx
+// ❌ Not recommended - Updates on every resize
+useWindowResize(() => {
+  setWidth(window.innerWidth);
+});
+
+// ✅ Recommended - Only update when crossing threshold
+useWindowResize(() => {
+  const width = window.innerWidth;
+  const newIsMobile = width < 768;
+  if (newIsMobile !== isMobile) {
+    setIsMobile(newIsMobile);
+  }
+});
+```
+
+## Usage Scenarios
+
+- **Responsive Layout**: Adjust layout based on screen size
+- **Sidebar Control**: Auto-collapse sidebar on small screens
+- **Grid System**: Dynamically adjust column count
+- **Chart Adaptation**: Recalculate chart dimensions
+- **Virtual Lists**: Update visible area size
+- **Tooltips**: Adjust tooltip position to avoid overflow
+
+## Notes
+
+- Callback function should be lightweight, avoid complex calculations
+- Consider using debounce to reduce unnecessary updates
+- Be mindful of performance when accessing DOM in callback
+- Don't perform excessive state updates in callback

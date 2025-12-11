@@ -333,5 +333,40 @@
   "theme.tags.tagsPageTitle": {
     "message": "标签",
     "description": "The title of the tag list page"
+  },
+  "homepage.getStarted": {
+    "message": "快速开始"
+  },
+  "homepage.title": {
+    "message": "首页",
+    "description": "The homepage title"
+  },
+  "homepage.description": {
+    "message": "为 KubeSphere 控制台构建的 React 组件库",
+    "description": "The homepage description"
+  },
+  "homepage.features.productionReady.title": {
+    "message": "50+ 生产就绪的组件"
+  },
+  "homepage.features.productionReady.description": {
+    "message": "一个包含 50 多个组件的综合性 React 组件库，在 KubeSphere 控制台中经过实战检验。从基础的 UI 元素到复杂的数据可视化组件。",
+    "description": "Description for production-ready components feature"
+  },
+  "homepage.features.cloudNative.title": {
+    "message": "为云原生而构建"
+  },
+  "homepage.features.cloudNative.description": {
+    "message": "专为 Kubernetes 和云原生应用程序设计。包含为 DevOps 工作流量身定制的 {logViewer}、{codeEditor} 和 {diffViewer} 等组件。",
+    "description": "Description for cloud native feature"
+  },
+  "homepage.features.typescript.title": {
+    "message": "TypeScript 和无障碍优先"
+  },
+  "homepage.features.typescript.description": {
+    "message": "完整的 TypeScript 支持和全面的类型定义。以无障碍为核心构建，遵循 WAI-ARIA 指南,确保您的应用程序适用于所有人。",
+    "description": "Description for TypeScript and accessibility feature"
+  },
+  "homepage.tagline": {
+    "message": "为 KubeSphere 控制台构建的 React 组件库"
   }
 }

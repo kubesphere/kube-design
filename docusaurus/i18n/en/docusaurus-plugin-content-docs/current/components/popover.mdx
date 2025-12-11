@@ -4,22 +4,985 @@ sidebar_position: 1
 
 # Popover
 
-> Component documentation is being migrated. Check back soon!
+Display floating content that provides more contextual information.
 
-## Overview
+## When to Use
 
-Popover component from Kube Design library.
+- Need to provide additional explanatory information for page elements
+- When the information content is relatively rich and needs structured presentation
+- Need to display additional operational options or quick actions
+- Need to display information on hover or click without leaving the current page
+
+The difference between Popover and Tooltip:
+
+- **Tooltip**: Simple text prompts, displayed on hover only, cannot contain complex content
+- **Popover**: Can display rich content, supports title, text, images, forms, etc., supports multiple trigger methods
+
+In Kube Design, the Popover component provides flexible floating card functionality:
+
+- **Multiple Trigger Modes**: Support mouseenter, click, focus, manual trigger
+- **12 Position Options**: Support display in 12 different directions
+- **Interactive Content**: Support user interaction with content (default enabled)
+- **Controlled Mode**: Support controlling display state through code
 
 ## Examples
 
 ### Basic Usage
 
+Most basic Popover usage.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  return (
+    <Popover title="Title" content="This is the popover content, can contain more information">
+      <Button>Hover me</Button>
+    </Popover>
+  );
+}
+```
+
+### Trigger Modes
+
+Popover supports multiple trigger modes.
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="md">
+      <Popover title="Hover Trigger" content="Mouse over to display popover" trigger="mouseenter">
+        <Button>Hover</Button>
+      </Popover>
+      <Popover title="Click Trigger" content="Click to display popover" trigger="click">
+        <Button>Click</Button>
+      </Popover>
+      <Popover title="Focus Trigger" content="Focus to display popover" trigger="focus">
+        <Button>Focus</Button>
+      </Popover>
+    </Group>
+  );
+}
+```
+
+### Positions
+
+Popover supports 12 different position options.
+
+```jsx live
+function Demo() {
+  const positions = [
+    ['top-start', 'top', 'top-end'],
+    ['left-start', 'left', 'left-end'],
+    ['right-start', 'right', 'right-end'],
+    ['bottom-start', 'bottom', 'bottom-end'],
+  ];
+
+  return (
+    <Group direction="column" spacing="xl">
+      {positions.map((row, i) => (
+        <Group key={i} spacing="md" style={{ justifyContent: 'center' }}>
+          {row.map((placement) => (
+            <Popover
+              key={placement}
+              title="Title"
+              content={`Placement: ${placement}`}
+              placement={placement}
+            >
+              <Button style={{ width: '120px' }}>{placement}</Button>
+            </Popover>
+          ))}
+        </Group>
+      ))}
+    </Group>
+  );
+}
+```
+
+### Custom Width
+
+Set Popover width through the `width` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="md">
+      <Popover
+        title="Default Width"
+        content="This popover uses the default width, automatically adapting to content width"
+      >
+        <Button>Default Width</Button>
+      </Popover>
+      <Popover
+        title="Custom Width"
+        content="This popover uses a custom width of 300px, suitable for longer content display"
+        width={300}
+      >
+        <Button>Width 300px</Button>
+      </Popover>
+      <Popover
+        title="Maximum Width"
+        content="This popover sets a maximum width. When content is shorter, it automatically adjusts width; when longer, it wraps with a maximum width of 400px"
+        maxWidth={400}
+      >
+        <Button>Max Width 400px</Button>
+      </Popover>
+    </Group>
+  );
+}
+```
+
+### Content Only
+
+Display content only without title.
+
+```jsx live
+function Demo() {
+  return (
+    <Popover content="This is pure content without title">
+      <Button>No Title</Button>
+    </Popover>
+  );
+}
+```
+
+### Complex Content
+
+Popover can contain complex content including text, lists, etc.
+
+```jsx live
+function Demo() {
+  const content = (
+    <div>
+      <Text variant="h6" style={{ marginBottom: '8px' }}>
+        Pod Information
+      </Text>
+      <Group direction="column" spacing="xs">
+        <Text size="sm">Name: nginx-deployment-123</Text>
+        <Text size="sm">Namespace: default</Text>
+        <Text size="sm">Status: Running</Text>
+        <Text size="sm">Restarts: 0</Text>
+      </Group>
+    </div>
+  );
+
+  return (
+    <Popover title="Details" content={content} width={300}>
+      <Button>View Pod Details</Button>
+    </Popover>
+  );
+}
+```
+
+### Content with Icons
+
+Add icons to content to enhance information expression.
+
+```jsx live
+function Demo() {
+  const { Cluster, Pod, Service } = KubedIcons;
+
+  const content = (
+    <Group direction="column" spacing="sm">
+      <Group spacing="xs">
+        <Cluster size={16} />
+        <Text size="sm">Cluster: production-1</Text>
+      </Group>
+      <Group spacing="xs">
+        <Pod size={16} />
+        <Text size="sm">Pods: 12 Running</Text>
+      </Group>
+      <Group spacing="xs">
+        <Service size={16} />
+        <Text size="sm">Services: 5 Active</Text>
+      </Group>
+    </Group>
+  );
+
+  return (
+    <Popover title="Cluster Status" content={content} width={250}>
+      <Button>Cluster Info</Button>
+    </Popover>
+  );
+}
+```
+
+### Controlled Mode
+
+Control Popover display state through `visible` and `onVisibleChange`.
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+
+  return (
+    <Group direction="column" spacing="md">
+      <Text>Popover is: {visible ? 'Visible' : 'Hidden'}</Text>
+      <Group spacing="xs">
+        <Button size="sm" onClick={() => setVisible(true)}>
+          Show
+        </Button>
+        <Button size="sm" variant="outline" onClick={() => setVisible(false)}>
+          Hide
+        </Button>
+        <Button size="sm" variant="text" onClick={() => setVisible(!visible)}>
+          Toggle
+        </Button>
+      </Group>
+      <Popover
+        title="Controlled Popover"
+        content="This popover is controlled through code"
+        visible={visible}
+        onVisibleChange={setVisible}
+        trigger="click"
+      >
+        <Button>Click Trigger</Button>
+      </Popover>
+    </Group>
+  );
+}
+```
+
+### Manual Control
+
+Manually control Popover display and hiding through ref.
+
+```jsx live
+function Demo() {
+  const popoverRef = React.useRef(null);
+
+  return (
+    <Group direction="column" spacing="md">
+      <Group spacing="xs">
+        <Button size="sm" onClick={() => popoverRef.current?.show()}>
+          Manual Show
+        </Button>
+        <Button size="sm" variant="outline" onClick={() => popoverRef.current?.hide()}>
+          Manual Hide
+        </Button>
+      </Group>
+      <Popover
+        title="Manual Control"
+        content="This popover is controlled through ref instance methods"
+        trigger="manual"
+        onMount={(instance) => {
+          popoverRef.current = instance;
+        }}
+      >
+        <Button>Target Element</Button>
+      </Popover>
+    </Group>
+  );
+}
+```
+
+### Delayed Display
+
+Control Popover display and hide delay through the `delay` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="md">
+      <Popover title="No Delay" content="Display immediately" delay={0}>
+        <Button>No Delay</Button>
+      </Popover>
+      <Popover title="Delay 500ms" content="Display after 500ms" delay={500}>
+        <Button>Delay 500ms</Button>
+      </Popover>
+      <Popover title="Delay 1s" content="Display after 1 second" delay={1000}>
+        <Button>Delay 1s</Button>
+      </Popover>
+    </Group>
+  );
+}
+```
+
+### Information Display
+
+Display additional explanatory information for page elements.
+
+```jsx live
+function Demo() {
+  const { Information } = KubedIcons;
+
+  const content = (
+    <div style={{ maxWidth: '300px' }}>
+      <Text size="sm">
+        Deployment is a Kubernetes resource that manages the lifecycle of Pods. It provides
+        declarative update strategies, supports rolling updates and rollback features, and ensures
+        application high availability.
+      </Text>
+    </div>
+  );
+
+  return (
+    <Group spacing="xs" align="center">
+      <Text>What is Deployment?</Text>
+      <Popover title="Deployment Explanation" content={content} placement="top">
+        <Information
+          size={16}
+          style={{ cursor: 'pointer', color: '#79879c' }}
+        />
+      </Popover>
+    </Group>
+  );
+}
+```
+
+### Quick Actions
+
+Display quick action options through Popover.
+
+```jsx live
+function Demo() {
+  const { More, Pen, Copy, Download, Trash } = KubedIcons;
+  const [action, setAction] = React.useState('');
+
+  const content = (
+    <Group direction="column" spacing="xs">
+      <Button
+        variant="text"
+        size="sm"
+        onClick={() => setAction('Edit')}
+        style={{ justifyContent: 'flex-start', width: '100%' }}
+      >
+        <Pen size={16} style={{ marginRight: '8px' }} />
+        Edit
+      </Button>
+      <Button
+        variant="text"
+        size="sm"
+        onClick={() => setAction('Copy')}
+        style={{ justifyContent: 'flex-start', width: '100%' }}
+      >
+        <Copy size={16} style={{ marginRight: '8px' }} />
+        Copy
+      </Button>
+      <Button
+        variant="text"
+        size="sm"
+        onClick={() => setAction('Download')}
+        style={{ justifyContent: 'flex-start', width: '100%' }}
+      >
+        <Download size={16} style={{ marginRight: '8px' }} />
+        Download
+      </Button>
+      <Divider style={{ margin: '4px 0' }} />
+      <Button
+        variant="text"
+        size="sm"
+        onClick={() => setAction('Delete')}
+        style={{ justifyContent: 'flex-start', width: '100%', color: '#ca2621' }}
+      >
+        <Trash size={16} style={{ marginRight: '8px' }} />
+        Delete
+      </Button>
+    </Group>
+  );
+
+  return (
+    <Group direction="column" spacing="md">
+      {action && <Text>You clicked: {action}</Text>}
+      <Popover content={content} trigger="click" placement="bottom-end">
+        <Button variant="text" style={{ padding: '4px 8px' }}>
+          <More size={20} />
+        </Button>
+      </Popover>
+    </Group>
+  );
+}
+```
+
+### Form Input
+
+Popover can contain form input.
+
+```jsx live
+function Demo() {
+  const [name, setName] = React.useState('');
+  const [visible, setVisible] = React.useState(false);
+
+  const content = (
+    <Group direction="column" spacing="md" style={{ width: '280px' }}>
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          Resource Name:
+        </Text>
+        <Input
+          placeholder="Please enter resource name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </div>
+      <Group spacing="xs" style={{ justifyContent: 'flex-end' }}>
+        <Button size="sm" variant="outline" onClick={() => setVisible(false)}>
+          Cancel
+        </Button>
+        <Button
+          size="sm"
+          onClick={() => {
+            alert(`Created: ${name}`);
+            setVisible(false);
+            setName('');
+          }}
+        >
+          Confirm
+        </Button>
+      </Group>
+    </Group>
+  );
+
+  return (
+    <Popover
+      title="Create Resource"
+      content={content}
+      trigger="click"
+      visible={visible}
+      onVisibleChange={setVisible}
+    >
+      <Button>Quick Create</Button>
+    </Popover>
+  );
+}
+```
+
+### List Information Display
+
+Display list information in Popover.
+
+```jsx live
+function Demo() {
+  const pods = [
+    { name: 'nginx-1', status: 'Running' },
+    { name: 'nginx-2', status: 'Running' },
+    { name: 'nginx-3', status: 'Pending' },
+  ];
+
+  const content = (
+    <Group direction="column" spacing="xs" style={{ width: '250px' }}>
+      {pods.map((pod) => (
+        <div
+          key={pod.name}
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            padding: '6px 8px',
+            backgroundColor: '#f5f7fa',
+            borderRadius: '4px',
+          }}
+        >
+          <Text size="sm">{pod.name}</Text>
+          <Badge
+            variant="dot"
+            color={pod.status === 'Running' ? 'success' : 'warning'}
+            size="sm"
+          >
+            {pod.status}
+          </Badge>
+        </div>
+      ))}
+    </Group>
+  );
+
+  return (
+    <Popover title="Pod List" content={content} placement="bottom">
+      <Button>View Pods (3)</Button>
+    </Popover>
+  );
+}
+```
+
+### Status Details Display
+
+Display detailed status information through Popover.
+
+```jsx live
+function Demo() {
+  const { Cluster } = KubedIcons;
+
+  const content = (
+    <div style={{ width: '320px' }}>
+      <Group direction="column" spacing="md">
+        <div>
+          <Text size="sm" color="secondary" style={{ marginBottom: '4px' }}>
+            Cluster Name
+          </Text>
+          <Text>production-cluster-1</Text>
+        </div>
+        <div>
+          <Text size="sm" color="secondary" style={{ marginBottom: '4px' }}>
+            Kubernetes Version
+          </Text>
+          <Text>v1.24.3</Text>
+        </div>
+        <div>
+          <Text size="sm" color="secondary" style={{ marginBottom: '4px' }}>
+            Node Count
+          </Text>
+          <Group spacing="xs">
+            <Badge color="success">Ready: 5</Badge>
+            <Badge color="warning">NotReady: 1</Badge>
+          </Group>
+        </div>
+        <div>
+          <Text size="sm" color="secondary" style={{ marginBottom: '4px' }}>
+            Resource Usage
+          </Text>
+          <div style={{ marginTop: '8px' }}>
+            <div style={{ marginBottom: '8px' }}>
+              <Group style={{ marginBottom: '4px', justifyContent: 'space-between' }}>
+                <Text size="xs">CPU</Text>
+                <Text size="xs">45%</Text>
+              </Group>
+              <Progress value={45} color="#55bc8a" size="sm" />
+            </div>
+            <div>
+              <Group style={{ marginBottom: '4px', justifyContent: 'space-between' }}>
+                <Text size="xs">Memory</Text>
+                <Text size="xs">72%</Text>
+              </Group>
+              <Progress value={72} color="#f5a623" size="sm" />
+            </div>
+          </div>
+        </div>
+      </Group>
+    </div>
+  );
+
+  return (
+    <Popover title="Cluster Status" content={content} trigger="click" placement="bottom-start">
+      <Button>
+        <Cluster size={16} style={{ marginRight: '8px' }} />
+        Cluster Details
+      </Button>
+    </Popover>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Popover
+
+Popover inherits all Tooltip properties and adds the following properties:
+
+| Property        | Description                                  | Type                                                                                                      | Default       |
+| --------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ------------- |
+| title           | Popover title                                | `ReactNode`                                                                                               | -             |
+| content         | Popover content                              | `ReactNode`                                                                                               | **Required**  |
+| width           | Popover width                                | `number`                                                                                                  | -             |
+| maxWidth        | Popover maximum width                        | `number`                                                                                                  | -             |
+| placement       | Popover position                             | `Placement`                                                                                               | `'top'`       |
+| trigger         | Trigger mode                                 | `'mouseenter' \| 'click' \| 'focus' \| 'manual'`                                                          | `'mouseenter'`|
+| visible         | Whether visible (controlled mode)            | `boolean`                                                                                                 | -             |
+| onVisibleChange | Callback when visibility changes             | `(visible: boolean) => void`                                                                              | -             |
+| interactive     | Whether content is interactive               | `boolean`                                                                                                 | `true`        |
+| delay           | Display delay (milliseconds)                 | `number \| [number, number]`                                                                              | `0`           |
+| offset          | Popover offset [horizontal, vertical]        | `[number, number]`                                                                                        | `[0, 4]`      |
+| duration        | Animation duration (milliseconds)            | `number \| [number, number]`                                                                              | `[250, 200]`  |
+| hideOnClick     | Whether to hide on click                     | `boolean \| 'toggle'`                                                                                     | `true`        |
+| disabled        | Whether disabled                             | `boolean`                                                                                                 | `false`       |
+| onMount         | Callback when Popover instance is created    | `(instance: PopoverInstance) => void`                                                                     | -             |
+| className       | Custom class name                            | `string`                                                                                                  | -             |
+| style           | Custom styles                                | `CSSProperties`                                                                                           | -             |
+| children        | Trigger element                              | `ReactElement`                                                                                            | **Required**  |
+
+### PopoverInstance
+
+Instance object obtained through the `onMount` callback, providing the following methods:
+
+| Method      | Description                      | Type                                    |
+| ----------- | -------------------------------- | --------------------------------------- |
+| show()      | Show Popover                     | `() => void`                            |
+| hide()      | Hide Popover                     | `() => void`                            |
+| setProps()  | Dynamically update Popover props | `(props: Partial<PopoverProps>) => void`|
+| destroy()   | Destroy Popover instance         | `() => void`                            |
+
+### Placement
+
+Popover supports the following 12 position options:
+
+| Value          | Description              |
+| -------------- | ------------------------ |
+| `top`          | Top center               |
+| `top-start`    | Top left                 |
+| `top-end`      | Top right                |
+| `bottom`       | Bottom center            |
+| `bottom-start` | Bottom left              |
+| `bottom-end`   | Bottom right             |
+| `left`         | Left center              |
+| `left-start`   | Left top                 |
+| `left-end`     | Left bottom              |
+| `right`        | Right center             |
+| `right-start`  | Right top                |
+| `right-end`    | Right bottom             |
+
+Additionally supports `auto` and `auto-start`, `auto-end` for automatic position calculation.
+
+:::info
+
+**About Popover vs Tooltip**:
+
+- Popover inherits all Tooltip functionality
+- Main differences:
+  - Popover supports `title` property for structured content
+  - Popover default `interactive={true}`, allowing interaction with content
+  - Popover typically displays richer content (lists, forms, etc.)
+  - Tooltip is more suitable for simple text prompts
+
+**About width settings**:
+
+- `width`: Fixed width, content wraps beyond this width
+- `maxWidth`: Maximum width, content wraps beyond this width, narrower content automatically adjusts width
+- When both are not set, Popover automatically adapts to content width
+- Recommend setting appropriate width based on content to avoid too wide or too narrow
+
+**About trigger modes**:
+
+- `mouseenter`: Display on hover, hide on mouse leave (default)
+- `click`: Display on click, click again or click outside to hide
+- `focus`: Display on element focus, hide on blur
+- `manual`: Fully manually controlled, requires using `visible` property or instance methods
+
+**About interactivity**:
+
+- `interactive={true}` (default): Users can interact with Popover content (click buttons, input text, etc.)
+- `interactive={false}`: Popover hides when mouse leaves trigger element
+- When content contains clickable elements (buttons, links, etc.), must keep `interactive={true}`
+
+**About delay**:
+
+- Single number: Both show and hide delay are this value
+- Array `[showDelay, hideDelay]`: Separately control show and hide delay
+- Unit is milliseconds
+- Setting appropriate delay can avoid frequent display/hiding
+
+**About offset**:
+
+- Format: `[horizontal, vertical]`
+- Horizontal offset: Positive moves right, negative moves left
+- Vertical offset: Positive moves down, negative moves up
+- Default `[0, 4]` means 4px spacing from trigger element
+
+**About animation**:
+
+- `duration`: Control animation duration, can be single number or array
+- Single number: Both show and hide animations use this duration
+- Array `[showDuration, hideDuration]`: Separately control show and hide animation duration
+- Default `[250, 200]` means 250ms show, 200ms hide
+
+**About hide behavior**:
+
+- `hideOnClick={true}`: Hide Popover when clicking trigger element
+- `hideOnClick={false}`: Click trigger element won't hide Popover
+- `hideOnClick='toggle'`: Click trigger element toggles Popover show/hide state
+- Click outside Popover always hides (when `trigger` is not `manual`)
+
+:::
+
+## Usage Recommendations
+
+### Popover vs Tooltip Selection
+
+Choose appropriate component based on content complexity:
+
+```jsx
+// Simple text prompt: use Tooltip
+<Tooltip content="Click to create new resource">
+  <Button>Create</Button>
+</Tooltip>
+
+// Rich content: use Popover
+<Popover
+  title="Create Resource"
+  content={
+    <div>
+      <Text>Select resource type:</Text>
+      <Button>Deployment</Button>
+      <Button>Service</Button>
+    </div>
+  }
+>
+  <Button>Create</Button>
+</Popover>
+```
+
+### Set Appropriate Width
+
+Set appropriate width based on content:
+
+```jsx
+// Short content: no need to set width, auto adapt
+<Popover content="Simple prompt">
+  <Button>Hover</Button>
+</Popover>
+
+// Long content: set fixed width
+<Popover
+  content="This is a long content description that needs to wrap to display well"
+  width={300}
+>
+  <Button>Details</Button>
+</Popover>
+
+// Variable content: set max width
+<Popover
+  content={dynamicContent}
+  maxWidth={400}
+>
+  <Button>View</Button>
+</Popover>
+```
+
+### Choose Appropriate Trigger Mode
+
+Choose trigger mode based on scenario:
+
+```jsx
+// Information display: use hover trigger
+<Popover title="Help" content="..." trigger="mouseenter">
+  <HelpIcon />
+</Popover>
+
+// Operations and forms: use click trigger
+<Popover title="Quick Create" content={<CreateForm />} trigger="click">
+  <Button>Create</Button>
+</Popover>
+
+// Input assistance: use focus trigger
+<Popover title="Format Requirements" content="..." trigger="focus">
+  <Input placeholder="Enter" />
+</Popover>
+```
+
+### Use Controlled Mode
+
+Use controlled mode when need to control display state:
+
+```jsx
+const [visible, setVisible] = useState(false);
+
+// External control display
+<div>
+  <Button onClick={() => setVisible(true)}>Show Details</Button>
+  <Popover
+    content="Detailed information"
+    visible={visible}
+    onVisibleChange={setVisible}
+  >
+    <div>Target Element</div>
+  </Popover>
+</div>
+```
+
+### Manual Control via ref
+
+Use ref for more flexible control:
+
+```jsx
+const popoverRef = useRef(null);
+
+const handleAction = () => {
+  // Show Popover when certain operation completes
+  popoverRef.current?.show();
+
+  // Hide after 2 seconds
+  setTimeout(() => {
+    popoverRef.current?.hide();
+  }, 2000);
+};
+
+<Popover
+  content="Operation successful"
+  trigger="manual"
+  onMount={(instance) => {
+    popoverRef.current = instance;
+  }}
+>
+  <Button onClick={handleAction}>Execute</Button>
+</Popover>
+```
+
+### Set Appropriate Delay
+
+Set delay to optimize user experience:
+
+```jsx
+// Information icon: set slight delay to avoid accidental triggers
+<Popover content="Help information" delay={300}>
+  <InfoIcon />
+</Popover>
+
+// Important prompt: no delay, display immediately
+<Popover content="Important notification" delay={0}>
+  <WarningIcon />
+</Popover>
+
+// Different show/hide delays
+<Popover content="Content" delay={[500, 0]}>
+  <Button>Hover</Button>
+</Popover>
+```
+
+### Position Selection
+
+Choose appropriate position based on element location:
+
+```jsx
+// Top area element: display below
+<Popover placement="bottom" content="...">
+  <Button>Top Button</Button>
+</Popover>
+
+// Bottom area element: display above
+<Popover placement="top" content="...">
+  <Button>Bottom Button</Button>
+</Popover>
+
+// Right area element: display on left
+<Popover placement="left" content="...">
+  <Button>Right Button</Button>
+</Popover>
+
+// Auto position: let component choose best position
+<Popover placement="auto" content="...">
+  <Button>Auto Position</Button>
+</Popover>
+```
+
+### Interactive Content Considerations
+
+Keep `interactive={true}` when content contains interactive elements:
+
+```jsx
+// Content contains buttons, links, etc.
+<Popover
+  interactive={true}  // Default is true
+  content={
+    <div>
+      <Button onClick={handleEdit}>Edit</Button>
+      <Button onClick={handleDelete}>Delete</Button>
+    </div>
+  }
+>
+  <Button>Actions</Button>
+</Popover>
+```
+
+### Use Title for Structured Content
+
+Add title for clear structure:
+
+```jsx
+// With title: clear structure
+<Popover
+  title="Pod Status"
+  content={
+    <div>
+      <Text>Running: 10</Text>
+      <Text>Pending: 2</Text>
+    </div>
+  }
+>
+  <Button>View Status</Button>
+</Popover>
+
+// Pure information: no need for title
+<Popover content="Click to view details">
+  <InfoIcon />
+</Popover>
+```
+
+### Form Input Best Practices
+
+Best practices when Popover contains forms:
+
+```jsx
+const [visible, setVisible] = useState(false);
+const [formData, setFormData] = useState({});
+
+<Popover
+  title="Quick Edit"
+  trigger="click"
+  visible={visible}
+  onVisibleChange={setVisible}
+  content={
+    <Form
+      onSubmit={(data) => {
+        handleSubmit(data);
+        setVisible(false);  // Hide after submit
+      }}
+    >
+      <Input name="name" />
+      <Button type="submit">Confirm</Button>
+      <Button onClick={() => setVisible(false)}>Cancel</Button>
+    </Form>
+  }
+>
+  <Button>Edit</Button>
+</Popover>
+```
+
+### Accessibility Considerations
+
+Ensure Popover is keyboard accessible:
+
+```jsx
+// Use button as trigger element, supports keyboard navigation
+<Popover content="Help information" trigger="focus">
+  <Button>Help</Button>
+</Popover>
+
+// For non-interactive elements, add appropriate ARIA attributes
+<Popover content="Explanation">
+  <span role="button" tabIndex={0}>
+    Explainable Text
+  </span>
+</Popover>
+```
+
+### Avoid Nested Popovers
+
+Avoid nesting Popovers as it affects user experience:
+
+```jsx
+// Not recommended: nested Popovers
+<Popover content="Outer">
+  <Popover content="Inner">
+    <Button>Button</Button>
+  </Popover>
+</Popover>
+
+// Recommended: flat structure
+<div>
+  <Popover content="Info 1">
+    <Button>Button 1</Button>
+  </Popover>
+  <Popover content="Info 2">
+    <Button>Button 2</Button>
+  </Popover>
+</div>
+```
+
+### Mobile Responsiveness
+
+Consider mobile device experience:
+
+```jsx
+// Mobile: use click trigger
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+<Popover
+  trigger={isMobile ? 'click' : 'mouseenter'}
+  content="..."
+>
+  <Button>View</Button>
+</Popover>
+
+// Mobile: set appropriate width
+<Popover
+  width={isMobile ? 280 : 400}
+  content="..."
+>
+  <Button>Details</Button>
+</Popover>
+```

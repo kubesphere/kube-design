@@ -1,25 +1,293 @@
 ---
-sidebar_position: 1
+sidebar_position: 7
 ---
 
-# UseLocalStorage
+# useLocalStorage
 
-> Hook 文档正在迁移中，敬请期待！
+管理 localStorage 的 Hook，提供类型安全的本地存储操作，并支持跨标签页同步。
 
-## 概述
+## 基本用法
 
-来自 Kube Design 的 `UseLocalStorage` hook。
+```jsx live
+function Demo() {
+  const [value, setValue] = useLocalStorage({ key: 'demo-value', defaultValue: '' });
 
-## 使用方法
+  return (
+    <div>
+      <Input
+        placeholder="输入内容（会自动保存）"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <div style={{ marginTop: '12px', fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+        当前存储的值: {value || '(空)'}
+      </div>
+      <Button
+        onClick={() => setValue('')}
+        size="small"
+        style={{ marginTop: '12px' }}
+      >
+        清空
+      </Button>
+    </div>
+  );
+}
+```
 
-```tsx
-import { UseLocalStorage } from '@kubed/hooks';
+## 主题持久化
 
-function Component() {
-  // Documentation coming soon
+保存用户的主题选择：
+
+```jsx live
+function Demo() {
+  const [theme, setTheme] = useLocalStorage({ 
+    key: 'app-theme', 
+    defaultValue: 'light' 
+  });
+
+  return (
+    <div>
+      <Group spacing="md">
+        <Button 
+          onClick={() => setTheme('light')}
+          variant={theme === 'light' ? 'filled' : 'outline'}
+        >
+          ☀️ 亮色
+        </Button>
+        <Button 
+          onClick={() => setTheme('dark')}
+          variant={theme === 'dark' ? 'filled' : 'outline'}
+        >
+          🌙 暗色
+        </Button>
+        <Button 
+          onClick={() => setTheme('auto')}
+          variant={theme === 'auto' ? 'filled' : 'outline'}
+        >
+          🔄 自动
+        </Button>
+      </Group>
+      <div
+        style={{
+          marginTop: '20px',
+          padding: '24px',
+          backgroundColor: 
+            theme === 'dark' ? '#1a1a1a' : 
+            theme === 'light' ? '#ffffff' : 
+            'var(--ifm-background-surface-color)',
+          color: 
+            theme === 'dark' ? '#ffffff' : 
+            theme === 'light' ? '#000000' : 
+            'var(--ifm-font-color-base)',
+          border: '1px solid var(--ifm-color-emphasis-300)',
+          borderRadius: '8px',
+          transition: 'all 0.3s',
+        }}
+      >
+        <h4>当前主题: {theme}</h4>
+        <p>刷新页面后主题会保持不变</p>
+      </div>
+    </div>
+  );
+}
+```
+
+## 用户偏好设置
+
+保存复杂的用户配置：
+
+```jsx live
+function Demo() {
+  const [fontSize, setFontSize] = useLocalStorage({ 
+    key: 'font-size', 
+    defaultValue: '16' 
+  });
+  const [notifications, setNotifications] = useLocalStorage({ 
+    key: 'notifications', 
+    defaultValue: 'true' 
+  });
+
+  return (
+    <div>
+      <div style={{ marginBottom: '20px' }}>
+        <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
+          字体大小
+        </label>
+        <Group spacing="sm">
+          {['14', '16', '18', '20'].map((size) => (
+            <Button
+              key={size}
+              size="small"
+              variant={fontSize === size ? 'filled' : 'outline'}
+              onClick={() => setFontSize(size)}
+            >
+              {size}px
+            </Button>
+          ))}
+        </Group>
+      </div>
+      
+      <div style={{ marginBottom: '20px' }}>
+        <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+          <input
+            type="checkbox"
+            checked={notifications === 'true'}
+            onChange={(e) => setNotifications(e.target.checked ? 'true' : 'false')}
+            style={{ marginRight: '8px' }}
+          />
+          <span>启用通知</span>
+        </label>
+      </div>
+
+      <div
+        style={{
+          padding: '20px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          fontSize: `${fontSize}px`,
+        }}
+      >
+        <h4 style={{ margin: '0 0 12px 0' }}>预览区域</h4>
+        <p style={{ margin: 0 }}>
+          字体大小: {fontSize}px {notifications === 'true' && '· 通知已启用 🔔'}
+        </p>
+      </div>
+    </div>
+  );
+}
+```
+
+## 表单草稿自动保存
+
+自动保存表单输入：
+
+```jsx live
+function Demo() {
+  const [title, setTitle] = useLocalStorage({ key: 'draft-title', defaultValue: '' });
+  const [content, setContent] = useLocalStorage({ key: 'draft-content', defaultValue: '' });
+
+  const handleClear = () => {
+    setTitle('');
+    setContent('');
+  };
+
+  return (
+    <div>
+      <div style={{ marginBottom: '12px' }}>
+        <Input
+          placeholder="标题"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+      </div>
+      <div style={{ marginBottom: '12px' }}>
+        <Textarea
+          placeholder="内容（自动保存草稿）"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          rows={4}
+        />
+      </div>
+      <Group spacing="md">
+        <Button onClick={handleClear} variant="outline">
+          清空草稿
+        </Button>
+      </Group>
+      {(title || content) && (
+        <div
+          style={{
+            marginTop: '16px',
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-success-lightest)',
+            borderRadius: '6px',
+            fontSize: '14px',
+          }}
+        >
+          ✓ 草稿已自动保存到本地
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## 函数式更新
+
+支持基于当前值的更新：
+
+```jsx live
+function Demo() {
+  const [count, setCount] = useLocalStorage({ key: 'counter', defaultValue: '0' });
+
+  const increment = () => setCount((prev) => String(Number(prev) + 1));
+  const decrement = () => setCount((prev) => String(Number(prev) - 1));
+  const reset = () => setCount('0');
+
+  return (
+    <div style={{ textAlign: 'center' }}>
+      <div
+        style={{
+          fontSize: '48px',
+          fontWeight: 'bold',
+          marginBottom: '20px',
+          color: 'var(--ifm-color-primary)',
+        }}
+      >
+        {count}
+      </div>
+      <Group spacing="md">
+        <Button onClick={decrement}>-</Button>
+        <Button onClick={increment}>+</Button>
+        <Button onClick={reset} variant="outline">重置</Button>
+      </Group>
+      <p style={{ marginTop: '16px', fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+        计数会保存到 localStorage
+      </p>
+    </div>
+  );
 }
 ```
 
 ## API
 
-文档编写中。
+### 参数
+
+```ts
+function useLocalStorage<T extends string>({
+  key,
+  defaultValue,
+}: {
+  key: string;
+  defaultValue?: T;
+}): [T, (val: T | ((prevState: T) => T)) => void]
+```
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| key | localStorage 的键名 | `string` | - |
+| defaultValue | 默认值 | `T` | `undefined` |
+
+### 返回值
+
+返回一个数组，用法类似 `useState`：
+
+| 索引 | 说明 | 类型 |
+|------|------|------|
+| [0] | 当前值 | `T` |
+| [1] | 更新函数 | `(val: T \| ((prevState: T) => T)) => void` |
+
+## 特性
+
+- **类型安全**: 提供 TypeScript 类型支持
+- **跨标签页同步**: 自动同步多个标签页的值
+- **SSR 友好**: 安全处理服务端渲染场景
+- **默认值**: 支持设置默认值
+- **函数式更新**: 支持基于当前值的更新
+
+## 使用场景
+
+- **用户偏好**: 保存主题、语言等用户设置
+- **表单草稿**: 自动保存表单输入
+- **购物车**: 持久化购物车数据
+- **浏览历史**: 记录用户浏览历史
+- **临时数据**: 存储不需要同步到服务器的临时数据

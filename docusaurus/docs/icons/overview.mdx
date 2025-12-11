@@ -4,118 +4,53 @@ sidebar_position: 1
 
 # 图标
 
-Kube Design 提供了一个全面的图标库，包含多种样式和变体。
+Kube Design 提供了一个全面的图标库，包含数百个跨越多个类别的图标，支持多种样式和变体。
 
-## 安装
+## 可用图标
 
-图标包含在 `@kubed/icons` 包中：
+图标库包含数百个图标，按类别分组。点击任意图标可复制其名称。
 
-```bash
-npm install @kubed/icons
-# or
-yarn add @kubed/icons
-# or
-pnpm add @kubed/icons
-```
+import IconGallery from '@site/src/components/IconGallery';
+
+<IconGallery />
 
 ## 使用方法
-
-### 基本用法
-
-直接导入和使用图标：
-
-```jsx
-import { User, Settings, Download, Upload } from '@kubed/icons';
-
-function Demo() {
-  return (
-    <div>
-      <User />
-      <Settings />
-      <Download />
-      <Upload />
-    </div>
-  );
-}
-```
 
 ### 图标大小
 
 使用 `size` 属性控制图标大小：
 
-```jsx
-import { User } from '@kubed/icons';
-
+```jsx live
 function Demo() {
+  const { AddDuotone } = KubedIcons;
   return (
-    <div>
-      <User size={16} />
-      <User size={24} />
-      <User size={32} />
-      <User size={48} />
-    </div>
+    <Group spacing="lg">
+      <AddDuotone size={16} />
+      <AddDuotone size={24} />
+      <AddDuotone size={32} />
+      <AddDuotone size={48} />
+    </Group>
   );
 }
 ```
 
 ### 图标颜色
 
-图标继承其父元素的颜色：
+图标继承当前的文本颜色，你可以通过 CSS 或内联样式来控制颜色：
 
-```jsx
-import { User } from '@kubed/icons';
-
+```jsx live
 function Demo() {
+  const { AddDuotone } = KubedIcons;
   return (
-    <div>
-      <div style={{ color: 'red' }}>
-        <User size={24} />
-      </div>
-      <div style={{ color: 'blue' }}>
-        <User size={24} />
-      </div>
-      <div style={{ color: 'green' }}>
-        <User size={24} />
-      </div>
-    </div>
+    <Group spacing="md">
+      <AddDuotone size={32} style={{ color: '#55bc8a' }} />
+      <AddDuotone size={32} style={{ color: '#329dce' }} />
+      <AddDuotone size={32} style={{ color: '#f5a623' }} />
+      <AddDuotone size={32} style={{ color: '#ca2621' }} />
+    </Group>
   );
 }
 ```
-
-### 与组件一起使用
-
-将图标与 Kube Design 组件一起使用：
-
-```jsx
-import { Button } from '@kubed/components';
-import { Download, Upload, Settings } from '@kubed/icons';
-
-function Demo() {
-  return (
-    <div>
-      <Button leftIcon={<Download size={16} />}>
-        Download
-      </Button>
-      <Button leftIcon={<Upload size={16} />}>
-        Upload
-      </Button>
-      <Button leftIcon={<Settings size={16} />}>
-        Settings
-      </Button>
-    </div>
-  );
-}
-```
-
-## 可用图标
-
-图标库包含数百个跨越多个类别的图标：
-
-- **UI 图标**：常见的界面元素（箭头、复选框等）
-- **文件图标**：文件类型指示器
-- **社交图标**：社交媒体平台
-- **品牌图标**：流行的品牌标志
-- **操作图标**：用户操作（下载、上传、删除等）
 
 ## 图标变体
 
@@ -131,49 +66,9 @@ function Demo() {
 
 所有图标接受以下属性：
 
-| Property | Description | Type | Default |
-|----------|-------------|------|---------|
-| size | 图标大小（像素） | `number \| string` | `24` |
-| color | 图标颜色 | `string` | 继承 |
-| className | CSS 类名 | `string` | - |
-| style | 内联样式 | `CSSProperties` | - |
-
-## 示例
-
-### 图标网格
-
-```jsx
-import { 
-  User, Settings, Download, Upload, 
-  Delete, Edit, Search, Filter,
-  Home, File, Folder, Star
-} from '@kubed/icons';
-
-function IconGrid() {
-  const icons = [
-    { Icon: User, name: 'User' },
-    { Icon: Settings, name: 'Settings' },
-    { Icon: Download, name: 'Download' },
-    { Icon: Upload, name: 'Upload' },
-    { Icon: Delete, name: 'Delete' },
-    { Icon: Edit, name: 'Edit' },
-    { Icon: Search, name: 'Search' },
-    { Icon: Filter, name: 'Filter' },
-    { Icon: Home, name: 'Home' },
-    { Icon: File, name: 'File' },
-    { Icon: Folder, name: 'Folder' },
-    { Icon: Star, name: 'Star' },
-  ];
-
-  return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
-      {icons.map(({ Icon, name }) => (
-        <div key={name} style={{ textAlign: 'center' }}>
-          <Icon size={32} />
-          <p>{name}</p>
-        </div>
-      ))}
-    </div>
-  );
-}
-```
+| Property  | Description            | Type               | Default          |
+| --------- | ---------------------- | ------------------ | ---------------- |
+| size      | 图标大小（像素）       | `number \| string` | `16`             |
+| color     | 图标颜色（CSS 颜色值） | `string`           | `'currentColor'` |
+| className | 额外的 CSS 类          | `string`           | -                |
+| style     | 内联样式               | `CSSProperties`    | -                |

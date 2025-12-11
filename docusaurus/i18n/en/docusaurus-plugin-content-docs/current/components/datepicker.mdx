@@ -2,24 +2,535 @@
 sidebar_position: 1
 ---
 
-# Datepicker
+# DatePicker
 
-> Component documentation is being migrated. Check back soon!
+A component for selecting dates or date ranges.
 
-## Overview
+## When to Use
 
-Datepicker component from Kube Design library.
+- Need users to input a date
+- Need users to select a date range
+- Need to select both date and time simultaneously
+- Suitable for date input scenarios in forms
 
 ## Examples
 
 ### Basic Usage
 
+The simplest usage, get the selected date through `onChange`.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  const [value, setValue] = React.useState(null);
+
+  const handleChange = (date, dateString) => {
+    setValue(date);
+  };
+
+  return (
+    <div>
+      <DatePicker onChange={handleChange} style={{ width: 300 }} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        Selected date: {value ? value.format('YYYY-MM-DD') : 'Not selected'}
+      </div>
+    </div>
+  );
+}
+```
+
+### Controlled Component
+
+Control the value of the date picker through the `value` property.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  const setToday = () => setValue(dayjs());
+  const setTomorrow = () => setValue(dayjs().add(1, 'day'));
+  const setNextWeek = () => setValue(dayjs().add(7, 'day'));
+
+  return (
+    <div>
+      <DatePicker value={value} onChange={setValue} style={{ width: 300 }} />
+      <Group style={{ marginTop: '16px' }}>
+        <Button onClick={setToday}>Today</Button>
+        <Button onClick={setTomorrow}>Tomorrow</Button>
+        <Button onClick={setNextWeek}>Next Week</Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+### Date Format
+
+Customize the date display format through the `format` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <DatePicker format="YYYY-MM-DD" placeholder="YYYY-MM-DD" style={{ width: 300 }} />
+      <DatePicker format="YYYY/MM/DD" placeholder="YYYY/MM/DD" style={{ width: 300 }} />
+      <DatePicker format="DD-MM-YYYY" placeholder="DD-MM-YYYY" style={{ width: 300 }} />
+      <DatePicker format="YYYY年MM月DD日" placeholder="YYYY年MM月DD日" style={{ width: 300 }} />
+    </Group>
+  );
+}
+```
+
+### Date Time Selection
+
+Enable time selection functionality through the `showTime` property.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  return (
+    <div>
+      <DatePicker
+        showTime
+        format="YYYY-MM-DD HH:mm:ss"
+        placeholder="Select date time"
+        onChange={setValue}
+        style={{ width: 300 }}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        Selected time: {value ? value.format('YYYY-MM-DD HH:mm:ss') : 'Not selected'}
+      </div>
+    </div>
+  );
+}
+```
+
+### Disabled State
+
+Disable the date picker through the `disabled` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <DatePicker disabled placeholder="Disabled state" style={{ width: 300 }} />
+      <DatePicker disabled defaultValue={dayjs()} style={{ width: 300 }} />
+    </Group>
+  );
+}
+```
+
+### Disabled Dates
+
+Disable specific dates through the `disabledDate` function.
+
+```jsx live
+function Demo() {
+  // Disable dates before today
+  const disabledDate = (current) => {
+    return current && current < dayjs().startOf('day');
+  };
+
+  return (
+    <div>
+      <DatePicker
+        disabledDate={disabledDate}
+        placeholder="Can only select today and future dates"
+        style={{ width: 300 }}
+      />
+    </div>
+  );
+}
+```
+
+### Week Picker
+
+Use `DatePicker.WeekPicker` to select a week.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  return (
+    <div>
+      <DatePicker.WeekPicker onChange={setValue} style={{ width: 300 }} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        Selected week: {value ? `${value.year()} Week ${value.week()}` : 'Not selected'}
+      </div>
+    </div>
+  );
+}
+```
+
+### Month Picker
+
+Use `DatePicker.MonthPicker` to select a month.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  return (
+    <div>
+      <DatePicker.MonthPicker onChange={setValue} style={{ width: 300 }} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        Selected month: {value ? value.format('YYYY-MM') : 'Not selected'}
+      </div>
+    </div>
+  );
+}
+```
+
+### Year Picker
+
+Use `DatePicker.YearPicker` to select a year.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  return (
+    <div>
+      <DatePicker.YearPicker onChange={setValue} style={{ width: 300 }} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        Selected year: {value ? value.format('YYYY') : 'Not selected'}
+      </div>
+    </div>
+  );
+}
+```
+
+### Quarter Picker
+
+Use `DatePicker.QuarterPicker` to select a quarter.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  const getQuarter = (date) => {
+    if (!date) return '';
+    const month = date.month();
+    const quarter = Math.floor(month / 3) + 1;
+    return `${date.year()} Q${quarter}`;
+  };
+
+  return (
+    <div>
+      <DatePicker.QuarterPicker onChange={setValue} style={{ width: 300 }} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        Selected quarter: {value ? getQuarter(value) : 'Not selected'}
+      </div>
+    </div>
+  );
+}
+```
+
+### Date Range Selection
+
+Use `DatePicker.RangePicker` to select a date range.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  return (
+    <div>
+      <DatePicker.RangePicker onChange={setValue} style={{ width: 400 }} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        Selected range:{' '}
+        {value && value[0] && value[1]
+          ? `${value[0].format('YYYY-MM-DD')} ~ ${value[1].format('YYYY-MM-DD')}`
+          : 'Not selected'}
+      </div>
+    </div>
+  );
+}
+```
+
+### Date Time Range
+
+RangePicker also supports selecting date time ranges.
+
+```jsx live
+function Demo() {
+  return (
+    <DatePicker.RangePicker
+      showTime
+      format="YYYY-MM-DD HH:mm:ss"
+      placeholder={['Start time', 'End time']}
+      style={{ width: 500 }}
+    />
+  );
+}
+```
+
+### Preset Ranges
+
+Add quick selection shortcuts for RangePicker.
+
+```jsx live
+function Demo() {
+  const { RangePicker } = DatePicker;
+
+  const ranges = {
+    'Today': [dayjs(), dayjs()],
+    'This Week': [dayjs().startOf('week'), dayjs().endOf('week')],
+    'This Month': [dayjs().startOf('month'), dayjs().endOf('month')],
+    'Last 7 Days': [dayjs().subtract(6, 'day'), dayjs()],
+    'Last 30 Days': [dayjs().subtract(29, 'day'), dayjs()],
+  };
+
+  return (
+    <div>
+      <RangePicker ranges={ranges} style={{ width: 400 }} />
+    </div>
+  );
+}
+```
+
+### Borderless
+
+Remove the border through `bordered={false}`.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <DatePicker bordered={false} placeholder="Borderless date picker" style={{ width: 300 }} />
+      <DatePicker.RangePicker bordered={false} style={{ width: 400 }} />
+    </Group>
+  );
+}
+```
+
+### Sizes
+
+Set the picker size through the `size` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <DatePicker size="sm" placeholder="Small size" style={{ width: 300 }} />
+      <DatePicker size="md" placeholder="Medium size (default)" style={{ width: 300 }} />
+      <DatePicker size="lg" placeholder="Large size" style={{ width: 300 }} />
+    </Group>
+  );
+}
+```
+
+### Disabled Date Ranges
+
+Restrict selection to dates within a specific range only.
+
+```jsx live
+function Demo() {
+  // Can only select dates within the next 30 days
+  const disabledDate = (current) => {
+    const today = dayjs().startOf('day');
+    const maxDate = dayjs().add(30, 'day').endOf('day');
+    return current && (current < today || current > maxDate);
+  };
+
+  return (
+    <DatePicker
+      disabledDate={disabledDate}
+      placeholder="Can only select next 30 days"
+      style={{ width: 300 }}
+    />
+  );
+}
+```
+
+### RangePicker Disabled Dates
+
+Restrict the start and end dates for date range selection.
+
+```jsx live
+function Demo() {
+  // Disable dates before today
+  const disabledDate = (current) => {
+    return current && current < dayjs().startOf('day');
+  };
+
+  return (
+    <DatePicker.RangePicker
+      disabledDate={disabledDate}
+      placeholder={['Start date', 'End date']}
+      style={{ width: 400 }}
+    />
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Common API
+
+The following API is shared by DatePicker, MonthPicker, YearPicker, WeekPicker, and QuarterPicker.
+
+| Property | Description | Type | Default |
+| --- | --- | --- | --- |
+| value | Date (controlled) | `dayjs` | - |
+| defaultValue | Default date (uncontrolled) | `dayjs` | - |
+| format | Display date format | `string` | `YYYY-MM-DD` |
+| placeholder | Input placeholder text | `string` | - |
+| disabled | Disabled | `boolean` | `false` |
+| bordered | Whether has border | `boolean` | `true` |
+| allowClear | Whether to show clear button | `boolean` | `true` |
+| size | Input box size | `'sm' \| 'md' \| 'lg'` | `'md'` |
+| picker | Set picker type | `'date' \| 'week' \| 'month' \| 'quarter' \| 'year'` | `'date'` |
+| disabledDate | Unselectable dates | `(currentDate: dayjs) => boolean` | - |
+| onChange | Callback when time changes | `(date: dayjs, dateString: string) => void` | - |
+| onOpenChange | Callback when calendar popup opens/closes | `(open: boolean) => void` | - |
+| getPopupContainer | Define the container for the popup | `(triggerNode: Element) => HTMLElement` | - |
+| Others | Native attributes | `HTMLAttributes<HTMLDivElement>` | - |
+
+:::info
+
+DatePicker uses [Day.js](https://day.js.org/) as the date handling library.
+
+**About date values**:
+- DatePicker internally uses dayjs objects to handle dates
+- `value` and `defaultValue` can accept `Date` objects or `dayjs` objects
+- The `onChange` callback returns a dayjs object, which can be converted to a native Date object using `.toDate()`
+- In actual projects, it's recommended to use dayjs for date operations
+
+**About format**:
+- Default format is `YYYY-MM-DD`
+- Common formats: `YYYY-MM-DD`, `YYYY/MM/DD`, `DD-MM-YYYY`, etc.
+- Full format reference: [Day.js Format Documentation](https://day.js.org/docs/en/display/format)
+
+**About disabledDate**:
+- The function receives the current date (dayjs object) as a parameter, returning `true` disables that date
+- Can use `current.toDate()` to convert to a native Date object for comparison
+- Commonly used for disabling past dates, future dates, etc.
+
+:::
+
+### DatePicker
+
+| Property | Description | Type | Default |
+| --- | --- | --- | --- |
+| showTime | Add time selection feature | `boolean \| object` | `false` |
+| showToday | Whether to show "Today" button | `boolean` | `true` |
+
+### DatePicker.RangePicker
+
+| Property | Description | Type | Default |
+| --- | --- | --- | --- |
+| value | Date range (controlled) | `[dayjs, dayjs]` | - |
+| defaultValue | Default date range (uncontrolled) | `[dayjs, dayjs]` | - |
+| format | Display date format | `string` | `YYYY-MM-DD` |
+| placeholder | Input placeholder text | `[string, string]` | - |
+| ranges | Preset time range shortcuts | `{ [range: string]: [dayjs, dayjs] }` | - |
+| separator | Set separator | `ReactNode` | `~` |
+| showTime | Add time selection feature | `boolean \| object` | `false` |
+| onChange | Callback when time changes | `(dates: [dayjs, dayjs], dateStrings: [string, string]) => void` | - |
+| Others | Other properties same as DatePicker | - | - |
+
+:::info
+
+**About RangePicker**:
+- `value` and `defaultValue` are both arrays of length 2, representing start time and end time respectively
+- `placeholder` is an array, can set placeholders for start and end input boxes separately
+- `ranges` can set preset time ranges for quick selection
+
+:::
+
+### DatePicker.MonthPicker
+
+Month picker, API is the same as DatePicker, default `format` is `YYYY-MM`.
+
+### DatePicker.WeekPicker
+
+Week picker, API is the same as DatePicker, default `format` is `YYYY-wo`.
+
+### DatePicker.YearPicker
+
+Year picker, API is the same as DatePicker, default `format` is `YYYY`.
+
+### DatePicker.QuarterPicker
+
+Quarter picker, API is the same as DatePicker, default `format` is `YYYY-[Q]Q`.
+
+## Usage Recommendations
+
+### Date Formatting
+
+Choose appropriate date format based on business requirements:
+
+```jsx
+// Standard format
+<DatePicker format="YYYY-MM-DD" />
+
+// With time
+<DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
+
+// Custom format
+<DatePicker format="YYYY年MM月DD日" />
+
+// Use formatDate method to format
+const formattedDate = value.format('YYYY-MM-DD');
+```
+
+### Disabled Dates
+
+Common date disabling scenarios:
+
+```jsx
+// Disable dates before today
+const disabledDate = (current) => {
+  return current && current < dayjs().startOf('day');
+};
+
+// Disable dates after today
+const disabledDate = (current) => {
+  return current && current > dayjs().endOf('day');
+};
+
+// Disable dates outside specified range
+const disabledDate = (current) => {
+  const start = dayjs('2024-01-01');
+  const end = dayjs('2024-12-31');
+  return current && (current < start || current > end);
+};
+```
+
+### Form Integration
+
+Using DatePicker in forms:
+
+```jsx
+const [form, setForm] = React.useState({
+  startDate: null,
+  endDate: null,
+});
+
+const handleDateChange = (date) => {
+  setForm({ ...form, startDate: date });
+};
+
+<DatePicker value={form.startDate} onChange={handleDateChange} />
+```
+
+### RangePicker Preset Ranges
+
+Provide users with common date range shortcuts:
+
+```jsx
+const ranges = {
+  Today: [dayjs(), dayjs()],
+  Yesterday: [dayjs().subtract(1, 'day'), dayjs().subtract(1, 'day')],
+  'Last 7 Days': [dayjs().subtract(7, 'day'), dayjs()],
+  'Last 30 Days': [dayjs().subtract(30, 'day'), dayjs()],
+  'This Month': [dayjs().startOf('month'), dayjs().endOf('month')],
+  'Last Month': [
+    dayjs().subtract(1, 'month').startOf('month'),
+    dayjs().subtract(1, 'month').endOf('month'),
+  ],
+};
+
+<DatePicker.RangePicker ranges={ranges} />
+```

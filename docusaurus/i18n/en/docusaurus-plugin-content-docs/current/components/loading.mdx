@@ -4,22 +4,313 @@ sidebar_position: 1
 
 # Loading
 
-> Component documentation is being migrated. Check back soon!
+Loading animation component for displaying wait states.
 
-## Overview
+## When to Use
 
-Loading component from Kube Design library.
+- When a page section is waiting for asynchronous data or rendering
+- Need to display a waiting state to users
+- Suitable for lightweight loading indicators
+
+In Kube Design, the Loading component provides clean loading animations:
+
+- **Two Variants**: circle1 and circle2 with different circular loading animations
+- **Multiple Sizes**: Support for xs, sm, md, lg, xl sizes
+- **Custom Colors**: Support all theme colors
+- **Lightweight**: Small size with good performance
 
 ## Examples
 
 ### Basic Usage
 
+Most basic loading animation using the default circle1 variant.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  return (
+    <Group spacing="lg">
+      <Loading />
+    </Group>
+  );
+}
+```
+
+### Sizes
+
+Loading supports five preset sizes: xs, sm, md, lg, xl.
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="lg" align="center">
+      <Loading size="xs" />
+      <Loading size="sm" />
+      <Loading size="md" />
+      <Loading size="lg" />
+      <Loading size="xl" />
+    </Group>
+  );
+}
+```
+
+### Variants
+
+Loading provides two loading animation variants.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="lg">
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          Circle1 Variant:
+        </Text>
+        <Group spacing="lg" align="center">
+          <Loading size="xs" variant="circle1" />
+          <Loading size="sm" variant="circle1" />
+          <Loading size="md" variant="circle1" />
+          <Loading size="lg" variant="circle1" />
+        </Group>
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          Circle2 Variant:
+        </Text>
+        <Group spacing="lg" align="center">
+          <Loading size="xs" variant="circle2" />
+          <Loading size="sm" variant="circle2" />
+          <Loading size="md" variant="circle2" />
+          <Loading size="lg" variant="circle2" />
+        </Group>
+      </div>
+    </Group>
+  );
+}
+```
+
+### Colors
+
+Different variants support different color options. circle1 only supports `dark` and `light`, while circle2 supports all theme colors.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="lg">
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          Circle1 (only dark/light):
+        </Text>
+        <Group spacing="lg" align="center">
+          <div>
+            <Loading size="md" variant="circle1" color="dark" />
+            <Text size="xs" style={{ textAlign: 'center', marginTop: '4px' }}>
+              dark
+            </Text>
+          </div>
+          <div style={{ backgroundColor: '#1a1a1a', padding: '8px', borderRadius: '4px' }}>
+            <Loading size="md" variant="circle1" color="light" />
+            <Text size="xs" style={{ textAlign: 'center', marginTop: '4px', color: '#fff' }}>
+              light
+            </Text>
+          </div>
+        </Group>
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          Circle2 (all theme colors):
+        </Text>
+        <Group spacing="lg" align="center">
+          <div>
+            <Loading size="md" variant="circle2" color="primary" />
+            <Text size="xs" style={{ textAlign: 'center', marginTop: '4px' }}>
+              primary
+            </Text>
+          </div>
+          <div>
+            <Loading size="md" variant="circle2" color="success" />
+            <Text size="xs" style={{ textAlign: 'center', marginTop: '4px' }}>
+              success
+            </Text>
+          </div>
+          <div>
+            <Loading size="md" variant="circle2" color="warning" />
+            <Text size="xs" style={{ textAlign: 'center', marginTop: '4px' }}>
+              warning
+            </Text>
+          </div>
+          <div>
+            <Loading size="md" variant="circle2" color="error" />
+            <Text size="xs" style={{ textAlign: 'center', marginTop: '4px' }}>
+              error
+            </Text>
+          </div>
+        </Group>
+      </div>
+    </Group>
+  );
+}
+```
+
+### Custom Size
+
+Besides preset sizes, you can specify pixel values with numbers.
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="lg" align="center">
+      <div>
+        <Loading size={24} />
+        <Text size="xs" style={{ textAlign: 'center', marginTop: '4px' }}>
+          24px
+        </Text>
+      </div>
+      <div>
+        <Loading size={40} variant="circle2" color="primary" />
+        <Text size="xs" style={{ textAlign: 'center', marginTop: '4px' }}>
+          40px
+        </Text>
+      </div>
+      <div>
+        <Loading size={64} variant="circle2" color="success" />
+        <Text size="xs" style={{ textAlign: 'center', marginTop: '4px' }}>
+          64px
+        </Text>
+      </div>
+    </Group>
+  );
+}
+```
+
+### Inline Usage
+
+Use loading animation inline with text or buttons.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Group spacing="xs" align="center">
+        <Loading size="xs" />
+        <Text size="sm">Loading...</Text>
+      </Group>
+      <Group spacing="xs" align="center">
+        <Text>Processing</Text>
+        <Loading size={16} variant="circle2" color="primary" />
+      </Group>
+      <Button disabled>
+        <Group spacing="xs" align="center">
+          <Loading size="sm" color="light" />
+          <span>Submitting...</span>
+        </Group>
+      </Button>
+    </Group>
+  );
+}
+```
+
+### List Loading
+
+Display loading more data state at the bottom of a list.
+
+```jsx live
+function Demo() {
+  const [loading, setLoading] = React.useState(false);
+
+  const handleLoadMore = () => {
+    setLoading(true);
+    setTimeout(() => setLoading(false), 1500);
+  };
+
+  return (
+    <div style={{ width: '100%', maxWidth: '400px' }}>
+      <div style={{ border: '1px solid #e0e0e0', borderRadius: '4px' }}>
+        {[1, 2, 3, 4, 5].map((item) => (
+          <div
+            key={item}
+            style={{
+              padding: '12px 16px',
+              borderBottom: '1px solid #e0e0e0',
+            }}
+          >
+            List Item {item}
+          </div>
+        ))}
+        {loading ? (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: '16px',
+            }}
+          >
+            <Loading size="sm" variant="circle2" color="primary" />
+            <Text size="sm" style={{ marginLeft: '8px' }}>
+              Loading more...
+            </Text>
+          </div>
+        ) : (
+          <div style={{ padding: '12px', textAlign: 'center' }}>
+            <Button size="sm" variant="text" onClick={handleLoadMore}>
+              Load More
+            </Button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Loading Properties
+
+| Property  | Description             | Type                                             | Default     |
+| --------- | ----------------------- | ------------------------------------------------ | ----------- |
+| size      | Loading animation size  | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number` | `'md'`      |
+| color     | Loading animation color | `string`                                         | `'dark'`    |
+| variant   | Loading animation variant | `'circle1' \| 'circle2'`                       | `'circle1'` |
+| className | Custom class name       | `string`                                         | -           |
+| style     | Custom styles           | `CSSProperties`                                  | -           |
+
+### Size to Pixel Mapping
+
+| Size | Pixels |
+| ---- | ------ |
+| xs   | 16px   |
+| sm   | 20px   |
+| md   | 32px   |
+| lg   | 48px   |
+| xl   | 52px   |
+
+:::info
+
+**About variants**:
+
+- `circle1`: Gradient circular loading animation, only supports `dark` and `light` colors
+- `circle2`: Solid color circular loading animation, supports all theme colors (primary, success, warning, error, etc.)
+
+**About colors**:
+
+- circle1 variant:
+  - `dark` (default): Dark gradient, suitable for light backgrounds
+  - `light`: Light gradient, suitable for dark backgrounds
+- circle2 variant:
+  - Supports all theme colors: `primary`, `success`, `warning`, `error`, etc.
+  - Also supports custom color values like `#1890ff`
+
+**About sizes**:
+
+- Can use preset sizes (xs/sm/md/lg/xl)
+- Can also use numbers to specify exact pixel values, e.g., `size={24}` for 24px
+- Recommend using preset sizes for consistency
+
+**Inherited properties**:
+
+- Loading component is implemented based on SVG elements
+- Inherits all native SVG element properties
+- Can be further customized via `style` or `className`
+
+:::

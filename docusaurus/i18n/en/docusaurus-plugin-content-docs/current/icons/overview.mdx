@@ -4,118 +4,53 @@ sidebar_position: 1
 
 # Icons
 
-Kube Design provides a comprehensive icon library with multiple styles and variants.
+Kube Design provides a comprehensive icon library with hundreds of icons spanning multiple categories, supporting various styles and variants.
 
-## Installation
+## Available Icons
 
-Icons are included in the `@kubed/icons` package:
+The icon library includes hundreds of icons grouped by category. Click on any icon to copy its name.
 
-```bash
-npm install @kubed/icons
-# or
-yarn add @kubed/icons
-# or
-pnpm add @kubed/icons
-```
+import IconGallery from '@site/src/components/IconGallery';
+
+<IconGallery />
 
 ## Usage
-
-### Basic Usage
-
-Import and use icons directly:
-
-```jsx
-import { User, Settings, Download, Upload } from '@kubed/icons';
-
-function Demo() {
-  return (
-    <div>
-      <User />
-      <Settings />
-      <Download />
-      <Upload />
-    </div>
-  );
-}
-```
 
 ### Icon Size
 
 Control icon size with the `size` prop:
 
-```jsx
-import { User } from '@kubed/icons';
-
+```jsx live
 function Demo() {
+  const { AddDuotone } = KubedIcons;
   return (
-    <div>
-      <User size={16} />
-      <User size={24} />
-      <User size={32} />
-      <User size={48} />
-    </div>
+    <Group spacing="lg">
+      <AddDuotone size={16} />
+      <AddDuotone size={24} />
+      <AddDuotone size={32} />
+      <AddDuotone size={48} />
+    </Group>
   );
 }
 ```
 
 ### Icon Color
 
-Icons inherit the color from their parent element:
+Icons inherit the current text color. You can control the color via CSS or inline styles:
 
-```jsx
-import { User } from '@kubed/icons';
-
+```jsx live
 function Demo() {
+  const { AddDuotone } = KubedIcons;
   return (
-    <div>
-      <div style={{ color: 'red' }}>
-        <User size={24} />
-      </div>
-      <div style={{ color: 'blue' }}>
-        <User size={24} />
-      </div>
-      <div style={{ color: 'green' }}>
-        <User size={24} />
-      </div>
-    </div>
+    <Group spacing="md">
+      <AddDuotone size={32} style={{ color: '#55bc8a' }} />
+      <AddDuotone size={32} style={{ color: '#329dce' }} />
+      <AddDuotone size={32} style={{ color: '#f5a623' }} />
+      <AddDuotone size={32} style={{ color: '#ca2621' }} />
+    </Group>
   );
 }
 ```
-
-### With Components
-
-Use icons with Kube Design components:
-
-```jsx
-import { Button } from '@kubed/components';
-import { Download, Upload, Settings } from '@kubed/icons';
-
-function Demo() {
-  return (
-    <div>
-      <Button leftIcon={<Download size={16} />}>
-        Download
-      </Button>
-      <Button leftIcon={<Upload size={16} />}>
-        Upload
-      </Button>
-      <Button leftIcon={<Settings size={16} />}>
-        Settings
-      </Button>
-    </div>
-  );
-}
-```
-
-## Available Icons
-
-The icon library includes hundreds of icons across multiple categories:
-
-- **UI Icons**: Common interface elements (arrows, checkmarks, etc.)
-- **File Icons**: File type indicators
-- **Social Icons**: Social media platforms
-- **Brand Icons**: Popular brand logos
-- **Action Icons**: User actions (download, upload, delete, etc.)
 
 ## Icon Variants
 
@@ -133,47 +68,7 @@ All icons accept the following props:
 
 | Property | Description | Type | Default |
 |----------|-------------|------|---------|
-| size | Icon size in pixels | `number \| string` | `24` |
-| color | Icon color | `string` | inherited |
-| className | CSS class name | `string` | - |
+| size | Icon size (pixels) | `number \| string` | `16` |
+| color | Icon color (CSS color value) | `string` | `'currentColor'` |
+| className | Additional CSS class | `string` | - |
 | style | Inline styles | `CSSProperties` | - |
-
-## Examples
-
-### Icon Grid
-
-```jsx
-import { 
-  User, Settings, Download, Upload, 
-  Delete, Edit, Search, Filter,
-  Home, File, Folder, Star
-} from '@kubed/icons';
-
-function IconGrid() {
-  const icons = [
-    { Icon: User, name: 'User' },
-    { Icon: Settings, name: 'Settings' },
-    { Icon: Download, name: 'Download' },
-    { Icon: Upload, name: 'Upload' },
-    { Icon: Delete, name: 'Delete' },
-    { Icon: Edit, name: 'Edit' },
-    { Icon: Search, name: 'Search' },
-    { Icon: Filter, name: 'Filter' },
-    { Icon: Home, name: 'Home' },
-    { Icon: File, name: 'File' },
-    { Icon: Folder, name: 'Folder' },
-    { Icon: Star, name: 'Star' },
-  ];
-
-  return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
-      {icons.map(({ Icon, name }) => (
-        <div key={name} style={{ textAlign: 'center' }}>
-          <Icon size={32} />
-          <p>{name}</p>
-        </div>
-      ))}
-    </div>
-  );
-}
-```

@@ -1,25 +1,345 @@
 ---
-sidebar_position: 1
+sidebar_position: 5
 ---
 
 # Divider
 
-> Component documentation is being migrated. Check back soon!
+A divider component for separating content.
 
-## Overview
+## When to Use
 
-Divider component from Kube Design library.
+- Separate text paragraphs in different sections
+- Separate inline text/links, such as in table action columns
+- Need to add visual separation to the interface
 
 ## Examples
 
 ### Basic Usage
 
+Default is a horizontal divider.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  return (
+    <div>
+      <p>
+        Kube Design is an open-source React component library for cloud-native applications,
+        providing rich components and tools to help developers quickly build modern user interfaces.
+      </p>
+      <Divider />
+      <p>
+        The component library is developed in TypeScript, provides complete type definitions,
+        supports on-demand loading, and has good extensibility and theme customization capabilities.
+      </p>
+    </div>
+  );
+}
+```
+
+### Divider Styles
+
+Set divider style through the `variant` property, supports `solid` (solid line), `dashed` (dashed line), `dotted` (dotted line).
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <p>Solid line divider (default)</p>
+      <Divider variant="solid" />
+      <p style={{ marginTop: '20px' }}>Dashed line divider</p>
+      <Divider variant="dashed" />
+      <p style={{ marginTop: '20px' }}>Dotted line divider</p>
+      <Divider variant="dotted" />
+    </div>
+  );
+}
+```
+
+### Divider Thickness
+
+Control the thickness of the divider using the `size` property.
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>Thickness: xs (default)</h4>
+      <Divider size="xs" />
+
+      <h4 style={{ marginBottom: '12px', marginTop: '20px' }}>Thickness: sm</h4>
+      <Divider size="sm" />
+
+      <h4 style={{ marginBottom: '12px', marginTop: '20px' }}>Thickness: md</h4>
+      <Divider size="md" />
+
+      <h4 style={{ marginBottom: '12px', marginTop: '20px' }}>Thickness: lg</h4>
+      <Divider size="lg" />
+    </div>
+  );
+}
+```
+
+### Divider with Text
+
+Add text labels to the divider using `label` and `labelPosition` properties to control positioning.
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <p>Content above</p>
+      <Divider label="Left Label" labelPosition="left" />
+      <p>Middle content</p>
+      <Divider label="Center Label" labelPosition="center" />
+      <p>Middle content</p>
+      <Divider label="Right Label" labelPosition="right" />
+      <p>Content below</p>
+    </div>
+  );
+}
+```
+
+### Text Label Styles
+
+Dividers with text can use different styles.
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <Divider label="Solid Divider" labelPosition="center" variant="solid" />
+      <div style={{ marginTop: '20px' }}>
+        <Divider label="Dashed Divider" labelPosition="center" variant="dashed" />
+      </div>
+      <div style={{ marginTop: '20px' }}>
+        <Divider label="Dotted Divider" labelPosition="center" variant="dotted" />
+      </div>
+    </div>
+  );
+}
+```
+
+### Divider Margins
+
+Set the top and bottom margins (horizontal direction) or left and right margins (vertical direction) using the `margins` property.
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <p>No margins</p>
+      <Divider margins={0} />
+      <p>Small margins</p>
+      <Divider margins="sm" />
+      <p>Medium margins</p>
+      <Divider margins="md" />
+      <p>Large margins</p>
+      <Divider margins="xl" />
+      <p>Custom margins (30px)</p>
+      <Divider margins={30} />
+      <p>End</p>
+    </div>
+  );
+}
+```
+
+### Vertical Divider
+
+Set `direction="vertical"` to create a vertical divider, commonly used with other components.
+
+```jsx live
+function Demo() {
+  return (
+    <Group>
+      <Button variant="text">Action 1</Button>
+      <Divider direction="vertical" />
+      <Button variant="text">Action 2</Button>
+      <Divider direction="vertical" />
+      <Button variant="text">Action 3</Button>
+    </Group>
+  );
+}
+```
+
+### Vertical Divider Height
+
+Customize the height of vertical dividers using the `height` property.
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <div style={{ marginBottom: '24px' }}>
+        <span style={{ marginRight: '12px' }}>Height: Default</span>
+        <Group style={{ display: 'inline-flex' }}>
+          <Button size="sm">Button</Button>
+          <Divider direction="vertical" />
+          <Button size="sm">Button</Button>
+        </Group>
+      </div>
+
+      <div style={{ marginBottom: '24px' }}>
+        <span style={{ marginRight: '12px' }}>Height: 20px</span>
+        <Group style={{ display: 'inline-flex' }}>
+          <Button size="sm">Button</Button>
+          <Divider direction="vertical" height={20} />
+          <Button size="sm">Button</Button>
+        </Group>
+      </div>
+
+      <div>
+        <span style={{ marginRight: '12px' }}>Height: 40px</span>
+        <Group style={{ display: 'inline-flex' }}>
+          <Button size="md">Button</Button>
+          <Divider direction="vertical" height={40} />
+          <Button size="md">Button</Button>
+        </Group>
+      </div>
+    </div>
+  );
+}
+```
+
+### Vertical Divider Styles
+
+Vertical dividers also support different styles.
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <div style={{ marginBottom: '20px' }}>
+        <Group>
+          <span>Solid</span>
+          <Divider direction="vertical" variant="solid" />
+          <span>Divider</span>
+        </Group>
+      </div>
+
+      <div style={{ marginBottom: '20px' }}>
+        <Group>
+          <span>Dashed</span>
+          <Divider direction="vertical" variant="dashed" />
+          <span>Divider</span>
+        </Group>
+      </div>
+
+      <div>
+        <Group>
+          <span>Dotted</span>
+          <Divider direction="vertical" variant="dotted" />
+          <span>Divider</span>
+        </Group>
+      </div>
+    </div>
+  );
+}
+```
+
+### Custom Color
+
+Customize divider color using the `color` property.
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <p>Default color</p>
+      <Divider />
+      <p style={{ marginTop: '20px' }}>Blue divider</p>
+      <Divider color="#329dce" />
+      <p style={{ marginTop: '20px' }}>Green divider</p>
+      <Divider color="#55bc8a" />
+      <p style={{ marginTop: '20px' }}>Red divider</p>
+      <Divider color="#ca2621" />
+    </div>
+  );
+}
+```
+
+### Practical Application Scenarios
+
+Demonstrates Divider usage in real scenarios.
+
+```jsx live
+function Demo() {
+  const { PencilDuotone, DeleteDuotone, CopyDuotone } = KubedIcons;
+
+  return (
+    <div>
+      {/* Card separation */}
+      <div style={{ border: '1px solid #d1d5de', borderRadius: '4px', padding: '16px', marginBottom: '24px' }}>
+        <h4 style={{ margin: '0 0 8px 0' }}>User Information</h4>
+        <p style={{ margin: '0 0 16px 0', color: '#79879c', fontSize: '14px' }}>
+          John Doe | Administrator
+        </p>
+        <Divider margins={0} />
+        <div style={{ marginTop: '16px' }}>
+          <h4 style={{ margin: '0 0 8px 0' }}>Contact Information</h4>
+          <p style={{ margin: 0, color: '#79879c', fontSize: '14px' }}>
+            Email: johndoe@example.com<br />
+            Phone: 138-0000-0000
+          </p>
+        </div>
+      </div>
+
+      {/* Action button separation */}
+      <div style={{ border: '1px solid #d1d5de', borderRadius: '4px', padding: '16px', marginBottom: '24px' }}>
+        <h4 style={{ margin: '0 0 12px 0' }}>Resource Actions</h4>
+        <Group spacing="xs">
+          <Button variant="text" size="sm" leftIcon={<PencilDuotone size={14} />}>
+            Edit
+          </Button>
+          <Divider direction="vertical" height={16} />
+          <Button variant="text" size="sm" leftIcon={<CopyDuotone size={14} />}>
+            Copy
+          </Button>
+          <Divider direction="vertical" height={16} />
+          <Button variant="text" size="sm" color="error" leftIcon={<DeleteDuotone size={14} />}>
+            Delete
+          </Button>
+        </Group>
+      </div>
+
+      {/* Grouped content */}
+      <div>
+        <h3>Project List</h3>
+        <Divider label="In Progress" labelPosition="left" />
+        <p style={{ color: '#79879c' }}>• Project A - Development Phase</p>
+        <p style={{ color: '#79879c' }}>• Project B - Testing Phase</p>
+        <Divider label="Completed" labelPosition="left" margins="lg" />
+        <p style={{ color: '#79879c' }}>• Project C - Launched</p>
+        <p style={{ color: '#79879c' }}>• Project D - Archived</p>
+      </div>
+    </div>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Divider Properties
+
+| Property | Description | Type | Default |
+| --- | --- | --- | --- |
+| direction | Divider direction | `'horizontal' \| 'vertical'` | `'horizontal'` |
+| variant | Divider style | `'solid' \| 'dashed' \| 'dotted'` | `'solid'` |
+| size | Divider thickness | `KubedNumberSize` | `'xs'` |
+| color | Divider color | `string` | - |
+| label | Text label (horizontal only) | `ReactNode` | - |
+| labelPosition | Text label position (horizontal only) | `'left' \| 'center' \| 'right'` | `'left'` |
+| labelProps | Properties passed to label | `Record<string, any>` | - |
+| margins | Margins (top/bottom for horizontal, left/right for vertical) | `KubedNumberSize` | `0` |
+| height | Vertical divider height (direction="vertical" only) | `number` | - |
+| Others | Native attributes | `HTMLAttributes<HTMLElement>` | - |
+
+:::info
+
+- `size` and `margins` values can be preset size names (`'xs'`, `'sm'`, `'md'`, `'lg'`, `'xl'`) or specific pixel values
+- Horizontal dividers fill the container width by default
+- Vertical dividers need to be used with other components (like Group) to ensure correct layout
+- Labeled dividers only work in horizontal direction (`direction="horizontal"`)
+
+The Divider component inherits all native HTML hr element attributes (such as `onClick`, `className`, etc.).
+
+:::

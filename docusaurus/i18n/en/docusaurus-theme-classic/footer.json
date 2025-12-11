@@ -32,7 +32,7 @@
     "description": "The label of footer link with label=KubeSphere Console linking to https://github.com/kubesphere/console"
   },
   "copyright": {
-    "message": "Copyright © 2025 KubeSphere. Built with Docusaurus.",
+    "message": "Copyright © 2025 KubeSphere.io",
     "description": "The footer copyright"
   }
 }

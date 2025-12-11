@@ -4,22 +4,426 @@ sidebar_position: 1
 
 # Skeleton
 
-> Component documentation is being migrated. Check back soon!
+Provide placeholder graphics at positions where content is loading.
 
-## Overview
+## When to Use
 
-Skeleton component from Kube Design library.
+- When network is slow and data loading takes a long time
+- During initial page rendering, need to show loading state
+- When loading list or card content
+- Provide better user experience and avoid page flickering
 
 ## Examples
 
 ### Basic Usage
 
+Most basic skeleton usage, default width 100%.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  return <Skeleton height={16} />;
+}
+```
+
+### Different Sizes
+
+Set skeleton dimensions through `width` and `height` properties.
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <Skeleton height={8} style={{ marginBottom: '8px' }} />
+      <Skeleton height={12} style={{ marginBottom: '8px' }} />
+      <Skeleton height={16} style={{ marginBottom: '8px' }} />
+      <Skeleton height={24} style={{ marginBottom: '8px' }} />
+      <Skeleton height={32} />
+    </div>
+  );
+}
+```
+
+### Circle Skeleton
+
+Create circular skeleton through `circle` property, commonly used for avatar placeholders.
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="md">
+      <Skeleton height={32} width={32} circle />
+      <Skeleton height={40} width={40} circle />
+      <Skeleton height={48} width={48} circle />
+      <Skeleton height={64} width={64} circle />
+    </Group>
+  );
+}
+```
+
+### Border Radius
+
+Set border radius size through `radius` property.
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <Skeleton height={16} radius="xs" style={{ marginBottom: '8px' }} />
+      <Skeleton height={16} radius="sm" style={{ marginBottom: '8px' }} />
+      <Skeleton height={16} radius="md" style={{ marginBottom: '8px' }} />
+      <Skeleton height={16} radius="lg" style={{ marginBottom: '8px' }} />
+      <Skeleton height={16} radius="xl" />
+    </div>
+  );
+}
+```
+
+### Disable Animation
+
+Disable animation effect through `animate={false}`.
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <Skeleton height={16} animate={true} style={{ marginBottom: '8px' }} />
+      <Skeleton height={16} animate={false} />
+    </div>
+  );
+}
+```
+
+### Text Placeholder
+
+Simulate skeleton for multi-line text.
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <Skeleton height={12} radius="xl" style={{ marginBottom: '8px' }} />
+      <Skeleton height={12} radius="xl" style={{ marginBottom: '8px' }} />
+      <Skeleton height={12} radius="xl" style={{ marginBottom: '8px' }} />
+      <Skeleton height={12} width="70%" radius="xl" />
+    </div>
+  );
+}
+```
+
+### Content with Avatar
+
+Common skeleton combination with avatar and text.
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="md" style={{ alignItems: 'flex-start' }}>
+      <Skeleton height={48} width={48} circle />
+      <div style={{ flex: 1 }}>
+        <Skeleton height={12} width="40%" radius="xl" style={{ marginBottom: '8px' }} />
+        <Skeleton height={12} radius="xl" style={{ marginBottom: '8px' }} />
+        <Skeleton height={12} radius="xl" style={{ marginBottom: '8px' }} />
+        <Skeleton height={12} width="60%" radius="xl" />
+      </div>
+    </Group>
+  );
+}
+```
+
+### Card Skeleton
+
+Use skeleton in a card.
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '350px' }}>
+        <Skeleton height={120} radius="sm" style={{ marginBottom: '12px' }} />
+        <Skeleton height={16} width="60%" radius="xl" style={{ marginBottom: '8px' }} />
+        <Skeleton height={12} radius="xl" style={{ marginBottom: '8px' }} />
+        <Skeleton height={12} radius="xl" style={{ marginBottom: '8px' }} />
+        <Skeleton height={12} width="80%" radius="xl" />
+      </Card>
+    </div>
+  );
+}
+```
+
+### List Skeleton
+
+Skeleton effect for list items.
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '400px' }}>
+        {[1, 2, 3].map((item) => (
+          <Group
+            key={item}
+            spacing="md"
+            style={{
+              padding: '12px 0',
+              borderBottom: item < 3 ? '1px solid #d8dee5' : 'none',
+              alignItems: 'flex-start',
+            }}
+          >
+            <Skeleton height={40} width={40} circle />
+            <div style={{ flex: 1 }}>
+              <Skeleton height={12} width="50%" radius="xl" style={{ marginBottom: '8px' }} />
+              <Skeleton height={10} width="80%" radius="xl" />
+            </div>
+            <Skeleton height={24} width={60} radius="sm" />
+          </Group>
+        ))}
+      </Card>
+    </div>
+  );
+}
+```
+
+### Table Skeleton
+
+Skeleton effect for loading tables.
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <Skeleton height={40} radius="sm" style={{ marginBottom: '8px' }} />
+      {[1, 2, 3, 4].map((item) => (
+        <Group
+          key={item}
+          style={{
+            padding: '12px 0',
+            borderBottom: '1px solid #d8dee5',
+          }}
+        >
+          <Skeleton height={16} width="15%" radius="sm" />
+          <Skeleton height={16} width="25%" radius="sm" />
+          <Skeleton height={16} width="20%" radius="sm" />
+          <Skeleton height={16} width="15%" radius="sm" />
+          <Skeleton height={16} width="10%" radius="sm" />
+        </Group>
+      ))}
+    </div>
+  );
+}
+```
+
+### Loading State Toggle
+
+Show skeleton combined with loading state.
+
+```jsx live
+function Demo() {
+  const [loading, setLoading] = React.useState(true);
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Button onClick={() => setLoading(!loading)} style={{ marginBottom: '16px' }}>
+        {loading ? 'Show Content' : 'Show Skeleton'}
+      </Button>
+      <Card style={{ width: '350px' }}>
+        {loading ? (
+          <Group spacing="md" style={{ alignItems: 'flex-start' }}>
+            <Skeleton height={48} width={48} circle />
+            <div style={{ flex: 1 }}>
+              <Skeleton height={14} width="60%" radius="xl" style={{ marginBottom: '8px' }} />
+              <Skeleton height={12} radius="xl" style={{ marginBottom: '8px' }} />
+              <Skeleton height={12} width="80%" radius="xl" />
+            </div>
+          </Group>
+        ) : (
+          <Group spacing="md" style={{ alignItems: 'flex-start' }}>
+            <div
+              style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '50%',
+                backgroundColor: '#329dce',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#fff',
+                fontWeight: 600,
+              }}
+            >
+              K
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontWeight: 600, marginBottom: '4px' }}>KubeSphere</div>
+              <div style={{ fontSize: '12px', color: '#79879c' }}>
+                Container platform for cloud native applications, supports multi-cloud and
+                multi-cluster management
+              </div>
+            </div>
+          </Group>
+        )}
+      </Card>
+    </div>
+  );
+}
+```
+
+### Complex Layout
+
+Skeleton for complex page layouts.
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '500px' }}>
+        <Group style={{ marginBottom: '16px' }}>
+          <Skeleton height={32} width={32} circle />
+          <div style={{ flex: 1 }}>
+            <Skeleton height={14} width="30%" radius="xl" />
+          </div>
+          <Skeleton height={24} width={80} radius="sm" />
+        </Group>
+        <Skeleton height={200} radius="sm" style={{ marginBottom: '12px' }} />
+        <Skeleton height={16} width="80%" radius="xl" style={{ marginBottom: '8px' }} />
+        <Skeleton height={12} radius="xl" style={{ marginBottom: '8px' }} />
+        <Skeleton height={12} radius="xl" style={{ marginBottom: '16px' }} />
+        <Group>
+          <Skeleton height={32} width={100} radius="sm" />
+          <Skeleton height={32} width={100} radius="sm" />
+        </Group>
+      </Card>
+    </div>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Skeleton
+
+| Property | Description              | Type                                             | Default  |
+| -------- | ------------------------ | ------------------------------------------------ | -------- |
+| visible  | Whether to show skeleton | `boolean`                                        | `true`   |
+| width    | Width                    | `number \| string`                               | `'100%'` |
+| height   | Height                   | `number \| string`                               | `'auto'` |
+| circle   | Whether it is circular   | `boolean`                                        | `false`  |
+| radius   | Border radius size       | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number` | `'md'`   |
+| animate  | Whether to show animation | `boolean`                                       | `true`   |
+
+:::info
+
+**About dimensions**:
+
+- `width` and `height` support numbers (unit is px) or strings (like '100%', 'auto')
+- When `circle` is `true`, width automatically equals height
+
+**About border radius**:
+
+- Preset radius: `xs` (2px), `sm` (4px), `md` (8px), `lg` (16px), `xl` (32px)
+- Can also pass numeric values directly
+- Text skeleton recommended to use `xl` radius
+
+**About animation**:
+
+- Shows shimmer animation by default
+- For static placeholders, set `animate={false}`
+
+**About visible**:
+
+- When `visible` is `false`, skeleton is not displayed
+- Can be used to control skeleton show/hide
+
+:::
+
+## Usage Recommendations
+
+### Reasonable Skeleton Layout
+
+Skeleton should closely match the layout of actual content:
+
+```jsx
+// Recommended: Layout similar to actual content
+<Group spacing="md">
+  <Skeleton height={48} width={48} circle />
+  <div style={{ flex: 1 }}>
+    <Skeleton height={14} width="40%" radius="xl" style={{ marginBottom: '8px' }} />
+    <Skeleton height={12} radius="xl" />
+  </div>
+</Group>
+
+// Not recommended: Layout too different from actual content
+<Skeleton height={100} />
+```
+
+### Text Skeleton
+
+Use skeleton with larger border radius for text:
+
+```jsx
+// Simulate title
+<Skeleton height={16} width="60%" radius="xl" style={{ marginBottom: '8px' }} />
+
+// Simulate body text
+<Skeleton height={12} radius="xl" style={{ marginBottom: '8px' }} />
+<Skeleton height={12} radius="xl" style={{ marginBottom: '8px' }} />
+<Skeleton height={12} width="80%" radius="xl" />
+```
+
+### Avatar Skeleton
+
+Use circular skeleton for avatars:
+
+```jsx
+// Circular avatar
+<Skeleton height={48} width={48} circle />
+
+// Rounded avatar
+<Skeleton height={48} width={48} radius="md" />
+```
+
+### Button Skeleton
+
+Use smaller border radius for buttons:
+
+```jsx
+<Skeleton height={32} width={100} radius="sm" />
+```
+
+### Combined with Loading State
+
+Toggle display based on loading state:
+
+```jsx
+const [loading, setLoading] = React.useState(true);
+
+{loading ? (
+  <Skeleton height={16} radius="xl" />
+) : (
+  <div>Actual content</div>
+)}
+```
+
+### List Skeleton
+
+Use arrays to generate multiple skeleton items:
+
+```jsx
+{[1, 2, 3].map((item) => (
+  <Group key={item} style={{ marginBottom: '12px' }}>
+    <Skeleton height={40} width={40} circle />
+    <Skeleton height={12} width="60%" radius="xl" />
+  </Group>
+))}
+```
+
+### Avoid Overuse
+
+Skeleton should be used for content with longer loading times; for quickly loaded content, it may not be necessary:
+
+```jsx
+// Recommended: For content requiring network requests
+{loading ? <Skeleton height={200} /> : <DataTable data={data} />}
+
+// Not recommended: For local data
+{loading ? <Skeleton height={20} /> : <span>{localData}</span>}
+```

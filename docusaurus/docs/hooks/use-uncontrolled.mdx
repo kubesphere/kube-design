@@ -1,25 +1,459 @@
 ---
-sidebar_position: 1
+sidebar_position: 20
 ---
 
-# UseUncontrolled
+# useUncontrolled
 
-> Hook 文档正在迁移中，敬请期待！
+管理受控和非受控状态的 Hook，让组件同时支持受控和非受控模式。
 
-## 概述
+## 基本用法
 
-来自 Kube Design 的 `UseUncontrolled` hook。
+```jsx live
+function Demo() {
+  // 非受控模式示例
+  function UncontrolledInput() {
+    const [value, setValue] = useUncontrolled({
+      value: undefined,
+      defaultValue: '',
+      finalValue: '',
+      rule: (val) => val !== undefined,
+      onChange: (val) => console.log('Changed:', val),
+    });
 
-## 使用方法
+    return (
+      <div style={{ marginBottom: '16px' }}>
+        <Input
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder="非受控输入（内部状态）"
+        />
+        <div
+          style={{
+            marginTop: '8px',
+            padding: '8px',
+            backgroundColor: 'var(--ifm-color-emphasis-100)',
+            borderRadius: '4px',
+            fontSize: '14px',
+          }}
+        >
+          当前值: {value || '(空)'}
+        </div>
+      </div>
+    );
+  }
 
-```tsx
-import { UseUncontrolled } from '@kubed/hooks';
+  return <UncontrolledInput />;
+}
+```
 
-function Component() {
-  // Documentation coming soon
+## 受控与非受控切换
+
+同时支持受控和非受控模式：
+
+```jsx live
+function Demo() {
+  const [mode, setMode] = useState('uncontrolled');
+  const [controlledValue, setControlledValue] = useState('受控模式初始值');
+
+  function FlexibleInput({ value, defaultValue, onChange }) {
+    const [internalValue, setInternalValue] = useUncontrolled({
+      value,
+      defaultValue,
+      finalValue: '',
+      rule: (val) => val !== undefined,
+      onChange,
+    });
+
+    return (
+      <Input
+        value={internalValue}
+        onChange={(e) => setInternalValue(e.target.value)}
+        placeholder="灵活的输入框"
+      />
+    );
+  }
+
+  return (
+    <div>
+      <Group spacing="md" style={{ marginBottom: '12px' }}>
+        <Button
+          onClick={() => setMode('uncontrolled')}
+          variant={mode === 'uncontrolled' ? 'filled' : 'outline'}
+        >
+          非受控模式
+        </Button>
+        <Button
+          onClick={() => setMode('controlled')}
+          variant={mode === 'controlled' ? 'filled' : 'outline'}
+        >
+          受控模式
+        </Button>
+      </Group>
+
+      <div
+        style={{
+          padding: '16px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          marginBottom: '12px',
+        }}
+      >
+        {mode === 'uncontrolled' ? (
+          <FlexibleInput defaultValue="非受控初始值" />
+        ) : (
+          <>
+            <FlexibleInput
+              value={controlledValue}
+              onChange={setControlledValue}
+            />
+            <Button
+              onClick={() => setControlledValue('')}
+              size="sm"
+              style={{ marginTop: '8px' }}
+            >
+              清空（外部控制）
+            </Button>
+          </>
+        )}
+      </div>
+
+      <div
+        style={{
+          padding: '12px',
+          backgroundColor: 'var(--ifm-background-surface-color)',
+          border: '1px solid var(--ifm-color-emphasis-300)',
+          borderRadius: '6px',
+          fontSize: '14px',
+        }}
+      >
+        <div><strong>当前模式:</strong> {mode === 'uncontrolled' ? '非受控' : '受控'}</div>
+        {mode === 'controlled' && (
+          <div><strong>外部状态:</strong> {controlledValue || '(空)'}</div>
+        )}
+      </div>
+    </div>
+  );
+}
+```
+
+## 自定义组件
+
+创建同时支持受控和非受控的自定义组件：
+
+```jsx live
+function Demo() {
+  function CustomCounter({ value, defaultValue = 0, onChange }) {
+    const [count, setCount] = useUncontrolled({
+      value,
+      defaultValue,
+      finalValue: 0,
+      rule: (val) => val !== undefined,
+      onChange,
+    });
+
+    const increment = () => setCount(count + 1);
+    const decrement = () => setCount(count - 1);
+    const reset = () => setCount(0);
+
+    return (
+      <div
+        style={{
+          padding: '20px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          textAlign: 'center',
+        }}
+      >
+        <div
+          style={{
+            fontSize: '48px',
+            fontWeight: 'bold',
+            color: 'var(--ifm-color-primary)',
+            marginBottom: '16px',
+          }}
+        >
+          {count}
+        </div>
+        <Group spacing="md">
+          <Button onClick={decrement}>-</Button>
+          <Button onClick={reset} variant="outline">重置</Button>
+          <Button onClick={increment}>+</Button>
+        </Group>
+      </div>
+    );
+  }
+
+  const [mode, setMode] = useState('uncontrolled');
+  const [externalCount, setExternalCount] = useState(10);
+
+  return (
+    <div>
+      <Group spacing="md" style={{ marginBottom: '12px' }}>
+        <Button
+          onClick={() => setMode('uncontrolled')}
+          variant={mode === 'uncontrolled' ? 'filled' : 'outline'}
+        >
+          非受控
+        </Button>
+        <Button
+          onClick={() => setMode('controlled')}
+          variant={mode === 'controlled' ? 'filled' : 'outline'}
+        >
+          受控
+        </Button>
+      </Group>
+
+      {mode === 'uncontrolled' ? (
+        <CustomCounter defaultValue={5} />
+      ) : (
+        <>
+          <CustomCounter value={externalCount} onChange={setExternalCount} />
+          <div
+            style={{
+              marginTop: '12px',
+              padding: '12px',
+              backgroundColor: 'var(--ifm-background-surface-color)',
+              border: '1px solid var(--ifm-color-emphasis-300)',
+              borderRadius: '6px',
+            }}
+          >
+            外部状态值: {externalCount}
+            <Button onClick={() => setExternalCount(0)} size="sm" style={{ marginLeft: '12px' }}>
+              外部重置
+            </Button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+```
+
+## 复杂状态管理
+
+管理复杂对象状态：
+
+```jsx live
+function Demo() {
+  function UserForm({ value, defaultValue, onChange }) {
+    const [formData, setFormData] = useUncontrolled({
+      value,
+      defaultValue: defaultValue || { name: '', email: '' },
+      finalValue: { name: '', email: '' },
+      rule: (val) => val !== undefined,
+      onChange,
+    });
+
+    const updateField = (field, val) => {
+      setFormData({ ...formData, [field]: val });
+    };
+
+    return (
+      <div>
+        <div style={{ marginBottom: '12px' }}>
+          <label style={{ display: 'block', marginBottom: '4px' }}>姓名</label>
+          <Input
+            value={formData.name}
+            onChange={(e) => updateField('name', e.target.value)}
+            placeholder="输入姓名"
+          />
+        </div>
+        <div>
+          <label style={{ display: 'block', marginBottom: '4px' }}>邮箱</label>
+          <Input
+            value={formData.email}
+            onChange={(e) => updateField('email', e.target.value)}
+            placeholder="输入邮箱"
+          />
+        </div>
+      </div>
+    );
+  }
+
+  const [isControlled, setIsControlled] = useState(false);
+  const [userData, setUserData] = useState({ name: 'John', email: 'john@example.com' });
+
+  return (
+    <div>
+      <Button onClick={() => setIsControlled(!isControlled)} style={{ marginBottom: '12px' }}>
+        切换到{isControlled ? '非受控' : '受控'}模式
+      </Button>
+
+      {isControlled ? (
+        <>
+          <UserForm value={userData} onChange={setUserData} />
+          <div
+            style={{
+              marginTop: '12px',
+              padding: '12px',
+              backgroundColor: 'var(--ifm-color-emphasis-100)',
+              borderRadius: '6px',
+              fontSize: '14px',
+            }}
+          >
+            <div><strong>外部状态:</strong></div>
+            <div>姓名: {userData.name}</div>
+            <div>邮箱: {userData.email}</div>
+          </div>
+        </>
+      ) : (
+        <UserForm defaultValue={{ name: 'Guest', email: '' }} />
+      )}
+    </div>
+  );
 }
 ```
 
 ## API
 
-文档编写中。
+### 参数
+
+```ts
+function useUncontrolled<T>({
+  value,
+  defaultValue,
+  finalValue,
+  rule,
+  onChange,
+  onValueUpdate
+}: UncontrolledOptions<T>): readonly [T | null, (value: T | null) => void, UncontrolledMode]
+```
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| value | 受控模式的值 | `T \| null \| undefined` | - |
+| defaultValue | 非受控模式的默认值 | `T \| null \| undefined` | - |
+| finalValue | 当 value 和 defaultValue 都未定义时的最终值 | `T \| null` | - |
+| rule | 判断值是否有效的函数 | `(value: T \| null \| undefined) => boolean` | - |
+| onChange | 值变化时的回调函数 | `(value: T \| null) => void` | - |
+| onValueUpdate | 值更新时的回调函数（可选） | `(value: T \| null) => void` | - |
+
+### 返回值
+
+返回一个只读数组，包含当前值、更新函数和模式。
+
+```ts
+readonly [T | null, (value: T | null) => void, UncontrolledMode]
+```
+
+- `[0]`: 当前值
+- `[1]`: 更新值的函数
+- `[2]`: 当前模式 (`'initial'` | `'controlled'` | `'uncontrolled'`)
+
+#### UncontrolledMode
+
+```ts
+type UncontrolledMode = 'initial' | 'controlled' | 'uncontrolled';
+```
+
+- `'initial'`: 初始状态
+- `'controlled'`: 受控模式
+- `'uncontrolled'`: 非受控模式
+
+## 工作原理
+
+1. **受控模式**: 当 `rule(value)` 返回 `true` 时，使用外部传入的值
+2. **非受控模式**: 当 `rule(value)` 返回 `false` 时，使用内部状态
+3. **默认值**: 非受控模式下，使用 `defaultValue` 初始化
+4. **onChange**: 值变化时总是调用 `onChange` 回调
+5. **rule 函数**: 通常检查 `value !== undefined` 来判断是否为受控模式
+
+## 受控 vs 非受控
+
+| 特性 | 受控模式 | 非受控模式 |
+|------|---------|-----------|
+| 状态管理 | 外部（父组件） | 内部（组件自身） |
+| 初始值 | `value` prop | `defaultValue` prop |
+| 更新方式 | 通过 `onChange` + 外部setState | 组件内部管理 |
+| 适用场景 | 需要外部控制、表单验证 | 简单场景、独立组件 |
+
+## 使用场景
+
+- **组件库开发**: 让组件同时支持两种模式
+- **表单组件**: Input、Select、Checkbox 等
+- **复用组件**: 提高组件的灵活性和复用性
+- **渐进增强**: 从非受控迁移到受控
+- **混合模式**: 部分受控、部分非受控
+
+## 最佳实践
+
+### 组件设计
+
+```tsx
+interface MyComponentProps {
+  value?: string; // 受控模式
+  defaultValue?: string; // 非受控模式
+  onChange?: (value: string) => void;
+}
+
+function MyComponent({ value, defaultValue, onChange }: MyComponentProps) {
+  const [internalValue, setValue] = useUncontrolled({
+    value,
+    defaultValue,
+    finalValue: '',
+    rule: (val) => val !== undefined,
+    onChange,
+  });
+
+  return <input value={internalValue} onChange={(e) => setValue(e.target.value)} />;
+}
+```
+
+### 类型安全
+
+```tsx
+// 确保类型一致
+const [count, setCount] = useUncontrolled<number>({
+  value: props.value,
+  defaultValue: props.defaultValue ?? 0,
+  finalValue: 0,
+  onChange: props.onChange,
+});
+```
+
+### 验证 Props
+
+在开发环境下验证 props 使用是否正确：
+
+```jsx
+if (process.env.NODE_ENV !== 'production') {
+  if (value !== undefined && defaultValue !== undefined) {
+    console.warn('不应同时提供 value 和 defaultValue');
+  }
+}
+```
+
+## 注意事项
+
+- 不要同时传入 `value` 和 `defaultValue`
+- 受控模式下，必须提供 `onChange`
+- 从受控切换到非受控（或反之）可能导致问题
+- `onChange` 在两种模式下都会被调用
+
+## TypeScript
+
+```tsx
+type FormData = {
+  username: string;
+  email: string;
+};
+
+function MyForm({
+  value,
+  defaultValue,
+  onChange,
+}: {
+  value?: FormData;
+  defaultValue?: FormData;
+  onChange?: (value: FormData) => void;
+}) {
+  const [formData, setFormData] = useUncontrolled<FormData>({
+    value,
+    defaultValue,
+    finalValue: { username: '', email: '' },
+    onChange,
+  });
+
+  return (/* ... */);
+}
+```

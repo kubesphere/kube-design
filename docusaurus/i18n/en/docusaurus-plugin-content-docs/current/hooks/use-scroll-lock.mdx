@@ -1,25 +1,307 @@
 ---
-sidebar_position: 1
+sidebar_position: 18
 ---
 
-# UseScrollLock
+# useScrollLock
 
-> Hook documentation is being migrated. Check back soon!
+A Hook for locking and unlocking page scrolling, commonly used in modal and drawer components.
 
-## Overview
+## Basic Usage
 
-`UseScrollLock` hook from Kube Design.
+```jsx live
+function Demo() {
+  const [lockScroll, setLockScroll] = useState(false);
+  useScrollLock(lockScroll);
 
-## Usage
+  return (
+    <div>
+      <Button onClick={() => setLockScroll(!lockScroll)}>
+        {lockScroll ? 'Unlock Scroll' : 'Lock Scroll'}
+      </Button>
+      <div
+        style={{
+          marginTop: '12px',
+          padding: '16px',
+          backgroundColor: lockScroll ? 'var(--ifm-color-warning-lightest)' : 'var(--ifm-color-success-lightest)',
+          borderRadius: '8px',
+        }}
+      >
+        <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>
+          {lockScroll ? '🔒 Scroll Locked' : '🔓 Scroll Unlocked'}
+        </div>
+        <div style={{ fontSize: '14px' }}>
+          {lockScroll ? 'Page background cannot scroll' : 'Page can scroll normally'}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
 
-```tsx
-import { UseScrollLock } from '@kubed/hooks';
+## Modal Example
 
-function Component() {
-  // Documentation coming soon
+Lock background scrolling when modal opens:
+
+```jsx live
+function Demo() {
+  const [opened, setOpened] = useState(false);
+  useScrollLock(opened);
+
+  return (
+    <div>
+      <Button onClick={() => setOpened(true)}>Open Modal</Button>
+      {opened && (
+        <>
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1000,
+            }}
+            onClick={() => setOpened(false)}
+          >
+            <div
+              style={{
+                backgroundColor: 'var(--ifm-background-surface-color)',
+                padding: '32px',
+                borderRadius: '8px',
+                maxWidth: '500px',
+                maxHeight: '80vh',
+                overflow: 'auto',
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3>Modal Title</h3>
+              <p>This is a modal. Background scrolling is locked.</p>
+              <p>You can scroll within this modal, but the background page won't scroll.</p>
+              {Array.from({ length: 10 }, (_, i) => (
+                <p key={i}>Modal content line {i + 1}</p>
+              ))}
+              <Button onClick={() => setOpened(false)}>Close</Button>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+```
+
+## Side Drawer
+
+Lock scrolling when drawer is open:
+
+```jsx live
+function Demo() {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  useScrollLock(drawerOpen);
+
+  return (
+    <div>
+      <Button onClick={() => setDrawerOpen(true)}>Open Sidebar</Button>
+      {drawerOpen && (
+        <>
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.3)',
+              zIndex: 1000,
+            }}
+            onClick={() => setDrawerOpen(false)}
+          />
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              right: 0,
+              bottom: 0,
+              width: '300px',
+              backgroundColor: 'var(--ifm-background-surface-color)',
+              boxShadow: '-2px 0 8px rgba(0, 0, 0, 0.1)',
+              padding: '24px',
+              overflowY: 'auto',
+              zIndex: 1001,
+            }}
+          >
+            <h3>Sidebar</h3>
+            <p>Background scrolling is locked</p>
+            {Array.from({ length: 20 }, (_, i) => (
+              <div key={i} style={{ padding: '8px 0' }}>
+                Menu item {i + 1}
+              </div>
+            ))}
+            <Button onClick={() => setDrawerOpen(false)}>Close</Button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+```
+
+## Conditional Locking
+
+Dynamically control scroll locking based on conditions:
+
+```jsx live
+function Demo() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  // Lock scrolling when any overlay is open
+  const shouldLock = menuOpen || modalOpen;
+  useScrollLock(shouldLock);
+
+  return (
+    <div>
+      <Group spacing="md">
+        <Button onClick={() => setMenuOpen(!menuOpen)}>
+          {menuOpen ? 'Close' : 'Open'} Menu
+        </Button>
+        <Button onClick={() => setModalOpen(!modalOpen)}>
+          {modalOpen ? 'Close' : 'Open'} Dialog
+        </Button>
+      </Group>
+      <div
+        style={{
+          marginTop: '16px',
+          padding: '16px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+        }}
+      >
+        <div>Scroll status: {shouldLock ? '🔒 Locked' : '🔓 Unlocked'}</div>
+        <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)', marginTop: '4px' }}>
+          Menu: {menuOpen ? 'Open' : 'Closed'} | Dialog: {modalOpen ? 'Open' : 'Closed'}
+        </div>
+      </div>
+    </div>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Parameters
+
+```ts
+function useScrollLock(lock: boolean): void
+```
+
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| lock | Whether to lock scrolling | `boolean` | - |
+
+### Return Value
+
+No return value.
+
+## How It Works
+
+When scrolling is locked:
+1. Save current scroll position
+2. Add `overflow: hidden` to `body` element
+3. Set fixed positioning to prevent layout shift
+4. On unlock, remove styles and restore scroll position
+
+## Features
+
+- **Auto Cleanup**: Automatically unlocks on component unmount
+- **No Layout Shift**: Maintains scrollbar width to avoid layout shift
+- **Nested Support**: Supports multiple components using it simultaneously
+- **Position Preservation**: Restores original scroll position on unlock
+
+## Notes
+
+- Locking scroll affects the entire page
+- Ensure scroll is unlocked when component unmounts
+- Modal content area should be independently scrollable
+- Pay attention to mobile compatibility
+
+## Usage Scenarios
+
+- **Modals**: Lock background when modal opens
+- **Drawers**: Side drawer components
+- **Full-Screen Menus**: Mobile full-screen navigation menus
+- **Image Preview**: Full-screen image viewer
+- **Video Player**: Full-screen video playback
+- **Onboarding**: User onboarding overlay
+
+## Alternative Approaches
+
+### Using CSS Classes
+
+```jsx
+// ❌ Manual management
+useEffect(() => {
+  if (opened) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+  return () => {
+    document.body.style.overflow = '';
+  };
+}, [opened]);
+
+// ✅ Using Hook
+useScrollLock(opened);
+```
+
+## Combining with Other Hooks
+
+### With useDisclosure
+
+```jsx
+function Demo() {
+  const { isOpen, open, close } = useDisclosure(false);
+  useScrollLock(isOpen);
+
+  return (
+    <>
+      <Button onClick={open}>Open Modal</Button>
+      {isOpen && <Modal onClose={close}>...</Modal>}
+    </>
+  );
+}
+```
+
+### With useClickOutside
+
+```jsx
+function Demo() {
+  const [opened, setOpened] = useState(false);
+  const ref = useClickOutside(() => setOpened(false));
+  useScrollLock(opened);
+
+  return (
+    <>
+      <Button onClick={() => setOpened(true)}>Open</Button>
+      {opened && (
+        <div ref={ref} style={{ position: 'fixed', ... }}>
+          Content
+        </div>
+      )}
+    </>
+  );
+}
+```
+
+## Best Practices
+
+- Only lock scrolling when necessary (modals, drawers, etc.)
+- Ensure clear unlock method is available during lock
+- Keep popup content scrollable
+- Consider mobile user experience
+- Test multi-layer popup scenarios

@@ -333,5 +333,40 @@
   "theme.tags.tagsPageTitle": {
     "message": "Tags",
     "description": "The title of the tag list page"
+  },
+  "homepage.getStarted": {
+    "message": "Get Started"
+  },
+  "homepage.title": {
+    "message": "Home",
+    "description": "The homepage title"
+  },
+  "homepage.description": {
+    "message": "A React component library built for KubeSphere Console",
+    "description": "The homepage description"
+  },
+  "homepage.features.productionReady.title": {
+    "message": "50+ Production-Ready Components"
+  },
+  "homepage.features.productionReady.description": {
+    "message": "A comprehensive React component library with 50+ components, built and battle-tested in KubeSphere Console. From basic UI elements to complex data visualizations.",
+    "description": "Description for production-ready components feature"
+  },
+  "homepage.features.cloudNative.title": {
+    "message": "Built for Cloud Native"
+  },
+  "homepage.features.cloudNative.description": {
+    "message": "Designed specifically for Kubernetes and cloud-native applications. Features components like {logViewer}, {codeEditor}, and {diffViewer} tailored for DevOps workflows.",
+    "description": "Description for cloud native feature"
+  },
+  "homepage.features.typescript.title": {
+    "message": "TypeScript & Accessibility First"
+  },
+  "homepage.features.typescript.description": {
+    "message": "Full TypeScript support with comprehensive type definitions. Built with accessibility in mind, following WAI-ARIA guidelines to ensure your applications work for everyone.",
+    "description": "Description for TypeScript and accessibility feature"
+  },
+  "homepage.tagline": {
+    "message": "A React component library built for KubeSphere Console"
   }
 }

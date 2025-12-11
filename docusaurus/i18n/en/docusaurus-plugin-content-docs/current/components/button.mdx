@@ -6,14 +6,14 @@ sidebar_position: 1
 
 Used to trigger an operation.
 
-## When To Use
+## When to Use
 
-A button means an operation (or a series of operations). Clicking a button will trigger corresponding business logic.
+A button represents an operation (or a series of operations). Clicking a button will trigger corresponding business logic.
 
-In Kube Design we provide 4 types of button:
+In Kube Design we provide 4 types of buttons:
 
-- **Primary button**: Indicate the main action, one primary button at most in one section
-- **Default button**: Indicate a series of actions without priority
+- **Primary button**: Indicates the main action, one primary button at most in one section
+- **Default button**: Indicates a series of actions without priority
 - **Text button**: Used for the most secondary action
 - **Link button**: Used for external links
 
@@ -21,12 +21,12 @@ In Kube Design we provide 4 types of button:
 
 ### Variants
 
-There are filled button, outline button, text button and link button in Kube Design.
+Kube Design provides filled button, outline button, text button and link button.
 
 ```jsx live
 function Demo() {
   return (
-    <div>
+    <Group spacing="xl">
       <Button variant="filled" color="secondary">
         Filled
       </Button>
@@ -39,14 +39,14 @@ function Demo() {
       <Button variant="link" color="default">
         Link
       </Button>
-    </div>
+    </Group>
   );
 }
 ```
 
 ### Colors
 
-There are six colors of Button. The color property can be set to `default`, `primary`, `secondary`, `success`, `warning` and `error`.
+Button has six colors. The color property can be set to `default`, `primary`, `secondary`, `success`, `warning` and `error`.
 
 ```jsx live
 function Demo() {
@@ -75,17 +75,23 @@ function Demo() {
 }
 ```
 
-### Disabled
+### Disabled State
 
 To mark a button as disabled, add the `disabled` property to the Button.
 
-```jsx
-import { Button, Group } from '@kubed/components';
-
+```jsx live
 function Demo() {
   return (
     <Group spacing="xl">
-      <Button disabled>Disabled Button</Button>
+      <Button variant="filled" color="primary" disabled>
+        Disabled Filled
+      </Button>
+      <Button variant="outline" color="secondary" disabled>
+        Disabled Outline
+      </Button>
+      <Button variant="text" disabled>
+        Disabled Text
+      </Button>
     </Group>
   );
 }
@@ -93,46 +99,47 @@ function Demo() {
 
 ### Block Button
 
-Block property will make the button fit to its parent width.
+The block property will make the button fit to its parent width.
 
-```jsx
-import { Button, Group } from '@kubed/components';
-
+```jsx live
 function Demo() {
   return (
-    <Group>
+    <div style={{ width: '100%' }}>
       <Button variant="filled" color="primary" block>
         Primary Block
       </Button>
-      <Button variant="outline" color="default" block>
-        Outline Block
-      </Button>
-    </Group>
+      <div style={{ marginTop: '12px' }}>
+        <Button variant="outline" color="secondary" block>
+          Outline Block
+        </Button>
+      </div>
+    </div>
   );
 }
 ```
 
 ### Shadow Button
 
-Shadow property will make the button have a shadow effect.
+The shadow property will make the button have a shadow effect.
 
-```jsx
-import { Button, Group } from '@kubed/components';
-
+```jsx live
 function Demo() {
   return (
-    <Group>
+    <Group spacing="xl">
       <Button variant="filled" color="primary" shadow>
         Primary
       </Button>
-      <Button variant="outline" color="secondary" shadow>
+      <Button variant="filled" color="secondary" shadow>
         Secondary
       </Button>
-      <Button variant="outline" color="success" shadow>
+      <Button variant="filled" color="success" shadow>
         Success
       </Button>
-      <Button variant="outline" color="warning" shadow>
+      <Button variant="filled" color="warning" shadow>
         Warning
+      </Button>
+      <Button variant="filled" color="error" shadow>
+        Error
       </Button>
     </Group>
   );
@@ -143,30 +150,31 @@ function Demo() {
 
 Use the `size` and `radius` props to change the size or radius of the button. You can set the value to `xs`, `sm`, `md`, `lg` or `xl`.
 
-```jsx
-import { Button, Group } from '@kubed/components';
-
+```jsx live
 function Demo() {
   return (
     <Group spacing="xl">
-      <Button variant="filled" color="default" radius="sm" size="sm">
+      <Button variant="filled" color="primary" radius="sm" size="xs">
+        XS Size
+      </Button>
+      <Button variant="filled" color="primary" radius="md" size="sm">
         Small
       </Button>
       <Button variant="filled" color="success" radius="md" size="md">
         Medium
       </Button>
-      <Button variant="filled" color="error" radius="lg" size="sm">
-        Large Radius
+      <Button variant="filled" color="warning" radius="lg" size="lg">
+        Large
       </Button>
-      <Button variant="filled" color="warning" radius="xl" size="lg">
-        Extra Large
+      <Button variant="filled" color="error" radius="xl" size="xl">
+        XL Size
       </Button>
     </Group>
   );
 }
 ```
 
-### Loading
+### Loading State
 
 A loading indicator can be added to a button by setting the `loading` property.
 
@@ -198,6 +206,7 @@ Button components can contain an Icon. This is done by setting the `leftIcon` or
 
 ```jsx live
 function Demo() {
+  const { Add } = KubedIcons;
   return (
     <Group spacing="xl">
       <Button variant="filled" radius="xl" leftIcon={<Add size={16} />}>
@@ -221,14 +230,15 @@ function Demo() {
 
 The `as` attribute can change the underlying element used by the component.
 
-```jsx
-import { Button, Group } from '@kubed/components';
-
+```jsx live
 function Demo() {
   return (
-    <Group>
-      <Button as="a" href="/login">
+    <Group spacing="xl">
+      <Button as="a" href="https://kubesphere.io" target="_blank" variant="filled" color="primary">
         Link Button
+      </Button>
+      <Button as="a" href="#button" variant="outline" color="secondary">
+        Anchor Link
       </Button>
     </Group>
   );
@@ -243,12 +253,19 @@ function Demo() {
 | --------- | ------------------------- | ---------------------------------------------------------------------------- | ----------- |
 | variant   | Button variant            | `'filled' \| 'outline' \| 'text' \| 'link'`                                  | `'filled'`  |
 | color     | Button color              | `'default' \| 'primary' \| 'secondary' \| 'success' \| 'warning' \| 'error'` | `'default'` |
-| size      | Button size               | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                                       | `'md'`      |
-| radius    | Border radius             | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                                       | `'md'`      |
+| size      | Button size               | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                                       | `'sm'`      |
+| radius    | Border radius             | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number`                             | `'xl'`      |
 | disabled  | Disabled state            | `boolean`                                                                    | `false`     |
 | loading   | Loading state             | `boolean`                                                                    | `false`     |
 | block     | Full width button         | `boolean`                                                                    | `false`     |
 | shadow    | Add shadow effect         | `boolean`                                                                    | `false`     |
-| leftIcon  | Icon on the left side     | `ReactNode`                                                                  | -           |
-| rightIcon | Icon on the right side    | `ReactNode`                                                                  | -           |
+| leftIcon  | Left side icon            | `ReactNode`                                                                  | -           |
+| rightIcon | Right side icon           | `ReactNode`                                                                  | -           |
 | as        | Change underlying element | `string \| Component`                                                        | `'button'`  |
+| className | Custom class name         | `string`                                                                     | -           |
+| children  | Button content            | `ReactNode`                                                                  | -           |
+| others    | Native attributes         | `ButtonHTMLAttributes<HTMLButtonElement>`                                    | -           |
+
+:::info
+Button component inherits all native HTML button element attributes (such as `onClick`, `onMouseEnter`, `type`, etc.). When using the `as` property, it will inherit the attributes of the corresponding element.
+:::

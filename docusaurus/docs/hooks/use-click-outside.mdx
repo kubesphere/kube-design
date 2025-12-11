@@ -2,24 +2,138 @@
 sidebar_position: 1
 ---
 
-# UseClickOutside
+# useClickOutside
 
-> Hook 文档正在迁移中，敬请期待！
+检测点击元素外部的 Hook，常用于实现下拉菜单、模态框等组件的点击外部关闭功能。
 
-## 概述
+## 基本用法
 
-来自 Kube Design 的 `UseClickOutside` hook。
+点击外部区域触发回调：
 
-## 使用方法
+```jsx live
+function Demo() {
+  const [opened, setOpened] = useState(false);
+  const ref = useClickOutside(() => setOpened(false));
 
-```tsx
-import { UseClickOutside } from '@kubed/hooks';
+  return (
+    <div>
+      <Button onClick={() => setOpened(true)}>打开下拉菜单</Button>
+      {opened && (
+        <div
+          ref={ref}
+          style={{
+            marginTop: '10px',
+            padding: '20px',
+            backgroundColor: 'var(--ifm-color-emphasis-100)',
+            borderRadius: '8px',
+            border: '1px solid var(--ifm-color-emphasis-300)',
+          }}
+        >
+          <div>点击外部关闭</div>
+          <Button onClick={() => setOpened(false)} style={{ marginTop: '10px' }}>
+            关闭
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}
+```
 
-function Component() {
-  // Documentation coming soon
+## 自定义事件
+
+可以自定义触发事件类型：
+
+```jsx live
+function Demo() {
+  const [opened, setOpened] = useState(false);
+  const ref = useClickOutside(() => setOpened(false), ['mouseup', 'touchend']);
+
+  return (
+    <div>
+      <Button onClick={() => setOpened(true)}>打开（自定义事件）</Button>
+      {opened && (
+        <div
+          ref={ref}
+          style={{
+            marginTop: '10px',
+            padding: '20px',
+            backgroundColor: 'var(--ifm-color-emphasis-100)',
+            borderRadius: '8px',
+          }}
+        >
+          使用 mouseup 和 touchend 事件
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## 多个元素
+
+监听多个元素的外部点击：
+
+```jsx live
+function Demo() {
+  const [opened, setOpened] = useState(false);
+  const buttonRef = useRef();
+  const dropdownRef = useRef();
+
+  useClickOutside(() => setOpened(false), null, [buttonRef.current, dropdownRef.current]);
+
+  return (
+    <div>
+      <Button ref={buttonRef} onClick={() => setOpened(!opened)}>
+        切换
+      </Button>
+      {opened && (
+        <div
+          ref={dropdownRef}
+          style={{
+            marginTop: '10px',
+            padding: '20px',
+            backgroundColor: 'var(--ifm-color-emphasis-100)',
+            borderRadius: '8px',
+          }}
+        >
+          点击按钮或此区域外部关闭
+        </div>
+      )}
+    </div>
+  );
 }
 ```
 
 ## API
 
-文档编写中。
+### 参数
+
+```ts
+function useClickOutside<T extends HTMLElement = any>(
+  handler: () => void,
+  events?: string[] | null,
+  nodes?: HTMLElement[]
+): RefObject<T>
+```
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| handler | 点击外部时触发的回调函数 | `() => void` | - |
+| events | 监听的事件类型数组 | `string[] \| null` | `['mousedown', 'touchstart']` |
+| nodes | 要监听的多个元素节点数组 | `HTMLElement[]` | - |
+
+### 返回值
+
+返回一个 ref 对象，需要绑定到要监听的元素上。
+
+```ts
+RefObject<T>
+```
+
+## 使用场景
+
+- **下拉菜单**: 点击菜单外部关闭
+- **模态框**: 点击遮罩层关闭弹窗
+- **弹出面板**: 点击外部收起面板
+- **表单**: 点击外部保存草稿或取消编辑

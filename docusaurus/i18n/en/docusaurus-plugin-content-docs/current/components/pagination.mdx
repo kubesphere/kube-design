@@ -4,22 +4,660 @@ sidebar_position: 1
 
 # Pagination
 
-> Component documentation is being migrated. Check back soon!
+Use pagination to separate long lists, loading only one page at a time.
 
-## Overview
+## When to Use
 
-Pagination component from Kube Design library.
+- When loading/rendering all data would take considerable time
+- Allow users to browse data by switching pages
+- Used for data display scenarios like tables and lists
+
+In Kube Design, the Pagination component provides clean pagination functionality:
+
+- **Simple Design**: Only displays current page and total pages for a clear, uncluttered interface
+- **Icon Navigation**: Use forward/backward icons to switch pages
+- **Total Count Display**: Optional display of total data count
+- **Controlled Mode**: Support page control through the page property
 
 ## Examples
 
 ### Basic Usage
 
+The most basic paginator.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  return <Pagination totalCount={100} />;
+}
+```
+
+### Page Change Synchronization
+
+Synchronize page state externally through callback functions.
+
+```jsx live
+function Demo() {
+  const [page, setPage] = React.useState(0);
+
+  return (
+    <Group direction="column" spacing="md">
+      <Text>Current page: {page + 1}</Text>
+      <Pagination totalCount={100} page={page} onNextPage={setPage} onPreviousPage={setPage} />
+    </Group>
+  );
+}
+```
+
+### Different Page Sizes
+
+Set the number of items per page through the `pageSize` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="xl">
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          10 items per page:
+        </Text>
+        <Pagination totalCount={100} pageSize={10} />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          20 items per page:
+        </Text>
+        <Pagination totalCount={100} pageSize={20} />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          50 items per page:
+        </Text>
+        <Pagination totalCount={100} pageSize={50} />
+      </div>
+    </Group>
+  );
+}
+```
+
+### Hide Total Count
+
+Use `showTotal={false}` to hide the total count display.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="xl">
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Show total (default):
+        </Text>
+        <Pagination totalCount={100} showTotal />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Hide total:
+        </Text>
+        <Pagination totalCount={100} showTotal={false} />
+      </div>
+    </Group>
+  );
+}
+```
+
+### Data Loading
+
+Use with data loading.
+
+```jsx live
+function Demo() {
+  const [page, setPage] = React.useState(0);
+  const [loading, setLoading] = React.useState(false);
+  const pageSize = 10;
+
+  const loadData = (newPage) => {
+    setLoading(true);
+    // Simulate data loading
+    setTimeout(() => {
+      setPage(newPage);
+      setLoading(false);
+    }, 500);
+  };
+
+  const items = Array.from({ length: pageSize }, (_, i) => ({
+    id: page * pageSize + i + 1,
+    name: `Item ${page * pageSize + i + 1}`,
+  }));
+
+  return (
+    <Group direction="column" spacing="md">
+      <Card style={{ padding: '16px', minHeight: '200px' }}>
+        {loading ? (
+          <Loading />
+        ) : (
+          <Group direction="column" spacing="xs">
+            {items.map((item) => (
+              <Text key={item.id} size="sm">
+                {item.name}
+              </Text>
+            ))}
+          </Group>
+        )}
+      </Card>
+      <Pagination
+        totalCount={100}
+        page={page}
+        pageSize={pageSize}
+        onNextPage={loadData}
+        onPreviousPage={loadData}
+      />
+    </Group>
+  );
+}
+```
+
+### List Pagination
+
+Using pagination in a list.
+
+```jsx live
+function Demo() {
+  const [page, setPage] = React.useState(0);
+  const pageSize = 5;
+
+  const allPods = Array.from({ length: 27 }, (_, i) => ({
+    id: i + 1,
+    name: `nginx-deployment-${i + 1}`,
+    status: i % 3 === 0 ? 'Running' : i % 3 === 1 ? 'Pending' : 'Error',
+  }));
+
+  const startIndex = page * pageSize;
+  const currentPods = allPods.slice(startIndex, startIndex + pageSize);
+
+  return (
+    <Group direction="column" spacing="md">
+      <Card>
+        {currentPods.map((pod) => (
+          <div
+            key={pod.id}
+            style={{
+              padding: '12px 16px',
+              borderBottom: '1px solid #eff4f9',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Text>{pod.name}</Text>
+            <Badge
+              variant="dot"
+              color={
+                pod.status === 'Running'
+                  ? 'success'
+                  : pod.status === 'Pending'
+                  ? 'warning'
+                  : 'error'
+              }
+            >
+              {pod.status}
+            </Badge>
+          </div>
+        ))}
+      </Card>
+      <Pagination
+        totalCount={allPods.length}
+        page={page}
+        pageSize={pageSize}
+        onNextPage={setPage}
+        onPreviousPage={setPage}
+      />
+    </Group>
+  );
+}
+```
+
+### Card Pagination
+
+Using pagination in a card list.
+
+```jsx live
+function Demo() {
+  const [page, setPage] = React.useState(0);
+  const pageSize = 4;
+
+  const allProjects = Array.from({ length: 15 }, (_, i) => ({
+    id: i + 1,
+    name: `Project ${i + 1}`,
+    description: `Project description ${i + 1}`,
+  }));
+
+  const startIndex = page * pageSize;
+  const currentProjects = allProjects.slice(startIndex, startIndex + pageSize);
+
+  return (
+    <Group direction="column" spacing="md">
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+        {currentProjects.map((project) => (
+          <Card key={project.id} style={{ padding: '16px' }}>
+            <Text variant="h6" style={{ marginBottom: '8px' }}>
+              {project.name}
+            </Text>
+            <Text size="sm" color="secondary">
+              {project.description}
+            </Text>
+          </Card>
+        ))}
+      </div>
+      <Pagination
+        totalCount={allProjects.length}
+        page={page}
+        pageSize={pageSize}
+        onNextPage={setPage}
+        onPreviousPage={setPage}
+      />
+    </Group>
+  );
+}
+```
+
+### Custom Styles
+
+Customize styles through the `style` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="xl">
+      <Pagination totalCount={100} />
+      <Pagination
+        totalCount={100}
+        style={{
+          padding: '12px',
+          backgroundColor: '#f5f7fa',
+          borderRadius: '4px',
+        }}
+      />
+      <Pagination
+        totalCount={100}
+        style={{
+          padding: '12px',
+          border: '1px solid #d8dee5',
+          borderRadius: '4px',
+        }}
+      />
+    </Group>
+  );
+}
+```
+
+### Edge Cases
+
+Handle edge cases: single page, no data, etc.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="xl">
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Single page:
+        </Text>
+        <Pagination totalCount={5} pageSize={10} />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Small data set:
+        </Text>
+        <Pagination totalCount={25} pageSize={10} />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Large data set:
+        </Text>
+        <Pagination totalCount={10000} pageSize={20} />
+      </div>
+    </Group>
+  );
+}
+```
+
+### Complete Example
+
+Comprehensive example: list pagination with search and sorting.
+
+```jsx live
+function Demo() {
+  const [page, setPage] = React.useState(0);
+  const [filter, setFilter] = React.useState('all');
+  const pageSize = 5;
+
+  const allData = Array.from({ length: 23 }, (_, i) => ({
+    id: i + 1,
+    name: `Service ${i + 1}`,
+    type: i % 2 === 0 ? 'ClusterIP' : 'NodePort',
+    status: i % 3 === 0 ? 'Active' : 'Inactive',
+  }));
+
+  const filteredData = filter === 'all' ? allData : allData.filter((item) => item.type === filter);
+
+  const startIndex = page * pageSize;
+  const currentData = filteredData.slice(startIndex, startIndex + pageSize);
+
+  const handleFilterChange = (newFilter) => {
+    setFilter(newFilter);
+    setPage(0); // Reset to first page
+  };
+
+  return (
+    <Group direction="column" spacing="md">
+      <Group spacing="xs">
+        <Button
+          size="sm"
+          variant={filter === 'all' ? 'filled' : 'outline'}
+          onClick={() => handleFilterChange('all')}
+        >
+          All
+        </Button>
+        <Button
+          size="sm"
+          variant={filter === 'ClusterIP' ? 'filled' : 'outline'}
+          onClick={() => handleFilterChange('ClusterIP')}
+        >
+          ClusterIP
+        </Button>
+        <Button
+          size="sm"
+          variant={filter === 'NodePort' ? 'filled' : 'outline'}
+          onClick={() => handleFilterChange('NodePort')}
+        >
+          NodePort
+        </Button>
+      </Group>
+      <Card>
+        {currentData.map((item) => (
+          <div
+            key={item.id}
+            style={{
+              padding: '12px 16px',
+              borderBottom: '1px solid #eff4f9',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <div>
+              <Text>{item.name}</Text>
+              <Text size="xs" color="secondary" style={{ marginTop: '4px' }}>
+                {item.type}
+              </Text>
+            </div>
+            <Badge variant="dot" color={item.status === 'Active' ? 'success' : 'secondary'}>
+              {item.status}
+            </Badge>
+          </div>
+        ))}
+      </Card>
+      <Pagination
+        totalCount={filteredData.length}
+        page={page}
+        pageSize={pageSize}
+        onNextPage={setPage}
+        onPreviousPage={setPage}
+      />
+    </Group>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### Pagination
+
+| Property       | Description                         | Type                     | Default      |
+| -------------- | ----------------------------------- | ------------------------ | ------------ |
+| totalCount     | Total data count                    | `number`                 | **Required** |
+| page           | Initial page number (starts from 0) | `number`                 | `0`          |
+| pageSize       | Number of items per page            | `number`                 | `10`         |
+| showTotal      | Whether to show total count         | `boolean`                | `true`       |
+| onNextPage     | Callback for next page              | `(page: number) => void` | -            |
+| onPreviousPage | Callback for previous page          | `(page: number) => void` | -            |
+| className      | Custom class name                   | `string`                 | -            |
+| style          | Custom styles                       | `CSSProperties`          | -            |
+
+:::info
+
+**About page numbering**:
+
+- The `page` property starts counting from 0 (0 represents the first page)
+- The `page` property only serves as the initial value; the component uses useState internally to maintain current page state
+- When displayed, it automatically adds 1 to show as "1 / 10" format
+- Total page count is automatically calculated via `Math.ceil(totalCount / pageSize)`
+
+**About component state**:
+
+- Pagination component uses internal state to manage current page number
+- The `page` prop is only used during component initialization and won't sync afterwards
+- For external page control, update data display in `onNextPage`/`onPreviousPage` callbacks
+- This is a semi-controlled mode: page number managed internally, data managed externally
+
+**About callback functions**:
+
+- `onNextPage` and `onPreviousPage` receive the new page number as a parameter
+- Page numbers in callbacks also start from 0
+- You can perform data loading, state updates, etc. in callbacks
+- Default value is `noop` (empty function), won't error if not provided
+
+**About boundary handling**:
+
+- On the first page (page === 0), the "previous page" button is automatically disabled
+- On the last page (page + 1 === pageCount), the "next page" button is automatically disabled
+- Boundary check logic: previous page won't go below 0, next page won't exceed pageCount
+- When there's only one page, both buttons are disabled
+
+**About total count display**:
+
+- By default shows `totalItems` text and count (e.g., "Total 100")
+- Can be hidden via `showTotal={false}`
+- Text content configured through LocaleProvider's `Pagination.totalItems`
+- When hidden, renders an empty div to maintain layout
+
+**About icons**:
+
+- Uses `Previous` and `Next` icons from `@kubed/icons`
+- Icon size is 20px
+- Buttons use `variant="text"` and `radius="sm"` styles
+
+:::
+
+## Usage Recommendations
+
+### Set Appropriate Page Size
+
+Set appropriate pageSize based on use case:
+
+```jsx
+// Large list items: use smaller pageSize
+<Pagination totalCount={100} pageSize={5} />
+
+// Small list items: use larger pageSize
+<Pagination totalCount={100} pageSize={20} />
+
+// Mobile: use even smaller pageSize
+<Pagination totalCount={100} pageSize={10} />
+```
+
+### Handle Data Loading
+
+Provide loading state during data loading:
+
+```jsx
+const [loading, setLoading] = useState(false);
+
+const handlePageChange = (newPage) => {
+  setLoading(true);
+  fetchData(newPage).then(() => {
+    setPage(newPage);
+    setLoading(false);
+  });
+};
+
+<>
+  {loading ? <Loading /> : <DataList data={currentData} />}
+  <Pagination
+    totalCount={total}
+    page={page}
+    onNextPage={handlePageChange}
+    onPreviousPage={handlePageChange}
+  />
+</>;
+```
+
+### Reset Page on Filter
+
+When data is filtered, reset to first page:
+
+```jsx
+const handleFilterChange = (filter) => {
+  setFilter(filter);
+  setPage(0); // Reset to first page
+};
+```
+
+### Maintain Consistent Total Count
+
+Ensure totalCount reflects filtered data total:
+
+```jsx
+const filteredData = data.filter(filterFn);
+
+<Pagination totalCount={filteredData.length} pageSize={10} />;
+```
+
+### Understand Component State Management
+
+Pagination uses semi-controlled mode:
+
+```jsx
+// Component manages page state internally
+// page prop only used for initialization
+const [page, setPage] = useState(0);
+
+// Update displayed data in callback
+const handlePageChange = (newPage) => {
+  // Component already updated page number internally
+  // Here we only need to update data display
+  const start = newPage * pageSize;
+  const end = start + pageSize;
+  setCurrentData(allData.slice(start, end));
+};
+
+<Pagination
+  totalCount={100}
+  page={0} // Only for initialization
+  pageSize={10}
+  onNextPage={handlePageChange}
+  onPreviousPage={handlePageChange}
+/>;
+```
+
+### Use with Tables
+
+Use paginator at the bottom of tables:
+
+```jsx
+<>
+  <Table data={currentPageData} />
+  <div style={{ marginTop: '16px' }}>
+    <Pagination
+      totalCount={totalCount}
+      page={page}
+      onNextPage={handleNext}
+      onPreviousPage={handlePrev}
+    />
+  </div>
+</>
+```
+
+### Handle Edge Cases
+
+Properly handle single page or no data scenarios:
+
+```jsx
+// When no data, don't show paginator
+{
+  totalCount > 0 && <Pagination totalCount={totalCount} pageSize={pageSize} />;
+}
+
+// When only one page, paginator automatically disables buttons
+<Pagination totalCount={5} pageSize={10} />;
+```
+
+### Style Customization
+
+Customize styles based on use case:
+
+```jsx
+// Paginator inside card
+<Pagination
+  totalCount={100}
+  style={{
+    padding: '12px 16px',
+    borderTop: '1px solid #eff4f9',
+  }}
+/>
+
+// Highlighted paginator
+<Pagination
+  totalCount={100}
+  style={{
+    padding: '12px',
+    backgroundColor: '#f5f7fa',
+    borderRadius: '4px',
+  }}
+/>
+```
+
+### URL Synchronization
+
+Sync page number to URL when needed:
+
+```jsx
+const [searchParams, setSearchParams] = useSearchParams();
+const page = parseInt(searchParams.get('page') || '0');
+
+const handlePageChange = (newPage) => {
+  setSearchParams({ page: newPage.toString() });
+};
+
+<Pagination
+  totalCount={100}
+  page={page}
+  onNextPage={handlePageChange}
+  onPreviousPage={handlePageChange}
+/>;
+```
+
+### Server-Side Pagination
+
+Use with API requests:
+
+```jsx
+const [page, setPage] = useState(0);
+const [data, setData] = useState([]);
+const [total, setTotal] = useState(0);
+const pageSize = 10;
+
+useEffect(() => {
+  fetchData(page, pageSize).then((res) => {
+    setData(res.items);
+    setTotal(res.total);
+  });
+}, [page]);
+
+<Pagination
+  totalCount={total}
+  page={page}
+  pageSize={pageSize}
+  onNextPage={setPage}
+  onPreviousPage={setPage}
+/>;
+```

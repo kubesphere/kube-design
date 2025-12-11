@@ -2,24 +2,653 @@
 sidebar_position: 1
 ---
 
-# Timepicker
+# TimePicker
 
-> Component documentation is being migrated. Check back soon!
+A component for selecting time.
 
-## Overview
+## When to Use
 
-Timepicker component from Kube Design library.
+- When users need to select a specific time
+- Form scenarios that need time input
+- Need to select a time range
+- Scenarios that need to limit selectable time
+
+In Kube Design, the TimePicker component provides flexible time selection functionality:
+
+- **Based on Day.js**: Uses the Day.js library for time handling
+- **12/24 Hour Formats**: Supports both 12-hour and 24-hour time formats
+- **Time Range**: Provides RangePicker for selecting time ranges
+- **Step Intervals**: Supports custom step intervals for hours, minutes, and seconds
+- **Disabled Times**: Supports disabling specific time slots
+- **Extra Footer**: Supports custom footer content
 
 ## Examples
 
 ### Basic Usage
 
+The most basic time picker usage.
+
 ```jsx live
 function Demo() {
-  return <div>Documentation coming soon...</div>;
+  const [value, setValue] = React.useState(null);
+
+  return (
+    <Group direction="column" spacing="md">
+      <TimePicker value={value} onChange={setValue} placeholder="请选择时间" />
+      {value && (
+        <Text size="sm">
+          Selected time: {value.format('HH:mm:ss')}
+        </Text>
+      )}
+    </Group>
+  );
+}
+```
+
+### 12-Hour Format
+
+Use 12-hour format through the `use12Hours` property.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  return (
+    <Group direction="column" spacing="md">
+      <TimePicker value={value} onChange={setValue} use12Hours placeholder="请选择时间" />
+      {value && (
+        <Text size="sm">
+          Selected time: {value.format('hh:mm:ss A')}
+        </Text>
+      )}
+    </Group>
+  );
+}
+```
+
+### Custom Format
+
+Customize the time display format through the `format` property.
+
+```jsx live
+function Demo() {
+  const [value1, setValue1] = React.useState(null);
+  const [value2, setValue2] = React.useState(null);
+  const [value3, setValue3] = React.useState(null);
+
+  return (
+    <Group direction="column" spacing="md">
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          Hour and minute (HH:mm):
+        </Text>
+        <TimePicker value={value1} onChange={setValue1} format="HH:mm" placeholder="请选择时间" />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          Hour, minute and second (HH:mm:ss):
+        </Text>
+        <TimePicker value={value2} onChange={setValue2} format="HH:mm:ss" placeholder="请选择时间" />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          12-hour format (hh:mm:ss A):
+        </Text>
+        <TimePicker
+          value={value3}
+          onChange={setValue3}
+          format="hh:mm:ss A"
+          use12Hours
+          placeholder="请选择时间"
+        />
+      </div>
+    </Group>
+  );
+}
+```
+
+### Step Intervals
+
+Set step intervals for time selection through `hourStep`, `minuteStep`, `secondStep`.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  return (
+    <Group direction="column" spacing="md">
+      <Text size="sm">Hour step: 2, Minute step: 15, Second step: 10</Text>
+      <TimePicker
+        value={value}
+        onChange={setValue}
+        hourStep={2}
+        minuteStep={15}
+        secondStep={10}
+        placeholder="请选择时间"
+      />
+    </Group>
+  );
+}
+```
+
+### Disabled Times
+
+Disable specific times through `disabledHours`, `disabledMinutes`, `disabledSeconds`.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  return (
+    <Group direction="column" spacing="md">
+      <Text size="sm">Disabled times: 0-8 hours, 0-29 minutes, 0-29 seconds</Text>
+      <TimePicker
+        value={value}
+        onChange={setValue}
+        disabledHours={() => [0, 1, 2, 3, 4, 5, 6, 7, 8]}
+        disabledMinutes={() => Array.from({ length: 30 }, (_, i) => i)}
+        disabledSeconds={() => Array.from({ length: 30 }, (_, i) => i)}
+        placeholder="请选择时间"
+      />
+    </Group>
+  );
+}
+```
+
+### Size Variants
+
+TimePicker supports three sizes: `sm`, `md`, `lg`.
+
+```jsx live
+function Demo() {
+  const [value1, setValue1] = React.useState(null);
+  const [value2, setValue2] = React.useState(null);
+  const [value3, setValue3] = React.useState(null);
+
+  return (
+    <Group direction="column" spacing="md">
+      <TimePicker size="sm" value={value1} onChange={setValue1} placeholder="Small size" />
+      <TimePicker size="md" value={value2} onChange={setValue2} placeholder="Medium size (default)" />
+      <TimePicker size="lg" value={value3} onChange={setValue3} placeholder="Large size" />
+    </Group>
+  );
+}
+```
+
+### Disabled State
+
+Disable the time picker through the `disabled` property.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  return (
+    <Group direction="column" spacing="md">
+      <TimePicker value={value} onChange={setValue} disabled placeholder="已禁用" />
+      <TimePicker value={dayjs('12:30:00', 'HH:mm:ss')} disabled placeholder="已禁用并有默认值" />
+    </Group>
+  );
+}
+```
+
+### With Extra Footer
+
+Add custom footer content through the `renderExtraFooter` property.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(null);
+
+  return (
+    <TimePicker
+      value={value}
+      onChange={setValue}
+      renderExtraFooter={() => (
+        <div style={{ padding: '8px', borderTop: '1px solid #eff4f9' }}>
+          <Button
+            size="xs"
+            variant="text"
+            onClick={() => setValue(dayjs())}
+          >
+            现在
+          </Button>
+        </div>
+      )}
+      placeholder="请选择时间"
+    />
+  );
+}
+```
+
+### Time Range Picker
+
+Use `TimePicker.RangePicker` to select a time range.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState([null, null]);
+  const { RangePicker } = TimePicker;
+
+  return (
+    <Group direction="column" spacing="md">
+      <RangePicker value={value} onChange={setValue} placeholder={['开始时间', '结束时间']} />
+      {value[0] && value[1] && (
+        <Text size="sm">
+          Selected time range: {value[0].format('HH:mm:ss')} ~ {value[1].format('HH:mm:ss')}
+        </Text>
+      )}
+    </Group>
+  );
+}
+```
+
+### Range Picker with Step Intervals
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState([null, null]);
+  const { RangePicker } = TimePicker;
+
+  return (
+    <Group direction="column" spacing="md">
+      <Text size="sm">Hour step: 1, Minute step: 15</Text>
+      <RangePicker
+        value={value}
+        onChange={setValue}
+        hourStep={1}
+        minuteStep={15}
+        placeholder={['开始时间', '结束时间']}
+      />
+    </Group>
+  );
+}
+```
+
+### Task Scheduling Time Selection
+
+Apply in a task scheduling scenario.
+
+```jsx live
+function Demo() {
+  const [startTime, setStartTime] = React.useState(null);
+  const [endTime, setEndTime] = React.useState(null);
+
+  return (
+    <Card>
+      <Text size="sm" weight={600} style={{ marginBottom: '16px' }}>
+        任务调度时间配置
+      </Text>
+      <Group direction="column" spacing="md">
+        <div>
+          <Text size="sm" style={{ marginBottom: '8px' }}>
+            Start time:
+          </Text>
+          <TimePicker
+            value={startTime}
+            onChange={setStartTime}
+            format="HH:mm"
+            minuteStep={15}
+            placeholder="请选择开始时间"
+          />
+        </div>
+        <div>
+          <Text size="sm" style={{ marginBottom: '8px' }}>
+            End time:
+          </Text>
+          <TimePicker
+            value={endTime}
+            onChange={setEndTime}
+            format="HH:mm"
+            minuteStep={15}
+            placeholder="请选择结束时间"
+            disabledHours={() => {
+              if (!startTime) return [];
+              const hour = startTime.hour();
+              return Array.from({ length: hour + 1 }, (_, i) => i);
+            }}
+          />
+        </div>
+      </Group>
+    </Card>
+  );
+}
+```
+
+### Service Time Window Configuration
+
+Apply in a service time window configuration scenario.
+
+```jsx live
+function Demo() {
+  const [workTime, setWorkTime] = React.useState([null, null]);
+  const { RangePicker } = TimePicker;
+
+  return (
+    <Card>
+      <Text size="sm" weight={600} style={{ marginBottom: '12px' }}>
+        服务时间窗口配置
+      </Text>
+      <Group direction="column" spacing="md">
+        <div>
+          <Text size="sm" style={{ marginBottom: '8px' }}>
+            Working hours:
+          </Text>
+          <RangePicker
+            value={workTime}
+            onChange={setWorkTime}
+            format="HH:mm"
+            minuteStep={30}
+            placeholder={['营业开始', '营业结束']}
+            disabledHours={() => [0, 1, 2, 3, 4, 5, 6, 22, 23]}
+          />
+          {workTime[0] && workTime[1] && (
+            <Text size="xs" color="secondary" style={{ marginTop: '8px' }}>
+              Service time: {workTime[0].format('HH:mm')} - {workTime[1].format('HH:mm')}
+            </Text>
+          )}
+        </div>
+      </Group>
+    </Card>
+  );
 }
 ```
 
 ## API
 
-Documentation in progress.
+### TimePicker
+
+| Property           | Description                        | Type                                           | Default     |
+| ------------------ | ---------------------------------- | ---------------------------------------------- | ----------- |
+| value              | Current selected time              | `Dayjs \| null`                                | -           |
+| defaultValue       | Default selected time              | `Dayjs`                                        | -           |
+| onChange           | Callback when time changes         | `(value: Dayjs \| null, timeString: string) => void` | - |
+| format             | Time display format                | `string`                                       | `'HH:mm:ss'`|
+| use12Hours         | Use 12-hour format                 | `boolean`                                      | `false`     |
+| hourStep           | Hour step interval                 | `number`                                       | `1`         |
+| minuteStep         | Minute step interval               | `number`                                       | `1`         |
+| secondStep         | Second step interval               | `number`                                       | `1`         |
+| disabledHours      | Disabled hour options              | `() => number[]`                               | -           |
+| disabledMinutes    | Disabled minute options            | `(selectedHour: number) => number[]`           | -           |
+| disabledSeconds    | Disabled second options            | `(selectedHour: number, selectedMinute: number) => number[]` | - |
+| hideDisabledOptions| Hide disabled options              | `boolean`                                      | `false`     |
+| size               | Input size                         | `'sm' \| 'md' \| 'lg'`                         | `'md'`      |
+| disabled           | Whether disabled                   | `boolean`                                      | `false`     |
+| placeholder        | Input placeholder                  | `string`                                       | `'请选择时间'` |
+| renderExtraFooter  | Extra footer content               | `() => ReactNode`                              | -           |
+| className          | Custom class name                  | `string`                                       | -           |
+| style              | Custom styles                      | `CSSProperties`                                | -           |
+
+### TimePicker.RangePicker
+
+| Property           | Description                        | Type                                           | Default     |
+| ------------------ | ---------------------------------- | ---------------------------------------------- | ----------- |
+| value              | Current selected time range        | `[Dayjs \| null, Dayjs \| null]`               | -           |
+| defaultValue       | Default selected time range        | `[Dayjs, Dayjs]`                               | -           |
+| onChange           | Callback when time range changes   | `(values: [Dayjs \| null, Dayjs \| null], timeStrings: [string, string]) => void` | - |
+| format             | Time display format                | `string`                                       | `'HH:mm:ss'`|
+| use12Hours         | Use 12-hour format                 | `boolean`                                      | `false`     |
+| hourStep           | Hour step interval                 | `number`                                       | `1`         |
+| minuteStep         | Minute step interval               | `number`                                       | `1`         |
+| secondStep         | Second step interval               | `number`                                       | `1`         |
+| disabledHours      | Disabled hour options              | `() => number[]`                               | -           |
+| disabledMinutes    | Disabled minute options            | `(selectedHour: number) => number[]`           | -           |
+| disabledSeconds    | Disabled second options            | `(selectedHour: number, selectedMinute: number) => number[]` | - |
+| size               | Input size                         | `'sm' \| 'md' \| 'lg'`                         | `'md'`      |
+| disabled           | Whether disabled                   | `boolean`                                      | `false`     |
+| placeholder        | Input placeholder array            | `[string, string]`                             | `['开始时间', '结束时间']` |
+| className          | Custom class name                  | `string`                                       | -           |
+| style              | Custom styles                      | `CSSProperties`                                | -           |
+
+:::info
+
+**About Day.js**:
+
+- TimePicker uses Day.js library to handle time
+- `value` and `defaultValue` must be Day.js objects
+- `onChange` callback's first parameter is a Day.js object
+- Can use `dayjs()` to create Day.js objects
+- Can use `.format()` method to format time to strings
+
+**About time format**:
+
+- `format` property controls time display format
+- Common formats:
+  - `HH:mm:ss`: 24-hour format with seconds (default)
+  - `HH:mm`: 24-hour format without seconds
+  - `hh:mm:ss A`: 12-hour format with AM/PM
+  - `hh:mm A`: 12-hour format without seconds
+- Format needs to match `use12Hours` setting
+
+**About 12/24 hour formats**:
+
+- `use12Hours={false}` (default): 24-hour format
+- `use12Hours={true}`: 12-hour format, shows AM/PM selector
+- 12-hour format format string should include `A` (AM/PM)
+
+**About step intervals**:
+
+- `hourStep`: Hour step interval, default 1
+- `minuteStep`: Minute step interval, default 1
+- `secondStep`: Second step interval, default 1
+- Step intervals limit selectable time options, unsuitable values are not displayed
+- For example, `minuteStep={15}` only shows 0, 15, 30, 45 minutes
+
+**About disabling times**:
+
+- `disabledHours`: Returns array of disabled hour numbers
+- `disabledMinutes`: Accepts selected hour, returns array of disabled minute numbers
+- `disabledSeconds`: Accepts selected hour and minute, returns array of disabled second numbers
+- Disabled times are grayed out and unselectable
+- Set `hideDisabledOptions={true}` to hide disabled options instead of graying them
+
+**About range picker**:
+
+- `TimePicker.RangePicker` is used to select time ranges
+- `value` is a tuple `[startTime, endTime]`
+- `onChange` receives tuple `[startTime, endTime]` and string tuple `[startTimeString, endTimeString]`
+- `placeholder` is a string tuple like `['开始时间', '结束时间']`
+- Can use `disabledHours` etc. to limit start time must be before end time
+
+**About extra footer**:
+
+- `renderExtraFooter` returns a ReactNode as extra footer content
+- Commonly used to add quick selection buttons like "Now", "Clear"
+- Footer is rendered at the bottom of the dropdown panel
+
+**About sizes**:
+
+- `size="sm"`: Small size, suitable for compact layouts
+- `size="md"`: Medium size (default)
+- `size="lg"`: Large size, suitable for prominent displays
+
+:::
+
+## Usage Recommendations
+
+### Choose Appropriate Time Format
+
+Select time format based on use case:
+
+```jsx
+// Task scheduling: Hour and minute only
+<TimePicker format="HH:mm" minuteStep={15} />
+
+// Precise time recording: Include seconds
+<TimePicker format="HH:mm:ss" />
+
+// User-friendly display: 12-hour format
+<TimePicker format="hh:mm A" use12Hours />
+```
+
+### Set Reasonable Step Intervals
+
+Set appropriate step intervals based on business needs:
+
+```jsx
+// Meeting scheduling: 15-minute intervals
+<TimePicker format="HH:mm" minuteStep={15} />
+
+// Shift scheduling: 30-minute intervals
+<TimePicker format="HH:mm" minuteStep={30} />
+
+// Precise timing: Second-level intervals
+<TimePicker format="HH:mm:ss" secondStep={1} />
+```
+
+### Limit Selectable Time Range
+
+Use disabled times to limit selectable range:
+
+```jsx
+// Only allow working hours (9:00-18:00)
+<TimePicker
+  format="HH:mm"
+  disabledHours={() => [
+    0, 1, 2, 3, 4, 5, 6, 7, 8, // Before 9 AM
+    18, 19, 20, 21, 22, 23,    // After 6 PM
+  ]}
+/>
+
+// Start time must be before end time
+<TimePicker
+  value={endTime}
+  onChange={setEndTime}
+  disabledHours={() => {
+    if (!startTime) return [];
+    const hour = startTime.hour();
+    return Array.from({ length: hour + 1 }, (_, i) => i);
+  }}
+/>
+```
+
+### Provide Default Values
+
+Provide reasonable default times to improve user experience:
+
+```jsx
+// Default to current time
+<TimePicker defaultValue={dayjs()} />
+
+// Default to specific time (e.g., 9:00 AM)
+<TimePicker defaultValue={dayjs('09:00', 'HH:mm')} format="HH:mm" />
+```
+
+### Add Quick Selection Buttons
+
+Use extra footer to provide common time shortcuts:
+
+```jsx
+<TimePicker
+  renderExtraFooter={() => (
+    <div style={{ padding: '8px', borderTop: '1px solid #eff4f9' }}>
+      <Group spacing="xs">
+        <Button size="xs" variant="text" onClick={() => setValue(dayjs())}>
+          现在
+        </Button>
+        <Button size="xs" variant="text" onClick={() => setValue(dayjs('09:00', 'HH:mm'))}>
+          9:00
+        </Button>
+        <Button size="xs" variant="text" onClick={() => setValue(dayjs('12:00', 'HH:mm'))}>
+          12:00
+        </Button>
+        <Button size="xs" variant="text" onClick={() => setValue(dayjs('18:00', 'HH:mm'))}>
+          18:00
+        </Button>
+      </Group>
+    </div>
+  )}
+/>
+```
+
+### Validate Time Range
+
+Validate start and end times in range picker:
+
+```jsx
+const [timeRange, setTimeRange] = useState([null, null]);
+
+const handleChange = (values) => {
+  if (values[0] && values[1]) {
+    if (values[0].isAfter(values[1])) {
+      notify.error('开始时间不能晚于结束时间');
+      return;
+    }
+  }
+  setTimeRange(values);
+};
+
+<TimePicker.RangePicker value={timeRange} onChange={handleChange} />;
+```
+
+### Clear Label Text
+
+Add clear labels above time pickers:
+
+```jsx
+<Group direction="column" spacing="md">
+  <div>
+    <Text size="sm" style={{ marginBottom: '8px' }}>
+      Task start time:
+    </Text>
+    <TimePicker value={startTime} onChange={setStartTime} />
+  </div>
+  <div>
+    <Text size="sm" style={{ marginBottom: '8px' }}>
+      Task end time:
+    </Text>
+    <TimePicker value={endTime} onChange={setEndTime} />
+  </div>
+</Group>
+```
+
+### Handle Time Zone Issues
+
+Note time zone handling when processing time:
+
+```jsx
+// Ensure consistent time zones when sending to backend
+const handleSubmit = () => {
+  const timeString = value.format('HH:mm:ss');
+  // Or use ISO format including time zone
+  const isoString = value.toISOString();
+  api.submit({ time: isoString });
+};
+```
+
+### Use with Form Components
+
+Integrate with form validation:
+
+```jsx
+<Form>
+  <Form.Item
+    label="预约时间"
+    name="appointmentTime"
+    rules={[{ required: true, message: '请选择预约时间' }]}
+  >
+    <TimePicker
+      format="HH:mm"
+      minuteStep={15}
+      disabledHours={() => [0, 1, 2, 3, 4, 5, 6, 7, 8, 18, 19, 20, 21, 22, 23]}
+    />
+  </Form.Item>
+</Form>
+```
+
+### Display Selected Time
+
+Show formatted time after selection:
+
+```jsx
+const [value, setValue] = useState(null);
+
+<>
+  <TimePicker value={value} onChange={setValue} />
+  {value && (
+    <Text size="sm" color="secondary">
+      You selected: {value.format('HH:mm:ss')}
+    </Text>
+  )}
+</>;
+```

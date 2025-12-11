@@ -1,25 +1,257 @@
 ---
-sidebar_position: 1
+sidebar_position: 14
 ---
 
-# UseWindowEvent
+# useWindowEvent
 
-> Hook 文档正在迁移中，敬请期待！
+管理 window 事件监听的 Hook。
 
-## 概述
+## 基本用法
 
-来自 Kube Design 的 `UseWindowEvent` hook。
+```jsx live
+function Demo() {
+  const [scrollY, setScrollY] = useState(0);
 
-## 使用方法
+  useWindowEvent('scroll', () => {
+    setScrollY(window.scrollY);
+  });
 
-```tsx
-import { UseWindowEvent } from '@kubed/hooks';
+  return (
+    <div
+      style={{
+        padding: '20px',
+        backgroundColor: 'var(--ifm-color-emphasis-100)',
+        borderRadius: '8px',
+        textAlign: 'center',
+      }}
+    >
+      <div style={{ fontSize: '32px', fontWeight: 'bold', color: 'var(--ifm-color-primary)' }}>
+        {Math.round(scrollY)}px
+      </div>
+      <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+        滚动距离
+      </div>
+    </div>
+  );
+}
+```
 
-function Component() {
-  // Documentation coming soon
+## 窗口大小监听
+
+监听窗口大小变化：
+
+```jsx live
+function Demo() {
+  const [size, setSize] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth : 0,
+    height: typeof window !== 'undefined' ? window.innerHeight : 0,
+  });
+
+  useWindowEvent('resize', () => {
+    setSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  });
+
+  return (
+    <div
+      style={{
+        padding: '20px',
+        backgroundColor: 'var(--ifm-background-surface-color)',
+        border: '1px solid var(--ifm-color-emphasis-300)',
+        borderRadius: '8px',
+      }}
+    >
+      <h4>窗口尺寸</h4>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+        <div
+          style={{
+            padding: '16px',
+            backgroundColor: 'var(--ifm-color-primary-lightest)',
+            borderRadius: '6px',
+            textAlign: 'center',
+          }}
+        >
+          <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{size.width}</div>
+          <div style={{ fontSize: '14px' }}>宽度 (px)</div>
+        </div>
+        <div
+          style={{
+            padding: '16px',
+            backgroundColor: 'var(--ifm-color-primary-lightest)',
+            borderRadius: '6px',
+            textAlign: 'center',
+          }}
+        >
+          <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{size.height}</div>
+          <div style={{ fontSize: '14px' }}>高度 (px)</div>
+        </div>
+      </div>
+      <p style={{ marginTop: '12px', fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+        调整浏览器窗口大小查看变化
+      </p>
+    </div>
+  );
+}
+```
+
+## 键盘事件
+
+监听全局键盘事件：
+
+```jsx live
+function Demo() {
+  const [lastKey, setLastKey] = useState('');
+  const [log, setLog] = useState([]);
+
+  useWindowEvent('keydown', (event) => {
+    const key = event.key;
+    setLastKey(key);
+    setLog((prev) => [...prev.slice(-4), key]);
+  });
+
+  return (
+    <div>
+      <div
+        style={{
+          padding: '24px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          marginBottom: '12px',
+          textAlign: 'center',
+        }}
+      >
+        <div style={{ fontSize: '48px', marginBottom: '12px' }}>⌨️</div>
+        <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+          按下任意键
+        </div>
+        {lastKey && (
+          <div
+            style={{
+              marginTop: '12px',
+              fontSize: '32px',
+              fontWeight: 'bold',
+              color: 'var(--ifm-color-primary)',
+            }}
+          >
+            {lastKey}
+          </div>
+        )}
+      </div>
+      {log.length > 0 && (
+        <div
+          style={{
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-emphasis-100)',
+            borderRadius: '6px',
+            fontSize: '14px',
+          }}
+        >
+          <strong>最近按键:</strong> {log.join(' → ')}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## 在线状态
+
+监听网络连接状态：
+
+```jsx live
+function Demo() {
+  const [online, setOnline] = useState(navigator.onLine);
+
+  useWindowEvent('online', () => setOnline(true));
+  useWindowEvent('offline', () => setOnline(false));
+
+  return (
+    <div
+      style={{
+        padding: '24px',
+        backgroundColor: online ? 'var(--ifm-color-success-lightest)' : 'var(--ifm-color-danger-lightest)',
+        borderRadius: '8px',
+        textAlign: 'center',
+      }}
+    >
+      <div style={{ fontSize: '48px', marginBottom: '12px' }}>
+        {online ? '🟢' : '🔴'}
+      </div>
+      <div style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '8px' }}>
+        {online ? '在线' : '离线'}
+      </div>
+      <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+        {online ? '网络连接正常' : '网络连接已断开'}
+      </div>
+    </div>
+  );
 }
 ```
 
 ## API
 
-文档编写中。
+### 参数
+
+```ts
+function useWindowEvent<K extends keyof WindowEventMap>(
+  type: K,
+  listener: (this: Window, ev: WindowEventMap[K]) => any,
+  options?: boolean | AddEventListenerOptions
+): void
+```
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| type | 事件类型 | `keyof WindowEventMap` | - |
+| listener | 事件处理函数 | `(event) => void` | - |
+| options | 事件监听选项 | `boolean \| AddEventListenerOptions` | - |
+
+### 返回值
+
+无返回值。
+
+## 常用事件类型
+
+### 窗口事件
+- `resize` - 窗口大小变化
+- `scroll` - 滚动事件
+- `focus` - 窗口获得焦点
+- `blur` - 窗口失去焦点
+
+### 键盘事件
+- `keydown` - 按键按下
+- `keyup` - 按键释放
+- `keypress` - 按键按下并释放
+
+### 鼠标事件
+- `mousemove` - 鼠标移动
+- `mousedown` - 鼠标按下
+- `mouseup` - 鼠标释放
+- `click` - 点击
+
+### 网络事件
+- `online` - 网络连接
+- `offline` - ���络断开
+
+### 其他事件
+- `beforeunload` - 页面卸载前
+- `hashchange` - URL hash 变化
+- `popstate` - 历史记录变化
+- `storage` - localStorage 变化
+- `visibilitychange` - 页面可见性变化
+
+## 特性
+
+- **自动清理**: 组件卸载时自动移除监听器
+- **类型安全**: 完整的 TypeScript 类型支持
+- **简洁 API**: 无需手动管理 addEventListener/removeEventListener
+
+## 使用场景
+
+- **响应式布局**: 监听窗口大小变化
+- **滚动效果**: 实现滚动相关功能
+- **键盘快捷键**: 全局快捷键监听
+- **网络状态**: 监测网络连接
+- **页面可见性**: 检测标签页切换
