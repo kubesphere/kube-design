@@ -32,12 +32,6 @@ module.exports = {
         '@typescript-eslint/return-await': 'off',
       },
     },
-    {
-      files: ['configs/**/*.ts', 'configs/**/*.js'],
-      parserOptions: {
-        project: null,
-      },
-    },
   ],
 
   rules: {
