@@ -43,3 +43,35 @@
 
   --docusaurus-highlighted-code-line-bg: rgba(111, 201, 156, 0.2);
 }
+
+/* ========================================
+   Fix CssBaseline Override Issues
+   ======================================== */
+
+/* Restore Docusaurus navigation and UI styles that are overridden by CssBaseline */
+
+/* Fix navbar and menu list styles */
+
+/* Fix navbar links */
+.navbar a,
+.navbar__link,
+.menu a,
+.menu__link,
+.theme-doc-sidebar-menu a,
+.dropdown a,
+.table-of-contents a {
+  color: var(--ifm-menu-color) !important;
+}
+
+.navbar a:hover,
+.navbar__link:hover,
+.menu a:hover,
+.menu__link:hover,
+.theme-doc-sidebar-menu a:hover {
+  color: var(--ifm-navbar-link-hover-color) !important;
+}
+
+/* Preserve Docusaurus body/html styles */
+html {
+  font-size: 14px !important;
+}

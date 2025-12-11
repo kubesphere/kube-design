@@ -42,7 +42,7 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           // Remove this to remove the "edit this page" links.
-          editUrl: 'https://github.com/kubesphere/kube-design/tree/master/my-website/',
+          editUrl: 'https://github.com/kubesphere/kube-design/tree/master/',
         },
         blog: false, // Disable blog for component library docs
         theme: {
@@ -132,8 +132,6 @@ const config: Config = {
   ],
 
   themeConfig: {
-    // Social card for better SEO
-    image: 'img/kube-design-social-card.png',
     metadata: [
       {
         name: 'keywords',
@@ -154,10 +152,10 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: 'Kube Design',
       logo: {
         alt: 'Kube Design Logo',
-        src: 'img/logo.svg',
+        src: 'img/ks-logo-dark.svg',
+        srcDark: 'img/ks-logo-light.svg',
       },
       items: [
         {
