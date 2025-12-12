@@ -41,6 +41,11 @@ const CategoryTitle = styled.h2`
   border-bottom: 2px solid var(--ifm-color-emphasis-300);
   text-transform: capitalize;
   color: var(--ifm-heading-color);
+
+  /* Add class for Algolia crawler */
+  &.CategoryTitle {
+    /* This class helps Algolia identify category headers */
+  }
 `;
 
 const IconGrid = styled.div`
@@ -61,6 +66,11 @@ const IconCard = styled.div`
   transition: all 0.2s;
   background: var(--ifm-background-surface-color);
   position: relative;
+
+  /* Add class for Algolia crawler */
+  &.IconCard {
+    /* This class helps Algolia identify individual icons */
+  }
 
   &:hover {
     border-color: var(--ifm-color-primary);
@@ -89,6 +99,11 @@ const IconName = styled.div`
   text-align: center;
   word-break: break-word;
   line-height: 1.3;
+
+  /* Add class for Algolia crawler */
+  &.IconName {
+    /* This class helps Algolia identify icon names */
+  }
 `;
 
 const CopiedToast = styled.div<{ show: boolean }>`
@@ -227,20 +242,26 @@ export default function IconGallery({ category, size = 32 }: IconGalleryProps) {
       ) : (
         Object.entries(filteredIcons).map(([categoryKey, icons]) => (
           <CategorySection key={categoryKey}>
-            <CategoryTitle>
+            <CategoryTitle
+              className="CategoryTitle"
+              data-category={categoryKey}
+            >
               {CategoryNameMap[categoryKey] || categoryKey} ({icons.length})
             </CategoryTitle>
             <IconGrid>
               {icons.map((iconName) => (
                 <IconCard
                   key={iconName}
+                  className="IconCard"
                   onClick={() => handleCopyIcon(iconName)}
                   title={`点击复制: ${iconName}`}
+                  data-icon-name={iconName}
+                  data-icon-category={categoryKey}
                 >
                   <IconWrapper>
                     <Icon name={iconName} />
                   </IconWrapper>
-                  <IconName>{iconName}</IconName>
+                  <IconName className="IconName">{iconName}</IconName>
                 </IconCard>
               ))}
             </IconGrid>
