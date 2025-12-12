@@ -75,3 +75,12 @@
 html {
   font-size: 14px !important;
 }
+
+/* ========================================
+   Fix Dropdown Menu Hover Issues
+   ======================================== */
+.dropdown__menu {
+  pointer-events: auto !important;
+  padding: 0.5rem !important;
+  left: inherit !important;
+}
