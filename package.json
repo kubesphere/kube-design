@@ -27,7 +27,7 @@
     "lint": "eslint packages --ext .ts,.tsx",
     "release": "changeset publish",
     "start:docs": "pnpm --filter ./docs run dev",
-    "storybook": "storybook dev -p 7001 -c configs/.storybook --no-open",
+    "storybook": "NODE_OPTIONS='--max-old-space-size=4096' storybook dev -p 7001 -c configs/.storybook --no-open",
     "syncpack": "syncpack list-mismatches",
     "test": "pnpm run syncpack && vitest run",
     "test:watch": "vitest",
@@ -55,6 +55,8 @@
     "@storybook/addon-docs": "^8.2.3",
     "@storybook/nextjs": "^8.2.3",
     "@storybook/react": "^8.2.3",
+    "@storybook/react-vite": "^8.2.3",
+    "@storybook/react-webpack5": "^8.2.3",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@types/fs-extra": "^9.0.11",
@@ -106,6 +108,7 @@
     "syncpack": "^5.7.11",
     "tsconfig-paths-webpack-plugin": "^3.5.1",
     "typescript": "5.8.3",
+    "vite": "^7.2.7",
     "vitest": "^3.1.1",
     "yargs": "^17.0.1"
   }

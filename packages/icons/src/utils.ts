@@ -7,8 +7,22 @@ export const moduleBabelConfig = {
   minified: true,
 };
 
+export const moduleEsmBabelConfig = {
+  presets: [['@babel/preset-env', { modules: false }], '@babel/preset-react'],
+  plugins: [
+    ['@babel/plugin-proposal-object-rest-spread', { loose: true }],
+    ['@babel/plugin-transform-runtime', { useESModules: true }],
+  ],
+  minified: true,
+};
+
 export const allModulesBabelConfig = {
   presets: ['@babel/preset-env'],
+  minified: true,
+};
+
+export const allModulesEsmBabelConfig = {
+  presets: [['@babel/preset-env', { modules: false }]],
   minified: true,
 };
 

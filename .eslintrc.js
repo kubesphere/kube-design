@@ -32,6 +32,18 @@ module.exports = {
         '@typescript-eslint/return-await': 'off',
       },
     },
+    {
+      files: ['scripts/**/*.ts', 'configs/**/*.ts'],
+      parserOptions: {
+        project: null,
+      },
+      rules: {
+        '@typescript-eslint/dot-notation': 'off',
+        '@typescript-eslint/no-implied-eval': 'off',
+        '@typescript-eslint/no-throw-literal': 'off',
+        '@typescript-eslint/return-await': 'off',
+      },
+    },
   ],
 
   rules: {
