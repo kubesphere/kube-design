@@ -1,28 +1,50 @@
 import React from 'react';
-import { itSupportsClassName, shallowWithTheme } from '@kubed/tests';
+import { itSupportsClassName, renderWithTheme } from '@kubed/tests';
+import { screen } from '@testing-library/react';
 import { Input } from './Input';
 
 describe('@kubed/components/Input', () => {
-  beforeAll(() => {
-    window.getComputedStyle = jest.fn();
+  // itSupportsClassName(Input, {});
+
+  describe('disabled prop', () => {
+    it('when disabled prop is true, the input should be disabled', () => {
+      renderWithTheme(<Input disabled aria-label="disabled-input" />); // 添加 aria-label 便于查询
+
+      const inputElement = screen.getByRole('textbox', { name: 'disabled-input' });
+
+      expect(inputElement).toBeDisabled();
+    });
+
+    it('when disabled prop is false or omitted, the input should be enabled', () => {
+      renderWithTheme(<Input aria-label="enabled-input" />);
+
+      const inputElement = screen.getByRole('textbox', { name: 'enabled-input' });
+
+      expect(inputElement).toBeEnabled();
+    });
   });
 
-  itSupportsClassName(Input, {});
+  describe('addonBefore prop', () => {
+    const addonText = '$';
 
-  it('sets disabled attribute on input based on disabled prop', () => {
-    const disabled = shallowWithTheme(<Input disabled />);
+    it('when addonBefore prop is provided, it should render the content', () => {
+      renderWithTheme(<Input addonBefore={addonText} aria-label="input-with-addon" />);
 
-    const notDisabled = shallowWithTheme(<Input />);
+      const addonElement = screen.getByText(addonText);
 
-    expect(disabled.render().find('input').attr('disabled')).toBe('disabled');
-    expect(notDisabled.render().find('input').attr('disabled')).toBe(undefined);
-  });
+      expect(addonElement).toBeInTheDocument();
 
-  it('renders given right section', () => {
-    const withAddonBefore = shallowWithTheme(<Input addonBefore="$" />);
-    const withoutAddonBefore = shallowWithTheme(<Input />);
+      expect(screen.getByRole('textbox', { name: 'input-with-addon' })).toBeInTheDocument();
+    });
 
-    expect(withoutAddonBefore.find(Input).prop('addonBefore')).toBe(undefined);
-    expect(withAddonBefore.find(Input).prop('addonBefore')).toBe('$');
+    it('when addonBefore prop is not provided, it should not render the content', () => {
+      renderWithTheme(<Input aria-label="input-without-addon" />);
+
+      const addonElement = screen.queryByText(addonText);
+
+      expect(addonElement).not.toBeInTheDocument();
+
+      expect(screen.getByRole('textbox', { name: 'input-without-addon' })).toBeInTheDocument();
+    });
   });
 });

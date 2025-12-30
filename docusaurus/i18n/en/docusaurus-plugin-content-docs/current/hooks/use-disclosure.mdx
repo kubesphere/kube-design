@@ -1,0 +1,131 @@
+---
+sidebar_position: 2
+---
+
+# useDisclosure
+
+A Hook for managing boolean state, providing convenient open, close, and toggle methods. Commonly used to control the visibility of components like modals and drawers.
+
+## Basic Usage
+
+```jsx live
+function Demo() {
+  const { isOpen, open, close, toggle } = useDisclosure(false);
+
+  return (
+    <div>
+      <Group spacing="md">
+        <Button onClick={open}>Open</Button>
+        <Button onClick={close}>Close</Button>
+        <Button onClick={toggle}>Toggle</Button>
+      </Group>
+      {isOpen && (
+        <div
+          style={{
+            marginTop: '20px',
+            padding: '20px',
+            backgroundColor: 'var(--ifm-color-primary-lightest)',
+            borderRadius: '8px',
+            border: '1px solid var(--ifm-color-primary-light)',
+          }}
+        >
+          Content is visible
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## Controlling Modal
+
+Using with the Modal component:
+
+```jsx live
+function Demo() {
+  const { isOpen, open, close } = useDisclosure();
+
+  return (
+    <div>
+      <Button onClick={open}>Open Modal</Button>
+      <Modal visible={isOpen} onCancel={close} title="Example Modal">
+        <p>This is a modal controlled by useDisclosure</p>
+        <Button onClick={close}>Close</Button>
+      </Modal>
+    </div>
+  );
+}
+```
+
+## Controlling Drawer
+
+Using with the Drawer component:
+
+```jsx live
+function Demo() {
+  const { isOpen, open, close } = useDisclosure();
+
+  return (
+    <div>
+      <Button onClick={open}>Open Drawer</Button>
+      <Drawer visible={isOpen} onClose={close} title="Example Drawer" placement="right">
+        <p>This is a drawer controlled by useDisclosure</p>
+        <Button onClick={close}>Close</Button>
+      </Drawer>
+    </div>
+  );
+}
+```
+
+## Initial State
+
+You can set the initial open state:
+
+```jsx live
+function Demo() {
+  const { isOpen, toggle } = useDisclosure(true);
+
+  return (
+    <div>
+      <Button onClick={toggle}>Toggle State</Button>
+      <div style={{ marginTop: '10px' }}>
+        Current state: <strong>{isOpen ? 'Open' : 'Closed'}</strong>
+      </div>
+    </div>
+  );
+}
+```
+
+## API
+
+### Parameters
+
+```ts
+function useDisclosure(initialIsOpen?: boolean): {
+  isOpen: boolean;
+  open: () => void;
+  close: () => void;
+  toggle: () => void;
+}
+```
+
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| initialIsOpen | Initial open state | `boolean` | `false` |
+
+### Return Values
+
+| Property | Description | Type |
+|----------|-------------|------|
+| isOpen | Current open state | `boolean` |
+| open | Open (set to true) | `() => void` |
+| close | Close (set to false) | `() => void` |
+| toggle | Toggle state | `() => void` |
+
+## Usage Scenarios
+
+- **Modal Control**: Control modal visibility
+- **Drawer Control**: Control drawer open/close state
+- **Dropdown Control**: Control dropdown menu expand/collapse
+- **Collapse Control**: Control collapse panel expand/collapse
+- **Any Boolean State**: Replace `useState` for boolean values with a more semantic API

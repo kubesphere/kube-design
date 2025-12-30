@@ -1,0 +1,30 @@
+{
+  "title": {
+    "message": "",
+    "description": "The title in the navbar"
+  },
+  "logo.alt": {
+    "message": "Kube Design Logo",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.Guide": {
+    "message": "指南",
+    "description": "Navbar item with label Guide"
+  },
+  "item.label.Components": {
+    "message": "组件",
+    "description": "Navbar item with label Components"
+  },
+  "item.label.Hooks": {
+    "message": "Hooks",
+    "description": "Navbar item with label Hooks"
+  },
+  "item.label.Icons": {
+    "message": "图标",
+    "description": "Navbar item with label Icons"
+  },
+  "item.label.GitHub": {
+    "message": "GitHub",
+    "description": "Navbar item with label GitHub"
+  }
+}

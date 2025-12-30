@@ -1,0 +1,337 @@
+---
+sidebar_position: 16
+---
+
+# useWindowResize
+
+监听窗口大小变化的 Hook。
+
+## 基本用法
+
+```jsx live
+function Demo() {
+  const [size, setSize] = useState({ width: 0, height: 0 });
+
+  useWindowResize(() => {
+    setSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  });
+
+  return (
+    <div>
+      <div
+        style={{
+          padding: '24px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          textAlign: 'center',
+        }}
+      >
+        <div style={{ fontSize: '48px', marginBottom: '16px' }}>📐</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+          <div
+            style={{
+              padding: '16px',
+              backgroundColor: 'var(--ifm-background-surface-color)',
+              borderRadius: '6px',
+            }}
+          >
+            <div style={{ fontSize: '32px', fontWeight: 'bold', color: 'var(--ifm-color-primary)' }}>
+              {size.width}
+            </div>
+            <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+              宽度 (px)
+            </div>
+          </div>
+          <div
+            style={{
+              padding: '16px',
+              backgroundColor: 'var(--ifm-background-surface-color)',
+              borderRadius: '6px',
+            }}
+          >
+            <div style={{ fontSize: '32px', fontWeight: 'bold', color: 'var(--ifm-color-primary)' }}>
+              {size.height}
+            </div>
+            <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+              高度 (px)
+            </div>
+          </div>
+        </div>
+        <div style={{ marginTop: '12px', fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+          调整浏览器窗口大小查看变化
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## 响应式布局
+
+根据窗口大小切换布局：
+
+```jsx live
+function Demo() {
+  const [layout, setLayout] = useState('desktop');
+
+  useWindowResize(() => {
+    const width = window.innerWidth;
+    if (width < 768) {
+      setLayout('mobile');
+    } else if (width < 1024) {
+      setLayout('tablet');
+    } else {
+      setLayout('desktop');
+    }
+  });
+
+  const layoutConfig = {
+    mobile: { icon: '📱', name: '移动端', color: 'var(--ifm-color-primary)' },
+    tablet: { icon: '📲', name: '平板', color: 'var(--ifm-color-success)' },
+    desktop: { icon: '🖥️', name: '桌面端', color: 'var(--ifm-color-info)' },
+  };
+
+  const config = layoutConfig[layout];
+
+  return (
+    <div
+      style={{
+        padding: '24px',
+        backgroundColor: 'var(--ifm-color-emphasis-100)',
+        borderRadius: '8px',
+        textAlign: 'center',
+      }}
+    >
+      <div style={{ fontSize: '64px', marginBottom: '12px' }}>{config.icon}</div>
+      <div style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px', color: config.color }}>
+        {config.name}
+      </div>
+      <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+        当前布局类型
+      </div>
+    </div>
+  );
+}
+```
+
+## 侧边栏自动收起
+
+小屏幕时自动收起侧边栏：
+
+```jsx live
+function Demo() {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  useWindowResize(() => {
+    if (window.innerWidth < 1024) {
+      setSidebarOpen(false);
+    } else {
+      setSidebarOpen(true);
+    }
+  });
+
+  return (
+    <div>
+      <Button onClick={() => setSidebarOpen(!sidebarOpen)} style={{ marginBottom: '12px' }}>
+        {sidebarOpen ? '收起' : '展开'} 侧边栏
+      </Button>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: sidebarOpen ? '200px 1fr' : '1fr',
+          gap: '12px',
+          minHeight: '200px',
+        }}
+      >
+        {sidebarOpen && (
+          <div
+            style={{
+              padding: '16px',
+              backgroundColor: 'var(--ifm-color-emphasis-100)',
+              borderRadius: '8px',
+            }}
+          >
+            <div style={{ fontWeight: 'bold', marginBottom: '12px' }}>侧边栏</div>
+            <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+              导航菜单项...
+            </div>
+          </div>
+        )}
+        <div
+          style={{
+            padding: '16px',
+            backgroundColor: 'var(--ifm-background-surface-color)',
+            border: '1px solid var(--ifm-color-emphasis-300)',
+            borderRadius: '8px',
+          }}
+        >
+          <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>主内容区</div>
+          <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+            窗口宽度小于 1024px 时，侧边栏会自动收起
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## 计算网格列数
+
+根据窗口宽度动态调整网格列数：
+
+```jsx live
+function Demo() {
+  const [columns, setColumns] = useState(4);
+
+  useWindowResize(() => {
+    const width = window.innerWidth;
+    if (width < 640) setColumns(1);
+    else if (width < 768) setColumns(2);
+    else if (width < 1024) setColumns(3);
+    else setColumns(4);
+  });
+
+  return (
+    <div>
+      <div
+        style={{
+          marginBottom: '12px',
+          padding: '12px',
+          backgroundColor: 'var(--ifm-color-primary-lightest)',
+          borderRadius: '6px',
+          textAlign: 'center',
+        }}
+      >
+        当前列数: <strong>{columns}</strong>
+      </div>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: `repeat(${columns}, 1fr)`,
+          gap: '12px',
+        }}
+      >
+        {Array.from({ length: 8 }, (_, i) => (
+          <div
+            key={i}
+            style={{
+              padding: '20px',
+              backgroundColor: 'var(--ifm-color-emphasis-100)',
+              borderRadius: '6px',
+              textAlign: 'center',
+            }}
+          >
+            {i + 1}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+## API
+
+### 参数
+
+```ts
+function useWindowResize(
+  callback: () => void
+): void
+```
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| callback | 窗口大小变化时的回调函数 | `() => void` | - |
+
+### 返回值
+
+无返回值。
+
+## 特性
+
+- **自动清理**: 组件卸载时自动移除监听器
+- **性能优化**: 内部已做防抖处理
+- **类型安全**: 完整的 TypeScript 支持
+
+## 与 useWindowEvent 的区别
+
+| 特性 | useWindowResize | useWindowEvent |
+|------|----------------|----------------|
+| 事件类型 | 仅 resize | 任意窗口事件 |
+| 使用便捷性 | ✅ 专门优化 | 需指定事件类型 |
+| 性能 | 内置防抖 | 需手动处理 |
+
+```jsx
+// useWindowResize - 推荐用于窗口大小监听
+useWindowResize(() => {
+  console.log('resized');
+});
+
+// useWindowEvent - 更通用
+useWindowEvent('resize', () => {
+  console.log('resized');
+});
+```
+
+## 性能优化建议
+
+### 使用防抖
+
+虽然 `useWindowResize` 内部已有优化，但对于复杂计算，建议结合 `useDebouncedValue`：
+
+```jsx
+function Demo() {
+  const [size, setSize] = useState({ width: 0, height: 0 });
+  const [debouncedSize] = useDebouncedValue(size, 300);
+
+  useWindowResize(() => {
+    setSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  });
+
+  // 使用 debouncedSize 进行复杂计算
+}
+```
+
+### 避免频繁渲染
+
+只在必要时更新状态：
+
+```jsx
+// ❌ 不推荐 - 每次 resize 都更新
+useWindowResize(() => {
+  setWidth(window.innerWidth);
+});
+
+// ✅ 推荐 - 只在跨越阈值时更新
+useWindowResize(() => {
+  const width = window.innerWidth;
+  const newIsMobile = width < 768;
+  if (newIsMobile !== isMobile) {
+    setIsMobile(newIsMobile);
+  }
+});
+```
+
+## 使用场景
+
+- **响应式布局**: 根据屏幕大小调整布局
+- **侧边栏控制**: 小屏幕自动收起侧边栏
+- **网格系统**: 动态调整列数
+- **图表适配**: 重新计算图表尺寸
+- **虚拟列表**: 更新可视区域大小
+- **工具提示**: 调整提示位置避免溢出
+
+## 注意事项
+
+- 回调函数应该尽量轻量，避免复杂计算
+- 考虑使用防抖减少不必要的更新
+- 在回调中访问 DOM 时注意性能
+- 不要在回调中进行大量状态更新

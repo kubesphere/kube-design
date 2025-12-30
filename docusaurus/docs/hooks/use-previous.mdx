@@ -1,0 +1,212 @@
+---
+sidebar_position: 13
+---
+
+# usePrevious
+
+获取上一次渲染的值的 Hook。
+
+## 基本用法
+
+```jsx live
+function Demo() {
+  const [count, setCount] = useState(0);
+  const previousCount = usePrevious(count);
+
+  return (
+    <div>
+      <div
+        style={{
+          padding: '20px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          marginBottom: '12px',
+        }}
+      >
+        <div style={{ marginBottom: '8px' }}>
+          当前值: <strong style={{ fontSize: '24px', color: 'var(--ifm-color-primary)' }}>{count}</strong>
+        </div>
+        <div>
+          上一次的值: <strong>{previousCount ?? '无'}</strong>
+        </div>
+        {previousCount !== undefined && (
+          <div style={{ marginTop: '8px', color: 'var(--ifm-color-emphasis-700)' }}>
+            变化: {count - previousCount > 0 ? '+' : ''}{count - previousCount}
+          </div>
+        )}
+      </div>
+      <Group spacing="md">
+        <Button onClick={() => setCount(count + 1)}>+1</Button>
+        <Button onClick={() => setCount(count - 1)}>-1</Button>
+        <Button onClick={() => setCount(0)} variant="outline">重置</Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+## 比较输入变化
+
+检测输入值的变化：
+
+```jsx live
+function Demo() {
+  const [input, setInput] = useState('');
+  const previousInput = usePrevious(input);
+
+  const hasChanged = input !== previousInput;
+
+  return (
+    <div>
+      <Input
+        placeholder="输入文字"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+      />
+      <div
+        style={{
+          marginTop: '12px',
+          padding: '12px',
+          backgroundColor: hasChanged ? 'var(--ifm-color-warning-lightest)' : 'var(--ifm-color-success-lightest)',
+          borderRadius: '6px',
+        }}
+      >
+        <div>当前输入: <strong>{input || '(空)'}</strong></div>
+        <div>上次输入: <strong>{previousInput || '(空)'}</strong></div>
+        <div style={{ marginTop: '8px' }}>
+          {hasChanged ? '✏️ 内容已改变' : '✓ 内容未变'}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## 表单状态跟踪
+
+追踪表单提交状态的变化：
+
+```jsx live
+function Demo() {
+  const [status, setStatus] = useState('idle');
+  const previousStatus = usePrevious(status);
+
+  const handleSubmit = () => {
+    setStatus('loading');
+    setTimeout(() => setStatus('success'), 1500);
+    setTimeout(() => setStatus('idle'), 3000);
+  };
+
+  const statusConfig = {
+    idle: { label: '空闲', color: 'var(--ifm-color-emphasis-300)', icon: '⚪' },
+    loading: { label: '加载中', color: 'var(--ifm-color-primary)', icon: '🔵' },
+    success: { label: '成功', color: 'var(--ifm-color-success)', icon: '🟢' },
+  };
+
+  return (
+    <div>
+      <Button onClick={handleSubmit} disabled={status === 'loading'}>
+        提交表单
+      </Button>
+      <div
+        style={{
+          marginTop: '16px',
+          padding: '16px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+        }}
+      >
+        <div style={{ marginBottom: '8px' }}>
+          {statusConfig[status].icon} 当前状态: <strong>{statusConfig[status].label}</strong>
+        </div>
+        {previousStatus && (
+          <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+            从 "{statusConfig[previousStatus].label}" 变为 "{statusConfig[status].label}"
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+```
+
+## 动画过渡
+
+基于值的变化触发动画：
+
+```jsx live
+function Demo() {
+  const [value, setValue] = useState(50);
+  const previousValue = usePrevious(value);
+
+  const isIncreasing = previousValue !== undefined && value > previousValue;
+  const isDecreasing = previousValue !== undefined && value < previousValue;
+
+  return (
+    <div>
+      <div
+        style={{
+          marginBottom: '16px',
+          padding: '24px',
+          backgroundColor: 'var(--ifm-background-surface-color)',
+          border: '1px solid var(--ifm-color-emphasis-300)',
+          borderRadius: '8px',
+          textAlign: 'center',
+        }}
+      >
+        <div
+          style={{
+            fontSize: '48px',
+            fontWeight: 'bold',
+            color: isIncreasing ? 'var(--ifm-color-success)' : isDecreasing ? 'var(--ifm-color-danger)' : 'var(--ifm-color-primary)',
+            transition: 'all 0.3s',
+          }}
+        >
+          {value}
+          {isIncreasing && ' ↑'}
+          {isDecreasing && ' ↓'}
+        </div>
+      </div>
+      <Group spacing="md">
+        <Button onClick={() => setValue(value - 10)}>-10</Button>
+        <Button onClick={() => setValue(value + 10)}>+10</Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+## API
+
+### 参数
+
+```ts
+function usePrevious<T>(value: T): T | undefined
+```
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| value | 需要追踪的值 | `T` | - |
+
+### 返回值
+
+返回上一次渲染时的值，首次渲染时返回 `undefined`。
+
+```ts
+T | undefined
+```
+
+## 工作原理
+
+使用 `useRef` 和 `useEffect` 实现：
+1. 每次渲染后，将当前值保存到 ref
+2. 下次渲染时，ref 中存储的就是上一次的值
+
+## 使用场景
+
+- **值变化检测**: 比较当前值和上一次值
+- **动画触发**: 基于值变化触发动画
+- **表单验证**: 比较表单字段变化
+- **撤销功能**: 实现简单的撤销操作
+- **状态转换**: 追踪状态机的状态���化
+- **性能优化**: 避免不必要的计算或请求

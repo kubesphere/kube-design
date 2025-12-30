@@ -1,0 +1,58 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.guideSidebar.category.Guide": {
+    "message": "指南",
+    "description": "The label for category 'Guide' in sidebar 'guideSidebar'"
+  },
+  "sidebar.componentsSidebar.category.General": {
+    "message": "通用",
+    "description": "The label for category 'General' in sidebar 'componentsSidebar'"
+  },
+  "sidebar.componentsSidebar.category.Layout": {
+    "message": "布局",
+    "description": "The label for category 'Layout' in sidebar 'componentsSidebar'"
+  },
+  "sidebar.componentsSidebar.category.Data Entry": {
+    "message": "数据录入",
+    "description": "The label for category 'Data Entry' in sidebar 'componentsSidebar'"
+  },
+  "sidebar.componentsSidebar.category.Data Display": {
+    "message": "数据展示",
+    "description": "The label for category 'Data Display' in sidebar 'componentsSidebar'"
+  },
+  "sidebar.componentsSidebar.category.Feedback": {
+    "message": "反馈",
+    "description": "The label for category 'Feedback' in sidebar 'componentsSidebar'"
+  },
+  "sidebar.componentsSidebar.category.Navigation": {
+    "message": "导航",
+    "description": "The label for category 'Navigation' in sidebar 'componentsSidebar'"
+  },
+  "sidebar.componentsSidebar.category.Other": {
+    "message": "其他",
+    "description": "The label for category 'Other' in sidebar 'componentsSidebar'"
+  },
+  "sidebar.hooksSidebar.category.State Management": {
+    "message": "状态管理",
+    "description": "The label for category 'State Management' in sidebar 'hooksSidebar'"
+  },
+  "sidebar.hooksSidebar.category.UI & Interactions": {
+    "message": "界面与交互",
+    "description": "The label for category 'UI & Interactions' in sidebar 'hooksSidebar'"
+  },
+  "sidebar.hooksSidebar.category.Lifecycle": {
+    "message": "生命周期",
+    "description": "The label for category 'Lifecycle' in sidebar 'hooksSidebar'"
+  },
+  "sidebar.hooksSidebar.category.Utilities": {
+    "message": "工具",
+    "description": "The label for category 'Utilities' in sidebar 'hooksSidebar'"
+  },
+  "sidebar.iconsSidebar.category.Icons": {
+    "message": "图标",
+    "description": "The label for category 'Icons' in sidebar 'iconsSidebar'"
+  }
+}

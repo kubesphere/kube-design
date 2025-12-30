@@ -1,0 +1,451 @@
+---
+sidebar_position: 1
+---
+
+# Progress
+
+Display the current progress of an operation.
+
+## When to Use
+
+- When an operation takes a long time to complete, show the current progress and status to users
+- When an operation will interrupt the current interface or needs to run in the background and may take more than 2 seconds
+- When you need to show the percentage completion of an operation
+- When you need to display the proportional distribution of multiple statuses
+
+## Examples
+
+### Basic Usage
+
+The simplest progress bar usage.
+
+```jsx live
+function Demo() {
+  return <Progress value={50} color="#329dce" />;
+}
+```
+
+### Different Progress Values
+
+Display progress bars with different values.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Progress value={0} color="#329dce" style={{ width: '100%' }} />
+      <Progress value={25} color="#329dce" style={{ width: '100%' }} />
+      <Progress value={50} color="#329dce" style={{ width: '100%' }} />
+      <Progress value={75} color="#329dce" style={{ width: '100%' }} />
+      <Progress value={100} color="#329dce" style={{ width: '100%' }} />
+    </Group>
+  );
+}
+```
+
+### Colors
+
+Set progress bar color through the `color` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Progress value={60} color="success" style={{ width: '100%' }} />
+      <Progress value={60} color="warning" style={{ width: '100%' }} />
+      <Progress value={60} color="error" style={{ width: '100%' }} />
+      <Progress value={60} color="primary" style={{ width: '100%' }} />
+      <Progress value={60} color="secondary" style={{ width: '100%' }} />
+    </Group>
+  );
+}
+```
+
+### Custom Colors
+
+Supports using HEX color values.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Progress value={60} color="#228be6" style={{ width: '100%' }} />
+      <Progress value={60} color="#40c057" style={{ width: '100%' }} />
+      <Progress value={60} color="#be4bdb" style={{ width: '100%' }} />
+      <Progress value={60} color="#ff6b6b" style={{ width: '100%' }} />
+      <Progress value={60} color="#fab005" style={{ width: '100%' }} />
+    </Group>
+  );
+}
+```
+
+### Sizes
+
+Control progress bar height through the `size` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Progress value={60} color="#329dce" size="xs" style={{ width: '100%' }} />
+      <Progress value={60} color="#329dce" size="sm" style={{ width: '100%' }} />
+      <Progress value={60} color="#329dce" size="md" style={{ width: '100%' }} />
+      <Progress value={60} color="#329dce" size="lg" style={{ width: '100%' }} />
+      <Progress value={60} color="#329dce" size="xl" style={{ width: '100%' }} />
+    </Group>
+  );
+}
+```
+
+### Custom Size
+
+The `size` property also supports passing numeric values (in pixels).
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Progress value={60} color="#329dce" size={4} style={{ width: '100%' }} />
+      <Progress value={60} color="#329dce" size={8} style={{ width: '100%' }} />
+      <Progress value={60} color="#329dce" size={16} style={{ width: '100%' }} />
+      <Progress value={60} color="#329dce" size={24} style={{ width: '100%' }} />
+    </Group>
+  );
+}
+```
+
+### Border Radius
+
+Control progress bar border radius through the `radius` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Progress value={60} color="#329dce" size="lg" radius="xs" style={{ width: '100%' }} />
+      <Progress value={60} color="#329dce" size="lg" radius="sm" style={{ width: '100%' }} />
+      <Progress value={60} color="#329dce" size="lg" radius="md" style={{ width: '100%' }} />
+      <Progress value={60} color="#329dce" size="lg" radius="lg" style={{ width: '100%' }} />
+      <Progress value={60} color="#329dce" size="lg" radius="xl" style={{ width: '100%' }} />
+    </Group>
+  );
+}
+```
+
+### Striped Style
+
+Add striped effect through the `striped` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Progress value={60} color="#329dce" striped style={{ width: '100%' }} />
+      <Progress value={60} color="#55bc8a" striped style={{ width: '100%' }} />
+      <Progress value={60} color="#f5a623" striped style={{ width: '100%' }} />
+      <Progress value={60} color="#ca2621" striped style={{ width: '100%' }} />
+    </Group>
+  );
+}
+```
+
+### Segmented Progress
+
+Render segmented progress bars through the `sections` property to show proportions of different statuses.
+
+```jsx live
+function Demo() {
+  return (
+    <Progress
+      size="xl"
+      sections={[
+        { value: 30, color: '#55bc8a' },
+        { value: 40, color: '#f5a623' },
+        { value: 20, color: '#ca2621' },
+      ]}
+    />
+  );
+}
+```
+
+### Resource Usage
+
+Typical scenario for displaying resource usage.
+
+```jsx live
+function Demo() {
+  const used = 65;
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '400px' }}>
+        <div style={{ marginBottom: '12px' }}>
+          <span style={{ fontWeight: 600 }}>CPU Usage</span>
+          <span style={{ float: 'right', color: '#79879c' }}>{used}%</span>
+        </div>
+        <Progress value={used} color={used > 80 ? '#ca2621' : used > 60 ? '#f5a623' : '#55bc8a'} />
+      </Card>
+    </div>
+  );
+}
+```
+
+### Multiple Resource Monitoring
+
+Display usage of multiple resources.
+
+```jsx live
+function Demo() {
+  const resources = [
+    { name: 'CPU', used: 45, color: '#55bc8a' },
+    { name: 'Memory', used: 72, color: '#f5a623' },
+    { name: 'Storage', used: 89, color: '#ca2621' },
+  ];
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '400px' }}>
+        <Group direction="column" spacing="lg">
+          {resources.map((resource) => (
+            <div key={resource.name}>
+              <div
+                style={{ marginBottom: '8px', display: 'flex', justifyContent: 'space-between' }}
+              >
+                <span>{resource.name}</span>
+                <span style={{ color: '#79879c' }}>{resource.used}%</span>
+              </div>
+              <Progress value={resource.used} color={resource.color} />
+            </div>
+          ))}
+        </Group>
+      </Card>
+    </div>
+  );
+}
+```
+
+### Quota Distribution
+
+Display resource quota distribution.
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '400px' }}>
+        <div style={{ marginBottom: '16px', fontWeight: 600 }}>Pod Status Distribution</div>
+        <Progress
+          size="lg"
+          sections={[
+            { value: 60, color: '#55bc8a' },
+            { value: 25, color: '#f5a623' },
+            { value: 15, color: '#ca2621' },
+          ]}
+        />
+        <Group style={{ marginTop: '12px', fontSize: '12px' }}>
+          <Group spacing="xs">
+            <div
+              style={{
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                backgroundColor: '#55bc8a',
+              }}
+            />
+            <span>Running 60%</span>
+          </Group>
+          <Group spacing="xs">
+            <div
+              style={{
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                backgroundColor: '#f5a623',
+              }}
+            />
+            <span>Pending 25%</span>
+          </Group>
+          <Group spacing="xs">
+            <div
+              style={{
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                backgroundColor: '#ca2621',
+              }}
+            />
+            <span>Failed 15%</span>
+          </Group>
+        </Group>
+      </Card>
+    </div>
+  );
+}
+```
+
+### Dynamic Progress
+
+Dynamically update progress bar value.
+
+```jsx live
+function Demo() {
+  const [progress, setProgress] = React.useState(0);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) return 0;
+        return prev + 10;
+      });
+    }, 500);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div>
+      <Progress value={progress} color="#329dce" striped />
+      <div style={{ marginTop: '8px', textAlign: 'center', color: '#79879c' }}>{progress}%</div>
+    </div>
+  );
+}
+```
+
+## API
+
+### Progress
+
+| Property | Description                   | Type                                             | Default |
+| -------- | ----------------------------- | ------------------------------------------------ | ------- |
+| value    | Current progress (0-100)      | `number`                                         | -       |
+| color    | Progress bar color            | `string`                                         | -       |
+| size     | Progress bar height           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number` | `'md'`  |
+| radius   | Progress bar border radius    | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number` | `'sm'`  |
+| striped  | Whether to show stripes       | `boolean`                                        | `false` |
+| sections | Segmented progress bar config | `Array<{ value: number; color: string }>`        | -       |
+
+:::info
+
+**About value**:
+
+- The `value` range is 0-100, representing percentage
+- When using `sections`, `value` is ignored
+
+**About color**:
+
+- Supports theme preset colors: `primary`, `secondary`, `success`, `warning`, `error`
+- Supports HEX format: `#55bc8a`, `#f5a623`
+- Supports RGB/RGBA format
+
+**About sections**:
+
+- Used to render segmented progress bars with different colors
+- Each segment needs to specify `value` (percentage) and `color`
+- The sum of all segment `value`s should not exceed 100
+
+**About size**:
+
+- Preset sizes: `xs` (4px), `sm` (8px), `md` (12px), `lg` (16px), `xl` (20px)
+- Also accepts numeric values directly
+
+:::
+
+## Usage Recommendations
+
+### Display Progress Value
+
+Combine with text to display specific progress value:
+
+```jsx
+<div>
+  <div style={{ marginBottom: '8px', display: 'flex', justifyContent: 'space-between' }}>
+    <span>Download Progress</span>
+    <span>{progress}%</span>
+  </div>
+  <Progress value={progress} />
+</div>
+```
+
+### Status Colors
+
+Dynamically change color based on progress value:
+
+```jsx
+const getColor = (value) => {
+  if (value >= 90) return 'error';
+  if (value >= 70) return 'warning';
+  return 'success';
+};
+
+<Progress value={used} color={getColor(used)} />;
+```
+
+### Segmented Progress Legend
+
+Add legend descriptions for segmented progress bars:
+
+```jsx
+<Progress
+  sections={[
+    { value: 60, color: 'success' },
+    { value: 25, color: 'warning' },
+    { value: 15, color: 'error' },
+  ]}
+/>
+<Group style={{ marginTop: '8px' }}>
+  <Badge color="success">Success 60%</Badge>
+  <Badge color="warning">Warning 25%</Badge>
+  <Badge color="error">Failed 15%</Badge>
+</Group>
+```
+
+### Stripes for In-Progress Status
+
+Use striped style to indicate ongoing operations:
+
+```jsx
+// In progress: use stripes
+<Progress value={progress} striped />
+
+// Completed: no stripes
+<Progress value={100} color="success" />
+```
+
+### Resource Monitoring Panel
+
+Create a resource monitoring panel:
+
+```jsx
+const resources = [
+  { name: 'CPU', value: 45 },
+  { name: 'Memory', value: 72 },
+  { name: 'Disk', value: 89 },
+];
+
+<Card>
+  {resources.map((resource) => (
+    <div key={resource.name}>
+      <div>
+        {resource.name}: {resource.value}%
+      </div>
+      <Progress
+        value={resource.value}
+        color={resource.value > 80 ? 'error' : resource.value > 60 ? 'warning' : 'success'}
+      />
+    </div>
+  ))}
+</Card>;
+```
+
+### Loading Progress
+
+Display file upload or download progress:
+
+```jsx
+const [uploadProgress, setUploadProgress] = React.useState(0);
+
+<Card>
+  <div>Uploading file...</div>
+  <Progress value={uploadProgress} striped />
+  <div>{uploadProgress}% completed</div>
+</Card>;
+```

@@ -1,0 +1,439 @@
+---
+sidebar_position: 1
+---
+
+# ActionConfirm 操作确认栏
+
+底部浮动的操作确认栏组件，用于确认或取消操作。
+
+## 何时使用
+
+- 需要用户确认表单提交或修改操作
+- 批量操作后需要确认
+- 需要在页面底部显示固定的操作按钮
+- 编辑场景下的保存/取消操作
+
+## 示例
+
+### 基础用法
+
+ActionConfirm 需要放在一个相对定位的容器中，它会固定在容器底部。
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(true);
+
+  return (
+    <div style={{ position: 'relative', height: '200px', border: '1px solid #d8dee5', borderRadius: '4px', overflow: 'hidden' }}>
+      <div style={{ padding: '20px' }}>
+        <Button onClick={() => setVisible(!visible)}>
+          {visible ? '隐藏确认栏' : '显示确认栏'}
+        </Button>
+      </div>
+      <ActionConfirm
+        visible={visible}
+        onOk={() => alert('确认')}
+        onCancel={() => setVisible(false)}
+      />
+    </div>
+  );
+}
+```
+
+### 加载状态
+
+通过 `confirmLoading` 属性显示确认按钮的加载状态，常用于异步操作。
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
+
+  const handleOk = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setVisible(false);
+    }, 2000);
+  };
+
+  return (
+    <div style={{ position: 'relative', height: '200px', border: '1px solid #d8dee5', borderRadius: '4px', overflow: 'hidden' }}>
+      <div style={{ padding: '20px' }}>
+        <Button onClick={() => setVisible(true)}>显示确认栏</Button>
+        <p style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+          点击确认按钮后会显示加载状态
+        </p>
+      </div>
+      <ActionConfirm
+        visible={visible}
+        confirmLoading={loading}
+        onOk={handleOk}
+        onCancel={() => setVisible(false)}
+      />
+    </div>
+  );
+}
+```
+
+### 自定义按钮文本
+
+通过 `okText` 和 `cancelText` 属性自定义按钮显示内容。
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(true);
+
+  return (
+    <div style={{ position: 'relative', height: '200px', border: '1px solid #d8dee5', borderRadius: '4px', overflow: 'hidden' }}>
+      <div style={{ padding: '20px' }}>
+        <Button onClick={() => setVisible(true)}>显示确认栏</Button>
+      </div>
+      <ActionConfirm
+        visible={visible}
+        okText="保存"
+        cancelText="取消"
+        onOk={() => {
+          alert('已保存');
+          setVisible(false);
+        }}
+        onCancel={() => setVisible(false)}
+      />
+    </div>
+  );
+}
+```
+
+### 表单编辑场景
+
+在表单编辑时显示操作确认栏的典型用法。
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [name, setName] = React.useState('nginx-deployment');
+
+  const handleChange = (e) => {
+    setName(e.target.value);
+    setVisible(true);
+  };
+
+  const handleSave = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setVisible(false);
+      alert(`已保存: ${name}`);
+    }, 1000);
+  };
+
+  const handleCancel = () => {
+    setName('nginx-deployment');
+    setVisible(false);
+  };
+
+  return (
+    <div style={{ position: 'relative', height: '250px', border: '1px solid #d8dee5', borderRadius: '4px', overflow: 'hidden' }}>
+      <div style={{ padding: '20px' }}>
+        <div style={{ marginBottom: '12px', fontWeight: 600 }}>编辑工作负载</div>
+        <Input
+          value={name}
+          onChange={handleChange}
+          placeholder="请输入名称"
+          style={{ width: '300px' }}
+        />
+        <p style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+          修改输入框内容后会显示确认栏
+        </p>
+      </div>
+      <ActionConfirm
+        visible={visible}
+        confirmLoading={loading}
+        okText="保存"
+        cancelText="取消"
+        onOk={handleSave}
+        onCancel={handleCancel}
+      />
+    </div>
+  );
+}
+```
+
+### 配合卡片使用
+
+在卡片组件中使用操作确认栏。
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+
+  const handleSave = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setVisible(false);
+    }, 1000);
+  };
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ position: 'relative', height: '280px', overflow: 'hidden' }}>
+        <div style={{ marginBottom: '16px', fontWeight: 600 }}>资源配置</div>
+        <Group direction="column" spacing="md">
+          <Input placeholder="名称" style={{ width: '300px' }} onChange={() => setVisible(true)} />
+          <Input placeholder="描述" style={{ width: '300px' }} onChange={() => setVisible(true)} />
+        </Group>
+        <ActionConfirm
+          visible={visible}
+          confirmLoading={loading}
+          okText="保存"
+          cancelText="取消"
+          onOk={handleSave}
+          onCancel={() => setVisible(false)}
+        />
+      </Card>
+    </div>
+  );
+}
+```
+
+### 删除确认
+
+用于危险操作的确认场景。
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+
+  const handleDelete = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setVisible(false);
+      alert('已删除');
+    }, 1000);
+  };
+
+  return (
+    <div style={{ position: 'relative', height: '200px', border: '1px solid #d8dee5', borderRadius: '4px', overflow: 'hidden' }}>
+      <div style={{ padding: '20px' }}>
+        <Button color="error" onClick={() => setVisible(true)}>
+          删除资源
+        </Button>
+        <p style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+          点击删除按钮后显示确认栏
+        </p>
+      </div>
+      <ActionConfirm
+        visible={visible}
+        confirmLoading={loading}
+        okText="确认删除"
+        cancelText="取消"
+        onOk={handleDelete}
+        onCancel={() => setVisible(false)}
+      />
+    </div>
+  );
+}
+```
+
+## API
+
+### ActionConfirm
+
+| 属性           | 说明                   | 类型         | 默认值                        |
+| -------------- | ---------------------- | ------------ | ----------------------------- |
+| visible        | 是否显示确认栏         | `boolean`    | **必需**                      |
+| okText         | 确认按钮文本           | `ReactNode`  | `<Check variant="light" />`   |
+| cancelText     | 取消按钮文本           | `ReactNode`  | `<Close variant="light" />`   |
+| confirmLoading | 确认按钮是否显示加载态 | `boolean`    | `false`                       |
+| onOk           | 点击确认按钮的回调     | `() => void` | -                             |
+| onCancel       | 点击取消按钮的回调     | `() => void` | -                             |
+| className      | 自定义类名             | `string`     | -                             |
+| style          | 自定义样式             | `CSSProperties` | -                          |
+
+:::info
+
+**关于定位**:
+
+- ActionConfirm 使用 `position: absolute` 定位,需要放在 `position: relative` 的容器中
+- 组件会固定在容器底部,通过 `bottom: 0; left: 0; right: 0;` 实现全宽布局
+- 距离容器边缘的间距为 12px(通过 `margin: 12px` 设置)
+- 容器需要设置 `overflow: hidden` 以确保动画效果正常
+- z-index 为 999,确保在其他元素之上
+
+**关于动画**:
+
+- 组件显示/隐藏时有平滑的过渡动画(transition: all 0.3s)
+- 隐藏时的效果(ActionConfirm.tsx 第 21-25 行):
+  ```typescript
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(48px);  // 向下滑出 48px
+  ```
+- 显示时的效果(ActionConfirm.tsx 第 13-18 行):
+  ```typescript
+  visibility: visible;
+  opacity: 1;
+  transform: translate(0);  // 回到原位
+  ```
+
+**关于按钮样式**:
+
+- 按钮使用深色背景(`theme.palette.accents_8`),白色文字(`theme.palette.background`)
+- 悬停时背景变为 `accents_7`(稍浅一些)
+- 按钮内边距:`padding: 10px 20px`
+- 按钮右边距:`margin-right: 12px`
+- 按钮对齐方式:`justify-content: right`
+
+**关于加载状态**:
+
+- 当 `confirmLoading` 为 `true` 时,确认按钮会显示 Loading 组件(size: 14px)
+- 加载状态下的样式(ActionConfirm.tsx 第 61-66 行):
+  ```typescript
+  background-color: accents_7;  // 背景变浅
+  cursor: not-allowed;          // 禁用光标
+  ```
+- 加载状态下点击确认按钮不会触发 `onOk` 回调(第 96 行判断 `!confirmLoading`)
+- 适用于需要异步处理的场景
+
+**关于图标**:
+
+- 默认确认按钮使用 `<Check variant="light" />` 图标(浅色变体)
+- 默认取消按钮使用 `<Close variant="light" />` 图标(浅色变体)
+- 可以通过 `okText` 和 `cancelText` 自定义为文本或其他内容
+- 图标来自 `@kubed/icons` 包
+
+**关于点击处理**:
+
+- `onCancel` 点击处理:直接调用传入的回调函数(第 89-93 行)
+- `onOk` 点击处理:只有在 `!confirmLoading` 时才调用回调(第 95-99 行)
+- 这确保了加载状态下不会重复提交
+
+:::
+
+
+## 使用建议
+
+### 容器设置
+
+确保父容器正确设置定位和溢出属性：
+
+```jsx
+// 正确：设置相对定位和隐藏溢出
+<div style={{ position: 'relative', overflow: 'hidden', height: '300px' }}>
+  <ActionConfirm visible={visible} />
+</div>
+
+// 错误：没有设置定位
+<div>
+  <ActionConfirm visible={visible} />
+</div>
+```
+
+### 表单场景
+
+在表单修改时显示确认栏：
+
+```jsx
+const [hasChanges, setHasChanges] = React.useState(false);
+
+const handleFieldChange = () => {
+  setHasChanges(true);
+};
+
+const handleSave = async () => {
+  await saveForm();
+  setHasChanges(false);
+};
+
+const handleCancel = () => {
+  resetForm();
+  setHasChanges(false);
+};
+
+<ActionConfirm
+  visible={hasChanges}
+  okText="保存"
+  cancelText="取消"
+  onOk={handleSave}
+  onCancel={handleCancel}
+/>
+```
+
+### 异步操作
+
+处理异步保存操作：
+
+```jsx
+const [loading, setLoading] = React.useState(false);
+
+const handleOk = async () => {
+  setLoading(true);
+  try {
+    await saveData();
+    setVisible(false);
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+<ActionConfirm
+  visible={visible}
+  confirmLoading={loading}
+  onOk={handleOk}
+  onCancel={() => setVisible(false)}
+/>
+```
+
+### 配合 Modal 使用
+
+在 Modal 内部使用确认栏：
+
+```jsx
+<Modal visible={modalVisible} onCancel={() => setModalVisible(false)}>
+  <div style={{ position: 'relative', minHeight: '200px' }}>
+    <Form>{/* 表单内容 */}</Form>
+    <ActionConfirm
+      visible={hasChanges}
+      okText="保存"
+      cancelText="取消"
+      onOk={handleSave}
+      onCancel={handleCancel}
+    />
+  </div>
+</Modal>
+```
+
+### 自定义按钮内容
+
+按钮支持任意 ReactNode：
+
+```jsx
+// 使用文本
+<ActionConfirm
+  okText="确认提交"
+  cancelText="放弃修改"
+/>
+
+// 使用图标和文本
+<ActionConfirm
+  okText={
+    <Group spacing="xs">
+      <Check size={14} />
+      <span>保存</span>
+    </Group>
+  }
+  cancelText={
+    <Group spacing="xs">
+      <Close size={14} />
+      <span>取消</span>
+    </Group>
+  }
+/>
+```

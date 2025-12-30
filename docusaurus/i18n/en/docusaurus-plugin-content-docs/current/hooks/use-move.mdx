@@ -1,0 +1,520 @@
+---
+sidebar_position: 2
+---
+
+# useMove
+
+A Hook for handling element drag behavior, tracking mouse and touch movement, and providing normalized coordinates (0-1).
+
+## Basic Usage
+
+```jsx live
+function Demo() {
+  const [value, setValue] = useState({ x: 0.2, y: 0.6 });
+  const { ref } = useMove(setValue);
+
+  return (
+    <div>
+      <div
+        ref={ref}
+        style={{
+          width: '100%',
+          height: '200px',
+          backgroundColor: 'var(--ifm-color-emphasis-200)',
+          borderRadius: '8px',
+          position: 'relative',
+          cursor: 'crosshair',
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            left: `calc(${value.x * 100}% - 8px)`,
+            top: `calc(${value.y * 100}% - 8px)`,
+            width: '16px',
+            height: '16px',
+            backgroundColor: 'var(--ifm-color-primary)',
+            borderRadius: '50%',
+            border: '2px solid white',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+          }}
+        />
+      </div>
+      <div
+        style={{
+          marginTop: '12px',
+          padding: '12px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '6px',
+          fontSize: '14px',
+        }}
+      >
+        Position: x: {(value.x * 100).toFixed(1)}%, y: {(value.y * 100).toFixed(1)}%
+      </div>
+    </div>
+  );
+}
+```
+
+## Color Picker
+
+Implement a simple color picker:
+
+```jsx live
+function Demo() {
+  const [hue, setHue] = useState({ x: 0.5, y: 0 });
+  const [brightness, setBrightness] = useState({ x: 0.5, y: 0.5 });
+  const { ref: hueRef } = useMove(setHue);
+  const { ref: brightnessRef } = useMove(setBrightness);
+
+  // Simple color calculation
+  const h = Math.round(hue.x * 360);
+  const s = 100;
+  const l = Math.round((1 - brightness.y) * 100);
+
+  return (
+    <div>
+      {/* Color Area */}
+      <div
+        ref={brightnessRef}
+        style={{
+          width: '100%',
+          height: '200px',
+          background: `linear-gradient(to bottom,
+            hsl(${h}, ${s}%, 50%) 0%,
+            hsl(${h}, ${s}%, 0%) 100%)`,
+          borderRadius: '8px',
+          position: 'relative',
+          cursor: 'crosshair',
+          marginBottom: '12px',
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            left: `calc(${brightness.x * 100}% - 10px)`,
+            top: `calc(${brightness.y * 100}% - 10px)`,
+            width: '20px',
+            height: '20px',
+            border: '3px solid white',
+            borderRadius: '50%',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+          }}
+        />
+      </div>
+
+      {/* Hue Slider */}
+      <div
+        ref={hueRef}
+        style={{
+          width: '100%',
+          height: '30px',
+          background: 'linear-gradient(to right, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%)',
+          borderRadius: '8px',
+          position: 'relative',
+          cursor: 'pointer',
+          marginBottom: '12px',
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            left: `calc(${hue.x * 100}% - 3px)`,
+            top: '-3px',
+            width: '6px',
+            height: '36px',
+            backgroundColor: 'white',
+            border: '2px solid var(--ifm-color-emphasis-600)',
+            borderRadius: '3px',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+          }}
+        />
+      </div>
+
+      {/* Color Preview */}
+      <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+        <div
+          style={{
+            width: '80px',
+            height: '80px',
+            backgroundColor: `hsl(${h}, ${s}%, ${l}%)`,
+            borderRadius: '8px',
+            border: '1px solid var(--ifm-color-emphasis-300)',
+          }}
+        />
+        <div style={{ flex: 1 }}>
+          <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>Color Value</div>
+          <code style={{ fontSize: '14px' }}>hsl({h}, {s}%, {l}%)</code>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## Image Cropper
+
+Implement image crop area selection:
+
+```jsx live
+function Demo() {
+  const [position, setPosition] = useState({ x: 0.25, y: 0.25 });
+  const [size] = useState({ width: 0.5, height: 0.5 });
+  const { ref, active } = useMove(setPosition);
+
+  return (
+    <div>
+      <div
+        ref={ref}
+        style={{
+          width: '100%',
+          height: '300px',
+          backgroundColor: 'var(--ifm-color-emphasis-200)',
+          borderRadius: '8px',
+          position: 'relative',
+          cursor: active ? 'grabbing' : 'grab',
+          backgroundImage: 'linear-gradient(45deg, #ccc 25%, transparent 25%, transparent 75%, #ccc 75%, #ccc), linear-gradient(45deg, #ccc 25%, transparent 25%, transparent 75%, #ccc 75%, #ccc)',
+          backgroundSize: '20px 20px',
+          backgroundPosition: '0 0, 10px 10px',
+        }}
+      >
+        {/* Overlay */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundColor: 'rgba(0,0,0,0.4)',
+          }}
+        />
+
+        {/* Crop Area */}
+        <div
+          style={{
+            position: 'absolute',
+            left: `${position.x * 100}%`,
+            top: `${position.y * 100}%`,
+            width: `${size.width * 100}%`,
+            height: `${size.height * 100}%`,
+            border: '2px dashed white',
+            backgroundColor: 'transparent',
+            boxShadow: '0 0 0 9999px rgba(0,0,0,0.4)',
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              color: 'white',
+              fontSize: '14px',
+              pointerEvents: 'none',
+              textShadow: '0 1px 2px rgba(0,0,0,0.8)',
+            }}
+          >
+            {active ? 'Dragging...' : 'Drag to move crop area'}
+          </div>
+        </div>
+      </div>
+      <div
+        style={{
+          marginTop: '12px',
+          padding: '12px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '6px',
+          fontSize: '14px',
+        }}
+      >
+        Crop position: ({(position.x * 100).toFixed(0)}%, {(position.y * 100).toFixed(0)}%)
+      </div>
+    </div>
+  );
+}
+```
+
+## Custom Slider
+
+Create a custom slider component:
+
+```jsx live
+function Demo() {
+  const [value, setValue] = useState({ x: 0.3, y: 0 });
+  const { ref, active } = useMove(setValue);
+  const percentage = Math.round(value.x * 100);
+
+  return (
+    <div>
+      <div
+        ref={ref}
+        style={{
+          width: '100%',
+          height: '40px',
+          backgroundColor: 'var(--ifm-color-emphasis-200)',
+          borderRadius: '20px',
+          position: 'relative',
+          cursor: 'pointer',
+        }}
+      >
+        {/* Progress */}
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            bottom: 0,
+            width: `${value.x * 100}%`,
+            backgroundColor: 'var(--ifm-color-primary)',
+            borderRadius: '20px',
+            transition: active ? 'none' : 'width 0.2s',
+          }}
+        />
+
+        {/* Handle */}
+        <div
+          style={{
+            position: 'absolute',
+            left: `calc(${value.x * 100}% - 20px)`,
+            top: '50%',
+            transform: 'translateY(-50%)',
+            width: '40px',
+            height: '40px',
+            backgroundColor: 'white',
+            border: '3px solid var(--ifm-color-primary)',
+            borderRadius: '50%',
+            boxShadow: active ? '0 4px 12px rgba(0,0,0,0.3)' : '0 2px 8px rgba(0,0,0,0.2)',
+            transition: active ? 'none' : 'all 0.2s',
+          }}
+        />
+      </div>
+
+      <div
+        style={{
+          marginTop: '16px',
+          textAlign: 'center',
+          fontSize: '32px',
+          fontWeight: 'bold',
+          color: 'var(--ifm-color-primary)',
+        }}
+      >
+        {percentage}%
+      </div>
+    </div>
+  );
+}
+```
+
+## Drawing Board
+
+Simple drawing board implementation:
+
+```jsx live
+function Demo() {
+  const [paths, setPaths] = useState([]);
+  const [currentPath, setCurrentPath] = useState([]);
+
+  const { ref, active } = useMove((position) => {
+    if (active) {
+      setCurrentPath((prev) => [...prev, position]);
+    }
+  });
+
+  useDidUpdate(() => {
+    if (!active && currentPath.length > 0) {
+      setPaths((prev) => [...prev, currentPath]);
+      setCurrentPath([]);
+    }
+  }, [active]);
+
+  const clearCanvas = () => {
+    setPaths([]);
+    setCurrentPath([]);
+  };
+
+  const renderPath = (path, index) => {
+    if (path.length < 2) return null;
+    const pathData = path
+      .map((point, i) => {
+        const x = point.x * 100;
+        const y = point.y * 100;
+        return `${i === 0 ? 'M' : 'L'} ${x} ${y}`;
+      })
+      .join(' ');
+
+    return (
+      <path
+        key={index}
+        d={pathData}
+        stroke="var(--ifm-color-primary)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+      />
+    );
+  };
+
+  return (
+    <div>
+      <div
+        ref={ref}
+        style={{
+          width: '100%',
+          height: '300px',
+          backgroundColor: 'white',
+          border: '2px solid var(--ifm-color-emphasis-300)',
+          borderRadius: '8px',
+          cursor: 'crosshair',
+          position: 'relative',
+        }}
+      >
+        <svg
+          style={{
+            width: '100%',
+            height: '100%',
+            display: 'block',
+          }}
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+        >
+          {paths.map(renderPath)}
+          {renderPath(currentPath, 'current')}
+        </svg>
+
+        {paths.length === 0 && currentPath.length === 0 && (
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              color: 'var(--ifm-color-emphasis-600)',
+              pointerEvents: 'none',
+            }}
+          >
+            Click and drag to draw
+          </div>
+        )}
+      </div>
+
+      <Group spacing="md" style={{ marginTop: '12px' }}>
+        <Button onClick={clearCanvas} size="small">
+          Clear Canvas
+        </Button>
+        <span style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+          Paths: {paths.length} | Drawing: {active ? 'Yes' : 'No'}
+        </span>
+      </Group>
+    </div>
+  );
+}
+```
+
+## API
+
+### Parameters
+
+```ts
+function useMove<T extends HTMLElement = HTMLDivElement>(
+  onChange: (value: { x: number; y: number }) => void,
+  options?: {
+    onScrubStart?: () => void;
+    onScrubEnd?: () => void;
+  }
+): {
+  ref: React.RefObject<T>;
+  active: boolean;
+}
+```
+
+| Parameter | Description | Type |
+|-----------|-------------|------|
+| onChange | Position change callback | `(value: { x: number; y: number }) => void` |
+| options.onScrubStart | Callback when drag starts | `() => void` |
+| options.onScrubEnd | Callback when drag ends | `() => void` |
+
+### Return Values
+
+| Property | Description | Type |
+|----------|-------------|------|
+| ref | Ref to bind to target element | `RefObject<T>` |
+| active | Whether currently dragging | `boolean` |
+
+### Coordinate System
+
+Returned coordinates are normalized values from 0 to 1:
+- `x`: Horizontal position, 0 (left) to 1 (right)
+- `y`: Vertical position, 0 (top) to 1 (bottom)
+
+```ts
+{
+  x: 0.5,  // 50% from left
+  y: 0.5   // 50% from top
+}
+```
+
+## Event Support
+
+- **Mouse Events**: `mousedown`, `mousemove`, `mouseup`
+- **Touch Events**: `touchstart`, `touchmove`, `touchend`
+- Supports both mouse and touch simultaneously
+
+## Notes
+
+- Coordinates are automatically clamped to [0, 1] range
+- Event listeners are automatically cleaned up on component unmount
+- Supports both mouse and touch devices
+- preventDefault is automatically called to prevent page scrolling
+- Can be used outside element boundaries (global listening during drag)
+
+## Advanced Usage
+
+### Limiting Drag Direction
+
+```jsx
+// Horizontal only
+const handleChange = (value) => {
+  setValue({ x: value.x, y: 0.5 });
+};
+
+// Vertical only
+const handleChange = (value) => {
+  setValue({ x: 0.5, y: value.y });
+};
+```
+
+### Adding Drag Sound Feedback
+
+```jsx
+const { ref, active } = useMove(setValue, {
+  onScrubStart: () => {
+    console.log('Drag started');
+    playSound('start');
+  },
+  onScrubEnd: () => {
+    console.log('Drag ended');
+    playSound('end');
+  },
+});
+```
+
+### Converting to Pixel Coordinates
+
+```jsx
+const handleChange = (value) => {
+  const rect = ref.current?.getBoundingClientRect();
+  if (rect) {
+    const pixelX = value.x * rect.width;
+    const pixelY = value.y * rect.height;
+    console.log(`Pixel position: (${pixelX}, ${pixelY})`);
+  }
+};
+```
+
+## Usage Scenarios
+
+- **Color Picker**: Select hue and saturation
+- **Image Cropper**: Crop area selection
+- **Custom Sliders**: Value selection and adjustment
+- **Drawing Board**: Free-hand drawing
+- **Games**: Control character position
+- **Data Visualization**: Interactive chart exploration

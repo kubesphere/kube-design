@@ -1,0 +1,366 @@
+---
+sidebar_position: 1
+---
+
+# Descriptions 描述列表
+
+成组展示多个只读字段的组件。
+
+## 何时使用
+
+- 常见于详情页的信息展示
+- 展示键值对形式的只读信息
+- 需要在卡片或面板中展示多个属性
+- 展示资源的元数据或配置信息
+
+## 示例
+
+### 基础用法
+
+最简单的描述列表用法，默认样式带有背景和边框。
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Description label="集群名称">default</Description>
+    </div>
+  );
+}
+```
+
+### 多个描述项
+
+使用多个 Description 组件展示多条信息。
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Description label="集群名称">default</Description>
+      <Description label="项目名称">kubesphere-system</Description>
+      <Description label="实例名称">ks-apiserver</Description>
+      <Description label="IP 地址">10.233.74.19</Description>
+    </div>
+  );
+}
+```
+
+### 无样式变体
+
+通过 `variant="unstyled"` 使用无样式变体，适合在卡片等容器中使用。
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '350px' }}>
+        <Description label="项目" variant="unstyled">
+          KubeSphere
+        </Description>
+        <Description label="集群" variant="unstyled">
+          default
+        </Description>
+        <Description label="工作负载" variant="unstyled">
+          ks-apiserver
+        </Description>
+        <Description label="状态" variant="unstyled">
+          运行中
+        </Description>
+      </Card>
+    </div>
+  );
+}
+```
+
+### 使用数据数组
+
+使用 `Descriptions` 组件和 `data` 属性批量渲染描述列表。
+
+```jsx live
+function Demo() {
+  const data = [
+    { label: '集群', value: 'default' },
+    { label: '项目', value: 'kubesphere-system' },
+    { label: '实例名称', value: 'ks-apiserver' },
+    { label: 'IP 地址', value: '10.233.74.19' },
+  ];
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '350px' }}>
+        <Descriptions data={data} variant="unstyled" />
+      </Card>
+    </div>
+  );
+}
+```
+
+### 默认样式与数据数组
+
+默认样式的描述列表更适合独立展示重要信息。
+
+```jsx live
+function Demo() {
+  const data = [
+    { label: 'Pod 名称', value: 'nginx-deployment-7fb96c846b-8xmtv' },
+    { label: 'Pod IP', value: '10.233.74.19/32' },
+    { label: '节点', value: 'node-01' },
+    { label: '命名空间', value: 'default' },
+  ];
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Descriptions data={data} variant="default" />
+    </div>
+  );
+}
+```
+
+### 自定义标签样式
+
+通过 `labelStyle` 自定义标签的样式。
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '350px' }}>
+        <Description
+          label="集群名称"
+          variant="unstyled"
+          labelStyle={{ color: '#329dce', fontWeight: 600 }}
+        >
+          default
+        </Description>
+        <Description
+          label="项目名称"
+          variant="unstyled"
+          labelStyle={{ color: '#329dce', fontWeight: 600 }}
+        >
+          kubesphere-system
+        </Description>
+      </Card>
+    </div>
+  );
+}
+```
+
+### 自定义内容样式
+
+通过 `contentStyle` 自定义内容的样式。
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '350px' }}>
+        <Description
+          label="状态"
+          variant="unstyled"
+          contentStyle={{ color: '#55bc8a', fontWeight: 600 }}
+        >
+          运行中
+        </Description>
+        <Description
+          label="副本数"
+          variant="unstyled"
+          contentStyle={{ color: '#329dce', fontWeight: 600 }}
+        >
+          3/3
+        </Description>
+        <Description
+          label="告警"
+          variant="unstyled"
+          contentStyle={{ color: '#ca2621', fontWeight: 600 }}
+        >
+          2 条待处理
+        </Description>
+      </Card>
+    </div>
+  );
+}
+```
+
+### 复杂内容
+
+描述列表的内容可以是任意 ReactNode。
+
+```jsx live
+function Demo() {
+  const { Kubernetes, Pod, Cluster } = KubedIcons;
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '400px' }}>
+        <Description label="平台" variant="unstyled">
+          <Group spacing="xs" style={{ display: 'inline-flex' }}>
+            <Kubernetes size={16} />
+            <span>Kubernetes</span>
+          </Group>
+        </Description>
+        <Description label="工作负载类型" variant="unstyled">
+          <Group spacing="xs" style={{ display: 'inline-flex' }}>
+            <Pod size={16} />
+            <span>Deployment</span>
+          </Group>
+        </Description>
+        <Description label="所属集群" variant="unstyled">
+          <Group spacing="xs" style={{ display: 'inline-flex' }}>
+            <Cluster size={16} />
+            <span>production</span>
+          </Group>
+        </Description>
+        <Description label="标签" variant="unstyled">
+          <Group spacing="xs">
+            <Badge color="primary">app=nginx</Badge>
+            <Badge color="secondary">version=v1</Badge>
+          </Group>
+        </Description>
+      </Card>
+    </div>
+  );
+}
+```
+
+## API
+
+### Description
+
+| 属性         | 说明           | 类型                      | 默认值      |
+| ------------ | -------------- | ------------------------- | ----------- |
+| label        | 标签内容       | `ReactNode`               | -           |
+| variant      | 外观样式       | `'default' \| 'unstyled'` | `'default'` |
+| labelStyle   | 标签自定义样式 | `CSSProperties`           | -           |
+| contentStyle | 内容自定义样式 | `CSSProperties`           | -           |
+| children     | 描述内容       | `ReactNode`               | -           |
+
+### Descriptions
+
+| 属性    | 说明         | 类型                                            | 默认值      |
+| ------- | ------------ | ----------------------------------------------- | ----------- |
+| data    | 描述列表数据 | `Array<{ label: ReactNode; value: ReactNode }>` | `[]`        |
+| variant | 外观样式     | `'default' \| 'unstyled'`                       | `'default'` |
+
+:::info
+
+**关于 variant**：
+
+- `default`：默认样式，带有背景色、边框和圆角，每项之间有间距，适合独立展示重要信息
+- `unstyled`：无样式变体，只有基本的内边距和冒号分隔，适合在卡片等容器中使用
+
+**关于 Description 与 Descriptions**：
+
+- `Description` 是单个描述项组件，适合需要自定义每项样式的场景
+- `Descriptions` 是批量渲染组件，通过 `data` 数组快速生成多个描述项
+
+**关于内容**：
+
+- `children`（Description）和 `value`（Descriptions）都支持任意 ReactNode
+- 可以放置文本、图标、Badge、按钮等任意 React 组件
+
+:::
+
+## 使用建议
+
+### 选择合适的变体
+
+根据使用场景选择合适的样式变体：
+
+```jsx
+// 在卡片内展示详情信息，使用 unstyled
+<Card sectionTitle="基本信息">
+  <Description label="名称" variant="unstyled">nginx</Description>
+  <Description label="状态" variant="unstyled">运行中</Description>
+</Card>
+
+// 独立展示重要信息，使用 default
+<Description label="Pod IP">10.233.74.19/32</Description>
+```
+
+### 使用数据数组
+
+当有多个结构相同的描述项时，推荐使用数据数组：
+
+```jsx
+// 推荐：使用数据数组
+const data = [
+  { label: '名称', value: 'nginx' },
+  { label: '状态', value: '运行中' },
+  { label: 'IP', value: '10.233.74.19' },
+];
+<Descriptions data={data} variant="unstyled" />
+
+// 不推荐：重复写多个 Description
+<Description label="名称" variant="unstyled">nginx</Description>
+<Description label="状态" variant="unstyled">运行中</Description>
+<Description label="IP" variant="unstyled">10.233.74.19</Description>
+```
+
+### 状态展示
+
+使用颜色区分不同状态：
+
+```jsx
+<Description label="状态" variant="unstyled">
+  <span style={{ color: '#55bc8a' }}>运行中</span>
+</Description>
+
+<Description label="状态" variant="unstyled">
+  <span style={{ color: '#ca2621' }}>异常</span>
+</Description>
+
+<Description label="状态" variant="unstyled">
+  <span style={{ color: '#f5a623' }}>警告</span>
+</Description>
+```
+
+### 配合 Card 使用
+
+在卡片中组织描述列表：
+
+```jsx
+<Card sectionTitle="资源详情">
+  <Descriptions data={resourceData} variant="unstyled" />
+</Card>
+```
+
+### 复杂内容组合
+
+展示带图标或标签的复杂内容：
+
+```jsx
+<Description label="标签" variant="unstyled">
+  <Group spacing="xs">
+    <Badge color="primary">app=nginx</Badge>
+    <Badge color="secondary">env=prod</Badge>
+  </Group>
+</Description>
+
+<Description label="类型" variant="unstyled">
+  <Group spacing="xs" style={{ display: 'inline-flex' }}>
+    <Pod size={16} />
+    <span>Deployment</span>
+  </Group>
+</Description>
+```
+
+### 动态数据
+
+从 API 获取数据后展示：
+
+```jsx
+const [data, setData] = React.useState([]);
+
+React.useEffect(() => {
+  fetchResourceDetails().then((res) => {
+    setData([
+      { label: '名称', value: res.name },
+      { label: '状态', value: res.status },
+      { label: '创建时间', value: res.createTime },
+    ]);
+  });
+}, []);
+
+<Descriptions data={data} variant="unstyled" />;
+```

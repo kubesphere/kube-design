@@ -1,0 +1,257 @@
+---
+sidebar_position: 14
+---
+
+# useWindowEvent
+
+A Hook for managing window event listeners.
+
+## Basic Usage
+
+```jsx live
+function Demo() {
+  const [scrollY, setScrollY] = useState(0);
+
+  useWindowEvent('scroll', () => {
+    setScrollY(window.scrollY);
+  });
+
+  return (
+    <div
+      style={{
+        padding: '20px',
+        backgroundColor: 'var(--ifm-color-emphasis-100)',
+        borderRadius: '8px',
+        textAlign: 'center',
+      }}
+    >
+      <div style={{ fontSize: '32px', fontWeight: 'bold', color: 'var(--ifm-color-primary)' }}>
+        {Math.round(scrollY)}px
+      </div>
+      <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+        Scroll Distance
+      </div>
+    </div>
+  );
+}
+```
+
+## Window Size Listening
+
+Monitor window size changes:
+
+```jsx live
+function Demo() {
+  const [size, setSize] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth : 0,
+    height: typeof window !== 'undefined' ? window.innerHeight : 0,
+  });
+
+  useWindowEvent('resize', () => {
+    setSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  });
+
+  return (
+    <div
+      style={{
+        padding: '20px',
+        backgroundColor: 'var(--ifm-background-surface-color)',
+        border: '1px solid var(--ifm-color-emphasis-300)',
+        borderRadius: '8px',
+      }}
+    >
+      <h4>Window Size</h4>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+        <div
+          style={{
+            padding: '16px',
+            backgroundColor: 'var(--ifm-color-primary-lightest)',
+            borderRadius: '6px',
+            textAlign: 'center',
+          }}
+        >
+          <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{size.width}</div>
+          <div style={{ fontSize: '14px' }}>Width (px)</div>
+        </div>
+        <div
+          style={{
+            padding: '16px',
+            backgroundColor: 'var(--ifm-color-primary-lightest)',
+            borderRadius: '6px',
+            textAlign: 'center',
+          }}
+        >
+          <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{size.height}</div>
+          <div style={{ fontSize: '14px' }}>Height (px)</div>
+        </div>
+      </div>
+      <p style={{ marginTop: '12px', fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+        Resize browser window to see changes
+      </p>
+    </div>
+  );
+}
+```
+
+## Keyboard Events
+
+Listen to global keyboard events:
+
+```jsx live
+function Demo() {
+  const [lastKey, setLastKey] = useState('');
+  const [log, setLog] = useState([]);
+
+  useWindowEvent('keydown', (event) => {
+    const key = event.key;
+    setLastKey(key);
+    setLog((prev) => [...prev.slice(-4), key]);
+  });
+
+  return (
+    <div>
+      <div
+        style={{
+          padding: '24px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          marginBottom: '12px',
+          textAlign: 'center',
+        }}
+      >
+        <div style={{ fontSize: '48px', marginBottom: '12px' }}>⌨️</div>
+        <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+          Press any key
+        </div>
+        {lastKey && (
+          <div
+            style={{
+              marginTop: '12px',
+              fontSize: '32px',
+              fontWeight: 'bold',
+              color: 'var(--ifm-color-primary)',
+            }}
+          >
+            {lastKey}
+          </div>
+        )}
+      </div>
+      {log.length > 0 && (
+        <div
+          style={{
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-emphasis-100)',
+            borderRadius: '6px',
+            fontSize: '14px',
+          }}
+        >
+          <strong>Recent keys:</strong> {log.join(' → ')}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## Online Status
+
+Monitor network connection status:
+
+```jsx live
+function Demo() {
+  const [online, setOnline] = useState(navigator.onLine);
+
+  useWindowEvent('online', () => setOnline(true));
+  useWindowEvent('offline', () => setOnline(false));
+
+  return (
+    <div
+      style={{
+        padding: '24px',
+        backgroundColor: online ? 'var(--ifm-color-success-lightest)' : 'var(--ifm-color-danger-lightest)',
+        borderRadius: '8px',
+        textAlign: 'center',
+      }}
+    >
+      <div style={{ fontSize: '48px', marginBottom: '12px' }}>
+        {online ? '🟢' : '🔴'}
+      </div>
+      <div style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '8px' }}>
+        {online ? 'Online' : 'Offline'}
+      </div>
+      <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+        {online ? 'Network connection is active' : 'Network connection lost'}
+      </div>
+    </div>
+  );
+}
+```
+
+## API
+
+### Parameters
+
+```ts
+function useWindowEvent<K extends keyof WindowEventMap>(
+  type: K,
+  listener: (this: Window, ev: WindowEventMap[K]) => any,
+  options?: boolean | AddEventListenerOptions
+): void
+```
+
+| Parameter | Description | Type | Default |
+|------|------|------|--------|
+| type | Event type | `keyof WindowEventMap` | - |
+| listener | Event handler function | `(event) => void` | - |
+| options | Event listener options | `boolean \| AddEventListenerOptions` | - |
+
+### Return Value
+
+No return value.
+
+## Common Event Types
+
+### Window Events
+- `resize` - Window size change
+- `scroll` - Scroll event
+- `focus` - Window gains focus
+- `blur` - Window loses focus
+
+### Keyboard Events
+- `keydown` - Key pressed
+- `keyup` - Key released
+- `keypress` - Key pressed and released
+
+### Mouse Events
+- `mousemove` - Mouse movement
+- `mousedown` - Mouse button pressed
+- `mouseup` - Mouse button released
+- `click` - Click
+
+### Network Events
+- `online` - Network connected
+- `offline` - Network disconnected
+
+### Other Events
+- `beforeunload` - Before page unload
+- `hashchange` - URL hash change
+- `popstate` - History change
+- `storage` - localStorage change
+- `visibilitychange` - Page visibility change
+
+## Features
+
+- **Auto Cleanup**: Automatically removes listener on component unmount
+- **Type Safe**: Full TypeScript type support
+- **Simple API**: No need to manually manage addEventListener/removeEventListener
+
+## Usage Scenarios
+
+- **Responsive Layout**: Monitor window size changes
+- **Scroll Effects**: Implement scroll-related functionality
+- **Keyboard Shortcuts**: Global shortcut key listening
+- **Network Status**: Monitor network connection
+- **Page Visibility**: Detect tab switching

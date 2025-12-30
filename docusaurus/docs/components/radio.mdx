@@ -1,0 +1,398 @@
+---
+sidebar_position: 1
+---
+
+# Radio 单选框
+
+用于在多个选项中进行单选。
+
+## 何时使用
+
+- 在一组可选项中进行单选
+- 需要展示所有选项供用户选择
+- 选项数量较少时（建议不超过 5 个）
+- 用于表单中的单选场景
+
+## 示例
+
+### 基础用法
+
+基本的单选框使用，通过 `label` 设置文本内容。
+
+```jsx live
+function Demo() {
+  const [checked, setChecked] = React.useState(false);
+
+  return (
+    <div>
+      <Radio
+        label="选项 A"
+        checked={checked}
+        onChange={(e) => setChecked(e.target.checked)}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        状态: {checked ? '已选中' : '未选中'}
+      </div>
+    </div>
+  );
+}
+```
+
+### 默认选中
+
+通过 `defaultChecked` 属性设置默认选中状态。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Radio label="默认未选中" />
+      <Radio label="默认选中" defaultChecked />
+    </Group>
+  );
+}
+```
+
+### 禁用状态
+
+通过 `disabled` 属性禁用单选框。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Radio label="未选中 - 禁用" disabled />
+      <Radio label="已选中 - 禁用" defaultChecked disabled />
+    </Group>
+  );
+}
+```
+
+### 单选框组
+
+使用 `RadioGroup` 组件实现一组单选框的管理。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('kubernetes');
+
+  return (
+    <div>
+      <RadioGroup value={value} onChange={setValue}>
+        <Radio label="Kubernetes" value="kubernetes" />
+        <Radio label="Docker" value="docker" />
+        <Radio label="Istio" value="istio" />
+        <Radio label="Helm" value="helm" />
+      </RadioGroup>
+      <div style={{ marginTop: '16px', color: '#79879c', fontSize: '14px' }}>
+        已选择: {value}
+      </div>
+    </div>
+  );
+}
+```
+
+### 单选框组 - 禁用
+
+RadioGroup 可以统一禁用所有子选项。
+
+```jsx live
+function Demo() {
+  return (
+    <RadioGroup defaultValue="option1" disabled>
+      <Radio label="选项 1" value="option1" />
+      <Radio label="选项 2" value="option2" />
+      <Radio label="选项 3" value="option3" />
+    </RadioGroup>
+  );
+}
+```
+
+### 受控组件
+
+通过 `value` 和 `onChange` 属性实现受控组件。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('sm');
+
+  const handleChange = (newValue) => {
+    setValue(newValue);
+  };
+
+  return (
+    <div>
+      <RadioGroup value={value} onChange={handleChange}>
+        <Radio label="小型 (sm)" value="sm" />
+        <Radio label="中型 (md)" value="md" />
+        <Radio label="大型 (lg)" value="lg" />
+      </RadioGroup>
+      <Group style={{ marginTop: '16px' }}>
+        <Button onClick={() => setValue('sm')}>选择小型</Button>
+        <Button onClick={() => setValue('md')}>选择中型</Button>
+        <Button onClick={() => setValue('lg')}>选择大型</Button>
+      </Group>
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        当前尺寸: {value}
+      </div>
+    </div>
+  );
+}
+```
+
+### 动态选项
+
+根据数据动态生成单选框列表。
+
+```jsx live
+function Demo() {
+  const options = [
+    { label: '开发环境', value: 'dev', disabled: false },
+    { label: '测试环境', value: 'test', disabled: false },
+    { label: '预发环境', value: 'staging', disabled: false },
+    { label: '生产环境', value: 'prod', disabled: true },
+  ];
+
+  const [selectedValue, setSelectedValue] = React.useState('dev');
+
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>请选择部署环境:</h4>
+      <RadioGroup value={selectedValue} onChange={setSelectedValue}>
+        {options.map((option) => (
+          <Radio
+            key={option.value}
+            label={option.label}
+            value={option.value}
+            disabled={option.disabled}
+          />
+        ))}
+      </RadioGroup>
+      <div
+        style={{
+          marginTop: '16px',
+          padding: '12px',
+          background: '#f7f8fa',
+          borderRadius: '4px',
+          fontSize: '14px',
+        }}
+      >
+        <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>已选择环境:</div>
+        <div style={{ color: '#79879c' }}>
+          {options.find((opt) => opt.value === selectedValue)?.label || '暂未选择'}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+### 无标签
+
+Radio 可以不传 `label` 属性，仅显示单选框。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('a');
+
+  return (
+    <RadioGroup value={value} onChange={setValue}>
+      <Radio value="a" />
+      <Radio value="b" />
+      <Radio value="c" />
+    </RadioGroup>
+  );
+}
+```
+
+### 实际应用场景
+
+展示单选框在实际场景中的应用。
+
+```jsx live
+function Demo() {
+  const [plan, setPlan] = React.useState('basic');
+
+  const plans = [
+    {
+      value: 'basic',
+      name: '基础版',
+      price: '¥99/月',
+      features: '2核4G，50GB存储',
+    },
+    {
+      value: 'pro',
+      name: '专业版',
+      price: '¥299/月',
+      features: '4核8G，200GB存储',
+    },
+    {
+      value: 'enterprise',
+      name: '企业版',
+      price: '¥999/月',
+      features: '8核16G，1TB存储',
+    },
+  ];
+
+  return (
+    <div>
+      <h4 style={{ marginBottom: '16px' }}>选择套餐:</h4>
+      <RadioGroup value={plan} onChange={setPlan}>
+        <Group direction="column" spacing="md">
+          {plans.map((item) => (
+            <div
+              key={item.value}
+              style={{
+                padding: '16px',
+                border: `2px solid ${plan === item.value ? '#55bc8a' : '#e3e9ef'}`,
+                borderRadius: '8px',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+              onClick={() => setPlan(item.value)}
+            >
+              <Group position="apart">
+                <Group>
+                  <Radio value={item.value} />
+                  <div>
+                    <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>{item.name}</div>
+                    <div style={{ fontSize: '12px', color: '#79879c' }}>{item.features}</div>
+                  </div>
+                </Group>
+                <div style={{ fontWeight: 'bold', color: '#55bc8a' }}>{item.price}</div>
+              </Group>
+            </div>
+          ))}
+        </Group>
+      </RadioGroup>
+    </div>
+  );
+}
+```
+
+## API
+
+### Radio 属性
+
+| 属性           | 说明                                  | 类型                              | 默认值  |
+| -------------- | ------------------------------------- | --------------------------------- | ------- |
+| label          | 单选框文本标签                        | `ReactNode`                       | -       |
+| value          | 单选框的值（在 RadioGroup 中使用）    | `string`                          | -       |
+| checked        | 是否选中（受控）                      | `boolean`                         | -       |
+| defaultChecked | 默认是否选中（非受控）                | `boolean`                         | `false` |
+| disabled       | 是否禁用                              | `boolean`                         | `false` |
+| id             | input 元素的 id，用于绑定 label       | `string`                          | -       |
+| onChange       | 变化时的回调函数                      | `(e: Event) => void`              | -       |
+| 其他           | 原生属性                              | `HTMLAttributes<HTMLInputElement>`| -       |
+
+:::info
+
+Radio 组件继承所有原生 HTML input[type="radio"] 元素的属性（如 `onClick`、`onFocus` 等）。
+
+**在 RadioGroup 中使用**：
+- 在 RadioGroup 中，不要使用 `checked` 属性，应通过 RadioGroup 的 `value` 控制
+- 必须设置 `value` 属性以标识每个选项
+- 如果在 RadioGroup 中设置 `checked`，会在控制台显示警告
+
+:::
+
+### RadioGroup 属性
+
+| 属性         | 说明                     | 类型                         | 默认值  |
+| ------------ | ------------------------ | ---------------------------- | ------- |
+| value        | 指定选中的选项（受控）   | `string \| number`           | -       |
+| defaultValue | 默认选中的选项（非受控） | `string`                     | -       |
+| disabled     | 是否禁用所有单选框       | `boolean`                    | `false` |
+| onChange     | 变化时的回调函数         | `(value: string) => void`    | -       |
+| 其他         | 原生属性                 | `HTMLAttributes<HTMLElement>`| -       |
+
+:::info
+
+**关于布局**：
+- RadioGroup 默认使用 Group 组件水平排列子元素
+- 如需垂直排列，可以在外层使用 Group 组件并设置 `direction="column"`
+
+**受控与非受控**：
+- 使用 `value` + `onChange` 实现受控组件
+- 使用 `defaultValue` 实现非受控组件
+- RadioGroup 的 `value` 是一个字符串，对应选中项的 `value` 值
+
+:::
+
+## 使用建议
+
+### 受控与非受控
+
+根据场景选择合适的使用方式：
+
+```jsx
+// 非受控：适用于简单场景，不需要外部控制状态
+<RadioGroup defaultValue="option1">
+  <Radio label="选项 1" value="option1" />
+  <Radio label="选项 2" value="option2" />
+</RadioGroup>
+
+// 受控：适用于需要外部控制或复杂交互的场景
+const [value, setValue] = React.useState('option1');
+<RadioGroup value={value} onChange={setValue}>
+  <Radio label="选项 1" value="option1" />
+  <Radio label="选项 2" value="option2" />
+</RadioGroup>
+```
+
+### Radio vs Select
+
+选择使用 Radio 还是 Select：
+
+```jsx
+// Radio：选项少（≤5个），需要一眼看到所有选项
+<RadioGroup value={value} onChange={setValue}>
+  <Radio label="小" value="sm" />
+  <Radio label="中" value="md" />
+  <Radio label="大" value="lg" />
+</RadioGroup>
+
+// Select：选项多（>5个），不需要展示所有选项
+<Select value={value} onChange={setValue}>
+  <Option value="xs">超小</Option>
+  <Option value="sm">小</Option>
+  <Option value="md">中</Option>
+  <Option value="lg">大</Option>
+  <Option value="xl">超大</Option>
+  <Option value="xxl">超超大</Option>
+</Select>
+```
+
+### 垂直布局
+
+自定义 RadioGroup 的垂直布局：
+
+```jsx
+<RadioGroup value={value} onChange={setValue}>
+  <Group direction="column">
+    <Radio label="选项 1" value="1" />
+    <Radio label="选项 2" value="2" />
+    <Radio label="选项 3" value="3" />
+  </Group>
+</RadioGroup>
+```
+
+### 与表单组件配合
+
+在 Form 中使用 RadioGroup：
+
+```jsx
+<Form onFinish={handleFinish}>
+  <FormItem
+    name="size"
+    label="尺寸"
+    rules={[{ required: true, message: '请选择尺寸' }]}
+  >
+    <RadioGroup>
+      <Radio label="小" value="sm" />
+      <Radio label="中" value="md" />
+      <Radio label="大" value="lg" />
+    </RadioGroup>
+  </FormItem>
+</Form>
+```

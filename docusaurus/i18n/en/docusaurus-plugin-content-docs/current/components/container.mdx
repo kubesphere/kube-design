@@ -1,0 +1,292 @@
+---
+sidebar_position: 4
+---
+
+# Container
+
+A container component that limits content to a maximum width and centers it, suitable for creating responsive page layouts.
+
+## When to Use
+
+- Create responsive page layouts
+- Limit content maximum width to improve reading experience
+- Maintain consistent content width across different screen sizes
+- Build standard page framework structures
+
+## Examples
+
+### Basic Usage
+
+Container has `padding` set to `md` by default, and content is horizontally centered.
+
+```jsx live
+function Demo() {
+  return (
+    <Container>
+      <div style={{ background: '#f7f8fa', padding: '20px', borderRadius: '4px' }}>
+        <h3 style={{ marginBottom: '12px' }}>Container Content</h3>
+        <p style={{ color: '#79879c', lineHeight: '1.6' }}>
+          The Container component is used to limit the maximum width of content and center it.
+          It provides preset responsive breakpoints that automatically adjust container width based on screen size,
+          providing users with the best reading experience.
+        </p>
+      </div>
+    </Container>
+  );
+}
+```
+
+### Container Sizes
+
+Use the `size` property to set the maximum width of the container. Available values: `xs`, `sm`, `md`, `lg`, `xl`.
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>Size: xs (570px)</h4>
+      <Container size="xs" style={{ marginBottom: '24px' }}>
+        <div style={{ background: '#e3f2fd', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0 }}>
+            This is an xs size container with a maximum width of 570px, suitable for narrower content layouts.
+          </p>
+        </div>
+      </Container>
+
+      <h4 style={{ marginBottom: '12px' }}>Size: sm (640px)</h4>
+      <Container size="sm" style={{ marginBottom: '24px' }}>
+        <div style={{ background: '#f3e5f5', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0 }}>
+            This is a sm size container with a maximum width of 640px, suitable for small devices or compact layouts.
+          </p>
+        </div>
+      </Container>
+
+      <h4 style={{ marginBottom: '12px' }}>Size: md (768px)</h4>
+      <Container size="md" style={{ marginBottom: '24px' }}>
+        <div style={{ background: '#fff3e0', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0 }}>
+            This is a md size container with a maximum width of 768px, suitable for tablet devices or medium-width layouts.
+          </p>
+        </div>
+      </Container>
+
+      <h4 style={{ marginBottom: '12px' }}>Size: lg (1024px)</h4>
+      <Container size="lg" style={{ marginBottom: '24px' }}>
+        <div style={{ background: '#e8f5e9', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0 }}>
+            This is a lg size container with a maximum width of 1024px, suitable for desktop devices or widescreen layouts.
+          </p>
+        </div>
+      </Container>
+
+      <h4 style={{ marginBottom: '12px' }}>Size: xl (1280px)</h4>
+      <Container size="xl">
+        <div style={{ background: '#fce4ec', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0 }}>
+            This is an xl size container with a maximum width of 1280px, suitable for large screens or scenarios requiring wider content areas.
+          </p>
+        </div>
+      </Container>
+    </div>
+  );
+}
+```
+
+### Custom Size
+
+The `size` property can also be set to a specific pixel value.
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>Custom Width: 500px</h4>
+      <Container size={500} style={{ marginBottom: '24px' }}>
+        <div style={{ background: '#f7f8fa', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0, color: '#79879c' }}>
+            Container maximum width is 500px
+          </p>
+        </div>
+      </Container>
+
+      <h4 style={{ marginBottom: '12px' }}>Custom Width: 900px</h4>
+      <Container size={900}>
+        <div style={{ background: '#f7f8fa', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0, color: '#79879c' }}>
+            Container maximum width is 900px
+          </p>
+        </div>
+      </Container>
+    </div>
+  );
+}
+```
+
+### Padding Control
+
+Use the `padding` property to control the horizontal padding of the container.
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>Padding: xs</h4>
+      <Container size="md" padding="xs" style={{ marginBottom: '24px' }}>
+        <div style={{ background: '#f7f8fa', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0 }}>Smaller padding</p>
+        </div>
+      </Container>
+
+      <h4 style={{ marginBottom: '12px' }}>Padding: md (default)</h4>
+      <Container size="md" padding="md" style={{ marginBottom: '24px' }}>
+        <div style={{ background: '#f7f8fa', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0 }}>Medium padding</p>
+        </div>
+      </Container>
+
+      <h4 style={{ marginBottom: '12px' }}>Padding: xl</h4>
+      <Container size="md" padding="xl">
+        <div style={{ background: '#f7f8fa', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0 }}>Larger padding</p>
+        </div>
+      </Container>
+    </div>
+  );
+}
+```
+
+### Fluid Container
+
+When the `fluid` property is set, the container width will fill 100% of the parent element, ignoring the `size` setting.
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>Fixed Size Container (size="md")</h4>
+      <Container size="md" style={{ marginBottom: '24px' }}>
+        <div style={{ background: '#e3f2fd', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0 }}>This is a container with a fixed maximum width</p>
+        </div>
+      </Container>
+
+      <h4 style={{ marginBottom: '12px' }}>Fluid Container (fluid)</h4>
+      <Container fluid>
+        <div style={{ background: '#f3e5f5', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0 }}>This is a fluid container with 100% width</p>
+        </div>
+      </Container>
+    </div>
+  );
+}
+```
+
+### Page Layout Example
+
+Container is commonly used for page body content layout.
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      {/* Page header */}
+      <div style={{ background: '#242e42', color: '#fff', padding: '16px 0' }}>
+        <Container size="lg">
+          <Group position="apart">
+            <h3 style={{ margin: 0 }}>Kube Design</h3>
+            <Group spacing="md">
+              <span>Home</span>
+              <span>Components</span>
+              <span>Docs</span>
+            </Group>
+          </Group>
+        </Container>
+      </div>
+
+      {/* Page content */}
+      <Container size="lg" style={{ marginTop: '24px', marginBottom: '24px' }}>
+        <div style={{ background: '#f7f8fa', padding: '24px', borderRadius: '4px' }}>
+          <h2 style={{ marginBottom: '16px' }}>Page Title</h2>
+          <p style={{ color: '#79879c', lineHeight: '1.6', marginBottom: '16px' }}>
+            The Container component is suitable for building standard page layouts. By setting an appropriate size,
+            you can ensure content has good readability and visual effects across different screen sizes.
+          </p>
+          <Button variant="filled" color="primary">Learn More</Button>
+        </div>
+      </Container>
+
+      {/* Page footer */}
+      <div style={{ background: '#f7f8fa', padding: '24px 0', borderTop: '1px solid #d1d5de' }}>
+        <Container size="lg">
+          <p style={{ margin: 0, textAlign: 'center', color: '#79879c', fontSize: '14px' }}>
+            © 2024 Kube Design. All rights reserved.
+          </p>
+        </Container>
+      </div>
+    </div>
+  );
+}
+```
+
+### Nested Usage
+
+Containers can be nested, and inner containers will be constrained by the outer container's width.
+
+```jsx live
+function Demo() {
+  return (
+    <Container size="lg" style={{ background: '#f7f8fa', padding: '20px' }}>
+      <h4 style={{ marginBottom: '16px' }}>Outer Container (lg - 1024px)</h4>
+      <Container size="md" style={{ background: '#fff', padding: '20px', border: '1px solid #d1d5de' }}>
+        <h4 style={{ marginBottom: '16px' }}>Inner Container (md - 768px)</h4>
+        <Container size="sm" style={{ background: '#e3f2fd', padding: '20px' }}>
+          <p style={{ margin: 0 }}>Innermost Container (sm - 640px)</p>
+        </Container>
+      </Container>
+    </Container>
+  );
+}
+```
+
+## API
+
+### Container Properties
+
+| Property | Description                                           | Type                             | Default |
+| -------- | ----------------------------------------------------- | -------------------------------- | ------- |
+| size     | Container maximum width, can be preset size or pixels | `KubedNumberSize`                | -       |
+| padding  | Container horizontal padding                          | `KubedNumberSize`                | `'md'`  |
+| fluid    | Whether fluid container, 100% width, ignores size     | `boolean`                        | `false` |
+| children | Container content                                     | `ReactNode`                      | -       |
+| Others   | Native attributes                                     | `HTMLAttributes<HTMLDivElement>` | -       |
+
+:::info
+
+**Preset Size Values**:
+
+- `xs`: 570px
+- `sm`: 640px
+- `md`: 768px
+- `lg`: 1024px
+- `xl`: 1280px
+
+The Container component inherits all native HTML div element attributes (such as `onClick`, `onMouseEnter`, etc.).
+
+:::
+
+## Responsive Design
+
+The Container component design follows a mobile-first principle:
+
+- On small screen devices, the container automatically adapts to screen width
+- On large screen devices, the container will not exceed the set maximum width
+- The `padding` property ensures content doesn't stick to screen edges
+
+Recommended use cases:
+
+- **xs/sm**: Mobile devices, small popups
+- **md**: Tablet devices, medium-width content
+- **lg**: Desktop devices, standard page layouts
+- **xl**: Large screens, widescreen content display
+- **fluid**: Scenarios requiring full parent container width

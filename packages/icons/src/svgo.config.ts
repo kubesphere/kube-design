@@ -1,113 +1,58 @@
 export default {
   plugins: [
+    'cleanupAttrs',
+    'removeDoctype',
+    'removeXMLProcInst',
+    'removeComments',
+    'removeMetadata',
+    'removeTitle',
+    'removeDesc',
+    'removeUselessDefs',
+    'removeEditorsNSData',
+    'removeEmptyAttrs',
+    'removeHiddenElems',
+    'removeEmptyText',
+    'removeEmptyContainers',
     {
-      cleanupAttrs: true,
+      name: 'removeViewBox',
+      active: false,
     },
+    'cleanupEnableBackground',
+    'convertStyleToAttrs',
+    'convertColors',
+    'convertPathData',
+    'convertTransform',
+    'removeUnknownsAndDefaults',
+    'removeNonInheritableGroupAttrs',
+    'removeUselessStrokeAndFill',
+    'removeUnusedNS',
+    'cleanupIds',
     {
-      removeDoctype: true,
-    },
-    {
-      removeXMLProcInst: true,
-    },
-    {
-      removeComments: true,
-    },
-    {
-      removeMetadata: true,
-    },
-    {
-      removeTitle: true,
-    },
-    {
-      removeDesc: true,
-    },
-    {
-      removeUselessDefs: true,
-    },
-    {
-      removeEditorsNSData: true,
-    },
-    {
-      removeEmptyAttrs: true,
-    },
-    {
-      removeHiddenElems: true,
-    },
-    {
-      removeEmptyText: true,
-    },
-    {
-      removeEmptyContainers: true,
-    },
-    {
-      removeViewBox: false,
-    },
-    {
-      cleanupEnableBackground: true,
-    },
-    {
-      convertStyleToAttrs: true,
-    },
-    {
-      convertColors: true,
-    },
-    {
-      convertPathData: true,
-    },
-    {
-      convertTransform: true,
-    },
-    {
-      removeUnknownsAndDefaults: true,
-    },
-    {
-      removeNonInheritableGroupAttrs: true,
-    },
-    {
-      removeUselessStrokeAndFill: true,
-    },
-    {
-      removeUnusedNS: true,
-    },
-    {
-      cleanupIDs: true,
-    },
-    {
-      cleanupNumericValues: {
+      name: 'cleanupNumericValues',
+      params: {
         floatPrecision: 1,
       },
     },
+    'moveElemsAttrsToGroup',
+    'moveGroupAttrsToElems',
+    'collapseGroups',
     {
-      moveElemsAttrsToGroup: true,
+      name: 'removeRasterImages',
+      active: false,
     },
+    'mergePaths',
+    'convertShapeToPath',
+    'sortAttrs',
+    'removeDimensions',
     {
-      moveGroupAttrsToElems: true,
-    },
-    {
-      collapseGroups: true,
-    },
-    {
-      removeRasterImages: false,
-    },
-    {
-      mergePaths: true,
-    },
-    {
-      convertShapeToPath: true,
-    },
-    {
-      sortAttrs: true,
-    },
-    {
-      removeDimensions: true,
-    },
-    {
-      removeAttrs: {
+      name: 'removeAttrs',
+      params: {
         attrs: ['svg:width', 'svg:height', 'svg:style', 'svg:color', '(stroke)'],
       },
     },
     {
-      removeAttributesBySelector: {
+      name: 'removeAttributesBySelector',
+      params: {
         selectors: [
           { selector: "[fill = 'none']", attributes: 'fill' },
           { selector: "[fill = '#B6C2CD']", attributes: 'fill' },

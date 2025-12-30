@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
 export function useScrollLock(lock?: boolean) {
   const [scrollLocked, setScrollLocked] = useState(lock || false);
@@ -7,19 +7,19 @@ export function useScrollLock(lock?: boolean) {
   const locked = useRef(false);
 
   // after scroll is unlocked body overflow style returns to the previous known value
-  const bodyOverflow = useRef<React.CSSProperties["overflow"]>(null);
+  const bodyOverflow = useRef<React.CSSProperties['overflow']>(null);
 
   const unlockScroll = () => {
     if (locked.current) {
       locked.current = false;
-      document.body.style.overflow = bodyOverflow.current || "";
+      document.body.style.overflow = bodyOverflow.current || '';
     }
   };
 
   const lockScroll = () => {
     locked.current = true;
     bodyOverflow.current = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
   };
 
   useEffect(() => {
@@ -39,8 +39,8 @@ export function useScrollLock(lock?: boolean) {
   }, [lock]);
 
   useEffect(() => {
-    if (lock === undefined && typeof window !== "undefined") {
-      window.document.body.style.overflow === "hidden" && setScrollLocked(true);
+    if (lock === undefined && typeof window !== 'undefined') {
+      window.document.body.style.overflow === 'hidden' && setScrollLocked(true);
     }
   }, [setScrollLocked]);
 

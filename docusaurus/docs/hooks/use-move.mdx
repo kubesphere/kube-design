@@ -1,0 +1,370 @@
+---
+sidebar_position: 22
+---
+
+# useMove
+
+跟踪鼠标和触摸移动的 Hook，返回元素内的归一化坐标 (0-1)。
+
+## 基本用法
+
+```jsx live
+function Demo() {
+  const [value, setValue] = useState({ x: 0.5, y: 0.5 });
+  const { ref, active } = useMove(setValue);
+
+  return (
+    <div>
+      <div
+        ref={ref}
+        style={{
+          width: '100%',
+          height: '200px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          position: 'relative',
+          cursor: 'crosshair',
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            left: `${value.x * 100}%`,
+            top: `${value.y * 100}%`,
+            width: '20px',
+            height: '20px',
+            backgroundColor: active ? 'var(--ifm-color-primary)' : 'var(--ifm-color-primary-dark)',
+            borderRadius: '50%',
+            transform: 'translate(-50%, -50%)',
+            transition: active ? 'none' : 'background-color 0.2s',
+          }}
+        />
+      </div>
+      <div
+        style={{
+          marginTop: '12px',
+          padding: '12px',
+          backgroundColor: 'var(--ifm-background-surface-color)',
+          border: '1px solid var(--ifm-color-emphasis-300)',
+          borderRadius: '6px',
+          fontSize: '14px',
+        }}
+      >
+        <div>X: {(value.x * 100).toFixed(1)}%</div>
+        <div>Y: {(value.y * 100).toFixed(1)}%</div>
+        <div>状态: {active ? '拖动中' : '空闲'}</div>
+      </div>
+    </div>
+  );
+}
+```
+
+## 颜色选择器
+
+使用 useMove 创建颜色选择器：
+
+```jsx live
+function Demo() {
+  const [value, setValue] = useState({ x: 0.5, y: 0.5 });
+  const { ref } = useMove(setValue);
+
+  const hue = Math.round(value.x * 360);
+  const lightness = Math.round((1 - value.y) * 100);
+  const color = `hsl(${hue}, 100%, ${lightness}%)`;
+
+  return (
+    <div>
+      <div
+        ref={ref}
+        style={{
+          width: '100%',
+          height: '200px',
+          background: `linear-gradient(to bottom, white, transparent, black),
+                       linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00)`,
+          borderRadius: '8px',
+          position: 'relative',
+          cursor: 'crosshair',
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            left: `${value.x * 100}%`,
+            top: `${value.y * 100}%`,
+            width: '16px',
+            height: '16px',
+            border: '2px solid white',
+            borderRadius: '50%',
+            boxShadow: '0 0 0 1px rgba(0,0,0,0.3)',
+            transform: 'translate(-50%, -50%)',
+          }}
+        />
+      </div>
+      <div
+        style={{
+          marginTop: '12px',
+          padding: '20px',
+          backgroundColor: color,
+          borderRadius: '6px',
+          textAlign: 'center',
+          color: lightness > 50 ? '#000' : '#fff',
+          fontWeight: 'bold',
+        }}
+      >
+        {color}
+      </div>
+    </div>
+  );
+}
+```
+
+## 滑块控制
+
+创建二维滑块：
+
+```jsx live
+function Demo() {
+  const [position, setPosition] = useState({ x: 0.5, y: 0.5 });
+  const { ref, active } = useMove(setPosition);
+
+  const size = 50 + position.x * 150;
+  const opacity = 0.3 + position.y * 0.7;
+
+  return (
+    <div>
+      <div
+        ref={ref}
+        style={{
+          width: '100%',
+          height: '200px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: active ? 'grabbing' : 'grab',
+        }}
+      >
+        <div
+          style={{
+            width: `${size}px`,
+            height: `${size}px`,
+            backgroundColor: 'var(--ifm-color-primary)',
+            opacity,
+            borderRadius: '8px',
+            transition: active ? 'none' : 'all 0.2s',
+          }}
+        />
+      </div>
+      <div
+        style={{
+          marginTop: '12px',
+          padding: '12px',
+          backgroundColor: 'var(--ifm-background-surface-color)',
+          border: '1px solid var(--ifm-color-emphasis-300)',
+          borderRadius: '6px',
+          fontSize: '14px',
+        }}
+      >
+        <div>大小: {size.toFixed(0)}px (X 轴控制)</div>
+        <div>不透明度: {opacity.toFixed(2)} (Y 轴控制)</div>
+      </div>
+    </div>
+  );
+}
+```
+
+## 带回调的拖动
+
+使用拖动开始和结束回调：
+
+```jsx live
+function Demo() {
+  const [value, setValue] = useState({ x: 0.5, y: 0.5 });
+  const [log, setLog] = useState([]);
+
+  const { ref, active } = useMove(setValue, {
+    onScrubStart: () => {
+      setLog((prev) => [...prev, '开始拖动']);
+    },
+    onScrubEnd: () => {
+      setLog((prev) => [...prev, '结束拖动']);
+    },
+  });
+
+  return (
+    <div>
+      <div
+        ref={ref}
+        style={{
+          width: '100%',
+          height: '150px',
+          backgroundColor: active ? 'var(--ifm-color-primary-lightest)' : 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '48px',
+          transition: 'background-color 0.2s',
+          cursor: 'move',
+        }}
+      >
+        {active ? '🎯' : '👆'}
+      </div>
+      {log.length > 0 && (
+        <div
+          style={{
+            marginTop: '12px',
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-emphasis-100)',
+            borderRadius: '6px',
+            fontSize: '14px',
+            maxHeight: '100px',
+            overflow: 'auto',
+          }}
+        >
+          <strong>事件日志:</strong>
+          {log.slice(-5).map((item, index) => (
+            <div key={index}>• {item}</div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## API
+
+### 参数
+
+```ts
+function useMove<T extends HTMLElement = HTMLDivElement>(
+  onChange: (value: UseMovePosition) => void,
+  handlers?: UseMoveHandlers
+): UseMoveResult<T>
+```
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| onChange | 位置变化时的回调函数 | `(value: UseMovePosition) => void` | - |
+| handlers | 拖动事件处理器 | `UseMoveHandlers` | - |
+
+#### UseMovePosition
+
+```ts
+interface UseMovePosition {
+  x: number;  // 0 到 1 之间的水平位置
+  y: number;  // 0 到 1 之间的垂直位置
+}
+```
+
+#### UseMoveHandlers
+
+```ts
+interface UseMoveHandlers {
+  onScrubStart?: () => void;  // 开始拖动时调用
+  onScrubEnd?: () => void;    // 结束拖动时调用
+}
+```
+
+### 返回值
+
+```ts
+interface UseMoveResult<T> {
+  ref: React.RefObject<T>;  // 要附加到元素的 ref
+  active: boolean;          // 是否正在拖动
+}
+```
+
+## 工作原理
+
+1. 监听元素的 `mousedown` 和 `touchstart` 事件
+2. 拖动时跟踪鼠标/触摸位置
+3. 计算相对于元素的归一化坐标 (0-1)
+4. 通过 `onChange` 回调返回位置
+5. 拖动结束时清理事件监听器
+
+## 特性
+
+- **归一化坐标**: 始终返回 0-1 之间的值
+- **触摸支持**: 同时支持鼠标和触摸事件
+- **性能优化**: 使用 requestAnimationFrame
+- **类型安全**: 完整的 TypeScript 支持
+- **事件回调**: 可选的开始/结束回调
+
+## 使用场景
+
+- **颜色选择器**: 二维色彩和亮度选择
+- **滑块控制**: 自定义范围滑块
+- **图片裁剪**: 拖动选择区域
+- **游戏控制**: 虚拟摇杆
+- **数据可视化**: 交互式图表
+- **音量/亮度**: 二维控制面板
+
+## 注意事项
+
+- 坐标值始终在 0-1 范围内
+- `active` 状态可用于显示视觉反馈
+- 触摸事件会调用 `preventDefault`
+- 组件卸载时自动清理事件监听器
+
+## 实际应用
+
+### 音量和平衡控制
+
+```jsx
+function VolumeControl() {
+  const [value, setValue] = useState({ x: 0.5, y: 0.5 });
+  const { ref, active } = useMove(setValue);
+
+  const volume = Math.round(value.y * 100);
+  const balance = Math.round((value.x - 0.5) * 200);
+
+  return (
+    <div>
+      <div ref={ref} style={{ width: '300px', height: '300px', ... }}>
+        {/* 控制器 UI */}
+      </div>
+      <div>
+        音量: {volume}% | 平衡: {balance > 0 ? 'R' : 'L'} {Math.abs(balance)}
+      </div>
+    </div>
+  );
+}
+```
+
+### 图片焦点选择
+
+```jsx
+function ImageFocus() {
+  const [focus, setFocus] = useState({ x: 0.5, y: 0.5 });
+  const { ref } = useMove(setFocus);
+
+  return (
+    <div ref={ref} style={{ position: 'relative' }}>
+      <img src="image.jpg" style={{ width: '100%' }} />
+      <div
+        style={{
+          position: 'absolute',
+          left: `${focus.x * 100}%`,
+          top: `${focus.y * 100}%`,
+          width: '50px',
+          height: '50px',
+          border: '2px solid white',
+          borderRadius: '50%',
+          transform: 'translate(-50%, -50%)',
+        }}
+      />
+    </div>
+  );
+}
+```
+
+## 最佳实践
+
+- 使用 `active` 状态提供拖动反馈
+- 添加视觉指示器显示当前位置
+- 考虑为触摸设备优化触摸目标大小
+- 提供键盘访问的替代方案
+- 在拖动时禁用文本选择

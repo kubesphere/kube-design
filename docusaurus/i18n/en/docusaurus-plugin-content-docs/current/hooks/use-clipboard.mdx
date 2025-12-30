@@ -1,0 +1,346 @@
+---
+sidebar_position: 21
+---
+
+# useClipboard
+
+A Hook for copying text to clipboard with automatic reset and error handling support.
+
+## Basic Usage
+
+```jsx live
+function Demo() {
+  const clipboard = useClipboard();
+
+  return (
+    <div>
+      <Button onClick={() => clipboard.copy('Hello, World!')}>
+        {clipboard.copied ? '✓ Copied' : 'Copy Text'}
+      </Button>
+      <div
+        style={{
+          marginTop: '12px',
+          padding: '12px',
+          backgroundColor: clipboard.copied ? 'var(--ifm-color-success-lightest)' : 'var(--ifm-color-emphasis-100)',
+          borderRadius: '6px',
+          fontSize: '14px',
+        }}
+      >
+        {clipboard.copied ? 'Text copied to clipboard!' : 'Click button to copy text'}
+      </div>
+    </div>
+  );
+}
+```
+
+## Custom Timeout
+
+Set the time for automatic reset of copy status:
+
+```jsx live
+function Demo() {
+  const clipboard = useClipboard({ timeout: 3000 });
+
+  return (
+    <div>
+      <Group spacing="md">
+        <Button
+          onClick={() => clipboard.copy('This text will be copied')}
+          variant={clipboard.copied ? 'filled' : 'outline'}
+        >
+          {clipboard.copied ? '✓ Copied' : 'Copy'}
+        </Button>
+        <Button onClick={clipboard.reset} disabled={!clipboard.copied}>
+          Reset State
+        </Button>
+      </Group>
+      <div
+        style={{
+          marginTop: '12px',
+          padding: '12px',
+          backgroundColor: 'var(--ifm-background-surface-color)',
+          border: '1px solid var(--ifm-color-emphasis-300)',
+          borderRadius: '6px',
+          fontSize: '14px',
+        }}
+      >
+        Copy state will auto-reset after 3 seconds
+      </div>
+    </div>
+  );
+}
+```
+
+## Copy Input Content
+
+Copy user input from an input field:
+
+```jsx live
+function Demo() {
+  const [inputValue, setInputValue] = useState('Copy me!');
+  const clipboard = useClipboard({ timeout: 2000 });
+
+  return (
+    <div>
+      <Input
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        placeholder="Enter content to copy"
+        style={{ marginBottom: '12px' }}
+      />
+      <Button onClick={() => clipboard.copy(inputValue)}>
+        {clipboard.copied ? '✓ Copied' : 'Copy Input Content'}
+      </Button>
+      {clipboard.copied && (
+        <div
+          style={{
+            marginTop: '12px',
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-success-lightest)',
+            borderRadius: '6px',
+            fontSize: '14px',
+          }}
+        >
+          Copied: <code>{inputValue}</code>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## Code Snippet Copy
+
+Common use case for copying code snippets:
+
+```jsx live
+function Demo() {
+  const clipboard = useClipboard({ timeout: 2000 });
+
+  const codeSnippet = `import { useClipboard } from '@kubed/hooks';
+
+function Demo() {
+  const clipboard = useClipboard();
+  return <button onClick={() => clipboard.copy('text')}>Copy</button>;
+}`;
+
+  return (
+    <div>
+      <div
+        style={{
+          position: 'relative',
+          padding: '16px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          fontFamily: 'monospace',
+          fontSize: '13px',
+          whiteSpace: 'pre-wrap',
+          marginBottom: '12px',
+        }}
+      >
+        {codeSnippet}
+        <Button
+          onClick={() => clipboard.copy(codeSnippet)}
+          size="sm"
+          style={{
+            position: 'absolute',
+            top: '8px',
+            right: '8px',
+          }}
+        >
+          {clipboard.copied ? '✓' : 'Copy'}
+        </Button>
+      </div>
+    </div>
+  );
+}
+```
+
+## Share Link
+
+Copy current page link:
+
+```jsx live
+function Demo() {
+  const clipboard = useClipboard({ timeout: 2000 });
+  const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
+
+  return (
+    <div>
+      <div
+        style={{
+          display: 'flex',
+          gap: '8px',
+          padding: '12px',
+          backgroundColor: 'var(--ifm-background-surface-color)',
+          border: '1px solid var(--ifm-color-emphasis-300)',
+          borderRadius: '6px',
+          marginBottom: '12px',
+        }}
+      >
+        <Input
+          value={currentUrl}
+          readOnly
+          style={{ flex: 1 }}
+        />
+        <Button onClick={() => clipboard.copy(currentUrl)}>
+          {clipboard.copied ? '✓ Copied' : 'Copy Link'}
+        </Button>
+      </div>
+      {clipboard.error && (
+        <div
+          style={{
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-danger-lightest)',
+            borderRadius: '6px',
+            fontSize: '14px',
+            color: 'var(--ifm-color-danger-dark)',
+          }}
+        >
+          Copy failed: {clipboard.error.message}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## API
+
+### Parameters
+
+```ts
+function useClipboard(options?: UseClipboardOptions): UseClipboardReturn
+```
+
+#### UseClipboardOptions
+
+| Parameter | Description | Type | Default |
+|------|------|------|--------|
+| timeout | Auto-reset time for copy status (milliseconds) | `number` | `1000` |
+
+### Return Value
+
+Returns an object with the following properties and methods:
+
+```ts
+interface UseClipboardReturn {
+  copy: (text: string) => void;  // Copy text to clipboard
+  copied: boolean;                // Whether text was successfully copied
+  reset: () => void;              // Manually reset copy status
+  error: Error | null;            // Error during copy process
+}
+```
+
+| Property/Method | Description | Type |
+|----------|------|------|
+| copy | Function to copy text to clipboard | `(text: string) => void` |
+| copied | Indicates whether text was copied | `boolean` |
+| reset | Manually reset copied state | `() => void` |
+| error | Error object when copy fails | `Error \| null` |
+
+## How It Works
+
+1. Uses `navigator.clipboard.writeText()` API to copy text
+2. Sets `copied` to `true` after successful copy
+3. Automatically resets `copied` state after specified timeout
+4. Catches and stores any copy errors
+
+## Browser Compatibility
+
+`useClipboard` uses the modern Clipboard API, supporting:
+- Chrome 63+
+- Firefox 53+
+- Safari 13.1+
+- Edge 79+
+
+For unsupported browsers, an error will be thrown and stored in the `error` property.
+
+## Notes
+
+- Must be used in a secure context (HTTPS or localhost)
+- Some browsers require user interaction to copy
+- Copy operation is asynchronous
+- Handle copy failure cases appropriately
+
+## Usage Scenarios
+
+- **Code Examples**: Copy code snippets to clipboard
+- **Sharing Features**: Copy links, invitation codes, etc.
+- **Form Data**: Copy generated keys, tokens, etc.
+- **Text Editors**: Implement copy functionality
+- **Data Display**: Copy table data, IDs, etc.
+
+## Best Practices
+
+### Provide Visual Feedback
+
+```jsx
+const clipboard = useClipboard();
+
+<Button
+  onClick={() => clipboard.copy(text)}
+  variant={clipboard.copied ? 'filled' : 'outline'}
+>
+  {clipboard.copied ? '✓ Copied' : 'Copy'}
+</Button>
+```
+
+### Handle Errors
+
+```jsx
+const clipboard = useClipboard();
+
+useEffect(() => {
+  if (clipboard.error) {
+    console.error('Copy failed:', clipboard.error);
+    // Show error notification
+  }
+}, [clipboard.error]);
+```
+
+### Combine with Notification Components
+
+```jsx
+const clipboard = useClipboard({ timeout: 2000 });
+
+useEffect(() => {
+  if (clipboard.copied) {
+    showNotification({
+      title: 'Success',
+      message: 'Copied to clipboard',
+      color: 'green',
+    });
+  }
+}, [clipboard.copied]);
+```
+
+## Security Considerations
+
+- Only call `copy` method after user interaction
+- Don't copy sensitive information to clipboard
+- Validate text content to be copied
+- Use HTTPS in production
+
+## Alternatives
+
+### Manual Implementation
+
+```jsx
+// ❌ Manually manage state and timeout
+const [copied, setCopied] = useState(false);
+
+const handleCopy = async (text) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1000);
+  } catch (err) {
+    console.error('Failed to copy:', err);
+  }
+};
+
+// ✅ Using Hook
+const clipboard = useClipboard();
+clipboard.copy(text);
+```

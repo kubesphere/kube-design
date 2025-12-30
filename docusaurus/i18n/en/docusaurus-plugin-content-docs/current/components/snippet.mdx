@@ -1,0 +1,364 @@
+---
+sidebar_position: 1
+---
+
+# Snippet
+
+Display copyable code snippets or command lines.
+
+## When to Use
+
+- Display command line instructions that users need to copy
+- Show installation commands or configuration code
+- Need one-click copy code snippets
+- Terminal command display
+
+## Examples
+
+### Basic Usage
+
+The simplest code snippet usage, with default `$` prefix symbol.
+
+```jsx live
+function Demo() {
+  return <Snippet>kubectl get pods</Snippet>;
+}
+```
+
+### Copyable
+
+Enable copy functionality through the `valueToCopy` property, click the right icon to copy content.
+
+```jsx live
+function Demo() {
+  return <Snippet valueToCopy="kubectl get pods -n kubesphere-system">kubectl get pods -n kubesphere-system</Snippet>;
+}
+```
+
+### Custom Symbol
+
+Customize the prefix symbol through the `symbol` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Snippet symbol="$" valueToCopy="npm install @kubed/components">
+        npm install @kubed/components
+      </Snippet>
+      <Snippet symbol=">" valueToCopy="yarn add @kubed/components">
+        yarn add @kubed/components
+      </Snippet>
+      <Snippet symbol="#" valueToCopy="pnpm add @kubed/components">
+        pnpm add @kubed/components
+      </Snippet>
+    </Group>
+  );
+}
+```
+
+### No Symbol
+
+Set `symbol` to an empty string to hide the prefix symbol.
+
+```jsx live
+function Demo() {
+  return (
+    <Snippet symbol="" valueToCopy="https://kubesphere.io">
+      https://kubesphere.io
+    </Snippet>
+  );
+}
+```
+
+### Custom Width
+
+Set the code snippet width through the `width` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Snippet width={200} valueToCopy="kubectl">kubectl</Snippet>
+      <Snippet width={400} valueToCopy="kubectl get pods">kubectl get pods</Snippet>
+      <Snippet width={600} valueToCopy="kubectl get pods -n kubesphere-system -o wide">
+        kubectl get pods -n kubesphere-system -o wide
+      </Snippet>
+    </Group>
+  );
+}
+```
+
+### Border Radius
+
+Set border radius size through the `radius` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Snippet radius="xs" valueToCopy="kubectl get pods">kubectl get pods</Snippet>
+      <Snippet radius="sm" valueToCopy="kubectl get pods">kubectl get pods</Snippet>
+      <Snippet radius="md" valueToCopy="kubectl get pods">kubectl get pods</Snippet>
+      <Snippet radius="lg" valueToCopy="kubectl get pods">kubectl get pods</Snippet>
+      <Snippet radius="xl" valueToCopy="kubectl get pods">kubectl get pods</Snippet>
+    </Group>
+  );
+}
+```
+
+### Installation Commands
+
+Display common package installation commands.
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '500px' }}>
+        <div style={{ marginBottom: '12px', fontWeight: 600 }}>Install Dependencies</div>
+        <Group direction="column" spacing="sm">
+          <div style={{ fontSize: '12px', color: '#79879c' }}>Using npm</div>
+          <Snippet symbol="$" width={440} valueToCopy="npm install @kubed/components">
+            npm install @kubed/components
+          </Snippet>
+          <div style={{ fontSize: '12px', color: '#79879c', marginTop: '8px' }}>Using yarn</div>
+          <Snippet symbol="$" width={440} valueToCopy="yarn add @kubed/components">
+            yarn add @kubed/components
+          </Snippet>
+        </Group>
+      </Card>
+    </div>
+  );
+}
+```
+
+### Kubernetes Commands
+
+Display Kubernetes-related commands.
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '550px' }}>
+        <div style={{ marginBottom: '12px', fontWeight: 600 }}>Common Commands</div>
+        <Group direction="column" spacing="sm">
+          <Snippet width={510} valueToCopy="kubectl get pods -A">
+            kubectl get pods -A
+          </Snippet>
+          <Snippet width={510} valueToCopy="kubectl get nodes -o wide">
+            kubectl get nodes -o wide
+          </Snippet>
+          <Snippet width={510} valueToCopy="kubectl describe pod nginx-deployment-xxx">
+            kubectl describe pod nginx-deployment-xxx
+          </Snippet>
+          <Snippet width={510} valueToCopy="kubectl logs -f nginx-deployment-xxx">
+            kubectl logs -f nginx-deployment-xxx
+          </Snippet>
+        </Group>
+      </Card>
+    </div>
+  );
+}
+```
+
+### Configuration Information
+
+Display configuration file paths or environment variables.
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '500px' }}>
+        <div style={{ marginBottom: '12px', fontWeight: 600 }}>Configuration Files</div>
+        <Group direction="column" spacing="sm">
+          <div style={{ fontSize: '12px', color: '#79879c' }}>Kubeconfig Path</div>
+          <Snippet symbol="" width={460} valueToCopy="~/.kube/config">
+            ~/.kube/config
+          </Snippet>
+          <div style={{ fontSize: '12px', color: '#79879c', marginTop: '8px' }}>Set Environment Variable</div>
+          <Snippet width={460} valueToCopy="export KUBECONFIG=~/.kube/config">
+            export KUBECONFIG=~/.kube/config
+          </Snippet>
+        </Group>
+      </Card>
+    </div>
+  );
+}
+```
+
+### Docker Commands
+
+Display Docker-related commands.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Snippet width={500} valueToCopy="docker pull kubesphere/ks-apiserver:latest">
+        docker pull kubesphere/ks-apiserver:latest
+      </Snippet>
+      <Snippet width={500} valueToCopy="docker run -d -p 8080:8080 nginx:latest">
+        docker run -d -p 8080:8080 nginx:latest
+      </Snippet>
+      <Snippet width={500} valueToCopy="docker exec -it container_id /bin/bash">
+        docker exec -it container_id /bin/bash
+      </Snippet>
+    </Group>
+  );
+}
+```
+
+### Git Commands
+
+Display Git-related commands.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Snippet width={450} valueToCopy="git clone https://github.com/kubesphere/kubesphere.git">
+        git clone https://github.com/kubesphere/kubesphere.git
+      </Snippet>
+      <Snippet width={450} valueToCopy="git checkout -b feature/new-feature">
+        git checkout -b feature/new-feature
+      </Snippet>
+      <Snippet width={450} valueToCopy="git push origin main">
+        git push origin main
+      </Snippet>
+    </Group>
+  );
+}
+```
+
+## API
+
+### Snippet
+
+| Property    | Description                   | Type                                             | Default |
+| ----------- | ----------------------------- | ------------------------------------------------ | ------- |
+| symbol      | Prefix symbol                 | `string`                                         | `'$'`   |
+| width       | Width (in px)                 | `number`                                         | `300`   |
+| radius      | Border radius size            | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number` | -       |
+| valueToCopy | Value to copy to clipboard    | `any`                                            | -       |
+| children    | Content to display            | `ReactNode`                                      | -       |
+
+:::info
+
+**About copy functionality**:
+
+- When the `valueToCopy` property is set, a copy icon appears on the right
+- After clicking the copy icon, it changes to a checkmark indicating successful copy
+- The copied content is the value of `valueToCopy`, not the `children` content
+- This allows the displayed content and copied content to be different
+
+**About symbols**:
+
+- Default symbol is `$`, commonly used for shell commands
+- Can be set to `>` for Windows commands
+- Can be set to `#` for root user commands
+- Setting to empty string `""` hides the symbol
+
+**About width**:
+
+- Default width is 300px
+- When content is long, it's recommended to increase width to avoid line wrapping
+- Width does not include the copy button space
+
+**About border radius**:
+
+- Preset radii: `xs` (2px), `sm` (4px), `md` (8px), `lg` (16px), `xl` (32px)
+- Can also pass a number value directly
+
+:::
+
+## Usage Recommendations
+
+### Always Provide Copy Functionality
+
+For commands that users need to copy, set `valueToCopy`:
+
+```jsx
+// Recommended: Provide copy functionality
+<Snippet valueToCopy="kubectl get pods">kubectl get pods</Snippet>
+
+// Not recommended: Cannot copy
+<Snippet>kubectl get pods</Snippet>
+```
+
+### Appropriate Symbols
+
+Choose appropriate symbols based on command type:
+
+```jsx
+// Shell commands (regular user)
+<Snippet symbol="$">npm install</Snippet>
+
+// Shell commands (root user)
+<Snippet symbol="#">apt-get install</Snippet>
+
+// Windows commands
+<Snippet symbol=">">dir</Snippet>
+
+// No symbol (URLs, paths, etc.)
+<Snippet symbol="">https://example.com</Snippet>
+```
+
+### Appropriate Width
+
+Set appropriate width based on content length:
+
+```jsx
+// Short commands
+<Snippet width={250} valueToCopy="kubectl">kubectl</Snippet>
+
+// Medium commands
+<Snippet width={400} valueToCopy="kubectl get pods">kubectl get pods</Snippet>
+
+// Long commands
+<Snippet width={600} valueToCopy="kubectl get pods -n namespace -o wide">
+  kubectl get pods -n namespace -o wide
+</Snippet>
+```
+
+### Group Related Commands
+
+Display related commands in groups:
+
+```jsx
+<Card>
+  <div style={{ marginBottom: '12px', fontWeight: 600 }}>Installation Steps</div>
+  <Group direction="column" spacing="sm">
+    <Snippet valueToCopy="git clone ...">git clone ...</Snippet>
+    <Snippet valueToCopy="cd project">cd project</Snippet>
+    <Snippet valueToCopy="npm install">npm install</Snippet>
+    <Snippet valueToCopy="npm start">npm start</Snippet>
+  </Group>
+</Card>
+```
+
+### Add Descriptive Text
+
+Add descriptions for commands:
+
+```jsx
+<Group direction="column" spacing="sm">
+  <div style={{ fontSize: '12px', color: '#79879c' }}>Clone Repository</div>
+  <Snippet valueToCopy="git clone https://github.com/...">
+    git clone https://github.com/...
+  </Snippet>
+</Group>
+```
+
+### Different Display and Copy Content
+
+When you need to display simplified content but copy full content:
+
+```jsx
+// Display simplified content, copy full content
+<Snippet valueToCopy="kubectl get pods -n kubesphere-system -o wide --show-labels">
+  kubectl get pods -n kubesphere-system ...
+</Snippet>
+```

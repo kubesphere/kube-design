@@ -1,0 +1,178 @@
+---
+sidebar_position: 9
+---
+
+# useDidMount
+
+组件挂载时执行回调的 Hook，相当于 class 组件的 `componentDidMount`。
+
+## 基本用法
+
+```jsx live
+function Demo() {
+  const [message, setMessage] = useState('');
+
+  useDidMount(() => {
+    setMessage('组件已挂载！');
+  });
+
+  return (
+    <div
+      style={{
+        padding: '24px',
+        backgroundColor: 'var(--ifm-color-success-lightest)',
+        borderRadius: '8px',
+        border: '1px solid var(--ifm-color-success)',
+      }}
+    >
+      {message || '等待挂载...'}
+    </div>
+  );
+}
+```
+
+## 获取数据
+
+组件挂载时获取数据：
+
+```jsx live
+function Demo() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useDidMount(() => {
+    // 模拟 API 请求
+    setTimeout(() => {
+      setData({ title: '文章标题', content: '这是文章内容' });
+      setLoading(false);
+    }, 1000);
+  });
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  return (
+    <div
+      style={{
+        padding: '20px',
+        backgroundColor: 'var(--ifm-background-surface-color)',
+        border: '1px solid var(--ifm-color-emphasis-300)',
+        borderRadius: '8px',
+      }}
+    >
+      <h4>{data.title}</h4>
+      <p>{data.content}</p>
+    </div>
+  );
+}
+```
+
+## 初始化
+
+执行初始化逻辑：
+
+```jsx live
+function Demo() {
+  const [initialized, setInitialized] = useState(false);
+  const [config, setConfig] = useState(null);
+
+  useDidMount(() => {
+    // 初始化配置
+    const savedConfig = localStorage.getItem('demo-config') || '{"theme":"light","language":"zh"}';
+    setConfig(JSON.parse(savedConfig));
+    setInitialized(true);
+  });
+
+  if (!initialized) {
+    return <div>初始化中...</div>;
+  }
+
+  return (
+    <div
+      style={{
+        padding: '20px',
+        backgroundColor: 'var(--ifm-color-emphasis-100)',
+        borderRadius: '8px',
+      }}
+    >
+      <h4>配置已加载</h4>
+      <div>主题: {config.theme}</div>
+      <div>语言: {config.language}</div>
+    </div>
+  );
+}
+```
+
+## 订阅事件
+
+组件挂载时订阅事件：
+
+```jsx live
+function Demo() {
+  const [online, setOnline] = useState(navigator.onLine);
+
+  useDidMount(() => {
+    const handleOnline = () => setOnline(true);
+    const handleOffline = () => setOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    // 返回清理函数
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  });
+
+  return (
+    <div
+      style={{
+        padding: '20px',
+        backgroundColor: online ? 'var(--ifm-color-success-lightest)' : 'var(--ifm-color-danger-lightest)',
+        borderRadius: '8px',
+        textAlign: 'center',
+      }}
+    >
+      <div style={{ fontSize: '32px', marginBottom: '12px' }}>
+        {online ? '🟢' : '🔴'}
+      </div>
+      <div>网络状态: {online ? '在线' : '离线'}</div>
+    </div>
+  );
+}
+```
+
+## API
+
+### 参数
+
+```ts
+function useDidMount(callback: () => any): void
+```
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| callback | 组件挂载时执行的回调函数 | `() => any` | - |
+
+回调函数可以返回一个清理函数，会在组件卸载时执行。
+
+### 返回值
+
+无返回值。
+
+## 注意事项
+
+- 只在组件首次挂载时执行一次
+- 回调可以返回清理函数，在组件卸载时执行
+- 相当于 `useEffect(() => { ... }, [])`
+- 不要在回调中直接修改依赖值
+
+## 使用场景
+
+- **数据获取**: 组件挂载时获取初始数据
+- **事件订阅**: 订阅全局事件或第三方服务
+- **初始化**: 执行一次性的初始化逻辑
+- **定时器**: 启动定时器或轮询
+- **日志记录**: 记录组件挂载事件

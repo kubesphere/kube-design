@@ -5,3 +5,4 @@ public
 .cache
 .eslintrc.js
 *.d.ts
+docusaurus/

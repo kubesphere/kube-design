@@ -1,0 +1,256 @@
+---
+sidebar_position: 1
+---
+
+# Text
+
+Basic component for displaying text content.
+
+## When to Use
+
+- When displaying titles, paragraphs, and list content
+- When style control over text content is needed
+- When displaying text with semantic colors
+
+In Kube Design, the Text component provides rich text style control:
+
+- **Multiple Sizes**: Supports five preset sizes: xs, sm, md, lg, xl
+- **Semantic Colors**: Supports all colors in the theme color system
+- **Heading Variants**: Supports h1-h6 heading styles
+- **Text Decoration**: Supports underline, italic, strikethrough, and other styles
+- **Flexible Configuration**: Supports font weight, text transformation, alignment, etc.
+
+## Examples
+
+### Basic Usage
+
+The most basic text display.
+
+```jsx live
+function Demo() {
+  return <Text>This is plain text</Text>;
+}
+```
+
+### Sizes
+
+Use the `size` property to set text size, supports five preset sizes: xs, sm, md, lg, xl.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="xs">
+      <Text size="xs">Extra small text (xs)</Text>
+      <Text size="sm">Small text (sm)</Text>
+      <Text size="md">Medium text (md)</Text>
+      <Text size="lg">Large text (lg)</Text>
+      <Text size="xl">Extra large text (xl)</Text>
+    </Group>
+  );
+}
+```
+
+### Colors
+
+Set text color through the `color` property, supports all theme colors.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="xs">
+      <Text color="primary">Primary color text</Text>
+      <Text color="success">Success color text</Text>
+      <Text color="warning">Warning color text</Text>
+      <Text color="error">Error color text</Text>
+      <Text color="secondary">Secondary color text</Text>
+    </Group>
+  );
+}
+```
+
+### Heading Variants
+
+Use the `variant` property to render text as h1-h6 headings, automatically applying corresponding font sizes.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="sm">
+      <Text variant="h1">Heading 1 (H1)</Text>
+      <Text variant="h2">Heading 2 (H2)</Text>
+      <Text variant="h3">Heading 3 (H3)</Text>
+      <Text variant="h4">Heading 4 (H4)</Text>
+      <Text variant="h5">Heading 5 (H5)</Text>
+      <Text variant="h6">Heading 6 (H6)</Text>
+    </Group>
+  );
+}
+```
+
+### Text Decoration
+
+The Text component supports multiple text decoration styles.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="xs">
+      <Text underline>Underlined text</Text>
+      <Text italic>Italic text</Text>
+      <Text delete>Strikethrough text</Text>
+    </Group>
+  );
+}
+```
+
+### Font Weight
+
+Use the `weight` property to set text font weight.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="xs">
+      <Text weight={300}>Light weight (300)</Text>
+      <Text weight={400}>Normal weight (400)</Text>
+      <Text weight={500}>Medium weight (500)</Text>
+      <Text weight={600}>Semi-bold weight (600)</Text>
+      <Text weight={700}>Bold weight (700)</Text>
+      <Text weight={900}>Extra bold weight (900)</Text>
+    </Group>
+  );
+}
+```
+
+### Text Transformation
+
+Use the `transform` property to transform text case.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="xs">
+      <Text transform="uppercase">uppercase text</Text>
+      <Text transform="lowercase">LOWERCASE TEXT</Text>
+      <Text transform="capitalize">capitalize text</Text>
+    </Group>
+  );
+}
+```
+
+### Alignment
+
+Use the `align` property to set text alignment.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="xs">
+      <Text align="left" style={{ width: '100%', border: '1px dashed #ccc', padding: '8px' }}>
+        Left-aligned text
+      </Text>
+      <Text align="center" style={{ width: '100%', border: '1px dashed #ccc', padding: '8px' }}>
+        Center-aligned text
+      </Text>
+      <Text align="right" style={{ width: '100%', border: '1px dashed #ccc', padding: '8px' }}>
+        Right-aligned text
+      </Text>
+    </Group>
+  );
+}
+```
+
+### Link Variant
+
+Use `variant="link"` to render text as a link style
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="md">
+      <Text variant="link" as="a" href="#" color="primary">
+        This is a link
+      </Text>
+      <Text variant="link" as="a" href="#" color="success">
+        Success color link
+      </Text>
+      <Text variant="link" as="a" href="#" color="error">
+        Error color link
+      </Text>
+    </Group>
+  );
+}
+```
+
+### Combined Usage
+
+Combine multiple properties to create rich text styles.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Text size="lg" color="primary" weight={600}>
+        Large bold primary text
+      </Text>
+      <Text size="md" color="warning" italic underline>
+        Medium italic underlined warning text
+      </Text>
+      <Text size="sm" color="secondary" transform="uppercase">
+        Small uppercase secondary text
+      </Text>
+      <Text variant="h3" color="success" weight={700} align="center">
+        Centered bold success heading
+      </Text>
+    </Group>
+  );
+}
+```
+
+### Custom Element
+
+Use the `as` property to change the underlying rendered HTML element.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="xs">
+      <Text as="p">Text rendered as p tag</Text>
+      <Text as="span" color="primary">
+        Text rendered as span tag
+      </Text>
+      <Text as="label" weight={600}>
+        Text rendered as label tag
+      </Text>
+    </Group>
+  );
+}
+```
+
+## API
+
+### Text Properties
+
+| Property  | Description            | Type                                                               | Default  |
+| --------- | ---------------------- | ------------------------------------------------------------------ | -------- |
+| size      | Text size              | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number`                   | `'sm'`   |
+| color     | Text color             | `string`                                                           | -        |
+| weight    | Font weight            | `React.CSSProperties['fontWeight']`                                | -        |
+| transform | Text transformation    | `'capitalize' \| 'uppercase' \| 'lowercase'`                       | -        |
+| underline | Whether to show underline | `boolean`                                                          | `false`  |
+| italic    | Whether italic         | `boolean`                                                          | `false`  |
+| delete    | Whether to show strikethrough | `boolean`                                                          | `false`  |
+| align     | Text alignment         | `'left' \| 'center' \| 'right'`                                    | -        |
+| variant   | Text variant           | `'text' \| 'link' \| 'h1' \| 'h2' \| 'h3' \| 'h4' \| 'h5' \| 'h6'` | `'text'` |
+| as        | Change underlying HTML element | `string \| Component`                                              | `'div'`  |
+| className | Custom class name      | `string`                                                           | -        |
+| style     | Custom styles          | `CSSProperties`                                                    | -        |
+| children  | Text content           | `ReactNode`                                                        | -        |
+
+:::info
+
+- When `variant` is set to h1-h6, the component automatically uses the corresponding HTML tag for rendering
+- The `color` property supports all theme colors, including primary, success, warning, error, etc.
+- More custom styles can be added through the `style` property
+- The component inherits all native HTML div element attributes (when `as` is another element, it inherits that element's attributes)
+  :::

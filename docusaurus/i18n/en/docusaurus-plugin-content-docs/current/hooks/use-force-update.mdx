@@ -1,0 +1,203 @@
+---
+sidebar_position: 12
+---
+
+# useForceUpdate
+
+A Hook for forcing component re-renders.
+
+## Basic Usage
+
+```jsx live
+function Demo() {
+  const forceUpdate = useForceUpdate();
+  const renderCount = useRef(0);
+  renderCount.current += 1;
+
+  return (
+    <div>
+      <div
+        style={{
+          padding: '24px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          marginBottom: '12px',
+          textAlign: 'center',
+        }}
+      >
+        <div style={{ fontSize: '48px', fontWeight: 'bold', color: 'var(--ifm-color-primary)' }}>
+          {renderCount.current}
+        </div>
+        <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+          Render count
+        </div>
+      </div>
+      <Button onClick={forceUpdate}>Force Re-render</Button>
+    </div>
+  );
+}
+```
+
+## Updating Non-Reactive Data
+
+Force update data stored in refs:
+
+```jsx live
+function Demo() {
+  const forceUpdate = useForceUpdate();
+  const dataRef = useRef({ count: 0, items: [] });
+
+  const addItem = () => {
+    dataRef.current.items.push(`Item ${dataRef.current.items.length + 1}`);
+    dataRef.current.count += 1;
+    forceUpdate(); // Force update to display new data
+  };
+
+  return (
+    <div>
+      <Button onClick={addItem}>Add Item</Button>
+      <div
+        style={{
+          marginTop: '12px',
+          padding: '16px',
+          backgroundColor: 'var(--ifm-background-surface-color)',
+          border: '1px solid var(--ifm-color-emphasis-300)',
+          borderRadius: '8px',
+        }}
+      >
+        <div style={{ marginBottom: '12px', fontWeight: 'bold' }}>
+          Total: {dataRef.current.count} items
+        </div>
+        {dataRef.current.items.map((item, index) => (
+          <div key={index} style={{ padding: '4px 0' }}>
+            • {item}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+## Refreshing Time Display
+
+Periodically force update to show current time:
+
+```jsx live
+function Demo() {
+  const forceUpdate = useForceUpdate();
+  const [auto, setAuto] = useState(false);
+
+  useDidMount(() => {
+    let timer;
+    if (auto) {
+      timer = setInterval(forceUpdate, 1000);
+    }
+    return () => clearInterval(timer);
+  });
+
+  useDidUpdate(() => {
+    let timer;
+    if (auto) {
+      timer = setInterval(forceUpdate, 1000);
+    } else {
+      timer && clearInterval(timer);
+    }
+    return () => clearInterval(timer);
+  }, [auto]);
+
+  return (
+    <div>
+      <Group spacing="md">
+        <Button onClick={forceUpdate}>Manual Refresh</Button>
+        <Button onClick={() => setAuto(!auto)} variant="outline">
+          {auto ? 'Stop Auto Refresh' : 'Auto Refresh'}
+        </Button>
+      </Group>
+      <div
+        style={{
+          marginTop: '16px',
+          padding: '20px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          textAlign: 'center',
+        }}
+      >
+        <div style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px' }}>
+          {new Date().toLocaleTimeString()}
+        </div>
+        <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+          {new Date().toLocaleDateString()}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## API
+
+### Parameters
+
+```ts
+function useForceUpdate(): () => void
+```
+
+No parameters.
+
+### Return Value
+
+Returns a function that forces the component to re-render when called.
+
+```ts
+() => void
+```
+
+## How It Works
+
+`useForceUpdate` internally uses `useReducer` to trigger a new state value each time it's called, causing the component to re-render.
+
+## Notes
+
+- Should be avoided whenever possible
+- Prefer using `useState` or `useReducer` for state management
+- Only use when dealing with non-reactive data (like refs)
+- Excessive use may cause performance issues
+- Does not align with React's declarative programming paradigm
+
+## Alternatives
+
+### Using useState
+
+```jsx
+// ❌ Not recommended
+const forceUpdate = useForceUpdate();
+const dataRef = useRef(data);
+dataRef.current = newData;
+forceUpdate();
+
+// ✅ Recommended
+const [data, setData] = useState(initialData);
+setData(newData);
+```
+
+### Using useReducer
+
+```jsx
+// ❌ Not recommended
+const forceUpdate = useForceUpdate();
+// Modify complex state
+forceUpdate();
+
+// ✅ Recommended
+const [state, dispatch] = useReducer(reducer, initialState);
+dispatch({ type: 'UPDATE', payload: newData });
+```
+
+## Legitimate Use Cases
+
+- **Third-party Library Integration**: Library doesn't support React reactive updates
+- **Performance Optimization**: Using refs to avoid unnecessary renders
+- **Time/Date Display**: Periodically refresh current time
+- **Debugging**: Temporary use during development
+- **Legacy Code**: Transitional solution when migrating class components to function components

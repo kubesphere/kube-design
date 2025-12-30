@@ -255,5 +255,3 @@ export function Tabs({
     </TabsContainer>
   );
 }
-
-Tabs.displayName = '@kubed/components/Tabs';

@@ -1,0 +1,735 @@
+---
+sidebar_position: 1
+---
+
+# Sheet
+
+A panel component that slides in from the edge of the screen.
+
+## When to Use
+
+- Need to complete subtasks without leaving the current page
+- Display additional details or forms
+- Need content to slide in from the side rather than covering the full screen
+- Scenarios for editing forms or viewing details
+
+In Kube Design, the Sheet component provides flexible side panel functionality:
+
+- **Four Directions**: Supports sliding in from top, right, bottom, or left
+- **Based on Radix UI**: Good accessibility support
+- **Composable API**: Provides multiple sub-components for flexible composition
+- **Overlay**: Supports background overlay and click-to-close
+- **Custom Width**: Supports custom panel width
+
+## Examples
+
+### Basic Usage
+
+The most basic side panel usage.
+
+```jsx live
+function Demo() {
+  const [open, setOpen] = React.useState(false);
+  const { SheetContent, SheetHeader, SheetFooter, SheetClose, SheetFieldTitle } = Sheet;
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>Open Panel</Button>
+      <Sheet.Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent>
+          <SheetHeader>
+            <SheetFieldTitle title="Panel Title" description="This is the panel description" />
+          </SheetHeader>
+          <div style={{ padding: '20px' }}>
+            <Text>This is the main content area of the panel</Text>
+          </div>
+          <SheetFooter>
+            <SheetClose asChild>
+              <Button>Close</Button>
+            </SheetClose>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet.Sheet>
+    </>
+  );
+}
+```
+
+### Different Directions
+
+Sheet supports sliding in from four directions.
+
+```jsx live
+function Demo() {
+  const [side, setSide] = React.useState(null);
+  const { SheetContent, SheetHeader, SheetFooter, SheetClose, SheetFieldTitle } = Sheet;
+
+  return (
+    <>
+      <Group spacing="xs">
+        <Button variant="outline" onClick={() => setSide('top')}>
+          From Top
+        </Button>
+        <Button variant="outline" onClick={() => setSide('right')}>
+          From Right
+        </Button>
+        <Button variant="outline" onClick={() => setSide('bottom')}>
+          From Bottom
+        </Button>
+        <Button variant="outline" onClick={() => setSide('left')}>
+          From Left
+        </Button>
+      </Group>
+      <Sheet.Sheet open={!!side} onOpenChange={(open) => !open && setSide(null)}>
+        <SheetContent side={side || 'right'}>
+          <SheetHeader>
+            <SheetFieldTitle title={`${side} Panel`} description={`Panel sliding from ${side}`} />
+          </SheetHeader>
+          <div style={{ padding: '20px' }}>
+            <Text>Panel content</Text>
+          </div>
+          <SheetFooter>
+            <SheetClose asChild>
+              <Button>Close</Button>
+            </SheetClose>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet.Sheet>
+    </>
+  );
+}
+```
+
+### Custom Width
+
+Set panel width through the `width` property.
+
+```jsx live
+function Demo() {
+  const [width, setWidth] = React.useState(null);
+  const { SheetContent, SheetHeader, SheetFooter, SheetClose, SheetFieldTitle } = Sheet;
+
+  return (
+    <>
+      <Group spacing="xs">
+        <Button variant="outline" onClick={() => setWidth(400)}>
+          Narrow Panel (400px)
+        </Button>
+        <Button variant="outline" onClick={() => setWidth(600)}>
+          Medium Panel (600px)
+        </Button>
+        <Button variant="outline" onClick={() => setWidth(800)}>
+          Wide Panel (800px)
+        </Button>
+        <Button variant="outline" onClick={() => setWidth('50%')}>
+          Half Screen Panel (50%)
+        </Button>
+      </Group>
+      <Sheet.Sheet open={!!width} onOpenChange={(open) => !open && setWidth(null)}>
+        <SheetContent width={width || 400}>
+          <SheetHeader>
+            <SheetFieldTitle title="Custom Width" description={`Current width: ${width}`} />
+          </SheetHeader>
+          <div style={{ padding: '20px' }}>
+            <Text>Panel content</Text>
+          </div>
+          <SheetFooter>
+            <SheetClose asChild>
+              <Button>Close</Button>
+            </SheetClose>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet.Sheet>
+    </>
+  );
+}
+```
+
+### Using SheetTrigger
+
+Define trigger declaratively using `SheetTrigger`.
+
+```jsx live
+function Demo() {
+  const { SheetTrigger, SheetContent, SheetHeader, SheetFooter, SheetClose, SheetFieldTitle } =
+    Sheet;
+
+  return (
+    <Sheet.Sheet>
+      <SheetTrigger asChild>
+        <Button>Open Panel</Button>
+      </SheetTrigger>
+      <SheetContent>
+        <SheetHeader>
+          <SheetFieldTitle title="Trigger Panel" description="Opened via SheetTrigger" />
+        </SheetHeader>
+        <div style={{ padding: '20px' }}>
+          <Text>This panel is opened through the SheetTrigger component</Text>
+        </div>
+        <SheetFooter>
+          <SheetClose asChild>
+            <Button>Close</Button>
+          </SheetClose>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet.Sheet>
+  );
+}
+```
+
+### Title with Icon
+
+Use `titleIcon` to add an icon to the title.
+
+```jsx live
+function Demo() {
+  const { Pod } = KubedIcons;
+  const [open, setOpen] = React.useState(false);
+  const { SheetContent, SheetHeader, SheetFooter, SheetClose, SheetFieldTitle } = Sheet;
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>View Pod Details</Button>
+      <Sheet.Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent width={600}>
+          <SheetHeader>
+            <SheetFieldTitle
+              titleIcon={<Pod size={40} />}
+              title="nginx-deployment-7d5c8f8b9d-x7k2m"
+              description="Pod Details"
+            />
+          </SheetHeader>
+          <div style={{ padding: '20px' }}>
+            <Group direction="column" spacing="sm">
+              <Text size="sm">
+                <strong>Namespace:</strong> default
+              </Text>
+              <Text size="sm">
+                <strong>Status:</strong> Running
+              </Text>
+              <Text size="sm">
+                <strong>Node:</strong> node-1
+              </Text>
+              <Text size="sm">
+                <strong>IP:</strong> 10.244.1.5
+              </Text>
+            </Group>
+          </div>
+          <SheetFooter>
+            <SheetClose asChild>
+              <Button variant="outline">Close</Button>
+            </SheetClose>
+            <Button>View Logs</Button>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet.Sheet>
+    </>
+  );
+}
+```
+
+### Edit Form
+
+Place an edit form in a Sheet.
+
+```jsx live
+function Demo() {
+  const [open, setOpen] = React.useState(false);
+  const [formData, setFormData] = React.useState({
+    name: 'nginx-service',
+    namespace: 'default',
+    port: '80',
+  });
+  const { SheetContent, SheetHeader, SheetFooter, SheetClose, SheetFieldTitle } = Sheet;
+
+  const handleSave = () => {
+    console.log('Save data:', formData);
+    setOpen(false);
+  };
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>Edit Configuration</Button>
+      <Sheet.Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent width={500}>
+          <SheetHeader>
+            <SheetFieldTitle title="Edit Service" description="Modify service configuration" />
+          </SheetHeader>
+          <div style={{ padding: '20px' }}>
+            <Group direction="column" spacing="md">
+              <div>
+                <Text size="sm" style={{ marginBottom: '8px' }}>
+                  Service Name:
+                </Text>
+                <Input
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                />
+              </div>
+              <div>
+                <Text size="sm" style={{ marginBottom: '8px' }}>
+                  Namespace:
+                </Text>
+                <Input
+                  value={formData.namespace}
+                  onChange={(e) => setFormData({ ...formData, namespace: e.target.value })}
+                />
+              </div>
+              <div>
+                <Text size="sm" style={{ marginBottom: '8px' }}>
+                  Port:
+                </Text>
+                <Input
+                  value={formData.port}
+                  onChange={(e) => setFormData({ ...formData, port: e.target.value })}
+                />
+              </div>
+            </Group>
+          </div>
+          <SheetFooter>
+            <SheetClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </SheetClose>
+            <Button onClick={handleSave}>Save</Button>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet.Sheet>
+    </>
+  );
+}
+```
+
+### No Overlay
+
+Set `hasOverlay={false}` to remove the background overlay.
+
+```jsx live
+function Demo() {
+  const [open, setOpen] = React.useState(false);
+  const { SheetContent, SheetHeader, SheetFooter, SheetClose, SheetFieldTitle } = Sheet;
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>Open Panel without Overlay</Button>
+      <Sheet.Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent hasOverlay={false}>
+          <SheetHeader>
+            <SheetFieldTitle title="No Overlay Panel" description="Background is not covered by overlay" />
+          </SheetHeader>
+          <div style={{ padding: '20px' }}>
+            <Text>This panel has no background overlay</Text>
+          </div>
+          <SheetFooter>
+            <SheetClose asChild>
+              <Button>Close</Button>
+            </SheetClose>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet.Sheet>
+    </>
+  );
+}
+```
+
+### Disable Mask Close
+
+Set `maskClosable={false}` to disable closing by clicking the overlay.
+
+```jsx live
+function Demo() {
+  const [open, setOpen] = React.useState(false);
+  const { SheetContent, SheetHeader, SheetFooter, SheetClose, SheetFieldTitle } = Sheet;
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>Open Panel</Button>
+      <Sheet.Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent maskClosable={false}>
+          <SheetHeader>
+            <SheetFieldTitle title="Disable Click Outside Close" description="Panel can only be closed via button" />
+          </SheetHeader>
+          <div style={{ padding: '20px' }}>
+            <Text>Clicking outside will not close this panel</Text>
+          </div>
+          <SheetFooter>
+            <SheetClose asChild>
+              <Button>Close</Button>
+            </SheetClose>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet.Sheet>
+    </>
+  );
+}
+```
+
+### Title with Extra Actions
+
+Use `headerExtra` to add extra actions next to the title.
+
+```jsx live
+function Demo() {
+  const { FolderSettingDuotone, Refresh2Duotone } = KubedIcons;
+  const [open, setOpen] = React.useState(false);
+  const { SheetContent, SheetHeader, SheetFooter, SheetClose, SheetFieldTitle } = Sheet;
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>Open Panel</Button>
+      <Sheet.Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent width={600}>
+          <SheetHeader>
+            <SheetFieldTitle
+              title="Resource Details"
+              description="View and manage resources"
+              headerExtra={
+                <Group spacing="xs">
+                  <Button size="sm" variant="text">
+                    <Refresh2Duotone size={16} />
+                  </Button>
+                  <Button size="sm" variant="text">
+                    <FolderSettingDuotone size={16} />
+                  </Button>
+                </Group>
+              }
+            />
+          </SheetHeader>
+          <div style={{ padding: '20px' }}>
+            <Text>Panel content</Text>
+          </div>
+          <SheetFooter>
+            <SheetClose asChild>
+              <Button>Close</Button>
+            </SheetClose>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet.Sheet>
+    </>
+  );
+}
+```
+
+### Complete Example
+
+A comprehensive example combining all features.
+
+```jsx live
+function Demo() {
+  const { Backup } = KubedIcons;
+  const [open, setOpen] = React.useState(false);
+  const [formData, setFormData] = React.useState({
+    replicas: '3',
+    image: 'nginx:1.21',
+    cpu: '500m',
+    memory: '512Mi',
+  });
+  const { SheetContent, SheetHeader, SheetFooter, SheetClose, SheetFieldTitle } = Sheet;
+
+  const handleSave = () => {
+    console.log('Save configuration:', formData);
+    setOpen(false);
+  };
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>Edit Deployment</Button>
+      <Sheet.Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent width={600} maskClosable={false}>
+          <SheetHeader>
+            <SheetFieldTitle
+              titleIcon={<Backup size={40} />}
+              title="nginx-deployment"
+              description="Edit deployment configuration"
+              headerExtra={<Badge color="success">Running</Badge>}
+            />
+          </SheetHeader>
+          <div style={{ padding: '20px', flex: 1, overflow: 'auto' }}>
+            <Group direction="column" spacing="md">
+              <Card style={{ padding: '16px' }}>
+                <Text size="sm" weight={600} style={{ marginBottom: '12px' }}>
+                  Basic Configuration
+                </Text>
+                <Group direction="column" spacing="md">
+                  <div>
+                    <Text size="sm" style={{ marginBottom: '8px' }}>
+                      Replicas:
+                    </Text>
+                    <Input
+                      value={formData.replicas}
+                      onChange={(e) => setFormData({ ...formData, replicas: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <Text size="sm" style={{ marginBottom: '8px' }}>
+                      Image:
+                    </Text>
+                    <Input
+                      value={formData.image}
+                      onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                    />
+                  </div>
+                </Group>
+              </Card>
+              <Card style={{ padding: '16px' }}>
+                <Text size="sm" weight={600} style={{ marginBottom: '12px' }}>
+                  Resource Limits
+                </Text>
+                <Group direction="column" spacing="md">
+                  <div>
+                    <Text size="sm" style={{ marginBottom: '8px' }}>
+                      CPU:
+                    </Text>
+                    <Input
+                      value={formData.cpu}
+                      onChange={(e) => setFormData({ ...formData, cpu: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <Text size="sm" style={{ marginBottom: '8px' }}>
+                      Memory:
+                    </Text>
+                    <Input
+                      value={formData.memory}
+                      onChange={(e) => setFormData({ ...formData, memory: e.target.value })}
+                    />
+                  </div>
+                </Group>
+              </Card>
+            </Group>
+          </div>
+          <SheetFooter>
+            <SheetClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </SheetClose>
+            <Button onClick={handleSave}>Save Changes</Button>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet.Sheet>
+    </>
+  );
+}
+```
+
+## API
+
+### Sheet
+
+Root component based on Radix UI Dialog.
+
+| Property     | Description              | Type                      | Default |
+| ------------ | ------------------------ | ------------------------- | ------- |
+| open         | Whether open (controlled)| `boolean`                 | -       |
+| onOpenChange | Callback on open change  | `(open: boolean) => void` | -       |
+| modal        | Whether modal            | `boolean`                 | `true`  |
+
+### SheetContent
+
+| Property        | Description               | Type                                     | Default              |
+| --------------- | ------------------------- | ---------------------------------------- | -------------------- |
+| side            | Slide-in direction        | `'top' \| 'right' \| 'bottom' \| 'left'` | `'right'`            |
+| width           | Panel width               | `number \| string`                       | -                    |
+| title           | Accessibility title       | `string`                                 | `'sheet'`            |
+| description     | Accessibility description | `string`                                 | `'sheet description'`|
+| hasOverlay      | Show overlay              | `boolean`                                | `true`               |
+| hasRadixOverlay | Use Radix overlay         | `boolean`                                | `false`              |
+| maskClosable    | Close on mask click       | `boolean`                                | `true`               |
+| className       | Custom class name         | `string`                                 | -                    |
+
+### SheetFieldTitle
+
+| Property    | Description     | Type           | Default |
+| ----------- | --------------- | -------------- | ------- |
+| title       | Title text      | `ReactNode`    | -       |
+| description | Description     | `ReactNode`    | -       |
+| titleIcon   | Title icon      | `ReactNode`    | -       |
+| headerExtra | Extra actions   | `ReactNode`    | -       |
+| header      | Custom header   | `ReactElement` | -       |
+
+### SheetHeader / SheetFooter
+
+| Property  | Description       | Type            | Default |
+| --------- | ----------------- | --------------- | ------- |
+| className | Custom class name | `string`        | -       |
+| style     | Custom styles     | `CSSProperties` | -       |
+
+### SheetTrigger / SheetClose
+
+| Property | Description              | Type      | Default |
+| -------- | ------------------------ | --------- | ------- |
+| asChild  | Use child as trigger     | `boolean` | `false` |
+
+:::info
+
+**About component composition**:
+
+- Sheet consists of multiple sub-components that need to be composed together
+- SheetContent is required, other components are optional
+- Recommended structure: Sheet > SheetContent > SheetHeader + content + SheetFooter
+
+**About direction**:
+
+- `side` supports four directions: top, right, bottom, left
+- Slides in from the right by default
+- Left/right panels are suitable for width settings, top/bottom panels for height
+
+**About controlled mode**:
+
+- Use `open` and `onOpenChange` for controlled mode
+- Can also use `SheetTrigger` and `SheetClose` for uncontrolled mode
+
+**About overlay**:
+
+- `hasOverlay` controls whether to show overlay, default is true
+- `maskClosable` controls whether clicking overlay closes panel, default is true
+- When `maskClosable` is false, panel can only be closed via close button
+
+**About accessibility**:
+
+- Built on Radix UI with good keyboard navigation and screen reader support
+- Set `title` and `description` properties to enhance accessibility
+
+:::
+
+## Usage Recommendations
+
+### Choose Appropriate Direction
+
+Select direction based on content and use case:
+
+```jsx
+// Edit form: Slide from right
+<SheetContent side="right" width={500}>...</SheetContent>
+
+// Notification panel: Slide from top
+<SheetContent side="top">...</SheetContent>
+
+// Action panel: Slide from bottom
+<SheetContent side="bottom">...</SheetContent>
+```
+
+### Set Appropriate Width
+
+Set width based on content:
+
+```jsx
+// Simple form: Narrower width
+<SheetContent width={400}>...</SheetContent>
+
+// Details display: Medium width
+<SheetContent width={600}>...</SheetContent>
+
+// Complex content: Wider or percentage
+<SheetContent width={800}>...</SheetContent>
+<SheetContent width="50%">...</SheetContent>
+```
+
+### Use Composable API
+
+Leverage sub-components for flexible composition:
+
+```jsx
+<Sheet open={open} onOpenChange={setOpen}>
+  <SheetContent>
+    <SheetHeader>
+      <SheetFieldTitle title="Title" description="Description" />
+    </SheetHeader>
+    <div>Content area</div>
+    <SheetFooter>
+      <SheetClose asChild>
+        <Button>Cancel</Button>
+      </SheetClose>
+      <Button>Confirm</Button>
+    </SheetFooter>
+  </SheetContent>
+</Sheet>
+```
+
+### Disable Outside Close for Forms
+
+Prevent accidental closure when editing forms:
+
+```jsx
+<SheetContent maskClosable={false}>
+  <form>{/* Form content */}</form>
+  <SheetFooter>
+    <SheetClose asChild>
+      <Button variant="outline">Cancel</Button>
+    </SheetClose>
+    <Button type="submit">Save</Button>
+  </SheetFooter>
+</SheetContent>
+```
+
+### Add Icons for Better Recognition
+
+Add icons for resource details:
+
+```jsx
+import { Pod, Service, Deployment } from '@kubed/icons';
+
+<SheetFieldTitle titleIcon={<Pod size={40} />} title="nginx-pod" description="Pod Details" />;
+```
+
+### Controlled Mode for State Management
+
+Use controlled mode to precisely control open state:
+
+```jsx
+const [open, setOpen] = useState(false);
+
+const handleSave = async () => {
+  await saveData();
+  setOpen(false);
+};
+
+<Sheet open={open} onOpenChange={setOpen}>
+  <SheetContent>
+    {/* Content */}
+    <Button onClick={handleSave}>Save</Button>
+  </SheetContent>
+</Sheet>;
+```
+
+### Scrollable Content Area
+
+Ensure long content is scrollable:
+
+```jsx
+<SheetContent>
+  <SheetHeader>...</SheetHeader>
+  <div style={{ flex: 1, overflow: 'auto', padding: '20px' }}>{/* Long content */}</div>
+  <SheetFooter>...</SheetFooter>
+</SheetContent>
+```
+
+### Provide Extra Actions
+
+Add common actions next to the title:
+
+```jsx
+<SheetFieldTitle
+  title="Resource Details"
+  description="Description"
+  headerExtra={
+    <Group spacing="xs">
+      <Button size="sm" variant="text">
+        <RefreshIcon />
+      </Button>
+      <Button size="sm" variant="text">
+        <SettingIcon />
+      </Button>
+    </Group>
+  }
+/>
+```
+
+### No Overlay Scenarios
+
+Remove overlay when not needed:
+
+```jsx
+// Sidebar auxiliary panel
+<SheetContent hasOverlay={false} side="right">
+  {/* Auxiliary content that doesn't block main interface */}
+</SheetContent>
+```

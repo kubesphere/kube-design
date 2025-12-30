@@ -1,0 +1,30 @@
+{
+  "title": {
+    "message": "",
+    "description": "The title in the navbar"
+  },
+  "logo.alt": {
+    "message": "Kube Design Logo",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.Guide": {
+    "message": "Guide",
+    "description": "Navbar item with label Guide"
+  },
+  "item.label.Components": {
+    "message": "Components",
+    "description": "Navbar item with label Components"
+  },
+  "item.label.Hooks": {
+    "message": "Hooks",
+    "description": "Navbar item with label Hooks"
+  },
+  "item.label.Icons": {
+    "message": "Icons",
+    "description": "Navbar item with label Icons"
+  },
+  "item.label.GitHub": {
+    "message": "GitHub",
+    "description": "Navbar item with label GitHub"
+  }
+}

@@ -1,0 +1,288 @@
+---
+sidebar_position: 8
+---
+
+# useHotkeys
+
+快捷键管理 Hook，用于注册和处理键盘快捷键。
+
+## 基本用法
+
+```jsx live
+function Demo() {
+  const [count, setCount] = useState(0);
+
+  useHotkeys([
+    ['ctrl+k', () => setCount((c) => c + 1)],
+    ['ctrl+j', () => setCount((c) => c - 1)],
+    ['ctrl+r', () => setCount(0)],
+  ]);
+
+  return (
+    <div style={{ textAlign: 'center' }}>
+      <div
+        style={{
+          fontSize: '48px',
+          fontWeight: 'bold',
+          marginBottom: '20px',
+          color: 'var(--ifm-color-primary)',
+        }}
+      >
+        {count}
+      </div>
+      <div
+        style={{
+          padding: '20px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+        }}
+      >
+        <h4 style={{ marginTop: 0 }}>快捷键说明</h4>
+        <div style={{ textAlign: 'left', display: 'inline-block' }}>
+          <div><kbd>Ctrl+K</kbd> 增加</div>
+          <div><kbd>Ctrl+J</kbd> 减少</div>
+          <div><kbd>Ctrl+R</kbd> 重置</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## 文本操作
+
+常见的文本编辑快捷键：
+
+```jsx live
+function Demo() {
+  const [text, setText] = useState('使用快捷键操作文本');
+  const [action, setAction] = useState('');
+
+  useHotkeys([
+    ['ctrl+b', () => {
+      setText((t) => `**${t}**`);
+      setAction('加粗');
+    }],
+    ['ctrl+i', () => {
+      setText((t) => `*${t}*`);
+      setAction('斜体');
+    }],
+    ['ctrl+u', () => {
+      setText((t) => t.toUpperCase());
+      setAction('大写');
+    }],
+    ['ctrl+l', () => {
+      setText((t) => t.toLowerCase());
+      setAction('小写');
+    }],
+  ]);
+
+  return (
+    <div>
+      <Textarea
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        rows={4}
+      />
+      {action && (
+        <div
+          style={{
+            marginTop: '12px',
+            padding: '8px 12px',
+            backgroundColor: 'var(--ifm-color-success-lightest)',
+            borderRadius: '4px',
+            fontSize: '14px',
+          }}
+        >
+          ✓ 执行了操作: {action}
+        </div>
+      )}
+      <div
+        style={{
+          marginTop: '16px',
+          padding: '12px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '6px',
+          fontSize: '14px',
+        }}
+      >
+        <strong>快捷键:</strong>
+        <div><kbd>Ctrl+B</kbd> 加粗</div>
+        <div><kbd>Ctrl+I</kbd> 斜体</div>
+        <div><kbd>Ctrl+U</kbd> 转大写</div>
+        <div><kbd>Ctrl+L</kbd> 转小写</div>
+      </div>
+    </div>
+  );
+}
+```
+
+## 模态框控制
+
+使用快捷键控制模态框：
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = useState(false);
+
+  useHotkeys([
+    ['ctrl+m', () => setVisible((v) => !v)],
+    ['escape', () => setVisible(false)],
+  ]);
+
+  return (
+    <div>
+      <Button onClick={() => setVisible(true)}>
+        打开模态框
+      </Button>
+      <div
+        style={{
+          marginTop: '12px',
+          padding: '12px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '6px',
+          fontSize: '14px',
+        }}
+      >
+        <strong>快捷键:</strong>
+        <div><kbd>Ctrl+M</kbd> 打开/关闭模态框</div>
+        <div><kbd>Escape</kbd> 关闭模态框</div>
+      </div>
+      <Modal 
+        visible={visible} 
+        onCancel={() => setVisible(false)}
+        title="快捷键演示"
+      >
+        <p>按 <kbd>Escape</kbd> 或 <kbd>Ctrl+M</kbd> 关闭</p>
+      </Modal>
+    </div>
+  );
+}
+```
+
+## 搜索功能
+
+快捷键触发搜索：
+
+```jsx live
+function Demo() {
+  const [searchVisible, setSearchVisible] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+
+  useHotkeys([
+    ['ctrl+/', () => setSearchVisible(true)],
+    ['escape', () => setSearchVisible(false)],
+  ]);
+
+  return (
+    <div>
+      {!searchVisible ? (
+        <div
+          style={{
+            padding: '40px',
+            backgroundColor: 'var(--ifm-color-emphasis-100)',
+            borderRadius: '8px',
+            textAlign: 'center',
+          }}
+        >
+          <p>按 <kbd>Ctrl+/</kbd> 打开搜索</p>
+        </div>
+      ) : (
+        <div>
+          <Input
+            autoFocus
+            placeholder="搜索..."
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            suffix={<span style={{ fontSize: '12px', color: 'var(--ifm-color-emphasis-600)' }}>ESC</span>}
+          />
+          <Button
+            onClick={() => setSearchVisible(false)}
+            style={{ marginTop: '12px' }}
+            size="small"
+          >
+            关闭 (Escape)
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## API
+
+### 参数
+
+```ts
+type HotkeyItem = [string, (event: KeyboardEvent) => void];
+
+function useHotkeys(hotkeys: HotkeyItem[]): void
+```
+
+| 参数 | 说明 | 类型 |
+|------|------|------|
+| hotkeys | 快捷键配置数组 | `HotkeyItem[]` |
+
+每个 `HotkeyItem` 是一个包含两个元素的数组：
+- `[0]`: 快捷键字符串
+- `[1]`: 触发时的回调函数
+
+### 快捷键格式
+
+支持的修饰键：
+- `ctrl` / `control`
+- `shift`
+- `alt` / `option`
+- `mod` (macOS: ⌘ Command, Windows/Linux: Ctrl)
+
+组合方式：使用 `+` 连接，例如：
+- `'ctrl+k'` - Ctrl + K
+- `'ctrl+shift+p'` - Ctrl + Shift + P
+- `'mod+s'` - ⌘ + S (Mac) 或 Ctrl + S (Windows/Linux)
+- `'escape'` - Escape 键
+- `'enter'` - Enter 键
+- `'space'` - 空格键
+
+## 常用快捷键示例
+
+```ts
+// 保存
+['mod+s', handleSave]
+
+// 打开搜索
+['ctrl+k', openSearch]
+
+// 关闭/取消
+['escape', handleClose]
+
+// 切换侧边栏
+['ctrl+b', toggleSidebar]
+
+// 打开命令面板
+['ctrl+shift+p', openCommandPalette]
+
+// 快速导航
+['ctrl+1', () => navigate('/home')]
+['ctrl+2', () => navigate('/dashboard')]
+
+// 文本格式化
+['ctrl+b', makeBold]
+['ctrl+i', makeItalic]
+['ctrl+u', makeUnderline]
+```
+
+## 注意事项
+
+- 快捷键会自动阻止浏览器默认行为
+- 快捷键在整个文档范围内生效
+- 避免与浏览器内置快捷键冲突
+- 组件卸载时会自动清理事件监听
+
+## 使用场景
+
+- **全局操作**: 保存、搜索、刷新等全局功能
+- **导航**: 快速页面跳转和切换
+- **编辑器**: 文本编辑和格式化
+- **模态框**: 打开/关闭弹窗
+- **开发工具**: 快速访问开发者功能

@@ -9,10 +9,10 @@ export async function getPackageBuildOrder(
   const { name } = pkg.packageJson;
 
   if (name in order) return;
-  if (pkg.packageJson.private) {
-    order[name] = -1;
-    return;
-  }
+  // if (pkg.packageJson.private) {
+  //   order[name] = -1;
+  //   return;
+  // }
 
   packages = packages || [];
 
@@ -46,8 +46,10 @@ export async function getPackagesBuildOrder(
     await getPackageBuildOrder(packages, pkg, order);
   }
 
-  return Object.keys(order)
+  const sortedPackages = Object.keys(order)
     .filter((p) => order[p] !== -1)
     .sort((a, b) => order[a] - order[b])
     .map((p) => packages.find((dataItem) => dataItem.packageJson.name === p));
+
+  return sortedPackages;
 }

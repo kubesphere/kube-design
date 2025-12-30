@@ -1,0 +1,366 @@
+---
+sidebar_position: 1
+---
+
+# Grid
+
+A 24-grid system for page layouts.
+
+## When to Use
+
+- Need to use a grid system for page layout
+- Need responsive column layouts
+- Need flexible spacing control
+
+## Grid System
+
+The grid system uses `Row` and `Col` components to create layouts:
+
+- Use `Row` to create horizontal row containers
+- Use `Col` as direct children of `Row` to create columns
+- Content should be placed inside `Col`
+- Default is 12 columns, can be customized through the `columns` property
+
+## Examples
+
+### Basic Usage
+
+Create a basic grid layout using a single `Row` and multiple `Col` components.
+
+```jsx live
+function Demo() {
+  const boxStyle = {
+    background: '#55bc8a',
+    color: '#fff',
+    padding: '20px',
+    textAlign: 'center',
+    borderRadius: '4px',
+  };
+
+  return (
+    <Row gutter={['md']}>
+      <Col span={6}>
+        <div style={boxStyle}>col-6</div>
+      </Col>
+      <Col span={6}>
+        <div style={boxStyle}>col-6</div>
+      </Col>
+      <Col span={6}>
+        <div style={boxStyle}>col-6</div>
+      </Col>
+      <Col span={6}>
+        <div style={boxStyle}>col-6</div>
+      </Col>
+    </Row>
+  );
+}
+```
+
+### Different Widths
+
+Create columns of different widths by setting different `span` values.
+
+```jsx live
+function Demo() {
+  const boxStyle = {
+    background: '#329dce',
+    color: '#fff',
+    padding: '20px',
+    textAlign: 'center',
+    borderRadius: '4px',
+  };
+
+  return (
+    <div>
+      <Row gutter={['md']} style={{ marginBottom: '12px' }}>
+        <Col span={12}>
+          <div style={boxStyle}>col-12</div>
+        </Col>
+      </Row>
+      <Row gutter={['md']} style={{ marginBottom: '12px' }}>
+        <Col span={8}>
+          <div style={boxStyle}>col-8</div>
+        </Col>
+        <Col span={4}>
+          <div style={boxStyle}>col-4</div>
+        </Col>
+      </Row>
+      <Row gutter={['md']}>
+        <Col span={6}>
+          <div style={boxStyle}>col-6</div>
+        </Col>
+        <Col span={3}>
+          <div style={boxStyle}>col-3</div>
+        </Col>
+        <Col span={3}>
+          <div style={boxStyle}>col-3</div>
+        </Col>
+      </Row>
+    </div>
+  );
+}
+```
+
+### Column Spacing
+
+Use the `gutter` property to set spacing between columns. `gutter` accepts an array, the first value is vertical spacing, the second is horizontal spacing.
+
+```jsx live
+function Demo() {
+  const boxStyle = {
+    background: '#55bc8a',
+    color: '#fff',
+    padding: '20px',
+    textAlign: 'center',
+    borderRadius: '4px',
+  };
+
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>Horizontal spacing: 20px</h4>
+      <Row gutter={[20]} style={{ marginBottom: '24px' }}>
+        <Col span={4}>
+          <div style={boxStyle}>col-4</div>
+        </Col>
+        <Col span={4}>
+          <div style={boxStyle}>col-4</div>
+        </Col>
+        <Col span={4}>
+          <div style={boxStyle}>col-4</div>
+        </Col>
+      </Row>
+
+      <h4 style={{ marginBottom: '12px' }}>Horizontal: 50px, Vertical: 20px</h4>
+      <Row gutter={[20, 50]}>
+        <Col span={4}>
+          <div style={boxStyle}>col-4</div>
+        </Col>
+        <Col span={4}>
+          <div style={boxStyle}>col-4</div>
+        </Col>
+        <Col span={4}>
+          <div style={boxStyle}>col-4</div>
+        </Col>
+        <Col span={4}>
+          <div style={boxStyle}>col-4</div>
+        </Col>
+        <Col span={4}>
+          <div style={boxStyle}>col-4</div>
+        </Col>
+      </Row>
+    </div>
+  );
+}
+```
+
+### Column Offset
+
+Use the `offset` property to offset columns to the right.
+
+```jsx live
+function Demo() {
+  const boxStyle = {
+    background: '#f5a623',
+    color: '#fff',
+    padding: '20px',
+    textAlign: 'center',
+    borderRadius: '4px',
+  };
+
+  return (
+    <div>
+      <Row gutter={['md']} style={{ marginBottom: '12px' }}>
+        <Col span={4}>
+          <div style={boxStyle}>col-4</div>
+        </Col>
+        <Col span={4} offset={4}>
+          <div style={boxStyle}>col-4 offset-4</div>
+        </Col>
+      </Row>
+      <Row gutter={['md']} style={{ marginBottom: '12px' }}>
+        <Col span={3} offset={3}>
+          <div style={boxStyle}>col-3 offset-3</div>
+        </Col>
+        <Col span={3} offset={3}>
+          <div style={boxStyle}>col-3 offset-3</div>
+        </Col>
+      </Row>
+      <Row gutter={['md']}>
+        <Col span={6} offset={6}>
+          <div style={boxStyle}>col-6 offset-6</div>
+        </Col>
+      </Row>
+    </div>
+  );
+}
+```
+
+### Auto Grow
+
+When `grow` is set, the columns in the last row will automatically fill the remaining space.
+
+```jsx live
+function Demo() {
+  const boxStyle = {
+    background: '#f5a623',
+    color: '#fff',
+    padding: '20px',
+    textAlign: 'center',
+    borderRadius: '4px',
+    minHeight: '80px',
+  };
+
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>Without grow (default)</h4>
+      <Row gutter={['md']} style={{ marginBottom: '24px' }}>
+        <Col span={4}>
+          <div style={boxStyle}>col-4</div>
+        </Col>
+        <Col span={4}>
+          <div style={boxStyle}>col-4</div>
+        </Col>
+        <Col span={4}>
+          <div style={boxStyle}>col-4</div>
+        </Col>
+        <Col span={4}>
+          <div style={boxStyle}>col-4</div>
+        </Col>
+      </Row>
+
+      <h4 style={{ marginBottom: '12px' }}>With grow</h4>
+      <Row gutter={['md']} grow>
+        <Col span={4}>
+          <div style={boxStyle}>col-4</div>
+        </Col>
+        <Col span={4}>
+          <div style={boxStyle}>col-4</div>
+        </Col>
+        <Col span={4}>
+          <div style={boxStyle}>col-4</div>
+        </Col>
+        <Col span={4}>
+          <div style={boxStyle}>col-4 (auto-fill)</div>
+        </Col>
+      </Row>
+    </div>
+  );
+}
+```
+
+### Alignment
+
+Set horizontal and vertical alignment of columns through `justify` and `align` properties.
+
+```jsx live
+function Demo() {
+  const boxStyle = {
+    background: '#329dce',
+    color: '#fff',
+    padding: '20px',
+    textAlign: 'center',
+    borderRadius: '4px',
+  };
+
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>Horizontal center (justify="center")</h4>
+      <Row gutter={['md']} justify="center" style={{ marginBottom: '24px' }}>
+        <Col span={3}>
+          <div style={boxStyle}>col-3</div>
+        </Col>
+        <Col span={3}>
+          <div style={boxStyle}>col-3</div>
+        </Col>
+        <Col span={3}>
+          <div style={boxStyle}>col-3</div>
+        </Col>
+      </Row>
+
+      <h4 style={{ marginBottom: '12px' }}>Right align (justify="flex-end")</h4>
+      <Row gutter={['md']} justify="flex-end" style={{ marginBottom: '24px' }}>
+        <Col span={3}>
+          <div style={boxStyle}>col-3</div>
+        </Col>
+        <Col span={3}>
+          <div style={boxStyle}>col-3</div>
+        </Col>
+        <Col span={3}>
+          <div style={boxStyle}>col-3</div>
+        </Col>
+      </Row>
+
+      <h4 style={{ marginBottom: '12px' }}>Space between (justify="space-between")</h4>
+      <Row gutter={['md']} justify="space-between">
+        <Col span={3}>
+          <div style={boxStyle}>col-3</div>
+        </Col>
+        <Col span={3}>
+          <div style={boxStyle}>col-3</div>
+        </Col>
+        <Col span={3}>
+          <div style={boxStyle}>col-3</div>
+        </Col>
+      </Row>
+    </div>
+  );
+}
+```
+
+### Custom Column Count
+
+Use the `columns` property to customize the total number of grid columns, default is 12.
+
+```jsx live
+function Demo() {
+  const boxStyle = {
+    background: '#55bc8a',
+    color: '#fff',
+    padding: '20px',
+    textAlign: 'center',
+    borderRadius: '4px',
+  };
+
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>24-column grid</h4>
+      <Row gutter={['md']} columns={24}>
+        <Col span={12}>
+          <div style={boxStyle}>col-12 (50%)</div>
+        </Col>
+        <Col span={6}>
+          <div style={boxStyle}>col-6 (25%)</div>
+        </Col>
+        <Col span={6}>
+          <div style={boxStyle}>col-6 (25%)</div>
+        </Col>
+      </Row>
+    </div>
+  );
+}
+```
+
+## API
+
+### Row Properties
+
+| Property | Description | Type | Default |
+| --- | --- | --- | --- |
+| gutter | Grid spacing, [vertical spacing, horizontal spacing] | `[KubedNumberSize, KubedNumberSize?]` | `['md']` |
+| grow | Whether columns in the last row auto-fill | `boolean` | `false` |
+| justify | Horizontal alignment | `React.CSSProperties['justifyContent']` | `'flex-start'` |
+| align | Vertical alignment | `React.CSSProperties['alignContent']` | `'stretch'` |
+| columns | Total number of grid columns | `number` | `12` |
+| Others | Native attributes | `HTMLAttributes<HTMLDivElement>` | - |
+
+### Col Properties
+
+| Property | Description | Type | Default |
+| --- | --- | --- | --- |
+| span | Number of grid columns to occupy | `number` | - |
+| offset | Number of grid columns to offset left | `number` | `0` |
+| Others | Native attributes | `HTMLAttributes<HTMLDivElement>` | - |
+
+:::info
+The `gutter` value can be a preset size name (`'xs'`, `'sm'`, `'md'`, `'lg'`, `'xl'`) or a specific pixel value.
+:::

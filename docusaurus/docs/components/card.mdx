@@ -1,0 +1,361 @@
+---
+sidebar_position: 1
+---
+
+# Card 卡片
+
+通用的内容容器组件，用于展示信息和内容分组。
+
+## 何时使用
+
+- 需要将相关内容组织在一起展示
+- 需要一个带有阴影效果的容器来突出内容
+- 展示概览信息、统计数据等
+- 作为列表项或网格项的容器
+
+## 示例
+
+### 基础用法
+
+最简单的卡片用法。
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card>
+        <p style={{ margin: 0 }}>
+          KubeSphere 是一个开源的容器平台，提供全栈的 IT 自动化运维能力，
+          简化企业的 DevOps 工作流。
+        </p>
+      </Card>
+    </div>
+  );
+}
+```
+
+### 带标题
+
+通过 `sectionTitle` 属性添加卡片标题。
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card sectionTitle="平台概述">
+        <p style={{ margin: 0 }}>
+          KubeSphere 是在 Kubernetes 之上构建的面向云原生应用的分布式操作系统，
+          完全开源，支持多云与多集群管理，提供全栈的 IT 自动化运维能力。
+        </p>
+      </Card>
+    </div>
+  );
+}
+```
+
+### 悬停效果
+
+通过 `hoverable` 属性添加鼠标悬停时的阴影效果。
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card sectionTitle="可交互卡片" hoverable>
+        <p style={{ margin: 0 }}>
+          鼠标悬停在卡片上时会显示更深的阴影效果，
+          适用于可点击或可交互的卡片场景。
+        </p>
+      </Card>
+    </div>
+  );
+}
+```
+
+### 内边距
+
+通过 `padding` 属性控制卡片内容的内边距。
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Group direction="column" spacing="lg">
+        <Card sectionTitle="小内边距" padding="xs">
+          <p style={{ margin: 0 }}>padding: xs</p>
+        </Card>
+        <Card sectionTitle="默认内边距" padding="sm">
+          <p style={{ margin: 0 }}>padding: sm (默认)</p>
+        </Card>
+        <Card sectionTitle="中等内边距" padding="md">
+          <p style={{ margin: 0 }}>padding: md</p>
+        </Card>
+        <Card sectionTitle="大内边距" padding="lg">
+          <p style={{ margin: 0 }}>padding: lg</p>
+        </Card>
+        <Card sectionTitle="自定义内边距" padding={32}>
+          <p style={{ margin: 0 }}>padding: 32px</p>
+        </Card>
+      </Group>
+    </div>
+  );
+}
+```
+
+### 卡片列表
+
+使用 Grid 组件创建卡片列表布局。
+
+```jsx live
+function Demo() {
+  const { Kubernetes, Docker, Cluster } = KubedIcons;
+
+  const items = [
+    { icon: Kubernetes, title: 'Kubernetes', desc: '容器编排平台' },
+    { icon: Docker, title: 'Docker', desc: '容器运行时' },
+    { icon: Cluster, title: '集群管理', desc: '多集群管理' },
+  ];
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Group spacing="lg">
+        {items.map((item) => (
+          <Card key={item.title} hoverable padding="md" style={{ width: 200 }}>
+            <Group direction="column" spacing="sm">
+              <item.icon size={32} />
+              <div>
+                <div style={{ fontWeight: 600, marginBottom: 4 }}>{item.title}</div>
+                <div style={{ fontSize: 12, color: '#79879c' }}>{item.desc}</div>
+              </div>
+            </Group>
+          </Card>
+        ))}
+      </Group>
+    </div>
+  );
+}
+```
+
+### 统计卡片
+
+展示统计数据的卡片示例。
+
+```jsx live
+function Demo() {
+  const stats = [
+    { label: '运行中', value: 128, color: '#55bc8a' },
+    { label: '已停止', value: 23, color: '#ca2621' },
+    { label: '待处理', value: 45, color: '#f5a623' },
+  ];
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Group spacing="lg">
+        {stats.map((stat) => (
+          <Card key={stat.label} padding="md" style={{ width: 150, textAlign: 'center' }}>
+            <div style={{ fontSize: 32, fontWeight: 600, color: stat.color }}>
+              {stat.value}
+            </div>
+            <div style={{ fontSize: 14, color: '#79879c', marginTop: 8 }}>
+              {stat.label}
+            </div>
+          </Card>
+        ))}
+      </Group>
+    </div>
+  );
+}
+```
+
+### 带操作的卡片
+
+卡片中包含操作按钮。
+
+```jsx live
+function Demo() {
+  const { Pen, Trash } = KubedIcons;
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card sectionTitle="项目配置" padding="md" style={{ width: 350 }}>
+        <Group direction="column" spacing="md">
+          <p style={{ margin: 0 }}>
+            这是一个带有操作按钮的卡片示例，可以在卡片底部添加编辑、删除等操作。
+          </p>
+          <Divider />
+          <Group spacing="sm">
+            <Button variant="text" size="sm" leftIcon={<Pen />}>
+              编辑
+            </Button>
+            <Button variant="text" size="sm" color="error" leftIcon={<Trash />}>
+              删除
+            </Button>
+          </Group>
+        </Group>
+      </Card>
+    </div>
+  );
+}
+```
+
+### 自定义样式
+
+通过 `contentStyle` 和 `contentClassName` 自定义卡片内容样式。
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Group spacing="lg">
+        <Card
+          sectionTitle="自定义背景"
+          contentStyle={{ backgroundColor: '#f0f7ff' }}
+          padding="md"
+          style={{ width: 200 }}
+        >
+          <p style={{ margin: 0 }}>浅蓝色背景</p>
+        </Card>
+        <Card
+          sectionTitle="自定义边框"
+          contentStyle={{ border: '2px solid #329dce' }}
+          padding="md"
+          style={{ width: 200 }}
+        >
+          <p style={{ margin: 0 }}>带边框卡片</p>
+        </Card>
+      </Group>
+    </div>
+  );
+}
+```
+
+### 嵌套卡片
+
+卡片可以嵌套使用。
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card sectionTitle="外层卡片" padding="md">
+        <Group direction="column" spacing="md">
+          <p style={{ margin: 0 }}>外层卡片内容</p>
+          <Card contentStyle={{ backgroundColor: '#f9fbfd' }} padding="sm">
+            <p style={{ margin: 0, fontSize: 14 }}>嵌套的内层卡片</p>
+          </Card>
+        </Group>
+      </Card>
+    </div>
+  );
+}
+```
+
+## API
+
+### Card
+
+| 属性             | 说明                 | 类型                            | 默认值 |
+| ---------------- | -------------------- | ------------------------------- | ------ |
+| sectionTitle     | 卡片标题             | `ReactNode`                     | -      |
+| padding          | 内容内边距           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number` | `'sm'` |
+| hoverable        | 是否显示悬停效果     | `boolean`                       | `false` |
+| contentStyle     | 内容区域样式         | `CSSProperties`                 | -      |
+| contentClassName | 内容区域类名         | `string`                        | -      |
+| children         | 卡片内容             | `ReactNode`                     | -      |
+
+:::info
+
+**关于内边距**：
+- 支持预设尺寸：`xs`、`sm`、`md`、`lg`、`xl`
+- 也支持传入数字值（单位为 px）
+- 默认值为 `sm`
+
+**关于标题**：
+- `sectionTitle` 会显示在卡片内容的上方
+- 标题使用较深的颜色和加粗字体
+- 适合用于给卡片内容分类或命名
+
+**关于悬停效果**：
+- 设置 `hoverable` 后，鼠标悬停时卡片阴影会加深
+- 适用于可点击、可选择的卡片场景
+- 可以结合 `onClick` 事件使卡片可交互
+
+:::
+
+## 使用建议
+
+### 卡片布局
+
+使用 Grid 或 Group 组件创建卡片网格布局：
+
+```jsx
+// 使用 Group 横向排列
+<Group spacing="lg">
+  <Card>卡片 1</Card>
+  <Card>卡片 2</Card>
+  <Card>卡片 3</Card>
+</Group>
+
+// 使用 Grid 创建响应式网格
+<Grid columns={3} gutter="lg">
+  <Card>卡片 1</Card>
+  <Card>卡片 2</Card>
+  <Card>卡片 3</Card>
+</Grid>
+```
+
+### 可点击卡片
+
+创建可点击的卡片：
+
+```jsx
+<Card
+  hoverable
+  onClick={() => handleClick()}
+  style={{ cursor: 'pointer' }}
+>
+  点击此卡片
+</Card>
+```
+
+### 卡片背景
+
+Card 组件默认有白色背景和阴影，适合放在灰色或其他颜色的容器中：
+
+```jsx
+// 推荐：在灰色背景中使用
+<div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+  <Card>内容</Card>
+</div>
+
+// 不推荐：在白色背景中直接使用（阴影效果不明显）
+<div style={{ backgroundColor: '#fff' }}>
+  <Card>内容</Card>
+</div>
+```
+
+### 内容组织
+
+合理组织卡片内容：
+
+```jsx
+<Card sectionTitle="用户信息" padding="md">
+  <Group direction="column" spacing="sm">
+    <div>姓名：张三</div>
+    <div>邮箱：zhangsan@example.com</div>
+    <Divider />
+    <Button size="sm">编辑信息</Button>
+  </Group>
+</Card>
+```
+
+### 统计展示
+
+用于展示统计数据：
+
+```jsx
+<Card padding="md" style={{ textAlign: 'center' }}>
+  <div style={{ fontSize: 36, fontWeight: 600 }}>1,234</div>
+  <div style={{ color: '#79879c' }}>总用户数</div>
+</Card>
+```

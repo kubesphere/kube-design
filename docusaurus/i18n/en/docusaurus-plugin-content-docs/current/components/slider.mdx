@@ -1,0 +1,609 @@
+---
+sidebar_position: 1
+---
+
+# Slider
+
+Sliding input component, including single value slider (Slider) and range slider (RangeSlider), for selecting within numerical intervals.
+
+## When to Use
+
+- Need to select a single value or range within a numerical interval
+- Need to select ranges (such as price intervals, time ranges, etc.)
+- Suitable for settings requiring visual feedback like volume, brightness, etc.
+- Work with mark points to display discrete numerical intervals
+
+## Examples
+
+### Basic Usage
+
+The simplest usage, single value slider controlled by `value` and `onChange`.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(50);
+
+  return (
+    <div>
+      <Slider value={value} onChange={setValue} />
+      <div style={{ marginTop: '24px', color: '#79879c', fontSize: '14px' }}>Current value: {value}</div>
+    </div>
+  );
+}
+```
+
+### Range Selection
+
+Use the `RangeSlider` component to select numerical ranges.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState([20, 80]);
+
+  return (
+    <div>
+      <RangeSlider value={value} onChange={setValue} />
+      <div style={{ marginTop: '24px', color: '#79879c', fontSize: '14px' }}>
+        Selected range: {value[0]} - {value[1]}
+      </div>
+    </div>
+  );
+}
+```
+
+### With Mark Points
+
+Customize mark point positions and labels through the `marks` array.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState([20, 80]);
+
+  const marks = [
+    { value: 0, label: '0%' },
+    { value: 20, label: '20%' },
+    { value: 50, label: '50%' },
+    { value: 80, label: '80%' },
+    { value: 100, label: '100%' },
+  ];
+
+  return (
+    <div>
+      <RangeSlider value={value} onChange={setValue} marks={marks} />
+      <div style={{ marginTop: '24px', color: '#79879c', fontSize: '14px' }}>
+        Selected range: {value[0]}% - {value[1]}%
+      </div>
+    </div>
+  );
+}
+```
+
+### Non-uniform Scale
+
+Set weights between mark points through the `weight` property to achieve non-uniform scales.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState([0.2, 2]);
+
+  const marks = [
+    { value: 0, label: 'Unlimited', weight: 2 },
+    { value: 0.2, label: 0.2, weight: 2 },
+    { value: 0.5, label: 0.5, weight: 2 },
+    { value: 1, label: 1, weight: 1 },
+    { value: 2, label: 2, weight: 2 },
+    { value: 3, label: 3, weight: 1 },
+    { value: 4, label: 4, weight: 1 },
+  ];
+
+  return (
+    <div>
+      <RangeSlider value={value} onChange={setValue} marks={marks} decimals={2} minRange={0.01} />
+      <div style={{ marginTop: '24px', color: '#79879c', fontSize: '14px' }}>
+        Selected range: {value[0]} - {value[1]}
+      </div>
+    </div>
+  );
+}
+```
+
+### Custom Labels
+
+Customize label display above the slider through the `label` property.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(25);
+
+  return (
+    <div>
+      <Slider value={value} onChange={setValue} label={(val) => `${val}°C`} labelAlwaysOn />
+      <div style={{ marginTop: '24px', color: '#79879c', fontSize: '14px' }}>
+        Current temperature: {value}°C
+      </div>
+    </div>
+  );
+}
+```
+
+### Disabled State
+
+Disable slider through the `disabled` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Slider defaultValue={50} disabled />
+      <RangeSlider defaultValue={[20, 80]} disabled />
+    </Group>
+  );
+}
+```
+
+### Price Range Selection
+
+A typical scenario for implementing price range selection.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState([1000, 5000]);
+
+  const marks = [
+    { value: 0, label: '¥0', weight: 1 },
+    { value: 1000, label: '¥1k', weight: 2 },
+    { value: 5000, label: '¥5k', weight: 2 },
+    { value: 10000, label: '¥10k', weight: 3 },
+    { value: 50000, label: '¥50k', weight: 4 },
+  ];
+
+  return (
+    <div>
+      <div style={{ marginBottom: '16px', fontSize: '14px', fontWeight: 'bold' }}>Price Filter</div>
+      <RangeSlider value={value} onChange={setValue} marks={marks} min={0} max={50000} />
+      <div
+        style={{ marginTop: '24px', padding: '12px', background: '#f7f8fa', borderRadius: '4px' }}
+      >
+        <div style={{ fontSize: '14px', color: '#242e42' }}>
+          Selected price: ¥{value[0]} - ¥{value[1]}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+### Time Range Selection
+
+A scenario for selecting time intervals.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState([9, 18]);
+
+  const marks = [
+    { value: 0, label: '00:00' },
+    { value: 6, label: '06:00' },
+    { value: 12, label: '12:00' },
+    { value: 18, label: '18:00' },
+    { value: 24, label: '24:00' },
+  ];
+
+  const formatTime = (hour) => {
+    return `${String(Math.floor(hour)).padStart(2, '0')}:00`;
+  };
+
+  return (
+    <div>
+      <div style={{ marginBottom: '16px', fontSize: '14px', fontWeight: 'bold' }}>Business Hours Setting</div>
+      <RangeSlider
+        value={value}
+        onChange={setValue}
+        marks={marks}
+        min={0}
+        max={24}
+        label={(val) => formatTime(val)}
+      />
+      <div
+        style={{ marginTop: '24px', padding: '12px', background: '#f7f8fa', borderRadius: '4px' }}
+      >
+        <div style={{ fontSize: '14px', color: '#242e42' }}>
+          Business hours: {formatTime(value[0])} - {formatTime(value[1])}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+### Resource Configuration Scenario
+
+Used to configure ranges for CPU, memory, and other resources.
+
+```jsx live
+function Demo() {
+  const [cpuValue, setCpuValue] = React.useState([2, 8]);
+  const [memValue, setMemValue] = React.useState([4, 16]);
+
+  const cpuMarks = [
+    { value: 0, label: '0' },
+    { value: 4, label: '4' },
+    { value: 8, label: '8' },
+    { value: 16, label: '16' },
+  ];
+
+  const memMarks = [
+    { value: 0, label: '0' },
+    { value: 8, label: '8' },
+    { value: 16, label: '16' },
+    { value: 32, label: '32' },
+  ];
+
+  return (
+    <div>
+      <div style={{ marginBottom: '16px' }}>
+        <div style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '12px' }}>
+          CPU Configuration Range (Core)
+        </div>
+        <RangeSlider
+          value={cpuValue}
+          onChange={setCpuValue}
+          marks={cpuMarks}
+          min={0}
+          max={16}
+          label={(val) => `${val} Core`}
+        />
+      </div>
+      <div style={{ marginBottom: '16px' }}>
+        <div style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '12px' }}>
+          Memory Configuration Range (GB)
+        </div>
+        <RangeSlider
+          value={memValue}
+          onChange={setMemValue}
+          marks={memMarks}
+          min={0}
+          max={32}
+          label={(val) => `${val} GB`}
+        />
+      </div>
+      <div style={{ padding: '12px', background: '#f7f8fa', borderRadius: '4px' }}>
+        <div style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '8px' }}>Current configuration:</div>
+        <div style={{ fontSize: '14px', color: '#79879c' }}>
+          CPU: {cpuValue[0]} - {cpuValue[1]} Core
+        </div>
+        <div style={{ fontSize: '14px', color: '#79879c' }}>
+          Memory: {memValue[0]} - {memValue[1]} GB
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+### Controlled Component
+
+Control slider value through external buttons.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState([25, 75]);
+
+  const handleReset = () => {
+    setValue([0, 100]);
+  };
+
+  const handleSetLow = () => {
+    setValue([0, 25]);
+  };
+
+  const handleSetMedium = () => {
+    setValue([25, 75]);
+  };
+
+  const handleSetHigh = () => {
+    setValue([75, 100]);
+  };
+
+  return (
+    <div>
+      <RangeSlider value={value} onChange={setValue} />
+      <Group style={{ marginTop: '24px' }}>
+        <Button onClick={handleSetLow}>Low</Button>
+        <Button onClick={handleSetMedium}>Medium</Button>
+        <Button onClick={handleSetHigh}>High</Button>
+        <Button onClick={handleReset}>Reset</Button>
+      </Group>
+      <div style={{ marginTop: '16px', color: '#79879c', fontSize: '14px' }}>
+        Current range: {value[0]} - {value[1]}
+      </div>
+    </div>
+  );
+}
+```
+
+### Step Setting
+
+Set slider movement step through the `step` property.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(50);
+
+  return (
+    <div>
+      <div style={{ marginBottom: '16px', fontSize: '14px', fontWeight: 'bold' }}>Step of 10</div>
+      <Slider
+        value={value}
+        onChange={setValue}
+        step={10}
+        marks={[
+          { value: 0, label: '0' },
+          { value: 50, label: '50' },
+          { value: 100, label: '100' },
+        ]}
+      />
+      <div style={{ marginTop: '24px', color: '#79879c', fontSize: '14px' }}>Current value: {value}</div>
+    </div>
+  );
+}
+```
+
+### Percentage Range
+
+A typical percentage range selection scenario.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState([30, 70]);
+
+  const marks = [
+    { value: 0, label: '0%' },
+    { value: 25, label: '25%' },
+    { value: 50, label: '50%' },
+    { value: 75, label: '75%' },
+    { value: 100, label: '100%' },
+  ];
+
+  const getLevel = (min, max) => {
+    const avg = (min + max) / 2;
+    if (avg < 25) return { text: 'Low', color: '#ca2621' };
+    if (avg < 50) return { text: 'Medium-Low', color: '#f5a623' };
+    if (avg < 75) return { text: 'Medium-High', color: '#55bc8a' };
+    return { text: 'High', color: '#329dce' };
+  };
+
+  const level = getLevel(value[0], value[1]);
+
+  return (
+    <div>
+      <div style={{ marginBottom: '16px', fontSize: '14px', fontWeight: 'bold' }}>Performance Threshold Setting</div>
+      <RangeSlider value={value} onChange={setValue} marks={marks} />
+      <div
+        style={{ marginTop: '24px', padding: '12px', background: '#f7f8fa', borderRadius: '4px' }}
+      >
+        <div style={{ fontSize: '14px', marginBottom: '4px' }}>
+          Threshold range: {value[0]}% - {value[1]}%
+        </div>
+        <div style={{ fontSize: '14px', color: level.color }}>Risk level: {level.text}</div>
+      </div>
+    </div>
+  );
+}
+```
+
+## API
+
+### Slider Properties
+
+| Property         | Description              | Type                                          | Default    |
+| ---------------- | ------------------------ | --------------------------------------------- | ---------- |
+| value            | Current value (controlled) | `number`                                      | -          |
+| defaultValue     | Default value (uncontrolled) | `number`                                      | -          |
+| min              | Minimum value            | `number`                                      | `0`        |
+| max              | Maximum value            | `number`                                      | `100`      |
+| step             | Step size                | `number`                                      | `1`        |
+| decimals         | Number of decimal places | `number`                                      | `0`        |
+| marks            | Mark point configuration | `SliderMark[]`                                | `[]`       |
+| size             | Slider size              | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`        | `'md'`     |
+| radius           | Border radius size       | `KubedNumberSize`                             | `'xl'`     |
+| disabled         | Whether disabled         | `boolean`                                     | `false`    |
+| label            | Label content or function | `ReactNode \| ((value: number) => ReactNode)` | `(f) => f` |
+| labelAlwaysOn    | Always show label        | `boolean`                                     | `false`    |
+| showLabelOnHover | Show label on hover      | `boolean`                                     | `true`     |
+| onChange         | Callback on value change | `(value: number) => void`                     | -          |
+
+### RangeSlider Properties
+
+| Property         | Description              | Type                                          | Default    |
+| ---------------- | ------------------------ | --------------------------------------------- | ---------- |
+| value            | Current value (controlled) | `[number, number]`                            | -          |
+| defaultValue     | Default value (uncontrolled) | `[number, number]`                            | -          |
+| min              | Minimum value            | `number`                                      | `0`        |
+| max              | Maximum value            | `number`                                      | `100`      |
+| step             | Step size                | `number`                                      | `1`        |
+| decimals         | Number of decimal places | `number`                                      | `0`        |
+| minRange         | Minimum range interval   | `number`                                      | `10`       |
+| marks            | Mark point configuration | `RangeSliderMark[]`                           | `[]`       |
+| size             | Slider size              | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`        | `'md'`     |
+| radius           | Border radius size       | `KubedNumberSize`                             | `'xl'`     |
+| disabled         | Whether disabled         | `boolean`                                     | `false`    |
+| label            | Label content or function | `ReactNode \| ((value: number) => ReactNode)` | `(f) => f` |
+| labelAlwaysOn    | Always show label        | `boolean`                                     | `false`    |
+| showLabelOnHover | Show label on hover      | `boolean`                                     | `true`     |
+| onChange         | Callback on value change | `(value: [number, number]) => void`           | -          |
+
+### SliderMark Type
+
+```typescript
+interface SliderMark {
+  value: number; // Value corresponding to the mark point
+  label?: ReactNode; // Text displayed for the mark point
+}
+```
+
+### RangeSliderMark Type
+
+```typescript
+interface RangeSliderMark {
+  value: number; // Value corresponding to the mark point
+  label?: ReactNode; // Text displayed for the mark point
+  weight?: number; // Mark point weight, controls interval proportion
+}
+```
+
+:::info
+
+**About value format**:
+
+- `Slider` value is a single number `number`
+- `RangeSlider` value is an array `[min, max]`, representing the selected range
+
+**About mark points**:
+
+- The `marks` array defines optional mark points
+- `RangeSlider`'s `marks` support the `weight` property to control non-uniform scales
+
+**About mark point weights**:
+
+- The `weight` property controls the proportion of intervals between adjacent mark points
+- The larger the weight, the more space that interval occupies on the slider
+- Suitable for scenarios requiring non-linear scales (such as price intervals)
+
+**About labels**:
+
+- `label` can be fixed content or a function, the function receives the current value as a parameter
+- Setting `labelAlwaysOn` to `true` keeps the label always visible
+- `showLabelOnHover` controls whether to show the label on hover
+
+**About step and precision**:
+
+- `step` controls the step size of slider movement
+- `decimals` controls the number of decimal places to retain
+- `RangeSlider`'s `minRange` controls the minimum range interval
+
+:::
+
+## Usage Recommendations
+
+### Choose Appropriate Component
+
+Select Slider or RangeSlider based on requirements:
+
+```jsx
+// Single value selection - use Slider
+<Slider value={volume} onChange={setVolume} label={(val) => `${val}%`} />
+
+// Range selection - use RangeSlider
+<RangeSlider value={priceRange} onChange={setPriceRange} marks={marks} />
+```
+
+### Mark Point Settings
+
+Set mark points and weights appropriately:
+
+```jsx
+// Linear scale - don't set weights or use equal weights
+const marks = [
+  { value: 0, label: '0' },
+  { value: 50, label: '50' },
+  { value: 100, label: '100' },
+];
+
+// Non-linear scale - control interval proportions through weights
+const marks = [
+  { value: 0, label: '¥0', weight: 1 },
+  { value: 100, label: '¥100', weight: 2 }, // This interval has larger proportion
+  { value: 1000, label: '¥1k', weight: 3 }, // This interval has largest proportion
+  { value: 10000, label: '¥10k', weight: 2 },
+];
+```
+
+### Custom Labels
+
+Use functions to customize label display:
+
+```jsx
+// Label with units
+<Slider label={(val) => `${val}°C`} labelAlwaysOn />
+
+// Formatted display
+<RangeSlider
+  label={(val) => {
+    if (val >= 1000) {
+      return `¥${(val / 1000).toFixed(1)}k`;
+    }
+    return `¥${val}`;
+  }}
+  marks={marks}
+/>
+```
+
+### Work with Forms
+
+Use Slider in forms:
+
+```jsx
+const [formData, setFormData] = React.useState({
+  volume: 50,
+  priceRange: [0, 5000],
+});
+
+const handleVolumeChange = (value) => {
+  setFormData({ ...formData, volume: value });
+};
+
+const handlePriceChange = (value) => {
+  setFormData({ ...formData, priceRange: value });
+};
+
+<>
+  <Slider value={formData.volume} onChange={handleVolumeChange} />
+  <RangeSlider value={formData.priceRange} onChange={handlePriceChange} marks={priceMarks} />
+</>;
+```
+
+### Real-time Feedback
+
+Provide users with real-time visual feedback:
+
+```jsx
+const [value, setValue] = React.useState([20, 80]);
+
+const getStatus = (min, max) => {
+  const range = max - min;
+  if (range < 20) return { text: 'Range too small', color: 'red' };
+  if (range > 80) return { text: 'Range too large', color: 'orange' };
+  return { text: 'Range appropriate', color: 'green' };
+};
+
+const status = getStatus(value[0], value[1]);
+
+<>
+  <RangeSlider value={value} onChange={setValue} marks={marks} />
+  <div style={{ color: status.color }}>{status.text}</div>
+</>;
+```
+
+### Preset Values
+
+Provide commonly used preset value options:
+
+```jsx
+const presets = [
+  { label: 'Low', value: [0, 25] },
+  { label: 'Medium', value: [25, 75] },
+  { label: 'High', value: [75, 100] },
+];
+
+<>
+  <RangeSlider value={value} onChange={setValue} marks={marks} />
+  <Group>
+    {presets.map((preset) => (
+      <Button key={preset.label} onClick={() => setValue(preset.value)}>
+        {preset.label}
+      </Button>
+    ))}
+  </Group>
+</>;
+```

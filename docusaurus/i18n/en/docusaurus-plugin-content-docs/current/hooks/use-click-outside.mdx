@@ -1,0 +1,139 @@
+---
+sidebar_position: 1
+---
+
+# useClickOutside
+
+A Hook for detecting clicks outside of an element. Commonly used to implement click-outside-to-close functionality for dropdown menus, modals, and other components.
+
+## Basic Usage
+
+Trigger a callback when clicking outside the target area:
+
+```jsx live
+function Demo() {
+  const [opened, setOpened] = useState(false);
+  const ref = useClickOutside(() => setOpened(false));
+
+  return (
+    <div>
+      <Button onClick={() => setOpened(true)}>Open Dropdown</Button>
+      {opened && (
+        <div
+          ref={ref}
+          style={{
+            marginTop: '10px',
+            padding: '20px',
+            backgroundColor: 'var(--ifm-color-emphasis-100)',
+            borderRadius: '8px',
+            border: '1px solid var(--ifm-color-emphasis-300)',
+          }}
+        >
+          <div>Click outside to close</div>
+          <Button onClick={() => setOpened(false)} style={{ marginTop: '10px' }}>
+            Close
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## Custom Events
+
+Customize the event types that trigger the callback:
+
+```jsx live
+function Demo() {
+  const [opened, setOpened] = useState(false);
+  const ref = useClickOutside(() => setOpened(false), ['mouseup', 'touchend']);
+
+  return (
+    <div>
+      <Button onClick={() => setOpened(true)}>Open (Custom Events)</Button>
+      {opened && (
+        <div
+          ref={ref}
+          style={{
+            marginTop: '10px',
+            padding: '20px',
+            backgroundColor: 'var(--ifm-color-emphasis-100)',
+            borderRadius: '8px',
+          }}
+        >
+          Using mouseup and touchend events
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## Multiple Elements
+
+Monitor clicks outside of multiple elements:
+
+```jsx live
+function Demo() {
+  const [opened, setOpened] = useState(false);
+  const buttonRef = useRef();
+  const dropdownRef = useRef();
+
+  useClickOutside(() => setOpened(false), null, [buttonRef.current, dropdownRef.current]);
+
+  return (
+    <div>
+      <Button ref={buttonRef} onClick={() => setOpened(!opened)}>
+        Toggle
+      </Button>
+      {opened && (
+        <div
+          ref={dropdownRef}
+          style={{
+            marginTop: '10px',
+            padding: '20px',
+            backgroundColor: 'var(--ifm-color-emphasis-100)',
+            borderRadius: '8px',
+          }}
+        >
+          Click outside the button or this area to close
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## API
+
+### Parameters
+
+```ts
+function useClickOutside<T extends HTMLElement = any>(
+  handler: () => void,
+  events?: string[] | null,
+  nodes?: HTMLElement[]
+): RefObject<T>
+```
+
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| handler | Callback function triggered when clicking outside | `() => void` | - |
+| events | Array of event types to listen for | `string[] \| null` | `['mousedown', 'touchstart']` |
+| nodes | Array of multiple element nodes to monitor | `HTMLElement[]` | - |
+
+### Return Value
+
+Returns a ref object that should be bound to the element to monitor.
+
+```ts
+RefObject<T>
+```
+
+## Usage Scenarios
+
+- **Dropdown Menus**: Close menu when clicking outside
+- **Modals**: Close popup when clicking on overlay
+- **Popup Panels**: Collapse panel when clicking outside
+- **Forms**: Save draft or cancel editing when clicking outside

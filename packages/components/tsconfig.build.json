@@ -1,0 +1,23 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "lib",
+    "noEmit": false,
+    "declaration": true,
+    "declarationMap": true,
+    "declarationDir": "lib"
+  },
+  "exclude": [
+    "node_modules",
+    "lib",
+    "esm",
+    "cjs",
+    "**/*.story.ts",
+    "**/*.story.tsx",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "jest-config.js",
+    "configs/storybook/main.js",
+    "docs/next-i18next.config.cjs"
+  ]
+}

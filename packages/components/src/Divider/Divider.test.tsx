@@ -4,8 +4,9 @@ import {
   itSupportsOthers,
   itSupportsStyle,
   itSupportsRef,
-  shallowWithTheme,
+  renderWithTheme,
 } from '@kubed/tests';
+import { screen } from '@testing-library/react';
 import { Divider } from './Divider';
 
 describe('@kubed/components/Divider', () => {
@@ -14,16 +15,22 @@ describe('@kubed/components/Divider', () => {
   itSupportsOthers(Divider, {});
   itSupportsRef(Divider, {}, HTMLDivElement);
 
-  it('renders given label in horizontal orientation', () => {
-    const withSubheader = shallowWithTheme(<Divider label="test-label" />);
-    expect(withSubheader.find(Divider).dive().text()).toBe('test-label');
+  const labelText = 'test-label';
+  it('should render the label text when label prop is provided', () => {
+    renderWithTheme(<Divider label={labelText} />);
+    expect(screen.getByText(labelText)).toBeInTheDocument();
   });
 
-  it('does not render label if label prop is not set or orientation is set to vertical', () => {
-    const noLabel = shallowWithTheme(<Divider />);
-    const vertical = shallowWithTheme(<Divider label="test-label" orientation="vertical" />);
-    expect(noLabel.find('hr')).toHaveLength(0);
-    expect(vertical.find('hr')).toHaveLength(0);
+  it('should not render the label text when label prop is omitted', () => {
+    renderWithTheme(<Divider />);
+
+    const labelElement = screen.queryByText(labelText);
+
+    expect(labelElement).not.toBeInTheDocument();
+  });
+  it('should not render the label text when direction is vertical', () => {
+    renderWithTheme(<Divider label={labelText} direction="vertical" />);
+    expect(screen.queryByText(labelText)).not.toBeInTheDocument();
   });
 
   it('has correct displayName', () => {

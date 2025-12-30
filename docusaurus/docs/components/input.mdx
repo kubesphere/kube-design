@@ -1,0 +1,409 @@
+---
+sidebar_position: 2
+---
+
+# Input 输入框
+
+用于用户文本输入的基础输入框组件。
+
+## 何时使用
+
+- 需要收集用户的文本输入
+- 需要对输入内容进行校验和处理
+- 可与其他组件组合构建复杂表单
+- 支持前缀、后缀、前置和后置标签等扩展场景
+
+## 示例
+
+### 基础用法
+
+最简单的用法，通过 `onChange` 获取输入值。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+
+  return (
+    <div>
+      <Input placeholder="请输入内容" value={value} onChange={(e) => setValue(e.target.value)} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        输入的内容: {value || '暂无'}
+      </div>
+    </div>
+  );
+}
+```
+
+### 不同尺寸
+
+通过 `size` 属性设置输入框尺寸，支持 `xs`、`sm`、`md`、`lg`、`xl` 五种尺寸。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Input size="xs" placeholder="超小尺寸 (xs)" />
+      <Input size="sm" placeholder="小尺寸 (sm)" />
+      <Input size="md" placeholder="中等尺寸 (md)" />
+      <Input size="lg" placeholder="大尺寸 (lg)" />
+      <Input size="xl" placeholder="超大尺寸 (xl)" />
+    </Group>
+  );
+}
+```
+
+### 前缀和后缀
+
+通过 `prefix` 和 `suffix` 添加前缀和后缀内容，可以是文本或图标。
+
+```jsx live
+function Demo() {
+  const { Magnifier, Loading3Duotone, Appcenter } = KubedIcons;
+
+  return (
+    <Group direction="column">
+      <Input prefix={<Magnifier size={16} />} placeholder="搜索..." />
+      <Input suffix={<Loading3Duotone size={16} />} placeholder="加载中..." />
+      <Input
+        prefix={<Magnifier size={16} />}
+        suffix={<Appcenter size={16} />}
+        placeholder="前缀和后缀"
+      />
+      <Input prefix="https://" suffix=".com" placeholder="example" />
+    </Group>
+  );
+}
+```
+
+### 前置和后置标签
+
+通过 `addonBefore` 和 `addonAfter` 添加前置和后置标签。
+
+```jsx live
+function Demo() {
+  const { Appcenter } = KubedIcons;
+
+  return (
+    <Group direction="column">
+      <Input addonBefore="https://" placeholder="请输入网址" />
+      <Input addonAfter=".com" placeholder="请输入域名" />
+      <Input addonBefore="https://" addonAfter=".com" placeholder="example" />
+      <Input addonBefore={<Appcenter size={16} />} addonAfter=".io" placeholder="请输入应用名称" />
+    </Group>
+  );
+}
+```
+
+### 禁用和只读
+
+通过 `disabled` 属性禁用输入框，通过 `readOnly` 属性设置只读。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Input disabled placeholder="禁用状态" />
+      <Input disabled value="禁用且有值" />
+      <Input readOnly value="只读状态" />
+    </Group>
+  );
+}
+```
+
+### 受控组件
+
+通过 `value` 和 `onChange` 属性实现受控组件，可以对输入进行限制。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+
+  const handleChange = (e) => {
+    // 限制只能输入6个字符
+    const newValue = e.target.value.slice(0, 6);
+    setValue(newValue);
+  };
+
+  const handleClear = () => {
+    setValue('');
+  };
+
+  return (
+    <div>
+      <Input placeholder="最多输入6个字符" value={value} onChange={handleChange} />
+      <Group style={{ marginTop: '16px' }}>
+        <Button onClick={handleClear}>清空</Button>
+      </Group>
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        已输入 {value.length}/6 个字符
+      </div>
+    </div>
+  );
+}
+```
+
+### 输入验证
+
+结合状态实现输入验证功能。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+  const [error, setError] = React.useState('');
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+    setValue(newValue);
+
+    if (newValue && !validateEmail(newValue)) {
+      setError('请输入有效的邮箱地址');
+    } else {
+      setError('');
+    }
+  };
+
+  return (
+    <div>
+      <Input placeholder="请输入邮箱地址" value={value} onChange={handleChange} />
+      {error && <div style={{ marginTop: '8px', color: '#ca2621', fontSize: '14px' }}>{error}</div>}
+      {value && !error && (
+        <div style={{ marginTop: '8px', color: '#55bc8a', fontSize: '14px' }}>邮箱格式正确</div>
+      )}
+    </div>
+  );
+}
+```
+
+### 格式化输入
+
+实现输入内容的自动格式化。
+
+```jsx live
+function Demo() {
+  const [phone, setPhone] = React.useState('');
+
+  const formatPhone = (value) => {
+    // 移除所有非数字字符
+    const cleaned = value.replace(/\D/g, '');
+    // 限制11位
+    const limited = cleaned.slice(0, 11);
+    // 格式化为 xxx-xxxx-xxxx
+    const match = limited.match(/^(\d{0,3})(\d{0,4})(\d{0,4})$/);
+    if (match) {
+      return [match[1], match[2], match[3]].filter(Boolean).join('-');
+    }
+    return limited;
+  };
+
+  const handleChange = (e) => {
+    const formatted = formatPhone(e.target.value);
+    setPhone(formatted);
+  };
+
+  return (
+    <div>
+      <Input
+        placeholder="请输入手机号码"
+        value={phone}
+        onChange={handleChange}
+        style={{ width: 300 }}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        格式化后的号码: {phone || '暂无'}
+      </div>
+    </div>
+  );
+}
+```
+
+### 自定义宽度
+
+通过 `width` 属性或 `style` 设置输入框宽度。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Input placeholder="width=200" width={200} />
+      <Input placeholder="width=300" width={300} />
+      <Input placeholder="width=400" width={400} />
+      <Input placeholder="style width" style={{ width: '100%', maxWidth: 500 }} />
+    </Group>
+  );
+}
+```
+
+### 焦点事件
+
+通过 `onFocus` 和 `onBlur` 处理焦点事件。
+
+```jsx live
+function Demo() {
+  const [focused, setFocused] = React.useState(false);
+  const [value, setValue] = React.useState('');
+
+  return (
+    <div>
+      <Input
+        placeholder="请输入内容"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        style={{ width: 300 }}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        输入框状态: {focused ? '聚焦中' : '未聚焦'}
+      </div>
+    </div>
+  );
+}
+```
+
+## API
+
+### Input 属性
+
+| 属性         | 说明               | 类型                               | 默认值   |
+| ------------ | ------------------ | ---------------------------------- | -------- |
+| value        | 输入框的值（受控） | `string`                           | -        |
+| defaultValue | 默认值（非受控）   | `string`                           | -        |
+| placeholder  | 占位符文本         | `string`                           | -        |
+| size         | 输入框尺寸         | `KubedSizes`                       | `'sm'`   |
+| width        | 输入框宽度（像素） | `number`                           | -        |
+| prefix       | 前缀内容           | `ReactNode`                        | -        |
+| suffix       | 后缀内容           | `ReactNode`                        | -        |
+| addonBefore  | 前置标签           | `ReactNode`                        | -        |
+| addonAfter   | 后置标签           | `ReactNode`                        | -        |
+| disabled     | 是否禁用           | `boolean`                          | `false`  |
+| readOnly     | 是否只读           | `boolean`                          | `false`  |
+| radius       | 边框圆角           | `KubedNumberSize`                  | -        |
+| type         | 输入框类型         | `string`                           | `'text'` |
+| onChange     | 值变化时的回调     | `(e: ChangeEvent) => void`         | -        |
+| onFocus      | 获得焦点时的回调   | `(e: FocusEvent) => void`          | -        |
+| onBlur       | 失去焦点时的回调   | `(e: FocusEvent) => void`          | -        |
+| 其他         | 原生属性           | `HTMLAttributes<HTMLInputElement>` | -        |
+
+:::info
+
+**关于受控与非受控**：
+
+- 使用 `value` + `onChange` 实现受控组件，完全控制输入值
+- 使用 `defaultValue` 实现非受控组件，组件内部管理状态
+- 受控模式下，必须提供 `onChange` 处理函数更新 `value`
+
+**关于前缀和后缀**：
+
+- `prefix` / `suffix`：在输入框内部显示，通常用于图标
+- `addonBefore` / `addonAfter`：在输入框外部显示，通常用于文本标签
+
+**关于尺寸**：
+
+- `xs`：超小尺寸，适用于紧凑布局
+- `sm`：小尺寸（默认），适用于大多数场景
+- `md`：中等尺寸，适用于强调的输入
+- `lg`：大尺寸，适用于重要表单
+- `xl`：超大尺寸，适用于主要操作
+
+Input 组件继承所有原生 HTML input 元素的属性（如 `maxLength`、`pattern`、`autoComplete` 等）。
+
+:::
+
+## 使用建议
+
+### 受控与非受控
+
+根据场景选择合适的使用方式：
+
+```jsx
+// 非受控：适用于简单场景，不需要外部控制状态
+<Input defaultValue="默认值" placeholder="请输入" />;
+
+// 受控：适用于需要验证、格式化或外部控制的场景
+const [value, setValue] = React.useState('');
+<Input value={value} onChange={(e) => setValue(e.target.value)} />;
+```
+
+### 输入验证
+
+推荐的验证模式：
+
+```jsx
+const [value, setValue] = React.useState('');
+const [error, setError] = React.useState('');
+
+const handleChange = (e) => {
+  const newValue = e.target.value;
+  setValue(newValue);
+
+  // 实时验证
+  if (newValue && !isValid(newValue)) {
+    setError('输入格式不正确');
+  } else {
+    setError('');
+  }
+};
+
+<Input value={value} onChange={handleChange} />;
+{
+  error && <div className="error">{error}</div>;
+}
+```
+
+### 格式化输入
+
+对于需要特定格式的输入（如电话号码、信用卡等）：
+
+```jsx
+const formatValue = (value) => {
+  // 实现格式化逻辑
+  return formattedValue;
+};
+
+const handleChange = (e) => {
+  const formatted = formatValue(e.target.value);
+  setValue(formatted);
+};
+```
+
+### 与表单组件配合
+
+在 Form 中使用 Input：
+
+```jsx
+<Form onFinish={handleFinish}>
+  <FormItem
+    name="username"
+    label="用户名"
+    rules={[
+      { required: true, message: '请输入用户名' },
+      { min: 3, message: '用户名至少3个字符' },
+    ]}
+  >
+    <Input placeholder="请输入用户名" />
+  </FormItem>
+</Form>
+```
+
+### 性能优化
+
+对于大量输入框或频繁更新的场景，考虑使用防抖：
+
+```jsx
+import { useDebouncedValue } from '@kubed/hooks';
+
+const [value, setValue] = React.useState('');
+const [debouncedValue] = useDebouncedValue(value, 300);
+
+React.useEffect(() => {
+  // 使用防抖后的值进行搜索或验证
+  if (debouncedValue) {
+    performSearch(debouncedValue);
+  }
+}, [debouncedValue]);
+```

@@ -1,0 +1,439 @@
+---
+sidebar_position: 1
+---
+
+# ActionConfirm
+
+A floating action confirmation bar component at the bottom, used to confirm or cancel operations.
+
+## When to Use
+
+- Need user confirmation for form submission or modification operations
+- Confirmation needed after batch operations
+- Need to display fixed action buttons at the bottom of the page
+- Save/Cancel operations in edit scenarios
+
+## Examples
+
+### Basic Usage
+
+ActionConfirm needs to be placed in a relatively positioned container, and it will be fixed at the bottom of the container.
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(true);
+
+  return (
+    <div style={{ position: 'relative', height: '200px', border: '1px solid #d8dee5', borderRadius: '4px', overflow: 'hidden' }}>
+      <div style={{ padding: '20px' }}>
+        <Button onClick={() => setVisible(!visible)}>
+          {visible ? 'Hide Confirm Bar' : 'Show Confirm Bar'}
+        </Button>
+      </div>
+      <ActionConfirm
+        visible={visible}
+        onOk={() => alert('Confirmed')}
+        onCancel={() => setVisible(false)}
+      />
+    </div>
+  );
+}
+```
+
+### Loading State
+
+Display the loading state of the confirm button through the `confirmLoading` property, commonly used for asynchronous operations.
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
+
+  const handleOk = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setVisible(false);
+    }, 2000);
+  };
+
+  return (
+    <div style={{ position: 'relative', height: '200px', border: '1px solid #d8dee5', borderRadius: '4px', overflow: 'hidden' }}>
+      <div style={{ padding: '20px' }}>
+        <Button onClick={() => setVisible(true)}>Show Confirm Bar</Button>
+        <p style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+          Loading state will be displayed after clicking the confirm button
+        </p>
+      </div>
+      <ActionConfirm
+        visible={visible}
+        confirmLoading={loading}
+        onOk={handleOk}
+        onCancel={() => setVisible(false)}
+      />
+    </div>
+  );
+}
+```
+
+### Custom Button Text
+
+Customize button display content through `okText` and `cancelText` properties.
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(true);
+
+  return (
+    <div style={{ position: 'relative', height: '200px', border: '1px solid #d8dee5', borderRadius: '4px', overflow: 'hidden' }}>
+      <div style={{ padding: '20px' }}>
+        <Button onClick={() => setVisible(true)}>Show Confirm Bar</Button>
+      </div>
+      <ActionConfirm
+        visible={visible}
+        okText="Save"
+        cancelText="Cancel"
+        onOk={() => {
+          alert('Saved');
+          setVisible(false);
+        }}
+        onCancel={() => setVisible(false)}
+      />
+    </div>
+  );
+}
+```
+
+### Form Edit Scenario
+
+Typical usage for displaying action confirmation bar when editing forms.
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [name, setName] = React.useState('nginx-deployment');
+
+  const handleChange = (e) => {
+    setName(e.target.value);
+    setVisible(true);
+  };
+
+  const handleSave = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setVisible(false);
+      alert(`Saved: ${name}`);
+    }, 1000);
+  };
+
+  const handleCancel = () => {
+    setName('nginx-deployment');
+    setVisible(false);
+  };
+
+  return (
+    <div style={{ position: 'relative', height: '250px', border: '1px solid #d8dee5', borderRadius: '4px', overflow: 'hidden' }}>
+      <div style={{ padding: '20px' }}>
+        <div style={{ marginBottom: '12px', fontWeight: 600 }}>Edit Workload</div>
+        <Input
+          value={name}
+          onChange={handleChange}
+          placeholder="Enter name"
+          style={{ width: '300px' }}
+        />
+        <p style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+          Confirmation bar will appear after modifying the input
+        </p>
+      </div>
+      <ActionConfirm
+        visible={visible}
+        confirmLoading={loading}
+        okText="Save"
+        cancelText="Cancel"
+        onOk={handleSave}
+        onCancel={handleCancel}
+      />
+    </div>
+  );
+}
+```
+
+### With Card Component
+
+Using action confirmation bar within a card component.
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+
+  const handleSave = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setVisible(false);
+    }, 1000);
+  };
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ position: 'relative', height: '280px', overflow: 'hidden' }}>
+        <div style={{ marginBottom: '16px', fontWeight: 600 }}>Resource Configuration</div>
+        <Group direction="column" spacing="md">
+          <Input placeholder="Name" style={{ width: '300px' }} onChange={() => setVisible(true)} />
+          <Input placeholder="Description" style={{ width: '300px' }} onChange={() => setVisible(true)} />
+        </Group>
+        <ActionConfirm
+          visible={visible}
+          confirmLoading={loading}
+          okText="Save"
+          cancelText="Cancel"
+          onOk={handleSave}
+          onCancel={() => setVisible(false)}
+        />
+      </Card>
+    </div>
+  );
+}
+```
+
+### Delete Confirmation
+
+Used for confirmation scenarios of dangerous operations.
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+
+  const handleDelete = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setVisible(false);
+      alert('Deleted');
+    }, 1000);
+  };
+
+  return (
+    <div style={{ position: 'relative', height: '200px', border: '1px solid #d8dee5', borderRadius: '4px', overflow: 'hidden' }}>
+      <div style={{ padding: '20px' }}>
+        <Button color="error" onClick={() => setVisible(true)}>
+          Delete Resource
+        </Button>
+        <p style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+          Confirmation bar will be displayed after clicking the delete button
+        </p>
+      </div>
+      <ActionConfirm
+        visible={visible}
+        confirmLoading={loading}
+        okText="Confirm Delete"
+        cancelText="Cancel"
+        onOk={handleDelete}
+        onCancel={() => setVisible(false)}
+      />
+    </div>
+  );
+}
+```
+
+## API
+
+### ActionConfirm
+
+| Property       | Description                           | Type            | Default                       |
+| -------------- | ------------------------------------- | --------------- | ----------------------------- |
+| visible        | Whether to display the confirm bar    | `boolean`       | **Required**                  |
+| okText         | Confirm button text                   | `ReactNode`     | `<Check variant="light" />`   |
+| cancelText     | Cancel button text                    | `ReactNode`     | `<Close variant="light" />`   |
+| confirmLoading | Whether the confirm button shows loading state | `boolean` | `false`                  |
+| onOk           | Callback when clicking the confirm button | `() => void` | -                            |
+| onCancel       | Callback when clicking the cancel button  | `() => void` | -                            |
+| className      | Custom class name                     | `string`        | -                             |
+| style          | Custom styles                         | `CSSProperties` | -                             |
+
+:::info
+
+**About Positioning**:
+
+- ActionConfirm uses `position: absolute` positioning and needs to be placed in a `position: relative` container
+- The component will be fixed at the bottom of the container, achieving full-width layout through `bottom: 0; left: 0; right: 0;`
+- The spacing from the container edge is 12px (set through `margin: 12px`)
+- The container needs to set `overflow: hidden` to ensure animation effects work properly
+- z-index is 999, ensuring it appears above other elements
+
+**About Animation**:
+
+- The component has smooth transition animations when showing/hiding (transition: all 0.3s)
+- Hidden state effect (ActionConfirm.tsx lines 21-25):
+  ```typescript
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(48px);  // Slides down 48px
+  ```
+- Visible state effect (ActionConfirm.tsx lines 13-18):
+  ```typescript
+  visibility: visible;
+  opacity: 1;
+  transform: translate(0);  // Returns to original position
+  ```
+
+**About Button Styles**:
+
+- Buttons use dark background (`theme.palette.accents_8`), white text (`theme.palette.background`)
+- On hover, background becomes `accents_7` (slightly lighter)
+- Button padding: `padding: 10px 20px`
+- Button right margin: `margin-right: 12px`
+- Button alignment: `justify-content: right`
+
+**About Loading State**:
+
+- When `confirmLoading` is `true`, the confirm button displays a Loading component (size: 14px)
+- Loading state styles (ActionConfirm.tsx lines 61-66):
+  ```typescript
+  background-color: accents_7;  // Background becomes lighter
+  cursor: not-allowed;          // Disabled cursor
+  ```
+- Clicking the confirm button in loading state does not trigger the `onOk` callback (line 96 checks `!confirmLoading`)
+- Suitable for scenarios requiring asynchronous processing
+
+**About Icons**:
+
+- Default confirm button uses `<Check variant="light" />` icon (light variant)
+- Default cancel button uses `<Close variant="light" />` icon (light variant)
+- Can be customized to text or other content through `okText` and `cancelText`
+- Icons are from the `@kubed/icons` package
+
+**About Click Handling**:
+
+- `onCancel` click handling: directly calls the passed callback function (lines 89-93)
+- `onOk` click handling: only calls the callback when `!confirmLoading` (lines 95-99)
+- This ensures no repeated submissions during loading state
+
+:::
+
+
+## Usage Recommendations
+
+### Container Setup
+
+Ensure the parent container has proper positioning and overflow properties:
+
+```jsx
+// Correct: Set relative positioning and hide overflow
+<div style={{ position: 'relative', overflow: 'hidden', height: '300px' }}>
+  <ActionConfirm visible={visible} />
+</div>
+
+// Incorrect: No positioning set
+<div>
+  <ActionConfirm visible={visible} />
+</div>
+```
+
+### Form Scenario
+
+Display confirmation bar when form is modified:
+
+```jsx
+const [hasChanges, setHasChanges] = React.useState(false);
+
+const handleFieldChange = () => {
+  setHasChanges(true);
+};
+
+const handleSave = async () => {
+  await saveForm();
+  setHasChanges(false);
+};
+
+const handleCancel = () => {
+  resetForm();
+  setHasChanges(false);
+};
+
+<ActionConfirm
+  visible={hasChanges}
+  okText="Save"
+  cancelText="Cancel"
+  onOk={handleSave}
+  onCancel={handleCancel}
+/>
+```
+
+### Asynchronous Operations
+
+Handle asynchronous save operations:
+
+```jsx
+const [loading, setLoading] = React.useState(false);
+
+const handleOk = async () => {
+  setLoading(true);
+  try {
+    await saveData();
+    setVisible(false);
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+<ActionConfirm
+  visible={visible}
+  confirmLoading={loading}
+  onOk={handleOk}
+  onCancel={() => setVisible(false)}
+/>
+```
+
+### With Modal Component
+
+Using confirmation bar inside a Modal:
+
+```jsx
+<Modal visible={modalVisible} onCancel={() => setModalVisible(false)}>
+  <div style={{ position: 'relative', minHeight: '200px' }}>
+    <Form>{/* Form content */}</Form>
+    <ActionConfirm
+      visible={hasChanges}
+      okText="Save"
+      cancelText="Cancel"
+      onOk={handleSave}
+      onCancel={handleCancel}
+    />
+  </div>
+</Modal>
+```
+
+### Custom Button Content
+
+Buttons support any ReactNode:
+
+```jsx
+// Using text
+<ActionConfirm
+  okText="Confirm Submit"
+  cancelText="Discard Changes"
+/>
+
+// Using icons and text
+<ActionConfirm
+  okText={
+    <Group spacing="xs">
+      <Check size={14} />
+      <span>Save</span>
+    </Group>
+  }
+  cancelText={
+    <Group spacing="xs">
+      <Close size={14} />
+      <span>Cancel</span>
+    </Group>
+  }
+/>
+```

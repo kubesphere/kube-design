@@ -1,0 +1,459 @@
+---
+sidebar_position: 23
+---
+
+# useQueue
+
+A Hook for managing a limited queue, automatically separating active state and waiting queue.
+
+## Basic Usage
+
+```jsx live
+function Demo() {
+  const { state, queue, add } = useQueue({ initialValues: [], limit: 3 });
+  const [inputValue, setInputValue] = useState('');
+
+  const handleAdd = () => {
+    if (inputValue.trim()) {
+      add(inputValue);
+      setInputValue('');
+    }
+  };
+
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+        <Input
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyPress={(e) => e.key === 'Enter' && handleAdd()}
+          placeholder="Enter item"
+          style={{ flex: 1 }}
+        />
+        <Button onClick={handleAdd}>Add</Button>
+      </div>
+
+      <div style={{ marginBottom: '12px' }}>
+        <div
+          style={{
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-success-lightest)',
+            borderRadius: '6px',
+            marginBottom: '8px',
+          }}
+        >
+          <strong>Active Items (max 3):</strong>
+          {state.length === 0 ? (
+            <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>None</div>
+          ) : (
+            state.map((item, index) => (
+              <div key={index} style={{ padding: '4px 0' }}>
+                {index + 1}. {item}
+              </div>
+            ))
+          )}
+        </div>
+
+        <div
+          style={{
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-warning-lightest)',
+            borderRadius: '6px',
+          }}
+        >
+          <strong>Waiting Queue:</strong>
+          {queue.length === 0 ? (
+            <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>None</div>
+          ) : (
+            queue.map((item, index) => (
+              <div key={index} style={{ padding: '4px 0' }}>
+                {index + 1}. {item}
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+
+      <div
+        style={{
+          padding: '8px 12px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '4px',
+          fontSize: '14px',
+        }}
+      >
+        Total: {state.length + queue.length} items ({state.length} active, {queue.length} waiting)
+      </div>
+    </div>
+  );
+}
+```
+
+## Notification Queue
+
+Manage limited notification displays:
+
+```jsx live
+function Demo() {
+  const { state: notifications, queue, add, update } = useQueue({
+    initialValues: [],
+    limit: 3,
+  });
+
+  const addNotification = (type) => {
+    const notification = {
+      id: Date.now(),
+      type,
+      message: `${type} notification ${Date.now()}`,
+    };
+    add(notification);
+  };
+
+  const removeNotification = (id) => {
+    update((items) => items.filter((item) => item.id !== id));
+  };
+
+  return (
+    <div>
+      <Group spacing="md" style={{ marginBottom: '16px' }}>
+        <Button onClick={() => addNotification('Info')} size="sm">
+          Add Info
+        </Button>
+        <Button onClick={() => addNotification('Warning')} size="sm" variant="outline">
+          Add Warning
+        </Button>
+        <Button onClick={() => addNotification('Error')} size="sm" variant="outline">
+          Add Error
+        </Button>
+      </Group>
+
+      <div style={{ marginBottom: '12px' }}>
+        <strong>Visible Notifications (max 3):</strong>
+        {notifications.length === 0 ? (
+          <div
+            style={{
+              padding: '20px',
+              backgroundColor: 'var(--ifm-color-emphasis-100)',
+              borderRadius: '6px',
+              textAlign: 'center',
+              marginTop: '8px',
+            }}
+          >
+            No notifications
+          </div>
+        ) : (
+          <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {notifications.map((notif) => (
+              <div
+                key={notif.id}
+                style={{
+                  padding: '12px',
+                  backgroundColor:
+                    notif.type === 'Error'
+                      ? 'var(--ifm-color-danger-lightest)'
+                      : notif.type === 'Warning'
+                      ? 'var(--ifm-color-warning-lightest)'
+                      : 'var(--ifm-color-info-lightest)',
+                  borderRadius: '6px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <span>{notif.message}</span>
+                <Button size="sm" onClick={() => removeNotification(notif.id)}>
+                  ✕
+                </Button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {queue.length > 0 && (
+        <div
+          style={{
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-emphasis-100)',
+            borderRadius: '6px',
+            fontSize: '14px',
+          }}
+        >
+          {queue.length} more notification(s) waiting in queue
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## Task Queue
+
+Manage concurrent task count:
+
+```jsx live
+function Demo() {
+  const { state: runningTasks, queue: pendingTasks, add, update, cleanQueue } = useQueue({
+    initialValues: [],
+    limit: 2,
+  });
+
+  const addTask = () => {
+    const task = {
+      id: Date.now(),
+      name: `Task ${Date.now()}`,
+      progress: 0,
+    };
+    add(task);
+  };
+
+  const completeTask = (id) => {
+    update((items) => items.filter((item) => item.id !== id));
+  };
+
+  return (
+    <div>
+      <Group spacing="md" style={{ marginBottom: '16px' }}>
+        <Button onClick={addTask}>Add Task</Button>
+        <Button onClick={cleanQueue} variant="outline" disabled={pendingTasks.length === 0}>
+          Clear Queue
+        </Button>
+      </Group>
+
+      <div style={{ marginBottom: '12px' }}>
+        <div
+          style={{
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-success-lightest)',
+            borderRadius: '6px',
+            marginBottom: '8px',
+          }}
+        >
+          <strong>Running (max 2 concurrent):</strong>
+          {runningTasks.length === 0 ? (
+            <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+              No running tasks
+            </div>
+          ) : (
+            runningTasks.map((task) => (
+              <div
+                key={task.id}
+                style={{
+                  marginTop: '8px',
+                  padding: '8px',
+                  backgroundColor: 'var(--ifm-background-surface-color)',
+                  borderRadius: '4px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <span>{task.name}</span>
+                <Button size="sm" onClick={() => completeTask(task.id)}>
+                  Complete
+                </Button>
+              </div>
+            ))
+          )}
+        </div>
+
+        <div
+          style={{
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-warning-lightest)',
+            borderRadius: '6px',
+          }}
+        >
+          <strong>Pending:</strong>
+          {pendingTasks.length === 0 ? (
+            <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+              No pending tasks
+            </div>
+          ) : (
+            pendingTasks.map((task, index) => (
+              <div key={task.id} style={{ padding: '4px 0' }}>
+                {index + 1}. {task.name}
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+
+      <div
+        style={{
+          padding: '8px 12px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '4px',
+          fontSize: '14px',
+        }}
+      >
+        Total tasks: {runningTasks.length + pendingTasks.length}
+      </div>
+    </div>
+  );
+}
+```
+
+## API
+
+### Parameters
+
+```ts
+function useQueue<T>({
+  initialValues,
+  limit
+}: UseQueueOptions<T>): UseQueueResult<T>
+```
+
+#### UseQueueOptions
+
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| initialValues | Initial values array | `T[]` | `[]` |
+| limit | Maximum number of items in active state | `number` | - |
+
+### Return Value
+
+Returns an object with the following properties and methods:
+
+```ts
+interface UseQueueResult<T> {
+  state: T[];                           // Active items (within limit)
+  queue: T[];                           // Waiting queue
+  add: (...items: T[]) => void;        // Add items
+  update: (fn: (state: T[]) => T[]) => void;  // Update all items
+  cleanQueue: () => void;              // Clear waiting queue
+}
+```
+
+| Property/Method | Description | Type |
+|-----------------|-------------|------|
+| state | Currently active items (max limit items) | `T[]` |
+| queue | Items in waiting queue | `T[]` |
+| add | Add one or more items | `(...items: T[]) => void` |
+| update | Update all items using a function | `(fn: (state: T[]) => T[]) => void` |
+| cleanQueue | Clear waiting queue, keep active items | `() => void` |
+
+## How It Works
+
+1. Maintains two arrays: `state` (active) and `queue` (waiting)
+2. When adding items, fill `state` to `limit` first, rest go to `queue`
+3. On update, redistribute items to `state` and `queue`
+4. `cleanQueue` only clears the queue, keeps active items
+
+## Features
+
+- **Automatic Separation**: Automatically manages active and waiting states
+- **Flexible Updates**: Supports functional updates
+- **Type Safe**: Full TypeScript generic support
+- **Batch Operations**: Supports adding multiple items at once
+
+## Usage Scenarios
+
+- **Notification System**: Limit number of simultaneously displayed notifications
+- **Task Queue**: Manage concurrent task execution
+- **Download Manager**: Limit concurrent downloads
+- **Playlist**: Manage play queue
+- **Chat Messages**: Limit visible message count
+- **Upload Queue**: Manage file upload order
+
+## Practical Applications
+
+### Download Queue Manager
+
+```jsx
+function DownloadManager() {
+  const { state: downloading, queue: pending, add, update } = useQueue({
+    initialValues: [],
+    limit: 3, // Max 3 concurrent downloads
+  });
+
+  const startDownload = (file) => {
+    add({ id: Date.now(), name: file, progress: 0 });
+  };
+
+  const updateProgress = (id, progress) => {
+    update((items) =>
+      items.map((item) =>
+        item.id === id ? { ...item, progress } : item
+      )
+    );
+  };
+
+  const completeDownload = (id) => {
+    update((items) => items.filter((item) => item.id !== id));
+  };
+
+  return (/* UI */);
+}
+```
+
+### Message Queue
+
+```jsx
+function MessageQueue() {
+  const { state: visible, queue: hidden, add } = useQueue({
+    initialValues: [],
+    limit: 5, // Max 5 visible messages
+  });
+
+  const sendMessage = (text) => {
+    add({
+      id: Date.now(),
+      text,
+      timestamp: new Date(),
+    });
+  };
+
+  return (/* UI */);
+}
+```
+
+## Best Practices
+
+### Add Unique Identifiers
+
+```jsx
+// ✅ Recommended - Use unique ID
+add({ id: uuid(), ...data });
+
+// ❌ Avoid - No unique identifier
+add(data);
+```
+
+### Update Specific Items
+
+```jsx
+// Update specific item
+update((items) =>
+  items.map((item) =>
+    item.id === targetId ? { ...item, ...updates } : item
+  )
+);
+
+// Delete specific item
+update((items) => items.filter((item) => item.id !== targetId));
+```
+
+### Type Safety
+
+```tsx
+interface Task {
+  id: number;
+  name: string;
+  status: 'pending' | 'running' | 'completed';
+}
+
+const queue = useQueue<Task>({
+  initialValues: [],
+  limit: 3,
+});
+```
+
+## Notes
+
+- `limit` determines the maximum length of `state`
+- When using `update`, must return a new array
+- `add` can add multiple items at once
+- `cleanQueue` does not affect items in `state`
+- Component re-renders do not reset queue state

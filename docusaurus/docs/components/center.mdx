@@ -1,0 +1,238 @@
+---
+sidebar_position: 3
+---
+
+# Center 居中
+
+将单个子元素在水平和垂直方向上居中的容器组件。
+
+## 何时使用
+
+- 需要将内容在容器中居中显示
+- 快速实现水平和垂直居中布局
+- 适用于各种场景的居中需求
+
+## 示例
+
+### 基础用法
+
+Center 默认使用 flexbox 实现子元素的水平和垂直居中。
+
+```jsx live
+function Demo() {
+  return (
+    <Center style={{ background: '#f7f8fa', height: '150px', border: '1px dashed #d1d5de' }}>
+      <div
+        style={{ padding: '12px 24px', background: '#55bc8a', color: '#fff', borderRadius: '4px' }}
+      >
+        居中内容
+      </div>
+    </Center>
+  );
+}
+```
+
+### 不同高度
+
+Center 会根据容器高度自动居中内容。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>高度: 100px</h4>
+      <Center
+        style={{
+          background: '#f7f8fa',
+          height: '100px',
+          border: '1px dashed #d1d5de',
+          marginBottom: '24px',
+        }}
+      >
+        <span>居中文本</span>
+      </Center>
+
+      <h4 style={{ marginBottom: '12px' }}>高度: 200px</h4>
+      <Center style={{ background: '#f7f8fa', height: '200px', border: '1px dashed #d1d5de' }}>
+        <span>居中文本</span>
+      </Center>
+    </div>
+  );
+}
+```
+
+### 居中按钮
+
+常用于将按钮或按钮组居中显示。
+
+```jsx live
+function Demo() {
+  return (
+    <Center style={{ background: '#f7f8fa', height: '120px', border: '1px dashed #d1d5de' }}>
+      <Group spacing="md">
+        <Button variant="outline">取消</Button>
+        <Button variant="filled" color="primary">
+          确定
+        </Button>
+      </Group>
+    </Center>
+  );
+}
+```
+
+### 居中图标
+
+适合用于空状态、加载状态等场景。
+
+```jsx live
+function Demo() {
+  const { InformationDuotone, WarningDuotone, ErrorDuotone } = KubedIcons;
+
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>信息提示</h4>
+      <Center
+        style={{
+          background: '#f7f8fa',
+          height: '120px',
+          border: '1px dashed #d1d5de',
+          marginBottom: '24px',
+        }}
+      >
+        <div style={{ textAlign: 'center' }}>
+          <InformationDuotone size={48} color="#329dce" />
+          <div style={{ marginTop: '8px', color: '#79879c' }}>暂无数据</div>
+        </div>
+      </Center>
+
+      <h4 style={{ marginBottom: '12px' }}>警告提示</h4>
+      <Center
+        style={{
+          background: '#fff3e0',
+          height: '120px',
+          border: '1px dashed #f5a623',
+          marginBottom: '24px',
+        }}
+      >
+        <div style={{ textAlign: 'center' }}>
+          <WarningDuotone size={48} color="#f5a623" />
+          <div style={{ marginTop: '8px', color: '#f5a623' }}>配置未完成</div>
+        </div>
+      </Center>
+
+      <h4 style={{ marginBottom: '12px' }}>错误提示</h4>
+      <Center style={{ background: '#ffebee', height: '120px', border: '1px dashed #ca2621' }}>
+        <div style={{ textAlign: 'center' }}>
+          <ErrorDuotone size={48} color="#ca2621" />
+          <div style={{ marginTop: '8px', color: '#ca2621' }}>加载失败</div>
+        </div>
+      </Center>
+    </div>
+  );
+}
+```
+
+### 全屏居中
+
+通过设置容器高度为视口高度实现全屏居中。
+
+```jsx live
+function Demo() {
+  return (
+    <Center style={{ background: '#f7f8fa', height: '300px', border: '1px dashed #d1d5de' }}>
+      <div style={{ textAlign: 'center' }}>
+        <h2 style={{ marginBottom: '16px', fontSize: '24px', color: '#242e42' }}>欢迎使用</h2>
+        <p style={{ marginBottom: '24px', color: '#79879c' }}>开始您的云原生之旅</p>
+        <Button variant="filled" color="primary">
+          立即开始
+        </Button>
+      </div>
+    </Center>
+  );
+}
+```
+
+### 卡片居中
+
+常用于卡片容器中的内容居中。
+
+```jsx live
+function Demo() {
+  const { KubernetesDuotone } = KubedIcons;
+
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+      <div style={{ border: '1px solid #d1d5de', borderRadius: '4px', overflow: 'hidden' }}>
+        <Center style={{ background: '#f7f8fa', height: '100px' }}>
+          <KubernetesDuotone size={48} color="#326CE5" />
+        </Center>
+        <div style={{ padding: '12px', textAlign: 'center' }}>
+          <h4 style={{ marginBottom: '4px' }}>Kubernetes</h4>
+          <p style={{ fontSize: '12px', color: '#79879c' }}>容器编排平台</p>
+        </div>
+      </div>
+
+      <div style={{ border: '1px solid #d1d5de', borderRadius: '4px', overflow: 'hidden' }}>
+        <Center style={{ background: '#f7f8fa', height: '100px' }}>
+          <KubernetesDuotone size={48} color="#326CE5" />
+        </Center>
+        <div style={{ padding: '12px', textAlign: 'center' }}>
+          <h4 style={{ marginBottom: '4px' }}>服务网格</h4>
+          <p style={{ fontSize: '12px', color: '#79879c' }}>微服务治理</p>
+        </div>
+      </div>
+
+      <div style={{ border: '1px solid #d1d5de', borderRadius: '4px', overflow: 'hidden' }}>
+        <Center style={{ background: '#f7f8fa', height: '100px' }}>
+          <KubernetesDuotone size={48} color="#326CE5" />
+        </Center>
+        <div style={{ padding: '12px', textAlign: 'center' }}>
+          <h4 style={{ marginBottom: '4px' }}>应用商店</h4>
+          <p style={{ fontSize: '12px', color: '#79879c' }}>一键部署应用</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+### 响应式居中
+
+Center 组件天然支持响应式布局。
+
+```jsx live
+function Demo() {
+  return (
+    <Center
+      style={{
+        background: '#f7f8fa',
+        minHeight: '150px',
+        border: '1px dashed #d1d5de',
+        padding: '20px',
+      }}
+    >
+      <div style={{ maxWidth: '400px', textAlign: 'center' }}>
+        <h3 style={{ marginBottom: '12px' }}>响应式内容</h3>
+        <p style={{ color: '#79879c', lineHeight: '1.6' }}>
+          Center 组件会自动适应容器大小，无论内容如何变化，都能保持居中对齐。
+        </p>
+      </div>
+    </Center>
+  );
+}
+```
+
+## API
+
+### Center 属性
+
+| 属性      | 说明         | 类型                             | 默认值 |
+| --------- | ------------ | -------------------------------- | ------ |
+| children  | 要居中的内容 | `ReactNode`                      | -      |
+| className | 自定义类名   | `string`                         | -      |
+| style     | 自定义样式   | `React.CSSProperties`            | -      |
+| 其他      | 原生属性     | `HTMLAttributes<HTMLDivElement>` | -      |
+
+:::info
+Center 组件继承所有原生 HTML div 元素的属性（如 `onClick`、`onMouseEnter` 等）。
+:::

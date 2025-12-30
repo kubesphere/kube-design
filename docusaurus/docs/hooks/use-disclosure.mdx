@@ -1,0 +1,131 @@
+---
+sidebar_position: 2
+---
+
+# useDisclosure
+
+管理布尔状态的 Hook，提供便捷的 open、close 和 toggle 方法，常用于控制模态框、抽屉等组件的显示隐藏。
+
+## 基本用法
+
+```jsx live
+function Demo() {
+  const { isOpen, open, close, toggle } = useDisclosure(false);
+
+  return (
+    <div>
+      <Group spacing="md">
+        <Button onClick={open}>打开</Button>
+        <Button onClick={close}>关闭</Button>
+        <Button onClick={toggle}>切换</Button>
+      </Group>
+      {isOpen && (
+        <div
+          style={{
+            marginTop: '20px',
+            padding: '20px',
+            backgroundColor: 'var(--ifm-color-primary-lightest)',
+            borderRadius: '8px',
+            border: '1px solid var(--ifm-color-primary-light)',
+          }}
+        >
+          内容已显示
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## 控制 Modal
+
+配合 Modal 组件使用：
+
+```jsx live
+function Demo() {
+  const { isOpen, open, close } = useDisclosure();
+
+  return (
+    <div>
+      <Button onClick={open}>打开模态框</Button>
+      <Modal visible={isOpen} onCancel={close} title="示例模态框">
+        <p>这是一个使用 useDisclosure 控制的模态框</p>
+        <Button onClick={close}>关闭</Button>
+      </Modal>
+    </div>
+  );
+}
+```
+
+## 控制 Drawer
+
+配合 Drawer 组件使用：
+
+```jsx live
+function Demo() {
+  const { isOpen, open, close } = useDisclosure();
+
+  return (
+    <div>
+      <Button onClick={open}>打开抽屉</Button>
+      <Drawer visible={isOpen} onClose={close} title="示例抽屉" placement="right">
+        <p>这是一个使用 useDisclosure 控制的抽屉</p>
+        <Button onClick={close}>关闭</Button>
+      </Drawer>
+    </div>
+  );
+}
+```
+
+## 初始状态
+
+可以设置初始打开状态：
+
+```jsx live
+function Demo() {
+  const { isOpen, toggle } = useDisclosure(true);
+
+  return (
+    <div>
+      <Button onClick={toggle}>切换状态</Button>
+      <div style={{ marginTop: '10px' }}>
+        当前状态: <strong>{isOpen ? '打开' : '关闭'}</strong>
+      </div>
+    </div>
+  );
+}
+```
+
+## API
+
+### 参数
+
+```ts
+function useDisclosure(initialIsOpen?: boolean): {
+  isOpen: boolean;
+  open: () => void;
+  close: () => void;
+  toggle: () => void;
+}
+```
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| initialIsOpen | 初始打开状态 | `boolean` | `false` |
+
+### 返回值
+
+| 属性 | 说明 | 类型 |
+|------|------|------|
+| isOpen | 当前打开状态 | `boolean` |
+| open | 打开（设置为 true） | `() => void` |
+| close | 关闭（设置为 false） | `() => void` |
+| toggle | 切换状态 | `() => void` |
+
+## 使用场景
+
+- **Modal 控制**: 控制模态框的显示隐藏
+- **Drawer 控制**: 控制抽屉的打开关闭
+- **Dropdown 控制**: 控制下拉菜单的展开收起
+- **Collapse 控制**: 控制折叠面板的展开收起
+- **任何布尔状态**: 替代 `useState` 管理布尔值，提供更语义化的API

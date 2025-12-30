@@ -1,0 +1,609 @@
+---
+sidebar_position: 1
+---
+
+# Slider 滑动输入条
+
+滑动型输入器，包括单值滑块（Slider）和范围滑块（RangeSlider），用于在数值区间内进行选择。
+
+## 何时使用
+
+- 需要在一个数值区间内选择单个值或范围
+- 需要选择范围时（如价格区间、时间范围等）
+- 适合设置音量、亮度等需要视觉反馈的场景
+- 配合标记点展示离散的数值区间
+
+## 示例
+
+### 基础用法
+
+最简单的用法，单值滑块通过 `value` 和 `onChange` 控制值。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(50);
+
+  return (
+    <div>
+      <Slider value={value} onChange={setValue} />
+      <div style={{ marginTop: '24px', color: '#79879c', fontSize: '14px' }}>当前值: {value}</div>
+    </div>
+  );
+}
+```
+
+### 范围选择
+
+使用 `RangeSlider` 组件选择数值范围。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState([20, 80]);
+
+  return (
+    <div>
+      <RangeSlider value={value} onChange={setValue} />
+      <div style={{ marginTop: '24px', color: '#79879c', fontSize: '14px' }}>
+        选中范围: {value[0]} - {value[1]}
+      </div>
+    </div>
+  );
+}
+```
+
+### 带标记点
+
+通过 `marks` 数组自定义标记点的位置和标签。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState([20, 80]);
+
+  const marks = [
+    { value: 0, label: '0%' },
+    { value: 20, label: '20%' },
+    { value: 50, label: '50%' },
+    { value: 80, label: '80%' },
+    { value: 100, label: '100%' },
+  ];
+
+  return (
+    <div>
+      <RangeSlider value={value} onChange={setValue} marks={marks} />
+      <div style={{ marginTop: '24px', color: '#79879c', fontSize: '14px' }}>
+        选中范围: {value[0]}% - {value[1]}%
+      </div>
+    </div>
+  );
+}
+```
+
+### 非均匀刻度
+
+通过 `weight` 属性设置标记点之间的权重，实现非均匀刻度。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState([0.2, 2]);
+
+  const marks = [
+    { value: 0, label: '无限制', weight: 2 },
+    { value: 0.2, label: 0.2, weight: 2 },
+    { value: 0.5, label: 0.5, weight: 2 },
+    { value: 1, label: 1, weight: 1 },
+    { value: 2, label: 2, weight: 2 },
+    { value: 3, label: 3, weight: 1 },
+    { value: 4, label: 4, weight: 1 },
+  ];
+
+  return (
+    <div>
+      <RangeSlider value={value} onChange={setValue} marks={marks} decimals={2} minRange={0.01} />
+      <div style={{ marginTop: '24px', color: '#79879c', fontSize: '14px' }}>
+        选中范围: {value[0]} - {value[1]}
+      </div>
+    </div>
+  );
+}
+```
+
+### 自定义标签
+
+通过 `label` 属性自定义滑块上方的标签显示。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(25);
+
+  return (
+    <div>
+      <Slider value={value} onChange={setValue} label={(val) => `${val}°C`} labelAlwaysOn />
+      <div style={{ marginTop: '24px', color: '#79879c', fontSize: '14px' }}>
+        当前温度: {value}°C
+      </div>
+    </div>
+  );
+}
+```
+
+### 禁用状态
+
+通过 `disabled` 属性禁用滑块。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Slider defaultValue={50} disabled />
+      <RangeSlider defaultValue={[20, 80]} disabled />
+    </Group>
+  );
+}
+```
+
+### 价格区间选择
+
+实现价格范围选择的典型场景。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState([1000, 5000]);
+
+  const marks = [
+    { value: 0, label: '¥0', weight: 1 },
+    { value: 1000, label: '¥1k', weight: 2 },
+    { value: 5000, label: '¥5k', weight: 2 },
+    { value: 10000, label: '¥10k', weight: 3 },
+    { value: 50000, label: '¥50k', weight: 4 },
+  ];
+
+  return (
+    <div>
+      <div style={{ marginBottom: '16px', fontSize: '14px', fontWeight: 'bold' }}>价格筛选</div>
+      <RangeSlider value={value} onChange={setValue} marks={marks} min={0} max={50000} />
+      <div
+        style={{ marginTop: '24px', padding: '12px', background: '#f7f8fa', borderRadius: '4px' }}
+      >
+        <div style={{ fontSize: '14px', color: '#242e42' }}>
+          已选价格: ¥{value[0]} - ¥{value[1]}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+### 时间范围选择
+
+选择时间区间的场景。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState([9, 18]);
+
+  const marks = [
+    { value: 0, label: '00:00' },
+    { value: 6, label: '06:00' },
+    { value: 12, label: '12:00' },
+    { value: 18, label: '18:00' },
+    { value: 24, label: '24:00' },
+  ];
+
+  const formatTime = (hour) => {
+    return `${String(Math.floor(hour)).padStart(2, '0')}:00`;
+  };
+
+  return (
+    <div>
+      <div style={{ marginBottom: '16px', fontSize: '14px', fontWeight: 'bold' }}>营业时间设置</div>
+      <RangeSlider
+        value={value}
+        onChange={setValue}
+        marks={marks}
+        min={0}
+        max={24}
+        label={(val) => formatTime(val)}
+      />
+      <div
+        style={{ marginTop: '24px', padding: '12px', background: '#f7f8fa', borderRadius: '4px' }}
+      >
+        <div style={{ fontSize: '14px', color: '#242e42' }}>
+          营业时间: {formatTime(value[0])} - {formatTime(value[1])}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+### 资源配置场景
+
+用于配置 CPU、内存等资源的范围。
+
+```jsx live
+function Demo() {
+  const [cpuValue, setCpuValue] = React.useState([2, 8]);
+  const [memValue, setMemValue] = React.useState([4, 16]);
+
+  const cpuMarks = [
+    { value: 0, label: '0' },
+    { value: 4, label: '4' },
+    { value: 8, label: '8' },
+    { value: 16, label: '16' },
+  ];
+
+  const memMarks = [
+    { value: 0, label: '0' },
+    { value: 8, label: '8' },
+    { value: 16, label: '16' },
+    { value: 32, label: '32' },
+  ];
+
+  return (
+    <div>
+      <div style={{ marginBottom: '16px' }}>
+        <div style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '12px' }}>
+          CPU 配置范围 (Core)
+        </div>
+        <RangeSlider
+          value={cpuValue}
+          onChange={setCpuValue}
+          marks={cpuMarks}
+          min={0}
+          max={16}
+          label={(val) => `${val} Core`}
+        />
+      </div>
+      <div style={{ marginBottom: '16px' }}>
+        <div style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '12px' }}>
+          内存配置范围 (GB)
+        </div>
+        <RangeSlider
+          value={memValue}
+          onChange={setMemValue}
+          marks={memMarks}
+          min={0}
+          max={32}
+          label={(val) => `${val} GB`}
+        />
+      </div>
+      <div style={{ padding: '12px', background: '#f7f8fa', borderRadius: '4px' }}>
+        <div style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '8px' }}>当前配置:</div>
+        <div style={{ fontSize: '14px', color: '#79879c' }}>
+          CPU: {cpuValue[0]} - {cpuValue[1]} Core
+        </div>
+        <div style={{ fontSize: '14px', color: '#79879c' }}>
+          内存: {memValue[0]} - {memValue[1]} GB
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+### 受控组件
+
+通过外部按钮控制滑块值。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState([25, 75]);
+
+  const handleReset = () => {
+    setValue([0, 100]);
+  };
+
+  const handleSetLow = () => {
+    setValue([0, 25]);
+  };
+
+  const handleSetMedium = () => {
+    setValue([25, 75]);
+  };
+
+  const handleSetHigh = () => {
+    setValue([75, 100]);
+  };
+
+  return (
+    <div>
+      <RangeSlider value={value} onChange={setValue} />
+      <Group style={{ marginTop: '24px' }}>
+        <Button onClick={handleSetLow}>低</Button>
+        <Button onClick={handleSetMedium}>中</Button>
+        <Button onClick={handleSetHigh}>高</Button>
+        <Button onClick={handleReset}>重置</Button>
+      </Group>
+      <div style={{ marginTop: '16px', color: '#79879c', fontSize: '14px' }}>
+        当前范围: {value[0]} - {value[1]}
+      </div>
+    </div>
+  );
+}
+```
+
+### 步长设置
+
+通过 `step` 属性设置滑块移动的步长。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(50);
+
+  return (
+    <div>
+      <div style={{ marginBottom: '16px', fontSize: '14px', fontWeight: 'bold' }}>步长为 10</div>
+      <Slider
+        value={value}
+        onChange={setValue}
+        step={10}
+        marks={[
+          { value: 0, label: '0' },
+          { value: 50, label: '50' },
+          { value: 100, label: '100' },
+        ]}
+      />
+      <div style={{ marginTop: '24px', color: '#79879c', fontSize: '14px' }}>当前值: {value}</div>
+    </div>
+  );
+}
+```
+
+### 百分比范围
+
+典型的百分比范围选择场景。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState([30, 70]);
+
+  const marks = [
+    { value: 0, label: '0%' },
+    { value: 25, label: '25%' },
+    { value: 50, label: '50%' },
+    { value: 75, label: '75%' },
+    { value: 100, label: '100%' },
+  ];
+
+  const getLevel = (min, max) => {
+    const avg = (min + max) / 2;
+    if (avg < 25) return { text: '较低', color: '#ca2621' };
+    if (avg < 50) return { text: '中等偏低', color: '#f5a623' };
+    if (avg < 75) return { text: '中等偏高', color: '#55bc8a' };
+    return { text: '较高', color: '#329dce' };
+  };
+
+  const level = getLevel(value[0], value[1]);
+
+  return (
+    <div>
+      <div style={{ marginBottom: '16px', fontSize: '14px', fontWeight: 'bold' }}>性能阈值设置</div>
+      <RangeSlider value={value} onChange={setValue} marks={marks} />
+      <div
+        style={{ marginTop: '24px', padding: '12px', background: '#f7f8fa', borderRadius: '4px' }}
+      >
+        <div style={{ fontSize: '14px', marginBottom: '4px' }}>
+          阈值范围: {value[0]}% - {value[1]}%
+        </div>
+        <div style={{ fontSize: '14px', color: level.color }}>风险等级: {level.text}</div>
+      </div>
+    </div>
+  );
+}
+```
+
+## API
+
+### Slider 属性
+
+| 属性             | 说明             | 类型                                          | 默认值     |
+| ---------------- | ---------------- | --------------------------------------------- | ---------- |
+| value            | 当前值（受控）   | `number`                                      | -          |
+| defaultValue     | 默认值（非受控） | `number`                                      | -          |
+| min              | 最小值           | `number`                                      | `0`        |
+| max              | 最大值           | `number`                                      | `100`      |
+| step             | 步长             | `number`                                      | `1`        |
+| decimals         | 保留小数位数     | `number`                                      | `0`        |
+| marks            | 标记点配置       | `SliderMark[]`                                | `[]`       |
+| size             | 滑块尺寸         | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`        | `'md'`     |
+| radius           | 圆角大小         | `KubedNumberSize`                             | `'xl'`     |
+| disabled         | 是否禁用         | `boolean`                                     | `false`    |
+| label            | 标签内容或函数   | `ReactNode \| ((value: number) => ReactNode)` | `(f) => f` |
+| labelAlwaysOn    | 标签始终显示     | `boolean`                                     | `false`    |
+| showLabelOnHover | 悬停时显示标签   | `boolean`                                     | `true`     |
+| onChange         | 值变化时的回调   | `(value: number) => void`                     | -          |
+
+### RangeSlider 属性
+
+| 属性             | 说明             | 类型                                          | 默认值     |
+| ---------------- | ---------------- | --------------------------------------------- | ---------- |
+| value            | 当前值（受控）   | `[number, number]`                            | -          |
+| defaultValue     | 默认值（非受控） | `[number, number]`                            | -          |
+| min              | 最小值           | `number`                                      | `0`        |
+| max              | 最大值           | `number`                                      | `100`      |
+| step             | 步长             | `number`                                      | `1`        |
+| decimals         | 保留小数位数     | `number`                                      | `0`        |
+| minRange         | 最小范围间隔     | `number`                                      | `10`       |
+| marks            | 标记点配置       | `RangeSliderMark[]`                           | `[]`       |
+| size             | 滑块尺寸         | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`        | `'md'`     |
+| radius           | 圆角大小         | `KubedNumberSize`                             | `'xl'`     |
+| disabled         | 是否禁用         | `boolean`                                     | `false`    |
+| label            | 标签内容或函数   | `ReactNode \| ((value: number) => ReactNode)` | `(f) => f` |
+| labelAlwaysOn    | 标签始终显示     | `boolean`                                     | `false`    |
+| showLabelOnHover | 悬停时显示标签   | `boolean`                                     | `true`     |
+| onChange         | 值变化时的回调   | `(value: [number, number]) => void`           | -          |
+
+### SliderMark 类型
+
+```typescript
+interface SliderMark {
+  value: number; // 标记点对应的值
+  label?: ReactNode; // 标记点显示的文本
+}
+```
+
+### RangeSliderMark 类型
+
+```typescript
+interface RangeSliderMark {
+  value: number; // 标记点对应的值
+  label?: ReactNode; // 标记点显示的文本
+  weight?: number; // 标记点权重，控制区间占比
+}
+```
+
+:::info
+
+**关于值的格式**：
+
+- `Slider` 的值是单个数字 `number`
+- `RangeSlider` 的值是数组 `[min, max]`，表示选中的范围
+
+**关于标记点**：
+
+- `marks` 数组定义了可选的标记点
+- `RangeSlider` 的 `marks` 支持 `weight` 属性控制非均匀刻度
+
+**关于标记点权重**：
+
+- `weight` 属性控制相邻标记点之间的区间占比
+- 权重越大，该区间在滑块上占据的空间越多
+- 适合需要非线性刻度的场景（如价格区间）
+
+**关于标签**：
+
+- `label` 可以是固定内容或函数，函数接收当前值作为参数
+- `labelAlwaysOn` 设为 `true` 时标签始终显示
+- `showLabelOnHover` 控制悬停时是否显示标签
+
+**关于步长和精度**：
+
+- `step` 控制滑块移动的步长
+- `decimals` 控制值保留的小数位数
+- `RangeSlider` 的 `minRange` 控制最小范围间隔
+
+:::
+
+## 使用建议
+
+### 选择合适的组件
+
+根据需求选择 Slider 或 RangeSlider：
+
+```jsx
+// 单值选择 - 使用 Slider
+<Slider value={volume} onChange={setVolume} label={(val) => `${val}%`} />
+
+// 范围选择 - 使用 RangeSlider
+<RangeSlider value={priceRange} onChange={setPriceRange} marks={marks} />
+```
+
+### 标记点设置
+
+合理设置标记点和权重：
+
+```jsx
+// 线性刻度 - 不设置权重或权重相同
+const marks = [
+  { value: 0, label: '0' },
+  { value: 50, label: '50' },
+  { value: 100, label: '100' },
+];
+
+// 非线性刻度 - 通过权重控制区间占比
+const marks = [
+  { value: 0, label: '¥0', weight: 1 },
+  { value: 100, label: '¥100', weight: 2 }, // 这个区间占比更大
+  { value: 1000, label: '¥1k', weight: 3 }, // 这个区间占比最大
+  { value: 10000, label: '¥10k', weight: 2 },
+];
+```
+
+### 自定义标签
+
+使用函数自定义标签显示：
+
+```jsx
+// 带单位的标签
+<Slider label={(val) => `${val}°C`} labelAlwaysOn />
+
+// 格式化显示
+<RangeSlider
+  label={(val) => {
+    if (val >= 1000) {
+      return `¥${(val / 1000).toFixed(1)}k`;
+    }
+    return `¥${val}`;
+  }}
+  marks={marks}
+/>
+```
+
+### 与表单配合
+
+在表单中使用 Slider：
+
+```jsx
+const [formData, setFormData] = React.useState({
+  volume: 50,
+  priceRange: [0, 5000],
+});
+
+const handleVolumeChange = (value) => {
+  setFormData({ ...formData, volume: value });
+};
+
+const handlePriceChange = (value) => {
+  setFormData({ ...formData, priceRange: value });
+};
+
+<>
+  <Slider value={formData.volume} onChange={handleVolumeChange} />
+  <RangeSlider value={formData.priceRange} onChange={handlePriceChange} marks={priceMarks} />
+</>;
+```
+
+### 实时反馈
+
+为用户提供实时的视觉反馈：
+
+```jsx
+const [value, setValue] = React.useState([20, 80]);
+
+const getStatus = (min, max) => {
+  const range = max - min;
+  if (range < 20) return { text: '范围过小', color: 'red' };
+  if (range > 80) return { text: '范围过大', color: 'orange' };
+  return { text: '范围合适', color: 'green' };
+};
+
+const status = getStatus(value[0], value[1]);
+
+<>
+  <RangeSlider value={value} onChange={setValue} marks={marks} />
+  <div style={{ color: status.color }}>{status.text}</div>
+</>;
+```
+
+### 预设值
+
+提供常用的预设值选项：
+
+```jsx
+const presets = [
+  { label: '低', value: [0, 25] },
+  { label: '中', value: [25, 75] },
+  { label: '高', value: [75, 100] },
+];
+
+<>
+  <RangeSlider value={value} onChange={setValue} marks={marks} />
+  <Group>
+    {presets.map((preset) => (
+      <Button key={preset.label} onClick={() => setValue(preset.value)}>
+        {preset.label}
+      </Button>
+    ))}
+  </Group>
+</>;
+```

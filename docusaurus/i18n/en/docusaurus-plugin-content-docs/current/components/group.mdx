@@ -1,0 +1,319 @@
+---
+sidebar_position: 2
+---
+
+# Group
+
+A layout component that arranges elements horizontally or vertically.
+
+## When to Use
+
+- Need to quickly arrange multiple elements in a row or column
+- Need to control spacing between elements
+- Need to control element alignment
+
+## Examples
+
+### Basic Usage
+
+Group arranges child elements horizontally by default, with `md` spacing.
+
+```jsx live
+function Demo() {
+  return (
+    <Group>
+      <Button variant="filled">Button 1</Button>
+      <Button variant="filled">Button 2</Button>
+      <Button variant="filled">Button 3</Button>
+    </Group>
+  );
+}
+```
+
+### Position Alignment
+
+Use the `position` property to control child element alignment.
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>Left Align (Default)</h4>
+      <Group position="left" style={{ marginBottom: '24px' }}>
+        <Button variant="filled">Button 1</Button>
+        <Button variant="filled">Button 2</Button>
+        <Button variant="filled">Button 3</Button>
+      </Group>
+
+      <h4 style={{ marginBottom: '12px' }}>Center Align</h4>
+      <Group position="center" style={{ marginBottom: '24px' }}>
+        <Button variant="filled">Button 1</Button>
+        <Button variant="filled">Button 2</Button>
+        <Button variant="filled">Button 3</Button>
+      </Group>
+
+      <h4 style={{ marginBottom: '12px' }}>Right Align</h4>
+      <Group position="right" style={{ marginBottom: '24px' }}>
+        <Button variant="filled">Button 1</Button>
+        <Button variant="filled">Button 2</Button>
+        <Button variant="filled">Button 3</Button>
+      </Group>
+
+      <h4 style={{ marginBottom: '12px' }}>Space Between</h4>
+      <Group position="apart">
+        <Button variant="filled">Button 1</Button>
+        <Button variant="filled">Button 2</Button>
+        <Button variant="filled">Button 3</Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+### Spacing Control
+
+Use the `spacing` property to control spacing between elements.
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>Spacing: xs</h4>
+      <Group spacing="xs" style={{ marginBottom: '24px' }}>
+        <Button variant="filled">Button 1</Button>
+        <Button variant="filled">Button 2</Button>
+        <Button variant="filled">Button 3</Button>
+      </Group>
+
+      <h4 style={{ marginBottom: '12px' }}>Spacing: md (Default)</h4>
+      <Group spacing="md" style={{ marginBottom: '24px' }}>
+        <Button variant="filled">Button 1</Button>
+        <Button variant="filled">Button 2</Button>
+        <Button variant="filled">Button 3</Button>
+      </Group>
+
+      <h4 style={{ marginBottom: '12px' }}>Spacing: xl</h4>
+      <Group spacing="xl" style={{ marginBottom: '24px' }}>
+        <Button variant="filled">Button 1</Button>
+        <Button variant="filled">Button 2</Button>
+        <Button variant="filled">Button 3</Button>
+      </Group>
+
+      <h4 style={{ marginBottom: '12px' }}>Custom Spacing: 50px</h4>
+      <Group spacing={50}>
+        <Button variant="filled">Button 1</Button>
+        <Button variant="filled">Button 2</Button>
+        <Button variant="filled">Button 3</Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+### Vertical Direction
+
+Use `direction="column"` to arrange elements vertically.
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ display: 'flex', gap: '40px' }}>
+      <div>
+        <h4 style={{ marginBottom: '12px' }}>Vertical - Left Align</h4>
+        <Group direction="column" position="left">
+          <Button variant="filled" style={{ width: '120px' }}>
+            Button 1
+          </Button>
+          <Button variant="filled" style={{ width: '160px' }}>
+            Button 2
+          </Button>
+          <Button variant="filled" style={{ width: '100px' }}>
+            Button 3
+          </Button>
+        </Group>
+      </div>
+
+      <div>
+        <h4 style={{ marginBottom: '12px' }}>Vertical - Center</h4>
+        <Group direction="column" position="center">
+          <Button variant="filled" style={{ width: '120px' }}>
+            Button 1
+          </Button>
+          <Button variant="filled" style={{ width: '160px' }}>
+            Button 2
+          </Button>
+          <Button variant="filled" style={{ width: '100px' }}>
+            Button 3
+          </Button>
+        </Group>
+      </div>
+
+      <div>
+        <h4 style={{ marginBottom: '12px' }}>Vertical - Right Align</h4>
+        <Group direction="column" position="right">
+          <Button variant="filled" style={{ width: '120px' }}>
+            Button 1
+          </Button>
+          <Button variant="filled" style={{ width: '160px' }}>
+            Button 2
+          </Button>
+          <Button variant="filled" style={{ width: '100px' }}>
+            Button 3
+          </Button>
+        </Group>
+      </div>
+    </div>
+  );
+}
+```
+
+### Auto Grow
+
+When `grow` is set, all child elements will evenly distribute the container width (or height).
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>Without grow (Default)</h4>
+      <Group style={{ marginBottom: '24px' }}>
+        <Button variant="filled">Button 1</Button>
+        <Button variant="filled">Button 2</Button>
+        <Button variant="filled">Button 3</Button>
+      </Group>
+
+      <h4 style={{ marginBottom: '12px' }}>With grow (Equal Width)</h4>
+      <Group grow>
+        <Button variant="filled">Button 1</Button>
+        <Button variant="filled">Button 2</Button>
+        <Button variant="filled">Button 3</Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+### No Wrap
+
+Use the `noWrap` property to prevent element wrapping.
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>Allow Wrap (Default)</h4>
+      <Group
+        style={{
+          marginBottom: '24px',
+          width: '300px',
+          border: '1px dashed #d1d5de',
+          padding: '12px',
+        }}
+      >
+        <Button variant="filled">Button 1</Button>
+        <Button variant="filled">Button 2</Button>
+        <Button variant="filled">Button 3</Button>
+        <Button variant="filled">Button 4</Button>
+        <Button variant="filled">Button 5</Button>
+      </Group>
+
+      <h4 style={{ marginBottom: '12px' }}>No Wrap</h4>
+      <Group
+        noWrap
+        style={{ width: '300px', border: '1px dashed #d1d5de', padding: '12px', overflow: 'auto' }}
+      >
+        <Button variant="filled">Button 1</Button>
+        <Button variant="filled">Button 2</Button>
+        <Button variant="filled">Button 3</Button>
+        <Button variant="filled">Button 4</Button>
+        <Button variant="filled">Button 5</Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+### Combined with Divider
+
+Group is commonly used with the Divider component.
+
+```jsx live
+function Demo() {
+  return (
+    <Group>
+      <Button variant="text">Action 1</Button>
+      <Divider direction="vertical" />
+      <Button variant="text">Action 2</Button>
+      <Divider direction="vertical" />
+      <Button variant="text">Action 3</Button>
+    </Group>
+  );
+}
+```
+
+### Mixed Content
+
+Group can contain any type of child elements.
+
+```jsx live
+function Demo() {
+  const { MagnifierDuotone, FilterDuotone, DownloadDuotone } = KubedIcons;
+
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>Toolbar Example</h4>
+      <Group
+        position="apart"
+        style={{
+          padding: '12px 16px',
+          background: '#f7f8fa',
+          borderRadius: '4px',
+          marginBottom: '24px',
+        }}
+      >
+        <Group spacing="sm">
+          <MagnifierDuotone size={20} />
+          <span>Search Results</span>
+        </Group>
+        <Group spacing="sm">
+          <Button variant="outline" size="xs" leftIcon={<FilterDuotone size={14} />}>
+            Filter
+          </Button>
+          <Button variant="outline" size="xs" leftIcon={<DownloadDuotone size={14} />}>
+            Export
+          </Button>
+        </Group>
+      </Group>
+
+      <h4 style={{ marginBottom: '12px' }}>Form Actions Example</h4>
+      <Group position="right">
+        <Button variant="outline">Cancel</Button>
+        <Button variant="filled" color="primary">
+          Confirm
+        </Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+## API
+
+### Group Properties
+
+| Property  | Description                  | Type                                       | Default  |
+| --------- | ---------------------------- | ------------------------------------------ | -------- |
+| position  | Child element alignment      | `'left' \| 'center' \| 'right' \| 'apart'` | `'left'` |
+| spacing   | Spacing between children     | `KubedNumberSize`                          | `'md'`   |
+| direction | Arrangement direction        | `'row' \| 'column'`                        | `'row'`  |
+| grow      | Whether children auto-fill   | `boolean`                                  | `false`  |
+| noWrap    | Whether to prevent wrapping  | `boolean`                                  | `false`  |
+| align     | Custom align-items           | `React.CSSProperties['alignItems']`        | -        |
+| Others    | Native attributes            | `HTMLAttributes<HTMLDivElement>`           | -        |
+
+:::info
+
+- The `spacing` value can be a preset size name (`'xs'`, `'sm'`, `'md'`, `'lg'`, `'xl'`) or a specific pixel value
+- `position="apart"` is equivalent to CSS's `justify-content: space-between`
+- In `direction="column"` mode, `position` controls `align-items` rather than `justify-content`
+  :::

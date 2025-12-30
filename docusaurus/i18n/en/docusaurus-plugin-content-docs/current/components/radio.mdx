@@ -1,0 +1,398 @@
+---
+sidebar_position: 1
+---
+
+# Radio
+
+Used for single selection among multiple options.
+
+## When to Use
+
+- Making a single selection in a set of options
+- When you need to display all options for user selection
+- When the number of options is small (recommended no more than 5)
+- For single-select scenarios in forms
+
+## Examples
+
+### Basic Usage
+
+Basic radio usage, set text content using `label` prop.
+
+```jsx live
+function Demo() {
+  const [checked, setChecked] = React.useState(false);
+
+  return (
+    <div>
+      <Radio
+        label="Option A"
+        checked={checked}
+        onChange={(e) => setChecked(e.target.checked)}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        Status: {checked ? 'Checked' : 'Unchecked'}
+      </div>
+    </div>
+  );
+}
+```
+
+### Default Checked
+
+Set default checked state using the `defaultChecked` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Radio label="Default Unchecked" />
+      <Radio label="Default Checked" defaultChecked />
+    </Group>
+  );
+}
+```
+
+### Disabled State
+
+Disable the radio using the `disabled` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Radio label="Unchecked - Disabled" disabled />
+      <Radio label="Checked - Disabled" defaultChecked disabled />
+    </Group>
+  );
+}
+```
+
+### Radio Group
+
+Use the `RadioGroup` component to manage a group of radios.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('kubernetes');
+
+  return (
+    <div>
+      <RadioGroup value={value} onChange={setValue}>
+        <Radio label="Kubernetes" value="kubernetes" />
+        <Radio label="Docker" value="docker" />
+        <Radio label="Istio" value="istio" />
+        <Radio label="Helm" value="helm" />
+      </RadioGroup>
+      <div style={{ marginTop: '16px', color: '#79879c', fontSize: '14px' }}>
+        Selected: {value}
+      </div>
+    </div>
+  );
+}
+```
+
+### Radio Group - Disabled
+
+RadioGroup can disable all child options uniformly.
+
+```jsx live
+function Demo() {
+  return (
+    <RadioGroup defaultValue="option1" disabled>
+      <Radio label="Option 1" value="option1" />
+      <Radio label="Option 2" value="option2" />
+      <Radio label="Option 3" value="option3" />
+    </RadioGroup>
+  );
+}
+```
+
+### Controlled Component
+
+Implement controlled component using `value` and `onChange` properties.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('sm');
+
+  const handleChange = (newValue) => {
+    setValue(newValue);
+  };
+
+  return (
+    <div>
+      <RadioGroup value={value} onChange={handleChange}>
+        <Radio label="Small (sm)" value="sm" />
+        <Radio label="Medium (md)" value="md" />
+        <Radio label="Large (lg)" value="lg" />
+      </RadioGroup>
+      <Group style={{ marginTop: '16px' }}>
+        <Button onClick={() => setValue('sm')}>Select Small</Button>
+        <Button onClick={() => setValue('md')}>Select Medium</Button>
+        <Button onClick={() => setValue('lg')}>Select Large</Button>
+      </Group>
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        Current size: {value}
+      </div>
+    </div>
+  );
+}
+```
+
+### Dynamic Options
+
+Generate radio list dynamically based on data.
+
+```jsx live
+function Demo() {
+  const options = [
+    { label: 'Development', value: 'dev', disabled: false },
+    { label: 'Testing', value: 'test', disabled: false },
+    { label: 'Staging', value: 'staging', disabled: false },
+    { label: 'Production', value: 'prod', disabled: true },
+  ];
+
+  const [selectedValue, setSelectedValue] = React.useState('dev');
+
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>Select Deployment Environment:</h4>
+      <RadioGroup value={selectedValue} onChange={setSelectedValue}>
+        {options.map((option) => (
+          <Radio
+            key={option.value}
+            label={option.label}
+            value={option.value}
+            disabled={option.disabled}
+          />
+        ))}
+      </RadioGroup>
+      <div
+        style={{
+          marginTop: '16px',
+          padding: '12px',
+          background: '#f7f8fa',
+          borderRadius: '4px',
+          fontSize: '14px',
+        }}
+      >
+        <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>Selected Environment:</div>
+        <div style={{ color: '#79879c' }}>
+          {options.find((opt) => opt.value === selectedValue)?.label || 'None selected'}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+### Without Label
+
+Radio can be used without the `label` property, showing only the radio button.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('a');
+
+  return (
+    <RadioGroup value={value} onChange={setValue}>
+      <Radio value="a" />
+      <Radio value="b" />
+      <Radio value="c" />
+    </RadioGroup>
+  );
+}
+```
+
+### Real-world Application
+
+Showcase radio usage in real-world scenarios.
+
+```jsx live
+function Demo() {
+  const [plan, setPlan] = React.useState('basic');
+
+  const plans = [
+    {
+      value: 'basic',
+      name: 'Basic Plan',
+      price: '$99/month',
+      features: '2 Cores 4GB, 50GB Storage',
+    },
+    {
+      value: 'pro',
+      name: 'Pro Plan',
+      price: '$299/month',
+      features: '4 Cores 8GB, 200GB Storage',
+    },
+    {
+      value: 'enterprise',
+      name: 'Enterprise Plan',
+      price: '$999/month',
+      features: '8 Cores 16GB, 1TB Storage',
+    },
+  ];
+
+  return (
+    <div>
+      <h4 style={{ marginBottom: '16px' }}>Select Plan:</h4>
+      <RadioGroup value={plan} onChange={setPlan}>
+        <Group direction="column" spacing="md">
+          {plans.map((item) => (
+            <div
+              key={item.value}
+              style={{
+                padding: '16px',
+                border: `2px solid ${plan === item.value ? '#55bc8a' : '#e3e9ef'}`,
+                borderRadius: '8px',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+              onClick={() => setPlan(item.value)}
+            >
+              <Group position="apart">
+                <Group>
+                  <Radio value={item.value} />
+                  <div>
+                    <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>{item.name}</div>
+                    <div style={{ fontSize: '12px', color: '#79879c' }}>{item.features}</div>
+                  </div>
+                </Group>
+                <div style={{ fontWeight: 'bold', color: '#55bc8a' }}>{item.price}</div>
+              </Group>
+            </div>
+          ))}
+        </Group>
+      </RadioGroup>
+    </div>
+  );
+}
+```
+
+## API
+
+### Radio Props
+
+| Property       | Description                           | Type                              | Default |
+| -------------- | ------------------------------------- | --------------------------------- | ------- |
+| label          | Radio text label                      | `ReactNode`                       | -       |
+| value          | Radio value (used in RadioGroup)      | `string`                          | -       |
+| checked        | Whether checked (controlled)          | `boolean`                         | -       |
+| defaultChecked | Whether checked by default (uncontrolled) | `boolean`                     | `false` |
+| disabled       | Whether disabled                      | `boolean`                         | `false` |
+| id             | ID of input element, used to bind label | `string`                        | -       |
+| onChange       | Callback when value changes           | `(e: Event) => void`              | -       |
+| others         | Native attributes                     | `HTMLAttributes<HTMLInputElement>`| -       |
+
+:::info
+
+Radio component inherits all native HTML input[type="radio"] element attributes (such as `onClick`, `onFocus`, etc.).
+
+**Using in RadioGroup**:
+- In RadioGroup, don't use the `checked` property; instead control via RadioGroup's `value`
+- Must set the `value` property to identify each option
+- If `checked` is set in RadioGroup, a warning will be displayed in the console
+
+:::
+
+### RadioGroup Props
+
+| Property     | Description                        | Type                         | Default |
+| ------------ | ---------------------------------- | ---------------------------- | ------- |
+| value        | Specify selected option (controlled) | `string \| number`         | -       |
+| defaultValue | Default selected option (uncontrolled) | `string`                  | -       |
+| disabled     | Whether to disable all radios      | `boolean`                    | `false` |
+| onChange     | Callback when value changes        | `(value: string) => void`    | -       |
+| others       | Native attributes                  | `HTMLAttributes<HTMLElement>`| -       |
+
+:::info
+
+**About Layout**:
+- RadioGroup uses the Group component for horizontal layout of child elements by default
+- For vertical layout, wrap with a Group component and set `direction="column"` in the outer layer
+
+**Controlled vs Uncontrolled**:
+- Use `value` + `onChange` for controlled component
+- Use `defaultValue` for uncontrolled component
+- RadioGroup's `value` is a string corresponding to the selected item's `value`
+
+:::
+
+## Usage Guidelines
+
+### Controlled vs Uncontrolled
+
+Choose the appropriate usage based on scenario:
+
+```jsx
+// Uncontrolled: suitable for simple scenarios that don't need external state control
+<RadioGroup defaultValue="option1">
+  <Radio label="Option 1" value="option1" />
+  <Radio label="Option 2" value="option2" />
+</RadioGroup>
+
+// Controlled: suitable for scenarios requiring external control or complex interactions
+const [value, setValue] = React.useState('option1');
+<RadioGroup value={value} onChange={setValue}>
+  <Radio label="Option 1" value="option1" />
+  <Radio label="Option 2" value="option2" />
+</RadioGroup>
+```
+
+### Radio vs Select
+
+Choosing between Radio and Select:
+
+```jsx
+// Radio: Few options (≤5), need to see all options at a glance
+<RadioGroup value={value} onChange={setValue}>
+  <Radio label="Small" value="sm" />
+  <Radio label="Medium" value="md" />
+  <Radio label="Large" value="lg" />
+</RadioGroup>
+
+// Select: Many options (>5), don't need to display all options
+<Select value={value} onChange={setValue}>
+  <Option value="xs">Extra Small</Option>
+  <Option value="sm">Small</Option>
+  <Option value="md">Medium</Option>
+  <Option value="lg">Large</Option>
+  <Option value="xl">Extra Large</Option>
+  <Option value="xxl">XX Large</Option>
+</Select>
+```
+
+### Vertical Layout
+
+Customize vertical layout for RadioGroup:
+
+```jsx
+<RadioGroup value={value} onChange={setValue}>
+  <Group direction="column">
+    <Radio label="Option 1" value="1" />
+    <Radio label="Option 2" value="2" />
+    <Radio label="Option 3" value="3" />
+  </Group>
+</RadioGroup>
+```
+
+### Working with Form Components
+
+Using RadioGroup in Form:
+
+```jsx
+<Form onFinish={handleFinish}>
+  <FormItem
+    name="size"
+    label="Size"
+    rules={[{ required: true, message: 'Please select size' }]}
+  >
+    <RadioGroup>
+      <Radio label="Small" value="sm" />
+      <Radio label="Medium" value="md" />
+      <Radio label="Large" value="lg" />
+    </RadioGroup>
+  </FormItem>
+</Form>
+```

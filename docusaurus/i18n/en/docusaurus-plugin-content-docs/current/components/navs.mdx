@@ -1,0 +1,671 @@
+---
+sidebar_position: 1
+---
+
+# Navs
+
+Tab switching component.
+
+## When to Use
+
+- Used to switch between different views on the same page
+- When the number of tabs is relatively small (recommended no more than 6)
+- Need to quickly switch between content areas
+
+In Kube Design, the Navs component provides flexible navigation tab functionality:
+
+- **Two Styles**: Provides pills and line styles
+- **Smooth Animation**: Smooth transition animation when switching tabs
+- **Responsive**: Support adaptive width and full-width mode
+- **Customizable**: Support custom colors, sizes and border radius
+
+## Examples
+
+### Basic Usage
+
+Most basic navigation tab usage.
+
+```jsx live
+function Demo() {
+  const data = [
+    { label: 'Pods', value: 'pods' },
+    { label: 'Services', value: 'services' },
+    { label: 'Configurations', value: 'configs' },
+  ];
+
+  return <Navs data={data} />;
+}
+```
+
+### Style Variants
+
+Navs provides two styles: pills (capsule) and line (underline).
+
+```jsx live
+function Demo() {
+  const data = [
+    { label: 'Workloads', value: 'workloads' },
+    { label: 'Network', value: 'network' },
+    { label: 'Storage', value: 'storage' },
+  ];
+
+  return (
+    <Group direction="column" spacing="xl">
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Pills Style (Default):
+        </Text>
+        <Navs data={data} variant="pills" />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Line Style:
+        </Text>
+        <Navs data={data} variant="line" />
+      </div>
+    </Group>
+  );
+}
+```
+
+### Controlled Mode
+
+Control selected tab through `value` and `onChange` properties.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('pods');
+
+  const data = [
+    { label: 'Pods', value: 'pods' },
+    { label: 'Services', value: 'services' },
+    { label: 'ConfigMaps', value: 'configmaps' },
+  ];
+
+  return (
+    <Group direction="column" spacing="md">
+      <Navs data={data} value={value} onChange={setValue} />
+      <Text>Current selection: {value}</Text>
+    </Group>
+  );
+}
+```
+
+### Different Sizes
+
+Set navigation tab size through the `size` property.
+
+```jsx live
+function Demo() {
+  const data = [
+    { label: 'KubeSphere', value: 'ks' },
+    { label: 'Kubernetes', value: 'k8s' },
+    { label: 'Jenkins', value: 'jenkins' },
+  ];
+
+  return (
+    <Group direction="column" spacing="xl">
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Small (sm):
+        </Text>
+        <Navs data={data} size="sm" />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Medium (md):
+        </Text>
+        <Navs data={data} size="md" />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Large (lg):
+        </Text>
+        <Navs data={data} size="lg" />
+      </div>
+    </Group>
+  );
+}
+```
+
+### Custom Colors
+
+Set active state color through the `color` property.
+
+```jsx live
+function Demo() {
+  const data = [
+    { label: 'KubeSphere', value: 'ks' },
+    { label: 'Kubernetes', value: 'k8s' },
+    { label: 'Jenkins', value: 'jenkins' },
+  ];
+
+  return (
+    <Group direction="column" spacing="xl">
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Pills Style - Primary:
+        </Text>
+        <Navs data={data} variant="pills" color="primary" />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Line Style - Primary:
+        </Text>
+        <Navs data={data} variant="line" color="primary" />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Pills Style - Success:
+        </Text>
+        <Navs data={data} variant="pills" color="success" />
+      </div>
+    </Group>
+  );
+}
+```
+
+### Full Width Mode
+
+Use the `fullWidth` property to make navigation tabs occupy full container width.
+
+```jsx live
+function Demo() {
+  const data = [
+    { label: 'Pods', value: 'pods' },
+    { label: 'Services', value: 'services' },
+    { label: 'ConfigMaps', value: 'configmaps' },
+  ];
+
+  return (
+    <Group direction="column" spacing="xl">
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Adaptive Width (Default):
+        </Text>
+        <Navs data={data} />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Full Width Mode:
+        </Text>
+        <Navs data={data} fullWidth />
+      </div>
+    </Group>
+  );
+}
+```
+
+### Custom Border Radius
+
+Set border radius size through the `radius` property.
+
+```jsx live
+function Demo() {
+  const data = [
+    { label: 'KubeSphere', value: 'ks' },
+    { label: 'Kubernetes', value: 'k8s' },
+    { label: 'Jenkins', value: 'jenkins' },
+  ];
+
+  return (
+    <Group direction="column" spacing="xl">
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Small Radius (sm):
+        </Text>
+        <Navs data={data} radius="sm" />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Medium Radius (md):
+        </Text>
+        <Navs data={data} radius="md" />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Large Radius (lg, Default):
+        </Text>
+        <Navs data={data} radius="lg" />
+      </div>
+      <div>
+        <Text size="sm" style={{ marginBottom: '12px' }}>
+          Extra Large Radius (xl):
+        </Text>
+        <Navs data={data} radius="xl" />
+      </div>
+    </Group>
+  );
+}
+```
+
+### Navigation with Badges
+
+Labels can include badges or other elements.
+
+```jsx live
+function Demo() {
+  const data = [
+    {
+      label: (
+        <Group spacing="xs">
+          <span>Running</span>
+          <Badge color="success" size="sm">
+            12
+          </Badge>
+        </Group>
+      ),
+      value: 'running',
+    },
+    {
+      label: (
+        <Group spacing="xs">
+          <span>Warning</span>
+          <Badge color="warning" size="sm">
+            3
+          </Badge>
+        </Group>
+      ),
+      value: 'warning',
+    },
+    {
+      label: (
+        <Group spacing="xs">
+          <span>Error</span>
+          <Badge color="error" size="sm">
+            1
+          </Badge>
+        </Group>
+      ),
+      value: 'error',
+    },
+  ];
+
+  return <Navs data={data} />;
+}
+```
+
+### Navigation with Icons
+
+Labels can include icons.
+
+```jsx live
+function Demo() {
+  const { Pod, Service, ConfigMap } = KubedIcons;
+
+  const data = [
+    {
+      label: (
+        <Group spacing="xs">
+          <Pod size={16} />
+          <span>Pods</span>
+        </Group>
+      ),
+      value: 'pods',
+    },
+    {
+      label: (
+        <Group spacing="xs">
+          <Service size={16} />
+          <span>Services</span>
+        </Group>
+      ),
+      value: 'services',
+    },
+    {
+      label: (
+        <Group spacing="xs">
+          <ConfigMap size={16} />
+          <span>Configurations</span>
+        </Group>
+      ),
+      value: 'configmaps',
+    },
+  ];
+
+  return <Navs data={data} />;
+}
+```
+
+### Switching Content Areas
+
+Used with content areas to implement tab functionality.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('overview');
+
+  const data = [
+    { label: 'Overview', value: 'overview' },
+    { label: 'Details', value: 'details' },
+    { label: 'Configuration', value: 'config' },
+  ];
+
+  const content = {
+    overview: (
+      <div>
+        <Text variant="h4" style={{ marginBottom: '8px' }}>
+          Overview Information
+        </Text>
+        <Text size="sm">This is the overview page content</Text>
+      </div>
+    ),
+    details: (
+      <div>
+        <Text variant="h4" style={{ marginBottom: '8px' }}>
+          Detailed Information
+        </Text>
+        <Text size="sm">This is the details page content</Text>
+      </div>
+    ),
+    config: (
+      <div>
+        <Text variant="h4" style={{ marginBottom: '8px' }}>
+          Configuration Information
+        </Text>
+        <Text size="sm">This is the configuration page content</Text>
+      </div>
+    ),
+  };
+
+  return (
+    <Group direction="column" spacing="md">
+      <Navs data={data} value={value} onChange={setValue} />
+      <Card style={{ padding: '20px' }}>{content[value]}</Card>
+    </Group>
+  );
+}
+```
+
+### Dynamic Tabs
+
+Dynamically render navigation tabs.
+
+```jsx live
+function Demo() {
+  const [tabs, setTabs] = React.useState([
+    { label: 'Tab 1', value: 'tab1' },
+    { label: 'Tab 2', value: 'tab2' },
+    { label: 'Tab 3', value: 'tab3' },
+  ]);
+  const [value, setValue] = React.useState('tab1');
+
+  const addTab = () => {
+    const newTab = {
+      label: `Tab ${tabs.length + 1}`,
+      value: `tab${tabs.length + 1}`,
+    };
+    setTabs([...tabs, newTab]);
+    setValue(newTab.value);
+  };
+
+  const removeTab = () => {
+    if (tabs.length > 1) {
+      const newTabs = tabs.slice(0, -1);
+      setTabs(newTabs);
+      if (value === tabs[tabs.length - 1].value) {
+        setValue(newTabs[newTabs.length - 1].value);
+      }
+    }
+  };
+
+  return (
+    <Group direction="column" spacing="md">
+      <Group spacing="xs">
+        <Button size="sm" onClick={addTab}>
+          Add Tab
+        </Button>
+        <Button size="sm" variant="outline" onClick={removeTab} disabled={tabs.length <= 1}>
+          Remove Tab
+        </Button>
+      </Group>
+      <Navs data={tabs} value={value} onChange={setValue} />
+    </Group>
+  );
+}
+```
+
+## API
+
+### Navs
+
+| Property                      | Description                   | Type                                                        | Default     |
+| ----------------------------- | ----------------------------- | ----------------------------------------------------------- | ----------- |
+| data                          | Navigation tab data           | `NavItem[]`                                                 | **Required** |
+| variant                       | Style variant                 | `'pills' \| 'line'`                                         | `'pills'`   |
+| value                         | Current selected value (controlled) | `string`                                          | -           |
+| defaultValue                  | Default selected value (uncontrolled) | `string`                                        | -           |
+| onChange                      | Callback when value changes   | `(value: string) => void`                                   | -           |
+| fullWidth                     | Whether to occupy full width  | `boolean`                                                   | `false`     |
+| color                         | Active state color            | `string \| 'default' \| 'primary' \| 'secondary' \| 'success' \| 'warning' \| 'error'` | -           |
+| size                          | Size                          | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                      | `'sm'`      |
+| radius                        | Border radius size            | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number`            | `'lg'`      |
+| transitionDuration            | Transition animation duration (ms) | `number`                                           | `150`       |
+| transitionTimingFunction      | Transition animation function | `string`                                                    | -           |
+| name                          | radio group name              | `string`                                                    | Random ID   |
+| className                     | Custom class name             | `string`                                                    | -           |
+| style                         | Custom styles                 | `CSSProperties`                                             | -           |
+
+### NavItem
+
+| Property | Description      | Type        | Default      |
+| -------- | ---------------- | ----------- | ------------ |
+| value    | Option value     | `string`    | **Required** |
+| label    | Option display content | `ReactNode` | **Required** |
+
+:::info
+
+**About style variants**:
+
+- `pills`: Capsule style with colored background for active state, rendered using PillsBg component
+- `line`: Underline style with bottom line indicating active state, rendered using LineBg component
+- Both styles have smooth sliding animation effects
+
+**About controlled vs uncontrolled**:
+
+- Use `value` and `onChange` for controlled mode
+- Use `defaultValue` for uncontrolled mode
+- When neither `value` nor `defaultValue` is set, first item is selected by default (via `finalValue: Array.isArray(data) ? data[0].value : null`)
+
+**About colors**:
+
+- Can use theme colors: `default`, `primary`, `secondary`, `success`, `warning`, `error`
+- Can also use custom color values (any valid CSS color value)
+- Uses default style when not set
+
+**About animation**:
+
+- Navigation tabs have smooth sliding animation when switching (implemented via ResizeObserver and transform)
+- Can control animation duration via `transitionDuration`, default 150 milliseconds
+- Set to 0 to disable animation
+- `transitionTimingFunction` allows custom animation easing function
+- Component automatically detects system `prefers-reduced-motion` setting
+
+**About implementation**:
+
+- Uses radio input for single selection logic
+- Manages controlled/uncontrolled state via `useUncontrolled` hook
+- Uses ResizeObserver to monitor size changes, dynamically calculating active indicator position and width
+- Animation disabled on initial render, enabled after 4ms to avoid animation flashing on first load
+
+**About name property**:
+
+- Used for radio group to ensure only one can be selected within the same group
+- Uses randomly generated ID (via `useId` hook) when not set
+- Recommend manually setting different names when multiple Navs exist on same page
+
+:::
+
+## Usage Recommendations
+
+### Number of Tabs
+
+Keep number of tabs moderate:
+
+```jsx
+// Recommended: 3-6 tabs
+const data = [
+  { label: 'Tab 1', value: '1' },
+  { label: 'Tab 2', value: '2' },
+  { label: 'Tab 3', value: '3' },
+  { label: 'Tab 4', value: '4' },
+];
+
+// When too many tabs, consider other navigation methods
+// Like dropdown menu or sidebar navigation
+```
+
+### Tab Text Length
+
+Keep tab text concise:
+
+```jsx
+// Recommended: Short labels
+const data = [
+  { label: 'Overview', value: 'overview' },
+  { label: 'Details', value: 'details' },
+  { label: 'Settings', value: 'settings' },
+];
+
+// Not recommended: Too long labels
+const data = [
+  { label: 'Application Overview Information', value: 'overview' },
+  { label: 'Detailed Configuration Information', value: 'details' },
+];
+```
+
+### Style Selection
+
+Choose appropriate style based on use case:
+
+```jsx
+// Content area switching: use pills style
+<Navs data={data} variant="pills" />
+
+// Page tabs: use line style
+<Navs data={data} variant="line" />
+```
+
+### Use Controlled Mode
+
+Use controlled mode when need to control selected state:
+
+```jsx
+const [activeTab, setActiveTab] = useState('overview');
+
+// Can change activeTab elsewhere
+const handleAction = () => {
+  setActiveTab('details');
+};
+
+<Navs data={data} value={activeTab} onChange={setActiveTab} />;
+```
+
+### Add Icons to Enhance Recognition
+
+Add icons to labels to improve readability:
+
+```jsx
+const data = [
+  {
+    label: (
+      <Group spacing="xs">
+        <HomeIcon />
+        <span>Home</span>
+      </Group>
+    ),
+    value: 'home',
+  },
+  {
+    label: (
+      <Group spacing="xs">
+        <SettingIcon />
+        <span>Settings</span>
+      </Group>
+    ),
+    value: 'settings',
+  },
+];
+```
+
+### Display Status Information
+
+Use badges to show counts or status:
+
+```jsx
+const data = [
+  {
+    label: (
+      <Group spacing="xs">
+        <span>Pending</span>
+        <Badge color="warning">{pendingCount}</Badge>
+      </Group>
+    ),
+    value: 'pending',
+  },
+  {
+    label: (
+      <Group spacing="xs">
+        <span>Completed</span>
+        <Badge color="success">{completedCount}</Badge>
+      </Group>
+    ),
+    value: 'completed',
+  },
+];
+```
+
+### Full Width Layout
+
+Use full width when container space is sufficient:
+
+```jsx
+// Use in card or container
+<Card>
+  <Navs data={data} fullWidth />
+  <div>{content}</div>
+</Card>
+```
+
+### With Content Areas
+
+Navigation tabs should be used with content areas:
+
+```jsx
+const [tab, setTab] = useState('overview');
+
+<div>
+  <Navs data={tabs} value={tab} onChange={setTab} />
+  <div style={{ marginTop: '16px' }}>{contentMap[tab]}</div>
+</div>;
+```
+
+### Disable Animation
+
+Can disable animation in performance-sensitive scenarios:
+
+```jsx
+<Navs data={data} transitionDuration={0} />
+```
+
+### Dynamic Tab Management
+
+When need to dynamically add/remove tabs:
+
+```jsx
+const [tabs, setTabs] = useState(initialTabs);
+const [active, setActive] = useState(initialTabs[0].value);
+
+const addTab = (newTab) => {
+  setTabs([...tabs, newTab]);
+  setActive(newTab.value);
+};
+
+const removeTab = (value) => {
+  const newTabs = tabs.filter((t) => t.value !== value);
+  setTabs(newTabs);
+  if (active === value) {
+    setActive(newTabs[0]?.value);
+  }
+};
+```

@@ -1,0 +1,465 @@
+---
+sidebar_position: 1
+---
+
+# InputNumber 数字输入框
+
+用于输入数字的输入框，支持步进器控制。
+
+## 何时使用
+
+- 需要用户输入数字时
+- 需要限制数字范围（最小值、最大值）
+- 需要按指定步长增减数值
+- 需要格式化数字显示（如千分位、精度等）
+
+## 示例
+
+### 基础用法
+
+最简单的用法，通过 `onChange` 获取数值。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(0);
+
+  return (
+    <div>
+      <InputNumber value={value} onChange={setValue} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>当前值: {value}</div>
+    </div>
+  );
+}
+```
+
+### 受控组件
+
+通过 `value` 和 `onChange` 实现受控组件。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(5);
+
+  const handleReset = () => setValue(0);
+  const handleSet = (num) => () => setValue(num);
+
+  return (
+    <div>
+      <InputNumber value={value} onChange={setValue} />
+      <Group style={{ marginTop: '16px' }}>
+        <Button onClick={handleReset}>重置为 0</Button>
+        <Button onClick={handleSet(10)}>设为 10</Button>
+        <Button onClick={handleSet(50)}>设为 50</Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+### 设置步长
+
+通过 `step` 属性设置每次增减的步长。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <div>
+        <div style={{ marginBottom: '8px', fontSize: '14px' }}>步长为 1（默认）：</div>
+        <InputNumber defaultValue={0} step={1} />
+      </div>
+      <div>
+        <div style={{ marginBottom: '8px', fontSize: '14px' }}>步长为 5：</div>
+        <InputNumber defaultValue={0} step={5} />
+      </div>
+      <div>
+        <div style={{ marginBottom: '8px', fontSize: '14px' }}>步长为 0.1：</div>
+        <InputNumber defaultValue={0} step={0.1} />
+      </div>
+      <div>
+        <div style={{ marginBottom: '8px', fontSize: '14px' }}>步长为 0.01：</div>
+        <InputNumber defaultValue={1} step={0.01} />
+      </div>
+    </Group>
+  );
+}
+```
+
+### 最小值和最大值
+
+通过 `min` 和 `max` 属性限制数值范围。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(0);
+
+  return (
+    <div>
+      <InputNumber value={value} onChange={setValue} min={-10} max={10} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        范围: -10 到 10，当前值: {value}
+      </div>
+    </div>
+  );
+}
+```
+
+### 禁用状态
+
+通过 `disabled` 属性禁用输入框。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <InputNumber disabled placeholder="禁用状态" />
+      <InputNumber disabled value={100} />
+    </Group>
+  );
+}
+```
+
+### 精度设置
+
+通过 `precision` 属性设置数值精度（小数位数）。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(1);
+
+  return (
+    <div>
+      <Group direction="column">
+        <div>
+          <div style={{ marginBottom: '8px', fontSize: '14px' }}>精度 0（整数）：</div>
+          <InputNumber defaultValue={1} precision={0} step={1} />
+        </div>
+        <div>
+          <div style={{ marginBottom: '8px', fontSize: '14px' }}>精度 2（保留2位小数）：</div>
+          <InputNumber value={value} onChange={setValue} precision={2} step={0.01} />
+        </div>
+        <div>
+          <div style={{ marginBottom: '8px', fontSize: '14px' }}>精度 4（保留4位小数）：</div>
+          <InputNumber defaultValue={3.1415} precision={4} step={0.0001} />
+        </div>
+      </Group>
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        精度2时的值: {value?.toFixed(2)}
+      </div>
+    </div>
+  );
+}
+```
+
+### 格式化显示
+
+通过 `formatter` 和 `parser` 自定义数值的显示和解析。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(1000);
+
+  // 格式化为千分位
+  const formatter = (value) => {
+    if (!value) return '';
+    return `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
+  // 解析千分位格式
+  const parser = (value) => {
+    return value.replace(/,/g, '');
+  };
+
+  return (
+    <div>
+      <InputNumber
+        value={value}
+        onChange={setValue}
+        formatter={formatter}
+        parser={parser}
+        width={150}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>实际值: {value}</div>
+    </div>
+  );
+}
+```
+
+### 货币格式
+
+实现货币格式的数字输入。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(100);
+
+  const formatter = (value) => {
+    if (!value) return '';
+    return `¥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
+  const parser = (value) => {
+    return value.replace(/¥\s?|(,*)/g, '');
+  };
+
+  return (
+    <div>
+      <InputNumber
+        value={value}
+        onChange={setValue}
+        formatter={formatter}
+        parser={parser}
+        width={150}
+        min={0}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>金额: {value} 元</div>
+    </div>
+  );
+}
+```
+
+### 百分比格式
+
+实现百分比格式的数字输入。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(50);
+
+  const formatter = (value) => {
+    if (!value && value !== 0) return '';
+    return `${value}%`;
+  };
+
+  const parser = (value) => {
+    return value.replace('%', '');
+  };
+
+  return (
+    <div>
+      <InputNumber
+        value={value}
+        onChange={setValue}
+        formatter={formatter}
+        parser={parser}
+        min={0}
+        max={100}
+        width={120}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>进度: {value}%</div>
+    </div>
+  );
+}
+```
+
+### 自定义宽度
+
+通过 `width` 属性设置输入框宽度。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <InputNumber width={100} defaultValue={0} />
+      <InputNumber width={150} defaultValue={0} />
+      <InputNumber width={200} defaultValue={0} />
+    </Group>
+  );
+}
+```
+
+### 步进回调
+
+通过 `onStep` 监听步进器的点击事件。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(0);
+  const [stepInfo, setStepInfo] = React.useState('');
+
+  const handleStep = (newValue, info) => {
+    setValue(newValue);
+    setStepInfo(`${info.type === 'up' ? '增加' : '减少'} ${info.offset}`);
+  };
+
+  return (
+    <div>
+      <InputNumber value={value} onChange={setValue} onStep={handleStep} step={5} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>当前值: {value}</div>
+      {stepInfo && (
+        <div style={{ marginTop: '8px', color: '#55bc8a', fontSize: '14px' }}>操作: {stepInfo}</div>
+      )}
+    </div>
+  );
+}
+```
+
+### 禁用控制器
+
+通过 `controls={false}` 隐藏步进控制器。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <div>
+        <div style={{ marginBottom: '8px', fontSize: '14px' }}>显示控制器（默认）：</div>
+        <InputNumber defaultValue={0} controls={true} />
+      </div>
+      <div>
+        <div style={{ marginBottom: '8px', fontSize: '14px' }}>隐藏控制器：</div>
+        <InputNumber defaultValue={0} controls={false} />
+      </div>
+    </Group>
+  );
+}
+```
+
+## API
+
+### InputNumber 属性
+
+| 属性             | 说明                        | 类型                                      | 默认值  |
+| ---------------- | --------------------------- | ----------------------------------------- | ------- |
+| value            | 输入框的值（受控）          | `string \| number`                        | -       |
+| defaultValue     | 默认值（非受控）            | `string \| number`                        | -       |
+| min              | 最小值                      | `string \| number`                        | -       |
+| max              | 最大值                      | `string \| number`                        | -       |
+| step             | 每次改变的步长              | `string \| number`                        | `1`     |
+| precision        | 数值精度（小数位数）        | `number`                                  | -       |
+| width            | 输入框宽度（像素）          | `number`                                  | `90`    |
+| controls         | 是否显示增减按钮            | `boolean`                                 | `true`  |
+| disabled         | 是否禁用                    | `boolean`                                 | `false` |
+| stringMode       | 是否以字符串形式处理值      | `boolean`                                 | `false` |
+| formatter        | 指定输入框展示值的格式      | `(value: string \| number) => string`     | -       |
+| parser           | 指定从 formatter 转换的方式 | `(value: string) => string \| number`     | -       |
+| decimalSeparator | 小数点符号                  | `string`                                  | `.`     |
+| onChange         | 值变化时的回调              | `(value: string \| number) => void`       | -       |
+| onStep           | 点击上下按钮时的回调        | `(value, info: { offset, type }) => void` | -       |
+| onPressEnter     | 按下回车键时的回调          | `(e: KeyboardEvent) => void`              | -       |
+| 其他             | 原生属性                    | `HTMLAttributes<HTMLInputElement>`        | -       |
+
+:::info
+
+**关于数值类型**：
+
+- 默认情况下，value 为 number 类型
+- 设置 `stringMode={true}` 可以使用字符串形式处理大数值，避免精度问题
+- `min`、`max`、`step` 均支持 number 和 string 类型
+
+**关于 formatter 和 parser**：
+
+- `formatter` 用于格式化显示值，将数值转换为展示的字符串
+- `parser` 用于从格式化的字符串中提取数值
+- 两者必须成对使用，确保可以正确转换
+
+**关于精度**：
+
+- `precision` 用于控制小数位数
+- 当设置 precision 时，输入值会自动四舍五入到指定精度
+- 建议配合相应的 `step` 值使用（如 precision={2} 配合 step={0.01}）
+
+**关于步长**：
+
+- `step` 控制每次点击增减按钮或使用键盘上下键时的变化量
+- 小数步长需要注意 JavaScript 浮点数精度问题
+- 可以通过 precision 属性来控制精度
+
+InputNumber 基于 rc-input-number 实现，继承其大部分属性和方法。
+
+:::
+
+## 使用建议
+
+### 受控与非受控
+
+根据场景选择合适的使用方式：
+
+```jsx
+// 非受控：适用于简单场景
+<InputNumber defaultValue={0} min={0} max={100} />;
+
+// 受控：适用于需要外部控制或联动的场景
+const [value, setValue] = React.useState(0);
+<InputNumber value={value} onChange={setValue} />;
+```
+
+### 数值范围限制
+
+合理设置最小值和最大值：
+
+```jsx
+// 年龄输入（0-150）
+<InputNumber min={0} max={150} defaultValue={18} />
+
+// 百分比（0-100）
+<InputNumber min={0} max={100} formatter={(v) => `${v}%`} parser={(v) => v.replace('%', '')} />
+
+// 评分（1-5）
+<InputNumber min={1} max={5} step={0.5} defaultValue={3} />
+```
+
+### 格式化最佳实践
+
+常用的格式化模式：
+
+```jsx
+// 千分位分隔
+const formatter = (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const parser = (value) => value.replace(/,/g, '');
+
+// 货币格式
+const formatter = (value) => `¥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const parser = (value) => value.replace(/¥\s?|(,*)/g, '');
+
+// 百分比
+const formatter = (value) => `${value}%`;
+const parser = (value) => value.replace('%', '');
+
+// 单位后缀
+const formatter = (value) => `${value} kg`;
+const parser = (value) => value.replace(' kg', '');
+```
+
+### 精度处理
+
+处理小数精度的建议：
+
+```jsx
+// 金额（2位小数）
+<InputNumber precision={2} step={0.01} min={0} />
+
+// 比率（4位小数）
+<InputNumber precision={4} step={0.0001} />
+
+// 整数
+<InputNumber precision={0} step={1} />
+```
+
+### 与表单组件配合
+
+在 Form 中使用 InputNumber：
+
+```jsx
+<Form onFinish={handleFinish}>
+  <FormItem
+    name="age"
+    label="年龄"
+    rules={[
+      { required: true, message: '请输入年龄' },
+      { type: 'number', min: 0, max: 150, message: '请输入有效的年龄' },
+    ]}
+  >
+    <InputNumber min={0} max={150} />
+  </FormItem>
+</Form>
+```
+
+### 大数值处理
+
+对于超出 JavaScript 安全整数范围的数值：
+
+```jsx
+// 使用 stringMode 处理大数值
+<InputNumber stringMode min="0" max="999999999999999999" defaultValue="9999999999999999" />
+```

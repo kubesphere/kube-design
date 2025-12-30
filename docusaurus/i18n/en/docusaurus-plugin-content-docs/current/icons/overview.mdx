@@ -1,0 +1,74 @@
+---
+sidebar_position: 1
+---
+
+# Icons
+
+Kube Design provides a comprehensive icon library with hundreds of icons spanning multiple categories, supporting various styles and variants.
+
+## Available Icons
+
+The icon library includes hundreds of icons grouped by category. Click on any icon to copy its name.
+
+import IconGallery from '@site/src/components/IconGallery';
+
+<IconGallery />
+
+## Usage
+
+### Icon Size
+
+Control icon size with the `size` prop:
+
+```jsx live
+function Demo() {
+  const { AddDuotone } = KubedIcons;
+  return (
+    <Group spacing="lg">
+      <AddDuotone size={16} />
+      <AddDuotone size={24} />
+      <AddDuotone size={32} />
+      <AddDuotone size={48} />
+    </Group>
+  );
+}
+```
+
+### Icon Color
+
+Icons inherit the current text color. You can control the color via CSS or inline styles:
+
+```jsx live
+function Demo() {
+  const { AddDuotone } = KubedIcons;
+  return (
+    <Group spacing="md">
+      <AddDuotone size={32} style={{ color: '#55bc8a' }} />
+      <AddDuotone size={32} style={{ color: '#329dce' }} />
+      <AddDuotone size={32} style={{ color: '#f5a623' }} />
+      <AddDuotone size={32} style={{ color: '#ca2621' }} />
+    </Group>
+  );
+}
+```
+
+## Icon Variants
+
+Icons are available in multiple styles:
+
+- **Outline**: Line-based icons (default)
+- **Filled**: Solid filled icons
+- **Duotone**: Two-tone icons
+
+## API
+
+### Icon Props
+
+All icons accept the following props:
+
+| Property | Description | Type | Default |
+|----------|-------------|------|---------|
+| size | Icon size (pixels) | `number \| string` | `16` |
+| color | Icon color (CSS color value) | `string` | `'currentColor'` |
+| className | Additional CSS class | `string` | - |
+| style | Inline styles | `CSSProperties` | - |

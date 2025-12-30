@@ -1,0 +1,280 @@
+---
+sidebar_position: 17
+---
+
+# useReducedMotion
+
+A Hook for detecting whether the user has enabled the "reduce motion" preference setting.
+
+## Basic Usage
+
+```jsx live
+function Demo() {
+  const reducedMotion = useReducedMotion();
+
+  return (
+    <div
+      style={{
+        padding: '24px',
+        backgroundColor: reducedMotion ? 'var(--ifm-color-warning-lightest)' : 'var(--ifm-color-success-lightest)',
+        borderRadius: '8px',
+        textAlign: 'center',
+      }}
+    >
+      <div style={{ fontSize: '48px', marginBottom: '12px' }}>
+        {reducedMotion ? '🐢' : '⚡'}
+      </div>
+      <div style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '8px' }}>
+        {reducedMotion ? 'Reduced Motion Mode' : 'Normal Animation Mode'}
+      </div>
+      <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+        Current user preference: {reducedMotion ? 'Reduce motion' : 'Allow animations'}
+      </div>
+    </div>
+  );
+}
+```
+
+## Conditional Animation
+
+Enable or disable animations based on user preference:
+
+```jsx live
+function Demo() {
+  const reducedMotion = useReducedMotion();
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <Button onClick={() => setCount(count + 1)} style={{ marginBottom: '16px' }}>
+        Click to Increase ({count})
+      </Button>
+      <div
+        style={{
+          padding: '40px',
+          backgroundColor: 'var(--ifm-color-primary-lightest)',
+          borderRadius: '8px',
+          textAlign: 'center',
+          transition: reducedMotion ? 'none' : 'all 0.5s ease',
+          transform: `scale(${1 + count * 0.05})`,
+        }}
+      >
+        <div style={{ fontSize: '48px' }}>🎯</div>
+        <div style={{ marginTop: '12px', fontSize: '14px' }}>
+          {reducedMotion ? 'Instant scale' : 'Smooth scale animation'}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## Adaptive Transition Effects
+
+Dynamically adjust transition duration:
+
+```jsx live
+function Demo() {
+  const reducedMotion = useReducedMotion();
+  const [visible, setVisible] = useState(true);
+
+  const transitionDuration = reducedMotion ? '0s' : '0.3s';
+
+  return (
+    <div>
+      <Button onClick={() => setVisible(!visible)} style={{ marginBottom: '12px' }}>
+        {visible ? 'Hide' : 'Show'}
+      </Button>
+      <div
+        style={{
+          height: visible ? '200px' : '0',
+          opacity: visible ? 1 : 0,
+          overflow: 'hidden',
+          transition: `all ${transitionDuration}`,
+          backgroundColor: 'var(--ifm-background-surface-color)',
+          border: '1px solid var(--ifm-color-emphasis-300)',
+          borderRadius: '8px',
+        }}
+      >
+        <div style={{ padding: '20px' }}>
+          <h4>Content Area</h4>
+          <p style={{ marginBottom: 0 }}>
+            This area shows or hides based on user animation preferences.
+            {reducedMotion ? ' Currently no transition animation.' : ' Currently has smooth transition animation.'}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## Loading Animation Adaptation
+
+Provide adapted animation effects for loading states:
+
+```jsx live
+function Demo() {
+  const reducedMotion = useReducedMotion();
+  const [loading, setLoading] = useState(false);
+
+  const handleLoad = () => {
+    setLoading(true);
+    setTimeout(() => setLoading(false), 2000);
+  };
+
+  return (
+    <div>
+      <Button onClick={handleLoad} disabled={loading} style={{ marginBottom: '16px' }}>
+        {loading ? 'Loading...' : 'Start Loading'}
+      </Button>
+      {loading && (
+        <div
+          style={{
+            padding: '32px',
+            backgroundColor: 'var(--ifm-color-emphasis-100)',
+            borderRadius: '8px',
+            textAlign: 'center',
+          }}
+        >
+          <div
+            style={{
+              display: 'inline-block',
+              width: '40px',
+              height: '40px',
+              border: '4px solid var(--ifm-color-primary-lightest)',
+              borderTopColor: 'var(--ifm-color-primary)',
+              borderRadius: '50%',
+              animation: reducedMotion ? 'none' : 'spin 1s linear infinite',
+            }}
+          />
+          <div style={{ marginTop: '12px', fontSize: '14px' }}>
+            {reducedMotion ? 'Loading (static)' : 'Loading (spinning animation)'}
+          </div>
+        </div>
+      )}
+      <style>{`
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
+    </div>
+  );
+}
+```
+
+## API
+
+### Parameters
+
+```ts
+function useReducedMotion(): boolean
+```
+
+No parameters.
+
+### Return Value
+
+Returns a boolean value indicating whether the user has enabled "reduce motion" preference.
+
+```ts
+boolean
+```
+
+- `true`: User has enabled reduced motion
+- `false`: User allows normal animations
+
+## How It Works
+
+Detects user system preferences through the `prefers-reduced-motion` media query:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* User has enabled reduced motion */
+}
+```
+
+## Features
+
+- **Accessibility**: Respects user accessibility preferences
+- **Auto Response**: Automatically updates when user changes settings
+- **Zero Configuration**: Ready to use without additional configuration
+- **Performance Friendly**: Can improve performance for users with reduced motion enabled
+
+## Setup Methods
+
+### macOS
+System Preferences → Accessibility → Display → Reduce Motion
+
+### Windows
+Settings → Ease of Access → Display → Show animations in Windows
+
+### iOS
+Settings → Accessibility → Motion → Reduce Motion
+
+### Android
+Settings → Accessibility → Remove animations
+
+## Usage Scenarios
+
+- **Transition Animations**: Disable or reduce transition effects based on preference
+- **Loading Animations**: Provide static alternatives
+- **Parallax Effects**: Disable scroll effects that may cause discomfort
+- **Auto-play**: Stop automatic carousels and video playback
+- **Hover Effects**: Simplify or remove complex hover animations
+- **Page Transitions**: Use instant transitions instead of fade effects
+
+## Best Practices
+
+### Progressive Enhancement
+
+```jsx
+const reducedMotion = useReducedMotion();
+
+const animationProps = reducedMotion
+  ? {}
+  : {
+      initial: { opacity: 0, y: 20 },
+      animate: { opacity: 1, y: 0 },
+      transition: { duration: 0.3 },
+    };
+
+return <motion.div {...animationProps}>Content</motion.div>;
+```
+
+### CSS-in-JS Integration
+
+```jsx
+const reducedMotion = useReducedMotion();
+
+const styles = {
+  transition: reducedMotion ? 'none' : 'all 0.3s ease',
+  animation: reducedMotion ? 'none' : 'fadeIn 0.5s',
+};
+```
+
+### Animation Library Configuration
+
+```jsx
+// Framer Motion
+const reducedMotion = useReducedMotion();
+
+<MotionConfig reducedMotion={reducedMotion ? 'always' : 'never'}>
+  {/* Component tree */}
+</MotionConfig>
+```
+
+## Notes
+
+- Not all animations should be disabled, only those that may cause discomfort
+- Preserve necessary state feedback animations
+- Consider providing static alternatives
+- Test user experience with reduced motion enabled
+- Some functional animations (like progress bars) can be retained
+
+## Accessibility
+
+Follows WCAG 2.1 guidelines:
+- **Success Criterion 2.3.3**: Animation from Interactions (AAA level)
+- Respect user system preferences
+- Provide usable experience without animations

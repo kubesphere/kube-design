@@ -1,0 +1,825 @@
+---
+sidebar_position: 1
+---
+
+# Steps
+
+A navigation component for displaying multi-step processes.
+
+## When to Use
+
+- Display the progress of a complex task or multi-step process
+- Guide users through multiple steps to complete a task
+- Need to display current step position and completion status
+- Multi-step form or wizard scenarios
+
+In Kube Design, the Steps component provides flexible step navigation functionality:
+
+- **Two Variants**: Supports default (with separators) and tab (label-style) styles
+- **Two Orientations**: Supports horizontal and vertical layouts
+- **Auto State Management**: Automatically manages step states (inactive, in progress, completed)
+- **Clickable Navigation**: Supports clicking step labels to navigate
+- **Completion Display**: Provides StepCompleted component for final completion display
+
+## Examples
+
+### Basic Usage
+
+The most basic step navigation usage.
+
+```jsx live
+function Demo() {
+  const [active, setActive] = React.useState(0);
+
+  return (
+    <Steps active={active} onStepClick={setActive}>
+      <Step label="Step One" description="This is the first step">
+        <Card style={{ padding: '20px', marginTop: '20px' }}>
+          <Text>Content for Step One</Text>
+        </Card>
+      </Step>
+      <Step label="Step Two" description="This is the second step">
+        <Card style={{ padding: '20px', marginTop: '20px' }}>
+          <Text>Content for Step Two</Text>
+        </Card>
+      </Step>
+      <Step label="Step Three" description="This is the third step">
+        <Card style={{ padding: '20px', marginTop: '20px' }}>
+          <Text>Content for Step Three</Text>
+        </Card>
+      </Step>
+    </Steps>
+  );
+}
+```
+
+### With Icons
+
+Add icons to step labels.
+
+```jsx live
+function Demo() {
+  const { FolderSettingDuotone, DarkModeDuotone, CheckCircleDuotone } = KubedIcons;
+  const [active, setActive] = React.useState(0);
+
+  return (
+    <Steps active={active} onStepClick={setActive}>
+      <Step label="基本信息" description="填写基本信息" icon={<FolderSettingDuotone />}>
+        <Card style={{ padding: '20px', marginTop: '20px' }}>
+          <Text>填写基本信息内容</Text>
+        </Card>
+      </Step>
+      <Step label="配置参数" description="配置应用参数" icon={<DarkModeDuotone />}>
+        <Card style={{ padding: '20px', marginTop: '20px' }}>
+          <Text>配置应用参数内容</Text>
+        </Card>
+      </Step>
+      <Step label="完成" description="配置完成" icon={<CheckCircleDuotone />}>
+        <Card style={{ padding: '20px', marginTop: '20px' }}>
+          <Text>配置完成内容</Text>
+        </Card>
+      </Step>
+    </Steps>
+  );
+}
+```
+
+### Vertical Layout
+
+Set vertical layout through the `orientation` property.
+
+```jsx live
+function Demo() {
+  const [active, setActive] = React.useState(0);
+
+  return (
+    <Steps active={active} onStepClick={setActive} orientation="vertical">
+      <Step label="创建 Deployment" description="创建一个新的 Deployment 资源">
+        <Card style={{ padding: '20px', marginLeft: '20px' }}>
+          <Text>创建 Deployment 表单</Text>
+        </Card>
+      </Step>
+      <Step label="配置 Service" description="配置 Service 暴露方式">
+        <Card style={{ padding: '20px', marginLeft: '20px' }}>
+          <Text>配置 Service 表单</Text>
+        </Card>
+      </Step>
+      <Step label="设置路由" description="设置 Ingress 路由规则">
+        <Card style={{ padding: '20px', marginLeft: '20px' }}>
+          <Text>设置路由规则表单</Text>
+        </Card>
+      </Step>
+    </Steps>
+  );
+}
+```
+
+### Tab Style
+
+Set tab style through `variant="tab"`.
+
+```jsx live
+function Demo() {
+  const [active, setActive] = React.useState(0);
+
+  return (
+    <Steps active={active} onStepClick={setActive} variant="tab">
+      <Step label="基础配置">
+        <Card style={{ padding: '20px', marginTop: '20px' }}>
+          <Text>基础配置内容</Text>
+        </Card>
+      </Step>
+      <Step label="高级配置">
+        <Card style={{ padding: '20px', marginTop: '20px' }}>
+          <Text>高级配置内容</Text>
+        </Card>
+      </Step>
+      <Step label="审核并创建">
+        <Card style={{ padding: '20px', marginTop: '20px' }}>
+          <Text>审核并创建内容</Text>
+        </Card>
+      </Step>
+    </Steps>
+  );
+}
+```
+
+### Vertical Tab Style
+
+Combine vertical layout with tab style.
+
+```jsx live
+function Demo() {
+  const [active, setActive] = React.useState(0);
+
+  return (
+    <Steps active={active} onStepClick={setActive} variant="tab" orientation="vertical">
+      <Step label="基本信息">
+        <Card style={{ padding: '20px', marginLeft: '20px' }}>
+          <Text>基本信息内容</Text>
+        </Card>
+      </Step>
+      <Step label="容器配置">
+        <Card style={{ padding: '20px', marginLeft: '20px' }}>
+          <Text>容器配置内容</Text>
+        </Card>
+      </Step>
+      <Step label="存储配置">
+        <Card style={{ padding: '20px', marginLeft: '20px' }}>
+          <Text>存储配置内容</Text>
+        </Card>
+      </Step>
+      <Step label="网络配置">
+        <Card style={{ padding: '20px', marginLeft: '20px' }}>
+          <Text>网络配置内容</Text>
+        </Card>
+      </Step>
+    </Steps>
+  );
+}
+```
+
+### With Completion Display
+
+Use `StepCompleted` to display content after all steps are complete.
+
+```jsx live
+function Demo() {
+  const [active, setActive] = React.useState(0);
+  const { StepCompleted } = Steps;
+
+  const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
+  const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
+
+  return (
+    <>
+      <Steps active={active} onStepClick={setActive}>
+        <Step label="基本信息" description="填写应用基本信息">
+          <Card style={{ padding: '20px', marginTop: '20px' }}>
+            <Text style={{ marginBottom: '12px' }}>请填写应用基本信息</Text>
+            <Input placeholder="应用名称" />
+          </Card>
+        </Step>
+        <Step label="配置参数" description="配置应用参数">
+          <Card style={{ padding: '20px', marginTop: '20px' }}>
+            <Text style={{ marginBottom: '12px' }}>请配置应用参数</Text>
+            <Input placeholder="副本数量" />
+          </Card>
+        </Step>
+        <Step label="审核" description="审核配置信息">
+          <Card style={{ padding: '20px', marginTop: '20px' }}>
+            <Text>请审核配置信息</Text>
+          </Card>
+        </Step>
+        <StepCompleted>
+          <Card
+            style={{
+              padding: '40px',
+              marginTop: '20px',
+              textAlign: 'center',
+              background: '#f0f9ff',
+            }}
+          >
+            <Text size="lg" weight={600} color="success">
+              ✓ 配置完成!
+            </Text>
+            <Text size="sm" style={{ marginTop: '8px' }}>
+              应用已成功创建
+            </Text>
+          </Card>
+        </StepCompleted>
+      </Steps>
+      <Group spacing="sm" style={{ marginTop: '20px' }}>
+        <Button onClick={prevStep} disabled={active === 0}>
+          上一步
+        </Button>
+        <Button onClick={nextStep} disabled={active === 3}>
+          下一步
+        </Button>
+      </Group>
+    </>
+  );
+}
+```
+
+### Disable Click Navigation
+
+Set `onStepClick={null}` to disable clicking step labels for navigation.
+
+```jsx live
+function Demo() {
+  const [active, setActive] = React.useState(0);
+
+  const nextStep = () => setActive((current) => (current < 2 ? current + 1 : current));
+  const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
+
+  return (
+    <>
+      <Steps active={active}>
+        <Step label="步骤一" description="不可点击跳转">
+          <Card style={{ padding: '20px', marginTop: '20px' }}>
+            <Text>步骤一的内容</Text>
+          </Card>
+        </Step>
+        <Step label="步骤二" description="不可点击跳转">
+          <Card style={{ padding: '20px', marginTop: '20px' }}>
+            <Text>步骤二的内容</Text>
+          </Card>
+        </Step>
+        <Step label="步骤三" description="不可点击跳转">
+          <Card style={{ padding: '20px', marginTop: '20px' }}>
+            <Text>步骤三的内容</Text>
+          </Card>
+        </Step>
+      </Steps>
+      <Group spacing="sm" style={{ marginTop: '20px' }}>
+        <Button onClick={prevStep} disabled={active === 0}>
+          上一步
+        </Button>
+        <Button onClick={nextStep} disabled={active === 2}>
+          下一步
+        </Button>
+      </Group>
+    </>
+  );
+}
+```
+
+### Custom Number Display
+
+Customize step number prefix through the `completedIcon` property.
+
+```jsx live
+function Demo() {
+  const { CheckCircleDuotone } = KubedIcons;
+  const [active, setActive] = React.useState(1);
+
+  return (
+    <Steps active={active} onStepClick={setActive} completedIcon={<CheckCircleDuotone />}>
+      <Step label="创建资源" description="该步骤已完成">
+        <Card style={{ padding: '20px', marginTop: '20px' }}>
+          <Text>创建资源内容</Text>
+        </Card>
+      </Step>
+      <Step label="配置参数" description="当前正在此步骤">
+        <Card style={{ padding: '20px', marginTop: '20px' }}>
+          <Text>配置参数内容</Text>
+        </Card>
+      </Step>
+      <Step label="部署应用" description="该步骤未开始">
+        <Card style={{ padding: '20px', marginTop: '20px' }}>
+          <Text>部署应用内容</Text>
+        </Card>
+      </Step>
+    </Steps>
+  );
+}
+```
+
+### Creation Wizard
+
+A complete example of a multi-step creation wizard.
+
+```jsx live
+function Demo() {
+  const { Backup } = KubedIcons;
+  const [active, setActive] = React.useState(0);
+  const [formData, setFormData] = React.useState({
+    name: '',
+    namespace: 'default',
+    replicas: '3',
+    image: 'nginx:latest',
+  });
+  const { StepCompleted } = Steps;
+
+  const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
+  const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
+
+  return (
+    <Card>
+      <Steps active={active} variant="tab">
+        <Step label="基本信息">
+          <div style={{ padding: '20px' }}>
+            <Group direction="column" spacing="md">
+              <div>
+                <Text size="sm" style={{ marginBottom: '8px' }}>
+                  Deployment 名称:
+                </Text>
+                <Input
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="请输入 Deployment 名称"
+                />
+              </div>
+              <div>
+                <Text size="sm" style={{ marginBottom: '8px' }}>
+                  命名空间:
+                </Text>
+                <Select
+                  value={formData.namespace}
+                  onChange={(value) => setFormData({ ...formData, namespace: value })}
+                >
+                  <Select.Option value="default">default</Select.Option>
+                  <Select.Option value="kubesphere-system">kubesphere-system</Select.Option>
+                </Select>
+              </div>
+            </Group>
+          </div>
+        </Step>
+        <Step label="容器配置">
+          <div style={{ padding: '20px' }}>
+            <Group direction="column" spacing="md">
+              <div>
+                <Text size="sm" style={{ marginBottom: '8px' }}>
+                  容器镜像:
+                </Text>
+                <Input
+                  value={formData.image}
+                  onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                  placeholder="请输入容器镜像"
+                />
+              </div>
+              <div>
+                <Text size="sm" style={{ marginBottom: '8px' }}>
+                  副本数量:
+                </Text>
+                <Input
+                  value={formData.replicas}
+                  onChange={(e) => setFormData({ ...formData, replicas: e.target.value })}
+                  placeholder="请输入副本数量"
+                />
+              </div>
+            </Group>
+          </div>
+        </Step>
+        <Step label="审核配置">
+          <div style={{ padding: '20px' }}>
+            <Entity>
+              <Field
+                avatar={<Backup size={40} />}
+                label="Deployment 名称"
+                value={formData.name || '-'}
+              />
+              <Field label="命名空间" value={formData.namespace} />
+              <Field label="镜像" value={formData.image} />
+              <Field label="副本数" value={formData.replicas} />
+            </Entity>
+          </div>
+        </Step>
+        <StepCompleted>
+          <div
+            style={{
+              padding: '40px',
+              textAlign: 'center',
+              background: '#f0f9ff',
+            }}
+          >
+            <Text size="lg" weight={600} color="success">
+              ✓ Deployment 创建成功!
+            </Text>
+            <Text size="sm" style={{ marginTop: '8px' }}>
+              Deployment "{formData.name}" 已在命名空间 "{formData.namespace}" 中成功创建
+            </Text>
+          </div>
+        </StepCompleted>
+      </Steps>
+      <div style={{ padding: '20px', borderTop: '1px solid #eff4f9' }}>
+        <Group spacing="sm" position="right">
+          <Button onClick={prevStep} disabled={active === 0} variant="outline">
+            上一步
+          </Button>
+          <Button onClick={nextStep} disabled={active === 3}>
+            {active === 2 ? '创建' : '下一步'}
+          </Button>
+        </Group>
+      </div>
+    </Card>
+  );
+}
+```
+
+### Vertical Creation Wizard
+
+Vertical layout wizard suitable for sidebars.
+
+```jsx live
+function Demo() {
+  const { FolderSettingDuotone, DarkModeDuotone, FileDocumentDuotone } = KubedIcons;
+  const [active, setActive] = React.useState(0);
+
+  return (
+    <div style={{ display: 'flex', background: '#eff4f9', padding: '20px' }}>
+      <div style={{ width: '300px' }}>
+        <Steps active={active} onStepClick={setActive} variant="tab" orientation="vertical">
+          <Step label="选择类型" icon={<FolderSettingDuotone />}>
+            <div style={{ marginLeft: '20px' }}>
+              <Card style={{ padding: '20px' }}>
+                <Text weight={600} style={{ marginBottom: '12px' }}>
+                  选择资源类型
+                </Text>
+                <Group direction="column" spacing="sm">
+                  <Button variant="outline" fullWidth>
+                    Deployment
+                  </Button>
+                  <Button variant="outline" fullWidth>
+                    StatefulSet
+                  </Button>
+                  <Button variant="outline" fullWidth>
+                    DaemonSet
+                  </Button>
+                </Group>
+              </Card>
+            </div>
+          </Step>
+          <Step label="配置参数" icon={<DarkModeDuotone />}>
+            <div style={{ marginLeft: '20px' }}>
+              <Card style={{ padding: '20px' }}>
+                <Text weight={600} style={{ marginBottom: '12px' }}>
+                  配置参数
+                </Text>
+                <Group direction="column" spacing="md">
+                  <Input placeholder="资源名称" />
+                  <Input placeholder="副本数量" />
+                  <Input placeholder="容器镜像" />
+                </Group>
+              </Card>
+            </div>
+          </Step>
+          <Step label="审核并创建" icon={<FileDocumentDuotone />}>
+            <div style={{ marginLeft: '20px' }}>
+              <Card style={{ padding: '20px' }}>
+                <Text weight={600} style={{ marginBottom: '12px' }}>
+                  审核配置
+                </Text>
+                <Text size="sm">请审核配置信息并点击创建</Text>
+                <Button style={{ marginTop: '12px' }} fullWidth>
+                  创建资源
+                </Button>
+              </Card>
+            </div>
+          </Step>
+        </Steps>
+      </div>
+    </div>
+  );
+}
+```
+
+## API
+
+### Steps
+
+| Property       | Description                          | Type                             | Default     |
+| -------------- | ------------------------------------ | -------------------------------- | ----------- |
+| active         | Currently active step (0-indexed)    | `number`                         | `0`         |
+| variant        | Step style variant                   | `'default' \| 'tab'`             | `'default'` |
+| orientation    | Layout orientation                   | `'horizontal' \| 'vertical'`     | `'horizontal'` |
+| onStepClick    | Callback when step is clicked        | `(stepIndex: number) => void`    | -           |
+| completedIcon  | Custom icon for completed steps      | `ReactNode`                      | -           |
+| className      | Custom class name                    | `string`                         | -           |
+| style          | Custom styles                        | `CSSProperties`                  | -           |
+| children       | Step and StepCompleted components    | `ReactNode`                      | -           |
+
+### Step
+
+| Property    | Description           | Type          | Default |
+| ----------- | --------------------- | ------------- | ------- |
+| label       | Step label            | `ReactNode`   | -       |
+| description | Step description      | `ReactNode`   | -       |
+| icon        | Step icon             | `ReactNode`   | -       |
+| children    | Step content          | `ReactNode`   | -       |
+
+### StepCompleted
+
+| Property | Description              | Type        | Default |
+| -------- | ------------------------ | ----------- | ------- |
+| children | Content to display when all steps complete | `ReactNode` | - |
+
+:::info
+
+**About state management**:
+
+- Steps component automatically manages three states for each step:
+  - **inactive**: Steps not yet reached (index > active)
+  - **progress**: Currently active step (index === active)
+  - **completed**: Completed steps (index < active)
+- State automatically determines step number/icon style and connector line color
+- Completed steps display check icon or custom completedIcon by default
+- In-progress step displays highlighted number
+- Inactive steps display gray number
+
+**About click navigation**:
+
+- When `onStepClick` is provided, step labels are clickable
+- Clicking a step label calls `onStepClick(stepIndex)`
+- Typically used for random access navigation between steps
+- Set `onStepClick={null}` or don't provide to disable click navigation
+- Disabled state prevents jumping to that step
+
+**About variants**:
+
+- `variant="default"`: Traditional step bar with connector lines
+  - Step numbers/icons + labels + descriptions
+  - Connector lines show progress
+  - Suitable for linear processes
+- `variant="tab"`: Tab-style labels
+  - More compact display
+  - Only shows labels, no descriptions
+  - Suitable for configuration panels and sidebars
+
+**About orientation**:
+
+- `orientation="horizontal"`: Horizontal layout (default)
+  - Steps arranged left to right
+  - Content displayed below
+  - Suitable for full-width wizards
+- `orientation="vertical"`: Vertical layout
+  - Steps arranged top to bottom
+  - Content displayed to the right
+  - Suitable for sidebar navigation
+
+**About StepCompleted**:
+
+- Special component to display content when all steps complete
+- Only displayed when `active` value exceeds all Step indexes
+- Typically used to show success messages, summary information, or next actions
+- Can contain any content: cards, text, buttons, etc.
+- Rendered as the last "step" but without step number or connector
+
+**About step content**:
+
+- Each Step's `children` is the content for that step
+- Only content of the current active step is displayed
+- Content supports any React components
+- Common pattern: use Card component to wrap step content
+
+**About icons**:
+
+- Each Step can have an `icon` property
+- Icons displayed to the left of step labels
+- Completed steps can use custom `completedIcon`
+- Icons automatically adjust color based on step state
+
+**About responsive behavior**:
+
+- Horizontal layout may have issues on narrow screens
+- Consider using vertical layout for mobile devices
+- Tab style more compact, suitable for space-constrained scenarios
+
+**About accessibility**:
+
+- Step labels should be clear and descriptive
+- Consider adding `aria-label` attributes
+- Keyboard navigation support (when clickable)
+- Screen reader-friendly state indications
+
+:::
+
+## Usage Recommendations
+
+### Choose Appropriate Variant
+
+Select variant based on use case:
+
+```jsx
+// Linear process: Use default variant
+<Steps variant="default">
+  <Step label="填写表单" description="填写基本信息" />
+  <Step label="审核" description="审核提交内容" />
+  <Step label="完成" description="提交完成" />
+</Steps>
+
+// Configuration panel: Use tab variant
+<Steps variant="tab">
+  <Step label="基础配置" />
+  <Step label="高级配置" />
+  <Step label="安全配置" />
+</Steps>
+```
+
+### Choose Appropriate Orientation
+
+Select orientation based on layout:
+
+```jsx
+// Full-width wizard: Use horizontal layout
+<Steps orientation="horizontal">...</Steps>
+
+// Sidebar navigation: Use vertical layout
+<Steps orientation="vertical" variant="tab">...</Steps>
+```
+
+### Clear Step Labels
+
+Step labels should clearly express step purpose:
+
+```jsx
+// Recommended: Clear action descriptions
+<Step label="创建 Deployment" description="配置 Deployment 基本信息" />
+<Step label="配置 Service" description="设置 Service 暴露方式" />
+<Step label="创建路由" description="配置 Ingress 规则" />
+
+// Not recommended: Vague labels
+<Step label="步骤一" description="第一步" />
+<Step label="步骤二" description="第二步" />
+```
+
+### Provide Navigation Buttons
+
+Add navigation buttons for better user experience:
+
+```jsx
+const [active, setActive] = useState(0);
+
+const nextStep = () => setActive((current) => Math.min(current + 1, totalSteps - 1));
+const prevStep = () => setActive((current) => Math.max(current - 1, 0));
+
+<>
+  <Steps active={active}>...</Steps>
+  <Group>
+    <Button onClick={prevStep} disabled={active === 0}>
+      上一步
+    </Button>
+    <Button onClick={nextStep} disabled={active === totalSteps - 1}>
+      下一步
+    </Button>
+  </Group>
+</>;
+```
+
+### Use StepCompleted to Display Results
+
+Show completion status when all steps complete:
+
+```jsx
+<Steps active={active}>
+  <Step label="步骤一">...</Step>
+  <Step label="步骤二">...</Step>
+  <Step label="步骤三">...</Step>
+  <StepCompleted>
+    <Card style={{ textAlign: 'center', padding: '40px' }}>
+      <Text size="lg" weight={600} color="success">
+        ✓ 全部完成!
+      </Text>
+      <Button style={{ marginTop: '16px' }}>查看结果</Button>
+    </Card>
+  </StepCompleted>
+</Steps>
+```
+
+### Manage Form Data State
+
+Properly manage form data across multiple steps:
+
+```jsx
+const [active, setActive] = useState(0);
+const [formData, setFormData] = useState({
+  step1: {},
+  step2: {},
+  step3: {},
+});
+
+const updateStepData = (step, data) => {
+  setFormData((prev) => ({
+    ...prev,
+    [step]: { ...prev[step], ...data },
+  }));
+};
+
+<Steps active={active}>
+  <Step label="基本信息">
+    <Input onChange={(e) => updateStepData('step1', { name: e.target.value })} />
+  </Step>
+  <Step label="配置参数">
+    <Input onChange={(e) => updateStepData('step2', { config: e.target.value })} />
+  </Step>
+  <Step label="审核">
+    <div>
+      名称: {formData.step1.name}
+      配置: {formData.step2.config}
+    </div>
+  </Step>
+</Steps>;
+```
+
+### Validate Before Proceeding
+
+Validate current step before allowing next:
+
+```jsx
+const [active, setActive] = useState(0);
+const [errors, setErrors] = useState({});
+
+const validateStep = (step) => {
+  // 验证逻辑
+  if (step === 0 && !formData.name) {
+    setErrors({ name: '名称不能为空' });
+    return false;
+  }
+  return true;
+};
+
+const nextStep = () => {
+  if (validateStep(active)) {
+    setActive((current) => current + 1);
+    setErrors({});
+  }
+};
+
+<Steps active={active}>
+  <Step label="基本信息">
+    <Input error={errors.name} />
+  </Step>
+</Steps>;
+```
+
+### Use Icons to Enhance Recognition
+
+Add icons to steps for easier recognition:
+
+```jsx
+import { FileDocument, Settings, Check } from '@kubed/icons';
+
+<Steps active={active}>
+  <Step label="填写表单" icon={<FileDocument />} />
+  <Step label="配置" icon={<Settings />} />
+  <Step label="完成" icon={<Check />} />
+</Steps>;
+```
+
+### Disable Jumping for Linear Processes
+
+Disable click navigation for processes that must be completed sequentially:
+
+```jsx
+// Don't provide onStepClick to disable jumping
+<Steps active={active}>
+  <Step label="填写表单">...</Step>
+  <Step label="支付">...</Step>
+  <Step label="完成">...</Step>
+</Steps>
+
+// Only navigation via Previous/Next buttons
+<Group>
+  <Button onClick={prevStep}>上一步</Button>
+  <Button onClick={nextStep}>下一步</Button>
+</Group>
+```
+
+### Use with Modal for Wizard Dialogs
+
+Create modal wizards:
+
+```jsx
+<Modal visible={open} footer={null} width={800}>
+  <Steps active={active} variant="tab">
+    <Step label="选择类型">...</Step>
+    <Step label="配置">...</Step>
+    <Step label="确认">...</Step>
+  </Steps>
+  <Group position="right" style={{ marginTop: '20px' }}>
+    <Button onClick={prevStep}>上一步</Button>
+    <Button onClick={nextStep}>下一步</Button>
+  </Group>
+</Modal>
+```

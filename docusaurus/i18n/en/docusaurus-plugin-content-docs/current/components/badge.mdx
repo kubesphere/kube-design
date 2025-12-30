@@ -1,0 +1,379 @@
+---
+sidebar_position: 1
+---
+
+# Badge
+
+A badge component for displaying status marks or counts.
+
+## When to Use
+
+- Need to display status or quantity information on elements
+- Use as corner indicator for avatars, icons or other elements
+- Display unread message count, online status, etc.
+- Need to highlight certain status information
+
+## Examples
+
+### Basic Usage
+
+The simplest usage, display numbers or text.
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="lg">
+      <Badge>3</Badge>
+      <Badge>99+</Badge>
+      <Badge>New</Badge>
+    </Group>
+  );
+}
+```
+
+### Colors
+
+Set badge color using the `color` prop, supports theme preset colors and custom colors.
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="lg">
+      <Badge>Default</Badge>
+      <Badge color="primary">Primary</Badge>
+      <Badge color="secondary">Secondary</Badge>
+      <Badge color="success">Success</Badge>
+      <Badge color="warning">Warning</Badge>
+      <Badge color="error">Error</Badge>
+    </Group>
+  );
+}
+```
+
+### Custom Colors
+
+Supports using HEX, RGB, RGBA color values.
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="lg">
+      <Badge color="#228be6">Blue</Badge>
+      <Badge color="#40c057">Green</Badge>
+      <Badge color="#be4bdb">Purple</Badge>
+      <Badge color="#ff6b6b">Red</Badge>
+      <Badge color="#fab005">Yellow</Badge>
+    </Group>
+  );
+}
+```
+
+### Shadow Effect
+
+Add shadow effect using the `shadow` prop to make the badge more prominent.
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="lg">
+      <Badge color="primary" shadow>
+        Primary
+      </Badge>
+      <Badge color="success" shadow>
+        Success
+      </Badge>
+      <Badge color="warning" shadow>
+        Warning
+      </Badge>
+      <Badge color="error" shadow>
+        Error
+      </Badge>
+    </Group>
+  );
+}
+```
+
+### Dot Badge
+
+Display as dot badge using the `dot` prop, commonly used for status indication.
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="lg">
+      <Badge color="success" dot />
+      <Badge color="warning" dot />
+      <Badge color="error" dot />
+    </Group>
+  );
+}
+```
+
+### Animation Effect
+
+Add animation effect to dot badge using the `motion` prop, suitable for scenarios that need to attract attention.
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="lg">
+      <Badge color="success" dot motion />
+      <Badge color="warning" dot motion />
+      <Badge color="error" dot motion />
+    </Group>
+  );
+}
+```
+
+### Anchor Positioning
+
+Use the `BadgeAnchor` component to position the badge on other elements.
+
+```jsx live
+function Demo() {
+  const { Storage, Pod, Cluster } = KubedIcons;
+
+  return (
+    <Group spacing={40}>
+      <BadgeAnchor>
+        <Badge color="error">5</Badge>
+        <Storage size={40} />
+      </BadgeAnchor>
+      <BadgeAnchor>
+        <Badge color="success">12</Badge>
+        <Pod size={40} />
+      </BadgeAnchor>
+      <BadgeAnchor>
+        <Badge color="warning">99+</Badge>
+        <Cluster size={40} />
+      </BadgeAnchor>
+    </Group>
+  );
+}
+```
+
+### Anchor Placement
+
+Set badge position on anchor element using the `placement` prop.
+
+```jsx live
+function Demo() {
+  const { Storage } = KubedIcons;
+
+  return (
+    <Group spacing={40}>
+      <BadgeAnchor placement="topLeft">
+        <Badge color="primary">1</Badge>
+        <Storage size={40} />
+      </BadgeAnchor>
+      <BadgeAnchor placement="topRight">
+        <Badge color="success">2</Badge>
+        <Storage size={40} />
+      </BadgeAnchor>
+      <BadgeAnchor placement="bottomLeft">
+        <Badge color="warning">3</Badge>
+        <Storage size={40} />
+      </BadgeAnchor>
+      <BadgeAnchor placement="bottomRight">
+        <Badge color="error">4</Badge>
+        <Storage size={40} />
+      </BadgeAnchor>
+    </Group>
+  );
+}
+```
+
+### Offset
+
+Adjust badge position offset using the `offset` prop.
+
+```jsx live
+function Demo() {
+  const { Pod } = KubedIcons;
+
+  return (
+    <Group spacing={40}>
+      <BadgeAnchor offset={[0, 0]}>
+        <Badge color="error" dot />
+        <Pod size={40} />
+      </BadgeAnchor>
+      <BadgeAnchor offset={[5, 5]}>
+        <Badge color="success" dot motion />
+        <Pod size={40} />
+      </BadgeAnchor>
+      <BadgeAnchor offset={[10, 10]}>
+        <Badge color="warning" dot />
+        <Pod size={40} />
+      </BadgeAnchor>
+    </Group>
+  );
+}
+```
+
+### With Tooltip
+
+Combine with Tooltip to display more information.
+
+```jsx live
+function Demo() {
+  const { Storage, Pod } = KubedIcons;
+
+  return (
+    <Group spacing={40}>
+      <BadgeAnchor>
+        <Tooltip content="5 unread messages">
+          <Badge color="error">5</Badge>
+        </Tooltip>
+        <Storage size={40} />
+      </BadgeAnchor>
+      <BadgeAnchor offset={[5, 5]}>
+        <Tooltip content="Service running normally">
+          <Badge color="success" dot motion />
+        </Tooltip>
+        <Pod size={40} />
+      </BadgeAnchor>
+    </Group>
+  );
+}
+```
+
+### Practical Use Cases
+
+Display some common usage scenarios.
+
+```jsx live
+function Demo() {
+  const { Bell, Mail, Cart } = KubedIcons;
+
+  return (
+    <Group spacing={40}>
+      <BadgeAnchor>
+        <Badge color="error">3</Badge>
+        <Button variant="text" style={{ padding: '8px' }}>
+          <Bell size={20} />
+        </Button>
+      </BadgeAnchor>
+      <BadgeAnchor>
+        <Badge color="primary">12</Badge>
+        <Button variant="text" style={{ padding: '8px' }}>
+          <Mail size={20} />
+        </Button>
+      </BadgeAnchor>
+      <BadgeAnchor offset={[5, 5]}>
+        <Badge color="success" dot motion />
+        <Button variant="text" style={{ padding: '8px' }}>
+          <Cart size={20} />
+        </Button>
+      </BadgeAnchor>
+    </Group>
+  );
+}
+```
+
+## API
+
+### Badge
+
+| Property | Description                           | Type                                                                                   | Default |
+| -------- | ------------------------------------- | -------------------------------------------------------------------------------------- | ------- |
+| color    | Badge color                           | `'default' \| 'primary' \| 'secondary' \| 'success' \| 'warning' \| 'error' \| string` | -       |
+| shadow   | Whether to show shadow                | `boolean`                                                                              | `false` |
+| dot      | Whether to display as dot             | `boolean`                                                                              | `false` |
+| motion   | Whether to show animation (dot only)  | `boolean`                                                                              | `false` |
+| children | Badge content                         | `ReactNode`                                                                            | -       |
+
+### BadgeAnchor
+
+| Property  | Description    | Type                                                       | Default         |
+| --------- | -------------- | ---------------------------------------------------------- | --------------- |
+| placement | Badge position | `'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight'` | `'bottomRight'` |
+| offset    | Position offset | `[number, number]`                                        | `[0, 0]`        |
+| children  | Child elements | `ReactNode`                                                | -               |
+
+:::info
+
+**About Colors**:
+
+- Supports theme preset colors: `primary`, `secondary`, `success`, `warning`, `error`
+- Supports HEX format: `#ff6b6b`, `#228be6`
+- Supports RGB/RGBA format: `rgb(255, 107, 107)`, `rgba(255, 107, 107, 0.8)`
+- When `color` is not provided, default gray style is used
+
+**About Dot Badge**:
+
+- When `dot` is `true`, Badge will render as StatusDot component
+- `motion` prop only takes effect when `dot` is `true`
+- Dot badge is commonly used for status indication, such as online/offline status
+
+**About BadgeAnchor**:
+
+- BadgeAnchor is a positioning container, the first child element should be Badge
+- The second child element is the target element to add badge to
+- `offset` array format is `[x, y]`, used for fine-tuning position
+
+:::
+
+## Usage Guidelines
+
+### Number Display
+
+For large numbers, it's recommended to use truncation:
+
+```jsx
+// Recommended: Use truncation display
+<Badge color="error">{count > 99 ? '99+' : count}</Badge>
+
+// Not recommended: Display overly long numbers
+<Badge color="error">12345</Badge>
+```
+
+### Status Indication
+
+Use dot badge to represent status:
+
+```jsx
+// Online status
+<BadgeAnchor offset={[5, 5]}>
+  <Badge color="success" dot motion />
+  <Avatar />
+</BadgeAnchor>
+
+// Offline status
+<BadgeAnchor offset={[5, 5]}>
+  <Badge color="default" dot />
+  <Avatar />
+</BadgeAnchor>
+
+// Busy status
+<BadgeAnchor offset={[5, 5]}>
+  <Badge color="warning" dot />
+  <Avatar />
+</BadgeAnchor>
+```
+
+### With Icons
+
+Display count on icon buttons:
+
+```jsx
+<BadgeAnchor>
+  <Badge color="error">{unreadCount}</Badge>
+  <IconButton>
+    <Bell />
+  </IconButton>
+</BadgeAnchor>
+```
+
+### Shadow Usage
+
+Use shadow when needing more emphasis or on complex backgrounds:
+
+```jsx
+// When needing emphasis
+<Badge color="error" shadow>Important</Badge>
+
+// On dark background
+<div style={{ background: '#333', padding: '20px' }}>
+  <Badge color="warning" shadow>Attention</Badge>
+</div>
+```

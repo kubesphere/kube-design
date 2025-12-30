@@ -1,0 +1,346 @@
+---
+sidebar_position: 21
+---
+
+# useClipboard
+
+用于复制文本到剪贴板的 Hook，支持自动重置和错误处理。
+
+## 基本用法
+
+```jsx live
+function Demo() {
+  const clipboard = useClipboard();
+
+  return (
+    <div>
+      <Button onClick={() => clipboard.copy('Hello, World!')}>
+        {clipboard.copied ? '✓ 已复制' : '复制文本'}
+      </Button>
+      <div
+        style={{
+          marginTop: '12px',
+          padding: '12px',
+          backgroundColor: clipboard.copied ? 'var(--ifm-color-success-lightest)' : 'var(--ifm-color-emphasis-100)',
+          borderRadius: '6px',
+          fontSize: '14px',
+        }}
+      >
+        {clipboard.copied ? '文本已复制到剪贴板！' : '点击按钮复制文本'}
+      </div>
+    </div>
+  );
+}
+```
+
+## 自定义超时时间
+
+设置复制状态自动重置的时间：
+
+```jsx live
+function Demo() {
+  const clipboard = useClipboard({ timeout: 3000 });
+
+  return (
+    <div>
+      <Group spacing="md">
+        <Button
+          onClick={() => clipboard.copy('这段文本会被复制')}
+          variant={clipboard.copied ? 'filled' : 'outline'}
+        >
+          {clipboard.copied ? '✓ 已复制' : '复制'}
+        </Button>
+        <Button onClick={clipboard.reset} disabled={!clipboard.copied}>
+          重置状态
+        </Button>
+      </Group>
+      <div
+        style={{
+          marginTop: '12px',
+          padding: '12px',
+          backgroundColor: 'var(--ifm-background-surface-color)',
+          border: '1px solid var(--ifm-color-emphasis-300)',
+          borderRadius: '6px',
+          fontSize: '14px',
+        }}
+      >
+        复制状态会在 3 秒后自动重置
+      </div>
+    </div>
+  );
+}
+```
+
+## 复制输入框内容
+
+从输入框复制用户输入的内容：
+
+```jsx live
+function Demo() {
+  const [inputValue, setInputValue] = useState('复制我！');
+  const clipboard = useClipboard({ timeout: 2000 });
+
+  return (
+    <div>
+      <Input
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        placeholder="输入要复制的内容"
+        style={{ marginBottom: '12px' }}
+      />
+      <Button onClick={() => clipboard.copy(inputValue)}>
+        {clipboard.copied ? '✓ 已复制' : '复制输入内容'}
+      </Button>
+      {clipboard.copied && (
+        <div
+          style={{
+            marginTop: '12px',
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-success-lightest)',
+            borderRadius: '6px',
+            fontSize: '14px',
+          }}
+        >
+          已复制: <code>{inputValue}</code>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## 代码片段复制
+
+复制代码片段的常见用例：
+
+```jsx live
+function Demo() {
+  const clipboard = useClipboard({ timeout: 2000 });
+
+  const codeSnippet = `import { useClipboard } from '@kubed/hooks';
+
+function Demo() {
+  const clipboard = useClipboard();
+  return <button onClick={() => clipboard.copy('text')}>Copy</button>;
+}`;
+
+  return (
+    <div>
+      <div
+        style={{
+          position: 'relative',
+          padding: '16px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          fontFamily: 'monospace',
+          fontSize: '13px',
+          whiteSpace: 'pre-wrap',
+          marginBottom: '12px',
+        }}
+      >
+        {codeSnippet}
+        <Button
+          onClick={() => clipboard.copy(codeSnippet)}
+          size="sm"
+          style={{
+            position: 'absolute',
+            top: '8px',
+            right: '8px',
+          }}
+        >
+          {clipboard.copied ? '✓' : '复制'}
+        </Button>
+      </div>
+    </div>
+  );
+}
+```
+
+## 分享链接
+
+复制当前页面链接：
+
+```jsx live
+function Demo() {
+  const clipboard = useClipboard({ timeout: 2000 });
+  const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
+
+  return (
+    <div>
+      <div
+        style={{
+          display: 'flex',
+          gap: '8px',
+          padding: '12px',
+          backgroundColor: 'var(--ifm-background-surface-color)',
+          border: '1px solid var(--ifm-color-emphasis-300)',
+          borderRadius: '6px',
+          marginBottom: '12px',
+        }}
+      >
+        <Input
+          value={currentUrl}
+          readOnly
+          style={{ flex: 1 }}
+        />
+        <Button onClick={() => clipboard.copy(currentUrl)}>
+          {clipboard.copied ? '✓ 已复制' : '复制链接'}
+        </Button>
+      </div>
+      {clipboard.error && (
+        <div
+          style={{
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-danger-lightest)',
+            borderRadius: '6px',
+            fontSize: '14px',
+            color: 'var(--ifm-color-danger-dark)',
+          }}
+        >
+          复制失败: {clipboard.error.message}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## API
+
+### 参数
+
+```ts
+function useClipboard(options?: UseClipboardOptions): UseClipboardReturn
+```
+
+#### UseClipboardOptions
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| timeout | 复制状态自动重置的时间（毫秒） | `number` | `1000` |
+
+### 返回值
+
+返回一个对象，包含以下属性和方法：
+
+```ts
+interface UseClipboardReturn {
+  copy: (text: string) => void;  // 复制文本到剪贴板
+  copied: boolean;                // 文本是否已成功复制
+  reset: () => void;              // 手动重置复制状态
+  error: Error | null;            // 复制过程中的错误
+}
+```
+
+| 属性/方法 | 说明 | 类型 |
+|----------|------|------|
+| copy | 复制文本到剪贴板的函��� | `(text: string) => void` |
+| copied | 表示文本是否已复制 | `boolean` |
+| reset | 手动重置 copied 状态 | `() => void` |
+| error | 复制失败时的错误对象 | `Error \| null` |
+
+## 工作原理
+
+1. 使用 `navigator.clipboard.writeText()` API 复制文本
+2. 复制成功后设置 `copied` 为 `true`
+3. 在指定的超时时间后自动重置 `copied` 状态
+4. 捕获并存储任何复制错误
+
+## 浏览器兼容性
+
+`useClipboard` 使用现代的 Clipboard API，支持：
+- Chrome 63+
+- Firefox 53+
+- Safari 13.1+
+- Edge 79+
+
+对于不支持的浏览器，会抛出错误并存储在 `error` 属性中。
+
+## 注意事项
+
+- 需要在安全上下文（HTTPS 或 localhost）中使用
+- 某些浏览器需要用户交互才能复制
+- 复制操作是异步的
+- 注意处理复制失败的情况
+
+## 使用场景
+
+- **代码示例**: 复制代码片段到剪贴板
+- **分享功能**: 复制链接、邀请码等
+- **表单数据**: 复制生成的密钥、令牌等
+- **文本编辑器**: 实现复制功能
+- **数据展示**: 复制表格数据、ID 等
+
+## 最佳实践
+
+### 提供视觉反馈
+
+```jsx
+const clipboard = useClipboard();
+
+<Button
+  onClick={() => clipboard.copy(text)}
+  variant={clipboard.copied ? 'filled' : 'outline'}
+>
+  {clipboard.copied ? '✓ 已复制' : '复制'}
+</Button>
+```
+
+### 处理错误
+
+```jsx
+const clipboard = useClipboard();
+
+useEffect(() => {
+  if (clipboard.error) {
+    console.error('复制失败:', clipboard.error);
+    // 显示错误提示
+  }
+}, [clipboard.error]);
+```
+
+### 与提示组件结合
+
+```jsx
+const clipboard = useClipboard({ timeout: 2000 });
+
+useEffect(() => {
+  if (clipboard.copied) {
+    showNotification({
+      title: '成功',
+      message: '已复制到剪贴板',
+      color: 'green',
+    });
+  }
+}, [clipboard.copied]);
+```
+
+## 安全考虑
+
+- 只在用户交互后调用 `copy` 方法
+- 不要复制敏感信息到剪贴板
+- 验证要复制的文本内容
+- 在生产环境使用 HTTPS
+
+## 替代方案
+
+### 手动实现
+
+```jsx
+// ❌ 手动管理状态和超时
+const [copied, setCopied] = useState(false);
+
+const handleCopy = async (text) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1000);
+  } catch (err) {
+    console.error('Failed to copy:', err);
+  }
+};
+
+// ✅ 使用 Hook
+const clipboard = useClipboard();
+clipboard.copy(text);
+```

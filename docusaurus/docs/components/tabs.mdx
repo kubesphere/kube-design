@@ -1,0 +1,354 @@
+---
+sidebar_position: 1
+---
+
+# Tabs 选项卡
+
+选项卡切换组件，用于在不同的内容面板之间进行切换。
+
+## 何时使用
+
+标签页可以将大量信息分组到不同的类别中，让用户只关注他们想要的内容。
+
+在 Kube Design 中我们提供了 3 种标签页类型：
+
+- **Pills（药丸）**：默认样式，带背景色的激活指示器
+- **Line（线条）**：底部带下划线的激活指示器
+- **Outline（轮廓）**：带边框的标签页样式
+
+## 示例
+
+### 基础用法
+
+最基本的标签页用法，默认使用 pills 变体。
+
+```jsx live
+function Demo() {
+  return (
+    <Tabs>
+      <Tab label="标签一" key="one">
+        这是标签一的内容
+      </Tab>
+      <Tab label="标签二" key="two">
+        这是标签二的内容
+      </Tab>
+      <Tab label="标签三" key="three">
+        这是标签三的内容
+      </Tab>
+    </Tabs>
+  );
+}
+```
+
+### 变体
+
+Kube Design 提供了三种标签页变体：pills（药丸）、line（线条）和 outline（轮廓）。
+
+```jsx live
+function Demo() {
+  return (
+    <>
+      <Tabs variant="pills">
+        <Tab label="标签一" key="one">
+          Pills 变体内容一
+        </Tab>
+        <Tab label="标签二" key="two">
+          Pills 变体内容二
+        </Tab>
+        <Tab label="标签三" key="three">
+          Pills 变体内容三
+        </Tab>
+      </Tabs>
+
+      <Tabs variant="line" style={{ marginTop: '24px' }}>
+        <Tab label="标签一" key="one">
+          Line 变体内容一
+        </Tab>
+        <Tab label="标签二" key="two">
+          Line 变体内容二
+        </Tab>
+        <Tab label="标签三" key="three">
+          Line 变体内容三
+        </Tab>
+      </Tabs>
+
+      <Tabs variant="outline" style={{ marginTop: '24px' }}>
+        <Tab label="标签一" key="one">
+          Outline 变体内容一
+        </Tab>
+        <Tab label="标签二" key="two">
+          Outline 变体内容二
+        </Tab>
+        <Tab label="标签三" key="three">
+          Outline 变体内容三
+        </Tab>
+      </Tabs>
+    </>
+  );
+}
+```
+
+### 颜色
+
+通过 `color` 属性设置标签页的主题颜色。
+
+```jsx live
+function Demo() {
+  return (
+    <>
+      <Tabs variant="line" color="primary">
+        <Tab label="标签一" key="one">
+          Primary 颜色的内容
+        </Tab>
+        <Tab label="标签二" key="two">
+          Primary 颜色的内容
+        </Tab>
+        <Tab label="标签三" key="three">
+          Primary 颜色的内容
+        </Tab>
+      </Tabs>
+
+      <Tabs variant="line" color="success" style={{ marginTop: '24px' }}>
+        <Tab label="标签一" key="one">
+          Success 颜色的内容
+        </Tab>
+        <Tab label="标签二" key="two">
+          Success 颜色的内容
+        </Tab>
+        <Tab label="标签三" key="three">
+          Success 颜色的内容
+        </Tab>
+      </Tabs>
+    </>
+  );
+}
+```
+
+### 方向
+
+标签页支持水平和垂直两种方向，通过 `direction` 属性设置。
+
+```jsx live
+function Demo() {
+  return (
+    <>
+      <Tabs variant="line" direction="horizontal">
+        <Tab label="标签一" key="one">
+          水平方向的内容一
+        </Tab>
+        <Tab label="标签二" key="two">
+          水平方向的内容二
+        </Tab>
+        <Tab label="标签三" key="three">
+          水平方向的内容三
+        </Tab>
+      </Tabs>
+
+      <Tabs variant="line" direction="vertical" style={{ marginTop: '24px' }}>
+        <Tab label="标签一" key="one">
+          垂直方向的内容一
+        </Tab>
+        <Tab label="标签二" key="two">
+          垂直方向的内容二
+        </Tab>
+        <Tab label="标签三" key="three">
+          垂直方向的内容三
+        </Tab>
+      </Tabs>
+    </>
+  );
+}
+```
+
+### 位置
+
+使用 `position` 属性控制标签头的对齐方式，支持 `left`、`center` 和 `right`。
+
+```jsx live
+function Demo() {
+  return (
+    <>
+      <Tabs variant="line" position="left">
+        <Tab label="标签一" key="one">
+          左对齐的内容
+        </Tab>
+        <Tab label="标签二" key="two">
+          左对齐的内容
+        </Tab>
+        <Tab label="标签三" key="three">
+          左对齐的内容
+        </Tab>
+      </Tabs>
+
+      <Tabs variant="line" position="center" style={{ marginTop: '24px' }}>
+        <Tab label="标签一" key="one">
+          居中对齐的内容
+        </Tab>
+        <Tab label="标签二" key="two">
+          居中对齐的内容
+        </Tab>
+        <Tab label="标签三" key="three">
+          居中对齐的内容
+        </Tab>
+      </Tabs>
+
+      <Tabs variant="line" position="right" style={{ marginTop: '24px' }}>
+        <Tab label="标签一" key="one">
+          右对齐的内容
+        </Tab>
+        <Tab label="标签二" key="two">
+          右对齐的内容
+        </Tab>
+        <Tab label="标签三" key="three">
+          右对齐的内容
+        </Tab>
+      </Tabs>
+    </>
+  );
+}
+```
+
+### 自动填充宽度
+
+设置 `grow` 属性可以使标签头平均分配容器宽度。
+
+```jsx live
+function Demo() {
+  return (
+    <Tabs grow variant="line">
+      <Tab label="标签一" key="one">
+        自动填充宽度的内容一
+      </Tab>
+      <Tab label="标签二" key="two">
+        自动填充宽度的内容二
+      </Tab>
+      <Tab label="标签三" key="three">
+        自动填充宽度的内容三
+      </Tab>
+    </Tabs>
+  );
+}
+```
+
+### 尺寸
+
+使用 `size` 属性设置标签页的尺寸，支持 `xs`、`sm`、`md`、`lg` 和 `xl`。
+
+```jsx live
+function Demo() {
+  return (
+    <>
+      <Tabs variant="line" size="xs">
+        <Tab label="XS 尺寸" key="one">
+          超小尺寸的内容
+        </Tab>
+        <Tab label="标签二" key="two">
+          标签二的内容
+        </Tab>
+      </Tabs>
+
+      <Tabs variant="line" size="sm" style={{ marginTop: '24px' }}>
+        <Tab label="SM 尺寸" key="one">
+          小尺寸的内容
+        </Tab>
+        <Tab label="标签二" key="two">
+          标签二的内容
+        </Tab>
+      </Tabs>
+
+      <Tabs variant="line" size="md" style={{ marginTop: '24px' }}>
+        <Tab label="MD 尺寸" key="one">
+          中等尺寸的内容
+        </Tab>
+        <Tab label="标签二" key="two">
+          标签二的内容
+        </Tab>
+      </Tabs>
+
+      <Tabs variant="line" size="lg" style={{ marginTop: '24px' }}>
+        <Tab label="LG 尺寸" key="one">
+          大尺寸的内容
+        </Tab>
+        <Tab label="标签二" key="two">
+          标签二的内容
+        </Tab>
+      </Tabs>
+    </>
+  );
+}
+```
+
+### 受控模式
+
+可以通过 `activeKey` 和 `onTabChange` 属性来控制标签页的激活状态。
+
+```jsx live
+function Demo() {
+  const [activeKey, setActiveKey] = React.useState('one');
+
+  return (
+    <>
+      <Tabs activeKey={activeKey} onTabChange={setActiveKey} variant="line">
+        <Tab label="标签一" key="one">
+          这是标签一的内容，当前激活: {activeKey}
+        </Tab>
+        <Tab label="标签二" key="two">
+          这是标签二的内容，当前激活: {activeKey}
+        </Tab>
+        <Tab label="标签三" key="three">
+          这是标签三的内容，当前激活: {activeKey}
+        </Tab>
+      </Tabs>
+      <Group spacing="xs" style={{ marginTop: '16px' }}>
+        <Button size="sm" onClick={() => setActiveKey('one')}>
+          切换到标签一
+        </Button>
+        <Button size="sm" onClick={() => setActiveKey('two')}>
+          切换到标签二
+        </Button>
+        <Button size="sm" onClick={() => setActiveKey('three')}>
+          切换到标签三
+        </Button>
+      </Group>
+    </>
+  );
+}
+```
+
+## API
+
+### Tabs 属性
+
+| 属性                     | 说明                   | 类型                                                                         | 默认值         |
+| ------------------------ | ---------------------- | ---------------------------------------------------------------------------- | -------------- |
+| variant                  | 标签页变体             | `'pills' \| 'line' \| 'outline'`                                             | `'pills'`      |
+| activeKey                | 当前激活的标签         | `string`                                                                     | -              |
+| defaultActiveKey         | 默认激活的标签         | `string`                                                                     | -              |
+| onChange                 | 切换标签时的回调       | `(value: string) => void`                                                    | -              |
+| onTabChange              | 标签切换时的回调       | `(tabKey: string) => void`                                                   | -              |
+| name                     | 标签组名称             | `string`                                                                     | 随机生成的 ID  |
+| grow                     | 标签头自动填充宽度     | `boolean`                                                                    | `false`        |
+| color                    | 激活标签的颜色         | `'default' \| 'primary' \| 'secondary' \| 'success' \| 'warning' \| 'error'` | `'default'`    |
+| size                     | 标签尺寸               | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                                       | `'sm'`         |
+| radius                   | 边框圆角               | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number`                             | `'lg'`         |
+| position                 | 标签头对齐方式         | `'left' \| 'center' \| 'right'`                                              | `'left'`       |
+| direction                | 标签方向               | `'horizontal' \| 'vertical'`                                                 | `'horizontal'` |
+| tabPadding               | 标签内容内边距         | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number`                             | `'xs'`         |
+| transitionDuration       | 过渡动画时长（ms）     | `number`                                                                     | `150`          |
+| transitionTimingFunction | 过渡动画时间函数       | `string`                                                                     | -              |
+| className                | 自定义类名             | `string`                                                                     | -              |
+| children                 | 标签页内容（Tab 组件） | `ReactNode`                                                                  | -              |
+
+### Tab 属性
+
+| 属性     | 说明           | 类型        | 默认值  |
+| -------- | -------------- | ----------- | ------- |
+| label    | 标签头显示文本 | `ReactNode` | -       |
+| key      | 标签的唯一标识 | `string`    | -       |
+| icon     | 标签头图标     | `ReactNode` | -       |
+| disabled | 是否禁用       | `boolean`   | `false` |
+| children | 标签内容       | `ReactNode` | -       |
+
+:::info
+Tabs 组件继承所有原生 HTML div 元素的属性。Tab 组件主要用于配置标签页的结构和内容，不直接渲染为 DOM 元素。
+:::

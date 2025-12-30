@@ -1,0 +1,74 @@
+---
+sidebar_position: 1
+---
+
+# 图标
+
+Kube Design 提供了一个全面的图标库，包含数百个跨越多个类别的图标，支持多种样式和变体。
+
+## 可用图标
+
+图标库包含数百个图标，按类别分组。点击任意图标可复制其名称。
+
+import IconGallery from '@site/src/components/IconGallery';
+
+<IconGallery />
+
+## 使用方法
+
+### 图标大小
+
+使用 `size` 属性控制图标大小：
+
+```jsx live
+function Demo() {
+  const { AddDuotone } = KubedIcons;
+  return (
+    <Group spacing="lg">
+      <AddDuotone size={16} />
+      <AddDuotone size={24} />
+      <AddDuotone size={32} />
+      <AddDuotone size={48} />
+    </Group>
+  );
+}
+```
+
+### 图标颜色
+
+图标继承当前的文本颜色，你可以通过 CSS 或内联样式来控制颜色：
+
+```jsx live
+function Demo() {
+  const { AddDuotone } = KubedIcons;
+  return (
+    <Group spacing="md">
+      <AddDuotone size={32} style={{ color: '#55bc8a' }} />
+      <AddDuotone size={32} style={{ color: '#329dce' }} />
+      <AddDuotone size={32} style={{ color: '#f5a623' }} />
+      <AddDuotone size={32} style={{ color: '#ca2621' }} />
+    </Group>
+  );
+}
+```
+
+## 图标变体
+
+图标有多种样式可用：
+
+- **轮廓**：基于线条的图标（默认）
+- **填充**：纯色填充的图标
+- **双色调**：双色调图标
+
+## API
+
+### 图标属性
+
+所有图标接受以下属性：
+
+| Property  | Description            | Type               | Default          |
+| --------- | ---------------------- | ------------------ | ---------------- |
+| size      | 图标大小（像素）       | `number \| string` | `16`             |
+| color     | 图标颜色（CSS 颜色值） | `string`           | `'currentColor'` |
+| className | 额外的 CSS 类          | `string`           | -                |
+| style     | 内联样式               | `CSSProperties`    | -                |

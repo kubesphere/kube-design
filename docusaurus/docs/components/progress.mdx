@@ -1,0 +1,451 @@
+---
+sidebar_position: 1
+---
+
+# Progress 进度条
+
+展示操作的当前进度。
+
+## 何时使用
+
+- 在操作需要较长时间才能完成时，为用户显示该操作的当前进度和状态
+- 当一个操作会打断当前界面，或者需要在后台运行，且耗时可能超过 2 秒时
+- 需要显示一个操作完成的百分比时
+- 需要展示多个状态的占比分布时
+
+## 示例
+
+### 基础用法
+
+最简单的进度条用法。
+
+```jsx live
+function Demo() {
+  return <Progress value={50} color="#329dce" />;
+}
+```
+
+### 不同进度值
+
+展示不同进度值的进度条。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Progress value={0} color="#329dce" style={{ width: '100%' }} />
+      <Progress value={25} color="#329dce" style={{ width: '100%' }} />
+      <Progress value={50} color="#329dce" style={{ width: '100%' }} />
+      <Progress value={75} color="#329dce" style={{ width: '100%' }} />
+      <Progress value={100} color="#329dce" style={{ width: '100%' }} />
+    </Group>
+  );
+}
+```
+
+### 颜色
+
+通过 `color` 属性设置进度条颜色。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Progress value={60} color="success" style={{ width: '100%' }} />
+      <Progress value={60} color="warning" style={{ width: '100%' }} />
+      <Progress value={60} color="error" style={{ width: '100%' }} />
+      <Progress value={60} color="primary" style={{ width: '100%' }} />
+      <Progress value={60} color="secondary" style={{ width: '100%' }} />
+    </Group>
+  );
+}
+```
+
+### 自定义颜色
+
+支持使用 HEX 颜色值。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Progress value={60} color="#228be6" style={{ width: '100%' }} />
+      <Progress value={60} color="#40c057" style={{ width: '100%' }} />
+      <Progress value={60} color="#be4bdb" style={{ width: '100%' }} />
+      <Progress value={60} color="#ff6b6b" style={{ width: '100%' }} />
+      <Progress value={60} color="#fab005" style={{ width: '100%' }} />
+    </Group>
+  );
+}
+```
+
+### 尺寸
+
+通过 `size` 属性控制进度条高度。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Progress value={60} color="#329dce" size="xs" style={{ width: '100%' }} />
+      <Progress value={60} color="#329dce" size="sm" style={{ width: '100%' }} />
+      <Progress value={60} color="#329dce" size="md" style={{ width: '100%' }} />
+      <Progress value={60} color="#329dce" size="lg" style={{ width: '100%' }} />
+      <Progress value={60} color="#329dce" size="xl" style={{ width: '100%' }} />
+    </Group>
+  );
+}
+```
+
+### 自定义尺寸
+
+`size` 属性也支持传入数字值（单位为 px）。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Progress value={60} color="#329dce" size={4} style={{ width: '100%' }} />
+      <Progress value={60} color="#329dce" size={8} style={{ width: '100%' }} />
+      <Progress value={60} color="#329dce" size={16} style={{ width: '100%' }} />
+      <Progress value={60} color="#329dce" size={24} style={{ width: '100%' }} />
+    </Group>
+  );
+}
+```
+
+### 圆角
+
+通过 `radius` 属性控制进度条圆角。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Progress value={60} color="#329dce" size="lg" radius="xs" style={{ width: '100%' }} />
+      <Progress value={60} color="#329dce" size="lg" radius="sm" style={{ width: '100%' }} />
+      <Progress value={60} color="#329dce" size="lg" radius="md" style={{ width: '100%' }} />
+      <Progress value={60} color="#329dce" size="lg" radius="lg" style={{ width: '100%' }} />
+      <Progress value={60} color="#329dce" size="lg" radius="xl" style={{ width: '100%' }} />
+    </Group>
+  );
+}
+```
+
+### 条纹样式
+
+通过 `striped` 属性添加条纹效果。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Progress value={60} color="#329dce" striped style={{ width: '100%' }} />
+      <Progress value={60} color="#55bc8a" striped style={{ width: '100%' }} />
+      <Progress value={60} color="#f5a623" striped style={{ width: '100%' }} />
+      <Progress value={60} color="#ca2621" striped style={{ width: '100%' }} />
+    </Group>
+  );
+}
+```
+
+### 多段进度条
+
+通过 `sections` 属性渲染多段进度条，展示不同状态的占比。
+
+```jsx live
+function Demo() {
+  return (
+    <Progress
+      size="xl"
+      sections={[
+        { value: 30, color: '#55bc8a' },
+        { value: 40, color: '#f5a623' },
+        { value: 20, color: '#ca2621' },
+      ]}
+    />
+  );
+}
+```
+
+### 资源使用情况
+
+展示资源使用情况的典型场景。
+
+```jsx live
+function Demo() {
+  const used = 65;
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '400px' }}>
+        <div style={{ marginBottom: '12px' }}>
+          <span style={{ fontWeight: 600 }}>CPU 使用率</span>
+          <span style={{ float: 'right', color: '#79879c' }}>{used}%</span>
+        </div>
+        <Progress value={used} color={used > 80 ? '#ca2621' : used > 60 ? '#f5a623' : '#55bc8a'} />
+      </Card>
+    </div>
+  );
+}
+```
+
+### 多项资源监控
+
+展示多项资源的使用情况。
+
+```jsx live
+function Demo() {
+  const resources = [
+    { name: 'CPU', used: 45, color: '#55bc8a' },
+    { name: '内存', used: 72, color: '#f5a623' },
+    { name: '存储', used: 89, color: '#ca2621' },
+  ];
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '400px' }}>
+        <Group direction="column" spacing="lg">
+          {resources.map((resource) => (
+            <div key={resource.name}>
+              <div
+                style={{ marginBottom: '8px', display: 'flex', justifyContent: 'space-between' }}
+              >
+                <span>{resource.name}</span>
+                <span style={{ color: '#79879c' }}>{resource.used}%</span>
+              </div>
+              <Progress value={resource.used} color={resource.color} />
+            </div>
+          ))}
+        </Group>
+      </Card>
+    </div>
+  );
+}
+```
+
+### 配额分布
+
+展示资源配额的分布情况。
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ width: '400px' }}>
+        <div style={{ marginBottom: '16px', fontWeight: 600 }}>Pod 状态分布</div>
+        <Progress
+          size="lg"
+          sections={[
+            { value: 60, color: '#55bc8a' },
+            { value: 25, color: '#f5a623' },
+            { value: 15, color: '#ca2621' },
+          ]}
+        />
+        <Group style={{ marginTop: '12px', fontSize: '12px' }}>
+          <Group spacing="xs">
+            <div
+              style={{
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                backgroundColor: '#55bc8a',
+              }}
+            />
+            <span>运行中 60%</span>
+          </Group>
+          <Group spacing="xs">
+            <div
+              style={{
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                backgroundColor: '#f5a623',
+              }}
+            />
+            <span>等待中 25%</span>
+          </Group>
+          <Group spacing="xs">
+            <div
+              style={{
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                backgroundColor: '#ca2621',
+              }}
+            />
+            <span>失败 15%</span>
+          </Group>
+        </Group>
+      </Card>
+    </div>
+  );
+}
+```
+
+### 动态进度
+
+动态更新进度条的值。
+
+```jsx live
+function Demo() {
+  const [progress, setProgress] = React.useState(0);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) return 0;
+        return prev + 10;
+      });
+    }, 500);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div>
+      <Progress value={progress} color="#329dce" striped />
+      <div style={{ marginTop: '8px', textAlign: 'center', color: '#79879c' }}>{progress}%</div>
+    </div>
+  );
+}
+```
+
+## API
+
+### Progress
+
+| 属性     | 说明              | 类型                                             | 默认值  |
+| -------- | ----------------- | ------------------------------------------------ | ------- |
+| value    | 当前进度（0-100） | `number`                                         | -       |
+| color    | 进度条颜色        | `string`                                         | -       |
+| size     | 进度条高度        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number` | `'md'`  |
+| radius   | 进度条圆角        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number` | `'sm'`  |
+| striped  | 是否显示条纹      | `boolean`                                        | `false` |
+| sections | 多段进度条配置    | `Array<{ value: number; color: string }>`        | -       |
+
+:::info
+
+**关于 value**：
+
+- `value` 的范围是 0-100，表示百分比
+- 当使用 `sections` 时，`value` 会被忽略
+
+**关于颜色**：
+
+- 支持主题预设颜色：`primary`、`secondary`、`success`、`warning`、`error`
+- 支持 HEX 格式：`#55bc8a`、`#f5a623`
+- 支持 RGB/RGBA 格式
+
+**关于 sections**：
+
+- 用于渲染多段不同颜色的进度条
+- 每段需要指定 `value`（百分比）和 `color`
+- 各段的 `value` 之和不应超过 100
+
+**关于尺寸**：
+
+- 预设尺寸：`xs`（4px）、`sm`（8px）、`md`（12px）、`lg`（16px）、`xl`（20px）
+- 也可以直接传入数字值
+
+:::
+
+## 使用建议
+
+### 显示进度数值
+
+结合文本显示具体的进度数值：
+
+```jsx
+<div>
+  <div style={{ marginBottom: '8px', display: 'flex', justifyContent: 'space-between' }}>
+    <span>下载进度</span>
+    <span>{progress}%</span>
+  </div>
+  <Progress value={progress} />
+</div>
+```
+
+### 状态颜色
+
+根据进度值动态改变颜色：
+
+```jsx
+const getColor = (value) => {
+  if (value >= 90) return 'error';
+  if (value >= 70) return 'warning';
+  return 'success';
+};
+
+<Progress value={used} color={getColor(used)} />;
+```
+
+### 多段进度条图例
+
+为多段进度条添加图例说明：
+
+```jsx
+<Progress
+  sections={[
+    { value: 60, color: 'success' },
+    { value: 25, color: 'warning' },
+    { value: 15, color: 'error' },
+  ]}
+/>
+<Group style={{ marginTop: '8px' }}>
+  <Badge color="success">成功 60%</Badge>
+  <Badge color="warning">警告 25%</Badge>
+  <Badge color="error">失败 15%</Badge>
+</Group>
+```
+
+### 条纹用于进行中状态
+
+使用条纹样式表示正在进行中的操作：
+
+```jsx
+// 进行中：使用条纹
+<Progress value={progress} striped />
+
+// 已完成：不使用条纹
+<Progress value={100} color="success" />
+```
+
+### 资源监控面板
+
+创建资源监控面板：
+
+```jsx
+const resources = [
+  { name: 'CPU', value: 45 },
+  { name: '内存', value: 72 },
+  { name: '磁盘', value: 89 },
+];
+
+<Card>
+  {resources.map((resource) => (
+    <div key={resource.name}>
+      <div>
+        {resource.name}: {resource.value}%
+      </div>
+      <Progress
+        value={resource.value}
+        color={resource.value > 80 ? 'error' : resource.value > 60 ? 'warning' : 'success'}
+      />
+    </div>
+  ))}
+</Card>;
+```
+
+### 加载进度
+
+显示文件上传或下载进度：
+
+```jsx
+const [uploadProgress, setUploadProgress] = React.useState(0);
+
+<Card>
+  <div>正在上传文件...</div>
+  <Progress value={uploadProgress} striped />
+  <div>{uploadProgress}% 已完成</div>
+</Card>;
+```

@@ -1,0 +1,292 @@
+---
+sidebar_position: 4
+---
+
+# Container 容器
+
+限制内容最大宽度并居中的容器组件，适用于创建响应式页面布局。
+
+## 何时使用
+
+- 创建响应式页面布局
+- 限制内容的最大宽度，提升阅读体验
+- 需要在不同屏幕尺寸下保持一致的内容宽度
+- 构建标准的页面框架结构
+
+## 示例
+
+### 基础用法
+
+Container 默认设置 `padding` 为 `md`，内容会水平居中。
+
+```jsx live
+function Demo() {
+  return (
+    <Container>
+      <div style={{ background: '#f7f8fa', padding: '20px', borderRadius: '4px' }}>
+        <h3 style={{ marginBottom: '12px' }}>容器内容</h3>
+        <p style={{ color: '#79879c', lineHeight: '1.6' }}>
+          Container 组件用于限制内容的最大宽度并使其居中对齐。
+          它提供了预设的响应式断点，可以根据屏幕尺寸自动调整容器宽度，
+          为用户提供最佳的阅读体验。
+        </p>
+      </div>
+    </Container>
+  );
+}
+```
+
+### 容器尺寸
+
+使用 `size` 属性设置容器的最大宽度。可选值：`xs`、`sm`、`md`、`lg`、`xl`。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>尺寸: xs (570px)</h4>
+      <Container size="xs" style={{ marginBottom: '24px' }}>
+        <div style={{ background: '#e3f2fd', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0 }}>
+            这是一个 xs 尺寸的容器，最大宽度为 570px，适合较窄的内容布局。
+          </p>
+        </div>
+      </Container>
+
+      <h4 style={{ marginBottom: '12px' }}>尺寸: sm (640px)</h4>
+      <Container size="sm" style={{ marginBottom: '24px' }}>
+        <div style={{ background: '#f3e5f5', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0 }}>
+            这是一个 sm 尺寸的容器，最大宽度为 640px，适合小型设备或紧凑布局。
+          </p>
+        </div>
+      </Container>
+
+      <h4 style={{ marginBottom: '12px' }}>尺寸: md (768px)</h4>
+      <Container size="md" style={{ marginBottom: '24px' }}>
+        <div style={{ background: '#fff3e0', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0 }}>
+            这是一个 md 尺寸的容器，最大宽度为 768px，适合平板设备或中等宽度布局。
+          </p>
+        </div>
+      </Container>
+
+      <h4 style={{ marginBottom: '12px' }}>尺寸: lg (1024px)</h4>
+      <Container size="lg" style={{ marginBottom: '24px' }}>
+        <div style={{ background: '#e8f5e9', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0 }}>
+            这是一个 lg 尺寸的容器，最大宽度为 1024px，适合桌面设备或宽屏布局。
+          </p>
+        </div>
+      </Container>
+
+      <h4 style={{ marginBottom: '12px' }}>尺寸: xl (1280px)</h4>
+      <Container size="xl">
+        <div style={{ background: '#fce4ec', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0 }}>
+            这是一个 xl 尺寸的容器，最大宽度为 1280px，适合大屏幕或需要更宽内容区域的场景。
+          </p>
+        </div>
+      </Container>
+    </div>
+  );
+}
+```
+
+### 自定义尺寸
+
+`size` 属性也可以设置为具体的像素值。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>自定义宽度: 500px</h4>
+      <Container size={500} style={{ marginBottom: '24px' }}>
+        <div style={{ background: '#f7f8fa', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0, color: '#79879c' }}>
+            容器最大宽度为 500px
+          </p>
+        </div>
+      </Container>
+
+      <h4 style={{ marginBottom: '12px' }}>自定义宽度: 900px</h4>
+      <Container size={900}>
+        <div style={{ background: '#f7f8fa', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0, color: '#79879c' }}>
+            容器最大宽度为 900px
+          </p>
+        </div>
+      </Container>
+    </div>
+  );
+}
+```
+
+### 内边距控制
+
+使用 `padding` 属性控制容器的水平内边距。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>内边距: xs</h4>
+      <Container size="md" padding="xs" style={{ marginBottom: '24px' }}>
+        <div style={{ background: '#f7f8fa', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0 }}>较小的内边距</p>
+        </div>
+      </Container>
+
+      <h4 style={{ marginBottom: '12px' }}>内边距: md (默认)</h4>
+      <Container size="md" padding="md" style={{ marginBottom: '24px' }}>
+        <div style={{ background: '#f7f8fa', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0 }}>中等内边距</p>
+        </div>
+      </Container>
+
+      <h4 style={{ marginBottom: '12px' }}>内边距: xl</h4>
+      <Container size="md" padding="xl">
+        <div style={{ background: '#f7f8fa', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0 }}>较大的内边距</p>
+        </div>
+      </Container>
+    </div>
+  );
+}
+```
+
+### 流式容器
+
+设置 `fluid` 属性后，容器宽度将占满父元素 100%，忽略 `size` 设置。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>固定尺寸容器 (size="md")</h4>
+      <Container size="md" style={{ marginBottom: '24px' }}>
+        <div style={{ background: '#e3f2fd', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0 }}>这是一个固定最大宽度的容器</p>
+        </div>
+      </Container>
+
+      <h4 style={{ marginBottom: '12px' }}>流式容器 (fluid)</h4>
+      <Container fluid>
+        <div style={{ background: '#f3e5f5', padding: '16px', borderRadius: '4px' }}>
+          <p style={{ margin: 0 }}>这是一个流式容器，宽度为 100%</p>
+        </div>
+      </Container>
+    </div>
+  );
+}
+```
+
+### 页面布局示例
+
+Container 常用于页面主体内容的布局。
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      {/* 页面头部 */}
+      <div style={{ background: '#242e42', color: '#fff', padding: '16px 0' }}>
+        <Container size="lg">
+          <Group position="apart">
+            <h3 style={{ margin: 0 }}>Kube Design</h3>
+            <Group spacing="md">
+              <span>首页</span>
+              <span>组件</span>
+              <span>文档</span>
+            </Group>
+          </Group>
+        </Container>
+      </div>
+
+      {/* 页面内容 */}
+      <Container size="lg" style={{ marginTop: '24px', marginBottom: '24px' }}>
+        <div style={{ background: '#f7f8fa', padding: '24px', borderRadius: '4px' }}>
+          <h2 style={{ marginBottom: '16px' }}>页面标题</h2>
+          <p style={{ color: '#79879c', lineHeight: '1.6', marginBottom: '16px' }}>
+            Container 组件适用于构建标准的页面布局。通过设置合适的尺寸，
+            可以确保内容在不同屏幕尺寸下都有良好的可读性和视觉效果。
+          </p>
+          <Button variant="filled" color="primary">了解更多</Button>
+        </div>
+      </Container>
+
+      {/* 页面底部 */}
+      <div style={{ background: '#f7f8fa', padding: '24px 0', borderTop: '1px solid #d1d5de' }}>
+        <Container size="lg">
+          <p style={{ margin: 0, textAlign: 'center', color: '#79879c', fontSize: '14px' }}>
+            © 2024 Kube Design. All rights reserved.
+          </p>
+        </Container>
+      </div>
+    </div>
+  );
+}
+```
+
+### 嵌套使用
+
+Container 可以嵌套使用，内层容器会受到外层容器的宽度限制。
+
+```jsx live
+function Demo() {
+  return (
+    <Container size="lg" style={{ background: '#f7f8fa', padding: '20px' }}>
+      <h4 style={{ marginBottom: '16px' }}>外层容器 (lg - 1024px)</h4>
+      <Container size="md" style={{ background: '#fff', padding: '20px', border: '1px solid #d1d5de' }}>
+        <h4 style={{ marginBottom: '16px' }}>内层容器 (md - 768px)</h4>
+        <Container size="sm" style={{ background: '#e3f2fd', padding: '20px' }}>
+          <p style={{ margin: 0 }}>最内层容器 (sm - 640px)</p>
+        </Container>
+      </Container>
+    </Container>
+  );
+}
+```
+
+## API
+
+### Container 属性
+
+| 属性     | 说明                                              | 类型              | 默认值 |
+| -------- | ------------------------------------------------- | ----------------- | ------ |
+| size     | 容器最大宽度，可以是预设尺寸或具体像素值          | `KubedNumberSize` | -      |
+| padding  | 容器的水平内边距                                  | `KubedNumberSize` | `'md'` |
+| fluid    | 是否为流式容器，设置后容器宽度为 100%，忽略 size | `boolean`         | `false`|
+| children | 容器内容                                          | `ReactNode`       | -      |
+| 其他     | 原生属性                                          | `HTMLAttributes<HTMLDivElement>` | - |
+
+:::info
+
+**预设尺寸值**：
+
+- `xs`: 570px
+- `sm`: 640px
+- `md`: 768px
+- `lg`: 1024px
+- `xl`: 1280px
+
+Container 组件继承所有原生 HTML div 元素的属性（如 `onClick`、`onMouseEnter` 等）。
+
+:::
+
+## 响应式设计
+
+Container 组件的设计遵循移动优先原则：
+
+- 在小屏幕设备上，容器会自动适应屏幕宽度
+- 在大屏幕设备上，容器不会超过设置的最大宽度
+- 通过 `padding` 属性确保内容不会紧贴屏幕边缘
+
+推荐的使用场景：
+
+- **xs/sm**: 移动设备、小型弹窗
+- **md**: 平板设备、中等宽度内容
+- **lg**: 桌面设备、标准页面布局
+- **xl**: 大屏幕、宽屏内容展示
+- **fluid**: 需要占满整个父容器的场景

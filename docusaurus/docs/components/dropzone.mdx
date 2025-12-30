@@ -1,0 +1,455 @@
+---
+sidebar_position: 1
+---
+
+# Dropzone 文件上传区域
+
+支持拖拽上传的文件选择区域。
+
+## 何时使用
+
+- 需要用户上传文件时
+- 支持拖拽上传功能
+- 需要限制文件类型和大小
+- 需要上传多个文件
+
+## 示例
+
+### 基础用法
+
+最简单的用法，点击或拖拽文件到区域即可触发上传。
+
+```jsx live
+function Demo() {
+  const [files, setFiles] = React.useState([]);
+
+  const handleDrop = (acceptedFiles) => {
+    setFiles(acceptedFiles);
+  };
+
+  return (
+    <div>
+      <Dropzone onDrop={handleDrop}>
+        <div style={{ padding: '40px', textAlign: 'center' }}>
+          <div style={{ fontSize: '16px', marginBottom: '8px' }}>拖拽文件到此处或点击选择文件</div>
+          <div style={{ fontSize: '14px', color: '#79879c' }}>支持任意类型文件上传</div>
+        </div>
+      </Dropzone>
+      {files.length > 0 && (
+        <div style={{ marginTop: '16px', color: '#79879c', fontSize: '14px' }}>
+          已选择文件: {files.map((f) => f.name).join(', ')}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+### 状态显示
+
+使用 `Dropzone.Accept`、`Dropzone.Reject`、`Dropzone.Idle` 显示不同状态。
+
+```jsx live
+function Demo() {
+  const { UploadDuotone, CheckDuotone, CloseDuotone } = KubedIcons;
+
+  return (
+    <Dropzone
+      onDrop={(files) => console.log('接受的文件:', files)}
+      onReject={(files) => console.log('拒绝的文件:', files)}
+      accept={['image/*']}
+    >
+      <Group position="center" spacing="xl" style={{ minHeight: 220, pointerEvents: 'none' }}>
+        <Dropzone.Accept>
+          <Center>
+            <div style={{ textAlign: 'center' }}>
+              <CheckDuotone size={50} color="#55bc8a" />
+              <div style={{ marginTop: '12px', fontSize: '16px', color: '#55bc8a' }}>
+                释放以上传文件
+              </div>
+            </div>
+          </Center>
+        </Dropzone.Accept>
+
+        <Dropzone.Reject>
+          <Center>
+            <div style={{ textAlign: 'center' }}>
+              <CloseDuotone size={50} color="#ca2621" />
+              <div style={{ marginTop: '12px', fontSize: '16px', color: '#ca2621' }}>
+                不支持此类型文件
+              </div>
+            </div>
+          </Center>
+        </Dropzone.Reject>
+
+        <Dropzone.Idle>
+          <Center>
+            <div style={{ textAlign: 'center' }}>
+              <UploadDuotone size={50} color="#79879c" />
+              <div style={{ marginTop: '12px', fontSize: '16px' }}>拖拽图片到此处</div>
+              <div style={{ marginTop: '8px', fontSize: '14px', color: '#79879c' }}>
+                仅支持图片文件
+              </div>
+            </div>
+          </Center>
+        </Dropzone.Idle>
+      </Group>
+    </Dropzone>
+  );
+}
+```
+
+### 限制文件类型
+
+通过 `accept` 属性限制可上传的文件类型。
+
+```jsx live
+function Demo() {
+  const [files, setFiles] = React.useState([]);
+
+  return (
+    <div>
+      <Dropzone onDrop={setFiles} accept={['image/png', 'image/jpeg', 'image/gif']}>
+        <div style={{ padding: '40px', textAlign: 'center' }}>
+          <div style={{ fontSize: '16px', marginBottom: '8px' }}>上传图片</div>
+          <div style={{ fontSize: '14px', color: '#79879c' }}>
+            仅支持 PNG、JPEG、GIF 格式
+          </div>
+        </div>
+      </Dropzone>
+      {files.length > 0 && (
+        <div style={{ marginTop: '16px', color: '#55bc8a', fontSize: '14px' }}>
+          已选择: {files.map((f) => f.name).join(', ')}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+### 限制文件大小
+
+通过 `maxSize` 属性限制文件大小（单位：字节）。
+
+```jsx live
+function Demo() {
+  const [files, setFiles] = React.useState([]);
+  const [rejected, setRejected] = React.useState([]);
+
+  const handleDrop = (acceptedFiles) => {
+    setFiles(acceptedFiles);
+    setRejected([]);
+  };
+
+  const handleReject = (fileRejections) => {
+    setRejected(fileRejections);
+  };
+
+  return (
+    <div>
+      <Dropzone onDrop={handleDrop} onReject={handleReject} maxSize={1024 * 1024}>
+        <div style={{ padding: '40px', textAlign: 'center' }}>
+          <div style={{ fontSize: '16px', marginBottom: '8px' }}>上传文件</div>
+          <div style={{ fontSize: '14px', color: '#79879c' }}>文件大小不超过 1MB</div>
+        </div>
+      </Dropzone>
+      {files.length > 0 && (
+        <div style={{ marginTop: '16px', color: '#55bc8a', fontSize: '14px' }}>
+          已选择: {files.map((f) => `${f.name} (${(f.size / 1024).toFixed(2)}KB)`).join(', ')}
+        </div>
+      )}
+      {rejected.length > 0 && (
+        <div style={{ marginTop: '16px', color: '#ca2621', fontSize: '14px' }}>
+          文件过大: {rejected.map((f) => f.file.name).join(', ')}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+### 单文件上传
+
+设置 `multiple={false}` 限制只能选择一个文件。
+
+```jsx live
+function Demo() {
+  const [file, setFile] = React.useState(null);
+
+  const handleDrop = (files) => {
+    setFile(files[0]);
+  };
+
+  return (
+    <div>
+      <Dropzone onDrop={handleDrop} multiple={false}>
+        <div style={{ padding: '40px', textAlign: 'center' }}>
+          <div style={{ fontSize: '16px', marginBottom: '8px' }}>上传单个文件</div>
+          <div style={{ fontSize: '14px', color: '#79879c' }}>只能选择一个文件</div>
+        </div>
+      </Dropzone>
+      {file && (
+        <div style={{ marginTop: '16px', color: '#79879c', fontSize: '14px' }}>
+          已选择文件: {file.name} ({(file.size / 1024).toFixed(2)}KB)
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+### 限制文件数量
+
+通过 `maxFiles` 属性限制最多上传的文件数量。
+
+```jsx live
+function Demo() {
+  const [files, setFiles] = React.useState([]);
+
+  return (
+    <div>
+      <Dropzone onDrop={setFiles} maxFiles={3}>
+        <div style={{ padding: '40px', textAlign: 'center' }}>
+          <div style={{ fontSize: '16px', marginBottom: '8px' }}>上传文件</div>
+          <div style={{ fontSize: '14px', color: '#79879c' }}>最多上传 3 个文件</div>
+        </div>
+      </Dropzone>
+      {files.length > 0 && (
+        <div style={{ marginTop: '16px' }}>
+          <div style={{ fontSize: '14px', color: '#79879c', marginBottom: '8px' }}>
+            已选择 {files.length} 个文件:
+          </div>
+          {files.map((file, index) => (
+            <div key={index} style={{ fontSize: '14px', color: '#79879c' }}>
+              {index + 1}. {file.name}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+### 禁用状态
+
+通过 `disabled` 属性禁用文件上传。
+
+```jsx live
+function Demo() {
+  const [disabled, setDisabled] = React.useState(true);
+
+  return (
+    <div>
+      <Dropzone onDrop={(files) => console.log(files)} disabled={disabled}>
+        <div style={{ padding: '40px', textAlign: 'center' }}>
+          <div style={{ fontSize: '16px', marginBottom: '8px' }}>
+            {disabled ? '禁用状态' : '启用状态'}
+          </div>
+          <div style={{ fontSize: '14px', color: '#79879c' }}>
+            {disabled ? '无法上传文件' : '可以上传文件'}
+          </div>
+        </div>
+      </Dropzone>
+      <Button style={{ marginTop: '16px' }} onClick={() => setDisabled(!disabled)}>
+        {disabled ? '启用' : '禁用'}
+      </Button>
+    </div>
+  );
+}
+```
+
+### 加载状态
+
+通过 `loading` 属性显示加载状态。
+
+```jsx live
+function Demo() {
+  const [loading, setLoading] = React.useState(false);
+  const [files, setFiles] = React.useState([]);
+
+  const handleDrop = (acceptedFiles) => {
+    setLoading(true);
+    setFiles(acceptedFiles);
+    // 模拟上传
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  };
+
+  return (
+    <div>
+      <Dropzone onDrop={handleDrop} loading={loading}>
+        <div style={{ padding: '40px', textAlign: 'center' }}>
+          <div style={{ fontSize: '16px', marginBottom: '8px' }}>上传文件</div>
+          <div style={{ fontSize: '14px', color: '#79879c' }}>
+            {loading ? '正在上传...' : '拖拽文件到此处'}
+          </div>
+        </div>
+      </Dropzone>
+      {files.length > 0 && !loading && (
+        <div style={{ marginTop: '16px', color: '#55bc8a', fontSize: '14px' }}>
+          上传成功: {files.map((f) => f.name).join(', ')}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+### 禁用点击
+
+设置 `activateOnClick={false}` 禁用点击选择文件，仅支持拖拽。
+
+```jsx live
+function Demo() {
+  const [files, setFiles] = React.useState([]);
+
+  return (
+    <div>
+      <Dropzone onDrop={setFiles} activateOnClick={false}>
+        <div style={{ padding: '40px', textAlign: 'center' }}>
+          <div style={{ fontSize: '16px', marginBottom: '8px' }}>仅支持拖拽上传</div>
+          <div style={{ fontSize: '14px', color: '#79879c' }}>点击无效，只能拖拽文件</div>
+        </div>
+      </Dropzone>
+      {files.length > 0 && (
+        <div style={{ marginTop: '16px', color: '#79879c', fontSize: '14px' }}>
+          已选择: {files.map((f) => f.name).join(', ')}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## API
+
+### Dropzone 属性
+
+| 属性                 | 说明                                     | 类型                                                     | 默认值       |
+| -------------------- | ---------------------------------------- | -------------------------------------------------------- | ------------ |
+| onDrop               | 文件被接受时的回调                       | `(files: File[]) => void`                                | -            |
+| onReject             | 文件被拒绝时的回调                       | `(fileRejections: FileRejection[]) => void`              | -            |
+| onDropAny            | 任何文件被放置时的回调                   | `(files: File[], rejections: FileRejection[]) => void`   | -            |
+| accept               | 接受的文件类型（MIME 类型）              | `string[]`                                               | -            |
+| multiple             | 是否允许多文件上传                       | `boolean`                                                | `true`       |
+| maxSize              | 文件最大大小（字节）                     | `number`                                                 | `Infinity`   |
+| maxFiles             | 最大文件数量                             | `number`                                                 | `0`          |
+| disabled             | 是否禁用                                 | `boolean`                                                | `false`      |
+| loading              | 是否显示加载状态                         | `boolean`                                                | `false`      |
+| activateOnClick      | 是否允许点击选择文件                     | `boolean`                                                | `true`       |
+| activateOnDrag       | 是否允许拖拽上传                         | `boolean`                                                | `true`       |
+| activateOnKeyboard   | 是否允许键盘操作                         | `boolean`                                                | `true`       |
+| openRef              | 获取 open 函数的 ref                     | `React.Ref<() => void>`                                  | -            |
+| name                 | 表单控件的名称                           | `string`                                                 | -            |
+| validator            | 自定义文件验证函数                       | `(file: File) => FileError \| FileError[] \| null`       | -            |
+| onDragEnter          | 拖拽进入时的回调                         | `(event: DragEvent) => void`                             | -            |
+| onDragLeave          | 拖拽离开时的回调                         | `(event: DragEvent) => void`                             | -            |
+| onDragOver           | 拖拽悬停时的回调                         | `(event: DragEvent) => void`                             | -            |
+| onFileDialogOpen     | 文件对话框打开时的回调                   | `() => void`                                             | -            |
+| onFileDialogCancel   | 文件对话框取消时的回调                   | `() => void`                                             | -            |
+| 其他                 | 原生属性                                 | `HTMLAttributes<HTMLDivElement>`                         | -            |
+
+:::info
+
+**关于 accept**：
+- `accept` 接受 MIME 类型数组，例如 `['image/*']`、`['image/png', 'image/jpeg']`
+- 常用 MIME 类型：
+  - 图片：`'image/*'`、`'image/png'`、`'image/jpeg'`、`'image/gif'`
+  - 文档：`'application/pdf'`、`'application/msword'`
+  - 视频：`'video/*'`、`'video/mp4'`
+  - 音频：`'audio/*'`、`'audio/mp3'`
+
+**关于文件验证**：
+- `maxSize` 以字节为单位，1MB = 1024 * 1024 字节
+- `maxFiles` 为 0 表示不限制文件数量
+- 被拒绝的文件会通过 `onReject` 回调返回，包含拒绝原因
+
+**关于子组件**：
+- `Dropzone.Accept`：拖拽有效文件时显示
+- `Dropzone.Reject`：拖拽无效文件时显示
+- `Dropzone.Idle`：默认状态时显示
+
+:::
+
+### Dropzone.Accept / Reject / Idle
+
+| 属性     | 说明     | 类型        | 默认值 |
+| -------- | -------- | ----------- | ------ |
+| children | 子元素   | `ReactNode` | -      |
+
+## 使用建议
+
+### 文件类型限制
+
+根据业务需求限制文件类型：
+
+```jsx
+// 图片文件
+<Dropzone accept={['image/*']} />
+
+// 特定图片格式
+<Dropzone accept={['image/png', 'image/jpeg']} />
+
+// 文档文件
+<Dropzone accept={['application/pdf', 'application/msword']} />
+
+// 多种类型
+<Dropzone accept={['image/*', 'application/pdf']} />
+```
+
+### 文件大小处理
+
+合理设置文件大小限制：
+
+```jsx
+// 1MB
+<Dropzone maxSize={1024 * 1024} />
+
+// 5MB
+<Dropzone maxSize={5 * 1024 * 1024} />
+
+// 10MB
+<Dropzone maxSize={10 * 1024 * 1024} />
+```
+
+### 错误处理
+
+处理文件上传错误：
+
+```jsx
+const handleReject = (fileRejections) => {
+  fileRejections.forEach(({ file, errors }) => {
+    errors.forEach((error) => {
+      if (error.code === 'file-too-large') {
+        console.log(`${file.name} 文件过大`);
+      }
+      if (error.code === 'file-invalid-type') {
+        console.log(`${file.name} 文件类型不支持`);
+      }
+      if (error.code === 'too-many-files') {
+        console.log('文件数量超过限制');
+      }
+    });
+  });
+};
+
+<Dropzone onReject={handleReject} />
+```
+
+### 程序化打开
+
+使用 openRef 程序化触发文件选择：
+
+```jsx
+const openRef = React.useRef(null);
+
+<Dropzone openRef={openRef} onDrop={handleDrop}>
+  ...
+</Dropzone>
+
+<Button onClick={() => openRef.current?.()}>
+  选择文件
+</Button>
+```

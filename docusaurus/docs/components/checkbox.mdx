@@ -1,0 +1,390 @@
+---
+sidebar_position: 1
+---
+
+# Checkbox 复选框
+
+用于在多个选项中进行多选。
+
+## 何时使用
+
+- 在一组可选项中进行多选
+- 单独使用可以表示两种状态之间的切换
+- 用于表单中的多选场景
+- 需要全选、半选等复杂交互场景
+
+## 示例
+
+### 基础用法
+
+基本的复选框使用，通过 `label` 设置文本内容。
+
+```jsx live
+function Demo() {
+  const [checked, setChecked] = React.useState(false);
+
+  const handleChange = (e) => {
+    setChecked(e.target.checked);
+  };
+
+  return (
+    <Group direction="column">
+      <Checkbox label="选项 A" onChange={handleChange} />
+      <Checkbox label="选项 B" defaultChecked />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        选项 A 状态: {checked ? '已选中' : '未选中'}
+      </div>
+    </Group>
+  );
+}
+```
+
+### 受控组件
+
+通过 `checked` 属性控制复选框的选中状态。
+
+```jsx live
+function Demo() {
+  const [checked, setChecked] = React.useState(true);
+
+  const toggle = () => {
+    setChecked(!checked);
+  };
+
+  return (
+    <Center>
+      <Checkbox
+        label="受控复选框"
+        checked={checked}
+        onChange={(e) => setChecked(e.target.checked)}
+      />
+      <Button onClick={toggle}>切换状态 (当前: {checked ? '已选中' : '未选中'})</Button>
+    </Center>
+  );
+}
+```
+
+### 禁用状态
+
+通过 `disabled` 属性禁用复选框。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Checkbox label="未选中 - 禁用" disabled />
+      <Checkbox label="已选中 - 禁用" defaultChecked disabled />
+    </Group>
+  );
+}
+```
+
+### 半选状态
+
+使用 `indeterminate` 属性表示部分选中状态，常用于全选场景。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Checkbox label="半选状态" indeterminate />
+      <Checkbox label="已选中状态" defaultChecked />
+      <Checkbox label="未选中状态" />
+    </Group>
+  );
+}
+```
+
+### 复选框组
+
+使用 `CheckboxGroup` 组件实现一组复选框的管理。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(['kubernetes']);
+
+  const handleChange = (values) => {
+    setValue(values);
+  };
+
+  return (
+    <div>
+      <CheckboxGroup value={value} onChange={handleChange}>
+        <Checkbox label="Kubernetes" value="kubernetes" />
+        <Checkbox label="Docker" value="docker" />
+        <Checkbox label="Istio" value="istio" />
+        <Checkbox label="Helm" value="helm" />
+      </CheckboxGroup>
+      <div style={{ marginTop: '16px', color: '#79879c', fontSize: '14px' }}>
+        已选择: {value.length > 0 ? value.join(', ') : '无'}
+      </div>
+    </div>
+  );
+}
+```
+
+### 复选框组 - 禁用
+
+CheckboxGroup 可以统一禁用所有子选项。
+
+```jsx live
+function Demo() {
+  return (
+    <CheckboxGroup defaultValue={['option1']} disabled>
+      <Checkbox label="选项 1" value="option1" />
+      <Checkbox label="选项 2" value="option2" />
+      <Checkbox label="选项 3" value="option3" />
+    </CheckboxGroup>
+  );
+}
+```
+
+### 垂直排列
+
+CheckboxGroup 默认使用 Group 组件水平排列，可以通过 `unstyled` 自定义布局。
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(['frontend']);
+
+  return (
+    <CheckboxGroup value={value} onChange={setValue} unstyled>
+      <Group direction="column">
+        <Checkbox label="前端开发" value="frontend" />
+        <Checkbox label="后端开发" value="backend" />
+        <Checkbox label="运维开发" value="devops" />
+        <Checkbox label="测试开发" value="qa" />
+      </Group>
+    </CheckboxGroup>
+  );
+}
+```
+
+### 全选功能
+
+实现全选、半选、取消全选的交互。
+
+```jsx live
+function Demo() {
+  const allOptions = [
+    { label: 'Kubernetes', value: 'k8s' },
+    { label: 'Docker', value: 'docker' },
+    { label: 'Istio', value: 'istio' },
+    { label: 'Prometheus', value: 'prometheus' },
+  ];
+
+  const [checkedList, setCheckedList] = React.useState(['k8s', 'docker']);
+
+  const allValues = allOptions.map((item) => item.value);
+  const checkAll = checkedList.length === allOptions.length;
+  const indeterminate = checkedList.length > 0 && checkedList.length < allOptions.length;
+
+  const onCheckAllChange = (e) => {
+    setCheckedList(e.target.checked ? allValues : []);
+  };
+
+  return (
+    <div>
+      <Checkbox
+        label="全选"
+        checked={checkAll}
+        indeterminate={indeterminate}
+        onChange={onCheckAllChange}
+      />
+      <Divider margins="sm" />
+      <CheckboxGroup value={checkedList} onChange={setCheckedList}>
+        {allOptions.map((option) => (
+          <Checkbox key={option.value} label={option.label} value={option.value} />
+        ))}
+      </CheckboxGroup>
+      <div style={{ marginTop: '16px', color: '#79879c', fontSize: '14px' }}>
+        已选择 {checkedList.length} 项
+      </div>
+    </div>
+  );
+}
+```
+
+### 无标签
+
+Checkbox 可以不传 `label` 属性，仅显示复选框。
+
+```jsx live
+function Demo() {
+  return (
+    <Group>
+      <Checkbox />
+      <Checkbox defaultChecked />
+      <Checkbox indeterminate />
+    </Group>
+  );
+}
+```
+
+### 动态选项
+
+根据数据动态生成复选框列表。
+
+```jsx live
+function Demo() {
+  const options = [
+    { label: '集群管理', value: 'cluster', disabled: false },
+    { label: '应用部署', value: 'app', disabled: false },
+    { label: '监控告警', value: 'monitor', disabled: false },
+    { label: '日志分析', value: 'log', disabled: true },
+    { label: '权限管理', value: 'auth', disabled: false },
+  ];
+
+  const [selectedValues, setSelectedValues] = React.useState(['cluster', 'app']);
+
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>请选择权限:</h4>
+      <CheckboxGroup value={selectedValues} onChange={setSelectedValues} unstyled>
+        <Group direction="column">
+          {options.map((option) => (
+            <Checkbox
+              key={option.value}
+              label={option.label}
+              value={option.value}
+              disabled={option.disabled}
+            />
+          ))}
+        </Group>
+      </CheckboxGroup>
+      <div
+        style={{
+          marginTop: '16px',
+          padding: '12px',
+          background: '#f7f8fa',
+          borderRadius: '4px',
+          fontSize: '14px',
+        }}
+      >
+        <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>已选择权限:</div>
+        <div style={{ color: '#79879c' }}>
+          {selectedValues.length > 0
+            ? options
+                .filter((opt) => selectedValues.includes(opt.value))
+                .map((opt) => opt.label)
+                .join('、')
+            : '暂未选择'}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## API
+
+### Checkbox 属性
+
+| 属性           | 说明                                  | 类型                               | 默认值  |
+| -------------- | ------------------------------------- | ---------------------------------- | ------- |
+| label          | 复选框文本标签                        | `ReactNode`                        | -       |
+| value          | 复选框的值（在 CheckboxGroup 中使用） | `string`                           | -       |
+| checked        | 是否选中（受控）                      | `boolean`                          | -       |
+| defaultChecked | 默认是否选中（非受控）                | `boolean`                          | `false` |
+| indeterminate  | 设置半选状态，优先级高于 checked      | `boolean`                          | `false` |
+| disabled       | 是否禁用                              | `boolean`                          | `false` |
+| id             | input 元素的 id，用于绑定 label       | `string`                           | -       |
+| onChange       | 变化时的回调函数                      | `(e: Event) => void`               | -       |
+| 其他           | 原生属性                              | `HTMLAttributes<HTMLInputElement>` | -       |
+
+:::info
+
+Checkbox 组件继承所有原生 HTML input[type="checkbox"] 元素的属性（如 `onClick`、`onFocus` 等）。
+
+**关于 indeterminate**：
+
+- `indeterminate` 状态用于表示"部分选中"，通常在全选场景中使用
+- 当 `indeterminate` 为 `true` 时，复选框显示为半选状态（横线）
+- `indeterminate` 优先级高于 `checked`，设置为 `true` 时会覆盖 `checked` 的效果
+
+**在 CheckboxGroup 中使用**：
+
+- 在 CheckboxGroup 中，不要使用 `checked` 属性，应通过 CheckboxGroup 的 `value` 控制
+- 必须设置 `value` 属性以标识每个选项
+
+:::
+
+### CheckboxGroup 属性
+
+| 属性         | 说明                                  | 类型                          | 默认值  |
+| ------------ | ------------------------------------- | ----------------------------- | ------- |
+| value        | 指定选中的选项（受控）                | `string[]`                    | -       |
+| defaultValue | 默认选中的选项（非受控）              | `string[]`                    | `[]`    |
+| disabled     | 是否禁用所有复选框                    | `boolean`                     | `false` |
+| onChange     | 变化时的回调函数                      | `(values: string[]) => void`  | -       |
+| unstyled     | 是否移除默认样式（不使用 Group 包裹） | `boolean`                     | `false` |
+| 其他         | 原生属性                              | `HTMLAttributes<HTMLElement>` | -       |
+
+:::info
+
+**关于布局**：
+
+- CheckboxGroup 默认使用 Group 组件水平排列子元素
+- 设置 `unstyled={true}` 可移除 Group 包裹，自定义布局方式
+- 自定义布局时，可以配合 Group 组件的 `direction="column"` 实现垂直排列
+
+**受控与非受控**：
+
+- 使用 `value` + `onChange` 实现受控组件
+- 使用 `defaultValue` 实现非受控组件
+- CheckboxGroup 的 `value` 是一个字符串数组，包含所有选中项的 `value` 值
+
+:::
+
+## 使用建议
+
+### 受控与非受控
+
+根据场景选择合适的使用方式：
+
+```jsx
+// 非受控：适用于简单场景，不需要外部控制状态
+<Checkbox label="同意协议" defaultChecked />;
+
+// 受控：适用于需要外部控制或复杂交互的场景
+const [checked, setChecked] = React.useState(false);
+<Checkbox label="同意协议" checked={checked} onChange={(e) => setChecked(e.target.checked)} />;
+```
+
+### 全选实现
+
+实现全选功能的推荐方式：
+
+```jsx
+const allChecked = checkedList.length === allOptions.length;
+const indeterminate = checkedList.length > 0 && checkedList.length < allOptions.length;
+
+<Checkbox
+  label="全选"
+  checked={allChecked}
+  indeterminate={indeterminate}
+  onChange={(e) => setCheckedList(e.target.checked ? allValues : [])}
+/>;
+```
+
+### CheckboxGroup 布局
+
+自定义 CheckboxGroup 的布局方式：
+
+```jsx
+// 垂直排列
+<CheckboxGroup value={value} onChange={setValue} unstyled>
+  <Group direction="column">
+    <Checkbox label="选项 1" value="1" />
+    <Checkbox label="选项 2" value="2" />
+  </Group>
+</CheckboxGroup>
+
+// 网格布局
+<CheckboxGroup value={value} onChange={setValue} unstyled>
+  <Row gutter={[12, 12]}>
+    <Col span={12}><Checkbox label="选项 1" value="1" /></Col>
+    <Col span={12}><Checkbox label="选项 2" value="2" /></Col>
+  </Row>
+</CheckboxGroup>
+```

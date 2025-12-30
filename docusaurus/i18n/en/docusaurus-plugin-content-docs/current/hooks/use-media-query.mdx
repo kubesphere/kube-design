@@ -1,0 +1,408 @@
+---
+sidebar_position: 6
+---
+
+# useMediaQuery
+
+A Hook for detecting media query matches, returning boolean values based on query results.
+
+## Basic Usage
+
+```jsx live
+function Demo() {
+  const isMobile = useMediaQuery('(max-width: 768px)');
+
+  return (
+    <div
+      style={{
+        padding: '24px',
+        backgroundColor: isMobile ? 'var(--ifm-color-primary-lightest)' : 'var(--ifm-color-success-lightest)',
+        borderRadius: '8px',
+        textAlign: 'center',
+      }}
+    >
+      <h3>{isMobile ? '📱 Mobile Device' : '💻 Desktop Device'}</h3>
+      <p>Current screen width: {isMobile ? '≤ 768px' : '> 768px'}</p>
+      <div style={{ fontSize: '14px', marginTop: '16px', color: 'var(--ifm-color-emphasis-700)' }}>
+        Try resizing your browser window to see the changes
+      </div>
+    </div>
+  );
+}
+```
+
+## Responsive Layout
+
+Detect different screen sizes:
+
+```jsx live
+function Demo() {
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const isTablet = useMediaQuery('(min-width: 769px) and (max-width: 1024px)');
+  const isDesktop = useMediaQuery('(min-width: 1025px)');
+
+  const getDeviceType = () => {
+    if (isMobile) return { type: 'Mobile', icon: '📱', color: '#1890ff' };
+    if (isTablet) return { type: 'Tablet', icon: '📱', color: '#52c41a' };
+    if (isDesktop) return { type: 'Desktop', icon: '💻', color: '#722ed1' };
+  };
+
+  const device = getDeviceType();
+
+  return (
+    <div>
+      <div
+        style={{
+          padding: '32px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          textAlign: 'center',
+        }}
+      >
+        <div style={{ fontSize: '48px', marginBottom: '16px' }}>{device.icon}</div>
+        <h3 style={{ color: device.color, margin: 0 }}>{device.type}</h3>
+      </div>
+      <div
+        style={{
+          marginTop: '16px',
+          padding: '16px',
+          backgroundColor: 'var(--ifm-background-surface-color)',
+          border: '1px solid var(--ifm-color-emphasis-300)',
+          borderRadius: '8px',
+          fontSize: '14px',
+        }}
+      >
+        <strong>Breakpoints:</strong>
+        <div>Mobile: ≤ 768px</div>
+        <div>Tablet: 769px - 1024px</div>
+        <div>Desktop: ≥ 1025px</div>
+      </div>
+    </div>
+  );
+}
+```
+
+## Dark Mode Detection
+
+Detect system dark mode preference:
+
+```jsx live
+function Demo() {
+  const isDark = useMediaQuery('(prefers-color-scheme: dark)');
+
+  return (
+    <div
+      style={{
+        padding: '32px',
+        backgroundColor: isDark ? '#1a1a1a' : '#ffffff',
+        color: isDark ? '#ffffff' : '#000000',
+        border: '1px solid var(--ifm-color-emphasis-300)',
+        borderRadius: '8px',
+        textAlign: 'center',
+        transition: 'all 0.3s',
+      }}
+    >
+      <div style={{ fontSize: '48px', marginBottom: '16px' }}>
+        {isDark ? '🌙' : '☀️'}
+      </div>
+      <h3>Current Theme: {isDark ? 'Dark Mode' : 'Light Mode'}</h3>
+      <p style={{ margin: '16px 0 0 0', fontSize: '14px', opacity: 0.8 }}>
+        Based on system color scheme preference
+      </p>
+    </div>
+  );
+}
+```
+
+## Orientation Detection
+
+Detect device orientation:
+
+```jsx live
+function Demo() {
+  const isPortrait = useMediaQuery('(orientation: portrait)');
+
+  return (
+    <div
+      style={{
+        padding: '32px',
+        backgroundColor: 'var(--ifm-color-emphasis-100)',
+        borderRadius: '8px',
+        textAlign: 'center',
+      }}
+    >
+      <div style={{ fontSize: '48px', marginBottom: '16px' }}>
+        {isPortrait ? '📱' : '🖥️'}
+      </div>
+      <h3>Current Orientation: {isPortrait ? 'Portrait' : 'Landscape'}</h3>
+      <div
+        style={{
+          marginTop: '16px',
+          padding: '12px',
+          backgroundColor: 'var(--ifm-background-surface-color)',
+          borderRadius: '6px',
+          fontSize: '14px',
+        }}
+      >
+        {isPortrait
+          ? 'Height > Width (vertical display)'
+          : 'Width > Height (horizontal display)'}
+      </div>
+    </div>
+  );
+}
+```
+
+## High DPI Screen Detection
+
+Detect Retina and high DPI screens:
+
+```jsx live
+function Demo() {
+  const isRetina = useMediaQuery('(min-resolution: 2dppx)');
+  const is4K = useMediaQuery('(min-resolution: 3dppx)');
+
+  return (
+    <div>
+      <div
+        style={{
+          padding: '24px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          marginBottom: '12px',
+        }}
+      >
+        <h4 style={{ marginTop: 0 }}>Screen Resolution</h4>
+        <div
+          style={{
+            display: 'flex',
+            gap: '12px',
+            flexWrap: 'wrap',
+          }}
+        >
+          <Badge variant={isRetina ? 'default' : 'outline'}>
+            {isRetina ? '✓' : '✗'} Retina (2x)
+          </Badge>
+          <Badge variant={is4K ? 'default' : 'outline'}>
+            {is4K ? '✓' : '✗'} 4K (3x)
+          </Badge>
+        </div>
+      </div>
+      <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+        High DPI screens show sharper images and text
+      </div>
+    </div>
+  );
+}
+```
+
+## Conditional Component Rendering
+
+Show different components based on screen size:
+
+```jsx live
+function Demo() {
+  const isMobile = useMediaQuery('(max-width: 768px)');
+
+  return (
+    <div>
+      {isMobile ? (
+        <div
+          style={{
+            padding: '16px',
+            backgroundColor: 'var(--ifm-color-primary-lightest)',
+            borderRadius: '8px',
+          }}
+        >
+          <h4 style={{ marginTop: 0 }}>Mobile View</h4>
+          <div style={{ fontSize: '14px' }}>
+            <p>• Simplified Layout</p>
+            <p>• Touch-optimized</p>
+            <p>• Single Column</p>
+          </div>
+        </div>
+      ) : (
+        <div
+          style={{
+            padding: '24px',
+            backgroundColor: 'var(--ifm-color-success-lightest)',
+            borderRadius: '8px',
+          }}
+        >
+          <h4 style={{ marginTop: 0 }}>Desktop View</h4>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div>
+              <strong>Layout Features</strong>
+              <p>• Multi-column Layout</p>
+              <p>• Larger Content Area</p>
+            </div>
+            <div>
+              <strong>Interaction</strong>
+              <p>• Mouse/Keyboard Optimized</p>
+              <p>• Rich Interactive Elements</p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## Print Media Query
+
+Detect print mode:
+
+```jsx live
+function Demo() {
+  const isPrint = useMediaQuery('print');
+
+  return (
+    <div
+      style={{
+        padding: '24px',
+        backgroundColor: 'var(--ifm-color-emphasis-100)',
+        borderRadius: '8px',
+      }}
+    >
+      <h4>Print Detection</h4>
+      <p>Current status: {isPrint ? 'Print Mode' : 'Screen Mode'}</p>
+      <Button onClick={() => window.print()} size="small">
+        Try Print Preview
+      </Button>
+      <div
+        style={{
+          marginTop: '16px',
+          padding: '12px',
+          backgroundColor: 'var(--ifm-background-surface-color)',
+          borderRadius: '6px',
+          fontSize: '14px',
+        }}
+      >
+        Open print preview to see the state change
+      </div>
+    </div>
+  );
+}
+```
+
+## API
+
+### Parameters
+
+```ts
+function useMediaQuery(query: string, initialValue?: boolean): boolean
+```
+
+| Parameter | Description | Type | Default |
+|-----------|-------------|------|---------|
+| query | CSS media query string | `string` | - |
+| initialValue | Initial value (before first detection) | `boolean` | `false` |
+
+### Return Value
+
+Returns a boolean value indicating whether the media query matches.
+
+```ts
+boolean
+```
+
+## Common Media Query Examples
+
+### Screen Size
+
+```ts
+// Mobile device
+useMediaQuery('(max-width: 768px)')
+
+// Tablet device
+useMediaQuery('(min-width: 769px) and (max-width: 1024px)')
+
+// Desktop device
+useMediaQuery('(min-width: 1025px)')
+
+// Large screen
+useMediaQuery('(min-width: 1920px)')
+```
+
+### Color Scheme
+
+```ts
+// Dark mode
+useMediaQuery('(prefers-color-scheme: dark)')
+
+// Light mode
+useMediaQuery('(prefers-color-scheme: light)')
+```
+
+### Orientation
+
+```ts
+// Portrait orientation
+useMediaQuery('(orientation: portrait)')
+
+// Landscape orientation
+useMediaQuery('(orientation: landscape)')
+```
+
+### Screen Resolution
+
+```ts
+// Retina screen (2x)
+useMediaQuery('(min-resolution: 2dppx)')
+
+// 4K screen (3x)
+useMediaQuery('(min-resolution: 3dppx)')
+```
+
+### Interaction Capabilities
+
+```ts
+// Touch device
+useMediaQuery('(pointer: coarse)')
+
+// Precision pointer device (mouse)
+useMediaQuery('(pointer: fine)')
+
+// Hover support
+useMediaQuery('(hover: hover)')
+```
+
+### Reduced Motion
+
+```ts
+// User prefers reduced motion
+useMediaQuery('(prefers-reduced-motion: reduce)')
+```
+
+## Notes
+
+- Media query results update in real-time, automatically trigger component re-renders
+- SSR (Server-Side Rendering) uses `initialValue` parameter
+- Event listeners are automatically cleaned up on component unmount
+- Avoid defining media queries in render functions, use constants or useMemo
+
+## Performance Optimization
+
+```jsx
+// ❌ Not recommended: Create new query string on every render
+function Component() {
+  const isMobile = useMediaQuery(`(max-width: ${threshold}px)`);
+}
+
+// ✅ Recommended: Use fixed query string
+const MOBILE_QUERY = '(max-width: 768px)';
+
+function Component() {
+  const isMobile = useMediaQuery(MOBILE_QUERY);
+}
+```
+
+## Usage Scenarios
+
+- **Responsive Layout**: Show different layouts based on screen size
+- **Adaptive Components**: Adjust component behavior and appearance
+- **Dark Mode**: Implement theme based on system preference
+- **Print Styles**: Optimize layout for print
+- **Touch Device Detection**: Optimize interaction for mobile devices
+- **Accessibility**: Respect user motion preference settings

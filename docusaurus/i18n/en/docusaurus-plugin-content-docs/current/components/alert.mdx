@@ -1,0 +1,529 @@
+---
+sidebar_position: 1
+---
+
+# Alert
+
+Display important messages to users.
+
+## When to Use
+
+- When you need to show warning, error, or success messages to users
+- Global notification messages at the top of the page
+- Static display format that remains visible and does not auto-dismiss
+- Can be combined with a close button for manual dismissal
+
+## Examples
+
+### Basic Usage
+
+The simplest usage, showing different types of alert messages.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Alert type="default">This is a default alert message</Alert>
+      <Alert type="info">This is an info alert</Alert>
+      <Alert type="warning">This is a warning alert</Alert>
+      <Alert type="error">This is an error alert</Alert>
+    </Group>
+  );
+}
+```
+
+### With Title
+
+Add a title using the `title` prop.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Alert type="info" title="Information">
+        This is an info alert with a title that can contain more detailed explanatory content.
+      </Alert>
+      <Alert type="warning" title="Warning">
+        This is a warning alert with a title, please review the related content carefully.
+      </Alert>
+      <Alert type="error" title="Error">
+        This is an error alert with a title, the operation failed, please try again.
+      </Alert>
+    </Group>
+  );
+}
+```
+
+### Closable
+
+Add a close button using the `closable` prop.
+
+```jsx live
+function Demo() {
+  const [visible1, setVisible1] = React.useState(true);
+  const [visible2, setVisible2] = React.useState(true);
+  const [visible3, setVisible3] = React.useState(true);
+
+  return (
+    <Group direction="column">
+      {visible1 && (
+        <Alert type="info" closable onClose={() => setVisible1(false)}>
+          This is a closable info alert
+        </Alert>
+      )}
+      {visible2 && (
+        <Alert type="warning" title="Warning" closable onClose={() => setVisible2(false)}>
+          This is a closable warning alert with a title
+        </Alert>
+      )}
+      {visible3 && (
+        <Alert type="error" closable onClose={() => setVisible3(false)}>
+          This is a closable error alert
+        </Alert>
+      )}
+      {!visible1 && !visible2 && !visible3 && (
+        <Button
+          onClick={() => {
+            setVisible1(true);
+            setVisible2(true);
+            setVisible3(true);
+          }}
+        >
+          Reset All Alerts
+        </Button>
+      )}
+    </Group>
+  );
+}
+```
+
+### Without Icon
+
+Hide the icon using `showIcon={false}`.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Alert type="info" showIcon={false}>
+        Info alert without icon
+      </Alert>
+      <Alert type="warning" title="Warning" showIcon={false}>
+        Warning alert without icon
+      </Alert>
+    </Group>
+  );
+}
+```
+
+### Custom Icon
+
+Customize the icon using the `icon` prop.
+
+```jsx live
+function Demo() {
+  const { Cluster, Storage, Network } = KubedIcons;
+
+  return (
+    <Group direction="column">
+      <Alert type="info" icon={<Cluster size={20} />}>
+        Cluster status is normal, all nodes are running properly
+      </Alert>
+      <Alert type="warning" icon={<Storage size={20} />} title="Storage Warning">
+        Storage space is running low, currently at 85% usage
+      </Alert>
+      <Alert type="error" icon={<Network size={20} />} title="Network Error">
+        Network connection failed, please check network configuration
+      </Alert>
+    </Group>
+  );
+}
+```
+
+### Success Messages
+
+Use the info type to display success messages.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Alert type="info">Operation completed successfully</Alert>
+      <Alert type="info" title="Created Successfully">
+        Cluster "my-cluster" has been created successfully, you can now deploy applications.
+      </Alert>
+    </Group>
+  );
+}
+```
+
+### Complex Content
+
+Alert can contain complex content structures.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Alert type="warning" title="Version Update Reminder">
+        <div>
+          <p style={{ marginBottom: '8px' }}>New version v2.0.0 has been released with the following updates:</p>
+          <ul style={{ paddingLeft: '20px', margin: 0 }}>
+            <li>Added cluster monitoring features</li>
+            <li>Optimized deployment process</li>
+            <li>Fixed known issues</li>
+          </ul>
+          <Button variant="text" style={{ marginTop: '8px', padding: 0 }}>
+            View Update Details
+          </Button>
+        </div>
+      </Alert>
+      <Alert type="info" title="Friendly Reminder">
+        <div>
+          <p style={{ marginBottom: '8px' }}>The system will undergo maintenance from 23:00 - 02:00 tonight.</p>
+          <p style={{ margin: 0 }}>Services may be briefly interrupted during maintenance, please prepare in advance.</p>
+        </div>
+      </Alert>
+    </Group>
+  );
+}
+```
+
+### Page-Level Global Notification
+
+Typical page-level notification scenario.
+
+```jsx live
+function Demo() {
+  const [showAlert, setShowAlert] = React.useState(true);
+
+  return (
+    <div>
+      {showAlert && (
+        <Alert
+          type="warning"
+          title="System Announcement"
+          closable
+          onClose={() => setShowAlert(false)}
+          style={{ marginBottom: '16px' }}
+        >
+          To provide better service, the system will undergo upgrade maintenance on January 1, 2024. Some features may be temporarily unavailable.
+        </Alert>
+      )}
+      <div
+        style={{
+          padding: '20px',
+          border: '1px solid #e3e9ef',
+          borderRadius: '4px',
+          textAlign: 'center',
+        }}
+      >
+        <p>Page Content Area</p>
+      </div>
+    </div>
+  );
+}
+```
+
+### Operation Feedback
+
+Display feedback messages after operations.
+
+```jsx live
+function Demo() {
+  const [alerts, setAlerts] = React.useState([]);
+
+  const addAlert = (type, message) => {
+    const id = Date.now();
+    setAlerts([...alerts, { id, type, message }]);
+  };
+
+  const removeAlert = (id) => {
+    setAlerts(alerts.filter((alert) => alert.id !== id));
+  };
+
+  return (
+    <div>
+      <Group style={{ marginBottom: '16px' }}>
+        <Button onClick={() => addAlert('info', 'Operation completed successfully')}>Success</Button>
+        <Button onClick={() => addAlert('warning', 'Please check configuration')}>Warning</Button>
+        <Button onClick={() => addAlert('error', 'Operation failed, please try again')}>Error</Button>
+      </Group>
+      <Group direction="column">
+        {alerts.map((alert) => (
+          <Alert key={alert.id} type={alert.type} closable onClose={() => removeAlert(alert.id)}>
+            {alert.message}
+          </Alert>
+        ))}
+      </Group>
+    </div>
+  );
+}
+```
+
+### Form Validation Messages
+
+Use Alert to display form validation results.
+
+```jsx live
+function Demo() {
+  const [formData, setFormData] = React.useState({ username: '', password: '' });
+  const [error, setError] = React.useState('');
+  const [success, setSuccess] = React.useState(false);
+
+  const handleSubmit = () => {
+    setError('');
+    setSuccess(false);
+
+    if (!formData.username || !formData.password) {
+      setError('Please fill in all required fields');
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters');
+      return;
+    }
+
+    setSuccess(true);
+  };
+
+  return (
+    <div>
+      {error && (
+        <Alert type="error" closable onClose={() => setError('')} style={{ marginBottom: '16px' }}>
+          {error}
+        </Alert>
+      )}
+      {success && (
+        <Alert
+          type="info"
+          closable
+          onClose={() => setSuccess(false)}
+          style={{ marginBottom: '16px' }}
+        >
+          Login successful!
+        </Alert>
+      )}
+      <Group direction="column" spacing="md">
+        <Input
+          placeholder="Username"
+          value={formData.username}
+          onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+        />
+        <InputPassword
+          placeholder="Password"
+          value={formData.password}
+          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+        />
+        <Button onClick={handleSubmit} variant="filled" color="primary">
+          Login
+        </Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+## API
+
+### Alert Props
+
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| type | Alert type | `'default' \| 'info' \| 'warning' \| 'error'` | `'default'` |
+| title | Title | `ReactNode` | - |
+| children | Alert content | `ReactNode` | - |
+| icon | Custom icon | `ReactNode` | - |
+| showIcon | Whether to show icon | `boolean` | `true` |
+| closable | Whether closable | `boolean` | `false` |
+| onClose | Callback when close | `() => void` | - |
+| others | Native attributes | `HTMLAttributes<HTMLDivElement>` | - |
+
+:::info
+
+**About Types**:
+
+- `default`: Default alert with gray theme
+- `info`: Information alert with blue theme, commonly used for success messages
+- `warning`: Warning alert with yellow theme
+- `error`: Error alert with red theme
+
+**About Icons**:
+
+- By default, an icon corresponding to the `type` will be displayed
+- Use the `icon` prop to customize the icon
+- Use `showIcon={false}` to hide the icon
+- Icon size increases when a title is present
+
+**About Closing**:
+
+- The `closable` prop controls whether to show the close button
+- Clicking the close button triggers the `onClose` callback
+- The component itself doesn't handle closing logic, it needs to be managed with state
+
+Alert component inherits all native HTML div element attributes.
+
+:::
+
+## Usage Guidelines
+
+### Choose the Right Type
+
+Select the appropriate type based on the nature of the message:
+
+```jsx
+// Success message - use info type (with green check icon)
+<Alert type="info">
+  Operation completed successfully
+</Alert>
+
+// General information - use default type
+<Alert type="default">
+  This is a general message
+</Alert>
+
+// Warning message - use warning type
+<Alert type="warning" title="Warning">
+  Configuration may cause issues, please check carefully
+</Alert>
+
+// Error message - use error type
+<Alert type="error" title="Error">
+  Operation failed, please try again
+</Alert>
+```
+
+### Closable Alerts
+
+Recommended approach for closable alerts:
+
+```jsx
+const [visible, setVisible] = React.useState(true);
+
+{
+  visible && (
+    <Alert type="info" closable onClose={() => setVisible(false)}>
+      This is a closable alert
+    </Alert>
+  );
+}
+
+// Reset button (optional)
+{
+  !visible && <Button onClick={() => setVisible(true)}>Show Alert</Button>;
+}
+```
+
+### Alert vs Notification
+
+Choosing between Alert and Notification:
+
+```jsx
+// Alert: Static display, doesn't auto-dismiss
+<Alert type="info">This message will remain until the user closes it</Alert>;
+
+// Notification: Floating layer, auto-dismisses
+notification.success({
+  title: 'Operation Successful',
+  content: 'This message will auto-dismiss after a few seconds',
+  duration: 3000,
+});
+```
+
+### Page-Level Notifications
+
+Display global notifications at the top of the page:
+
+```jsx
+function Page() {
+  const [showNotice, setShowNotice] = React.useState(true);
+
+  return (
+    <div>
+      {showNotice && (
+        <Alert
+          type="warning"
+          title="System Announcement"
+          closable
+          onClose={() => setShowNotice(false)}
+          style={{ marginBottom: '20px' }}
+        >
+          System maintenance notice content...
+        </Alert>
+      )}
+      {/* Page content */}
+    </div>
+  );
+}
+```
+
+### Form Validation
+
+Using Alert in forms:
+
+```jsx
+const [errors, setErrors] = React.useState([]);
+
+const validate = () => {
+  const newErrors = [];
+  if (!formData.name) newErrors.push('Please enter name');
+  if (!formData.email) newErrors.push('Please enter email');
+  setErrors(newErrors);
+  return newErrors.length === 0;
+};
+
+{
+  errors.length > 0 && (
+    <Alert type="error" title="Form Validation Failed">
+      <ul style={{ paddingLeft: '20px', margin: 0 }}>
+        {errors.map((error, index) => (
+          <li key={index}>{error}</li>
+        ))}
+      </ul>
+    </Alert>
+  );
+}
+```
+
+### Dynamic Alert List
+
+Managing multiple dynamic alerts:
+
+```jsx
+const [alerts, setAlerts] = React.useState([]);
+
+const addAlert = (type, message) => {
+  const id = Date.now();
+  setAlerts([...alerts, { id, type, message }]);
+};
+
+const removeAlert = (id) => {
+  setAlerts(alerts.filter((alert) => alert.id !== id));
+};
+
+<>
+  {alerts.map((alert) => (
+    <Alert key={alert.id} type={alert.type} closable onClose={() => removeAlert(alert.id)}>
+      {alert.message}
+    </Alert>
+  ))}
+</>;
+```
+
+### Content Layout
+
+For alerts with complex content:
+
+```jsx
+<Alert type="info" title="Title">
+  <div>
+    <p>Paragraph text content...</p>
+    <ul>
+      <li>List item 1</li>
+      <li>List item 2</li>
+    </ul>
+    <Button variant="text">Action Button</Button>
+  </div>
+</Alert>
+```

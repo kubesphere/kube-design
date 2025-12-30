@@ -1,0 +1,578 @@
+---
+sidebar_position: 3
+---
+
+# Select
+
+A dropdown select component for selecting values from a list.
+
+## When to Use
+
+- Select single or multiple values from a set of options
+- Need to provide search and filter functionality
+- Replace Radio when the number of options is large (more than 5)
+- Need to support remote search or dynamic option loading
+
+## Examples
+
+### Basic Usage
+
+The simplest usage, configure options via the `options` prop.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(undefined);
+
+  const options = [
+    { label: 'Kubernetes', value: 'kubernetes' },
+    { label: 'Docker', value: 'docker' },
+    { label: 'Istio', value: 'istio' },
+    { label: 'Helm', value: 'helm' },
+  ];
+
+  return (
+    <div>
+      <Select
+        placeholder="Select a container platform"
+        options={options}
+        value={value}
+        onChange={setValue}
+        style={{ width: 200 }}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        Selected: {value || 'None'}
+      </div>
+    </div>
+  );
+}
+```
+
+### Default Value
+
+Set default selected value using the `defaultValue` prop.
+
+```jsx live
+function Demo() {
+  const options = [
+    { label: 'Kubernetes', value: 'kubernetes' },
+    { label: 'Docker', value: 'docker' },
+    { label: 'Istio', value: 'istio' },
+  ];
+
+  return (
+    <Select
+      placeholder="Please select"
+      options={options}
+      defaultValue="kubernetes"
+      style={{ width: 200 }}
+    />
+  );
+}
+```
+
+### Disabled State
+
+Disable the select using the `disabled` prop.
+
+```jsx live
+function Demo() {
+  const options = [
+    { label: 'Kubernetes', value: 'kubernetes' },
+    { label: 'Docker', value: 'docker' },
+    { label: 'Istio', value: 'istio' },
+  ];
+
+  return (
+    <Group direction="column">
+      <Select placeholder="Disabled state" options={options} disabled style={{ width: 200 }} />
+      <Select
+        placeholder="Disabled with value"
+        options={options}
+        defaultValue="kubernetes"
+        disabled
+        style={{ width: 200 }}
+      />
+    </Group>
+  );
+}
+```
+
+### Disabled Options
+
+Disable individual options using the `disabled` property.
+
+```jsx live
+function Demo() {
+  const options = [
+    { label: 'Kubernetes', value: 'kubernetes' },
+    { label: 'Docker', value: 'docker' },
+    { label: 'Istio (Unavailable)', value: 'istio', disabled: true },
+    { label: 'Helm', value: 'helm' },
+  ];
+
+  return <Select placeholder="Please select" options={options} style={{ width: 200 }} />;
+}
+```
+
+### Searchable
+
+Enable search functionality using the `showSearch` prop.
+
+```jsx live
+function Demo() {
+  const options = [
+    { label: 'Kubernetes', value: 'kubernetes' },
+    { label: 'Docker', value: 'docker' },
+    { label: 'Istio', value: 'istio' },
+    { label: 'Helm', value: 'helm' },
+    { label: 'Prometheus', value: 'prometheus' },
+    { label: 'Grafana', value: 'grafana' },
+    { label: 'Jaeger', value: 'jaeger' },
+    { label: 'Fluentd', value: 'fluentd' },
+  ];
+
+  return <Select placeholder="Search and select" options={options} showSearch style={{ width: 200 }} />;
+}
+```
+
+### Multiple Mode
+
+Enable multiple selection using `mode="multiple"`.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(['kubernetes']);
+
+  const options = [
+    { label: 'Kubernetes', value: 'kubernetes' },
+    { label: 'Docker', value: 'docker' },
+    { label: 'Istio', value: 'istio' },
+    { label: 'Helm', value: 'helm' },
+    { label: 'Prometheus', value: 'prometheus' },
+  ];
+
+  return (
+    <div>
+      <Select
+        placeholder="Select multiple platforms"
+        options={options}
+        mode="multiple"
+        value={value}
+        onChange={setValue}
+        style={{ width: 300 }}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        Selected: {value.length > 0 ? value.join(', ') : 'None'}
+      </div>
+    </div>
+  );
+}
+```
+
+### Tags Mode
+
+Enable tags mode using `mode="tags"`, supports custom input of new values.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState([]);
+
+  const options = [
+    { label: 'app', value: 'app' },
+    { label: 'web', value: 'web' },
+    { label: 'api', value: 'api' },
+  ];
+
+  return (
+    <div>
+      <Select
+        placeholder="Enter or select tags"
+        options={options}
+        mode="tags"
+        value={value}
+        onChange={setValue}
+        style={{ width: 300 }}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        Tags: {value.length > 0 ? value.join(', ') : 'None'}
+      </div>
+    </div>
+  );
+}
+```
+
+### Clearable
+
+Allow clearing the selected value using the `allowClear` prop.
+
+```jsx live
+function Demo() {
+  const options = [
+    { label: 'Kubernetes', value: 'kubernetes' },
+    { label: 'Docker', value: 'docker' },
+    { label: 'Istio', value: 'istio' },
+  ];
+
+  return (
+    <Group direction="column">
+      <Select
+        placeholder="Single - Clearable"
+        options={options}
+        defaultValue="kubernetes"
+        allowClear
+        style={{ width: 200 }}
+      />
+      <Select
+        placeholder="Multiple - Clearable"
+        options={options}
+        defaultValue={['kubernetes', 'docker']}
+        mode="multiple"
+        allowClear
+        style={{ width: 300 }}
+      />
+    </Group>
+  );
+}
+```
+
+### Grouped Options
+
+Group options using `OptGroup`.
+
+```jsx live
+function Demo() {
+  return (
+    <Select placeholder="Please select" style={{ width: 200 }}>
+      <Select.OptGroup label="Container Runtime">
+        <Select.Option value="docker">Docker</Select.Option>
+        <Select.Option value="containerd">containerd</Select.Option>
+        <Select.Option value="crio">CRI-O</Select.Option>
+      </Select.OptGroup>
+      <Select.OptGroup label="Orchestration Platform">
+        <Select.Option value="kubernetes">Kubernetes</Select.Option>
+        <Select.Option value="swarm">Docker Swarm</Select.Option>
+      </Select.OptGroup>
+    </Select>
+  );
+}
+```
+
+### Custom Option Content
+
+Customize option content using the `Option` sub-component.
+
+```jsx live
+function Demo() {
+  const { Kubernetes, Docker } = KubedIcons;
+
+  return (
+    <Select placeholder="Select platform" style={{ width: 250 }}>
+      <Select.Option value="kubernetes">
+        <Group spacing="sm">
+          <Kubernetes size={16} />
+          <span>Kubernetes</span>
+        </Group>
+      </Select.Option>
+      <Select.Option value="docker">
+        <Group spacing="sm">
+          <Docker size={16} />
+          <span>Docker</span>
+        </Group>
+      </Select.Option>
+    </Select>
+  );
+}
+```
+
+### Custom Empty State
+
+Customize empty state display using `notFoundContent`.
+
+```jsx live
+function Demo() {
+  const { Information } = KubedIcons;
+
+  return (
+    <Select
+      placeholder="Please search"
+      showSearch
+      options={[]}
+      notFoundContent={
+        <Group spacing="xs" style={{ justifyContent: 'center', padding: '12px' }}>
+          <Information size={16} />
+          <span>No matches found</span>
+        </Group>
+      }
+      style={{ width: 200 }}
+    />
+  );
+}
+```
+
+### Controlled Component
+
+Implement controlled component using `value` and `onChange`.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('kubernetes');
+
+  const options = [
+    { label: 'Kubernetes', value: 'kubernetes' },
+    { label: 'Docker', value: 'docker' },
+    { label: 'Istio', value: 'istio' },
+  ];
+
+  return (
+    <div>
+      <Select
+        placeholder="Please select"
+        options={options}
+        value={value}
+        onChange={setValue}
+        style={{ width: 200 }}
+      />
+      <Group style={{ marginTop: '16px' }}>
+        <Button onClick={() => setValue('kubernetes')}>Select Kubernetes</Button>
+        <Button onClick={() => setValue('docker')}>Select Docker</Button>
+        <Button onClick={() => setValue(undefined)}>Clear</Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+### Dynamic Loading
+
+Dynamically load options based on search input.
+
+```jsx live
+function Demo() {
+  const [options, setOptions] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+
+  const handleSearch = (value) => {
+    if (!value) {
+      setOptions([]);
+      return;
+    }
+
+    setLoading(true);
+    // Simulate async search
+    setTimeout(() => {
+      const results = [`${value}-app`, `${value}-web`, `${value}-api`, `${value}-service`].map(
+        (item) => ({ label: item, value: item })
+      );
+      setOptions(results);
+      setLoading(false);
+    }, 500);
+  };
+
+  return (
+    <Select
+      placeholder="Enter search keyword"
+      showSearch
+      options={options}
+      onSearch={handleSearch}
+      filterOption={false}
+      loading={loading}
+      notFoundContent={loading ? 'Searching...' : 'No data'}
+      style={{ width: 250 }}
+    />
+  );
+}
+```
+
+## API
+
+### Select Props
+
+| Property                 | Description                           | Type                                    | Default     |
+| ------------------------ | ------------------------------------- | --------------------------------------- | ----------- |
+| value                    | Selected value (controlled)           | `string \| number \| (string \| number)[] \| LabeledValue \| LabeledValue[]`                    | -           |
+| defaultValue             | Default value (uncontrolled)          | `string \| number \| (string \| number)[] \| LabeledValue \| LabeledValue[]`                    | -           |
+| placeholder              | Placeholder text                      | `string`                                | -           |
+| options                  | Option data                           | `Option[]`                              | `[]`        |
+| mode                     | Selection mode                        | `'multiple' \| 'tags'`                  | - (single)  |
+| disabled                 | Whether disabled                      | `boolean`                               | `false`     |
+| showSearch               | Whether searchable                    | `boolean`                               | `false`     |
+| showArrow                | Whether to show dropdown arrow        | `boolean`                               | `true`      |
+| allowClear               | Whether to allow clearing             | `boolean`                               | `false`     |
+| loading                  | Whether loading                       | `boolean`                               | `false`     |
+| bordered                 | Whether has border                    | `boolean`                               | `true`      |
+| virtual                  | Whether to enable virtual scrolling   | `boolean`                               | `true`      |
+| listHeight               | Dropdown list height                  | `number`                                | `256`       |
+| listItemHeight           | Dropdown list item height             | `number`                                | `24`        |
+| notFoundContent          | Empty state content                   | `ReactNode`                             | `'No Data'` |
+| filterOption             | Whether to filter options             | `boolean \| (input, option) => boolean` | `true`      |
+| dropdownMatchSelectWidth | Whether dropdown width matches select | `boolean \| number`                     | `true`      |
+| getPopupContainer        | Dropdown mount container              | `(node: HTMLElement) => HTMLElement`    | -           |
+| onChange                 | Callback when value changes           | `(value, option) => void`               | -           |
+| onSearch                 | Callback when searching               | `(value: string) => void`               | -           |
+| onSelect                 | Callback when option is selected      | `(value, option) => void`               | -           |
+| onDeselect               | Callback when option is deselected (multiple mode) | `(value, option) => void`               | -           |
+| onClear                  | Callback when cleared                 | `() => void`                            | -           |
+| others                   | Native attributes                     | `HTMLAttributes<HTMLElement>`           | -           |
+
+### Option Type
+
+```typescript
+interface Option {
+  label: ReactNode; // Display text
+  value: string | number; // Option value
+  disabled?: boolean; // Whether disabled
+}
+
+interface LabeledValue {
+  key?: string;
+  value: string | number;
+  label: ReactNode;
+}
+```
+
+### Select.Option Props
+
+| Property | Description       | Type              | Default  |
+| -------- | ----------------- | ----------------- | -------- |
+| value    | Option value      | `string \| number` | -        |
+| disabled | Whether disabled  | `boolean`         | `false`  |
+| children | Option content    | `ReactNode`       | -        |
+
+### Select.OptGroup Props
+
+| Property | Description  | Type        | Default |
+| -------- | ------------ | ----------- | ------- |
+| label    | Group label  | `ReactNode` | -       |
+| children | Child options | `ReactNode` | -       |
+
+:::info
+
+**About Modes**:
+
+- Default mode: Single selection (when `mode` prop is not set)
+- `multiple`: Multiple selection mode, can select multiple values, value type is array
+- `tags`: Tags mode, supports custom input of new values, value type is array
+
+**About Search**:
+
+- `showSearch`: Enable search functionality
+- `filterOption`: Set to `false` to disable local filtering, used with `onSearch` for remote search
+- Default filter rule matches label
+
+**About Arrow Display**:
+
+- `showArrow`: Controls whether to show dropdown arrow icon, default is `true`
+- In multiple mode, can set `showArrow={true}` to show arrow
+
+**About Controlled vs Uncontrolled**:
+
+- Use `value` + `onChange` for controlled component
+- Use `defaultValue` for uncontrolled component
+- In multiple mode, value is array type
+
+**About Performance**:
+
+- Select enables virtual scrolling by default, suitable for large data scenarios
+- Adjust virtual scrolling parameters via `listHeight` and `listItemHeight`
+
+:::
+
+## Usage Guidelines
+
+### Controlled vs Uncontrolled
+
+Choose the appropriate usage based on scenario:
+
+```jsx
+// Uncontrolled: suitable for simple scenarios
+<Select defaultValue="kubernetes" options={options} />;
+
+// Controlled: suitable for scenarios requiring external control or linkage
+const [value, setValue] = React.useState('kubernetes');
+<Select value={value} onChange={setValue} options={options} />;
+```
+
+### Select vs Radio
+
+Choosing between Select and Radio:
+
+```jsx
+// Select: Many options (>5) or need search functionality
+<Select
+  showSearch
+  options={manyOptions}
+  placeholder="Search and select"
+/>
+
+// Radio: Few options (≤5) and need to see all options at a glance
+<RadioGroup value={value} onChange={setValue}>
+  <Radio label="Small" value="sm" />
+  <Radio label="Medium" value="md" />
+  <Radio label="Large" value="lg" />
+</RadioGroup>
+```
+
+### Remote Search
+
+Recommended approach for implementing remote search:
+
+```jsx
+const [options, setOptions] = React.useState([]);
+const [loading, setLoading] = React.useState(false);
+
+const handleSearch = async (value) => {
+  if (!value) {
+    setOptions([]);
+    return;
+  }
+
+  setLoading(true);
+  const results = await fetchOptions(value);
+  setOptions(results);
+  setLoading(false);
+};
+
+<Select
+  showSearch
+  filterOption={false}
+  onSearch={handleSearch}
+  options={options}
+  loading={loading}
+  notFoundContent={loading ? 'Searching...' : 'No data'}
+/>;
+```
+
+### Working with Form Components
+
+Using Select in Form:
+
+```jsx
+<Form onFinish={handleFinish}>
+  <FormItem name="platform" label="Platform" rules={[{ required: true, message: 'Please select platform' }]}>
+    <Select placeholder="Please select" options={options} />
+  </FormItem>
+  <FormItem name="tags" label="Tags" rules={[{ required: true, message: 'Please select tags' }]}>
+    <Select mode="multiple" placeholder="Please select" options={tagOptions} />
+  </FormItem>
+</Form>
+```
+
+### Large Data Optimization
+
+For large data scenarios, Select enables virtual scrolling by default:
+
+```jsx
+// Large data scenario
+const options = Array.from({ length: 10000 }, (_, i) => ({
+  label: `Option ${i + 1}`,
+  value: `option-${i + 1}`,
+}));
+
+<Select
+  showSearch
+  options={options}
+  listHeight={300}
+  listItemHeight={32}
+  placeholder="Select from 10000 options"
+/>;
+```

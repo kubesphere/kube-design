@@ -1,0 +1,238 @@
+---
+sidebar_position: 3
+---
+
+# Center
+
+A container component that centers a single child element both horizontally and vertically.
+
+## When to Use
+
+- Need to center content within a container
+- Quickly achieve horizontal and vertical centering layout
+- Suitable for various centering scenarios
+
+## Examples
+
+### Basic Usage
+
+Center uses flexbox by default to center child elements horizontally and vertically.
+
+```jsx live
+function Demo() {
+  return (
+    <Center style={{ background: '#f7f8fa', height: '150px', border: '1px dashed #d1d5de' }}>
+      <div
+        style={{ padding: '12px 24px', background: '#55bc8a', color: '#fff', borderRadius: '4px' }}
+      >
+        Centered Content
+      </div>
+    </Center>
+  );
+}
+```
+
+### Different Heights
+
+Center automatically centers content based on container height.
+
+```jsx live
+function Demo() {
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>Height: 100px</h4>
+      <Center
+        style={{
+          background: '#f7f8fa',
+          height: '100px',
+          border: '1px dashed #d1d5de',
+          marginBottom: '24px',
+        }}
+      >
+        <span>Centered Text</span>
+      </Center>
+
+      <h4 style={{ marginBottom: '12px' }}>Height: 200px</h4>
+      <Center style={{ background: '#f7f8fa', height: '200px', border: '1px dashed #d1d5de' }}>
+        <span>Centered Text</span>
+      </Center>
+    </div>
+  );
+}
+```
+
+### Center Buttons
+
+Commonly used to center buttons or button groups.
+
+```jsx live
+function Demo() {
+  return (
+    <Center style={{ background: '#f7f8fa', height: '120px', border: '1px dashed #d1d5de' }}>
+      <Group spacing="md">
+        <Button variant="outline">Cancel</Button>
+        <Button variant="filled" color="primary">
+          Confirm
+        </Button>
+      </Group>
+    </Center>
+  );
+}
+```
+
+### Center Icons
+
+Suitable for empty states, loading states, and similar scenarios.
+
+```jsx live
+function Demo() {
+  const { InformationDuotone, WarningDuotone, ErrorDuotone } = KubedIcons;
+
+  return (
+    <div>
+      <h4 style={{ marginBottom: '12px' }}>Information</h4>
+      <Center
+        style={{
+          background: '#f7f8fa',
+          height: '120px',
+          border: '1px dashed #d1d5de',
+          marginBottom: '24px',
+        }}
+      >
+        <div style={{ textAlign: 'center' }}>
+          <InformationDuotone size={48} color="#329dce" />
+          <div style={{ marginTop: '8px', color: '#79879c' }}>No data available</div>
+        </div>
+      </Center>
+
+      <h4 style={{ marginBottom: '12px' }}>Warning</h4>
+      <Center
+        style={{
+          background: '#fff3e0',
+          height: '120px',
+          border: '1px dashed #f5a623',
+          marginBottom: '24px',
+        }}
+      >
+        <div style={{ textAlign: 'center' }}>
+          <WarningDuotone size={48} color="#f5a623" />
+          <div style={{ marginTop: '8px', color: '#f5a623' }}>Configuration incomplete</div>
+        </div>
+      </Center>
+
+      <h4 style={{ marginBottom: '12px' }}>Error</h4>
+      <Center style={{ background: '#ffebee', height: '120px', border: '1px dashed #ca2621' }}>
+        <div style={{ textAlign: 'center' }}>
+          <ErrorDuotone size={48} color="#ca2621" />
+          <div style={{ marginTop: '8px', color: '#ca2621' }}>Loading failed</div>
+        </div>
+      </Center>
+    </div>
+  );
+}
+```
+
+### Full Screen Centering
+
+Achieve full screen centering by setting the container height to viewport height.
+
+```jsx live
+function Demo() {
+  return (
+    <Center style={{ background: '#f7f8fa', height: '300px', border: '1px dashed #d1d5de' }}>
+      <div style={{ textAlign: 'center' }}>
+        <h2 style={{ marginBottom: '16px', fontSize: '24px', color: '#242e42' }}>Welcome</h2>
+        <p style={{ marginBottom: '24px', color: '#79879c' }}>Start your cloud native journey</p>
+        <Button variant="filled" color="primary">
+          Get Started
+        </Button>
+      </div>
+    </Center>
+  );
+}
+```
+
+### Card Centering
+
+Commonly used for centering content within card containers.
+
+```jsx live
+function Demo() {
+  const { KubernetesDuotone } = KubedIcons;
+
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+      <div style={{ border: '1px solid #d1d5de', borderRadius: '4px', overflow: 'hidden' }}>
+        <Center style={{ background: '#f7f8fa', height: '100px' }}>
+          <KubernetesDuotone size={48} color="#326CE5" />
+        </Center>
+        <div style={{ padding: '12px', textAlign: 'center' }}>
+          <h4 style={{ marginBottom: '4px' }}>Kubernetes</h4>
+          <p style={{ fontSize: '12px', color: '#79879c' }}>Container orchestration</p>
+        </div>
+      </div>
+
+      <div style={{ border: '1px solid #d1d5de', borderRadius: '4px', overflow: 'hidden' }}>
+        <Center style={{ background: '#f7f8fa', height: '100px' }}>
+          <KubernetesDuotone size={48} color="#326CE5" />
+        </Center>
+        <div style={{ padding: '12px', textAlign: 'center' }}>
+          <h4 style={{ marginBottom: '4px' }}>Service Mesh</h4>
+          <p style={{ fontSize: '12px', color: '#79879c' }}>Microservice governance</p>
+        </div>
+      </div>
+
+      <div style={{ border: '1px solid #d1d5de', borderRadius: '4px', overflow: 'hidden' }}>
+        <Center style={{ background: '#f7f8fa', height: '100px' }}>
+          <KubernetesDuotone size={48} color="#326CE5" />
+        </Center>
+        <div style={{ padding: '12px', textAlign: 'center' }}>
+          <h4 style={{ marginBottom: '4px' }}>App Store</h4>
+          <p style={{ fontSize: '12px', color: '#79879c' }}>One-click deployment</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+### Responsive Centering
+
+The Center component naturally supports responsive layouts.
+
+```jsx live
+function Demo() {
+  return (
+    <Center
+      style={{
+        background: '#f7f8fa',
+        minHeight: '150px',
+        border: '1px dashed #d1d5de',
+        padding: '20px',
+      }}
+    >
+      <div style={{ maxWidth: '400px', textAlign: 'center' }}>
+        <h3 style={{ marginBottom: '12px' }}>Responsive Content</h3>
+        <p style={{ color: '#79879c', lineHeight: '1.6' }}>
+          The Center component automatically adapts to the container size, maintaining center alignment regardless of content changes.
+        </p>
+      </div>
+    </Center>
+  );
+}
+```
+
+## API
+
+### Center Properties
+
+| Property  | Description         | Type                             | Default |
+| --------- | ------------------- | -------------------------------- | ------- |
+| children  | Content to center   | `ReactNode`                      | -       |
+| className | Custom class name   | `string`                         | -       |
+| style     | Custom styles       | `React.CSSProperties`            | -       |
+| Others    | Native attributes   | `HTMLAttributes<HTMLDivElement>` | -       |
+
+:::info
+The Center component inherits all native HTML div element attributes (such as `onClick`, `onMouseEnter`, etc.).
+:::

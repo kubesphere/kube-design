@@ -1,0 +1,245 @@
+---
+sidebar_position: 11
+---
+
+# useUnmount
+
+组件卸载时执行回调的 Hook，相当于 class 组件的 `componentWillUnmount`。
+
+## 基本用法
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = useState(true);
+
+  const ChildComponent = () => {
+    useUnmount(() => {
+      console.log('组件已卸载');
+    });
+
+    return (
+      <div
+        style={{
+          padding: '20px',
+          backgroundColor: 'var(--ifm-color-success-lightest)',
+          borderRadius: '8px',
+          border: '1px solid var(--ifm-color-success)',
+        }}
+      >
+        这个组件会在卸载时打印日志到控制台
+      </div>
+    );
+  };
+
+  return (
+    <div>
+      <Button onClick={() => setVisible(!visible)}>
+        {visible ? '卸载组件' : '挂载组件'}
+      </Button>
+      <div style={{ marginTop: '12px' }}>
+        {visible && <ChildComponent />}
+      </div>
+    </div>
+  );
+}
+```
+
+## 清理定时器
+
+组件卸载时清理定时器：
+
+```jsx live
+function Demo() {
+  const [show, setShow] = useState(true);
+
+  const Timer = () => {
+    const [count, setCount] = useState(0);
+
+    useDidMount(() => {
+      const timer = setInterval(() => {
+        setCount((c) => c + 1);
+      }, 1000);
+
+      // 使用 useUnmount 清理
+      return () => clearInterval(timer);
+    });
+
+    useUnmount(() => {
+      console.log('定时器已清理，最终计数:', count);
+    });
+
+    return (
+      <div
+        style={{
+          padding: '20px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          textAlign: 'center',
+        }}
+      >
+        <div style={{ fontSize: '32px', fontWeight: 'bold' }}>{count}</div>
+        <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+          秒数
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div>
+      <Button onClick={() => setShow(!show)}>
+        {show ? '停止计时器' : '启动计时器'}
+      </Button>
+      <div style={{ marginTop: '12px' }}>
+        {show && <Timer />}
+      </div>
+    </div>
+  );
+}
+```
+
+## 取消 API 请求
+
+组件卸载时取消pending的请求：
+
+```jsx live
+function Demo() {
+  const [show, setShow] = useState(true);
+
+  const DataFetcher = () => {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const abortController = useRef(null);
+
+    useDidMount(() => {
+      abortController.current = new AbortController();
+
+      // 模拟 API 请求
+      setTimeout(() => {
+        if (abortController.current && !abortController.current.signal.aborted) {
+          setData({ message: '数据加载成功' });
+          setLoading(false);
+        }
+      }, 2000);
+    });
+
+    useUnmount(() => {
+      // 取消请求
+      if (abortController.current) {
+        abortController.current.abort();
+        console.log('API 请求已取消');
+      }
+    });
+
+    if (loading) {
+      return <Loading />;
+    }
+
+    return (
+      <div
+        style={{
+          padding: '20px',
+          backgroundColor: 'var(--ifm-color-success-lightest)',
+          borderRadius: '8px',
+        }}
+      >
+        {data?.message}
+      </div>
+    );
+  };
+
+  return (
+    <div>
+      <Button onClick={() => setShow(!show)}>
+        {show ? '卸载' : '挂载'}
+      </Button>
+      <div style={{ marginTop: '12px' }}>
+        {show && <DataFetcher />}
+      </div>
+    </div>
+  );
+}
+```
+
+## 保存状态
+
+组件卸载时保存状态：
+
+```jsx live
+function Demo() {
+  const [show, setShow] = useState(true);
+
+  const Editor = () => {
+    const [content, setContent] = useState('');
+
+    useUnmount(() => {
+      if (content) {
+        localStorage.setItem('editor-draft', content);
+        console.log('草稿已保存:', content);
+      }
+    });
+
+    return (
+      <div>
+        <Textarea
+          placeholder="输入内容（卸载时自动保存）"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          rows={4}
+        />
+        <div style={{ marginTop: '8px', fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+          点击"卸载"按钮时会保存到 localStorage
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div>
+      <Button onClick={() => setShow(!show)}>
+        {show ? '卸载（保存）' : '挂载'}
+      </Button>
+      <div style={{ marginTop: '12px' }}>
+        {show && <Editor />}
+      </div>
+    </div>
+  );
+}
+```
+
+## API
+
+### 参数
+
+```ts
+function useUnmount(fn: () => void): void
+```
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| fn | 组件卸载时执行的回调函数 | `() => void` | - |
+
+### 返回值
+
+无返回值。
+
+## 特性
+
+- **稳定引用**: 即使回调函数变化，也能正确执行最新的函数
+- **自动清理**: 组件卸载时自动执行
+- **简单易用**: 无需手动管理 useEffect 的清理函数
+
+## 注意事项
+
+- 只在组件卸载时执行一次
+- 回调函数的引用会自动更新到最新版本
+- 不要在回调中执行会导致副作用的操作（如 setState）
+
+## 使用场景
+
+- **清理定时器**: 清理 setTimeout/setInterval
+- **取消请求**: 取消未完成的 API 请求
+- **移除监听**: 移除事件监听器
+- **保存状态**: 保存组件状态到 localStorage
+- **释放资源**: 释放订阅、连接等资源
+- **日志记录**: 记录组件生命周期

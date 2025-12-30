@@ -1,0 +1,230 @@
+---
+sidebar_position: 10
+---
+
+# useDidUpdate
+
+组件更新时执行回调的 Hook，跳过首次挂载，相当于 class 组件的 `componentDidUpdate`。
+
+## 基本用法
+
+```jsx live
+function Demo() {
+  const [count, setCount] = useState(0);
+  const [updateCount, setUpdateCount] = useState(0);
+
+  useDidUpdate(() => {
+    setUpdateCount((c) => c + 1);
+  }, [count]);
+
+  return (
+    <div>
+      <div
+        style={{
+          padding: '20px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          marginBottom: '12px',
+        }}
+      >
+        <div>计数: {count}</div>
+        <div style={{ color: 'var(--ifm-color-primary)' }}>
+          更新次数: {updateCount}
+        </div>
+      </div>
+      <Button onClick={() => setCount(count + 1)}>增加</Button>
+    </div>
+  );
+}
+```
+
+## 监听特定值
+
+只在特定依赖变化时执行：
+
+```jsx live
+function Demo() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [log, setLog] = useState([]);
+
+  useDidUpdate(() => {
+    setLog((logs) => [...logs, `名字更新为: ${name}`]);
+  }, [name]);
+
+  return (
+    <div>
+      <div style={{ marginBottom: '12px' }}>
+        <Input
+          placeholder="输入名字"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </div>
+      <div style={{ marginBottom: '12px' }}>
+        <Input
+          placeholder="输入邮箱（不会触发日志）"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </div>
+      {log.length > 0 && (
+        <div
+          style={{
+            padding: '12px',
+            backgroundColor: 'var(--ifm-color-emphasis-100)',
+            borderRadius: '6px',
+            fontSize: '14px',
+          }}
+        >
+          <strong>更新日志:</strong>
+          {log.map((item, index) => (
+            <div key={index}>• {item}</div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## 同步到 localStorage
+
+值变化时同步到本地存储：
+
+```jsx live
+function Demo() {
+  const [text, setText] = useState('');
+  const [saved, setSaved] = useState(false);
+
+  useDidUpdate(() => {
+    localStorage.setItem('draft-text', text);
+    setSaved(true);
+    const timer = setTimeout(() => setSaved(false), 2000);
+    return () => clearTimeout(timer);
+  }, [text]);
+
+  return (
+    <div>
+      <Textarea
+        placeholder="输入文本（自动保存）"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        rows={4}
+      />
+      {saved && (
+        <div
+          style={{
+            marginTop: '12px',
+            padding: '8px 12px',
+            backgroundColor: 'var(--ifm-color-success-lightest)',
+            borderRadius: '4px',
+            fontSize: '14px',
+          }}
+        >
+          ✓ 已保存
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## 表单验证
+
+字段变化时执行验证：
+
+```jsx live
+function Demo() {
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+
+  useDidUpdate(() => {
+    if (password && confirmPassword) {
+      if (password !== confirmPassword) {
+        setError('两次密码不一致');
+      } else {
+        setError('');
+      }
+    }
+  }, [password, confirmPassword]);
+
+  return (
+    <div>
+      <div style={{ marginBottom: '12px' }}>
+        <Input
+          type="password"
+          placeholder="输入密码"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </div>
+      <div style={{ marginBottom: '12px' }}>
+        <Input
+          type="password"
+          placeholder="确认密码"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+      </div>
+      {error && (
+        <div
+          style={{
+            padding: '8px 12px',
+            backgroundColor: 'var(--ifm-color-danger-lightest)',
+            color: 'var(--ifm-color-danger-dark)',
+            borderRadius: '4px',
+            fontSize: '14px',
+          }}
+        >
+          {error}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## API
+
+### 参数
+
+```ts
+function useDidUpdate(
+  fn: () => void,
+  dependencies?: any[]
+): void
+```
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| fn | 更新时执行的回调函数 | `() => void` | - |
+| dependencies | 依赖数组 | `any[]` | `undefined` |
+
+### 返回值
+
+无返回值。
+
+## 与 useEffect 的区别
+
+| 特性 | useDidUpdate | useEffect |
+|------|-------------|-----------|
+| 首次挂载 | ❌ 不执行 | ✅ 执行 |
+| 更新时 | ✅ 执行 | ✅ 执行 |
+| 使用场景 | 只关心更新 | 挂载和更新都关心 |
+
+## 注意事项
+
+- 组件首次挂载时**不会**执行回调
+- 只在依赖项变化时执行
+- 如果不传依赖数组，每次更新都会执行
+- 避免在回调中修改依赖值，可能造成无限循环
+
+## 使用场景
+
+- **数据同步**: 状态变化时同步到外部系统
+- **表单验证**: 字段变化时执行验证
+- **日志记录**: 记录值的变化
+- **副作用**: 响应特定状态变化
+- **API 调用**: 搜索词变化时重新请求数据

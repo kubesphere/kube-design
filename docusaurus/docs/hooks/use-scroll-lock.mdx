@@ -1,0 +1,307 @@
+---
+sidebar_position: 18
+---
+
+# useScrollLock
+
+锁定和解锁页面滚动的 Hook，常用于模态框和抽屉组件。
+
+## 基本用法
+
+```jsx live
+function Demo() {
+  const [lockScroll, setLockScroll] = useState(false);
+  useScrollLock(lockScroll);
+
+  return (
+    <div>
+      <Button onClick={() => setLockScroll(!lockScroll)}>
+        {lockScroll ? '解锁滚动' : '锁定滚动'}
+      </Button>
+      <div
+        style={{
+          marginTop: '12px',
+          padding: '16px',
+          backgroundColor: lockScroll ? 'var(--ifm-color-warning-lightest)' : 'var(--ifm-color-success-lightest)',
+          borderRadius: '8px',
+        }}
+      >
+        <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>
+          {lockScroll ? '🔒 滚动已锁定' : '🔓 滚动已解锁'}
+        </div>
+        <div style={{ fontSize: '14px' }}>
+          {lockScroll ? '页面背景无法滚动' : '页面可以正常滚动'}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## 模态框示例
+
+打开模态框时锁定背景滚动：
+
+```jsx live
+function Demo() {
+  const [opened, setOpened] = useState(false);
+  useScrollLock(opened);
+
+  return (
+    <div>
+      <Button onClick={() => setOpened(true)}>打开模态框</Button>
+      {opened && (
+        <>
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1000,
+            }}
+            onClick={() => setOpened(false)}
+          >
+            <div
+              style={{
+                backgroundColor: 'var(--ifm-background-surface-color)',
+                padding: '32px',
+                borderRadius: '8px',
+                maxWidth: '500px',
+                maxHeight: '80vh',
+                overflow: 'auto',
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3>模态框标题</h3>
+              <p>这是一个模态框。背景滚动已被锁定。</p>
+              <p>你可以在这个模态框内滚动，但背景页面不会滚动。</p>
+              {Array.from({ length: 10 }, (_, i) => (
+                <p key={i}>模态框内容行 {i + 1}</p>
+              ))}
+              <Button onClick={() => setOpened(false)}>关闭</Button>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+```
+
+## 侧边抽屉
+
+抽屉打开时锁定滚动：
+
+```jsx live
+function Demo() {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  useScrollLock(drawerOpen);
+
+  return (
+    <div>
+      <Button onClick={() => setDrawerOpen(true)}>打开侧边栏</Button>
+      {drawerOpen && (
+        <>
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.3)',
+              zIndex: 1000,
+            }}
+            onClick={() => setDrawerOpen(false)}
+          />
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              right: 0,
+              bottom: 0,
+              width: '300px',
+              backgroundColor: 'var(--ifm-background-surface-color)',
+              boxShadow: '-2px 0 8px rgba(0, 0, 0, 0.1)',
+              padding: '24px',
+              overflowY: 'auto',
+              zIndex: 1001,
+            }}
+          >
+            <h3>侧边栏</h3>
+            <p>背景滚动已锁定</p>
+            {Array.from({ length: 20 }, (_, i) => (
+              <div key={i} style={{ padding: '8px 0' }}>
+                菜单项 {i + 1}
+              </div>
+            ))}
+            <Button onClick={() => setDrawerOpen(false)}>关闭</Button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+```
+
+## 条件锁定
+
+根据条件动态控制滚动锁定：
+
+```jsx live
+function Demo() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  // 任一弹窗打开时锁定滚动
+  const shouldLock = menuOpen || modalOpen;
+  useScrollLock(shouldLock);
+
+  return (
+    <div>
+      <Group spacing="md">
+        <Button onClick={() => setMenuOpen(!menuOpen)}>
+          {menuOpen ? '关闭' : '打开'} 菜单
+        </Button>
+        <Button onClick={() => setModalOpen(!modalOpen)}>
+          {modalOpen ? '关闭' : '打开'} 对话框
+        </Button>
+      </Group>
+      <div
+        style={{
+          marginTop: '16px',
+          padding: '16px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+        }}
+      >
+        <div>滚动状态: {shouldLock ? '🔒 已锁定' : '🔓 未锁定'}</div>
+        <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)', marginTop: '4px' }}>
+          菜单: {menuOpen ? '打开' : '关闭'} | 对话框: {modalOpen ? '打开' : '关闭'}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## API
+
+### 参数
+
+```ts
+function useScrollLock(lock: boolean): void
+```
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| lock | 是否锁定滚动 | `boolean` | - |
+
+### 返回值
+
+无返回值。
+
+## 工作原理
+
+当滚动被锁定时：
+1. 保存当前滚动位置
+2. 在 `body` 元素上添加 `overflow: hidden`
+3. 设置固定定位防止布局跳动
+4. 恢复时移除样式并还原滚动位置
+
+## 特性
+
+- **自动清理**: 组件卸载时自动解锁
+- **防止跳动**: 保持滚动条宽度，避免布局偏移
+- **嵌套支持**: 支持多个组件同时使用
+- **位置保持**: 解锁后恢复原滚动位置
+
+## 注意事项
+
+- 锁定滚动会影响整个页面
+- 确保在组件卸载时解锁滚动
+- 模态框内容区域应该独立可滚动
+- 注意移动端的兼容性处理
+
+## 使用场景
+
+- **模态框**: 打开模态框时锁定背景
+- **抽屉**: 侧边栏抽屉组件
+- **全屏菜单**: 移动端全屏导航菜单
+- **图片预览**: 全屏图片查看器
+- **视频播放器**: 全屏视频播放
+- **引导流程**: 用户引导遮罩层
+
+## 替代方案
+
+### 使用 CSS 类
+
+```jsx
+// ❌ 手动管理
+useEffect(() => {
+  if (opened) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+  return () => {
+    document.body.style.overflow = '';
+  };
+}, [opened]);
+
+// ✅ 使用 Hook
+useScrollLock(opened);
+```
+
+## 与其他 Hook 结合
+
+### 与 useDisclosure 结合
+
+```jsx
+function Demo() {
+  const { isOpen, open, close } = useDisclosure(false);
+  useScrollLock(isOpen);
+
+  return (
+    <>
+      <Button onClick={open}>打开模态框</Button>
+      {isOpen && <Modal onClose={close}>...</Modal>}
+    </>
+  );
+}
+```
+
+### 与 useClickOutside 结合
+
+```jsx
+function Demo() {
+  const [opened, setOpened] = useState(false);
+  const ref = useClickOutside(() => setOpened(false));
+  useScrollLock(opened);
+
+  return (
+    <>
+      <Button onClick={() => setOpened(true)}>打开</Button>
+      {opened && (
+        <div ref={ref} style={{ position: 'fixed', ... }}>
+          内容
+        </div>
+      )}
+    </>
+  );
+}
+```
+
+## 最佳实践
+
+- 仅在必要时锁定滚动（模态框、抽屉等）
+- 确保锁定期间有明确的解锁方式
+- 保持弹窗内容可滚动
+- 考虑移动端的用户体验
+- 测试多层弹窗的场景

@@ -8,8 +8,10 @@
   "module": "esm/index.js",
   "types": "lib/index.d.ts",
   "peerDependencies": {
-    "enzyme": ">=3.11.0",
-    "jest-axe": ">=4.1.0",
-    "react": ">=16.8.6"
+    "jest-axe": ">=10.0.0",
+    "react": ">=18.0.0"
+  },
+  "dependencies": {
+    "@kubed/components": "workspace:*"
   }
 }

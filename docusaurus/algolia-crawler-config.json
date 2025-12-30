@@ -1,0 +1,78 @@
+{
+  "index_name": "kube-design",
+  "start_urls": [
+    {
+      "url": "https://kube-design-docusaurus.vercel.app/",
+      "selectors_key": "default"
+    },
+    {
+      "url": "https://kube-design-docusaurus.vercel.app/docs/icons/",
+      "selectors_key": "icons",
+      "page_rank": 2
+    }
+  ],
+  "sitemap_urls": ["https://kube-design-docusaurus.vercel.app/sitemap.xml"],
+  "stop_urls": ["/search", "\\.json$"],
+  "selectors": {
+    "default": {
+      "lvl0": {
+        "selector": "(//ul[contains(@class,'menu__list')]//a[contains(@class, 'menu__link--active')]/text() | //nav[contains(@class, 'navbar')]//a[contains(@class, 'navbar__link--active')]/text())[last()]",
+        "type": "xpath",
+        "global": true,
+        "default_value": "Documentation"
+      },
+      "lvl1": "article h1, .theme-doc-markdown h1",
+      "lvl2": "article h2, .theme-doc-markdown h2",
+      "lvl3": "article h3, .theme-doc-markdown h3",
+      "lvl4": "article h4, .theme-doc-markdown h4",
+      "lvl5": "article h5, .theme-doc-markdown h5",
+      "lvl6": "article h6, .theme-doc-markdown h6",
+      "text": "article p, article li, .theme-doc-markdown p, .theme-doc-markdown li, article .table-of-contents__item"
+    },
+    "icons": {
+      "lvl0": {
+        "selector": "article h1",
+        "global": true,
+        "default_value": "Icons"
+      },
+      "lvl1": "article h2[id]:not([id^='category-'])",
+      "lvl2": {
+        "selector": "//h2[contains(@class, 'CategoryTitle')]/text()",
+        "type": "xpath",
+        "global": false
+      },
+      "lvl3": {
+        "selector": "//div[contains(@class, 'IconCard')]//div[contains(@class, 'IconName')]",
+        "type": "xpath",
+        "global": false
+      },
+      "text": "article p, article li"
+    }
+  },
+  "selectors_exclude": [
+    ".hash-link",
+    ".theme-code-block",
+    "nav.navbar",
+    "aside.theme-doc-sidebar-container",
+    ".theme-doc-toc-mobile",
+    ".theme-doc-toc-desktop",
+    ".theme-doc-breadcrumbs",
+    ".theme-edit-this-page",
+    ".theme-last-updated",
+    "footer.footer",
+    ".pagination-nav",
+    "input[type='text']",
+    ".StatsBar",
+    ".CopiedToast"
+  ],
+  "js_render": true,
+  "js_wait": 2,
+  "renderJavaScript": true,
+  "custom_settings": {
+    "separatorsToIndex": "_",
+    "attributesForFaceting": ["language", "version", "type", "docusaurus_tag"],
+    "attributesToRetrieve": ["hierarchy", "content", "anchor", "url", "url_without_anchor", "type"]
+  },
+  "conversation_id": ["kube-design"],
+  "nb_hits": 46250
+}

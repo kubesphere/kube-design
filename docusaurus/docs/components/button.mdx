@@ -1,0 +1,271 @@
+---
+sidebar_position: 1
+---
+
+# Button
+
+用于触发一个操作。
+
+## 何时使用
+
+按钮代表一个操作（或一系列操作）。点击按钮将触发相应的业务逻辑。
+
+在 Kube Design 中我们提供了 4 种按钮类型：
+
+- **主要按钮**：表示主要操作，一个区域中最多只有一个主要按钮
+- **默认按钮**：表示一系列没有优先级的操作
+- **文本按钮**：用于最次要的操作
+- **链接按钮**：用于外部链接
+
+## 示例
+
+### 变体
+
+Kube Design 中提供了填充按钮、轮廓按钮、文本按钮和链接按钮。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="xl">
+      <Button variant="filled" color="secondary">
+        Filled
+      </Button>
+      <Button variant="outline" color="default" radius="xl">
+        Outline
+      </Button>
+      <Button variant="text" radius="xl">
+        Text
+      </Button>
+      <Button variant="link" color="default">
+        Link
+      </Button>
+    </Group>
+  );
+}
+```
+
+### 颜色
+
+Button 有六种颜色。color 属性可以设置为 `default`、`primary`、`secondary`、`success`、`warning` 和 `error`。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="xl">
+      <Button variant="filled" color="default">
+        Default
+      </Button>
+      <Button variant="filled" color="primary">
+        Primary
+      </Button>
+      <Button variant="filled" color="secondary">
+        Secondary
+      </Button>
+      <Button variant="filled" color="success">
+        Success
+      </Button>
+      <Button variant="filled" color="warning">
+        Warning
+      </Button>
+      <Button variant="filled" color="error">
+        Error
+      </Button>
+    </Group>
+  );
+}
+```
+
+### 禁用状态
+
+要将按钮标记为禁用状态，请向 Button 添加 `disabled` 属性。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="xl">
+      <Button variant="filled" color="primary" disabled>
+        Disabled Filled
+      </Button>
+      <Button variant="outline" color="secondary" disabled>
+        Disabled Outline
+      </Button>
+      <Button variant="text" disabled>
+        Disabled Text
+      </Button>
+    </Group>
+  );
+}
+```
+
+### 块级按钮
+
+block 属性将使按钮适应其父元素的宽度。
+
+```jsx live
+function Demo() {
+  return (
+    <div style={{ width: '100%' }}>
+      <Button variant="filled" color="primary" block>
+        Primary Block
+      </Button>
+      <div style={{ marginTop: '12px' }}>
+        <Button variant="outline" color="secondary" block>
+          Outline Block
+        </Button>
+      </div>
+    </div>
+  );
+}
+```
+
+### 阴影按钮
+
+shadow 属性将使按钮具有阴影效果。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="xl">
+      <Button variant="filled" color="primary" shadow>
+        Primary
+      </Button>
+      <Button variant="filled" color="secondary" shadow>
+        Secondary
+      </Button>
+      <Button variant="filled" color="success" shadow>
+        Success
+      </Button>
+      <Button variant="filled" color="warning" shadow>
+        Warning
+      </Button>
+      <Button variant="filled" color="error" shadow>
+        Error
+      </Button>
+    </Group>
+  );
+}
+```
+
+### 尺寸和圆角
+
+使用 `size` 和 `radius` 属性更改按钮的尺寸或圆角。您可以将值设置为 `xs`、`sm`、`md`、`lg` 或 `xl`。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="xl">
+      <Button variant="filled" color="primary" radius="sm" size="xs">
+        XS 尺寸
+      </Button>
+      <Button variant="filled" color="primary" radius="md" size="sm">
+        Small
+      </Button>
+      <Button variant="filled" color="success" radius="md" size="md">
+        Medium
+      </Button>
+      <Button variant="filled" color="warning" radius="lg" size="lg">
+        Large
+      </Button>
+      <Button variant="filled" color="error" radius="xl" size="xl">
+        XL 尺寸
+      </Button>
+    </Group>
+  );
+}
+```
+
+### 加载状态
+
+通过设置 `loading` 属性可以向按钮添加加载指示器。
+
+```jsx live
+function Demo() {
+  const [loading, setLoading] = React.useState(false);
+
+  const handleClick = () => {
+    setLoading(true);
+    setTimeout(() => setLoading(false), 2000);
+  };
+
+  return (
+    <Group spacing="xl">
+      <Button variant="filled" color="primary" size="md" loading={loading} onClick={handleClick}>
+        {loading ? 'Loading...' : 'Click Me'}
+      </Button>
+      <Button variant="filled" color="primary" size="lg" loading>
+        Always Loading
+      </Button>
+    </Group>
+  );
+}
+```
+
+### 带图标
+
+Button 组件可以包含图标。这可以通过设置 `leftIcon` 或 `rightIcon` 属性，或在 Button 中放置 Icon 组件来实现。
+
+```jsx live
+function Demo() {
+  const { Add } = KubedIcons;
+  return (
+    <Group spacing="xl">
+      <Button variant="filled" radius="xl" leftIcon={<Add size={16} />}>
+        Left Icon
+      </Button>
+      <Button variant="filled" radius="xl">
+        <Add />
+      </Button>
+      <Button variant="filled" radius="xl" color="success">
+        <Add />
+      </Button>
+      <Button variant="filled" radius="xl" color="success" rightIcon={<Add size={16} />}>
+        Right Icon
+      </Button>
+    </Group>
+  );
+}
+```
+
+### 作为不同元素
+
+`as` 属性可以更改组件使用的底层元素。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="xl">
+      <Button as="a" href="https://kubesphere.io" target="_blank" variant="filled" color="primary">
+        Link Button
+      </Button>
+      <Button as="a" href="#button" variant="outline" color="secondary">
+        Anchor Link
+      </Button>
+    </Group>
+  );
+}
+```
+
+## API
+
+### Button 属性
+
+| 属性      | 说明         | 类型                                                                         | 默认值      |
+| --------- | ------------ | ---------------------------------------------------------------------------- | ----------- |
+| variant   | 按钮变体     | `'filled' \| 'outline' \| 'text' \| 'link'`                                  | `'filled'`  |
+| color     | 按钮颜色     | `'default' \| 'primary' \| 'secondary' \| 'success' \| 'warning' \| 'error'` | `'default'` |
+| size      | 按钮尺寸     | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                                       | `'sm'`      |
+| radius    | 边框圆角     | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number`                             | `'xl'`      |
+| disabled  | 禁用状态     | `boolean`                                                                    | `false`     |
+| loading   | 加载状态     | `boolean`                                                                    | `false`     |
+| block     | 全宽按钮     | `boolean`                                                                    | `false`     |
+| shadow    | 添加阴影效果 | `boolean`                                                                    | `false`     |
+| leftIcon  | 左侧图标     | `ReactNode`                                                                  | -           |
+| rightIcon | 右侧图标     | `ReactNode`                                                                  | -           |
+| as        | 更改底层元素 | `string \| Component`                                                        | `'button'`  |
+| className | 自定义类名   | `string`                                                                     | -           |
+| children  | 按钮内容     | `ReactNode`                                                                  | -           |
+| 其他      | 原生属性     | `ButtonHTMLAttributes<HTMLButtonElement>`                                    | -           |
+
+:::info
+Button 组件继承所有原生 HTML button 元素的属性（如 `onClick`、`onMouseEnter`、`type` 等）。当使用 `as` 属性时，会继承对应元素的属性。
+:::

@@ -1,0 +1,178 @@
+---
+sidebar_position: 9
+---
+
+# useDidMount
+
+A Hook that executes a callback when the component mounts, equivalent to the `componentDidMount` lifecycle method in class components.
+
+## Basic Usage
+
+```jsx live
+function Demo() {
+  const [message, setMessage] = useState('');
+
+  useDidMount(() => {
+    setMessage('Component mounted!');
+  });
+
+  return (
+    <div
+      style={{
+        padding: '24px',
+        backgroundColor: 'var(--ifm-color-success-lightest)',
+        borderRadius: '8px',
+        border: '1px solid var(--ifm-color-success)',
+      }}
+    >
+      {message || 'Waiting for mount...'}
+    </div>
+  );
+}
+```
+
+## Fetching Data
+
+Fetch data when the component mounts:
+
+```jsx live
+function Demo() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useDidMount(() => {
+    // Simulate API request
+    setTimeout(() => {
+      setData({ title: 'Article Title', content: 'This is the article content' });
+      setLoading(false);
+    }, 1000);
+  });
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  return (
+    <div
+      style={{
+        padding: '20px',
+        backgroundColor: 'var(--ifm-background-surface-color)',
+        border: '1px solid var(--ifm-color-emphasis-300)',
+        borderRadius: '8px',
+      }}
+    >
+      <h4>{data.title}</h4>
+      <p>{data.content}</p>
+    </div>
+  );
+}
+```
+
+## Initialization
+
+Execute initialization logic:
+
+```jsx live
+function Demo() {
+  const [initialized, setInitialized] = useState(false);
+  const [config, setConfig] = useState(null);
+
+  useDidMount(() => {
+    // Initialize configuration
+    const savedConfig = localStorage.getItem('demo-config') || '{"theme":"light","language":"en"}';
+    setConfig(JSON.parse(savedConfig));
+    setInitialized(true);
+  });
+
+  if (!initialized) {
+    return <div>Initializing...</div>;
+  }
+
+  return (
+    <div
+      style={{
+        padding: '20px',
+        backgroundColor: 'var(--ifm-color-emphasis-100)',
+        borderRadius: '8px',
+      }}
+    >
+      <h4>Configuration Loaded</h4>
+      <div>Theme: {config.theme}</div>
+      <div>Language: {config.language}</div>
+    </div>
+  );
+}
+```
+
+## Event Subscription
+
+Subscribe to events when the component mounts:
+
+```jsx live
+function Demo() {
+  const [online, setOnline] = useState(navigator.onLine);
+
+  useDidMount(() => {
+    const handleOnline = () => setOnline(true);
+    const handleOffline = () => setOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    // Return cleanup function
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  });
+
+  return (
+    <div
+      style={{
+        padding: '20px',
+        backgroundColor: online ? 'var(--ifm-color-success-lightest)' : 'var(--ifm-color-danger-lightest)',
+        borderRadius: '8px',
+        textAlign: 'center',
+      }}
+    >
+      <div style={{ fontSize: '32px', marginBottom: '12px' }}>
+        {online ? '🟢' : '🔴'}
+      </div>
+      <div>Network status: {online ? 'Online' : 'Offline'}</div>
+    </div>
+  );
+}
+```
+
+## API
+
+### Parameters
+
+```ts
+function useDidMount(callback: () => any): void
+```
+
+| Parameter | Description | Type | Default |
+|------|------|------|--------|
+| callback | Callback function executed when component mounts | `() => any` | - |
+
+The callback function can return a cleanup function that will be executed when the component unmounts.
+
+### Return Value
+
+No return value.
+
+## Notes
+
+- Only executes once when the component first mounts
+- Callback can return a cleanup function that executes on component unmount
+- Equivalent to `useEffect(() => { ... }, [])`
+- Do not directly modify dependency values inside the callback
+
+## Usage Scenarios
+
+- **Data Fetching**: Fetch initial data when component mounts
+- **Event Subscription**: Subscribe to global events or third-party services
+- **Initialization**: Execute one-time initialization logic
+- **Timers**: Start timers or polling
+- **Logging**: Log component mount events

@@ -1,0 +1,409 @@
+---
+sidebar_position: 2
+---
+
+# Input
+
+A basic input field component for user text input.
+
+## When to Use
+
+- Need to collect user text input
+- Need to validate and process input content
+- Can be combined with other components to build complex forms
+- Supports prefix, suffix, addon before and addon after for extended scenarios
+
+## Examples
+
+### Basic Usage
+
+The simplest usage, get the input value through `onChange`.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+
+  return (
+    <div>
+      <Input placeholder="Enter content" value={value} onChange={(e) => setValue(e.target.value)} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        Entered content: {value || 'None'}
+      </div>
+    </div>
+  );
+}
+```
+
+### Different Sizes
+
+Set input size through the `size` property, supports five sizes: `xs`, `sm`, `md`, `lg`, `xl`.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Input size="xs" placeholder="Extra small size (xs)" />
+      <Input size="sm" placeholder="Small size (sm)" />
+      <Input size="md" placeholder="Medium size (md)" />
+      <Input size="lg" placeholder="Large size (lg)" />
+      <Input size="xl" placeholder="Extra large size (xl)" />
+    </Group>
+  );
+}
+```
+
+### Prefix and Suffix
+
+Add prefix and suffix content through `prefix` and `suffix`, can be text or icons.
+
+```jsx live
+function Demo() {
+  const { Magnifier, Loading3Duotone, Appcenter } = KubedIcons;
+
+  return (
+    <Group direction="column">
+      <Input prefix={<Magnifier size={16} />} placeholder="Search..." />
+      <Input suffix={<Loading3Duotone size={16} />} placeholder="Loading..." />
+      <Input
+        prefix={<Magnifier size={16} />}
+        suffix={<Appcenter size={16} />}
+        placeholder="Prefix and suffix"
+      />
+      <Input prefix="https://" suffix=".com" placeholder="example" />
+    </Group>
+  );
+}
+```
+
+### Addon Before and After
+
+Add addon before and after through `addonBefore` and `addonAfter`.
+
+```jsx live
+function Demo() {
+  const { Appcenter } = KubedIcons;
+
+  return (
+    <Group direction="column">
+      <Input addonBefore="https://" placeholder="Enter URL" />
+      <Input addonAfter=".com" placeholder="Enter domain" />
+      <Input addonBefore="https://" addonAfter=".com" placeholder="example" />
+      <Input addonBefore={<Appcenter size={16} />} addonAfter=".io" placeholder="Enter app name" />
+    </Group>
+  );
+}
+```
+
+### Disabled and ReadOnly
+
+Disable the input through the `disabled` property, set to read-only through the `readOnly` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Input disabled placeholder="Disabled state" />
+      <Input disabled value="Disabled with value" />
+      <Input readOnly value="Read-only state" />
+    </Group>
+  );
+}
+```
+
+### Controlled Component
+
+Implement controlled component through `value` and `onChange` properties, can restrict input.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+
+  const handleChange = (e) => {
+    // Limit to 6 characters only
+    const newValue = e.target.value.slice(0, 6);
+    setValue(newValue);
+  };
+
+  const handleClear = () => {
+    setValue('');
+  };
+
+  return (
+    <div>
+      <Input placeholder="Enter up to 6 characters" value={value} onChange={handleChange} />
+      <Group style={{ marginTop: '16px' }}>
+        <Button onClick={handleClear}>Clear</Button>
+      </Group>
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        Entered {value.length}/6 characters
+      </div>
+    </div>
+  );
+}
+```
+
+### Input Validation
+
+Implement input validation with state.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+  const [error, setError] = React.useState('');
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+    setValue(newValue);
+
+    if (newValue && !validateEmail(newValue)) {
+      setError('Please enter a valid email address');
+    } else {
+      setError('');
+    }
+  };
+
+  return (
+    <div>
+      <Input placeholder="Enter email address" value={value} onChange={handleChange} />
+      {error && <div style={{ marginTop: '8px', color: '#ca2621', fontSize: '14px' }}>{error}</div>}
+      {value && !error && (
+        <div style={{ marginTop: '8px', color: '#55bc8a', fontSize: '14px' }}>Email format is correct</div>
+      )}
+    </div>
+  );
+}
+```
+
+### Formatted Input
+
+Implement automatic formatting of input content.
+
+```jsx live
+function Demo() {
+  const [phone, setPhone] = React.useState('');
+
+  const formatPhone = (value) => {
+    // Remove all non-digit characters
+    const cleaned = value.replace(/\D/g, '');
+    // Limit to 11 digits
+    const limited = cleaned.slice(0, 11);
+    // Format as xxx-xxxx-xxxx
+    const match = limited.match(/^(\d{0,3})(\d{0,4})(\d{0,4})$/);
+    if (match) {
+      return [match[1], match[2], match[3]].filter(Boolean).join('-');
+    }
+    return limited;
+  };
+
+  const handleChange = (e) => {
+    const formatted = formatPhone(e.target.value);
+    setPhone(formatted);
+  };
+
+  return (
+    <div>
+      <Input
+        placeholder="Enter phone number"
+        value={phone}
+        onChange={handleChange}
+        style={{ width: 300 }}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        Formatted number: {phone || 'None'}
+      </div>
+    </div>
+  );
+}
+```
+
+### Custom Width
+
+Set input width through the `width` property or `style`.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Input placeholder="width=200" width={200} />
+      <Input placeholder="width=300" width={300} />
+      <Input placeholder="width=400" width={400} />
+      <Input placeholder="style width" style={{ width: '100%', maxWidth: 500 }} />
+    </Group>
+  );
+}
+```
+
+### Focus Events
+
+Handle focus events through `onFocus` and `onBlur`.
+
+```jsx live
+function Demo() {
+  const [focused, setFocused] = React.useState(false);
+  const [value, setValue] = React.useState('');
+
+  return (
+    <div>
+      <Input
+        placeholder="Enter content"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        style={{ width: 300 }}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        Input state: {focused ? 'Focused' : 'Not focused'}
+      </div>
+    </div>
+  );
+}
+```
+
+## API
+
+### Input Props
+
+| Property     | Description                       | Type                               | Default  |
+| ------------ | --------------------------------- | ---------------------------------- | -------- |
+| value        | Input value (controlled)          | `string`                           | -        |
+| defaultValue | Default value (uncontrolled)      | `string`                           | -        |
+| placeholder  | Placeholder text                  | `string`                           | -        |
+| size         | Input size                        | `KubedSizes`                       | `'sm'`   |
+| width        | Input width (pixels)              | `number`                           | -        |
+| prefix       | Prefix content                    | `ReactNode`                        | -        |
+| suffix       | Suffix content                    | `ReactNode`                        | -        |
+| addonBefore  | Addon before                      | `ReactNode`                        | -        |
+| addonAfter   | Addon after                       | `ReactNode`                        | -        |
+| disabled     | Whether disabled                  | `boolean`                          | `false`  |
+| readOnly     | Whether read-only                 | `boolean`                          | `false`  |
+| radius       | Border radius                     | `KubedNumberSize`                  | -        |
+| type         | Input type                        | `string`                           | `'text'` |
+| onChange     | Callback when value changes       | `(e: ChangeEvent) => void`         | -        |
+| onFocus      | Callback when focused             | `(e: FocusEvent) => void`          | -        |
+| onBlur       | Callback when blurred             | `(e: FocusEvent) => void`          | -        |
+| others       | Native attributes                 | `HTMLAttributes<HTMLInputElement>` | -        |
+
+:::info
+
+**About Controlled vs Uncontrolled**:
+
+- Use `value` + `onChange` for controlled component, fully control the input value
+- Use `defaultValue` for uncontrolled component, component manages state internally
+- In controlled mode, must provide `onChange` handler to update `value`
+
+**About Prefix and Suffix**:
+
+- `prefix` / `suffix`: Display inside the input field, usually for icons
+- `addonBefore` / `addonAfter`: Display outside the input field, usually for text labels
+
+**About Sizes**:
+
+- `xs`: Extra small size, suitable for compact layouts
+- `sm`: Small size (default), suitable for most scenarios
+- `md`: Medium size, suitable for emphasized inputs
+- `lg`: Large size, suitable for important forms
+- `xl`: Extra large size, suitable for primary actions
+
+Input component inherits all native HTML input element attributes (such as `maxLength`, `pattern`, `autoComplete`, etc.).
+
+:::
+
+## Usage Guidelines
+
+### Controlled vs Uncontrolled
+
+Choose the appropriate usage based on scenario:
+
+```jsx
+// Uncontrolled: suitable for simple scenarios that don't need external state control
+<Input defaultValue="Default value" placeholder="Enter text" />;
+
+// Controlled: suitable for scenarios requiring validation, formatting or external control
+const [value, setValue] = React.useState('');
+<Input value={value} onChange={(e) => setValue(e.target.value)} />;
+```
+
+### Input Validation
+
+Recommended validation pattern:
+
+```jsx
+const [value, setValue] = React.useState('');
+const [error, setError] = React.useState('');
+
+const handleChange = (e) => {
+  const newValue = e.target.value;
+  setValue(newValue);
+
+  // Real-time validation
+  if (newValue && !isValid(newValue)) {
+    setError('Invalid input format');
+  } else {
+    setError('');
+  }
+};
+
+<Input value={value} onChange={handleChange} />;
+{
+  error && <div className="error">{error}</div>;
+}
+```
+
+### Formatted Input
+
+For inputs requiring specific formats (such as phone numbers, credit cards, etc.):
+
+```jsx
+const formatValue = (value) => {
+  // Implement formatting logic
+  return formattedValue;
+};
+
+const handleChange = (e) => {
+  const formatted = formatValue(e.target.value);
+  setValue(formatted);
+};
+```
+
+### Working with Form Components
+
+Using Input in Form:
+
+```jsx
+<Form onFinish={handleFinish}>
+  <FormItem
+    name="username"
+    label="Username"
+    rules={[
+      { required: true, message: 'Please enter username' },
+      { min: 3, message: 'Username must be at least 3 characters' },
+    ]}
+  >
+    <Input placeholder="Enter username" />
+  </FormItem>
+</Form>
+```
+
+### Performance Optimization
+
+For scenarios with many input fields or frequent updates, consider using debounce:
+
+```jsx
+import { useDebouncedValue } from '@kubed/hooks';
+
+const [value, setValue] = React.useState('');
+const [debouncedValue] = useDebouncedValue(value, 300);
+
+React.useEffect(() => {
+  // Use debounced value for search or validation
+  if (debouncedValue) {
+    performSearch(debouncedValue);
+  }
+}, [debouncedValue]);
+```

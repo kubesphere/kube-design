@@ -1,0 +1,588 @@
+---
+sidebar_position: 1
+---
+
+# ShowMore
+
+Collapse long content and view complete content through expand/collapse buttons.
+
+## When to Use
+
+- When content is long and needs to be collapsed
+- Need to save page space while retaining access to complete content
+- Long text scenarios such as list items, descriptions, logs, etc.
+- When users need to actively choose to view detailed content
+
+In Kube Design, the ShowMore component provides flexible content collapse functionality:
+
+- **Auto Detection**: Automatically determines if content exceeds maximum height
+- **Smooth Animation**: Supports custom transition animation duration
+- **Custom Labels**: Can customize expand and collapse button text
+- **Initial State**: Supports setting initial expanded or collapsed state
+- **Flexible Height**: Supports custom maximum height when collapsed
+
+## Examples
+
+### Basic Usage
+
+The most basic expand/collapse usage, collapsing text content that exceeds height.
+
+```jsx live
+function Demo() {
+  return (
+    <ShowMore
+      maxHeight={60}
+      showLabel={<a style={{ cursor: 'pointer', color: '#55bc8a' }}>Show More</a>}
+      hideLabel={<a style={{ cursor: 'pointer', color: '#55bc8a' }}>Collapse</a>}
+    >
+      <Text>
+        Kubernetes is an open-source container orchestration engine for automating deployment, scaling, and management of containerized applications. It was originally designed by Google and is now maintained by the Cloud Native Computing Foundation (CNCF). Kubernetes provides a container-centric management environment that orchestrates compute, network, and storage infrastructure to support user workloads. Kubernetes has portability, scalability, and self-healing capabilities, and has become the de facto standard in container orchestration. Kubernetes is an open-source container orchestration engine for automating deployment, scaling, and management of containerized applications. It was originally designed by Google and is now maintained by the Cloud Native Computing Foundation (CNCF). Kubernetes provides a container-centric management environment that orchestrates compute, network, and storage infrastructure to support user workloads. Kubernetes has portability, scalability, and self-healing capabilities, and has become the de facto standard in container orchestration.
+      </Text>
+    </ShowMore>
+  );
+}
+```
+
+### Custom Labels
+
+Use different expand and collapse label styles.
+
+```jsx live
+function Demo() {
+  const { ChevronDown, ChevronUp } = KubedIcons;
+
+  return (
+    <Group direction="column" spacing="lg">
+      <ShowMore
+        maxHeight={30}
+        showLabel={
+          <Button size="xs" variant="text">
+            <ChevronDown size={16} style={{ marginRight: '4px' }} />
+            Expand All
+          </Button>
+        }
+        hideLabel={
+          <Button size="xs" variant="text">
+            <ChevronUp size={16} style={{ marginRight: '4px' }} />
+            Collapse Content
+          </Button>
+        }
+      >
+        <Text>
+          KubeSphere is an enterprise-grade distributed multi-tenant container platform built on top of Kubernetes, providing full-stack IT automated operation and maintenance capabilities to simplify enterprise DevOps workflows. Its architecture makes it very easy to integrate third-party applications with platform components. KubeSphere provides an operation-friendly wizard-style interface to help enterprises quickly build a feature-rich container cloud platform. KubeSphere is an enterprise-grade distributed multi-tenant container platform built on top of Kubernetes, providing full-stack IT automated operation and maintenance capabilities to simplify enterprise DevOps workflows. Its architecture makes it very easy to integrate third-party applications with platform components. KubeSphere provides an operation-friendly wizard-style interface to help enterprises quickly build a feature-rich container cloud platform.
+        </Text>
+      </ShowMore>
+    </Group>
+  );
+}
+```
+
+### Initial Expanded State
+
+Set initial state to expanded through the `expanded` property.
+
+```jsx live
+function Demo() {
+  return (
+    <ShowMore
+      maxHeight={10}
+      expanded={true}
+      showLabel={<a style={{ cursor: 'pointer', color: '#55bc8a' }}>View More</a>}
+      hideLabel={<a style={{ cursor: 'pointer', color: '#55bc8a' }}>Collapse</a>}
+    >
+      <Group direction="column" spacing="sm">
+        <Text size="sm">Pod is the smallest deployable unit in Kubernetes</Text>
+        <Text size="sm">A Pod can contain one or more containers</Text>
+        <Text size="sm">Containers in a Pod share network and storage resources</Text>
+        <Text size="sm">Pods are ephemeral and can be created, destroyed, and replaced</Text>
+        <Text size="sm">Each Pod has a unique IP address</Text>
+      </Group>
+    </ShowMore>
+  );
+}
+```
+
+### Custom Transition Duration
+
+Adjust the speed of expand/collapse animation through `transitionDuration`.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="lg">
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          Fast animation (100ms):
+        </Text>
+        <ShowMore
+          maxHeight={40}
+          transitionDuration={100}
+          showLabel={<a style={{ cursor: 'pointer', color: '#55bc8a' }}>Expand</a>}
+          hideLabel={<a style={{ cursor: 'pointer', color: '#55bc8a' }}>Collapse</a>}
+        >
+          <Text>
+            Fast expand/collapse animation, suitable for scenarios where content changes are minimal. The animation duration is 100ms, allowing users to quickly see the expand and collapse effects. Fast expand/collapse animation, suitable for scenarios where content changes are minimal. The animation duration is 100ms, allowing users to quickly see the expand and collapse effects. Fast expand/collapse animation, suitable for scenarios where content changes are minimal. The animation duration is 100ms, allowing users to quickly see the expand and collapse effects. Fast expand/collapse animation, suitable for scenarios where content changes are minimal. The animation duration is 100ms, allowing users to quickly see the expand and collapse effects.
+          </Text>
+        </ShowMore>
+      </div>
+
+      <div>
+        <Text size="sm" style={{ marginBottom: '8px' }}>
+          Slow animation (800ms):
+        </Text>
+        <ShowMore
+          maxHeight={40}
+          transitionDuration={800}
+          showLabel={<a style={{ cursor: 'pointer', color: '#55bc8a' }}>Expand</a>}
+          hideLabel={<a style={{ cursor: 'pointer', color: '#55bc8a' }}>Collapse</a>}
+        >
+          <Text>
+            Slower expand/collapse animation provides a smoother visual experience. The animation duration is 800ms, suitable for scenarios with more content or when emphasizing the expansion process. Slower expand/collapse animation provides a smoother visual experience. The animation duration is 800ms, suitable for scenarios with more content or when emphasizing the expansion process. Slower expand/collapse animation provides a smoother visual experience. The animation duration is 800ms, suitable for scenarios with more content or when emphasizing the expansion process.
+          </Text>
+        </ShowMore>
+      </div>
+    </Group>
+  );
+}
+```
+
+### No Animation Effect
+
+Set `transitionDuration={0}` to disable animation effect.
+
+```jsx live
+function Demo() {
+  return (
+    <ShowMore
+      maxHeight={50}
+      transitionDuration={0}
+      showLabel={<a style={{ cursor: 'pointer', color: '#55bc8a' }}>Show All</a>}
+      hideLabel={<a style={{ cursor: 'pointer', color: '#55bc8a' }}>Hide</a>}
+    >
+      <Text>
+        In some scenarios, animation effects are not needed. You can disable animation by setting transitionDuration to 0. This way, expanding and collapsing complete immediately without transition effects. This approach is suitable for performance-critical scenarios or when you don't want visual transitions. In some scenarios, animation effects are not needed. You can disable animation by setting transitionDuration to 0. This way, expanding and collapsing complete immediately without transition effects. This approach is suitable for performance-critical scenarios or when you don't want visual transitions. In some scenarios, animation effects are not needed. You can disable animation by setting transitionDuration to 0. This way, expanding and collapsing complete immediately without transition effects. This approach is suitable for performance-critical scenarios or when you don't want visual transitions.
+      </Text>
+    </ShowMore>
+  );
+}
+```
+
+### Rich Content Collapse
+
+ShowMore can collapse any content, not just text.
+
+```jsx live
+function Demo() {
+  const { Pod } = KubedIcons;
+
+  return (
+    <ShowMore
+      maxHeight={100}
+      showLabel={
+        <Button size="sm" variant="outline">
+          Show More Pods
+        </Button>
+      }
+      hideLabel={
+        <Button size="sm" variant="outline">
+          Collapse List
+        </Button>
+      }
+    >
+      <Group direction="column" spacing="sm">
+        {[
+          'nginx-deployment-7d5c8f8b9d-x7k2m',
+          'nginx-deployment-7d5c8f8b9d-b8z9p',
+          'nginx-deployment-7d5c8f8b9d-m4n6q',
+          'nginx-deployment-7d5c8f8b9d-p7r2k',
+          'nginx-deployment-7d5c8f8b9d-q9s3n',
+          'nginx-deployment-7d5c8f8b9d-t5v8m',
+        ].map((name) => (
+          <Card key={name} style={{ padding: '12px' }} hoverable>
+            <Group spacing="md">
+              <Pod size={24} />
+              <Text size="sm">{name}</Text>
+              <Badge color="success" size="sm">
+                Running
+              </Badge>
+            </Group>
+          </Card>
+        ))}
+      </Group>
+    </ShowMore>
+  );
+}
+```
+
+### Complete Example
+
+A comprehensive example combining all features.
+
+```jsx live
+function Demo() {
+  const { Backup, ChevronDown, ChevronUp } = KubedIcons;
+
+  const pods = [
+    { name: 'nginx-deployment-7d5c8f8b9d-x7k2m', status: 'Running', restarts: 0, age: '2d' },
+    { name: 'nginx-deployment-7d5c8f8b9d-b8z9p', status: 'Running', restarts: 1, age: '2d' },
+    { name: 'nginx-deployment-7d5c8f8b9d-m4n6q', status: 'Running', restarts: 0, age: '1d' },
+    { name: 'nginx-deployment-7d5c8f8b9d-p7r2k', status: 'Running', restarts: 0, age: '1d' },
+    { name: 'nginx-deployment-7d5c8f8b9d-q9s3n', status: 'Running', restarts: 2, age: '18h' },
+  ];
+
+  return (
+    <Card>
+      <Entity bordered={false}>
+        <Field
+          avatar={<Backup size={40} />}
+          label="Deployment Name"
+          value="nginx-deployment"
+          width="35%"
+        />
+        <Field label="Replicas" value="5/5" width="15%" />
+        <Field label="Image" value="nginx:1.21" width="30%" />
+        <Field label="Status" value={<Badge color="success">Running</Badge>} width="20%" />
+      </Entity>
+
+      <div style={{ padding: '16px', borderTop: '1px solid #eff4f9' }}>
+        <Text size="sm" weight={600} style={{ marginBottom: '12px' }}>
+          Associated Pods:
+        </Text>
+        <ShowMore
+          maxHeight={150}
+          transitionDuration={400}
+          showLabel={
+            <Button size="sm" variant="text" style={{ marginTop: '8px' }}>
+              <ChevronDown size={16} style={{ marginRight: '4px' }} />
+              Show All {pods.length} Pods
+            </Button>
+          }
+          hideLabel={
+            <Button size="sm" variant="text" style={{ marginTop: '8px' }}>
+              <ChevronUp size={16} style={{ marginRight: '4px' }} />
+              Collapse List
+            </Button>
+          }
+        >
+          <Group direction="column" spacing="xs">
+            {pods.map((pod) => (
+              <div
+                key={pod.name}
+                style={{
+                  padding: '8px 12px',
+                  background: '#f5f7fa',
+                  borderRadius: '4px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <Text size="sm">{pod.name}</Text>
+                <Group spacing="md">
+                  <Badge size="sm" color="success">
+                    {pod.status}
+                  </Badge>
+                  <Text size="xs" color="secondary">
+                    Restarts: {pod.restarts}
+                  </Text>
+                  <Text size="xs" color="secondary">
+                    {pod.age}
+                  </Text>
+                </Group>
+              </div>
+            ))}
+          </Group>
+        </ShowMore>
+      </div>
+
+      <div style={{ padding: '16px', borderTop: '1px solid #eff4f9' }}>
+        <Text size="sm" weight={600} style={{ marginBottom: '8px' }}>
+          Deployment Description:
+        </Text>
+        <ShowMore
+          maxHeight={50}
+          showLabel={
+            <a style={{ cursor: 'pointer', color: '#55bc8a', fontSize: '12px' }}>View Details</a>
+          }
+          hideLabel={<a style={{ cursor: 'pointer', color: '#55bc8a', fontSize: '12px' }}>Collapse</a>}
+        >
+          <Text size="sm" color="secondary">
+            This is a standard nginx web server deployment configured with 5 replicas to ensure high availability. The deployment uses a RollingUpdate strategy, enabling zero-downtime updates. All Pods are currently in a healthy running state with no restart anomalies. This deployment is associated with a ClusterIP type Service, accessible within the cluster via the service name.
+          </Text>
+        </ShowMore>
+      </div>
+    </Card>
+  );
+}
+```
+
+## API
+
+### ShowMore
+
+| Property           | Description                      | Type                                    | Default    |
+| ------------------ | -------------------------------- | --------------------------------------- | ---------- |
+| maxHeight          | Maximum visible height when collapsed (px) | `number`                       | `100`      |
+| showLabel          | Label for expand button          | `ReactNode`                             | **Required** |
+| hideLabel          | Label for collapse button        | `ReactNode`                             | **Required** |
+| expanded           | Whether initially expanded       | `boolean`                               | `false`    |
+| transitionDuration | Transition animation duration (ms) | `number`                               | `300`      |
+| controlRef         | Get ref of toggle button         | `React.ForwardedRef<HTMLButtonElement>` | -          |
+| className          | Custom class name                | `string`                                | -          |
+| style              | Custom styles                    | `CSSProperties`                         | -          |
+| children           | Content to collapse              | `ReactNode`                             | -          |
+
+:::info
+
+**About auto detection**:
+
+- ShowMore automatically detects if content height exceeds `maxHeight`
+- Only displays expand/collapse button when content height exceeds `maxHeight`
+- If content height is less than `maxHeight`, button is not displayed
+- Height detection uses element's actual height
+
+**About expanded state**:
+
+- `expanded={false}`: Initial state is collapsed (default)
+- `expanded={true}`: Initial state is expanded
+- Clicking button toggles state
+- State change triggers animation transition
+
+**About labels**:
+
+- `showLabel`: Button label displayed when collapsed (not expanded)
+- `hideLabel`: Button label displayed when expanded
+- Labels can be any ReactNode, including text, links, buttons, etc.
+- Currently displayed label switches based on `show` state
+
+**About animation**:
+
+- `transitionDuration`: Controls expand/collapse animation duration
+- Set to `0` or `null` to disable animation effect
+- Default 300ms, can be adjusted based on content amount
+- Animation is achieved by smoothly transitioning `max-height`
+
+**About styles**:
+
+- Can customize container styles through `className` or `style`
+- Button element has `showmore-button` class name for global styling
+- Label styles are completely controlled by `showLabel` and `hideLabel`
+
+**About height calculation**:
+
+- Content height is stored in `contentHeight` state
+- When expanded uses contentHeight, when collapsed uses maxHeight
+- Height change triggers CSS transition animation
+
+**About re-rendering**:
+
+- When `children` content changes, component automatically re-detects height
+- When `maxHeight` changes, also recalculates whether to show expand button
+- Ensures correct behavior in dynamic content scenarios
+
+:::
+
+## Usage Recommendations
+
+### Set Appropriate Maximum Height
+
+Choose suitable maxHeight based on content type:
+
+```jsx
+// Text content: 2-3 lines height
+<ShowMore maxHeight={60} showLabel="More" hideLabel="Collapse">
+  <Text>Text content...</Text>
+</ShowMore>
+
+// List content: Show 2-3 list items
+<ShowMore maxHeight={150} showLabel="Show All" hideLabel="Collapse">
+  <List>...</List>
+</ShowMore>
+
+// Configuration content: Show partial config
+<ShowMore maxHeight={100} showLabel="View Full Config" hideLabel="Collapse">
+  <pre>Config content...</pre>
+</ShowMore>
+```
+
+### Clear Label Text
+
+Provide meaningful expand/collapse labels:
+
+```jsx
+// Recommended: Clear action description
+<ShowMore
+  showLabel={<a>Show All 20 Pods</a>}
+  hideLabel={<a>Collapse List</a>}
+>
+  ...
+</ShowMore>
+
+// Recommended: Button with icon
+<ShowMore
+  showLabel={<Button size="sm"><ChevronDown /> Expand Details</Button>}
+  hideLabel={<Button size="sm"><ChevronUp /> Collapse</Button>}
+>
+  ...
+</ShowMore>
+
+// Not recommended: Vague labels
+<ShowMore showLabel="More" hideLabel="less">...</ShowMore>
+```
+
+### Use Gradient Mask
+
+Add gradient effect to collapsed content:
+
+```jsx
+<ShowMore
+  maxHeight={80}
+  showLabel={
+    <div
+      style={{
+        background: 'linear-gradient(to bottom, transparent, white)',
+        padding: '20px 0 10px',
+        marginTop: '-20px',
+      }}
+    >
+      <Button>Expand</Button>
+    </div>
+  }
+  hideLabel={<Button>Collapse</Button>}
+>
+  <Text>Content...</Text>
+</ShowMore>
+```
+
+### Adjust Animation Based on Content
+
+Use different animation durations for different content:
+
+```jsx
+// Short content: Fast animation
+<ShowMore transitionDuration={200} maxHeight={40}>
+  <Text>Short text</Text>
+</ShowMore>
+
+// Long content: Slower animation
+<ShowMore transitionDuration={500} maxHeight={200}>
+  <LongList />
+</ShowMore>
+
+// Performance priority: No animation
+<ShowMore transitionDuration={0} maxHeight={100}>
+  <HeavyContent />
+</ShowMore>
+```
+
+### Use with Cards
+
+Use ShowMore in cards:
+
+```jsx
+<Card>
+  <Text weight={600}>Resource Details</Text>
+  <ShowMore maxHeight={100} showLabel={<a>View Details</a>} hideLabel={<a>Collapse</a>}>
+    <ResourceDetails />
+  </ShowMore>
+</Card>
+```
+
+### Application in Lists
+
+Use in long lists:
+
+```jsx
+const items = [...]; // Many items
+
+<ShowMore
+  maxHeight={200}
+  showLabel={<Button variant="text">Show All {items.length} Items</Button>}
+  hideLabel={<Button variant="text">Collapse</Button>}
+>
+  {items.map(item => <ItemCard key={item.id} {...item} />)}
+</ShowMore>
+```
+
+### Description Text Scenario
+
+Use for collapsing descriptive text:
+
+```jsx
+<Entity>
+  <Field label="Name" value="nginx-service" />
+  <Field label="Type" value="ClusterIP" />
+</Entity>
+<div style={{ marginTop: '12px' }}>
+  <Text size="sm" weight={600}>Description:</Text>
+  <ShowMore
+    maxHeight={40}
+    showLabel={<a style={{ fontSize: '12px' }}>Expand</a>}
+    hideLabel={<a style={{ fontSize: '12px' }}>Collapse</a>}
+  >
+    <Text size="sm" color="secondary">{description}</Text>
+  </ShowMore>
+</div>
+```
+
+### Configuration and Log Scenarios
+
+Use when viewing configurations or logs:
+
+```jsx
+<ShowMore
+  maxHeight={120}
+  showLabel={<Button size="sm">View Full Log</Button>}
+  hideLabel={<Button size="sm">Collapse Log</Button>}
+>
+  <pre
+    style={{
+      background: '#1e1e1e',
+      color: '#d4d4d4',
+      padding: '12px',
+      borderRadius: '4px',
+      fontSize: '12px',
+    }}
+  >
+    {logContent}
+  </pre>
+</ShowMore>
+```
+
+### Avoid Nested Usage
+
+Don't nest multiple ShowMores:
+
+```jsx
+// Not recommended: Nested ShowMore
+<ShowMore maxHeight={100} showLabel="Expand" hideLabel="Collapse">
+  <div>
+    Content...
+    <ShowMore maxHeight={50} showLabel="More" hideLabel="Collapse">
+      Nested content...
+    </ShowMore>
+  </div>
+</ShowMore>
+
+// Recommended: Use single ShowMore or separate
+<ShowMore maxHeight={150} showLabel="Expand All" hideLabel="Collapse">
+  <div>All content...</div>
+</ShowMore>
+```
+
+### Handling Content Updates
+
+When content changes dynamically, ShowMore automatically re-detects height:
+
+```jsx
+const [items, setItems] = useState([...]);
+
+// ShowMore recalculates height when items change
+<ShowMore
+  maxHeight={150}
+  showLabel="Show All"
+  hideLabel="Collapse"
+>
+  {items.map(item => <ItemCard key={item.id} {...item} />)}
+</ShowMore>
+```

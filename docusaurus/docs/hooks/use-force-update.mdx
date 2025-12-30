@@ -1,0 +1,203 @@
+---
+sidebar_position: 12
+---
+
+# useForceUpdate
+
+强制组件重新渲染的 Hook。
+
+## 基本用法
+
+```jsx live
+function Demo() {
+  const forceUpdate = useForceUpdate();
+  const renderCount = useRef(0);
+  renderCount.current += 1;
+
+  return (
+    <div>
+      <div
+        style={{
+          padding: '24px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          marginBottom: '12px',
+          textAlign: 'center',
+        }}
+      >
+        <div style={{ fontSize: '48px', fontWeight: 'bold', color: 'var(--ifm-color-primary)' }}>
+          {renderCount.current}
+        </div>
+        <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+          渲染次数
+        </div>
+      </div>
+      <Button onClick={forceUpdate}>强制重新渲染</Button>
+    </div>
+  );
+}
+```
+
+## 更新非响应式数据
+
+强制更新使用 ref 存储的数据：
+
+```jsx live
+function Demo() {
+  const forceUpdate = useForceUpdate();
+  const dataRef = useRef({ count: 0, items: [] });
+
+  const addItem = () => {
+    dataRef.current.items.push(`Item ${dataRef.current.items.length + 1}`);
+    dataRef.current.count += 1;
+    forceUpdate(); // 强制更新以显示新数据
+  };
+
+  return (
+    <div>
+      <Button onClick={addItem}>添加项目</Button>
+      <div
+        style={{
+          marginTop: '12px',
+          padding: '16px',
+          backgroundColor: 'var(--ifm-background-surface-color)',
+          border: '1px solid var(--ifm-color-emphasis-300)',
+          borderRadius: '8px',
+        }}
+      >
+        <div style={{ marginBottom: '12px', fontWeight: 'bold' }}>
+          总计: {dataRef.current.count} 个项目
+        </div>
+        {dataRef.current.items.map((item, index) => (
+          <div key={index} style={{ padding: '4px 0' }}>
+            • {item}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+## 刷新时间显示
+
+定期强制更新以显示最新时间：
+
+```jsx live
+function Demo() {
+  const forceUpdate = useForceUpdate();
+  const [auto, setAuto] = useState(false);
+
+  useDidMount(() => {
+    let timer;
+    if (auto) {
+      timer = setInterval(forceUpdate, 1000);
+    }
+    return () => clearInterval(timer);
+  });
+
+  useDidUpdate(() => {
+    let timer;
+    if (auto) {
+      timer = setInterval(forceUpdate, 1000);
+    } else {
+      timer && clearInterval(timer);
+    }
+    return () => clearInterval(timer);
+  }, [auto]);
+
+  return (
+    <div>
+      <Group spacing="md">
+        <Button onClick={forceUpdate}>手动刷新</Button>
+        <Button onClick={() => setAuto(!auto)} variant="outline">
+          {auto ? '停止自动刷新' : '自动刷新'}
+        </Button>
+      </Group>
+      <div
+        style={{
+          marginTop: '16px',
+          padding: '20px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          textAlign: 'center',
+        }}
+      >
+        <div style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px' }}>
+          {new Date().toLocaleTimeString()}
+        </div>
+        <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+          {new Date().toLocaleDateString()}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## API
+
+### 参数
+
+```ts
+function useForceUpdate(): () => void
+```
+
+无参数。
+
+### 返回值
+
+返回一个函数，调用该函数会强制组件重新渲染。
+
+```ts
+() => void
+```
+
+## 工作原理
+
+`useForceUpdate` 内部使用 `useReducer` 实现，每次调用都会触发一个新的状态值，从而导致组件重新渲染。
+
+## 注意事项
+
+- 应该尽量避免使用强制更新
+- 优先考虑使用 `useState` 或 `useReducer` 管理状态
+- 仅在处理非响应式数据（如 ref）时使用
+- 过度使用可能导致性能问题
+- 不符合 React 的声明式编程范式
+
+## 替代方案
+
+### 使用 useState
+
+```jsx
+// ❌ 不推荐
+const forceUpdate = useForceUpdate();
+const dataRef = useRef(data);
+dataRef.current = newData;
+forceUpdate();
+
+// ✅ 推荐
+const [data, setData] = useState(initialData);
+setData(newData);
+```
+
+### 使用 useReducer
+
+```jsx
+// ❌ 不推荐
+const forceUpdate = useForceUpdate();
+// 修改复杂状态
+forceUpdate();
+
+// ✅ 推荐
+const [state, dispatch] = useReducer(reducer, initialState);
+dispatch({ type: 'UPDATE', payload: newData });
+```
+
+## 合理使用场景
+
+- **第三方库集成**: 库不支持 React 响应式更新
+- **性能优化**: 使用 ref 避免不必要的渲染
+- **时间/日期显示**: 定期刷新当前时间
+- **调试**: 开发过程中临时使用
+- **遗留代码**: 迁移 class 组件到函数组件时的过渡方案

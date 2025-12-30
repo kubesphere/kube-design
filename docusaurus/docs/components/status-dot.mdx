@@ -1,0 +1,439 @@
+---
+sidebar_position: 1
+---
+
+# StatusDot 状态点
+
+用于显示状态的圆点指示器。
+
+## 何时使用
+
+- 需要显示资源或服务的运行状态时
+- 在列表或表格中标记项目状态
+- 需要直观展示在线/离线、健康/异常等状态
+- 指示进行中的操作或过程
+
+在 Kube Design 中,StatusDot 组件提供了丰富的状态展示功能:
+
+- **多种颜色**:支持 success、warning、error 等主题颜色
+- **动画效果**:支持闪烁动画表示进行中状态
+- **阴影效果**:可选的阴影增强视觉效果
+- **带标签**:可以附带文字标签说明状态
+- **双层设计**:外圈低透明度,内圈高亮,层次分明
+
+## 示例
+
+### 基础用法
+
+最基本的状态点用法,带有标签文字。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="xl">
+      <StatusDot color="success">运行中</StatusDot>
+      <StatusDot color="warning">警告</StatusDot>
+      <StatusDot color="error">错误</StatusDot>
+      <StatusDot>默认</StatusDot>
+    </Group>
+  );
+}
+```
+
+### 无标签
+
+仅显示状态点,不带文字标签。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="md">
+      <StatusDot />
+      <StatusDot color="success" />
+      <StatusDot color="warning" />
+      <StatusDot color="error" />
+    </Group>
+  );
+}
+```
+
+### 动画效果
+
+使用 `motion` 属性启用闪烁动画,表示进行中的状态。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Group spacing="xl">
+        <StatusDot motion>处理中</StatusDot>
+        <StatusDot motion color="warning">
+          同步中
+        </StatusDot>
+        <StatusDot motion color="success">
+          启动中
+        </StatusDot>
+        <StatusDot motion color="error">
+          重启中
+        </StatusDot>
+      </Group>
+      <Group spacing="md">
+        <StatusDot motion />
+        <StatusDot motion color="success" />
+        <StatusDot motion color="warning" />
+        <StatusDot motion color="error" />
+      </Group>
+    </Group>
+  );
+}
+```
+
+### 无阴影
+
+设置 `shadow={false}` 关闭阴影效果。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column" spacing="md">
+      <Text size="sm">有阴影(默认):</Text>
+      <Group spacing="md">
+        <StatusDot color="success" />
+        <StatusDot color="warning" />
+        <StatusDot color="error" />
+      </Group>
+      <Text size="sm">无阴影:</Text>
+      <Group spacing="md">
+        <StatusDot color="success" shadow={false} />
+        <StatusDot color="warning" shadow={false} />
+        <StatusDot color="error" shadow={false} />
+      </Group>
+    </Group>
+  );
+}
+```
+
+### 配合 Tooltip 使用
+
+为状态点添加提示信息。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="xl">
+      <Tooltip content="Pod 正在正常运行">
+        <StatusDot color="success">Running</StatusDot>
+      </Tooltip>
+      <Tooltip content="Pod 正在等待资源分配">
+        <StatusDot color="warning" motion>
+          Pending
+        </StatusDot>
+      </Tooltip>
+      <Tooltip content="Pod 启动失败,请检查日志">
+        <StatusDot color="error">Failed</StatusDot>
+      </Tooltip>
+      <Tooltip content="点击查看详情">
+        <StatusDot color="success" />
+      </Tooltip>
+    </Group>
+  );
+}
+```
+
+## API
+
+### StatusDot
+
+| 属性           | 说明             | 类型                                                       | 默认值      |
+| -------------- | ---------------- | ---------------------------------------------------------- | ----------- |
+| color          | 状态点颜色       | `'default' \| 'success' \| 'warning' \| 'error' \| string` | `'default'` |
+| motion         | 是否启用闪烁动画 | `boolean`                                                  | `false`     |
+| shadow         | 是否显示阴影     | `boolean`                                                  | `true`      |
+| labelClassName | 标签的自定义类名 | `string`                                                   | -           |
+| children       | 标签文字         | `ReactNode`                                                | -           |
+
+:::info
+
+**关于颜色系统**:
+
+- StatusDot 支持主题预设颜色:default、success、warning、error
+- 也可以传入其他主题颜色名称或自定义颜色字符串
+- 颜色解析逻辑(StatusDot.tsx 第 31-40 行):
+  - 首先尝试从 `palette[color]` 获取(如 success、warning 等)
+  - 其次尝试从 `palette.colors[color][2]` 获取(取颜色数组的第 3 个值)
+  - 都不匹配则使用 `palette.accents_5` 作为默认颜色
+- 颜色会自动生成两层效果(第 42-49 行):
+  - 外层背景:`addColorAlpha(colorHex, 0.1)` - 10% 透明度
+  - 内层圆点:`getColor(color, theme)` - 完整颜色
+- 阴影颜色使用 RGB 格式:`rgb(${colorRgb} / 36%)`(第 47 行)
+
+**关于动画实现**:
+
+- `motion={true}` 启用闪烁动画(StatusDot.tsx 第 91 行默认为 false)
+- 动画使用 keyframes 定义(第 7-20 行):
+  ```typescript
+  0%: transform: scale(0.7); opacity: 0.2;
+  50%: transform: scale(1.2); opacity: 1;
+  100%: transform: scale(0.7); opacity: 0.2;
+  ```
+- 动画周期为 1.5 秒,线性播放,无限循环:`1.5s linear infinite`(第 25 行)
+- 动画应用于外层 Dot 元素(第 63 行),内层 `:before` 伪元素不动画
+- 适合用于表示进行中的状态,如 Pending、Creating、Terminating
+- 如果 `motion={false}`,`getAnimation` 返回 null,不应用动画(第 22-29 行)
+
+**关于阴影效果**:
+
+- `shadow` 属性默认为 `true`(StatusDot.tsx 第 101 行)
+- 阴影效果仅在 `shadow={true}` 时应用(第 47 行判断)
+- 阴影样式:`box-shadow: 0 8px 16px 0 rgb(${colorRgb} / 36%)`
+- 阴影使用与状态点相同的颜色,36% 透明度
+- 在列表或表格中,可以关闭阴影减少视觉干扰
+- 使用 `shadow={false}` 关闭阴影
+
+**关于双层圆点设计**:
+
+- StatusDot 使用两层圆点设计实现视觉层次
+- 外层圆点(Dot)(第 56-76 行):
+  - 尺寸:12px × 12px(第 59-60 行)
+  - 圆角:`border-radius: 50%`(第 61 行)
+  - 背景:颜色的 10% 透明度版本(第 46 行)
+  - 定位:`position: relative`(第 57 行)
+- 内层圆点(`:before` 伪元素)(第 65-75 行):
+  - 尺寸:8.3px × 8.3px(约为外层的 69%,第 71-72 行)
+  - 圆角:`border-radius: 50%`(第 73 行)
+  - 背景:完整主题颜色(第 74 行)
+  - 定位:绝对定位,居中对齐(第 66-70 行)
+  - 居中方式:`left: 50%; top: 50%; transform: translate(-50%, -50%)`
+- 这种设计提供了更好的视觉效果和层次感
+
+**关于标签显示**:
+
+- `children` 作为标签文字显示在状态点右侧(StatusDot.tsx 第 105 行)
+- 只有传入 `children` 时才渲染标签(第 105 行判断)
+- 标签样式(第 78-84 行):
+  - 左侧外边距:8px(第 79 行)
+  - 颜色:`theme.palette.accents_8`(深色,第 80 行)
+  - 字体粗细:600(第 81 行)
+  - 字体栈:Roboto, PingFang SC 等(第 82-83 行)
+- 不传 `children` 时仅显示状态点,适合表格等紧凑场景
+- 可以通过 `labelClassName` 自定义标签样式(第 97 行接口定义)
+
+**关于组件结构**:
+
+- StatusDot 使用 forwardRef 实现,支持 ref 转发(StatusDot.tsx 第 100-109 行)
+- 组件层级结构(第 103-106 行):
+  - DotWrapper - 最外层容器,`inline-flex` 布局,垂直居中(第 51-54 行)
+  - Dot - 状态点本体,包含动画和阴影(第 56-76 行)
+  - Label - 标签文字(可选,第 78-84 行)
+- displayName 设置为 `'@kubed/components/StatusDot'`(第 111 行)
+
+**关于默认值**:
+
+- `color`:未设置时使用 `palette.accents_5`(第 39 行)
+- `motion`:默认为 `false`,不启用动画(第 101 行)
+- `shadow`:默认为 `true`,显示阴影(第 101 行)
+- `labelClassName`:无默认值(第 97 行)
+
+**关于尺寸规格**:
+
+- 外层圆点:12px × 12px(StatusDot.tsx 第 59-60 行)
+- 内层圆点:8.3px × 8.3px(第 71-72 行)
+- 标签间距:左侧 8px(第 79 行)
+- 所有尺寸固定,不支持通过 props 自定义
+
+**关于颜色转换**:
+
+- 使用 `colorToRgbValues` 函数将 hex 颜色转为 RGB 值数组(第 5、44 行)
+- 使用 `addColorAlpha` 函数添加透明度(第 5、46 行)
+- 这些工具函数来自 `../utils/color` 模块
+
+**关于可访问性**:
+
+- 组件支持通过 `...rest` 传递额外的 HTML 属性(第 101、103 行)
+- 可以添加 `aria-label`、`role` 等属性增强可访问性
+- 建议为无标签的状态点提供 `aria-label` 说明状态含义
+- 标签文字本身就提供了可访问的状态说明
+
+**关于使用场景**:
+
+- 表格列表:快速展示状态,可选择性显示标签
+- 详情页:使用带标签的完整展示
+- 仪表盘:配合动画展示实时状态
+- 统计卡片:作为状态指示器
+- 通知消息:标识消息重要程度
+
+:::
+
+## 使用建议
+
+### 使用语义化颜色
+
+根据状态含义选择颜色:
+
+```jsx
+// 推荐: 语义化颜色
+<StatusDot color="success">运行中</StatusDot>     // 正常状态
+<StatusDot color="warning">等待中</StatusDot>     // 警告状态
+<StatusDot color="error">错误</StatusDot>         // 错误状态
+<StatusDot>未知</StatusDot>                       // 默认状态
+
+// 不推荐: 无规律的颜色使用
+<StatusDot color="error">运行中</StatusDot>       // 颜色与状态不符
+```
+
+### 进行中状态使用动画
+
+对于正在进行的操作使用动画:
+
+```jsx
+// 推荐: 进行中状态使用动画
+<StatusDot color="warning" motion>Pending</StatusDot>
+<StatusDot color="warning" motion>Creating</StatusDot>
+<StatusDot color="error" motion>Terminating</StatusDot>
+
+// 不推荐: 稳定状态使用动画
+<StatusDot color="success" motion>Running</StatusDot>  // Running 是稳定状态
+```
+
+### 列表中保持一致性
+
+在列表中使用相同的显示方式:
+
+```jsx
+// 推荐: 所有项目保持一致
+{
+  items.map((item) => (
+    <StatusDot key={item.id} color={item.statusColor} motion={item.isProgressing}>
+      {item.statusText}
+    </StatusDot>
+  ));
+}
+
+// 不推荐: 有的带标签,有的不带
+```
+
+### 配合 Tooltip 提供更多信息
+
+为无标签状态点添加提示:
+
+```jsx
+<Tooltip content="Pod 正在正常运行,已运行 24 小时">
+  <StatusDot color="success" />
+</Tooltip>
+
+// 或者为带标签的状态点添加详细说明
+<Tooltip content="5 个容器中有 3 个已就绪">
+  <StatusDot color="warning">Partially Ready</StatusDot>
+</Tooltip>
+```
+
+### 在表格中关闭阴影
+
+列表或表格中可以关闭阴影减少视觉干扰:
+
+```jsx
+<table>
+  {data.map((item) => (
+    <tr key={item.id}>
+      <td>{item.name}</td>
+      <td>
+        <StatusDot color={item.color} shadow={false}>
+          {item.status}
+        </StatusDot>
+      </td>
+    </tr>
+  ))}
+</table>
+```
+
+### 定义状态映射
+
+创建统一的状态颜色映射:
+
+```jsx
+const statusColorMap = {
+  Running: 'success',
+  Pending: 'warning',
+  Failed: 'error',
+  Unknown: 'default',
+};
+
+const statusMotionMap = {
+  Pending: true,
+  ContainerCreating: true,
+  Terminating: true,
+};
+
+<StatusDot color={statusColorMap[status]} motion={statusMotionMap[status]}>
+  {status}
+</StatusDot>;
+```
+
+### 结合 Entity 使用
+
+在 Entity 组件中展示状态:
+
+```jsx
+<Entity>
+  <Field avatar={<Pod size={40} />} label="nginx-pod" value="nginx:1.21" />
+  <Field label="状态" value={<StatusDot color="success">Running</StatusDot>} />
+</Entity>
+```
+
+### 状态说明要清晰
+
+标签文字应该清晰表达状态:
+
+```jsx
+// 推荐: 清晰的状态描述
+<StatusDot color="success">Ready</StatusDot>
+<StatusDot color="warning">PartiallyAvailable</StatusDot>
+<StatusDot color="error">CrashLoopBackOff</StatusDot>
+
+// 不推荐: 模糊的描述
+<StatusDot color="success">OK</StatusDot>
+<StatusDot color="warning">?</StatusDot>
+```
+
+### 不同大小的使用场景
+
+根据场景调整显示方式:
+
+```jsx
+// 详情页面: 带标签,有阴影
+<StatusDot color="success">Running</StatusDot>
+
+// 表格列表: 带标签,无阴影
+<StatusDot color="success" shadow={false}>Running</StatusDot>
+
+// 紧凑列表: 无标签,无阴影,配合 Tooltip
+<Tooltip content="Running">
+  <StatusDot color="success" shadow={false} />
+</Tooltip>
+```
+
+### 处理多种状态
+
+合理组织多种状态的显示:
+
+```jsx
+const getStatusProps = (status) => {
+  switch (status) {
+    case 'Running':
+      return { color: 'success', label: '运行中' };
+    case 'Pending':
+      return { color: 'warning', motion: true, label: '等待中' };
+    case 'Failed':
+      return { color: 'error', label: '失败' };
+    case 'Succeeded':
+      return { color: 'success', label: '完成' };
+    default:
+      return { color: 'default', label: '未知' };
+  }
+};
+
+const { color, motion, label } = getStatusProps(pod.status);
+<StatusDot color={color} motion={motion}>
+  {label}
+</StatusDot>;
+```

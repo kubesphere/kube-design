@@ -1,0 +1,215 @@
+---
+sidebar_position: 15
+---
+
+# useId
+
+生成稳定唯一的 ID，用于可访问性属性和表单元素关联。
+
+## 基本用法
+
+```jsx live
+function Demo() {
+  const id = useId();
+
+  return (
+    <div>
+      <div
+        style={{
+          padding: '20px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '8px',
+          marginBottom: '12px',
+        }}
+      >
+        <div style={{ marginBottom: '8px' }}>
+          生成的 ID: <code style={{ color: 'var(--ifm-color-primary)' }}>{id}</code>
+        </div>
+        <div style={{ fontSize: '14px', color: 'var(--ifm-color-emphasis-700)' }}>
+          每次渲染保持稳定
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## 表单标签关联
+
+使用 ID 关联 label 和 input：
+
+```jsx live
+function Demo() {
+  const id = useId();
+
+  return (
+    <div>
+      <div style={{ marginBottom: '12px' }}>
+        <label
+          htmlFor={id}
+          style={{
+            display: 'block',
+            marginBottom: '8px',
+            fontWeight: 'bold',
+          }}
+        >
+          用户名
+        </label>
+        <Input id={id} placeholder="请输入用户名" />
+      </div>
+      <div
+        style={{
+          padding: '12px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '6px',
+          fontSize: '14px',
+        }}
+      >
+        <strong>关联 ID:</strong> <code>{id}</code>
+      </div>
+    </div>
+  );
+}
+```
+
+## ARIA 属性
+
+使用 ID 连接 ARIA 属性：
+
+```jsx live
+function Demo() {
+  const buttonId = useId();
+  const contentId = useId();
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <div>
+      <Button
+        id={buttonId}
+        aria-expanded={expanded}
+        aria-controls={contentId}
+        onClick={() => setExpanded(!expanded)}
+      >
+        {expanded ? '收起' : '展开'} 内容
+      </Button>
+      {expanded && (
+        <div
+          id={contentId}
+          role="region"
+          aria-labelledby={buttonId}
+          style={{
+            marginTop: '12px',
+            padding: '16px',
+            backgroundColor: 'var(--ifm-background-surface-color)',
+            border: '1px solid var(--ifm-color-emphasis-300)',
+            borderRadius: '8px',
+          }}
+        >
+          这是可展开的内容区域，通过 ARIA 属性与按钮关联。
+        </div>
+      )}
+      <div
+        style={{
+          marginTop: '12px',
+          padding: '12px',
+          backgroundColor: 'var(--ifm-color-emphasis-100)',
+          borderRadius: '6px',
+          fontSize: '14px',
+        }}
+      >
+        <div>按钮 ID: <code>{buttonId}</code></div>
+        <div>内容 ID: <code>{contentId}</code></div>
+      </div>
+    </div>
+  );
+}
+```
+
+## 多个输入框
+
+为表单中的多个字段生成唯一 ID：
+
+```jsx live
+function Demo() {
+  const nameId = useId();
+  const emailId = useId();
+  const phoneId = useId();
+
+  return (
+    <div>
+      <div style={{ marginBottom: '12px' }}>
+        <label htmlFor={nameId} style={{ display: 'block', marginBottom: '4px' }}>
+          姓名
+        </label>
+        <Input id={nameId} placeholder="请输入姓名" />
+      </div>
+      <div style={{ marginBottom: '12px' }}>
+        <label htmlFor={emailId} style={{ display: 'block', marginBottom: '4px' }}>
+          邮箱
+        </label>
+        <Input id={emailId} type="email" placeholder="请输入邮箱" />
+      </div>
+      <div style={{ marginBottom: '12px' }}>
+        <label htmlFor={phoneId} style={{ display: 'block', marginBottom: '4px' }}>
+          电话
+        </label>
+        <Input id={phoneId} type="tel" placeholder="请输入电话" />
+      </div>
+    </div>
+  );
+}
+```
+
+## API
+
+### 参数
+
+```ts
+function useId(staticId?: string): string
+```
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| staticId | 静态 ID（可选） | `string` | `undefined` |
+
+### 返回值
+
+返回一个稳定的唯一 ID 字符串。
+
+```ts
+string
+```
+
+## 特性
+
+- **稳定性**: 在组件的整个生命周期中保持不变
+- **唯一性**: 在整个应用中保证唯一
+- **SSR 兼容**: 服务端和客户端生成的 ID 一致
+- **可覆盖**: 可以通��参数提供自定义 ID
+
+## 注意事项
+
+- 如果传入 `staticId`，将直接使用该 ID
+- 不要将生成的 ID 用作 React key
+- ID 在组件卸载后不会被重用
+- 适用于需要关联元素的场景
+
+## 使用场景
+
+- **表单标签**: 关联 label 和 input 元素
+- **ARIA 属性**: `aria-labelledby`、`aria-describedby` 等
+- **可访问性**: 提升屏幕阅读器体验
+- **元素关联**: 任何需要唯一 ID 的元素关联场景
+- **错误提示**: 关联表单字段和错误消息
+
+## 与 React 18 的区别
+
+如果你使用 React 18+，可以直接使用内置的 `useId` Hook。`@kubed/hooks` 的 `useId` 提供了与 React 18 相同的 API，同时兼容 React 17 及更早版本。
+
+```jsx
+// React 18+ 内置
+import { useId } from 'react';
+
+// @kubed/hooks 版本（兼容 React 17）
+import { useId } from '@kubed/hooks';
+```

@@ -1,0 +1,447 @@
+---
+sidebar_position: 1
+---
+
+# SliderConfirm 滑动确认
+
+通过滑动操作确认危险或重要的操作。
+
+## 何时使用
+
+- 执行删除、移除等危险操作时
+- 需要用户明确确认风险时
+- 防止用户误操作的场景
+- 重要操作的二次确认
+
+在 Kube Design 中,SliderConfirm 组件提供了交互式的确认功能:
+
+- **滑动交互**:需要滑动到最右侧才能确认
+- **视觉反馈**:滑动过程中有颜色渐变效果
+- **自定义提示**:可自定义滑动条上的提示文字
+- **自定义图标**:可自定义拖动手柄的图标
+- **防误操作**:比简单的按钮点击更安全
+
+## 示例
+
+### 基础用法
+
+最基本的滑动确认用法。
+
+```jsx live
+function Demo() {
+  const { Kubesphere } = KubedIcons;
+  const [confirmed, setConfirmed] = React.useState(false);
+
+  const handleConfirm = () => {
+    setConfirmed(true);
+    setTimeout(() => setConfirmed(false), 2000);
+  };
+
+  return (
+    <Group direction="column" spacing="md">
+      {confirmed && (
+        <Text color="success" weight={600}>
+          ✓ 已确认!
+        </Text>
+      )}
+      <SliderConfirm
+        tip="向右滑动确认操作"
+        dragIcon={<Kubesphere size={30} color="#50b484" />}
+        onConfirm={handleConfirm}
+      />
+    </Group>
+  );
+}
+```
+
+### 自定义提示文字
+
+使用不同的提示文字来说明操作风险。
+
+```jsx live
+function Demo() {
+  const { RestartDuotone } = KubedIcons;
+  const [action, setAction] = React.useState('');
+
+  return (
+    <Group direction="column" spacing="lg">
+      <div>
+        {action && (
+          <Card style={{ padding: '12px', background: '#f0f9ff' }}>
+            <Text size="sm">已确认: {action}</Text>
+          </Card>
+        )}
+
+        <div>
+          <Text size="sm" style={{ marginBottom: '8px' }}>
+            删除确认:
+          </Text>
+          <SliderConfirm
+            tip="我了解删除集群的风险"
+            dragIcon={<RestartDuotone size={28} color="#50b484" />}
+            onConfirm={() => setAction('删除集群')}
+          />
+        </div>
+      </div>
+    </Group>
+  );
+}
+```
+
+### 自定义拖动图标
+
+使用不同的图标来匹配操作类型。
+
+```jsx live
+function Demo() {
+  const { TrashDuotone, CloseDuotone, StopDuotone, StartDuotone } = KubedIcons;
+  const [result, setResult] = React.useState('');
+
+  return (
+    <Group direction="column" spacing="lg">
+      <>
+        {result && (
+          <Text color="success" weight={600}>
+            ✓ {result}
+          </Text>
+        )}
+
+        <div>
+          <Text size="sm" style={{ marginBottom: '8px' }}>
+            删除操作:
+          </Text>
+          <SliderConfirm
+            tip="向右滑动删除"
+            dragIcon={<TrashDuotone size={24} />}
+            onConfirm={() => setResult('已删除')}
+          />
+        </div>
+      </>
+    </Group>
+  );
+}
+```
+
+## API
+
+### SliderConfirm
+
+| 属性      | 说明                 | 类型                  | 默认值     |
+| --------- | -------------------- | --------------------- | ---------- |
+| tip       | 滑动条上的提示文字   | `string \| ReactNode` | -          |
+| dragIcon  | 拖动手柄的图标       | `ReactNode`           | -          |
+| onConfirm | 滑动到最右侧时的回调 | `() => void`          | `() => {}` |
+| className | 自定义类名           | `string`              | -          |
+| style     | 自定义样式           | `CSSProperties`       | -          |
+
+:::info
+
+**关于操作原理**:
+
+- 用户需要将滑块从左侧拖动到最右侧才能触发确认(SliderConfirm.tsx 第 27-30 行)
+- 使用 `@kubed/hooks` 的 `useMove` hook 实现拖动功能(第 24 行)
+- 拖动进度 `value` 范围为 0-1,当 value 达到 1 时触发 `onConfirm`(第 27 行判断)
+- 滑动过程中有视觉反馈,文字颜色从 `#79879c` (灰色) 渐变到 `#ffffff` (白色)(第 36-44 行)
+- 颜色渐变计算公式(第 38-40 行):
+  ```typescript
+  rgb(${121 + (255 - 121) * value},
+      ${135 + (255 - 135) * value},
+      ${156 + (255 - 156) * value})
+  ```
+- 背景也会随着滑动填充,提供清晰的进度指示(opacity 从 0 到 value,第 35 行)
+- 释放滑块后如果没有到达最右侧,会自动回到初始位置(第 32-34 行,transitionDuration 为 0.3s)
+
+**关于组件结构**:
+
+- SliderConfirm 使用 forwardRef 实现,支持 ref 转发(第 21-64 行)
+- 组件层级结构(第 47-61 行):
+  - SliderConfirmRoot - 最外层容器,宽度 560px(SliderConfirm.styles.ts 第 4-7 行)
+  - Track - 轨道背景,高度 40px,圆角 40px,背景色 `accents_1`(第 9-17 行)
+  - DragHandlerWrapper - 拖动区域容器,绝对定位,左右各留 28px 间距(第 23-32 行)
+  - DragBackGround - 绿色填充背景 `#55bc8a`,随拖动显示(第 34-42 行)
+  - Tip - 提示文字,z-index: 9,font-weight: 600(第 59-63 行)
+  - DragHandler - 拖动手柄,48x32px,白色圆角,z-index: 10(第 44-57 行)
+- displayName 设置为 `'@kubed/components/SliderConfirm'`(第 66 行)
+
+**关于拖动手柄**:
+
+- 手柄尺寸: 48px 宽 × 32px 高(SliderConfirm.styles.ts 第 47-48 行)
+- 初始位置: `left: -24px`(未激活状态,SliderConfirm.tsx 第 32 行)
+- 拖动时位置计算: `calc(${value * 100}% - 24px)`(激活状态,第 32 行)
+- 白色背景 `#fff`,带阴影效果(第 50-51 行)
+- 顶部偏移 4px,与轨道边缘对齐(第 46 行)
+- cursor 设置为 pointer,提示可拖动(第 52 行)
+- 使用 flexbox 居中显示图标(第 53-55 行)
+
+**关于背景填充**:
+
+- 绿色背景 `#55bc8a`(SliderConfirm.styles.ts 第 35 行)
+- 初始透明度为 0(第 41 行),激活后透明度随 value 变化(SliderConfirm.tsx 第 35 行)
+- 初始 right 值: `calc(100% - 28px)`(未激活,第 34 行)
+- 拖动时 right 值: `calc(${(1 - value) * 100}% - 28px)`(激活,第 34 行)
+- 这样背景从左向右逐渐填充,提供清晰的进度反馈
+- 圆角 40px,与轨道圆角一致(第 40 行)
+
+**关于动画过渡**:
+
+- 激活状态(拖动中): transitionDuration 为 `0s`,实时跟随手指/鼠标(第 33 行)
+- 释放状态: transitionDuration 为 `0.3s`,平滑回到初始位置(第 33 行)
+- 过渡应用到手柄位置(left)和背景大小(right)(第 51、57 行的 style)
+- 如果滑动到最右侧(value === 1),触发 onConfirm 后不会回弹(第 27-30 行)
+
+**关于文字颜色渐变**:
+
+- 未激活时: 固定灰色 `#79879c`(第 42-43 行)
+- 激活时: 从灰色渐变到白色(第 36-41 行)
+- RGB 起始值: (121, 135, 156) - 灰色
+- RGB 结束值: (255, 255, 255) - 白色
+- 渐变公式: `起始值 + (结束值 - 起始值) * value`
+- 提供平滑的视觉反馈,增强确认感
+
+**关于使用场景**:
+
+- 适用于删除、移除、清空等不可逆的危险操作
+- 相比简单的确认对话框,提供更强的心理提示
+- 防止用户误触或不经思考的操作
+- 常用于集群管理、资源删除等关键操作
+- 组件宽度固定为 560px,适合在卡片或模态框中使用
+
+**关于交互设计**:
+
+- 滑动操作比点击按钮需要更多的意识和时间
+- 提示文字应清晰说明操作的风险和后果
+- 建议与警告提示一起使用,说明操作影响
+- 可以作为多步骤确认流程的最后一步
+- 拖动区域设置了 user-select: none,防止文字选中(SliderConfirm.styles.ts 第 16 行)
+
+**关于提示文字**:
+
+- `tip` 支持 string 或 ReactNode 类型(SliderConfirm.tsx 第 16 行)
+- 可以是纯文本或包含样式的 React 元素
+- 应该清晰表达操作的风险
+- 常用格式:"我了解...的风险"、"我确认..."
+- 文字应该简洁但足够明确
+- 避免使用"向右滑动"等操作性提示,因为这是显而易见的
+- 文字会随拖动渐变颜色,提供视觉反馈
+
+**关于图标选择**:
+
+- `dragIcon` 应该与操作类型匹配
+- 删除操作:使用 Trash 图标,红色
+- 停止/关闭:使用 Close/Stop 图标,橙色或红色
+- 重启:使用 Restart 图标,橙色
+- 通用确认:使用品牌图标或 CheckCircle,绿色
+- 图标渲染在 DragHandler 中,居中显示
+- 建议图标尺寸为 24-30px
+
+**关于默认值**:
+
+- `onConfirm` 默认为空函数 `() => {}`(第 22 行)
+- `tip` 和 `dragIcon` 无默认值,需要开发者提供
+- 如果不提供 tip,滑块仍然可以工作但没有提示文字
+
+:::
+
+## 使用建议
+
+### 仅用于危险操作
+
+SliderConfirm 应该只用于不可逆的危险操作:
+
+```jsx
+// 推荐: 删除、移除等危险操作
+<SliderConfirm
+  tip="我了解删除集群的风险"
+  dragIcon={<Trash size={28} color="#ca2621" />}
+  onConfirm={handleDelete}
+/>
+
+// 不推荐: 普通操作不需要滑动确认
+<SliderConfirm
+  tip="我确认查看详情"  // 查看详情不是危险操作
+  onConfirm={handleView}
+/>
+```
+
+### 提供清晰的风险说明
+
+在滑动确认前显示操作的影响:
+
+```jsx
+<Card>
+  <div style={{ padding: '12px', background: '#fff1f0', borderRadius: '4px' }}>
+    <Text weight={600} color="error">
+      ⚠️ 警告
+    </Text>
+    <Text size="sm">删除部署将同时删除所有关联的 Pod,此操作不可恢复。</Text>
+  </div>
+
+  <SliderConfirm
+    tip="我了解删除部署的风险"
+    dragIcon={<Trash size={28} color="#ca2621" />}
+    onConfirm={handleDelete}
+  />
+</Card>
+```
+
+### 选择合适的提示文字
+
+提示文字应该让用户意识到风险:
+
+```jsx
+// 推荐: 强调风险和后果
+<SliderConfirm tip="我了解删除集群的风险" onConfirm={...} />
+<SliderConfirm tip="我确认清空所有数据" onConfirm={...} />
+<SliderConfirm tip="我理解此操作不可恢复" onConfirm={...} />
+
+// 不推荐: 纯操作性提示
+<SliderConfirm tip="向右滑动删除" onConfirm={...} />
+<SliderConfirm tip="滑动确认" onConfirm={...} />
+```
+
+### 使用匹配的图标和颜色
+
+图标和颜色应该反映操作的性质:
+
+```jsx
+import { Trash, Close, Stop, Restart } from '@kubed/icons';
+
+// 删除: 红色垃圾桶
+<SliderConfirm
+  dragIcon={<Trash size={28} color="#ca2621" />}
+  tip="我了解删除的风险"
+  onConfirm={handleDelete}
+/>
+
+// 停止: 橙色停止
+<SliderConfirm
+  dragIcon={<Stop size={28} color="#f5a623" />}
+  tip="我确认停止服务"
+  onConfirm={handleStop}
+/>
+
+// 重启: 橙色重启
+<SliderConfirm
+  dragIcon={<Restart size={28} color="#f5a623" />}
+  tip="我确认重启集群"
+  onConfirm={handleRestart}
+/>
+```
+
+### 配合通知反馈
+
+确认后使用通知告知用户操作结果:
+
+```jsx
+const handleConfirm = async () => {
+  try {
+    await deleteResource();
+    notify.success('资源已成功删除');
+  } catch (error) {
+    notify.error('删除失败: ' + error.message);
+  }
+};
+
+<>
+  <SliderConfirm tip="我了解删除的风险" onConfirm={handleConfirm} />
+  <Notify />
+</>;
+```
+
+### 多步骤确认流程
+
+对于特别危险的操作,使用多步骤确认:
+
+```jsx
+// 第一步: 按钮确认
+<Button color="error" onClick={() => setShowConfirm(true)}>
+  删除集群
+</Button>;
+
+// 第二步: 模态框展示影响
+{
+  showConfirm && (
+    <Modal>
+      <WarningMessage />
+      <ResourceList />
+      {/* 第三步: 滑动确认 */}
+      <SliderConfirm tip="我了解删除集群的风险" onConfirm={handleFinalConfirm} />
+    </Modal>
+  );
+}
+```
+
+### 显示将要删除的资源
+
+在确认前让用户清楚地看到影响范围:
+
+```jsx
+<Card>
+  <Text weight={600}>将要删除的资源:</Text>
+  <List>
+    <ListItem>3 个 Deployments</ListItem>
+    <ListItem>5 个 Services</ListItem>
+    <ListItem>15 个 Pods</ListItem>
+  </List>
+
+  <SliderConfirm tip="我了解删除命名空间的风险" onConfirm={handleDelete} />
+</Card>
+```
+
+### 提供取消选项
+
+始终给用户一个取消的机会:
+
+```jsx
+<Modal visible={confirmOpen} footer={null}>
+  <WarningMessage />
+
+  <SliderConfirm tip="我了解删除的风险" onConfirm={handleConfirm} />
+
+  <Button variant="text" onClick={() => setConfirmOpen(false)} style={{ marginTop: '12px' }}>
+    取消操作
+  </Button>
+</Modal>
+```
+
+### 确认后的反馈
+
+操作完成后给予明确的反馈:
+
+```jsx
+const [deleted, setDeleted] = useState(false);
+
+const handleConfirm = async () => {
+  await performDelete();
+  setDeleted(true);
+};
+
+{
+  deleted ? (
+    <div style={{ textAlign: 'center', padding: '32px' }}>
+      <CheckCircle size={64} color="#52c41a" />
+      <Text variant="h5">删除成功</Text>
+    </div>
+  ) : (
+    <SliderConfirm tip="我了解删除的风险" onConfirm={handleConfirm} />
+  );
+}
+```
+
+### 避免过度使用
+
+不要在所有操作上都使用滑动确认:
+
+```jsx
+// 不推荐: 对普通操作使用
+<SliderConfirm tip="确认保存" onConfirm={handleSave} />
+<SliderConfirm tip="确认编辑" onConfirm={handleEdit} />
+
+// 推荐: 只对危险操作使用
+<Button onClick={handleSave}>保存</Button>  // 可逆操作用按钮
+<Button onClick={handleEdit}>编辑</Button>  // 可逆操作用按钮
+<SliderConfirm                              // 不可逆操作用滑动确认
+  tip="我了解删除的风险"
+  onConfirm={handleDelete}
+/>
+```

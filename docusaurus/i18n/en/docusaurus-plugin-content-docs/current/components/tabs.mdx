@@ -1,0 +1,354 @@
+---
+sidebar_position: 1
+---
+
+# Tabs
+
+Tab switching component for switching between different content panels.
+
+## When to Use
+
+Tabs can group large amounts of information into different categories, allowing users to focus only on the content they want.
+
+In Kube Design, we provide 3 types of tabs:
+
+- **Pills**: Default style with colored background as active indicator
+- **Line**: Active indicator with underline at bottom
+- **Outline**: Tab style with borders
+
+## Examples
+
+### Basic Usage
+
+The most basic tab usage, using the pills variant by default.
+
+```jsx live
+function Demo() {
+  return (
+    <Tabs>
+      <Tab label="Tab One" key="one">
+        This is the content of Tab One
+      </Tab>
+      <Tab label="Tab Two" key="two">
+        This is the content of Tab Two
+      </Tab>
+      <Tab label="Tab Three" key="three">
+        This is the content of Tab Three
+      </Tab>
+    </Tabs>
+  );
+}
+```
+
+### Variants
+
+Kube Design provides three tab variants: pills, line, and outline.
+
+```jsx live
+function Demo() {
+  return (
+    <>
+      <Tabs variant="pills">
+        <Tab label="Tab One" key="one">
+          Pills variant content one
+        </Tab>
+        <Tab label="Tab Two" key="two">
+          Pills variant content two
+        </Tab>
+        <Tab label="Tab Three" key="three">
+          Pills variant content three
+        </Tab>
+      </Tabs>
+
+      <Tabs variant="line" style={{ marginTop: '24px' }}>
+        <Tab label="Tab One" key="one">
+          Line variant content one
+        </Tab>
+        <Tab label="Tab Two" key="two">
+          Line variant content two
+        </Tab>
+        <Tab label="Tab Three" key="three">
+          Line variant content three
+        </Tab>
+      </Tabs>
+
+      <Tabs variant="outline" style={{ marginTop: '24px' }}>
+        <Tab label="Tab One" key="one">
+          Outline variant content one
+        </Tab>
+        <Tab label="Tab Two" key="two">
+          Outline variant content two
+        </Tab>
+        <Tab label="Tab Three" key="three">
+          Outline variant content three
+        </Tab>
+      </Tabs>
+    </>
+  );
+}
+```
+
+### Colors
+
+Set tab theme color through the `color` property.
+
+```jsx live
+function Demo() {
+  return (
+    <>
+      <Tabs variant="line" color="primary">
+        <Tab label="Tab One" key="one">
+          Primary color content
+        </Tab>
+        <Tab label="Tab Two" key="two">
+          Primary color content
+        </Tab>
+        <Tab label="Tab Three" key="three">
+          Primary color content
+        </Tab>
+      </Tabs>
+
+      <Tabs variant="line" color="success" style={{ marginTop: '24px' }}>
+        <Tab label="Tab One" key="one">
+          Success color content
+        </Tab>
+        <Tab label="Tab Two" key="two">
+          Success color content
+        </Tab>
+        <Tab label="Tab Three" key="three">
+          Success color content
+        </Tab>
+      </Tabs>
+    </>
+  );
+}
+```
+
+### Direction
+
+Tabs support both horizontal and vertical directions through the `direction` property.
+
+```jsx live
+function Demo() {
+  return (
+    <>
+      <Tabs variant="line" direction="horizontal">
+        <Tab label="Tab One" key="one">
+          Horizontal direction content one
+        </Tab>
+        <Tab label="Tab Two" key="two">
+          Horizontal direction content two
+        </Tab>
+        <Tab label="Tab Three" key="three">
+          Horizontal direction content three
+        </Tab>
+      </Tabs>
+
+      <Tabs variant="line" direction="vertical" style={{ marginTop: '24px' }}>
+        <Tab label="Tab One" key="one">
+          Vertical direction content one
+        </Tab>
+        <Tab label="Tab Two" key="two">
+          Vertical direction content two
+        </Tab>
+        <Tab label="Tab Three" key="three">
+          Vertical direction content three
+        </Tab>
+      </Tabs>
+    </>
+  );
+}
+```
+
+### Position
+
+Use the `position` property to control tab header alignment, supports `left`, `center`, and `right`.
+
+```jsx live
+function Demo() {
+  return (
+    <>
+      <Tabs variant="line" position="left">
+        <Tab label="Tab One" key="one">
+          Left-aligned content
+        </Tab>
+        <Tab label="Tab Two" key="two">
+          Left-aligned content
+        </Tab>
+        <Tab label="Tab Three" key="three">
+          Left-aligned content
+        </Tab>
+      </Tabs>
+
+      <Tabs variant="line" position="center" style={{ marginTop: '24px' }}>
+        <Tab label="Tab One" key="one">
+          Center-aligned content
+        </Tab>
+        <Tab label="Tab Two" key="two">
+          Center-aligned content
+        </Tab>
+        <Tab label="Tab Three" key="three">
+          Center-aligned content
+        </Tab>
+      </Tabs>
+
+      <Tabs variant="line" position="right" style={{ marginTop: '24px' }}>
+        <Tab label="Tab One" key="one">
+          Right-aligned content
+        </Tab>
+        <Tab label="Tab Two" key="two">
+          Right-aligned content
+        </Tab>
+        <Tab label="Tab Three" key="three">
+          Right-aligned content
+        </Tab>
+      </Tabs>
+    </>
+  );
+}
+```
+
+### Auto Fill Width
+
+Setting the `grow` property makes tab headers evenly distribute the container width.
+
+```jsx live
+function Demo() {
+  return (
+    <Tabs grow variant="line">
+      <Tab label="Tab One" key="one">
+        Auto fill width content one
+      </Tab>
+      <Tab label="Tab Two" key="two">
+        Auto fill width content two
+      </Tab>
+      <Tab label="Tab Three" key="three">
+        Auto fill width content three
+      </Tab>
+    </Tabs>
+  );
+}
+```
+
+### Sizes
+
+Use the `size` property to set tab size, supports `xs`, `sm`, `md`, `lg`, and `xl`.
+
+```jsx live
+function Demo() {
+  return (
+    <>
+      <Tabs variant="line" size="xs">
+        <Tab label="XS Size" key="one">
+          Extra small size content
+        </Tab>
+        <Tab label="Tab Two" key="two">
+          Tab two content
+        </Tab>
+      </Tabs>
+
+      <Tabs variant="line" size="sm" style={{ marginTop: '24px' }}>
+        <Tab label="SM Size" key="one">
+          Small size content
+        </Tab>
+        <Tab label="Tab Two" key="two">
+          Tab two content
+        </Tab>
+      </Tabs>
+
+      <Tabs variant="line" size="md" style={{ marginTop: '24px' }}>
+        <Tab label="MD Size" key="one">
+          Medium size content
+        </Tab>
+        <Tab label="Tab Two" key="two">
+          Tab two content
+        </Tab>
+      </Tabs>
+
+      <Tabs variant="line" size="lg" style={{ marginTop: '24px' }}>
+        <Tab label="LG Size" key="one">
+          Large size content
+        </Tab>
+        <Tab label="Tab Two" key="two">
+          Tab two content
+        </Tab>
+      </Tabs>
+    </>
+  );
+}
+```
+
+### Controlled Mode
+
+Control tab activation state through `activeKey` and `onTabChange` properties.
+
+```jsx live
+function Demo() {
+  const [activeKey, setActiveKey] = React.useState('one');
+
+  return (
+    <>
+      <Tabs activeKey={activeKey} onTabChange={setActiveKey} variant="line">
+        <Tab label="Tab One" key="one">
+          This is Tab One content, currently active: {activeKey}
+        </Tab>
+        <Tab label="Tab Two" key="two">
+          This is Tab Two content, currently active: {activeKey}
+        </Tab>
+        <Tab label="Tab Three" key="three">
+          This is Tab Three content, currently active: {activeKey}
+        </Tab>
+      </Tabs>
+      <Group spacing="xs" style={{ marginTop: '16px' }}>
+        <Button size="sm" onClick={() => setActiveKey('one')}>
+          Switch to Tab One
+        </Button>
+        <Button size="sm" onClick={() => setActiveKey('two')}>
+          Switch to Tab Two
+        </Button>
+        <Button size="sm" onClick={() => setActiveKey('three')}>
+          Switch to Tab Three
+        </Button>
+      </Group>
+    </>
+  );
+}
+```
+
+## API
+
+### Tabs Properties
+
+| Property                 | Description                  | Type                                                                         | Default        |
+| ------------------------ | ---------------------------- | ---------------------------------------------------------------------------- | -------------- |
+| variant                  | Tab variant                  | `'pills' \| 'line' \| 'outline'`                                             | `'pills'`      |
+| activeKey                | Currently active tab         | `string`                                                                     | -              |
+| defaultActiveKey         | Default active tab           | `string`                                                                     | -              |
+| onChange                 | Callback on tab switch       | `(value: string) => void`                                                    | -              |
+| onTabChange              | Callback on tab change       | `(tabKey: string) => void`                                                   | -              |
+| name                     | Tab group name               | `string`                                                                     | Random ID      |
+| grow                     | Auto fill tab header width   | `boolean`                                                                    | `false`        |
+| color                    | Active tab color             | `'default' \| 'primary' \| 'secondary' \| 'success' \| 'warning' \| 'error'` | `'default'`    |
+| size                     | Tab size                     | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                                       | `'sm'`         |
+| radius                   | Border radius                | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number`                             | `'lg'`         |
+| position                 | Tab header alignment         | `'left' \| 'center' \| 'right'`                                              | `'left'`       |
+| direction                | Tab direction                | `'horizontal' \| 'vertical'`                                                 | `'horizontal'` |
+| tabPadding               | Tab content padding          | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number`                             | `'xs'`         |
+| transitionDuration       | Transition duration (ms)     | `number`                                                                     | `150`          |
+| transitionTimingFunction | Transition timing function   | `string`                                                                     | -              |
+| className                | Custom class name            | `string`                                                                     | -              |
+| children                 | Tab content (Tab components) | `ReactNode`                                                                  | -              |
+
+### Tab Properties
+
+| Property | Description          | Type        | Default |
+| -------- | -------------------- | ----------- | ------- |
+| label    | Tab header text      | `ReactNode` | -       |
+| key      | Unique tab identifier| `string`    | -       |
+| icon     | Tab header icon      | `ReactNode` | -       |
+| disabled | Whether disabled     | `boolean`   | `false` |
+| children | Tab content          | `ReactNode` | -       |
+
+:::info
+The Tabs component inherits all native HTML div element attributes. The Tab component is primarily used to configure tab structure and content, and is not directly rendered as a DOM element.
+:::

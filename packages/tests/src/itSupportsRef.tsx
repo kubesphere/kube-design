@@ -1,15 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
-import { act } from 'react-dom/test-utils';
-import { themeUtils } from '@kubed/components';
-import { ThemeProvider } from 'styled-components';
-
-const waitForComponentToPaint = async (wrapper: any) => {
-  await act(async () => {
-    await new Promise((resolve) => setTimeout(resolve));
-    wrapper.update();
-  });
-};
+import { renderWithTheme } from './itSupportsTheme';
 
 export function itSupportsRef(
   Component: React.ElementType,
@@ -19,12 +9,12 @@ export function itSupportsRef(
 ) {
   it('supports ref', async () => {
     const ref = React.createRef<typeof refType>();
-    const element = mount(
-      <ThemeProvider theme={themeUtils.getPresets()[0]}>
-        <Component {...requiredProps} {...{ [refProp]: ref }} />
-      </ThemeProvider>
-    );
-    await waitForComponentToPaint(element);
+
+    renderWithTheme(<Component {...requiredProps} {...{ [refProp]: ref }} />);
+
+    // 等待React渲染完成
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
     expect(ref.current instanceof refType).toBe(true);
   });
 }

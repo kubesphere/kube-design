@@ -11,7 +11,7 @@
   "sideEffects": false,
   "main": "cjs/index.js",
   "module": "esm/index.js",
-  "types": "lib/src/index.d.ts",
+  "types": "lib/index.d.ts",
   "files": [
     "cjs",
     "esm",
@@ -41,11 +41,11 @@
     "tippy.js": "^6.3.7"
   },
   "devDependencies": {
-    "@kubed/tests": "0.2.35"
+    "@kubed/tests": "workspace:*"
   },
   "peerDependencies": {
-    "@kubed/hooks": "0.2.35",
-    "@kubed/icons": "0.2.35",
+    "@kubed/hooks": "workspace:*",
+    "@kubed/icons": "workspace:*",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6",
     "react-is": "^17.0.2"

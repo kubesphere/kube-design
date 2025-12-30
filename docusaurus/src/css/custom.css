@@ -1,0 +1,86 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+/* KubeSphere Brand Colors - Primary: Green (#55bc8a), Secondary: Blue (#329dce) */
+:root {
+  /* Primary color - KubeSphere Green */
+  --ifm-color-primary: #55bc8a;
+  --ifm-color-primary-dark: #479e88;
+  --ifm-color-primary-darker: #3f9481;
+  --ifm-color-primary-darkest: #3b747a;
+  --ifm-color-primary-light: #6fc99c;
+  --ifm-color-primary-lighter: #89d4ad;
+  --ifm-color-primary-lightest: #a2d8bb;
+
+  /* Secondary color - KubeSphere Blue */
+  --ifm-color-secondary: #329dce;
+  --ifm-color-secondary-dark: #3385b0;
+  --ifm-color-secondary-darker: #326e93;
+
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(85, 188, 138, 0.1);
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  /* Lighter green for better contrast in dark mode */
+  --ifm-color-primary: #6fc99c;
+  --ifm-color-primary-dark: #55bc8a;
+  --ifm-color-primary-darker: #479e88;
+  --ifm-color-primary-darkest: #3b747a;
+  --ifm-color-primary-light: #89d4ad;
+  --ifm-color-primary-lighter: #a2d8bb;
+  --ifm-color-primary-lightest: #c4e6d4;
+
+  /* Lighter blue for dark mode */
+  --ifm-color-secondary: #7eb8dc;
+  --ifm-color-secondary-dark: #329dce;
+  --ifm-color-secondary-darker: #3385b0;
+
+  --docusaurus-highlighted-code-line-bg: rgba(111, 201, 156, 0.2);
+}
+
+/* ========================================
+   Fix CssBaseline Override Issues
+   ======================================== */
+
+/* Restore Docusaurus navigation and UI styles that are overridden by CssBaseline */
+
+/* Fix navbar and menu list styles */
+
+/* Fix navbar links */
+.navbar a,
+.navbar__link,
+.menu a,
+.menu__link,
+.theme-doc-sidebar-menu a,
+.dropdown a,
+.table-of-contents a {
+  color: var(--ifm-menu-color) !important;
+}
+
+.navbar a:hover,
+.navbar__link:hover,
+.menu a:hover,
+.menu__link:hover,
+.theme-doc-sidebar-menu a:hover {
+  color: var(--ifm-navbar-link-hover-color) !important;
+}
+
+/* Preserve Docusaurus body/html styles */
+html {
+  font-size: 14px !important;
+}
+
+/* ========================================
+   Fix Dropdown Menu Hover Issues
+   ======================================== */
+.dropdown__menu {
+  pointer-events: auto !important;
+  padding: 0.5rem !important;
+  left: inherit !important;
+}

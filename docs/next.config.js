@@ -12,7 +12,7 @@ const { i18n } = require('./next-i18next.config.cjs');
 
 module.exports = withPlugins([], {
   transpilePackages: ['@kubed/components', '@kubed/hooks', '@kubed/hooks'],
-  reactStrictMode: false,
+  reactStrictMode: true,
   i18n,
   experimental: {
     forceSwcTransforms: true,

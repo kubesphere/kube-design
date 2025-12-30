@@ -1,0 +1,493 @@
+---
+sidebar_position: 1
+---
+
+# Switch 开关
+
+开关选择器，用于在两个互斥的状态之间切换。
+
+## 何时使用
+
+- 需要表示开关状态/两种状态之间的切换
+- 与 Checkbox 的区别是，Switch 会立即触发状态改变，而 Checkbox 一般用于状态标记，需要配合提交操作
+- 需要显示当前状态的文本提示（开/关）
+- 用于设置项的开关控制
+
+## 示例
+
+### 基础用法
+
+最简单的用法，通过 `onChange` 获取开关状态。
+
+```jsx live
+function Demo() {
+  const [checked, setChecked] = React.useState(false);
+
+  return (
+    <div>
+      <Switch checked={checked} onChange={setChecked} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        当前状态: {checked ? '开启' : '关闭'}
+      </div>
+    </div>
+  );
+}
+```
+
+### 默认选中
+
+通过 `defaultChecked` 设置默认选中状态。
+
+```jsx live
+function Demo() {
+  return (
+    <Group>
+      <Switch />
+      <Switch defaultChecked />
+    </Group>
+  );
+}
+```
+
+### 禁用状态
+
+通过 `disabled` 属性禁用开关。
+
+```jsx live
+function Demo() {
+  return (
+    <Group>
+      <Switch disabled />
+      <Switch defaultChecked disabled />
+    </Group>
+  );
+}
+```
+
+### 带标签
+
+通过 `label` 属性添加标签文本。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Switch label="接收通知" defaultChecked />
+      <Switch label="自动更新" />
+      <Switch label="开启调试模式" disabled />
+    </Group>
+  );
+}
+```
+
+### 显示文本
+
+通过 `okText` 和 `offText` 在开关内显示文本。
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Switch okText="开" offText="关" defaultChecked />
+      <Switch okText="ON" offText="OFF" />
+      <Switch okText="启用" offText="禁用" defaultChecked />
+    </Group>
+  );
+}
+```
+
+### 按钮变体
+
+通过 `variant="button"` 使用按钮样式的开关。
+
+```jsx live
+function Demo() {
+  const [checked, setChecked] = React.useState(false);
+
+  return (
+    <div>
+      <Group direction="column">
+        <Switch variant="button" label="自动保存" checked={checked} onChange={setChecked} />
+        <Switch variant="button" label="启用缓存" defaultChecked />
+        <Switch variant="button" label="调试模式" disabled />
+      </Group>
+      <div style={{ marginTop: '16px', color: '#79879c', fontSize: '14px' }}>
+        自动保存: {checked ? '已开启' : '已关闭'}
+      </div>
+    </div>
+  );
+}
+```
+
+### 受控组件
+
+通过 `checked` 和 `onChange` 实现受控组件。
+
+```jsx live
+function Demo() {
+  const [checked, setChecked] = React.useState(false);
+
+  const handleToggle = () => {
+    setChecked(!checked);
+  };
+
+  return (
+    <div>
+      <Switch checked={checked} onChange={setChecked} label="开关状态" />
+      <Group style={{ marginTop: '16px' }}>
+        <Button onClick={handleToggle}>切换状态</Button>
+        <Button onClick={() => setChecked(true)}>开启</Button>
+        <Button onClick={() => setChecked(false)}>关闭</Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+### 加载状态
+
+模拟异步操作时的加载状态。
+
+```jsx live
+function Demo() {
+  const [checked, setChecked] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+
+  const handleChange = (value) => {
+    setLoading(true);
+    // 模拟异步操作
+    setTimeout(() => {
+      setChecked(value);
+      setLoading(false);
+    }, 1000);
+  };
+
+  return (
+    <div>
+      <Switch checked={checked} onChange={handleChange} disabled={loading} label="启用服务" />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        {loading ? '处理中...' : `服务状态: ${checked ? '已启用' : '已禁用'}`}
+      </div>
+    </div>
+  );
+}
+```
+
+### 确认操作
+
+在切换前显示确认对话框。
+
+```jsx live
+function Demo() {
+  const [checked, setChecked] = React.useState(false);
+
+  const handleChange = (value) => {
+    if (value) {
+      if (confirm('确定要开启此功能吗？')) {
+        setChecked(value);
+      }
+    } else {
+      setChecked(value);
+    }
+  };
+
+  return (
+    <Switch
+      checked={checked}
+      onChange={handleChange}
+      label="危险操作（开启前需确认）"
+    />
+  );
+}
+```
+
+### 开关列表
+
+实现一组开关配置。
+
+```jsx live
+function Demo() {
+  const [settings, setSettings] = React.useState({
+    notifications: true,
+    autoUpdate: false,
+    debugMode: false,
+    analytics: true,
+  });
+
+  const handleChange = (key, value) => {
+    setSettings({ ...settings, [key]: value });
+  };
+
+  return (
+    <div>
+      <Group direction="column" spacing="md">
+        <Switch
+          label="推送通知"
+          checked={settings.notifications}
+          onChange={(value) => handleChange('notifications', value)}
+        />
+        <Switch
+          label="自动更新"
+          checked={settings.autoUpdate}
+          onChange={(value) => handleChange('autoUpdate', value)}
+        />
+        <Switch
+          label="调试模式"
+          checked={settings.debugMode}
+          onChange={(value) => handleChange('debugMode', value)}
+        />
+        <Switch
+          label="数据分析"
+          checked={settings.analytics}
+          onChange={(value) => handleChange('analytics', value)}
+        />
+      </Group>
+      <div
+        style={{
+          marginTop: '16px',
+          padding: '12px',
+          background: '#f7f8fa',
+          borderRadius: '4px',
+          fontSize: '14px',
+        }}
+      >
+        <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>当前配置:</div>
+        <div>推送通知: {settings.notifications ? '开' : '关'}</div>
+        <div>自动更新: {settings.autoUpdate ? '开' : '关'}</div>
+        <div>调试模式: {settings.debugMode ? '开' : '关'}</div>
+        <div>数据分析: {settings.analytics ? '开' : '关'}</div>
+      </div>
+    </div>
+  );
+}
+```
+
+### 权限控制场景
+
+根据权限控制开关的可用性。
+
+```jsx live
+function Demo() {
+  const [userRole, setUserRole] = React.useState('user');
+  const [featureEnabled, setFeatureEnabled] = React.useState(false);
+
+  const isAdmin = userRole === 'admin';
+
+  return (
+    <div>
+      <Group style={{ marginBottom: '16px' }}>
+        <Button onClick={() => setUserRole('admin')} variant={userRole === 'admin' ? 'filled' : 'outline'}>
+          管理员模式
+        </Button>
+        <Button onClick={() => setUserRole('user')} variant={userRole === 'user' ? 'filled' : 'outline'}>
+          普通用户模式
+        </Button>
+      </Group>
+      <Switch
+        label="高级功能（仅管理员可用）"
+        checked={featureEnabled}
+        onChange={setFeatureEnabled}
+        disabled={!isAdmin}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        当前角色: {userRole === 'admin' ? '管理员' : '普通用户'}
+        {!isAdmin && ' - 您没有权限修改此设置'}
+      </div>
+    </div>
+  );
+}
+```
+
+## API
+
+### Switch 属性
+
+| 属性             | 说明                   | 类型                                | 默认值      |
+| ---------------- | ---------------------- | ----------------------------------- | ----------- |
+| checked          | 是否选中（受控）       | `boolean`                           | -           |
+| defaultChecked   | 默认是否选中（非受控） | `boolean`                           | `false`     |
+| disabled         | 是否禁用               | `boolean`                           | `false`     |
+| label            | 标签文本               | `ReactNode`                         | -           |
+| variant          | 开关变体               | `'default' \| 'button'`             | `'default'` |
+| okText           | 选中时显示的文本       | `ReactNode`                         | -           |
+| offText          | 未选中时显示的文本     | `ReactNode`                         | -           |
+| id               | input 元素的 id        | `string`                            | -           |
+| onChange         | 变化时的回调           | `(checked: boolean, event) => void` | -           |
+| onClick          | 点击时的回调           | `(checked: boolean, event) => void` | -           |
+| 其他             | 原生属性               | `HTMLAttributes<HTMLInputElement>`  | -           |
+
+:::info
+
+**关于受控与非受控**：
+- 使用 `checked` + `onChange` 实现受控组件，完全控制开关状态
+- 使用 `defaultChecked` 实现非受控组件，组件内部管理状态
+- 受控模式下，必须提供 `onChange` 处理函数更新 `checked`
+
+**关于变体**：
+- `default`：默认样式，经典的开关外观
+- `button`：按钮样式，适合需要更醒目的场景
+
+**关于文本显示**：
+- `okText` / `offText`：仅在 `variant="default"` 时有效
+- 文本会显示在开关内部，根据状态自动切换
+
+**关于禁用**：
+- 禁用状态下，开关不可点击，`onChange` 不会被触发
+- 常用于权限控制或加载状态
+
+Switch 组件继承所有原生 HTML input[type="checkbox"] 元素的属性。
+
+:::
+
+## 使用建议
+
+### 受控与非受控
+
+根据场景选择合适的使用方式：
+
+```jsx
+// 非受控：适用于简单场景，不需要外部控制状态
+<Switch defaultChecked label="接收通知" />
+
+// 受控：适用于需要外部控制或复杂交互的场景
+const [checked, setChecked] = React.useState(false);
+<Switch checked={checked} onChange={setChecked} label="接收通知" />
+```
+
+### Switch vs Checkbox
+
+选择使用 Switch 还是 Checkbox：
+
+```jsx
+// Switch：立即生效的开关操作
+<Switch
+  label="启用通知"
+  checked={enabled}
+  onChange={(value) => {
+    setEnabled(value);
+    // 立即保存到后端
+    saveSettings({ notifications: value });
+  }}
+/>
+
+// Checkbox：需要配合表单提交的选项
+<Form onSubmit={handleSubmit}>
+  <Checkbox label="接收邮件通知" name="emailNotification" />
+  <Checkbox label="接收短信通知" name="smsNotification" />
+  <Button type="submit">保存设置</Button>
+</Form>
+```
+
+### 异步操作处理
+
+处理异步操作的推荐方式：
+
+```jsx
+const [checked, setChecked] = React.useState(false);
+const [loading, setLoading] = React.useState(false);
+
+const handleChange = async (value) => {
+  setLoading(true);
+  try {
+    await updateSettings({ feature: value });
+    setChecked(value);
+  } catch (error) {
+    // 保持原状态
+    alert('操作失败，请重试');
+  } finally {
+    setLoading(false);
+  }
+};
+
+<Switch
+  checked={checked}
+  onChange={handleChange}
+  disabled={loading}
+  label={loading ? '处理中...' : '启用功能'}
+/>
+```
+
+### 确认操作
+
+对于重要操作，建议添加确认步骤：
+
+```jsx
+const handleChange = (value) => {
+  if (value) {
+    // 开启时需要确认
+    if (confirm('确定要开启此功能吗？这可能会影响系统性能。')) {
+      setChecked(value);
+      saveSettings(value);
+    }
+  } else {
+    // 关闭时直接执行
+    setChecked(value);
+    saveSettings(value);
+  }
+};
+
+<Switch checked={checked} onChange={handleChange} />
+```
+
+### 与表单组件配合
+
+在表单中使用 Switch 时的建议：
+
+```jsx
+// 使用 FormItem 的 valuePropName
+<Form onFinish={handleFinish}>
+  <FormItem
+    name="notifications"
+    label="推送通知"
+    valuePropName="checked"
+  >
+    <Switch />
+  </FormItem>
+  <FormItem
+    name="autoUpdate"
+    label="自动更新"
+    valuePropName="checked"
+  >
+    <Switch />
+  </FormItem>
+</Form>
+```
+
+### 批量操作
+
+实现"全选"功能：
+
+```jsx
+const [items, setItems] = React.useState({
+  feature1: false,
+  feature2: false,
+  feature3: false,
+});
+
+const allChecked = Object.values(items).every(Boolean);
+
+const handleToggleAll = (checked) => {
+  setItems({
+    feature1: checked,
+    feature2: checked,
+    feature3: checked,
+  });
+};
+
+<>
+  <Switch
+    label="全部启用"
+    checked={allChecked}
+    onChange={handleToggleAll}
+  />
+  <Divider />
+  {Object.keys(items).map(key => (
+    <Switch
+      key={key}
+      label={key}
+      checked={items[key]}
+      onChange={(value) => setItems({ ...items, [key]: value })}
+    />
+  ))}
+</>
+```

@@ -1,0 +1,526 @@
+---
+sidebar_position: 1
+---
+
+# Banner
+
+A banner component for displaying important information at the top of the page.
+
+## When to Use
+
+- Display page title and description information at the top of the page
+- Need to show relevant tips or help information to users
+- Provide contextual information on detail pages or list pages
+
+In Kube Design, the Banner component provides rich banner functionality:
+
+- **Icon Support**: Can add icons to enhance visual effects
+- **Title and Description**: Display page title and description text
+- **Navigation Integration**: Can embed navigation tabs
+- **Tip Information**: Supports collapsible BannerTip prompts
+
+## Examples
+
+### Basic Usage
+
+The most basic banner usage, including icon, title, and description.
+
+```jsx live
+function Demo() {
+  const { Cluster } = KubedIcons;
+
+  return (
+    <Banner
+      icon={<Cluster size={48} />}
+      title="Cluster Nodes"
+      description="Cluster nodes provide the running status of nodes in the current cluster, and you can edit and delete nodes"
+    />
+  );
+}
+```
+
+### Different Icons
+
+Use different icons to display different types of pages.
+
+```jsx live
+function Demo() {
+  const { Pod, Service, ConfigMap, Project } = KubedIcons;
+
+  return (
+    <Group direction="column" spacing="md">
+      <Banner
+        icon={<Pod size={48} />}
+        title="Pods"
+        description="Pods are the basic execution unit of Kubernetes applications"
+      />
+      <Banner
+        icon={<Service size={48} />}
+        title="Services"
+        description="Services define how to access a group of Pods"
+      />
+      <Banner
+        icon={<ConfigMap size={48} />}
+        title="ConfigMaps"
+        description="ConfigMaps are used to store non-confidential configuration data"
+      />
+    </Group>
+  );
+}
+```
+
+### With Navigation
+
+Embed navigation tabs in the banner.
+
+```jsx live
+function Demo() {
+  const { Cluster } = KubedIcons;
+
+  const navData = [
+    { label: 'KubeSphere', value: 'kubesphere' },
+    { label: 'Kubernetes', value: 'kubernetes' },
+    { label: 'Jenkins', value: 'jenkins' },
+  ];
+
+  return (
+    <Banner
+      icon={<Cluster size={48} />}
+      title="Cluster Management"
+      description="Manage and monitor your Kubernetes clusters"
+    >
+      <Navs data={navData} />
+    </Banner>
+  );
+}
+```
+
+### With Tips
+
+Use BannerTip to add collapsible tip information.
+
+```jsx live
+function Demo() {
+  const { Cluster } = KubedIcons;
+
+  return (
+    <Banner
+      icon={<Cluster size={48} />}
+      title="Cluster Nodes"
+      description="Cluster nodes provide the running status of nodes in the current cluster"
+    >
+      <BannerTip title="What are cluster nodes?" key="node-intro">
+        Cluster nodes are the worker machines in a Kubernetes cluster, which can be physical or virtual machines. Each node is managed by the control plane and contains the services needed to run Pods.
+      </BannerTip>
+      <BannerTip title="What types of nodes are there?" key="node-type">
+        Nodes are divided into Master nodes and Worker nodes. Master nodes are responsible for managing cluster state, while Worker nodes are responsible for running application workloads.
+      </BannerTip>
+    </Banner>
+  );
+}
+```
+
+### Non-removable Tips
+
+Set `removable={false}` to disable tip removal.
+
+```jsx live
+function Demo() {
+  const { Information } = KubedIcons;
+
+  return (
+    <Banner
+      icon={<Information size={48} />}
+      title="System Announcement"
+      description="Important system notifications and announcements"
+    >
+      <BannerTip title="System Maintenance Notice" key="maintenance" removable={false}>
+        The system will undergo maintenance upgrade from 2:00-4:00 AM this Saturday, during which services will be temporarily unavailable. Please prepare in advance.
+      </BannerTip>
+    </Banner>
+  );
+}
+```
+
+### Tips with Action Buttons
+
+Add action buttons to tips.
+
+```jsx live
+function Demo() {
+  const { Cluster } = KubedIcons;
+
+  return (
+    <Banner
+      icon={<Cluster size={48} />}
+      title="Cluster Nodes"
+      description="Cluster nodes provide the running status of nodes in the current cluster"
+    >
+      <BannerTip
+        title="How to add new nodes?"
+        key="add-node"
+        removable={false}
+        operations={<Button size="sm">View Documentation</Button>}
+      >
+        You can add new machines to the cluster through the add node function to expand the cluster's computing capacity.
+      </BannerTip>
+      <BannerTip
+        title="How to manage node taints?"
+        key="node-taint"
+        operations={<Button size="sm" variant="outline">Learn More</Button>}
+      >
+        Node taints can prevent certain pod replicas from being deployed to the node, working with tolerations to ensure pods are not scheduled to inappropriate nodes.
+      </BannerTip>
+    </Banner>
+  );
+}
+```
+
+### Navigation and Tips Combined
+
+Contains both navigation and tip information.
+
+```jsx live
+function Demo() {
+  const { Project } = KubedIcons;
+
+  const navData = [
+    { label: 'All Projects', value: 'all' },
+    { label: 'My Projects', value: 'mine' },
+    { label: 'Archived', value: 'archived' },
+  ];
+
+  return (
+    <Banner
+      icon={<Project size={48} />}
+      title="Project Management"
+      description="Projects are used to group and manage resources, and can isolate resources by project"
+    >
+      <Navs data={navData} />
+      <BannerTip title="What is a project?" key="project-intro">
+        A Project is the basic resource isolation unit in KubeSphere, corresponding to Kubernetes Namespace. You can create workloads, services and other resources in a project.
+      </BannerTip>
+      <BannerTip title="How to create a project?" key="create-project">
+        Click the "Create" button in the upper right corner, fill in the project name, description and other information to create a new project. After creation, you can set resource quotas and network policies.
+      </BannerTip>
+    </Banner>
+  );
+}
+```
+
+### Multiple Tips
+
+Display multiple tip information.
+
+```jsx live
+function Demo() {
+  const { Pod } = KubedIcons;
+
+  return (
+    <Banner
+      icon={<Pod size={48} />}
+      title="Pods"
+      description="Pods are the smallest deployable units in Kubernetes"
+    >
+      <BannerTip title="What is a Pod?" key="pod-intro">
+        A Pod is a collection of containers that share storage and network resources. It is the smallest scheduling unit in Kubernetes.
+      </BannerTip>
+      <BannerTip title="Pod Lifecycle" key="pod-lifecycle">
+        Pods have multiple states: Pending, Running, Succeeded, Failed, Unknown. Understanding these states helps troubleshoot issues.
+      </BannerTip>
+      <BannerTip title="How to view Pod logs?" key="pod-logs">
+        Select a Pod and click the "Logs" button to view the container's running logs. You can also use the kubectl logs command.
+      </BannerTip>
+      <BannerTip title="How to enter container terminal?" key="pod-terminal">
+        Select a Pod and click the "Terminal" button to enter the container's command line terminal for debugging and troubleshooting.
+      </BannerTip>
+    </Banner>
+  );
+}
+```
+
+### Application Deployment Scenario
+
+Usage example on an application deployment page.
+
+```jsx live
+function Demo() {
+  const { Application } = KubedIcons;
+
+  const navData = [
+    { label: 'App Templates', value: 'template' },
+    { label: 'Custom Apps', value: 'custom' },
+    { label: 'App Repository', value: 'repo' },
+  ];
+
+  return (
+    <Banner
+      icon={<Application size={48} />}
+      title="Application Management"
+      description="Deploy and manage applications using app templates or Helm Charts"
+    >
+      <Navs data={navData} />
+      <BannerTip title="What are app templates?" key="app-template" removable={false}>
+        App templates are packaged based on Helm Charts and contain all Kubernetes resource definitions and configurations for an application. You can deploy a complete application stack with one click.
+      </BannerTip>
+      <BannerTip
+        title="How to create custom apps?"
+        key="custom-app"
+        operations={<Button size="sm">Start Creating</Button>}
+      >
+        Custom apps allow you to build applications from scratch, add multiple service components, and configure routes and storage.
+      </BannerTip>
+    </Banner>
+  );
+}
+```
+
+### Custom Styles
+
+Customize styles through className.
+
+```jsx live
+function Demo() {
+  const { Setting } = KubedIcons;
+
+  return (
+    <Banner
+      icon={<Setting size={48} />}
+      title="System Settings"
+      description="Configure system global parameters and preference settings"
+      style={{ backgroundColor: '#f5f7fa' }}
+    >
+      <BannerTip title="How to change system language?" key="language">
+        Select the "Language" option in system settings and choose your desired language. The system supports multiple languages including Chinese and English.
+      </BannerTip>
+    </Banner>
+  );
+}
+```
+
+## API
+
+### Banner
+
+| Property    | Description                          | Type            | Default |
+| ----------- | ------------------------------------ | --------------- | ------- |
+| icon        | Banner icon                          | `ReactNode`     | -       |
+| title       | Banner title                         | `ReactNode`     | -       |
+| description | Banner description                   | `ReactNode`     | -       |
+| children    | Child elements (Navs or BannerTip)   | `ReactNode`     | -       |
+| className   | Custom class name                    | `string`        | -       |
+| style       | Custom styles                        | `CSSProperties` | -       |
+
+### BannerTip
+
+| Property   | Description                          | Type        | Default    |
+| ---------- | ------------------------------------ | ----------- | ---------- |
+| key        | Unique identifier for the tip        | `string`    | **Required** |
+| title      | Tip title                            | `ReactNode` | -          |
+| children   | Tip content                          | `ReactNode` | -          |
+| removable  | Whether the tip can be removed       | `boolean`   | `true`     |
+| operations | Action buttons                       | `ReactNode` | -          |
+
+:::info
+
+**About Banner Composition**:
+
+- Banner is built on the Card component (Banner.tsx line 98), with `padding={0}` set
+- Banner consists of three parts:
+  - BannerTitle: Contains icon, title and description (lines 99-107)
+  - BannerNavs: Navigation area with `accents_1` background color (line 109)
+  - BannerExtra: Tip area containing all BannerTips (lines 108-128)
+- Extra content (children) is automatically categorized: BannerTips and other elements (like Navs)
+- BannerTips are automatically arranged below navigation
+
+**About Icon Area**:
+
+- Icon container size is fixed at 60x60px (BannerIcon: lines 23-24)
+- Icon size is 48x48px (lines 27-30)
+- Special border radius design: `border-radius: 100px 0 100px 100px` (line 19, top-right corner is square)
+- Background color is `accents_1` with 6px padding
+- 12px spacing from title area (margin-right)
+
+**About Title Styles**:
+
+- Title uses Text component with variant="h3", size=24, color="accents_8" (lines 102-103)
+- Title has text shadow effect: `text-shadow: 0 4px 8px rgba(accents_8, 0.1)` (line 38)
+- Description text color is `accents_5` (line 105)
+- Title area padding: `padding: 24px 20px 21px` (line 14)
+
+**About BannerTip**:
+
+- BannerTip must set `key` property as unique identifier (line 62)
+- Clicking BannerTip expands/collapses content (via onClick callback)
+- When expanded shows ChevronDown arrow, when collapsed shows ChevronRight arrow (BannerTip.tsx line 97)
+- Removable by default via close button, set `removable={false}` to disable (line 85 default is true)
+- Can add custom action buttons via `operations`, displayed on the right side (lines 102-104)
+
+**About State Management**:
+
+- Banner uses useState to manage active tip key (Banner.tsx line 68)
+- Only one BannerTip can be expanded at a time (lines 70-76 logic)
+- Removed BannerTips are recorded in removedTipKeys array (lines 69, 78-81)
+- Removed tips are filtered via `removedTipKeys.indexOf(child.key) < 0` (line 89)
+- State persists during component lifecycle, resets after page refresh
+
+**About Child Element Processing**:
+
+- Banner iterates through children, extracting BannerTip type children separately (lines 86-95)
+- Uses `child.type === BannerTip` to determine if child is BannerTip component (line 88)
+- Other types of children (like Navs) are placed in others array and rendered in BannerNavs (line 109)
+- BannerTips are rendered via map, passing open, onClick, onRemove props (lines 110-127)
+
+**About BannerTip Styles**:
+
+- BannerTip padding: `padding: 12px 60px 12px 52px` (BannerTip.tsx line 9)
+- Top border: `border-top: 1px solid accents_2` (line 11)
+- Hover effect: background becomes `accents_0` (lines 15-17)
+- Icon position: absolute positioning `left: 24px, top: 11px` (lines 21-23)
+- Operations area: absolute positioning on right side, vertically centered (lines 36-42)
+- Close icon size: 20px (line 104)
+
+**About Expand Animation**:
+
+- Content is displayed directly when expanded, no additional animation
+- Content is conditionally rendered: `{open && <Text>...</Text>}` (BannerTip.tsx line 100)
+- Icon switching has hover effect, background color changes (lines 44-47)
+
+**About Remove Operation**:
+
+- Clicking close icon triggers onRemove callback, passing tipKey (lines 90-93)
+- Uses stopPropagation to prevent event bubbling, avoiding onClick trigger (line 91)
+- Banner updates removedTipKeys state upon receiving removal notification (Banner.tsx lines 78-81)
+- Removed BannerTips are filtered out during re-render
+
+:::
+
+
+## Usage Recommendations
+
+### Keep Description Concise
+
+Banner descriptions should be concise and clear:
+
+```jsx
+// Recommended: Concise description
+<Banner
+  title="Cluster Nodes"
+  description="Manage and monitor all nodes in the cluster"
+/>
+
+// Not recommended: Description too long
+<Banner
+  title="Cluster Nodes"
+  description="Cluster nodes provide the running status of nodes in the current cluster, and you can edit and delete nodes, and also view detailed information of nodes..."
+/>
+```
+
+### Choose Appropriate Icons
+
+Use icons related to the content:
+
+```jsx
+import { Pod, Service, Cluster, Setting } from '@kubed/icons';
+
+// Pod page
+<Banner icon={<Pod size={48} />} title="Pods" />
+
+// Service page
+<Banner icon={<Service size={48} />} title="Services" />
+
+// Cluster page
+<Banner icon={<Cluster size={48} />} title="Clusters" />
+```
+
+### Keep Tips Reasonable in Number
+
+Keep the number of tips within a reasonable range:
+
+```jsx
+// Recommended: 2-4 tips
+<Banner>
+  <BannerTip key="tip1">...</BannerTip>
+  <BannerTip key="tip2">...</BannerTip>
+  <BannerTip key="tip3">...</BannerTip>
+</Banner>
+
+// Not recommended: Too many tips, consider using documentation links
+<Banner>
+  {/* 5+ tips */}
+</Banner>
+```
+
+### Set Important Tips as Non-removable
+
+For important system notifications, set as non-removable:
+
+```jsx
+<BannerTip
+  title="Important Notice"
+  key="important"
+  removable={false}
+>
+  System maintenance notification content...
+</BannerTip>
+```
+
+### Add Action Buttons
+
+Provide quick action entry points for users:
+
+```jsx
+<BannerTip
+  title="How to get started?"
+  key="getting-started"
+  operations={<Button size="sm">View Tutorial</Button>}
+>
+  Click to view tutorial for more information...
+</BannerTip>
+```
+
+### Use with Navigation
+
+Add navigation when categorized display is needed:
+
+```jsx
+<Banner title="Resource Management" description="...">
+  <Navs data={categories} />
+  <BannerTip key="tip">...</BannerTip>
+</Banner>
+```
+
+### Ensure Unique Keys
+
+Each BannerTip must have a unique key:
+
+```jsx
+<Banner>
+  <BannerTip key="tip-1">Tip 1</BannerTip>
+  <BannerTip key="tip-2">Tip 2</BannerTip>
+  <BannerTip key="tip-3">Tip 3</BannerTip>
+</Banner>
+```
+
+### Page-level Usage
+
+Banner is typically used at the top of pages:
+
+```jsx
+function PageComponent() {
+  return (
+    <div>
+      <Banner
+        icon={<Cluster />}
+        title="Page Title"
+        description="Page description"
+      >
+        <BannerTip key="help">Help information</BannerTip>
+      </Banner>
+      <div className="page-content">
+        {/* Page content */}
+      </div>
+    </div>
+  );
+}
+```

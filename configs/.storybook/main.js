@@ -1,7 +1,6 @@
 import { dirname, join } from 'path';
 /* eslint-disable no-param-reassign */
 const path = require('path');
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin').default;
 
 module.exports = {
   stories: [
@@ -10,7 +9,6 @@ module.exports = {
   ],
 
   addons: [
-    getAbsolutePath('storybook-addon-turbo-build'),
     getAbsolutePath('@storybook/addon-docs'),
   ],
 
@@ -18,26 +16,20 @@ module.exports = {
     reactDocgen: true,
   },
 
-  webpackFinal: async (config) => {
-    config.resolve = {
-      ...config.resolve,
-      plugins: [
-        ...(config.resolve.plugins || []),
-        new TsconfigPathsPlugin({
-          extensions: ['.ts', '.tsx', '.js'],
-          configFile: path.join(__dirname, '../../tsconfig.json'),
-        }),
-      ],
+  async viteFinal(config) {
+    // Ensure ESM resolution for monorepo packages
+    config.resolve = config.resolve || {};
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@kubed/icons': path.resolve(__dirname, '../../packages/icons/dist/index.mjs'),
+      '@kubed/components': path.resolve(__dirname, '../../packages/components/src'),
+      '@kubed/hooks': path.resolve(__dirname, '../../packages/hooks/src'),
     };
-
-    // Turn off docgen plugin as it breaks bundle with displayName
-    // config.plugins.pop();
-
     return config;
   },
 
   framework: {
-    name: getAbsolutePath('@storybook/nextjs'),
+    name: getAbsolutePath('@storybook/react-vite'),
     options: {},
   },
 

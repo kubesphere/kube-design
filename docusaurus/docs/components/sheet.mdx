@@ -1,0 +1,792 @@
+---
+sidebar_position: 1
+---
+
+# Sheet 侧边面板
+
+从屏幕边缘滑入的面板组件。
+
+## 何时使用
+
+- 需要在不离开当前页面的情况下完成子任务
+- 展示额外的详情信息或表单
+- 需要从侧边滑入内容而不是覆盖全屏
+- 编辑表单或查看详情的场景
+
+在 Kube Design 中,Sheet 组件提供了灵活的侧边面板功能:
+
+- **四个方向**:支持从顶部、右侧、底部、左侧滑入
+- **基于 Radix UI**:可访问性支持良好
+- **组合式 API**:提供多个子组件灵活组合
+- **遮罩层**:支持背景遮罩和点击关闭
+- **自定义宽度**:支持自定义面板宽度
+
+## 示例
+
+### 基础用法
+
+最基本的侧边面板用法。
+
+```jsx live
+function Demo() {
+  const [open, setOpen] = React.useState(false);
+  const { SheetContent, SheetHeader, SheetFooter, SheetClose, SheetFieldTitle } = Sheet;
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>打开面板</Button>
+      <Sheet.Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent>
+          <SheetHeader>
+            <SheetFieldTitle title="面板标题" description="这是面板的描述信息" />
+          </SheetHeader>
+          <div style={{ padding: '20px' }}>
+            <Text>这是面板的主要内容区域</Text>
+          </div>
+          <SheetFooter>
+            <SheetClose asChild>
+              <Button>关闭</Button>
+            </SheetClose>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet.Sheet>
+    </>
+  );
+}
+```
+
+### 不同方向
+
+Sheet 支持从四个方向滑入。
+
+```jsx live
+function Demo() {
+  const [side, setSide] = React.useState(null);
+  const { SheetContent, SheetHeader, SheetFooter, SheetClose, SheetFieldTitle } = Sheet;
+
+  return (
+    <>
+      <Group spacing="xs">
+        <Button variant="outline" onClick={() => setSide('top')}>
+          从顶部
+        </Button>
+        <Button variant="outline" onClick={() => setSide('right')}>
+          从右侧
+        </Button>
+        <Button variant="outline" onClick={() => setSide('bottom')}>
+          从底部
+        </Button>
+        <Button variant="outline" onClick={() => setSide('left')}>
+          从左侧
+        </Button>
+      </Group>
+      <Sheet.Sheet open={!!side} onOpenChange={(open) => !open && setSide(null)}>
+        <SheetContent side={side || 'right'}>
+          <SheetHeader>
+            <SheetFieldTitle title={`${side} 面板`} description={`从 ${side} 滑入的面板`} />
+          </SheetHeader>
+          <div style={{ padding: '20px' }}>
+            <Text>面板内容</Text>
+          </div>
+          <SheetFooter>
+            <SheetClose asChild>
+              <Button>关闭</Button>
+            </SheetClose>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet.Sheet>
+    </>
+  );
+}
+```
+
+### 自定义宽度
+
+通过 `width` 属性设置面板宽度。
+
+```jsx live
+function Demo() {
+  const [width, setWidth] = React.useState(null);
+  const { SheetContent, SheetHeader, SheetFooter, SheetClose, SheetFieldTitle } = Sheet;
+
+  return (
+    <>
+      <Group spacing="xs">
+        <Button variant="outline" onClick={() => setWidth(400)}>
+          窄面板 (400px)
+        </Button>
+        <Button variant="outline" onClick={() => setWidth(600)}>
+          中等面板 (600px)
+        </Button>
+        <Button variant="outline" onClick={() => setWidth(800)}>
+          宽面板 (800px)
+        </Button>
+        <Button variant="outline" onClick={() => setWidth('50%')}>
+          半屏面板 (50%)
+        </Button>
+      </Group>
+      <Sheet.Sheet open={!!width} onOpenChange={(open) => !open && setWidth(null)}>
+        <SheetContent width={width || 400}>
+          <SheetHeader>
+            <SheetFieldTitle title="自定义宽度" description={`当前宽度: ${width}`} />
+          </SheetHeader>
+          <div style={{ padding: '20px' }}>
+            <Text>面板内容</Text>
+          </div>
+          <SheetFooter>
+            <SheetClose asChild>
+              <Button>关闭</Button>
+            </SheetClose>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet.Sheet>
+    </>
+  );
+}
+```
+
+### 使用 SheetTrigger
+
+使用 `SheetTrigger` 声明式定义触发器。
+
+```jsx live
+function Demo() {
+  const { SheetTrigger, SheetContent, SheetHeader, SheetFooter, SheetClose, SheetFieldTitle } =
+    Sheet;
+
+  return (
+    <Sheet.Sheet>
+      <SheetTrigger asChild>
+        <Button>打开面板</Button>
+      </SheetTrigger>
+      <SheetContent>
+        <SheetHeader>
+          <SheetFieldTitle title="触发器面板" description="通过 SheetTrigger 打开" />
+        </SheetHeader>
+        <div style={{ padding: '20px' }}>
+          <Text>这个面板通过 SheetTrigger 组件打开</Text>
+        </div>
+        <SheetFooter>
+          <SheetClose asChild>
+            <Button>关闭</Button>
+          </SheetClose>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet.Sheet>
+  );
+}
+```
+
+### 带图标的标题
+
+使用 `titleIcon` 为标题添加图标。
+
+```jsx live
+function Demo() {
+  const { Pod } = KubedIcons;
+  const [open, setOpen] = React.useState(false);
+  const { SheetContent, SheetHeader, SheetFooter, SheetClose, SheetFieldTitle } = Sheet;
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>查看 Pod 详情</Button>
+      <Sheet.Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent width={600}>
+          <SheetHeader>
+            <SheetFieldTitle
+              titleIcon={<Pod size={40} />}
+              title="nginx-deployment-7d5c8f8b9d-x7k2m"
+              description="Pod 详细信息"
+            />
+          </SheetHeader>
+          <div style={{ padding: '20px' }}>
+            <Group direction="column" spacing="sm">
+              <Text size="sm">
+                <strong>命名空间:</strong> default
+              </Text>
+              <Text size="sm">
+                <strong>状态:</strong> Running
+              </Text>
+              <Text size="sm">
+                <strong>节点:</strong> node-1
+              </Text>
+              <Text size="sm">
+                <strong>IP:</strong> 10.244.1.5
+              </Text>
+            </Group>
+          </div>
+          <SheetFooter>
+            <SheetClose asChild>
+              <Button variant="outline">关闭</Button>
+            </SheetClose>
+            <Button>查看日志</Button>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet.Sheet>
+    </>
+  );
+}
+```
+
+### 编辑表单
+
+在 Sheet 中放置编辑表单。
+
+```jsx live
+function Demo() {
+  const [open, setOpen] = React.useState(false);
+  const [formData, setFormData] = React.useState({
+    name: 'nginx-service',
+    namespace: 'default',
+    port: '80',
+  });
+  const { SheetContent, SheetHeader, SheetFooter, SheetClose, SheetFieldTitle } = Sheet;
+
+  const handleSave = () => {
+    console.log('保存数据:', formData);
+    setOpen(false);
+  };
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>编辑配置</Button>
+      <Sheet.Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent width={500}>
+          <SheetHeader>
+            <SheetFieldTitle title="编辑服务" description="修改服务配置信息" />
+          </SheetHeader>
+          <div style={{ padding: '20px' }}>
+            <Group direction="column" spacing="md">
+              <div>
+                <Text size="sm" style={{ marginBottom: '8px' }}>
+                  服务名称:
+                </Text>
+                <Input
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                />
+              </div>
+              <div>
+                <Text size="sm" style={{ marginBottom: '8px' }}>
+                  命名空间:
+                </Text>
+                <Input
+                  value={formData.namespace}
+                  onChange={(e) => setFormData({ ...formData, namespace: e.target.value })}
+                />
+              </div>
+              <div>
+                <Text size="sm" style={{ marginBottom: '8px' }}>
+                  端口:
+                </Text>
+                <Input
+                  value={formData.port}
+                  onChange={(e) => setFormData({ ...formData, port: e.target.value })}
+                />
+              </div>
+            </Group>
+          </div>
+          <SheetFooter>
+            <SheetClose asChild>
+              <Button variant="outline">取消</Button>
+            </SheetClose>
+            <Button onClick={handleSave}>保存</Button>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet.Sheet>
+    </>
+  );
+}
+```
+
+### 无遮罩层
+
+设置 `hasOverlay={false}` 去除背景遮罩。
+
+```jsx live
+function Demo() {
+  const [open, setOpen] = React.useState(false);
+  const { SheetContent, SheetHeader, SheetFooter, SheetClose, SheetFieldTitle } = Sheet;
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>打开无遮罩面板</Button>
+      <Sheet.Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent hasOverlay={false}>
+          <SheetHeader>
+            <SheetFieldTitle title="无遮罩面板" description="背景不会被遮罩层覆盖" />
+          </SheetHeader>
+          <div style={{ padding: '20px' }}>
+            <Text>这个面板没有背景遮罩</Text>
+          </div>
+          <SheetFooter>
+            <SheetClose asChild>
+              <Button>关闭</Button>
+            </SheetClose>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet.Sheet>
+    </>
+  );
+}
+```
+
+### 禁止点击遮罩关闭
+
+设置 `maskClosable={false}` 禁止点击遮罩关闭。
+
+```jsx live
+function Demo() {
+  const [open, setOpen] = React.useState(false);
+  const { SheetContent, SheetHeader, SheetFooter, SheetClose, SheetFieldTitle } = Sheet;
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>打开面板</Button>
+      <Sheet.Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent maskClosable={false}>
+          <SheetHeader>
+            <SheetFieldTitle title="禁止点击外部关闭" description="只能通过按钮关闭面板" />
+          </SheetHeader>
+          <div style={{ padding: '20px' }}>
+            <Text>点击外部区域不会关闭此面板</Text>
+          </div>
+          <SheetFooter>
+            <SheetClose asChild>
+              <Button>关闭</Button>
+            </SheetClose>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet.Sheet>
+    </>
+  );
+}
+```
+
+### 带额外操作的标题
+
+使用 `headerExtra` 在标题旁添加额外操作。
+
+```jsx live
+function Demo() {
+  const { FolderSettingDuotone, Refresh2Duotone } = KubedIcons;
+  const [open, setOpen] = React.useState(false);
+  const { SheetContent, SheetHeader, SheetFooter, SheetClose, SheetFieldTitle } = Sheet;
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>打开面板</Button>
+      <Sheet.Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent width={600}>
+          <SheetHeader>
+            <SheetFieldTitle
+              title="资源详情"
+              description="查看和管理资源"
+              headerExtra={
+                <Group spacing="xs">
+                  <Button size="sm" variant="text">
+                    <Refresh2Duotone size={16} />
+                  </Button>
+                  <Button size="sm" variant="text">
+                    <FolderSettingDuotone size={16} />
+                  </Button>
+                </Group>
+              }
+            />
+          </SheetHeader>
+          <div style={{ padding: '20px' }}>
+            <Text>面板内容</Text>
+          </div>
+          <SheetFooter>
+            <SheetClose asChild>
+              <Button>关闭</Button>
+            </SheetClose>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet.Sheet>
+    </>
+  );
+}
+```
+
+### 完整示例
+
+综合所有功能的完整示例。
+
+```jsx live
+function Demo() {
+  const { Backup } = KubedIcons;
+  const [open, setOpen] = React.useState(false);
+  const [formData, setFormData] = React.useState({
+    replicas: '3',
+    image: 'nginx:1.21',
+    cpu: '500m',
+    memory: '512Mi',
+  });
+  const { SheetContent, SheetHeader, SheetFooter, SheetClose, SheetFieldTitle } = Sheet;
+
+  const handleSave = () => {
+    console.log('保存配置:', formData);
+    setOpen(false);
+  };
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>编辑部署</Button>
+      <Sheet.Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent width={600} maskClosable={false}>
+          <SheetHeader>
+            <SheetFieldTitle
+              titleIcon={<Backup size={40} />}
+              title="nginx-deployment"
+              description="编辑部署配置"
+              headerExtra={<Badge color="success">Running</Badge>}
+            />
+          </SheetHeader>
+          <div style={{ padding: '20px', flex: 1, overflow: 'auto' }}>
+            <Group direction="column" spacing="md">
+              <Card style={{ padding: '16px' }}>
+                <Text size="sm" weight={600} style={{ marginBottom: '12px' }}>
+                  基本配置
+                </Text>
+                <Group direction="column" spacing="md">
+                  <div>
+                    <Text size="sm" style={{ marginBottom: '8px' }}>
+                      副本数:
+                    </Text>
+                    <Input
+                      value={formData.replicas}
+                      onChange={(e) => setFormData({ ...formData, replicas: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <Text size="sm" style={{ marginBottom: '8px' }}>
+                      镜像:
+                    </Text>
+                    <Input
+                      value={formData.image}
+                      onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                    />
+                  </div>
+                </Group>
+              </Card>
+              <Card style={{ padding: '16px' }}>
+                <Text size="sm" weight={600} style={{ marginBottom: '12px' }}>
+                  资源限制
+                </Text>
+                <Group direction="column" spacing="md">
+                  <div>
+                    <Text size="sm" style={{ marginBottom: '8px' }}>
+                      CPU:
+                    </Text>
+                    <Input
+                      value={formData.cpu}
+                      onChange={(e) => setFormData({ ...formData, cpu: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <Text size="sm" style={{ marginBottom: '8px' }}>
+                      内存:
+                    </Text>
+                    <Input
+                      value={formData.memory}
+                      onChange={(e) => setFormData({ ...formData, memory: e.target.value })}
+                    />
+                  </div>
+                </Group>
+              </Card>
+            </Group>
+          </div>
+          <SheetFooter>
+            <SheetClose asChild>
+              <Button variant="outline">取消</Button>
+            </SheetClose>
+            <Button onClick={handleSave}>保存修改</Button>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet.Sheet>
+    </>
+  );
+}
+```
+
+## API
+
+### Sheet
+
+基于 Radix UI Dialog 的根组件。
+
+| 属性         | 说明             | 类型                      | 默认值 |
+| ------------ | ---------------- | ------------------------- | ------ |
+| open         | 是否打开(受控)   | `boolean`                 | -      |
+| onOpenChange | 打开状态变化回调 | `(open: boolean) => void` | -      |
+| modal        | 是否为模态       | `boolean`                 | `true` |
+
+### SheetContent
+
+| 属性            | 说明                  | 类型                                     | 默认值                |
+| --------------- | --------------------- | ---------------------------------------- | --------------------- |
+| side            | 滑入方向              | `'top' \| 'right' \| 'bottom' \| 'left'` | `'right'`             |
+| width           | 面板宽度              | `number \| string`                       | -                     |
+| title           | 可访问性标题          | `string`                                 | `'sheet'`             |
+| description     | 可访问性描述          | `string`                                 | `'sheet description'` |
+| hasOverlay      | 是否显示遮罩层        | `boolean`                                | `true`                |
+| hasRadixOverlay | 是否使用 Radix 遮罩层 | `boolean`                                | `false`               |
+| maskClosable    | 点击遮罩是否关闭      | `boolean`                                | `true`                |
+| className       | 自定义类名            | `string`                                 | -                     |
+
+### SheetFieldTitle
+
+| 属性        | 说明       | 类型           | 默认值 |
+| ----------- | ---------- | -------------- | ------ |
+| title       | 标题文字   | `ReactNode`    | -      |
+| description | 描述文字   | `ReactNode`    | -      |
+| titleIcon   | 标题图标   | `ReactNode`    | -      |
+| headerExtra | 额外操作   | `ReactNode`    | -      |
+| header      | 自定义头部 | `ReactElement` | -      |
+
+### SheetHeader / SheetFooter
+
+| 属性      | 说明       | 类型            | 默认值 |
+| --------- | ---------- | --------------- | ------ |
+| className | 自定义类名 | `string`        | -      |
+| style     | 自定义样式 | `CSSProperties` | -      |
+
+### SheetTrigger / SheetClose
+
+| 属性    | 说明                 | 类型      | 默认值  |
+| ------- | -------------------- | --------- | ------- |
+| asChild | 使用子元素作为触发器 | `boolean` | `false` |
+
+:::info
+
+**关于组件组合**:
+
+- Sheet 由多个子组件组成,需要按照结构组合使用
+- SheetContent 是必需的,其他组件可选
+- 推荐结构:Sheet > SheetContent > SheetHeader + content + SheetFooter
+- Sheet 组件基于 Radix UI Dialog 构建(Sheets.tsx 第 2 行):`import * as SheetPrimitive from '@radix-ui/react-dialog'`
+- Sheet、SheetTrigger、SheetClose、SheetPortal 直接使用 Radix UI 组件(第 20-23 行)
+
+**关于组件导出**:
+
+- Sheet.tsx 作为入口文件,从 Sheets.tsx 导入所有组件(Sheet.tsx 第 1 行)
+- 导出的组件包括:Sheet, SheetPortal, SheetOverlay, SheetTrigger, SheetClose, SheetContent, SheetHeader, SheetFooter, SheetTitle, SheetDescription, SheetHeaderClose, SheetFieldTitle
+- 还有 SheetBaseContent 组件用于基础内容渲染(Sheets.tsx 第 191 行)
+
+**关于方向**:
+
+- `side` 支持四个方向:top、right、bottom、left
+- 默认从右侧滑入(Sheets.tsx 第 99 行):`side = 'right'`
+- 左/右方向的面板适合设置宽度,上/下方向的面板适合设置高度
+- side 属性传递给 StyledSheetContent 处理不同方向的动画和定位
+
+**关于受控模式**:
+
+- 使用 `open` 和 `onOpenChange` 进行受控
+- 也可以使用 `SheetTrigger` 和 `SheetClose` 进行非受控
+- Sheet 组件直接使用 `SheetPrimitive.Root`,继承 Radix UI 的受控/非受控模式
+
+**关于遮罩层**:
+
+- SheetContent 支持两种遮罩层:
+  - 基础遮罩层(hasOverlay):使用 SheetBaseOverlay,支持点击关闭(第 111-119 行)
+  - Radix 遮罩层(hasRadixOverlay):使用 SheetRadixOverlay(第 123 行)
+- `hasOverlay` 默认为 true(第 101 行)
+- `hasRadixOverlay` 默认为 false(第 100 行)
+- `maskClosable` 控制点击遮罩是否关闭面板,默认为 true(第 102 行)
+- 当 `maskClosable` 为 true 时,遮罩层被 SheetClose 包裹(第 113-115 行)
+
+**关于可访问性**:
+
+- 基于 Radix UI 构建,具有良好的键盘导航和屏幕阅读器支持
+- 设置 `title` 和 `description` 属性增强可访问性
+- SheetContent 内部包含隐藏的 Title 和 Description 元素(第 125-132 行)
+- 默认 title 为 `'sheet'`(第 126 行)
+- 默认 description 为 `'sheet description'`(第 130 行)
+- HiddenTitle 组件用于隐藏这些可访问性元素
+
+**关于 SheetFieldTitle**:
+
+- SheetFieldTitle 用于创建带图标的标题区域(Sheets.tsx 第 26-49 行)
+- 接收 props:header, title, description, titleIcon, headerExtra
+- 如果提供 `header` 属性,直接返回该元素(第 34 行)
+- 使用 Field 组件显示标题信息(第 40、45 行):
+  - avatar → titleIcon
+  - value → title
+  - label → description
+- 当有 `headerExtra` 时,使用 HeaderWrapper 包裹(第 37-43 行)
+- 最外层包裹 `div.kubed-modal-title`(第 48 行)
+
+**关于关闭按钮**:
+
+- SheetContent 内部自动包含关闭按钮(第 133-137 行)
+- 使用 SheetHeaderClose 组件定位
+- 按钮样式:variant="filled", color="secondary", radius="sm", size="sm"
+- 图标使用 CloseDuotone(size: 24, variant: "light")
+
+**关于 SheetHeader 和 SheetFooter**:
+
+- SheetHeader 使用 StyledSheetHeader 样式组件(第 145-147 行)
+- SheetFooter 使用 StyledSheetFooter 样式组件(第 149-151 行)
+- 两者都接收 className 和其他 HTMLDivElement 属性
+
+**关于 displayName**:
+
+- Sheet: '@kubed/components/Sheet'(第 167 行)
+- SheetHeader: 'SheetHeader'(第 174 行)
+- SheetFooter: 'SheetFooter'(第 175 行)
+- 其他组件继承 Radix UI 的 displayName
+
+**关于 SheetBaseContent**:
+
+- SheetBaseContent 是简化版的内容组件(第 73-88 行)
+- 不包含关闭按钮和隐藏的可访问性元素
+- 直接渲染 children 内容
+- 适用于需要完全自定义内容结构的场景
+
+:::
+
+## 使用建议
+
+### 选择合适的方向
+
+根据内容和使用场景选择方向:
+
+```jsx
+// 编辑表单: 从右侧滑入
+<SheetContent side="right" width={500}>...</SheetContent>
+
+// 通知面板: 从顶部滑入
+<SheetContent side="top">...</SheetContent>
+
+// 操作面板: 从底部滑入
+<SheetContent side="bottom">...</SheetContent>
+```
+
+### 合理设置宽度
+
+根据内容设置合适的宽度:
+
+```jsx
+// 简单表单: 较窄宽度
+<SheetContent width={400}>...</SheetContent>
+
+// 详情展示: 中等宽度
+<SheetContent width={600}>...</SheetContent>
+
+// 复杂内容: 较宽或百分比
+<SheetContent width={800}>...</SheetContent>
+<SheetContent width="50%">...</SheetContent>
+```
+
+### 使用组合式 API
+
+利用子组件灵活组合:
+
+```jsx
+<Sheet open={open} onOpenChange={setOpen}>
+  <SheetContent>
+    <SheetHeader>
+      <SheetFieldTitle title="标题" description="描述" />
+    </SheetHeader>
+    <div>内容区域</div>
+    <SheetFooter>
+      <SheetClose asChild>
+        <Button>取消</Button>
+      </SheetClose>
+      <Button>确定</Button>
+    </SheetFooter>
+  </SheetContent>
+</Sheet>
+```
+
+### 表单场景禁止外部关闭
+
+编辑表单时防止意外关闭:
+
+```jsx
+<SheetContent maskClosable={false}>
+  <form>{/* 表单内容 */}</form>
+  <SheetFooter>
+    <SheetClose asChild>
+      <Button variant="outline">取消</Button>
+    </SheetClose>
+    <Button type="submit">保存</Button>
+  </SheetFooter>
+</SheetContent>
+```
+
+### 添加图标增强识别
+
+为资源详情添加图标:
+
+```jsx
+import { Pod, Service, Deployment } from '@kubed/icons';
+
+<SheetFieldTitle titleIcon={<Pod size={40} />} title="nginx-pod" description="Pod 详情" />;
+```
+
+### 受控模式管理状态
+
+使用受控模式精确控制打开状态:
+
+```jsx
+const [open, setOpen] = useState(false);
+
+const handleSave = async () => {
+  await saveData();
+  setOpen(false);
+};
+
+<Sheet open={open} onOpenChange={setOpen}>
+  <SheetContent>
+    {/* 内容 */}
+    <Button onClick={handleSave}>保存</Button>
+  </SheetContent>
+</Sheet>;
+```
+
+### 内容区域可滚动
+
+确保长内容可以滚动:
+
+```jsx
+<SheetContent>
+  <SheetHeader>...</SheetHeader>
+  <div style={{ flex: 1, overflow: 'auto', padding: '20px' }}>{/* 长内容 */}</div>
+  <SheetFooter>...</SheetFooter>
+</SheetContent>
+```
+
+### 提供额外操作
+
+在标题旁添加常用操作:
+
+```jsx
+<SheetFieldTitle
+  title="资源详情"
+  description="描述"
+  headerExtra={
+    <Group spacing="xs">
+      <Button size="sm" variant="text">
+        <RefreshIcon />
+      </Button>
+      <Button size="sm" variant="text">
+        <SettingIcon />
+      </Button>
+    </Group>
+  }
+/>
+```
+
+### 无遮罩层场景
+
+不需要遮罩时去除:
+
+```jsx
+// 侧边辅助面板
+<SheetContent hasOverlay={false} side="right">
+  {/* 不阻断主界面操作的辅助内容 */}
+</SheetContent>
+```

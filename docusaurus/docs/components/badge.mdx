@@ -1,0 +1,379 @@
+---
+sidebar_position: 1
+---
+
+# Badge 徽标
+
+用于展示状态标记或计数的徽标组件。
+
+## 何时使用
+
+- 需要在元素上展示状态或数量信息
+- 用于头像、图标或其他元素的角标提示
+- 展示未读消息数、在线状态等
+- 需要突出显示某些状态信息
+
+## 示例
+
+### 基础用法
+
+最简单的用法，展示数字或文本。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="lg">
+      <Badge>3</Badge>
+      <Badge>99+</Badge>
+      <Badge>New</Badge>
+    </Group>
+  );
+}
+```
+
+### 颜色
+
+通过 `color` 属性设置徽标颜色，支持主题预设色和自定义颜色。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="lg">
+      <Badge>Default</Badge>
+      <Badge color="primary">Primary</Badge>
+      <Badge color="secondary">Secondary</Badge>
+      <Badge color="success">Success</Badge>
+      <Badge color="warning">Warning</Badge>
+      <Badge color="error">Error</Badge>
+    </Group>
+  );
+}
+```
+
+### 自定义颜色
+
+支持使用 HEX、RGB、RGBA 颜色值。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="lg">
+      <Badge color="#228be6">Blue</Badge>
+      <Badge color="#40c057">Green</Badge>
+      <Badge color="#be4bdb">Purple</Badge>
+      <Badge color="#ff6b6b">Red</Badge>
+      <Badge color="#fab005">Yellow</Badge>
+    </Group>
+  );
+}
+```
+
+### 阴影效果
+
+通过 `shadow` 属性添加阴影效果，使徽标更加突出。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="lg">
+      <Badge color="primary" shadow>
+        Primary
+      </Badge>
+      <Badge color="success" shadow>
+        Success
+      </Badge>
+      <Badge color="warning" shadow>
+        Warning
+      </Badge>
+      <Badge color="error" shadow>
+        Error
+      </Badge>
+    </Group>
+  );
+}
+```
+
+### 点状徽标
+
+通过 `dot` 属性展示为点状徽标，常用于状态指示。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="lg">
+      <Badge color="success" dot />
+      <Badge color="warning" dot />
+      <Badge color="error" dot />
+    </Group>
+  );
+}
+```
+
+### 动画效果
+
+通过 `motion` 属性为点状徽标添加动画效果，适用于需要吸引注意力的场景。
+
+```jsx live
+function Demo() {
+  return (
+    <Group spacing="lg">
+      <Badge color="success" dot motion />
+      <Badge color="warning" dot motion />
+      <Badge color="error" dot motion />
+    </Group>
+  );
+}
+```
+
+### 锚点定位
+
+使用 `BadgeAnchor` 组件将徽标定位在其他元素上。
+
+```jsx live
+function Demo() {
+  const { Storage, Pod, Cluster } = KubedIcons;
+
+  return (
+    <Group spacing={40}>
+      <BadgeAnchor>
+        <Badge color="error">5</Badge>
+        <Storage size={40} />
+      </BadgeAnchor>
+      <BadgeAnchor>
+        <Badge color="success">12</Badge>
+        <Pod size={40} />
+      </BadgeAnchor>
+      <BadgeAnchor>
+        <Badge color="warning">99+</Badge>
+        <Cluster size={40} />
+      </BadgeAnchor>
+    </Group>
+  );
+}
+```
+
+### 锚点位置
+
+通过 `placement` 属性设置徽标在锚点元素上的位置。
+
+```jsx live
+function Demo() {
+  const { Storage } = KubedIcons;
+
+  return (
+    <Group spacing={40}>
+      <BadgeAnchor placement="topLeft">
+        <Badge color="primary">1</Badge>
+        <Storage size={40} />
+      </BadgeAnchor>
+      <BadgeAnchor placement="topRight">
+        <Badge color="success">2</Badge>
+        <Storage size={40} />
+      </BadgeAnchor>
+      <BadgeAnchor placement="bottomLeft">
+        <Badge color="warning">3</Badge>
+        <Storage size={40} />
+      </BadgeAnchor>
+      <BadgeAnchor placement="bottomRight">
+        <Badge color="error">4</Badge>
+        <Storage size={40} />
+      </BadgeAnchor>
+    </Group>
+  );
+}
+```
+
+### 偏移量
+
+通过 `offset` 属性调整徽标的位置偏移。
+
+```jsx live
+function Demo() {
+  const { Pod } = KubedIcons;
+
+  return (
+    <Group spacing={40}>
+      <BadgeAnchor offset={[0, 0]}>
+        <Badge color="error" dot />
+        <Pod size={40} />
+      </BadgeAnchor>
+      <BadgeAnchor offset={[5, 5]}>
+        <Badge color="success" dot motion />
+        <Pod size={40} />
+      </BadgeAnchor>
+      <BadgeAnchor offset={[10, 10]}>
+        <Badge color="warning" dot />
+        <Pod size={40} />
+      </BadgeAnchor>
+    </Group>
+  );
+}
+```
+
+### 配合 Tooltip 使用
+
+结合 Tooltip 展示更多信息。
+
+```jsx live
+function Demo() {
+  const { Storage, Pod } = KubedIcons;
+
+  return (
+    <Group spacing={40}>
+      <BadgeAnchor>
+        <Tooltip content="5 条未读消息">
+          <Badge color="error">5</Badge>
+        </Tooltip>
+        <Storage size={40} />
+      </BadgeAnchor>
+      <BadgeAnchor offset={[5, 5]}>
+        <Tooltip content="服务运行正常">
+          <Badge color="success" dot motion />
+        </Tooltip>
+        <Pod size={40} />
+      </BadgeAnchor>
+    </Group>
+  );
+}
+```
+
+### 实际应用场景
+
+展示一些常见的使用场景。
+
+```jsx live
+function Demo() {
+  const { Bell, Mail, Cart } = KubedIcons;
+
+  return (
+    <Group spacing={40}>
+      <BadgeAnchor>
+        <Badge color="error">3</Badge>
+        <Button variant="text" style={{ padding: '8px' }}>
+          <Bell size={20} />
+        </Button>
+      </BadgeAnchor>
+      <BadgeAnchor>
+        <Badge color="primary">12</Badge>
+        <Button variant="text" style={{ padding: '8px' }}>
+          <Mail size={20} />
+        </Button>
+      </BadgeAnchor>
+      <BadgeAnchor offset={[5, 5]}>
+        <Badge color="success" dot motion />
+        <Button variant="text" style={{ padding: '8px' }}>
+          <Cart size={20} />
+        </Button>
+      </BadgeAnchor>
+    </Group>
+  );
+}
+```
+
+## API
+
+### Badge
+
+| 属性     | 说明                         | 类型                                                                                   | 默认值  |
+| -------- | ---------------------------- | -------------------------------------------------------------------------------------- | ------- |
+| color    | 徽标颜色                     | `'default' \| 'primary' \| 'secondary' \| 'success' \| 'warning' \| 'error' \| string` | -       |
+| shadow   | 是否显示阴影                 | `boolean`                                                                              | `false` |
+| dot      | 是否显示为点状               | `boolean`                                                                              | `false` |
+| motion   | 是否显示动画（仅点状时有效） | `boolean`                                                                              | `false` |
+| children | 徽标内容                     | `ReactNode`                                                                            | -       |
+
+### BadgeAnchor
+
+| 属性      | 说明       | 类型                                                       | 默认值          |
+| --------- | ---------- | ---------------------------------------------------------- | --------------- |
+| placement | 徽标位置   | `'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight'` | `'bottomRight'` |
+| offset    | 位置偏移量 | `[number, number]`                                         | `[0, 0]`        |
+| children  | 子元素     | `ReactNode`                                                | -               |
+
+:::info
+
+**关于颜色**：
+
+- 支持主题预设颜色：`primary`、`secondary`、`success`、`warning`、`error`
+- 支持 HEX 格式：`#ff6b6b`、`#228be6`
+- 支持 RGB/RGBA 格式：`rgb(255, 107, 107)`、`rgba(255, 107, 107, 0.8)`
+- 不传 `color` 时使用默认灰色样式
+
+**关于点状徽标**：
+
+- 当 `dot` 为 `true` 时，Badge 会渲染为 StatusDot 组件
+- `motion` 属性只在 `dot` 为 `true` 时生效
+- 点状徽标常用于状态指示，如在线/离线状态
+
+**关于 BadgeAnchor**：
+
+- BadgeAnchor 是一个定位容器，第一个子元素应该是 Badge
+- 第二个子元素是要添加徽标的目标元素
+- `offset` 数组格式为 `[x, y]`，用于微调位置
+
+:::
+
+## 使用建议
+
+### 数字展示
+
+对于较大的数字，建议使用截断显示：
+
+```jsx
+// 推荐：使用截断显示
+<Badge color="error">{count > 99 ? '99+' : count}</Badge>
+
+// 不推荐：显示过长的数字
+<Badge color="error">12345</Badge>
+```
+
+### 状态指示
+
+使用点状徽标表示状态：
+
+```jsx
+// 在线状态
+<BadgeAnchor offset={[5, 5]}>
+  <Badge color="success" dot motion />
+  <Avatar />
+</BadgeAnchor>
+
+// 离线状态
+<BadgeAnchor offset={[5, 5]}>
+  <Badge color="default" dot />
+  <Avatar />
+</BadgeAnchor>
+
+// 忙碌状态
+<BadgeAnchor offset={[5, 5]}>
+  <Badge color="warning" dot />
+  <Avatar />
+</BadgeAnchor>
+```
+
+### 配合图标使用
+
+在图标按钮上显示计数：
+
+```jsx
+<BadgeAnchor>
+  <Badge color="error">{unreadCount}</Badge>
+  <IconButton>
+    <Bell />
+  </IconButton>
+</BadgeAnchor>
+```
+
+### 阴影使用
+
+在需要更强调或在复杂背景上时使用阴影：
+
+```jsx
+// 需要强调时
+<Badge color="error" shadow>Important</Badge>
+
+// 在深色背景上
+<div style={{ background: '#333', padding: '20px' }}>
+  <Badge color="warning" shadow>Attention</Badge>
+</div>
+```

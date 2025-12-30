@@ -1,0 +1,1566 @@
+---
+sidebar_position: 1
+---
+
+# Table 表格
+
+展示行列数据的表格组件。
+
+## 何时使用
+
+- 当有大量结构化的数据需要展现
+- 需要对数据进行排序、筛选、分页等操作
+- 展示资源列表、配置项等信息
+
+## 示例
+
+### 基础用法
+
+使用 BaseTable 的基础组件构建简单表格。
+
+```jsx live
+function Demo() {
+  const { Table, TableHead, TableBody, TableRow, TableCell } = BaseTable;
+
+  return (
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>名称</TableCell>
+          <TableCell>状态</TableCell>
+          <TableCell>创建时间</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        <TableRow>
+          <TableCell>nginx-deployment</TableCell>
+          <TableCell>运行中</TableCell>
+          <TableCell>2024-01-15 10:30</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>redis-master</TableCell>
+          <TableCell>运行中</TableCell>
+          <TableCell>2024-01-14 09:20</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>mysql-server</TableCell>
+          <TableCell>已停止</TableCell>
+          <TableCell>2024-01-13 08:15</TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+  );
+}
+```
+
+### 带边框
+
+通过 `hasBorder` 属性添加边框样式。
+
+```jsx live
+function Demo() {
+  const { Table, TableHead, TableBody, TableRow, TableCell } = BaseTable;
+
+  return (
+    <Table>
+      <TableHead hasBorder>
+        <TableRow>
+          <TableCell>Pod 名称</TableCell>
+          <TableCell>命名空间</TableCell>
+          <TableCell>节点</TableCell>
+          <TableCell>状态</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody hasBorder>
+        <TableRow>
+          <TableCell>nginx-7fb96c846b-8xmtv</TableCell>
+          <TableCell>default</TableCell>
+          <TableCell>node-01</TableCell>
+          <TableCell>Running</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>nginx-7fb96c846b-kj2nq</TableCell>
+          <TableCell>default</TableCell>
+          <TableCell>node-02</TableCell>
+          <TableCell>Running</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>nginx-7fb96c846b-lm9px</TableCell>
+          <TableCell>default</TableCell>
+          <TableCell>node-01</TableCell>
+          <TableCell>Pending</TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+  );
+}
+```
+
+### 可选择行
+
+实现行选择功能。
+
+```jsx live
+function Demo() {
+  const { Table, TableHead, TableBody, TableRow, TableCell } = BaseTable;
+  const [selectedIds, setSelectedIds] = React.useState([]);
+
+  const data = [
+    { id: '1', name: 'nginx-deployment', replicas: '3/3', status: '运行中' },
+    { id: '2', name: 'redis-master', replicas: '1/1', status: '运行中' },
+    { id: '3', name: 'mysql-server', replicas: '0/1', status: '已停止' },
+  ];
+
+  const handleSelect = (id) => {
+    setSelectedIds((ids) => {
+      if (ids.includes(id)) {
+        return ids.filter((i) => i !== id);
+      }
+      return [...ids, id];
+    });
+  };
+
+  const allSelected = selectedIds.length === data.length;
+  const someSelected = selectedIds.length > 0 && selectedIds.length < data.length;
+
+  return (
+    <Table>
+      <TableHead hasBorder>
+        <TableRow>
+          <TableCell style={{ width: '40px' }}>
+            <Checkbox
+              checked={allSelected}
+              indeterminate={someSelected}
+              onChange={() => {
+                if (selectedIds.length > 0) {
+                  setSelectedIds([]);
+                } else {
+                  setSelectedIds(data.map((d) => d.id));
+                }
+              }}
+            />
+          </TableCell>
+          <TableCell>名称</TableCell>
+          <TableCell>副本数</TableCell>
+          <TableCell>状态</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody hasBorder>
+        {data.map((item) => (
+          <TableRow key={item.id} selected={selectedIds.includes(item.id)}>
+            <TableCell>
+              <Checkbox
+                checked={selectedIds.includes(item.id)}
+                onChange={() => handleSelect(item.id)}
+              />
+            </TableCell>
+            <TableCell>{item.name}</TableCell>
+            <TableCell>{item.replicas}</TableCell>
+            <TableCell>{item.status}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+}
+```
+
+### 固定表头
+
+通过 `stickyHeader` 属性固定表头，适合大量数据的展示。
+
+```jsx live
+function Demo() {
+  const { Table, TableHead, TableBody, TableRow, TableCell } = BaseTable;
+
+  const data = Array.from({ length: 20 }, (_, i) => ({
+    name: `pod-${i + 1}`,
+    namespace: i % 2 === 0 ? 'default' : 'kubesphere-system',
+    node: `node-0${(i % 3) + 1}`,
+    status: i % 5 === 0 ? 'Pending' : 'Running',
+  }));
+
+  return (
+    <div style={{ height: '300px', overflow: 'auto' }}>
+      <Table stickyHeader>
+        <TableHead hasBorder>
+          <TableRow>
+            <TableCell>Pod 名称</TableCell>
+            <TableCell>命名空间</TableCell>
+            <TableCell>节点</TableCell>
+            <TableCell>状态</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody hasBorder>
+          {data.map((item, index) => (
+            <TableRow key={index}>
+              <TableCell>{item.name}</TableCell>
+              <TableCell>{item.namespace}</TableCell>
+              <TableCell>{item.node}</TableCell>
+              <TableCell>{item.status}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
+```
+
+### 固定列
+
+BaseTable 支持固定列功能，适合宽表格的展示。
+
+```jsx live
+function Demo() {
+  const { Table, TableHead, TableBody, TableRow, TableCell } = BaseTable;
+  const { Pen, Trash } = KubedIcons;
+
+  const data = [
+    {
+      name: 'nginx-deployment',
+      namespace: 'default',
+      status: 'Running',
+      cpu: '50m',
+      memory: '128Mi',
+      replicas: '3/3',
+    },
+    {
+      name: 'redis-master',
+      namespace: 'default',
+      status: 'Running',
+      cpu: '100m',
+      memory: '256Mi',
+      replicas: '1/1',
+    },
+    {
+      name: 'mysql-server',
+      namespace: 'database',
+      status: 'Pending',
+      cpu: '200m',
+      memory: '512Mi',
+      replicas: '0/1',
+    },
+  ];
+
+  return (
+    <div style={{ width: '600px', overflow: 'auto' }}>
+      <Table style={{ minWidth: '900px' }}>
+        <TableHead hasBorder>
+          <TableRow>
+            <TableCell fixed="left" fixedWidth={0} fixedLastLeft style={{ width: '150px' }}>
+              名称
+            </TableCell>
+            <TableCell style={{ width: '120px' }}>命名空间</TableCell>
+            <TableCell style={{ width: '100px' }}>状态</TableCell>
+            <TableCell style={{ width: '100px' }}>CPU</TableCell>
+            <TableCell style={{ width: '100px' }}>内存</TableCell>
+            <TableCell style={{ width: '100px' }}>副本数</TableCell>
+            <TableCell fixed="right" fixedWidth={0} fixedLastRight style={{ width: '100px' }}>
+              操作
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody hasBorder>
+          {data.map((item, index) => (
+            <TableRow key={index}>
+              <TableCell fixed="left" fixedWidth={0} fixedLastLeft>
+                <span style={{ fontWeight: 600 }}>{item.name}</span>
+              </TableCell>
+              <TableCell>{item.namespace}</TableCell>
+              <TableCell>
+                <Badge color={item.status === 'Running' ? '#55bc8a' : '#f5a623'}>
+                  {item.status}
+                </Badge>
+              </TableCell>
+              <TableCell>{item.cpu}</TableCell>
+              <TableCell>{item.memory}</TableCell>
+              <TableCell>{item.replicas}</TableCell>
+              <TableCell fixed="right" fixedWidth={0} fixedLastRight>
+                <Group spacing="xs">
+                  <Button variant="text" size="sm" radius="sm">
+                    <Pen size={16} />
+                  </Button>
+                  <Button variant="text" size="sm" radius="sm" color="error">
+                    <Trash size={16} />
+                  </Button>
+                </Group>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
+```
+
+### 分页
+
+使用 Pagination 组件实现分页功能。
+
+```jsx live
+function Demo() {
+  const { Table, TableHead, TableBody, TableRow, TableCell, Pagination } = BaseTable;
+  const [pagination, setPagination] = React.useState({ page: 1, pageSize: 5 });
+
+  const allData = Array.from({ length: 23 }, (_, i) => ({
+    name: `deployment-${i + 1}`,
+    replicas: `${Math.floor(Math.random() * 3) + 1}/${Math.floor(Math.random() * 3) + 1}`,
+    status: i % 4 === 0 ? '已停止' : '运行中',
+  }));
+
+  const startIndex = (pagination.page - 1) * pagination.pageSize;
+  const data = allData.slice(startIndex, startIndex + pagination.pageSize);
+
+  return (
+    <div>
+      <Table>
+        <TableHead hasBorder>
+          <TableRow>
+            <TableCell>名称</TableCell>
+            <TableCell>副本数</TableCell>
+            <TableCell>状态</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody hasBorder>
+          {data.map((item, index) => (
+            <TableRow key={index}>
+              <TableCell>{item.name}</TableCell>
+              <TableCell>{item.replicas}</TableCell>
+              <TableCell>{item.status}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <Pagination total={allData.length} pagination={pagination} onChange={setPagination} />
+    </div>
+  );
+}
+```
+
+### 工具栏
+
+使用 Toolbar 组件添加表格工具栏。
+
+```jsx live
+function Demo() {
+  const { Table, TableHead, TableBody, TableRow, TableCell, Toolbar } = BaseTable;
+  const { Add, Refresh } = KubedIcons;
+
+  const data = [
+    { name: 'nginx-deployment', replicas: '3/3', status: '运行中' },
+    { name: 'redis-master', replicas: '1/1', status: '运行中' },
+    { name: 'mysql-server', replicas: '0/1', status: '已停止' },
+  ];
+
+  return (
+    <div>
+      <Toolbar
+        enableBatchActions={false}
+        enableFilters={false}
+        filterProps={{
+          suggestions: [],
+          onChange: () => {},
+        }}
+        toolbarRight={
+          <Group>
+            <Button variant="text" radius="sm">
+              <Refresh size={16} />
+            </Button>
+            <Button leftIcon={<Add />}>创建</Button>
+          </Group>
+        }
+      />
+      <Table>
+        <TableHead hasBorder>
+          <TableRow>
+            <TableCell>名称</TableCell>
+            <TableCell>副本数</TableCell>
+            <TableCell>状态</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody hasBorder>
+          {data.map((item, index) => (
+            <TableRow key={index}>
+              <TableCell>{item.name}</TableCell>
+              <TableCell>{item.replicas}</TableCell>
+              <TableCell>{item.status}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
+```
+
+### 带操作列
+
+在表格中添加操作按钮。
+
+```jsx live
+function Demo() {
+  const { Table, TableHead, TableBody, TableRow, TableCell } = BaseTable;
+  const { Pen, Trash, More } = KubedIcons;
+
+  const data = [
+    { name: 'nginx-deployment', replicas: '3/3', status: '运行中' },
+    { name: 'redis-master', replicas: '1/1', status: '运行中' },
+    { name: 'mysql-server', replicas: '0/1', status: '已停止' },
+  ];
+
+  return (
+    <Table>
+      <TableHead hasBorder>
+        <TableRow>
+          <TableCell>名称</TableCell>
+          <TableCell>副本数</TableCell>
+          <TableCell>状态</TableCell>
+          <TableCell style={{ width: '120px' }}>操作</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody hasBorder>
+        {data.map((item, index) => (
+          <TableRow key={index}>
+            <TableCell>{item.name}</TableCell>
+            <TableCell>{item.replicas}</TableCell>
+            <TableCell>{item.status}</TableCell>
+            <TableCell>
+              <Group spacing="xs">
+                <Button variant="text" size="sm" radius="sm">
+                  <Pen size={16} />
+                </Button>
+                <Button variant="text" size="sm" radius="sm" color="error">
+                  <Trash size={16} />
+                </Button>
+              </Group>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+}
+```
+
+### 带状态样式
+
+根据数据状态显示不同样式。
+
+```jsx live
+function Demo() {
+  const { Table, TableHead, TableBody, TableRow, TableCell } = BaseTable;
+
+  const data = [
+    { name: 'nginx-deployment', replicas: '3/3', status: 'Running', color: '#55bc8a' },
+    { name: 'redis-master', replicas: '1/1', status: 'Running', color: '#55bc8a' },
+    { name: 'mysql-server', replicas: '0/1', status: 'Stopped', color: '#ca2621' },
+    { name: 'api-gateway', replicas: '2/3', status: 'Updating', color: '#f5a623' },
+  ];
+
+  return (
+    <Table>
+      <TableHead hasBorder>
+        <TableRow>
+          <TableCell>名称</TableCell>
+          <TableCell>副本数</TableCell>
+          <TableCell>状态</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody hasBorder>
+        {data.map((item, index) => (
+          <TableRow key={index}>
+            <TableCell>
+              <span style={{ fontWeight: 600 }}>{item.name}</span>
+            </TableCell>
+            <TableCell>{item.replicas}</TableCell>
+            <TableCell>
+              <Badge color={item.color}>{item.status}</Badge>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+}
+```
+
+### 空状态
+
+表格数据为空时的展示。
+
+```jsx live
+function Demo() {
+  const { Table, TableHead, TableBody, TableRow, TableCell } = BaseTable;
+
+  return (
+    <div>
+      <Table>
+        <TableHead hasBorder>
+          <TableRow>
+            <TableCell>名称</TableCell>
+            <TableCell>副本数</TableCell>
+            <TableCell>状态</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody hasBorder>
+          <TableRow>
+            <TableCell colSpan={3}>
+              <Empty title="暂无数据" description="当前列表为空" />
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
+```
+
+### 资源列表
+
+Kubernetes 资源列表的典型展示。
+
+```jsx live
+function Demo() {
+  const { Table, TableHead, TableBody, TableRow, TableCell, Pagination } = BaseTable;
+  const { Pod, More } = KubedIcons;
+
+  const data = [
+    {
+      name: 'nginx-7fb96c846b-8xmtv',
+      status: 'Running',
+      restarts: 0,
+      age: '2d',
+      ip: '10.233.74.19',
+      node: 'node-01',
+    },
+    {
+      name: 'nginx-7fb96c846b-kj2nq',
+      status: 'Running',
+      restarts: 1,
+      age: '2d',
+      ip: '10.233.74.20',
+      node: 'node-02',
+    },
+    {
+      name: 'nginx-7fb96c846b-lm9px',
+      status: 'Pending',
+      restarts: 0,
+      age: '1h',
+      ip: '-',
+      node: '-',
+    },
+  ];
+
+  return (
+    <div style={{ backgroundColor: '#eff4f9', padding: '20px' }}>
+      <Card style={{ padding: 0 }}>
+        <Table>
+          <TableHead hasBorder>
+            <TableRow>
+              <TableCell>名称</TableCell>
+              <TableCell>状态</TableCell>
+              <TableCell>重启次数</TableCell>
+              <TableCell>运行时间</TableCell>
+              <TableCell>IP</TableCell>
+              <TableCell>节点</TableCell>
+              <TableCell style={{ width: '60px' }}></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody hasBorder>
+            {data.map((item, index) => (
+              <TableRow key={index}>
+                <TableCell>
+                  <Group spacing="xs">
+                    <Pod size={20} />
+                    <span style={{ fontWeight: 600 }}>{item.name}</span>
+                  </Group>
+                </TableCell>
+                <TableCell>
+                  <Badge color={item.status === 'Running' ? '#55bc8a' : '#f5a623'}>
+                    {item.status}
+                  </Badge>
+                </TableCell>
+                <TableCell>{item.restarts}</TableCell>
+                <TableCell>{item.age}</TableCell>
+                <TableCell>{item.ip}</TableCell>
+                <TableCell>{item.node}</TableCell>
+                <TableCell>
+                  <Button variant="text" size="sm" radius="sm">
+                    <More size={16} />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Card>
+    </div>
+  );
+}
+```
+
+### DataTable 基础用法
+
+使用 DataTable 创建功能完整的数据表格，支持分页、工具栏等功能。
+
+```jsx live
+function Demo() {
+  const columns = React.useMemo(
+    () => [
+      {
+        accessorKey: 'name',
+        header: '名称',
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: 'status',
+        header: '状态',
+        cell: (info) => (
+          <Badge color={info.getValue() === 'Running' ? '#55bc8a' : '#f5a623'}>
+            {info.getValue()}
+          </Badge>
+        ),
+      },
+      {
+        accessorKey: 'cpu',
+        header: 'CPU',
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: 'memory',
+        header: '内存',
+        cell: (info) => info.getValue(),
+      },
+    ],
+    []
+  );
+
+  const data = React.useMemo(
+    () =>
+      Array.from({ length: 25 }, (_, i) => ({
+        name: `workload-${i + 1}`,
+        status: i % 3 === 0 ? 'Pending' : 'Running',
+        cpu: `${Math.floor(Math.random() * 100)}%`,
+        memory: `${Math.floor(Math.random() * 1000)}Mi`,
+      })),
+    []
+  );
+
+  const defaultOptions = React.useMemo(
+    () =>
+      DataTable.getDefaultTableOptions({
+        tableName: 'demo-table',
+        manual: false,
+        enableToolbar: true,
+        enablePagination: true,
+        enableFilters: false,
+      }),
+    []
+  );
+
+  const table = DataTable.useTable({
+    ...defaultOptions,
+    data,
+    columns,
+    meta: {
+      ...defaultOptions.meta,
+      getProps: {
+        toolbar: () => ({
+          toolbarRight: <Button>创建</Button>,
+        }),
+      },
+    },
+  });
+
+  return <DataTable.DataTable table={table} />;
+}
+```
+
+### DataTable 带筛选
+
+DataTable 支持列筛选功能。
+
+```jsx live
+function Demo() {
+  const columns = React.useMemo(
+    () => [
+      {
+        accessorKey: 'name',
+        header: '名称',
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: 'namespace',
+        header: '命名空间',
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: 'status',
+        header: '状态',
+        cell: (info) => (
+          <Badge color={info.getValue() === 'Running' ? '#55bc8a' : '#f5a623'}>
+            {info.getValue()}
+          </Badge>
+        ),
+      },
+    ],
+    []
+  );
+
+  const data = React.useMemo(
+    () =>
+      Array.from({ length: 30 }, (_, i) => ({
+        name: `pod-${i + 1}`,
+        namespace: i % 2 === 0 ? 'default' : 'kubesphere-system',
+        status: i % 4 === 0 ? 'Pending' : 'Running',
+      })),
+    []
+  );
+
+  const defaultOptions = React.useMemo(
+    () =>
+      DataTable.getDefaultTableOptions({
+        tableName: 'filter-demo',
+        manual: false,
+        enableToolbar: true,
+        enablePagination: true,
+        enableFilters: true,
+      }),
+    []
+  );
+
+  const table = DataTable.useTable({
+    ...defaultOptions,
+    data,
+    columns,
+    meta: {
+      ...defaultOptions.meta,
+      getProps: {
+        filters: () => ({
+          simpleMode: false,
+          suggestions: [
+            {
+              key: 'namespace',
+              label: '命名空间',
+              options: [
+                { key: 'default', label: 'default' },
+                { key: 'kubesphere-system', label: 'kubesphere-system' },
+              ],
+            },
+            {
+              key: 'status',
+              label: '状态',
+              options: [
+                { key: 'Running', label: 'Running' },
+                { key: 'Pending', label: 'Pending' },
+              ],
+            },
+          ],
+        }),
+      },
+    },
+  });
+
+  return <DataTable.DataTable table={table} />;
+}
+```
+
+### DataTable 服务端分页
+
+使用 `manual: true` 实现服务端分页，手动控制数据加载。
+
+```jsx live
+function Demo() {
+  const [data, setData] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+  const [pagination, setPagination] = React.useState({ pageIndex: 0, pageSize: 5 });
+  const [total, setTotal] = React.useState(50);
+
+  // 模拟服务端数据
+  const allData = React.useMemo(
+    () =>
+      Array.from({ length: 50 }, (_, i) => ({
+        id: `${i + 1}`,
+        name: `workload-${i + 1}`,
+        status: i % 3 === 0 ? 'Pending' : 'Running',
+        cpu: `${Math.floor(Math.random() * 100)}%`,
+      })),
+    []
+  );
+
+  // 模拟数据加载
+  React.useEffect(() => {
+    setLoading(true);
+    const timer = setTimeout(() => {
+      const start = pagination.pageIndex * pagination.pageSize;
+      const end = start + pagination.pageSize;
+      setData(allData.slice(start, end));
+      setLoading(false);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [pagination, allData]);
+
+  const columns = React.useMemo(
+    () => [
+      {
+        accessorKey: 'name',
+        header: '名称',
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: 'status',
+        header: '状态',
+        cell: (info) => (
+          <Badge color={info.getValue() === 'Running' ? '#55bc8a' : '#f5a623'}>
+            {info.getValue()}
+          </Badge>
+        ),
+      },
+      {
+        accessorKey: 'cpu',
+        header: 'CPU',
+        cell: (info) => info.getValue(),
+      },
+    ],
+    []
+  );
+
+  const defaultOptions = React.useMemo(
+    () =>
+      DataTable.getDefaultTableOptions({
+        tableName: 'server-pagination-demo',
+        manual: true,
+        enableToolbar: true,
+        enablePagination: true,
+      }),
+    []
+  );
+
+  const table = DataTable.useTable({
+    ...defaultOptions,
+    data,
+    columns,
+    rowCount: total,
+    state: {
+      pagination,
+    },
+    onPaginationChange: setPagination,
+    loading,
+  });
+
+  return <DataTable.DataTable table={table} />;
+}
+```
+
+### DataTable 带选择
+
+DataTable 支持行选择功能。
+
+```jsx live
+function Demo() {
+  const [rowSelection, setRowSelection] = React.useState({});
+
+  const columns = React.useMemo(
+    () => [
+      {
+        id: 'select',
+        header: ({ table }) => (
+          <Checkbox
+            checked={table.getIsAllRowsSelected()}
+            indeterminate={table.getIsSomeRowsSelected()}
+            onChange={table.getToggleAllRowsSelectedHandler()}
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={row.getIsSelected()}
+            indeterminate={row.getIsSomeSelected()}
+            onChange={row.getToggleSelectedHandler()}
+          />
+        ),
+        meta: {
+          width: 40,
+        },
+      },
+      {
+        accessorKey: 'name',
+        header: '名称',
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: 'replicas',
+        header: '副本数',
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: 'status',
+        header: '状态',
+        cell: (info) => (
+          <Badge color={info.getValue() === 'Running' ? '#55bc8a' : '#ca2621'}>
+            {info.getValue()}
+          </Badge>
+        ),
+      },
+    ],
+    []
+  );
+
+  const data = React.useMemo(
+    () =>
+      Array.from({ length: 20 }, (_, i) => ({
+        name: `deployment-${i + 1}`,
+        replicas: `${Math.floor(Math.random() * 3) + 1}/3`,
+        status: i % 5 === 0 ? 'Stopped' : 'Running',
+      })),
+    []
+  );
+
+  const defaultOptions = React.useMemo(
+    () =>
+      DataTable.getDefaultTableOptions({
+        tableName: 'selection-demo',
+        manual: false,
+        enableToolbar: true,
+        enablePagination: true,
+        enableSelection: true,
+        enableMultiSelection: true,
+      }),
+    []
+  );
+
+  const table = DataTable.useTable({
+    ...defaultOptions,
+    data,
+    columns,
+    state: {
+      rowSelection,
+    },
+    onRowSelectionChange: setRowSelection,
+    getRowId: (row) => row.name,
+    meta: {
+      ...defaultOptions.meta,
+      getProps: {
+        toolbar: () => ({
+          batchActions: (
+            <Button
+              color="error"
+              onClick={() => alert(`删除 ${Object.keys(rowSelection).length} 项`)}
+            >
+              批量删除
+            </Button>
+          ),
+        }),
+      },
+    },
+  });
+
+  return <DataTable.DataTable table={table} />;
+}
+```
+
+## API
+
+### BaseTable.Table
+
+| 属性         | 说明               | 类型      | 默认值  |
+| ------------ | ------------------ | --------- | ------- |
+| stickyHeader | 是否固定表头       | `boolean` | `false` |
+| maxContext   | 是否使用最大上下文 | `boolean` | `false` |
+
+### BaseTable.TableHead
+
+| 属性         | 说明           | 类型      | 默认值  |
+| ------------ | -------------- | --------- | ------- |
+| hasBorder    | 是否显示边框   | `boolean` | `false` |
+| hasBorderTop | 是否显示上边框 | `boolean` | `false` |
+
+### BaseTable.TableBody
+
+| 属性      | 说明         | 类型      | 默认值  |
+| --------- | ------------ | --------- | ------- |
+| hasBorder | 是否显示边框 | `boolean` | `false` |
+
+### BaseTable.TableRow
+
+| 属性     | 说明         | 类型      | 默认值  |
+| -------- | ------------ | --------- | ------- |
+| selected | 是否选中状态 | `boolean` | `false` |
+
+### BaseTable.TableCell
+
+| 属性           | 说明                 | 类型                | 默认值  |
+| -------------- | -------------------- | ------------------- | ------- |
+| fixed          | 固定列位置           | `'left' \| 'right'` | -       |
+| fixedWidth     | 固定列偏移宽度       | `number`            | -       |
+| fixedLastLeft  | 是否为左侧最后固定列 | `boolean`           | `false` |
+| fixedLastRight | 是否为右侧最后固定列 | `boolean`           | `false` |
+| width          | 列宽度               | `number`            | -       |
+| colSpan        | 合并列数             | `number`            | -       |
+
+### BaseTable.Pagination
+
+| 属性       | 说明         | 类型                                                       | 默认值 |
+| ---------- | ------------ | ---------------------------------------------------------- | ------ |
+| total      | 数据总数     | `number`                                                   | -      |
+| pagination | 分页状态     | `{ page: number; pageSize?: number }`                      | -      |
+| onChange   | 分页变化回调 | `(pagination: { page: number; pageSize: number }) => void` | -      |
+
+### BaseTable.Toolbar
+
+| 属性                  | 说明               | 类型         | 默认值  |
+| --------------------- | ------------------ | ------------ | ------- |
+| enableBatchActions    | 是否启用批量操作   | `boolean`    | `false` |
+| onDisableBatchActions | 取消批量操作的回调 | `() => void` | -       |
+| enableFilters         | 是否启用筛选       | `boolean`    | `false` |
+| filterProps           | 筛选器属性         | `object`     | -       |
+| toolbarRight          | 工具栏右侧内容     | `ReactNode`  | -       |
+
+### DataTable.getDefaultTableOptions
+
+获取 DataTable 的默认配置选项。
+
+| 参数                 | 说明             | 类型      | 默认值  |
+| -------------------- | ---------------- | --------- | ------- |
+| tableName            | 表格唯一标识     | `string`  | -       |
+| manual               | 是否手动控制数据 | `boolean` | `false` |
+| enableToolbar        | 是否启用工具栏   | `boolean` | `true`  |
+| enablePagination     | 是否启用分页     | `boolean` | `true`  |
+| enableFilters        | 是否启用筛选     | `boolean` | `false` |
+| enableSelection      | 是否启用选择     | `boolean` | `false` |
+| enableMultiSelection | 是否启用多选     | `boolean` | `false` |
+| enableSort           | 是否启用排序     | `boolean` | `false` |
+| enableVisible        | 是否启用列显隐   | `boolean` | `false` |
+
+### DataTable.useTable
+
+创建 DataTable 实例的 Hook，基于 @tanstack/react-table。
+
+| 参数                 | 说明                 | 类型                    | 默认值 |
+| -------------------- | -------------------- | ----------------------- | ------ |
+| data                 | 表格数据             | `T[]`                   | -      |
+| columns              | 列定义               | `ColumnDef<T>[]`        | -      |
+| state                | 表格状态             | `Partial<TableState>`   | -      |
+| onRowSelectionChange | 选择变化回调         | `(selection) => void`   | -      |
+| onParamsChange       | 参数变化回调         | `(params, key) => void` | -      |
+| getRowId             | 获取行 ID            | `(row) => string`       | -      |
+| rowCount             | 数据总数（手动模式） | `number`                | -      |
+| loading              | 是否加载中           | `boolean`               | -      |
+| meta                 | 表格元数据           | `TableMeta`             | -      |
+
+### DataTable.DataTable
+
+渲染 DataTable 的组件。
+
+| 属性      | 说明       | 类型       | 默认值 |
+| --------- | ---------- | ---------- | ------ |
+| table     | 表格实例   | `Table<T>` | -      |
+| className | 自定义类名 | `string`   | -      |
+
+### useTable 扩展点
+
+DataTable 的 `useTable` Hook 支持丰富的扩展点配置。
+
+#### options.meta
+
+表格元数据配置，用于控制表格的各种行为和属性。
+
+```typescript
+interface TableMeta<T> {
+  // 表格唯一标识
+  tableName: string;
+  // 是否手动控制数据（服务端分页）
+  manual: boolean;
+  // 是否启用工具栏
+  enableToolbar: boolean;
+  // 是否启用分页
+  enablePagination: boolean;
+  // 是否启用选择
+  enableSelection: boolean;
+  // 是否启用多选
+  enableMultiSelection: boolean;
+  // 是否启用筛选
+  enableFilters: boolean;
+  // 是否启用排序
+  enableSort: boolean;
+  // 是否启用列显隐
+  enableVisible: boolean;
+  // 初始化状态处理器
+  registerHandlers?: (handler: StateHandler) => void;
+  // 获取各组件的 props
+  getProps: {
+    // 表格 props
+    table?: () => TableProps;
+    // 工具栏 props
+    toolbar?: () => ToolbarProps;
+    // 筛选器 props
+    filters?: () => FilterProps;
+    // 分页 props
+    pagination?: () => PaginationProps;
+    // 空状态 props
+    empty?: () => EmptyProps;
+    // 表头 props
+    th?: (header: Header<T>) => TableCellProps;
+    // 单元格 props
+    td?: (cell: Cell<T>) => TableCellProps;
+    // 行 props
+    tr?: (row: Row<T>) => TableRowProps;
+  };
+}
+```
+
+#### options.meta.registerHandlers
+
+注册状态处理器，用于在表格外部控制表格状态。
+
+```typescript
+interface StateHandler {
+  // 设置分页
+  setPageIndex: (index: number) => void;
+  // 设置每页条数
+  setPageSize: (size: number) => void;
+  // 设置筛选条件
+  setFilters: (filters: ColumnFiltersState) => void;
+  // 设置排序
+  setSorting: (sorting: SortingState) => void;
+  // 设置行选择
+  setRowSelection: (selection: RowSelectionState) => void;
+  // 刷新数据
+  refresh: () => void;
+}
+```
+
+使用示例：
+
+```jsx
+const handlerRef = React.useRef < StateHandler > null;
+
+const table = DataTable.useTable({
+  ...defaultOptions,
+  data,
+  columns,
+  meta: {
+    ...defaultOptions.meta,
+    registerHandlers: (handler) => {
+      handlerRef.current = handler;
+    },
+  },
+});
+
+// 在外部控制表格
+const handleRefresh = () => {
+  handlerRef.current?.refresh();
+};
+
+const handleResetFilters = () => {
+  handlerRef.current?.setFilters([]);
+};
+```
+
+#### options.columns column.meta
+
+列元数据配置，用于控制列的行为和属性。
+
+```typescript
+interface ColumnMeta {
+  // 列描述
+  description?: string;
+  // 选择类型（用于筛选）
+  selectType?: 'single' | 'multiple';
+  // 是否可排序
+  sortable?: boolean;
+  // 搜索键名
+  searchKey?: string;
+  // 列宽度
+  width?: number | string;
+  // 固定位置
+  fixed?: 'left' | 'right';
+}
+```
+
+使用示例：
+
+```jsx
+const columns = [
+  {
+    accessorKey: 'name',
+    header: '名称',
+    meta: {
+      searchKey: 'name',
+      sortable: true,
+      width: 200,
+    },
+  },
+  {
+    accessorKey: 'status',
+    header: '状态',
+    meta: {
+      selectType: 'multiple',
+      description: '资源运行状态',
+    },
+  },
+];
+```
+
+### Status2StorageFeature
+
+DataTable 提供了 `Status2StorageFeature` 功能，用于将表格状态持久化到 localStorage。
+
+```jsx
+import { DataTable } from '@kubed/components';
+
+const defaultOptions = DataTable.getDefaultTableOptions({
+  tableName: 'my-table',
+  // 启用状态持久化
+  enableStateToStorage: true,
+});
+
+const table = DataTable.useTable({
+  ...defaultOptions,
+  data,
+  columns,
+  // 配置需要持久化的状态
+  _features: [DataTable.Status2StorageFeature],
+});
+```
+
+持久化的状态包括：
+
+- 分页状态（pageIndex, pageSize）
+- 排序状态
+- 列筛选状态
+- 列显隐状态
+
+:::info
+
+**关于 BaseTable 与 DataTable**：
+
+- `BaseTable` 是基础表格组件，提供最基本的表格结构
+- `DataTable` 是基于 @tanstack/react-table 的高级数据表格，提供排序、筛选、分页等功能
+- 简单场景推荐使用 `BaseTable`，复杂数据管理场景推荐使用 `DataTable`
+
+**关于固定列**：
+
+- 使用 `fixed` 属性设置固定列的位置
+- `fixedWidth` 设置固定列的偏移位置
+- `fixedLastLeft` 和 `fixedLastRight` 用于标记最后一个固定列，会显示阴影效果
+
+**关于分页**：
+
+- `Pagination` 组件支持页码和每页条数的切换
+- `pagination` 属性包含 `page`（当前页，从 1 开始）和 `pageSize`（每页条数）
+
+**关于选择功能**：
+
+- 行选择需要自行管理选中状态
+- 使用 `Checkbox` 组件实现选择框
+- `TableRow` 的 `selected` 属性用于显示选中样式
+
+**关于 DataTable**：
+
+- DataTable 基于 @tanstack/react-table 构建
+- 使用 `getDefaultTableOptions` 获取默认配置
+- 使用 `useTable` Hook 创建表格实例
+- 支持工具栏、分页、筛选、选择、排序等功能
+- `manual: true` 表示手动控制数据（服务端分页），`manual: false` 表示本地数据
+
+**关于列定义**：
+
+- `accessorKey`：数据字段名
+- `header`：表头内容
+- `cell`：单元格渲染函数，接收 `info` 参数
+- `meta`：列元数据，可设置宽度、对齐等
+
+**关于 meta.getProps**：
+
+- `toolbar`：工具栏配置，如 `toolbarRight`、`batchActions`
+- `filters`：筛选器配置，如 `suggestions`、`simpleMode`
+- `pagination`：分页配置，如 `total`
+- `empty`：空状态配置
+- `table`：表格配置，如 `stickyHeader`
+
+:::
+
+## 使用建议
+
+### 合理使用边框
+
+根据场景选择是否显示边框：
+
+```jsx
+// 有边框：数据密集时更清晰
+<TableHead hasBorder>
+  ...
+</TableHead>
+<TableBody hasBorder>
+  ...
+</TableBody>
+
+// 无边框：简洁风格
+<TableHead>
+  ...
+</TableHead>
+<TableBody>
+  ...
+</TableBody>
+```
+
+### 固定表头处理
+
+使用固定表头时，需要设置容器高度和滚动：
+
+```jsx
+<div style={{ height: '400px', overflow: 'auto' }}>
+  <Table stickyHeader>...</Table>
+</div>
+```
+
+### 空状态处理
+
+数据为空时显示友好提示：
+
+```jsx
+{
+  data.length === 0 ? (
+    <TableRow>
+      <TableCell colSpan={columns.length}>
+        <Empty title="暂无数据" />
+      </TableCell>
+    </TableRow>
+  ) : (
+    data.map((item) => <TableRow key={item.id}>...</TableRow>)
+  );
+}
+```
+
+### 操作列设计
+
+操作列宽度固定，按钮使用图标：
+
+```jsx
+<TableCell style={{ width: '120px' }}>
+  <Group spacing="xs">
+    <Button variant="text" size="sm">
+      <Pen size={16} />
+    </Button>
+    <Button variant="text" size="sm" color="error">
+      <Trash size={16} />
+    </Button>
+  </Group>
+</TableCell>
+```
+
+### 状态展示
+
+使用 Badge 组件展示状态：
+
+```jsx
+<TableCell>
+  <Badge color={status === 'Running' ? '#55bc8a' : '#ca2621'}>{status}</Badge>
+</TableCell>
+```
+
+### 选择功能
+
+实现全选和单选：
+
+```jsx
+// 表头全选
+<Checkbox
+  checked={selectedIds.length === data.length}
+  indeterminate={selectedIds.length > 0 && selectedIds.length < data.length}
+  onChange={handleSelectAll}
+/>
+
+// 行选择
+<Checkbox
+  checked={selectedIds.includes(item.id)}
+  onChange={() => handleSelect(item.id)}
+/>
+```
+
+### DataTable 基本用法
+
+使用 DataTable 快速创建功能完整的表格：
+
+```jsx
+const defaultOptions = DataTable.getDefaultTableOptions({
+  tableName: 'my-table',
+  manual: false,
+  enableToolbar: true,
+  enablePagination: true,
+});
+
+const table = DataTable.useTable({
+  ...defaultOptions,
+  data,
+  columns,
+});
+
+<DataTable.DataTable table={table} />;
+```
+
+### DataTable 自定义工具栏
+
+通过 meta.getProps 配置工具栏：
+
+```jsx
+meta: {
+  ...defaultOptions.meta,
+  getProps: {
+    toolbar: () => ({
+      toolbarLeft: <Select />,
+      toolbarRight: <Button>创建</Button>,
+      batchActions: <Button color="error">批量删除</Button>,
+    }),
+  },
+}
+```
+
+### DataTable 配置筛选器
+
+配置筛选器选项：
+
+```jsx
+meta: {
+  ...defaultOptions.meta,
+  getProps: {
+    filters: () => ({
+      simpleMode: false,
+      suggestions: [
+        {
+          key: 'status',
+          label: '状态',
+          options: [
+            { key: 'Running', label: 'Running' },
+            { key: 'Stopped', label: 'Stopped' },
+          ],
+        },
+      ],
+    }),
+  },
+}
+```
+
+### 服务端分页配置
+
+使用 `manual: true` 进行服务端分页：
+
+```jsx
+const [pagination, setPagination] = React.useState({ pageIndex: 0, pageSize: 10 });
+
+const defaultOptions = DataTable.getDefaultTableOptions({
+  tableName: 'server-table',
+  manual: true,
+  enablePagination: true,
+});
+
+const table = DataTable.useTable({
+  ...defaultOptions,
+  data,
+  columns,
+  rowCount: total, // 服务端返回的总数
+  state: {
+    pagination,
+  },
+  onPaginationChange: setPagination,
+  onParamsChange: (params, key) => {
+    // 参数变化时重新请求数据
+    if (key === 'pagination') {
+      fetchData(params);
+    }
+  },
+});
+```
+
+### 外部控制表格状态
+
+使用 registerHandlers 在外部控制表格：
+
+```jsx
+const handlerRef = React.useRef(null);
+
+const table = DataTable.useTable({
+  ...defaultOptions,
+  data,
+  columns,
+  meta: {
+    ...defaultOptions.meta,
+    registerHandlers: (handler) => {
+      handlerRef.current = handler;
+    },
+  },
+});
+
+// 外部刷新数据
+<Button onClick={() => handlerRef.current?.refresh()}>刷新</Button>
+
+// 外部重置筛选
+<Button onClick={() => handlerRef.current?.setFilters([])}>清空筛选</Button>
+```
+
+### 固定列配置
+
+使用 fixed 属性固定列：
+
+```jsx
+<TableCell fixed="left" fixedWidth={0} fixedLastLeft>
+  固定在左侧的列
+</TableCell>
+
+<TableCell fixed="right" fixedWidth={0} fixedLastRight>
+  固定在右侧的列
+</TableCell>
+```
+
+注意：
+
+- `fixedWidth` 设置固定列的偏移位置
+- `fixedLastLeft` 标记左侧最后一个固定列，会显示阴影
+- `fixedLastRight` 标记右侧最后一个固定列，会显示阴影
+
+### 列定义最佳实践
+
+```jsx
+const columns = [
+  {
+    accessorKey: 'name',
+    header: '名称',
+    cell: (info) => <span style={{ fontWeight: 600 }}>{info.getValue()}</span>,
+    meta: {
+      searchKey: 'name',
+      sortable: true,
+      width: 200,
+    },
+  },
+  {
+    accessorKey: 'status',
+    header: '状态',
+    cell: (info) => (
+      <Badge color={info.getValue() === 'Running' ? '#55bc8a' : '#ca2621'}>{info.getValue()}</Badge>
+    ),
+    meta: {
+      selectType: 'multiple',
+      description: '资源运行状态',
+    },
+  },
+  {
+    id: 'actions',
+    header: '操作',
+    cell: ({ row }) => (
+      <Group spacing="xs">
+        <Button variant="text" size="sm" onClick={() => handleEdit(row.original)}>
+          编辑
+        </Button>
+        <Button variant="text" size="sm" color="error" onClick={() => handleDelete(row.original)}>
+          删除
+        </Button>
+      </Group>
+    ),
+    meta: {
+      width: 120,
+    },
+  },
+];
+```

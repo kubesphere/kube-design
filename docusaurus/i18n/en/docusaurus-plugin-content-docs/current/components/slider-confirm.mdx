@@ -1,0 +1,447 @@
+---
+sidebar_position: 1
+---
+
+# SliderConfirm
+
+Confirm dangerous or important operations through a sliding interaction.
+
+## When to Use
+
+- When performing dangerous operations like deletion or removal
+- When users need to explicitly acknowledge risks
+- Scenarios to prevent accidental user operations
+- Secondary confirmation for important operations
+
+In Kube Design, the SliderConfirm component provides interactive confirmation functionality:
+
+- **Slide Interaction**: Must slide to the far right to confirm
+- **Visual Feedback**: Color gradient effect during sliding
+- **Custom Tips**: Customizable prompt text on the slider
+- **Custom Icons**: Customizable drag handle icon
+- **Prevent Misoperation**: Safer than simple button clicks
+
+## Examples
+
+### Basic Usage
+
+The most basic slider confirmation usage.
+
+```jsx live
+function Demo() {
+  const { Kubesphere } = KubedIcons;
+  const [confirmed, setConfirmed] = React.useState(false);
+
+  const handleConfirm = () => {
+    setConfirmed(true);
+    setTimeout(() => setConfirmed(false), 2000);
+  };
+
+  return (
+    <Group direction="column" spacing="md">
+      {confirmed && (
+        <Text color="success" weight={600}>
+          ✓ Confirmed!
+        </Text>
+      )}
+      <SliderConfirm
+        tip="Slide right to confirm operation"
+        dragIcon={<Kubesphere size={30} color="#50b484" />}
+        onConfirm={handleConfirm}
+      />
+    </Group>
+  );
+}
+```
+
+### Custom Tip Text
+
+Use different tip text to explain operation risks.
+
+```jsx live
+function Demo() {
+  const { RestartDuotone } = KubedIcons;
+  const [action, setAction] = React.useState('');
+
+  return (
+    <Group direction="column" spacing="lg">
+      <div>
+        {action && (
+          <Card style={{ padding: '12px', background: '#f0f9ff' }}>
+            <Text size="sm">Confirmed: {action}</Text>
+          </Card>
+        )}
+
+        <div>
+          <Text size="sm" style={{ marginBottom: '8px' }}>
+            Delete Confirmation:
+          </Text>
+          <SliderConfirm
+            tip="I understand the risks of deleting the cluster"
+            dragIcon={<RestartDuotone size={28} color="#50b484" />}
+            onConfirm={() => setAction('Delete Cluster')}
+          />
+        </div>
+      </div>
+    </Group>
+  );
+}
+```
+
+### Custom Drag Icon
+
+Use different icons to match the operation type.
+
+```jsx live
+function Demo() {
+  const { TrashDuotone, CloseDuotone, StopDuotone, StartDuotone } = KubedIcons;
+  const [result, setResult] = React.useState('');
+
+  return (
+    <Group direction="column" spacing="lg">
+      <>
+        {result && (
+          <Text color="success" weight={600}>
+            ✓ {result}
+          </Text>
+        )}
+
+        <div>
+          <Text size="sm" style={{ marginBottom: '8px' }}>
+            Delete Operation:
+          </Text>
+          <SliderConfirm
+            tip="Slide right to delete"
+            dragIcon={<TrashDuotone size={24} />}
+            onConfirm={() => setResult('Deleted')}
+          />
+        </div>
+      </>
+    </Group>
+  );
+}
+```
+
+## API
+
+### SliderConfirm
+
+| Property  | Description                       | Type                  | Default    |
+| --------- | --------------------------------- | --------------------- | ---------- |
+| tip       | Prompt text on the slider         | `string \| ReactNode` | -          |
+| dragIcon  | Icon for the drag handle          | `ReactNode`           | -          |
+| onConfirm | Callback when slid to far right   | `() => void`          | `() => {}` |
+| className | Custom class name                 | `string`              | -          |
+| style     | Custom styles                     | `CSSProperties`       | -          |
+
+:::info
+
+**About operation mechanism**:
+
+- User must drag the slider from left to far right to trigger confirmation
+- Uses the `useMove` hook from `@kubed/hooks` to implement dragging
+- Drag progress `value` ranges from 0-1, triggers `onConfirm` when value reaches 1
+- Visual feedback during sliding, text color transitions from gray `#79879c` to white `#ffffff`
+- Color gradient formula:
+  ```typescript
+  rgb(${121 + (255 - 121) * value},
+      ${135 + (255 - 135) * value},
+      ${156 + (255 - 156) * value})
+  ```
+- Background fills as you slide, providing clear progress indication
+- If slider is released before reaching the far right, it automatically returns to initial position (transitionDuration is 0.3s)
+
+**About component structure**:
+
+- SliderConfirm uses forwardRef, supporting ref forwarding
+- Component hierarchy:
+  - SliderConfirmRoot - Outermost container, 560px width
+  - Track - Track background, 40px height, 40px border radius, background color `accents_1`
+  - DragHandlerWrapper - Drag area container, absolutely positioned, 28px spacing on left and right
+  - DragBackGround - Green fill background `#55bc8a`, shows as you drag
+  - Tip - Prompt text, z-index: 9, font-weight: 600
+  - DragHandler - Drag handle, 48x32px, white rounded, z-index: 10
+- displayName set to `'@kubed/components/SliderConfirm'`
+
+**About drag handle**:
+
+- Handle size: 48px width × 32px height
+- Initial position: `left: -24px` (inactive state)
+- Position during drag: `calc(${value * 100}% - 24px)` (active state)
+- White background `#fff`, with shadow effect
+- 4px top offset, aligned with track edge
+- cursor set to pointer, indicating draggable
+- Uses flexbox to center icon
+
+**About background fill**:
+
+- Green background `#55bc8a`
+- Initial opacity is 0, when active opacity changes with value
+- Initial right value: `calc(100% - 28px)` (inactive)
+- Right value during drag: `calc(${(1 - value) * 100}% - 28px)` (active)
+- Background fills from left to right, providing clear progress feedback
+- 40px border radius, consistent with track radius
+
+**About animation transitions**:
+
+- Active state (dragging): transitionDuration is `0s`, follows finger/mouse in real-time
+- Release state: transitionDuration is `0.3s`, smoothly returns to initial position
+- Transition applied to handle position (left) and background size (right)
+- If slid to far right (value === 1), does not bounce back after triggering onConfirm
+
+**About text color gradient**:
+
+- Inactive: Fixed gray `#79879c`
+- Active: Gradients from gray to white
+- RGB start value: (121, 135, 156) - gray
+- RGB end value: (255, 255, 255) - white
+- Gradient formula: `start value + (end value - start value) * value`
+- Provides smooth visual feedback, enhancing confirmation sense
+
+**About use cases**:
+
+- Suitable for irreversible dangerous operations like deletion, removal, clearing
+- Compared to simple confirmation dialogs, provides stronger psychological cues
+- Prevents accidental touches or thoughtless operations
+- Commonly used for critical operations like cluster management, resource deletion
+- Component width fixed at 560px, suitable for use in cards or modals
+
+**About interaction design**:
+
+- Sliding operation requires more awareness and time than clicking buttons
+- Tip text should clearly explain the risks and consequences of the operation
+- Recommended to use with warning prompts explaining operation impact
+- Can be used as the final step in a multi-step confirmation process
+- Drag area has user-select: none set, preventing text selection
+
+**About tip text**:
+
+- `tip` supports string or ReactNode type
+- Can be plain text or styled React elements
+- Should clearly express operation risks
+- Common formats: "I understand the risks of...", "I confirm..."
+- Text should be concise but clear enough
+- Avoid operational prompts like "Slide right" as this is obvious
+- Text color transitions as you drag, providing visual feedback
+
+**About icon selection**:
+
+- `dragIcon` should match the operation type
+- Delete operations: Use Trash icon, red
+- Stop/close: Use Close/Stop icon, orange or red
+- Restart: Use Restart icon, orange
+- General confirmation: Use brand icon or CheckCircle, green
+- Icon renders in DragHandler, centered
+- Recommended icon size is 24-30px
+
+**About defaults**:
+
+- `onConfirm` defaults to empty function `() => {}`
+- `tip` and `dragIcon` have no defaults, need to be provided by developer
+- If tip is not provided, slider still works but has no prompt text
+
+:::
+
+## Usage Recommendations
+
+### Only Use for Dangerous Operations
+
+SliderConfirm should only be used for irreversible dangerous operations:
+
+```jsx
+// Recommended: Dangerous operations like deletion, removal
+<SliderConfirm
+  tip="I understand the risks of deleting the cluster"
+  dragIcon={<Trash size={28} color="#ca2621" />}
+  onConfirm={handleDelete}
+/>
+
+// Not recommended: Normal operations don't need slide confirmation
+<SliderConfirm
+  tip="I confirm viewing details"  // Viewing details is not a dangerous operation
+  onConfirm={handleView}
+/>
+```
+
+### Provide Clear Risk Explanation
+
+Show operation impact before slide confirmation:
+
+```jsx
+<Card>
+  <div style={{ padding: '12px', background: '#fff1f0', borderRadius: '4px' }}>
+    <Text weight={600} color="error">
+      ⚠️ Warning
+    </Text>
+    <Text size="sm">Deleting the deployment will also delete all associated Pods. This operation cannot be recovered.</Text>
+  </div>
+
+  <SliderConfirm
+    tip="I understand the risks of deleting the deployment"
+    dragIcon={<Trash size={28} color="#ca2621" />}
+    onConfirm={handleDelete}
+  />
+</Card>
+```
+
+### Choose Appropriate Tip Text
+
+Tip text should make users aware of risks:
+
+```jsx
+// Recommended: Emphasize risks and consequences
+<SliderConfirm tip="I understand the risks of deleting the cluster" onConfirm={...} />
+<SliderConfirm tip="I confirm clearing all data" onConfirm={...} />
+<SliderConfirm tip="I understand this operation cannot be recovered" onConfirm={...} />
+
+// Not recommended: Pure operational prompts
+<SliderConfirm tip="Slide right to delete" onConfirm={...} />
+<SliderConfirm tip="Slide to confirm" onConfirm={...} />
+```
+
+### Use Matching Icons and Colors
+
+Icons and colors should reflect the nature of the operation:
+
+```jsx
+import { Trash, Close, Stop, Restart } from '@kubed/icons';
+
+// Delete: Red trash can
+<SliderConfirm
+  dragIcon={<Trash size={28} color="#ca2621" />}
+  tip="I understand the risks of deletion"
+  onConfirm={handleDelete}
+/>
+
+// Stop: Orange stop
+<SliderConfirm
+  dragIcon={<Stop size={28} color="#f5a623" />}
+  tip="I confirm stopping the service"
+  onConfirm={handleStop}
+/>
+
+// Restart: Orange restart
+<SliderConfirm
+  dragIcon={<Restart size={28} color="#f5a623" />}
+  tip="I confirm restarting the cluster"
+  onConfirm={handleRestart}
+/>
+```
+
+### Combine with Notification Feedback
+
+Use notifications to inform users of operation results after confirmation:
+
+```jsx
+const handleConfirm = async () => {
+  try {
+    await deleteResource();
+    notify.success('Resource successfully deleted');
+  } catch (error) {
+    notify.error('Deletion failed: ' + error.message);
+  }
+};
+
+<>
+  <SliderConfirm tip="I understand the risks of deletion" onConfirm={handleConfirm} />
+  <Notify />
+</>;
+```
+
+### Multi-Step Confirmation Process
+
+For especially dangerous operations, use multi-step confirmation:
+
+```jsx
+// Step 1: Button confirmation
+<Button color="error" onClick={() => setShowConfirm(true)}>
+  Delete Cluster
+</Button>;
+
+// Step 2: Modal showing impact
+{
+  showConfirm && (
+    <Modal>
+      <WarningMessage />
+      <ResourceList />
+      {/* Step 3: Slide confirmation */}
+      <SliderConfirm tip="I understand the risks of deleting the cluster" onConfirm={handleFinalConfirm} />
+    </Modal>
+  );
+}
+```
+
+### Show Resources to be Deleted
+
+Let users clearly see the scope of impact before confirmation:
+
+```jsx
+<Card>
+  <Text weight={600}>Resources to be deleted:</Text>
+  <List>
+    <ListItem>3 Deployments</ListItem>
+    <ListItem>5 Services</ListItem>
+    <ListItem>15 Pods</ListItem>
+  </List>
+
+  <SliderConfirm tip="I understand the risks of deleting the namespace" onConfirm={handleDelete} />
+</Card>
+```
+
+### Provide Cancel Option
+
+Always give users a chance to cancel:
+
+```jsx
+<Modal visible={confirmOpen} footer={null}>
+  <WarningMessage />
+
+  <SliderConfirm tip="I understand the risks of deletion" onConfirm={handleConfirm} />
+
+  <Button variant="text" onClick={() => setConfirmOpen(false)} style={{ marginTop: '12px' }}>
+    Cancel Operation
+  </Button>
+</Modal>
+```
+
+### Feedback After Confirmation
+
+Give clear feedback after the operation completes:
+
+```jsx
+const [deleted, setDeleted] = useState(false);
+
+const handleConfirm = async () => {
+  await performDelete();
+  setDeleted(true);
+};
+
+{
+  deleted ? (
+    <div style={{ textAlign: 'center', padding: '32px' }}>
+      <CheckCircle size={64} color="#52c41a" />
+      <Text variant="h5">Deletion Successful</Text>
+    </div>
+  ) : (
+    <SliderConfirm tip="I understand the risks of deletion" onConfirm={handleConfirm} />
+  );
+}
+```
+
+### Avoid Overuse
+
+Don't use slide confirmation for all operations:
+
+```jsx
+// Not recommended: Using for normal operations
+<SliderConfirm tip="Confirm save" onConfirm={handleSave} />
+<SliderConfirm tip="Confirm edit" onConfirm={handleEdit} />
+
+// Recommended: Only use for dangerous operations
+<Button onClick={handleSave}>Save</Button>  // Use button for reversible operations
+<Button onClick={handleEdit}>Edit</Button>  // Use button for reversible operations
+<SliderConfirm                              // Use slide confirmation for irreversible operations
+  tip="I understand the risks of deletion"
+  onConfirm={handleDelete}
+/>
+```

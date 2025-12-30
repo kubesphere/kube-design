@@ -1,7 +1,7 @@
 // https://github.dev/geist-org/react-icons/blob/master/src/generate.ts
 import fs from 'fs-extra';
 import path from 'path';
-import SVGO from 'svgo';
+import { optimize } from 'svgo';
 import { transform } from '@babel/core';
 import svgoConfig from './svgo.config';
 import {
@@ -9,7 +9,9 @@ import {
   toHumpName,
   makeBasicDefinition,
   moduleBabelConfig,
+  moduleEsmBabelConfig,
   allModulesBabelConfig,
+  allModulesEsmBabelConfig,
 } from './utils';
 
 const outputDir = path.join(__dirname, '../', 'dist');
@@ -37,9 +39,9 @@ const parseSvg = (svg: string) => {
 
 export default (async () => {
   await fs.remove(outputDir);
-  const svgo = new SVGO(svgoConfig);
 
   let exports = '';
+  let esmExports = '';
   let definition = makeBasicDefinition();
   const iconSet = {};
 
@@ -53,9 +55,10 @@ export default (async () => {
           const componentName = toComponentName(file.split('.')[0]);
           iconSet[dir].push(componentName);
           const fileName = toHumpName(file.split('.')[0]);
-          const fileContent = fs.readFileSync(`${sourceDir}/${dir}/${file}`);
-          const { data } = await svgo.optimize(fileContent);
-          const optimizedSvgString = data.replace(
+          const fileContent = fs.readFileSync(`${sourceDir}/${dir}/${file}`, 'utf-8');
+          // @ts-ignore
+          const result = optimize(fileContent, svgoConfig);
+          const optimizedSvgString = result.data.replace(
             new RegExp(`${primaryColor}`, 'g'),
             'currentColor'
           );
@@ -68,14 +71,17 @@ export default (async () => {
   export default ${componentName};`;
 
           exports += `export { default as ${componentName} } from './${fileName}';\n`;
+          esmExports += `export { default as ${componentName} } from './${fileName}.mjs';\n`;
           definition += `export const ${componentName}: Icon;\n`;
 
           const componentDefinition = `${makeBasicDefinition()}declare const ${componentName}: Icon;
   export default ${componentName}\n`;
           const componentCode = transform(component, moduleBabelConfig).code;
+          const componentEsmCode = transform(component, moduleEsmBabelConfig).code;
 
           await fs.outputFile(path.join(outputDir, `${fileName}.d.ts`), componentDefinition);
           await fs.outputFile(path.join(outputDir, `${fileName}.js`), componentCode);
+          await fs.outputFile(path.join(outputDir, `${fileName}.mjs`), componentEsmCode);
         });
       }
     });
@@ -84,7 +90,9 @@ export default (async () => {
   await Promise.all(sourceDirs.map((sourceDir) => action(sourceDir)));
 
   const allModulesCode = transform(exports, allModulesBabelConfig).code;
+  const allModulesEsmCode = transform(esmExports, allModulesEsmBabelConfig).code;
   await fs.outputFile(path.join(outputDir, 'index.d.ts'), definition);
   await fs.outputFile(path.join(outputDir, 'index.js'), allModulesCode);
+  await fs.outputFile(path.join(outputDir, 'index.mjs'), allModulesEsmCode);
   await fs.outputFile(path.join(outputDir, 'icons.json'), JSON.stringify(iconSet));
 })();

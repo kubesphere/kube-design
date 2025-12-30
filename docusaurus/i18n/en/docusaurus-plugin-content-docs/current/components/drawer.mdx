@@ -1,0 +1,591 @@
+---
+sidebar_position: 1
+---
+
+# Drawer
+
+A panel that slides out from the edge of the screen.
+
+## When to Use
+
+- When you need an additional panel to control the content of a parent window
+- When you need users to handle temporary tasks in the current workflow without page navigation
+- When you need to display detailed information while keeping the current context visible
+
+In Kube Design, the Drawer component provides flexible side panel functionality:
+
+- **Left/Right Directions**: Supports sliding out from both left and right directions
+- **Custom Sizing**: Customizable drawer width
+- **Mask Control**: Supports showing/hiding mask layer and closing on mask click
+- **Nested Usage**: Supports multi-level drawer nesting
+
+## Examples
+
+### Basic Usage
+
+The most basic drawer usage, sliding out from the right side.
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setVisible(true)}>Open Drawer</Button>
+      <Drawer visible={visible} onClose={() => setVisible(false)} width={500} placement="right">
+        <div style={{ padding: '20px' }}>
+          <h3>Drawer Title</h3>
+          <p>This is the drawer content area</p>
+          <Button onClick={() => setVisible(false)}>Close</Button>
+        </div>
+      </Drawer>
+    </>
+  );
+}
+```
+
+### Different Directions
+
+Drawer supports sliding out from both left and right directions.
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState('');
+
+  const placements = [
+    { key: 'left', label: 'Open from Left', width: 400 },
+    { key: 'right', label: 'Open from Right', width: 400 },
+  ];
+
+  return (
+    <>
+      <Group spacing="xs">
+        {placements.map(({ key, label }) => (
+          <Button key={key} onClick={() => setVisible(key)}>
+            {label}
+          </Button>
+        ))}
+      </Group>
+
+      {placements.map(({ key, width }) => (
+        <Drawer
+          key={key}
+          visible={visible === key}
+          onClose={() => setVisible('')}
+          placement={key}
+          width={width}
+        >
+          <div style={{ padding: '20px' }}>
+            <h3>Drawer opened from {key} direction</h3>
+            <p>Drawer content</p>
+            <Button onClick={() => setVisible('')}>Close</Button>
+          </div>
+        </Drawer>
+      ))}
+    </>
+  );
+}
+```
+
+### Custom Width
+
+Customize the drawer width using the `width` prop (for left/right directions).
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState('');
+
+  const widths = [
+    { size: 300, label: 'Small (300px)' },
+    { size: 500, label: 'Medium (500px)' },
+    { size: 720, label: 'Large (720px)' },
+  ];
+
+  return (
+    <>
+      <Group spacing="xs">
+        {widths.map(({ size, label }) => (
+          <Button key={size} onClick={() => setVisible(size)}>
+            {label}
+          </Button>
+        ))}
+      </Group>
+
+      {widths.map(({ size }) => (
+        <Drawer
+          key={size}
+          visible={visible === size}
+          onClose={() => setVisible('')}
+          width={size}
+          placement="right"
+        >
+          <div style={{ padding: '20px' }}>
+            <h3>Width: {size}px</h3>
+            <p>This is a {size}px width drawer</p>
+            <Button onClick={() => setVisible('')}>Close</Button>
+          </div>
+        </Drawer>
+      ))}
+    </>
+  );
+}
+```
+
+### Mask Control
+
+Control whether to show the mask with `mask` and whether clicking the mask closes the drawer with `maskClosable`.
+
+```jsx live
+function Demo() {
+  const [visible1, setVisible1] = React.useState(false);
+  const [visible2, setVisible2] = React.useState(false);
+
+  return (
+    <>
+      <Group spacing="xs">
+        <Button onClick={() => setVisible1(true)}>Closable by Mask Click</Button>
+        <Button onClick={() => setVisible2(true)}>Not Closable by Mask Click</Button>
+      </Group>
+
+      <Drawer
+        visible={visible1}
+        onClose={() => setVisible1(false)}
+        width={400}
+        placement="right"
+        maskClosable
+      >
+        <div style={{ padding: '20px' }}>
+          <h3>Closable by Mask Click</h3>
+          <p>maskClosable=true</p>
+          <Button onClick={() => setVisible1(false)}>Close</Button>
+        </div>
+      </Drawer>
+
+      <Drawer
+        visible={visible2}
+        onClose={() => setVisible2(false)}
+        width={400}
+        placement="right"
+        maskClosable={false}
+      >
+        <div style={{ padding: '20px' }}>
+          <h3>Not Closable by Mask Click</h3>
+          <p>maskClosable=false</p>
+          <p>Can only be closed via button</p>
+          <Button onClick={() => setVisible2(false)}>Close</Button>
+        </div>
+      </Drawer>
+    </>
+  );
+}
+```
+
+### Without Mask
+
+Set `mask={false}` to hide the mask layer.
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setVisible(true)}>Open Drawer without Mask</Button>
+      <Drawer
+        visible={visible}
+        onClose={() => setVisible(false)}
+        width={400}
+        placement="right"
+        mask={false}
+      >
+        <div style={{ padding: '20px', backgroundColor: '#fff', height: '100%' }}>
+          <h3>Drawer without Mask</h3>
+          <p>This drawer has no mask layer</p>
+          <Button onClick={() => setVisible(false)}>Close</Button>
+        </div>
+      </Drawer>
+    </>
+  );
+}
+```
+
+### Nested Drawers
+
+Drawers support multi-level nesting, allowing new drawers to open within a drawer.
+
+```jsx live
+function Demo() {
+  const [visible1, setVisible1] = React.useState(false);
+  const [visible2, setVisible2] = React.useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setVisible1(true)}>Open First Level Drawer</Button>
+
+      <Drawer visible={visible1} onClose={() => setVisible1(false)} width={600} placement="right">
+        <div style={{ padding: '20px' }}>
+          <h3>First Level Drawer</h3>
+          <p>Click the button below to open the second level drawer</p>
+          <Group spacing="xs">
+            <Button onClick={() => setVisible2(true)}>Open Second Level Drawer</Button>
+            <Button onClick={() => setVisible1(false)}>Close</Button>
+          </Group>
+        </div>
+
+        <Drawer visible={visible2} onClose={() => setVisible2(false)} width={400} placement="right">
+          <div style={{ padding: '20px' }}>
+            <h3>Second Level Drawer</h3>
+            <p>This is a nested drawer</p>
+            <Group spacing="xs">
+              <Button onClick={() => setVisible2(false)}>Close</Button>
+              <Button
+                onClick={() => {
+                  setVisible2(false);
+                  setVisible1(false);
+                }}
+              >
+                Close All
+              </Button>
+            </Group>
+          </div>
+        </Drawer>
+      </Drawer>
+    </>
+  );
+}
+```
+
+### Custom Content Styling
+
+Use `contentWrapperStyle` to customize the drawer content container style.
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setVisible(true)}>Open Custom Styled Drawer</Button>
+      <Drawer
+        visible={visible}
+        onClose={() => setVisible(false)}
+        width={500}
+        placement="right"
+        contentWrapperStyle={{
+          borderRadius: '8px 0 0 8px',
+          boxShadow: '-2px 0 8px rgba(0, 0, 0, 0.15)',
+        }}
+      >
+        <div style={{ padding: '20px', backgroundColor: '#f5f5f5', height: '100%' }}>
+          <h3>Custom Styled Drawer</h3>
+          <p>This drawer uses custom container styling</p>
+          <Button onClick={() => setVisible(false)}>Close</Button>
+        </div>
+      </Drawer>
+    </>
+  );
+}
+```
+
+## API
+
+### Drawer Props
+
+| Property            | Description                         | Type                                         | Default         |
+| ------------------- | ----------------------------------- | -------------------------------------------- | --------------- |
+| visible             | Whether the drawer is visible       | `boolean`                                    | `false`         |
+| placement           | Drawer direction                    | `'left' \| 'right'`                          | `'right'`       |
+| width               | Drawer width (for left/right)       | `number \| string`                           | -               |
+| height              | Drawer height (for top/bottom)      | `number \| string`                           | -               |
+| mask                | Whether to show mask                | `boolean`                                    | `true`          |
+| maskClosable        | Whether clicking mask closes drawer | `boolean`                                    | `true`          |
+| maskStyle           | Mask style                          | `CSSProperties`                              | -               |
+| contentWrapperStyle | Content container style             | `CSSProperties`                              | -               |
+| keyboard            | Whether ESC key closes drawer       | `boolean`                                    | `true`          |
+| autoFocus           | Auto focus after opening            | `boolean`                                    | `true`          |
+| getContainer        | Specify drawer mount HTML node      | `HTMLElement \| () => HTMLElement \| string` | `document.body` |
+| onClose             | Callback when closing               | `(e: Event) => void`                         | -               |
+| afterVisibleChange  | Callback after animation ends       | `(visible: boolean) => void`                 | -               |
+| className           | Custom class name                   | `string`                                     | -               |
+| children            | Drawer content                      | `ReactNode`                                  | -               |
+| handler             | Custom trigger handle               | `ReactElement \| null \| false`              | -               |
+| level               | Set drawer level                    | `string \| string[] \| null`                 | `null`          |
+| levelMove           | Push distance                       | `number \| [number, number] \| function`     | -               |
+
+:::info
+
+- Drawer component is based on rc-drawer, providing smooth slide-in/out animations
+- **Currently only supports left and right directions**
+- It's recommended to include an explicit close button in the Drawer for better UX
+- Pay attention to z-index when nesting drawers
+
+**About Width and Height**:
+
+- `width`: Width for left/right drawers, supports number (px) or string (e.g., '50%')
+- `height`: Height for top/bottom drawers (currently only left/right supported, this prop is reserved for future)
+- When width is not set, it defaults to auto-fit content
+
+**About Mask**:
+
+- Default `mask={true}`, shows semi-transparent mask layer
+- When `maskClosable={true}`, clicking mask closes the drawer
+- Use `maskStyle` to customize mask styling
+
+**About Keyboard Interaction**:
+
+- When `keyboard={true}`, supports ESC key to close drawer
+- When `autoFocus={true}`, auto-focuses on drawer content after opening
+
+**About Advanced Props**:
+
+- `handler`: Custom trigger handle, usually for creating draggable drawer edges
+- `level`: Set page levels affected by drawer, can be selector string or string array
+- `levelMove`: Set page push distance when drawer opens, can be fixed value or function
+
+**About Container Mounting**:
+
+- Default mounts to `document.body`
+- Use `getContainer` to specify mounting to a specific DOM node
+- Supports HTML element, function returning element, or selector string
+
+:::
+
+## Usage Guidelines
+
+### Drawer vs Modal
+
+Choose the appropriate component based on use case:
+
+```jsx
+// Drawer: suitable for displaying details, config panels, etc.
+<Drawer visible={visible} width={600}>
+  <DetailPanel />
+</Drawer>
+
+// Modal: suitable for operations requiring explicit user confirmation
+<Modal visible={visible} title="Confirm Delete">
+  Are you sure you want to delete?
+</Modal>
+```
+
+### Choose Appropriate Direction
+
+Select direction based on content and layout:
+
+```jsx
+// Open from right: most common, suitable for detail display (default)
+<Drawer placement="right" width={500}>
+
+// Open from left: suitable for menus, navigation, etc.
+<Drawer placement="left" width={280}>
+```
+
+### Set Appropriate Width
+
+Set width based on content complexity:
+
+```jsx
+// Simple details: narrow drawer
+<Drawer width={400}>
+
+// Detailed information: medium width
+<Drawer width={600}>  // Recommended
+
+// Complex content: wide drawer
+<Drawer width={800}>
+
+// Responsive width
+<Drawer width="80%">
+```
+
+### Provide Clear Closing Methods
+
+Ensure users can easily close the drawer:
+
+```jsx
+<Drawer
+  visible={visible}
+  onClose={() => setVisible(false)}
+  maskClosable  // Allow closing by mask click
+  keyboard      // Allow ESC key to close
+>
+  <div style={{ padding: '20px' }}>
+    <h3>Title</h3>
+    <p>Content</p>
+    {/* Provide explicit close button */}
+    <Button onClick={() => setVisible(false)}>Close</Button>
+  </div>
+</Drawer>
+```
+
+### Use Cases Without Mask
+
+In some scenarios, you can hide the mask:
+
+```jsx
+// Auxiliary panel: doesn't block main content
+<Drawer
+  mask={false}
+  placement="right"
+  width={300}
+>
+  <ToolPanel />
+</Drawer>
+
+// But ensure clear closing methods are provided
+```
+
+### Nested Drawer Management
+
+Manage states of multi-level nested drawers:
+
+```jsx
+const [drawer1, setDrawer1] = useState(false);
+const [drawer2, setDrawer2] = useState(false);
+
+// Close all drawers
+const closeAll = () => {
+  setDrawer2(false);
+  setDrawer1(false);
+};
+
+<Drawer visible={drawer1} width={700}>
+  First level content
+  <Button onClick={() => setDrawer2(true)}>Open Details</Button>
+
+  <Drawer visible={drawer2} width={500}>
+    Second level details
+    <Button onClick={closeAll}>Close All</Button>
+  </Drawer>
+</Drawer>
+```
+
+### Content Area Layout
+
+Organize drawer content properly:
+
+```jsx
+<Drawer visible={visible} width={600}>
+  {/* Header area */}
+  <div style={{ padding: '20px', borderBottom: '1px solid #e0e0e0' }}>
+    <h2>Title</h2>
+    <p>Description</p>
+  </div>
+
+  {/* Content area (scrollable) */}
+  <div style={{ padding: '20px', flex: 1, overflow: 'auto' }}>
+    <DetailContent />
+  </div>
+
+  {/* Footer actions */}
+  <div style={{ padding: '20px', borderTop: '1px solid #e0e0e0' }}>
+    <Group spacing="xs">
+      <Button onClick={handleCancel}>Cancel</Button>
+      <Button color="secondary" onClick={handleSubmit}>Confirm</Button>
+    </Group>
+  </div>
+</Drawer>
+```
+
+### Form Scenarios
+
+Using forms in drawers:
+
+```jsx
+const [visible, setVisible] = useState(false);
+const [formData, setFormData] = useState({});
+
+<Drawer
+  visible={visible}
+  width={600}
+  onClose={() => {
+    // Prompt to save before closing
+    if (hasChanges) {
+      if (confirm('You have unsaved changes. Close anyway?')) {
+        setVisible(false);
+      }
+    } else {
+      setVisible(false);
+    }
+  }}
+>
+  <Form data={formData} onChange={setFormData}>
+    {/* Form fields */}
+  </Form>
+</Drawer>
+```
+
+### Custom Container
+
+Specify the drawer mount container:
+
+```jsx
+// Mount to specific container to avoid z-index issues
+<Drawer
+  visible={visible}
+  getContainer={() => document.getElementById('app-container')}
+>
+  Content
+</Drawer>
+
+// Or use selector string
+<Drawer
+  visible={visible}
+  getContainer="#app-container"
+>
+  Content
+</Drawer>
+```
+
+### Responsive Handling
+
+Mobile optimization:
+
+```jsx
+const isMobile = window.innerWidth < 768;
+
+<Drawer
+  visible={visible}
+  width={isMobile ? '100%' : 600}
+  placement="right"
+>
+  Content
+</Drawer>
+```
+
+### Prevent Repeated Opening
+
+Avoid multiple opens from consecutive clicks:
+
+```jsx
+const [visible, setVisible] = useState(false);
+const [loading, setLoading] = useState(false);
+
+const handleOpen = async () => {
+  if (visible || loading) return;
+
+  setLoading(true);
+  try {
+    // Load data
+    await fetchData();
+    setVisible(true);
+  } finally {
+    setLoading(false);
+  }
+};
+
+<Button onClick={handleOpen} loading={loading}>
+  Open Drawer
+</Button>
+```
+
+### Performance Optimization
+
+Lazy render complex content:
+
+```jsx
+<Drawer visible={visible}>
+  {/* Only render complex content when visible */}
+  {visible && <ComplexContent />}
+</Drawer>
+```

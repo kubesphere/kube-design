@@ -1,0 +1,591 @@
+---
+sidebar_position: 1
+---
+
+# Drawer 抽屉
+
+屏幕边缘滑出的浮层面板。
+
+## 何时使用
+
+- 当需要一个附加的面板来控制父窗口内容时
+- 当需要用户在当前任务流中处理临时任务,又不希望跳转页面时
+- 需要展示详细信息,并保持当前上下文可见时
+
+在 Kube Design 中,Drawer 抽屉组件提供了灵活的侧边展示功能:
+
+- **左右弹出**:支持从左侧和右侧两个方向弹出
+- **自定义尺寸**:可以自定义抽屉的宽度
+- **遮罩控制**:支持显示/隐藏遮罩层,以及点击遮罩关闭
+- **嵌套使用**:支持多层抽屉嵌套
+
+## 示例
+
+### 基础用法
+
+最基本的抽屉用法,从右侧滑出。
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setVisible(true)}>打开抽屉</Button>
+      <Drawer visible={visible} onClose={() => setVisible(false)} width={500} placement="right">
+        <div style={{ padding: '20px' }}>
+          <h3>抽屉标题</h3>
+          <p>这是抽屉的内容区域</p>
+          <Button onClick={() => setVisible(false)}>关闭</Button>
+        </div>
+      </Drawer>
+    </>
+  );
+}
+```
+
+### 不同方向
+
+Drawer 支持从左侧和右侧两个方向弹出。
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState('');
+
+  const placements = [
+    { key: 'left', label: '从左侧打开', width: 400 },
+    { key: 'right', label: '从右侧打开', width: 400 },
+  ];
+
+  return (
+    <>
+      <Group spacing="xs">
+        {placements.map(({ key, label }) => (
+          <Button key={key} onClick={() => setVisible(key)}>
+            {label}
+          </Button>
+        ))}
+      </Group>
+
+      {placements.map(({ key, width }) => (
+        <Drawer
+          key={key}
+          visible={visible === key}
+          onClose={() => setVisible('')}
+          placement={key}
+          width={width}
+        >
+          <div style={{ padding: '20px' }}>
+            <h3>从{key}方向打开的抽屉</h3>
+            <p>抽屉内容</p>
+            <Button onClick={() => setVisible('')}>关闭</Button>
+          </div>
+        </Drawer>
+      ))}
+    </>
+  );
+}
+```
+
+### 自定义宽度
+
+可以通过 `width` 属性自定义抽屉的宽度(对于 left/right 方向)。
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState('');
+
+  const widths = [
+    { size: 300, label: '小尺寸 (300px)' },
+    { size: 500, label: '中等尺寸 (500px)' },
+    { size: 720, label: '大尺寸 (720px)' },
+  ];
+
+  return (
+    <>
+      <Group spacing="xs">
+        {widths.map(({ size, label }) => (
+          <Button key={size} onClick={() => setVisible(size)}>
+            {label}
+          </Button>
+        ))}
+      </Group>
+
+      {widths.map(({ size }) => (
+        <Drawer
+          key={size}
+          visible={visible === size}
+          onClose={() => setVisible('')}
+          width={size}
+          placement="right"
+        >
+          <div style={{ padding: '20px' }}>
+            <h3>宽度: {size}px</h3>
+            <p>这是{size}px宽度的抽屉</p>
+            <Button onClick={() => setVisible('')}>关闭</Button>
+          </div>
+        </Drawer>
+      ))}
+    </>
+  );
+}
+```
+
+### 遮罩控制
+
+可以通过 `mask` 控制是否显示遮罩,通过 `maskClosable` 控制点击遮罩是否关闭抽屉。
+
+```jsx live
+function Demo() {
+  const [visible1, setVisible1] = React.useState(false);
+  const [visible2, setVisible2] = React.useState(false);
+
+  return (
+    <>
+      <Group spacing="xs">
+        <Button onClick={() => setVisible1(true)}>点击遮罩可关闭</Button>
+        <Button onClick={() => setVisible2(true)}>点击遮罩不可关闭</Button>
+      </Group>
+
+      <Drawer
+        visible={visible1}
+        onClose={() => setVisible1(false)}
+        width={400}
+        placement="right"
+        maskClosable
+      >
+        <div style={{ padding: '20px' }}>
+          <h3>点击遮罩可关闭</h3>
+          <p>maskClosable=true</p>
+          <Button onClick={() => setVisible1(false)}>关闭</Button>
+        </div>
+      </Drawer>
+
+      <Drawer
+        visible={visible2}
+        onClose={() => setVisible2(false)}
+        width={400}
+        placement="right"
+        maskClosable={false}
+      >
+        <div style={{ padding: '20px' }}>
+          <h3>点击遮罩不可关闭</h3>
+          <p>maskClosable=false</p>
+          <p>只能通过按钮关闭</p>
+          <Button onClick={() => setVisible2(false)}>关闭</Button>
+        </div>
+      </Drawer>
+    </>
+  );
+}
+```
+
+### 无遮罩
+
+设置 `mask={false}` 可以不显示遮罩层。
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setVisible(true)}>打开无遮罩抽屉</Button>
+      <Drawer
+        visible={visible}
+        onClose={() => setVisible(false)}
+        width={400}
+        placement="right"
+        mask={false}
+      >
+        <div style={{ padding: '20px', backgroundColor: '#fff', height: '100%' }}>
+          <h3>无遮罩抽屉</h3>
+          <p>这个抽屉没有遮罩层</p>
+          <Button onClick={() => setVisible(false)}>关闭</Button>
+        </div>
+      </Drawer>
+    </>
+  );
+}
+```
+
+### 多层嵌套
+
+抽屉支持多层嵌套,可以在抽屉中打开新的抽屉。
+
+```jsx live
+function Demo() {
+  const [visible1, setVisible1] = React.useState(false);
+  const [visible2, setVisible2] = React.useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setVisible1(true)}>打开第一层抽屉</Button>
+
+      <Drawer visible={visible1} onClose={() => setVisible1(false)} width={600} placement="right">
+        <div style={{ padding: '20px' }}>
+          <h3>第一层抽屉</h3>
+          <p>点击下面的按钮打开第二层抽屉</p>
+          <Group spacing="xs">
+            <Button onClick={() => setVisible2(true)}>打开第二层抽屉</Button>
+            <Button onClick={() => setVisible1(false)}>关闭</Button>
+          </Group>
+        </div>
+
+        <Drawer visible={visible2} onClose={() => setVisible2(false)} width={400} placement="right">
+          <div style={{ padding: '20px' }}>
+            <h3>第二层抽屉</h3>
+            <p>这是嵌套的抽屉</p>
+            <Group spacing="xs">
+              <Button onClick={() => setVisible2(false)}>关闭</Button>
+              <Button
+                onClick={() => {
+                  setVisible2(false);
+                  setVisible1(false);
+                }}
+              >
+                关闭全部
+              </Button>
+            </Group>
+          </div>
+        </Drawer>
+      </Drawer>
+    </>
+  );
+}
+```
+
+### 内容样式自定义
+
+使用 `contentWrapperStyle` 可以自定义抽屉内容容器的样式。
+
+```jsx live
+function Demo() {
+  const [visible, setVisible] = React.useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setVisible(true)}>打开自定义样式抽屉</Button>
+      <Drawer
+        visible={visible}
+        onClose={() => setVisible(false)}
+        width={500}
+        placement="right"
+        contentWrapperStyle={{
+          borderRadius: '8px 0 0 8px',
+          boxShadow: '-2px 0 8px rgba(0, 0, 0, 0.15)',
+        }}
+      >
+        <div style={{ padding: '20px', backgroundColor: '#f5f5f5', height: '100%' }}>
+          <h3>自定义样式抽屉</h3>
+          <p>这个抽屉使用了自定义的容器样式</p>
+          <Button onClick={() => setVisible(false)}>关闭</Button>
+        </div>
+      </Drawer>
+    </>
+  );
+}
+```
+
+## API
+
+### Drawer 属性
+
+| 属性                | 说明                         | 类型                                         | 默认值          |
+| ------------------- | ---------------------------- | -------------------------------------------- | --------------- |
+| visible             | 抽屉是否可见                 | `boolean`                                    | `false`         |
+| placement           | 抽屉的方向                   | `'left' \| 'right'`                          | `'right'`       |
+| width               | 抽屉宽度（左右方向时使用）   | `number \| string`                           | -               |
+| height              | 抽屉高度（上下方向时使用）   | `number \| string`                           | -               |
+| mask                | 是否展示遮罩                 | `boolean`                                    | `true`          |
+| maskClosable        | 点击遮罩是否关闭抽屉         | `boolean`                                    | `true`          |
+| maskStyle           | 遮罩样式                     | `CSSProperties`                              | -               |
+| contentWrapperStyle | 内容容器的样式               | `CSSProperties`                              | -               |
+| keyboard            | 是否支持键盘 ESC 关闭        | `boolean`                                    | `true`          |
+| autoFocus           | 打开后是否自动聚焦           | `boolean`                                    | `true`          |
+| getContainer        | 指定 Drawer 挂载的 HTML 节点 | `HTMLElement \| () => HTMLElement \| string` | `document.body` |
+| onClose             | 关闭时的回调                 | `(e: Event) => void`                         | -               |
+| afterVisibleChange  | 切换动画结束后的回调         | `(visible: boolean) => void`                 | -               |
+| className           | 自定义类名                   | `string`                                     | -               |
+| children            | 抽屉内容                     | `ReactNode`                                  | -               |
+| handler             | 自定义触发手柄               | `ReactElement \| null \| false`              | -               |
+| level               | 设置抽屉层级                 | `string \| string[] \| null`                 | `null`          |
+| levelMove           | 推拉距离                     | `number \| [number, number] \| function`     | -               |
+
+:::info
+
+- Drawer 组件基于 rc-drawer 实现,提供了流畅的滑入滑出动画
+- **目前仅支持从左侧(left)和右侧(right)两个方向弹出**
+- 建议在 Drawer 中包含明确的关闭按钮,提升用户体验
+- 多层嵌套时,注意控制抽屉的层级(z-index)
+
+**关于宽度和高度**:
+
+- `width`: 左右方向抽屉的宽度,支持数字(px)或字符串(如 '50%')
+- `height`: 上下方向抽屉的高度(当前版本仅支持左右方向,该属性保留用于未来扩展)
+- 未设置宽度时,默认宽度为内容自适应
+
+**关于遮罩**:
+
+- 默认 `mask={true}`,显示半透明遮罩层
+- `maskClosable={true}` 时,点击遮罩可关闭抽屉
+- 使用 `maskStyle` 可以自定义遮罩样式
+
+**关于键盘交互**:
+
+- `keyboard={true}` 时,支持 ESC 键关闭抽屉
+- `autoFocus={true}` 时,打开后自动聚焦到抽屉内容
+
+**关于高级属性**:
+
+- `handler`: 自定义触发手柄,通常用于创建可拖拽的抽屉边缘
+- `level`: 设置抽屉影响的页面层级,可以是选择器字符串或字符串数组
+- `levelMove`: 设置抽屉打开时页面的推拉距离,可以是固定值或函数
+
+**关于容器挂载**:
+
+- 默认挂载到 `document.body`
+- 使用 `getContainer` 可以指定挂载到特定的 DOM 节点
+- 支持传入 HTML 元素、返回元素的函数或选择器字符串
+
+  :::
+
+## 使用建议
+
+### Drawer vs Modal
+
+根据使用场景选择合适的组件:
+
+```jsx
+// Drawer: 适合展示详情、配置面板等侧边内容
+<Drawer visible={visible} width={600}>
+  <DetailPanel />
+</Drawer>
+
+// Modal: 适合需要用户明确确认的操作
+<Modal visible={visible} title="确认删除">
+  确定要删除吗?
+</Modal>
+```
+
+### 选择合适的方向
+
+根据内容和布局选择弹出方向:
+
+```jsx
+// 从右侧打开: 最常用,适合详情展示(默认)
+<Drawer placement="right" width={500}>
+
+// 从左侧打开: 适合菜单、导航等
+<Drawer placement="left" width={280}>
+```
+
+### 设置合适的宽度
+
+根据内容复杂度设置宽度:
+
+```jsx
+// 简单详情: 窄抽屉
+<Drawer width={400}>
+
+// 详细信息: 中等宽度
+<Drawer width={600}>  // 推荐
+
+// 复杂内容: 宽抽屉
+<Drawer width={800}>
+
+// 响应式宽度
+<Drawer width="80%">
+```
+
+### 提供明确的关闭方式
+
+确保用户能够方便地关闭抽屉:
+
+```jsx
+<Drawer
+  visible={visible}
+  onClose={() => setVisible(false)}
+  maskClosable  // 允许点击遮罩关闭
+  keyboard      // 允许 ESC 键关闭
+>
+  <div style={{ padding: '20px' }}>
+    <h3>标题</h3>
+    <p>内容</p>
+    {/* 提供明确的关闭按钮 */}
+    <Button onClick={() => setVisible(false)}>关闭</Button>
+  </div>
+</Drawer>
+```
+
+### 无遮罩使用场景
+
+在某些场景下可以不显示遮罩:
+
+```jsx
+// 辅助面板: 不阻挡主要内容
+<Drawer
+  mask={false}
+  placement="right"
+  width={300}
+>
+  <ToolPanel />
+</Drawer>
+
+// 但要注意提供明确的关闭方式
+```
+
+### 嵌套抽屉管理
+
+管理多层嵌套抽屉的状态:
+
+```jsx
+const [drawer1, setDrawer1] = useState(false);
+const [drawer2, setDrawer2] = useState(false);
+
+// 关闭所有抽屉
+const closeAll = () => {
+  setDrawer2(false);
+  setDrawer1(false);
+};
+
+<Drawer visible={drawer1} width={700}>
+  第一层内容
+  <Button onClick={() => setDrawer2(true)}>打开详情</Button>
+
+  <Drawer visible={drawer2} width={500}>
+    第二层详情
+    <Button onClick={closeAll}>关闭全部</Button>
+  </Drawer>
+</Drawer>
+```
+
+### 内容区域布局
+
+合理组织抽屉内的内容:
+
+```jsx
+<Drawer visible={visible} width={600}>
+  {/* 头部区域 */}
+  <div style={{ padding: '20px', borderBottom: '1px solid #e0e0e0' }}>
+    <h2>标题</h2>
+    <p>描述信息</p>
+  </div>
+
+  {/* 内容区域(可滚动) */}
+  <div style={{ padding: '20px', flex: 1, overflow: 'auto' }}>
+    <DetailContent />
+  </div>
+
+  {/* 底部操作区 */}
+  <div style={{ padding: '20px', borderTop: '1px solid #e0e0e0' }}>
+    <Group spacing="xs">
+      <Button onClick={handleCancel}>取消</Button>
+      <Button color="secondary" onClick={handleSubmit}>确定</Button>
+    </Group>
+  </div>
+</Drawer>
+```
+
+### 表单场景
+
+在抽屉中使用表单:
+
+```jsx
+const [visible, setVisible] = useState(false);
+const [formData, setFormData] = useState({});
+
+<Drawer
+  visible={visible}
+  width={600}
+  onClose={() => {
+    // 关闭前可以提示保存
+    if (hasChanges) {
+      if (confirm('有未保存的更改,确定关闭吗?')) {
+        setVisible(false);
+      }
+    } else {
+      setVisible(false);
+    }
+  }}
+>
+  <Form data={formData} onChange={setFormData}>
+    {/* 表单字段 */}
+  </Form>
+</Drawer>
+```
+
+### 自定义容器
+
+指定抽屉挂载的容器:
+
+```jsx
+// 挂载到特定容器,避免 z-index 问题
+<Drawer
+  visible={visible}
+  getContainer={() => document.getElementById('app-container')}
+>
+  内容
+</Drawer>
+
+// 或使用选择器字符串
+<Drawer
+  visible={visible}
+  getContainer="#app-container"
+>
+  内容
+</Drawer>
+```
+
+### 响应式处理
+
+移动端优化:
+
+```jsx
+const isMobile = window.innerWidth < 768;
+
+<Drawer
+  visible={visible}
+  width={isMobile ? '100%' : 600}
+  placement="right"
+>
+  内容
+</Drawer>
+```
+
+### 防止重复打开
+
+避免连续点击导致多次打开:
+
+```jsx
+const [visible, setVisible] = useState(false);
+const [loading, setLoading] = useState(false);
+
+const handleOpen = async () => {
+  if (visible || loading) return;
+
+  setLoading(true);
+  try {
+    // 加载数据
+    await fetchData();
+    setVisible(true);
+  } finally {
+    setLoading(false);
+  }
+};
+
+<Button onClick={handleOpen} loading={loading}>
+  打开抽屉
+</Button>
+```
+
+### 性能优化
+
+对于复杂内容,延迟渲染:
+
+```jsx
+<Drawer visible={visible}>
+  {/* 只在可见时渲染复杂内容 */}
+  {visible && <ComplexContent />}
+</Drawer>
+```

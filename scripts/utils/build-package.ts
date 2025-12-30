@@ -26,13 +26,14 @@ async function locatePackage(packageName: string) {
 
 async function compile(config: RollupOptions) {
   const build = await rollup(config);
-  const outputs: OutputOptions[] = Array.isArray(config.output) ? config.output : [config.output];
+  const outputArray = Array.isArray(config.output) ? config.output : [config.output];
+  const outputs: OutputOptions[] = outputArray.filter((o): o is OutputOptions => o !== undefined);
 
   return Promise.all(outputs.map((output) => build.write(output)));
 }
 
 async function generateDts(packagePath: string) {
-  await execa('yarn', ['tsc', '--build'], {
+  await execa('pnpm', ['tsc', '--build', 'tsconfig.build.json'], {
     cwd: packagePath,
   });
 
@@ -55,13 +56,16 @@ export async function buildPackage(packageName: string, options?: BuildOptions) 
     const startTime = Date.now();
 
     if (packageName === '@kubed/icons') {
-      await execa('yarn', ['build:icons']);
+      await execa('pnpm', ['build:icons']);
     } else {
       await generateDts(packagePath);
 
-      for (const format of options?.formats) {
+      const formats = options?.formats ?? ['es', 'cjs'];
+      for (const format of formats) {
         const config = await createPackageConfig({
-          ...options,
+          analyze: options?.analyze ?? false,
+          sourcemap: options?.sourcemap ?? true,
+          minify: options?.minify ?? false,
           basePath: packagePath,
           format,
         });
@@ -78,7 +82,7 @@ export async function buildPackage(packageName: string, options?: BuildOptions) 
     );
   } catch (err) {
     logger.error(`Failed to compile package: ${chalk.cyan(packageName)}`);
-    process.stdout.write(`${err.toString('minimal')}\n`);
+    process.stdout.write(`${err instanceof Error ? err.message : String(err)}\n`);
     process.exit(1);
   }
 }

@@ -1,0 +1,465 @@
+---
+sidebar_position: 1
+---
+
+# InputNumber
+
+An input box for entering numbers, with stepper controls.
+
+## When to Use
+
+- When users need to input numbers
+- Need to limit number range (minimum, maximum)
+- Need to increase or decrease values by a specified step
+- Need to format number display (e.g., thousands separator, precision)
+
+## Examples
+
+### Basic Usage
+
+The simplest usage, get the value through `onChange`.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(0);
+
+  return (
+    <div>
+      <InputNumber value={value} onChange={setValue} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>Current value: {value}</div>
+    </div>
+  );
+}
+```
+
+### Controlled Component
+
+Implement a controlled component using `value` and `onChange`.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(5);
+
+  const handleReset = () => setValue(0);
+  const handleSet = (num) => () => setValue(num);
+
+  return (
+    <div>
+      <InputNumber value={value} onChange={setValue} />
+      <Group style={{ marginTop: '16px' }}>
+        <Button onClick={handleReset}>Reset to 0</Button>
+        <Button onClick={handleSet(10)}>Set to 10</Button>
+        <Button onClick={handleSet(50)}>Set to 50</Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+### Setting Step
+
+Set the increment/decrement step through the `step` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <div>
+        <div style={{ marginBottom: '8px', fontSize: '14px' }}>Step of 1 (default):</div>
+        <InputNumber defaultValue={0} step={1} />
+      </div>
+      <div>
+        <div style={{ marginBottom: '8px', fontSize: '14px' }}>Step of 5:</div>
+        <InputNumber defaultValue={0} step={5} />
+      </div>
+      <div>
+        <div style={{ marginBottom: '8px', fontSize: '14px' }}>Step of 0.1:</div>
+        <InputNumber defaultValue={0} step={0.1} />
+      </div>
+      <div>
+        <div style={{ marginBottom: '8px', fontSize: '14px' }}>Step of 0.01:</div>
+        <InputNumber defaultValue={1} step={0.01} />
+      </div>
+    </Group>
+  );
+}
+```
+
+### Minimum and Maximum
+
+Restrict the value range through `min` and `max` properties.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(0);
+
+  return (
+    <div>
+      <InputNumber value={value} onChange={setValue} min={-10} max={10} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        Range: -10 to 10, Current value: {value}
+      </div>
+    </div>
+  );
+}
+```
+
+### Disabled State
+
+Disable the input box through the `disabled` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <InputNumber disabled placeholder="Disabled state" />
+      <InputNumber disabled value={100} />
+    </Group>
+  );
+}
+```
+
+### Precision Settings
+
+Set number precision (decimal places) through the `precision` property.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(1);
+
+  return (
+    <div>
+      <Group direction="column">
+        <div>
+          <div style={{ marginBottom: '8px', fontSize: '14px' }}>Precision 0 (integer):</div>
+          <InputNumber defaultValue={1} precision={0} step={1} />
+        </div>
+        <div>
+          <div style={{ marginBottom: '8px', fontSize: '14px' }}>Precision 2 (2 decimal places):</div>
+          <InputNumber value={value} onChange={setValue} precision={2} step={0.01} />
+        </div>
+        <div>
+          <div style={{ marginBottom: '8px', fontSize: '14px' }}>Precision 4 (4 decimal places):</div>
+          <InputNumber defaultValue={3.1415} precision={4} step={0.0001} />
+        </div>
+      </Group>
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        Value with precision 2: {value?.toFixed(2)}
+      </div>
+    </div>
+  );
+}
+```
+
+### Formatted Display
+
+Customize the display and parsing of numbers through `formatter` and `parser`.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(1000);
+
+  // Format as thousands separator
+  const formatter = (value) => {
+    if (!value) return '';
+    return `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
+  // Parse thousands separator format
+  const parser = (value) => {
+    return value.replace(/,/g, '');
+  };
+
+  return (
+    <div>
+      <InputNumber
+        value={value}
+        onChange={setValue}
+        formatter={formatter}
+        parser={parser}
+        width={150}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>Actual value: {value}</div>
+    </div>
+  );
+}
+```
+
+### Currency Format
+
+Implement currency format number input.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(100);
+
+  const formatter = (value) => {
+    if (!value) return '';
+    return `¥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
+  const parser = (value) => {
+    return value.replace(/¥\s?|(,*)/g, '');
+  };
+
+  return (
+    <div>
+      <InputNumber
+        value={value}
+        onChange={setValue}
+        formatter={formatter}
+        parser={parser}
+        width={150}
+        min={0}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>Amount: {value} yuan</div>
+    </div>
+  );
+}
+```
+
+### Percentage Format
+
+Implement percentage format number input.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(50);
+
+  const formatter = (value) => {
+    if (!value && value !== 0) return '';
+    return `${value}%`;
+  };
+
+  const parser = (value) => {
+    return value.replace('%', '');
+  };
+
+  return (
+    <div>
+      <InputNumber
+        value={value}
+        onChange={setValue}
+        formatter={formatter}
+        parser={parser}
+        min={0}
+        max={100}
+        width={120}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>Progress: {value}%</div>
+    </div>
+  );
+}
+```
+
+### Custom Width
+
+Set the input box width through the `width` property.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <InputNumber width={100} defaultValue={0} />
+      <InputNumber width={150} defaultValue={0} />
+      <InputNumber width={200} defaultValue={0} />
+    </Group>
+  );
+}
+```
+
+### Step Callback
+
+Monitor stepper clicks through the `onStep` callback.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState(0);
+  const [stepInfo, setStepInfo] = React.useState('');
+
+  const handleStep = (newValue, info) => {
+    setValue(newValue);
+    setStepInfo(`${info.type === 'up' ? 'Increased' : 'Decreased'} by ${info.offset}`);
+  };
+
+  return (
+    <div>
+      <InputNumber value={value} onChange={setValue} onStep={handleStep} step={5} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>Current value: {value}</div>
+      {stepInfo && (
+        <div style={{ marginTop: '8px', color: '#55bc8a', fontSize: '14px' }}>Action: {stepInfo}</div>
+      )}
+    </div>
+  );
+}
+```
+
+### Disable Controls
+
+Hide the stepper controls through `controls={false}`.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <div>
+        <div style={{ marginBottom: '8px', fontSize: '14px' }}>Show controls (default):</div>
+        <InputNumber defaultValue={0} controls={true} />
+      </div>
+      <div>
+        <div style={{ marginBottom: '8px', fontSize: '14px' }}>Hide controls:</div>
+        <InputNumber defaultValue={0} controls={false} />
+      </div>
+    </Group>
+  );
+}
+```
+
+## API
+
+### InputNumber Properties
+
+| Property         | Description                         | Type                                      | Default |
+| ---------------- | ----------------------------------- | ----------------------------------------- | ------- |
+| value            | Input value (controlled)            | `string \| number`                        | -       |
+| defaultValue     | Default value (uncontrolled)        | `string \| number`                        | -       |
+| min              | Minimum value                       | `string \| number`                        | -       |
+| max              | Maximum value                       | `string \| number`                        | -       |
+| step             | Step for each change                | `string \| number`                        | `1`     |
+| precision        | Number precision (decimal places)   | `number`                                  | -       |
+| width            | Input box width (pixels)            | `number`                                  | `90`    |
+| controls         | Whether to show increase/decrease buttons | `boolean`                           | `true`  |
+| disabled         | Whether disabled                    | `boolean`                                 | `false` |
+| stringMode       | Whether to handle value as string   | `boolean`                                 | `false` |
+| formatter        | Specify display value format        | `(value: string \| number) => string`     | -       |
+| parser           | Specify conversion from formatter   | `(value: string) => string \| number`     | -       |
+| decimalSeparator | Decimal point symbol                | `string`                                  | `.`     |
+| onChange         | Callback when value changes         | `(value: string \| number) => void`       | -       |
+| onStep           | Callback when clicking up/down      | `(value, info: { offset, type }) => void` | -       |
+| onPressEnter     | Callback when pressing Enter        | `(e: KeyboardEvent) => void`              | -       |
+| Others           | Native attributes                   | `HTMLAttributes<HTMLInputElement>`        | -       |
+
+:::info
+
+**About Number Type**:
+
+- By default, value is number type
+- Set `stringMode={true}` to use string form for large numbers, avoiding precision issues
+- `min`, `max`, `step` all support number and string types
+
+**About formatter and parser**:
+
+- `formatter` is used to format display value, converting numbers to display strings
+- `parser` is used to extract numbers from formatted strings
+- Both must be used together to ensure correct conversion
+
+**About Precision**:
+
+- `precision` is used to control decimal places
+- When precision is set, input values are automatically rounded to the specified precision
+- Recommended to use with corresponding `step` value (e.g., precision={2} with step={0.01})
+
+**About Step**:
+
+- `step` controls the change amount when clicking increase/decrease buttons or using keyboard up/down keys
+- Decimal steps need to be aware of JavaScript floating point precision issues
+- Precision can be controlled through the precision property
+
+InputNumber is based on rc-input-number implementation, inheriting most of its properties and methods.
+
+:::
+
+## Usage Recommendations
+
+### Controlled vs Uncontrolled
+
+Choose the appropriate approach based on scenario:
+
+```jsx
+// Uncontrolled: suitable for simple scenarios
+<InputNumber defaultValue={0} min={0} max={100} />;
+
+// Controlled: suitable for scenarios requiring external control or linkage
+const [value, setValue] = React.useState(0);
+<InputNumber value={value} onChange={setValue} />;
+```
+
+### Number Range Restrictions
+
+Set minimum and maximum values appropriately:
+
+```jsx
+// Age input (0-150)
+<InputNumber min={0} max={150} defaultValue={18} />
+
+// Percentage (0-100)
+<InputNumber min={0} max={100} formatter={(v) => `${v}%`} parser={(v) => v.replace('%', '')} />
+
+// Rating (1-5)
+<InputNumber min={1} max={5} step={0.5} defaultValue={3} />
+```
+
+### Formatting Best Practices
+
+Common formatting patterns:
+
+```jsx
+// Thousands separator
+const formatter = (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const parser = (value) => value.replace(/,/g, '');
+
+// Currency format
+const formatter = (value) => `¥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const parser = (value) => value.replace(/¥\s?|(,*)/g, '');
+
+// Percentage
+const formatter = (value) => `${value}%`;
+const parser = (value) => value.replace('%', '');
+
+// Unit suffix
+const formatter = (value) => `${value} kg`;
+const parser = (value) => value.replace(' kg', '');
+```
+
+### Precision Handling
+
+Recommendations for handling decimal precision:
+
+```jsx
+// Amount (2 decimal places)
+<InputNumber precision={2} step={0.01} min={0} />
+
+// Ratio (4 decimal places)
+<InputNumber precision={4} step={0.0001} />
+
+// Integer
+<InputNumber precision={0} step={1} />
+```
+
+### Working with Form Components
+
+Using InputNumber in Form:
+
+```jsx
+<Form onFinish={handleFinish}>
+  <FormItem
+    name="age"
+    label="Age"
+    rules={[
+      { required: true, message: 'Please enter age' },
+      { type: 'number', min: 0, max: 150, message: 'Please enter a valid age' },
+    ]}
+  >
+    <InputNumber min={0} max={150} />
+  </FormItem>
+</Form>
+```
+
+### Handling Large Numbers
+
+For values exceeding JavaScript's safe integer range:
+
+```jsx
+// Use stringMode for large numbers
+<InputNumber stringMode min="0" max="999999999999999999" defaultValue="9999999999999999" />
+```

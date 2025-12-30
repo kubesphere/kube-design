@@ -3,7 +3,8 @@ module.exports = {
   extends: ['airbnb-typescript', 'plugin:jest/recommended', 'plugin:prettier/recommended'],
   plugins: ['prettier', '@typescript-eslint', 'jest'],
   parserOptions: {
-    project: './tsconfig.json',
+    project: ['./packages/*/tsconfig.json'],
+    tsconfigRootDir: __dirname,
   },
 
   env: {
@@ -12,7 +13,45 @@ module.exports = {
     'jest/globals': true,
   },
 
+  settings: {
+    jest: {
+      version: 27,
+    },
+  },
+
+  overrides: [
+    {
+      files: ['*.story.tsx', '*.story.ts'],
+      parserOptions: {
+        project: null,
+      },
+      rules: {
+        '@typescript-eslint/dot-notation': 'off',
+        '@typescript-eslint/no-implied-eval': 'off',
+        '@typescript-eslint/no-throw-literal': 'off',
+        '@typescript-eslint/return-await': 'off',
+      },
+    },
+    {
+      files: ['scripts/**/*.ts', 'configs/**/*.ts'],
+      parserOptions: {
+        project: null,
+      },
+      rules: {
+        '@typescript-eslint/dot-notation': 'off',
+        '@typescript-eslint/no-implied-eval': 'off',
+        '@typescript-eslint/no-throw-literal': 'off',
+        '@typescript-eslint/return-await': 'off',
+      },
+    },
+  ],
+
   rules: {
+    // Disable deprecated rules
+    'react/jsx-filename-extension': 'off',
+    'import/extensions': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
+
     'max-len': [
       'error',
       100,
@@ -52,6 +91,11 @@ module.exports = {
 
     // disabled for condition && someFunc()
     'no-unused-expressions': 'off',
+
+    // Disable deprecated/removed rules in newer ESLint versions
+    'react/prop-types': 'off',
+    'react/no-unused-prop-types': 'off',
+    'react/button-has-type': 'off',
 
     // backend developers like _, no need to transform data all the time
     camelcase: 'off',

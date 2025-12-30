@@ -1,0 +1,216 @@
+---
+sidebar_position: 5
+---
+
+# useDebouncedValue
+
+A Hook for debouncing values, commonly used for search input, window resizing, and other scenarios requiring delayed updates.
+
+## Basic Usage
+
+```jsx live
+function Demo() {
+  const [value, setValue] = useState('');
+  const [debouncedValue] = useDebouncedValue(value, 500);
+
+  return (
+    <div>
+      <Input
+        placeholder="Type text, updates after 500ms"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <div style={{ marginTop: '20px' }}>
+        <div>Real-time value: {value || '(empty)'}</div>
+        <div style={{ color: 'var(--ifm-color-primary)' }}>
+          Debounced value: {debouncedValue || '(empty)'}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## Search Input
+
+Simulate search scenario, reduce API requests:
+
+```jsx live
+function Demo() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearch] = useDebouncedValue(searchTerm, 800);
+  const [searching, setSearching] = useState(false);
+
+  useEffect(() => {
+    if (debouncedSearch) {
+      setSearching(true);
+      // Simulate API request
+      const timer = setTimeout(() => setSearching(false), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [debouncedSearch]);
+
+  return (
+    <div>
+      <Input
+        placeholder="Search..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        suffix={searching && <span>🔍 Searching...</span>}
+      />
+      <div style={{ marginTop: '20px' }}>
+        {debouncedSearch && (
+          <div
+            style={{
+              padding: '12px',
+              backgroundColor: 'var(--ifm-color-emphasis-100)',
+              borderRadius: '6px',
+            }}
+          >
+            Search term: <strong>{debouncedSearch}</strong>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+```
+
+## Leading Mode
+
+Execute first update immediately, then debounce:
+
+```jsx live
+function Demo() {
+  const [value, setValue] = useState('');
+  const [debouncedValue] = useDebouncedValue(value, 500, { leading: true });
+
+  return (
+    <div>
+      <Input
+        placeholder="Leading mode: first update is immediate"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <div style={{ marginTop: '20px' }}>
+        <div>Input value: {value || '(empty)'}</div>
+        <div style={{ color: 'var(--ifm-color-success)' }}>
+          Debounced value (Leading): {debouncedValue || '(empty)'}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## Cancel Debounce
+
+Manually cancel pending debounce updates:
+
+```jsx live
+function Demo() {
+  const [value, setValue] = useState('');
+  const [debouncedValue, cancel] = useDebouncedValue(value, 1000);
+
+  return (
+    <div>
+      <Input
+        placeholder="Type text"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <Group spacing="md" style={{ marginTop: '10px' }}>
+        <Button onClick={cancel} size="small">
+          Cancel Debounce
+        </Button>
+        <Button onClick={() => setValue('')} size="small" variant="outline">
+          Clear
+        </Button>
+      </Group>
+      <div style={{ marginTop: '20px' }}>
+        <div>Real-time value: {value || '(empty)'}</div>
+        <div style={{ color: 'var(--ifm-color-primary)' }}>
+          Debounced value: {debouncedValue || '(empty)'}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## Form Validation
+
+Delay validation of user input:
+
+```jsx live
+function Demo() {
+  const [email, setEmail] = useState('');
+  const [debouncedEmail] = useDebouncedValue(email, 600);
+
+  const isValid = debouncedEmail && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(debouncedEmail);
+  const showValidation = debouncedEmail.length > 0;
+
+  return (
+    <div>
+      <Input
+        placeholder="Enter email address"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      {showValidation && (
+        <div
+          style={{
+            marginTop: '10px',
+            padding: '8px 12px',
+            borderRadius: '4px',
+            backgroundColor: isValid
+              ? 'var(--ifm-color-success-lightest)'
+              : 'var(--ifm-color-danger-lightest)',
+            color: isValid
+              ? 'var(--ifm-color-success-dark)'
+              : 'var(--ifm-color-danger-dark)',
+          }}
+        >
+          {isValid ? '✓ Email format is valid' : '✗ Email format is invalid'}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## API
+
+### Parameters
+
+```ts
+function useDebouncedValue<T = any>(
+  value: T,
+  wait: number,
+  options?: { leading?: boolean }
+): [T, () => void]
+```
+
+| Parameter | Description | Type | Default |
+|------|------|------|--------|
+| value | Value to debounce | `T` | - |
+| wait | Debounce delay time (milliseconds) | `number` | - |
+| options | Configuration options | `{ leading?: boolean }` | `{ leading: false }` |
+| options.leading | Whether to execute immediately at the start of the delay | `boolean` | `false` |
+
+### Return Value
+
+Returns an array:
+
+| Index | Description | Type |
+|------|------|------|
+| [0] | Debounced value | `T` |
+| [1] | Function to cancel pending update | `() => void` |
+
+## Usage Scenarios
+
+- **Search Input**: Reduce number of search API requests
+- **Window Resize**: Delay processing window size changes
+- **Form Validation**: Delay validation of user input
+- **Auto-save**: Delay triggering auto-save
+- **Scroll Events**: Reduce scroll event handling frequency

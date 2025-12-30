@@ -3,10 +3,14 @@ import {
   itRendersChildren,
   itSupportsOthers,
   itSupportsStyle,
-  shallowWithTheme,
+  renderWithTheme,
 } from '@kubed/tests';
 import * as React from 'react';
-import { Container } from './Container';
+import { screen } from '@testing-library/react';
+import { Container, sizes } from './Container';
+import { themeUtils } from '../theme';
+
+const { getSizeValue } = themeUtils;
 
 describe('@kubd/components/Container', () => {
   itSupportsClassName(Container, {});
@@ -14,17 +18,23 @@ describe('@kubd/components/Container', () => {
   itSupportsOthers(Container, {});
   itSupportsStyle(Container, {});
 
-  it('renders given size,padding and fluid', () => {
-    const wrapper = shallowWithTheme(
+  it('to match snapshot', () => {
+    const { asFragment } = renderWithTheme(
       <Container padding="xl" size="sm" fluid>
         To get the most out of this module, you should have worked your way through the previous
         JavaScript modules in the series. Those modules typically involve simple API usage, as it is
         often difficult to write client-side JavaScript examples without them.
       </Container>
     );
-    expect(wrapper.find(Container).prop('padding')).toBe('xl');
-    expect(wrapper.find(Container).prop('size')).toBe('sm');
-    expect(wrapper.find(Container).prop('fluid')).toBe(true);
+    expect(asFragment()).toMatchInlineSnapshot(`
+      <DocumentFragment>
+        <div
+          class="sc-gFqAkR evfHzS"
+        >
+          To get the most out of this module, you should have worked your way through the previous JavaScript modules in the series. Those modules typically involve simple API usage, as it is often difficult to write client-side JavaScript examples without them.
+        </div>
+      </DocumentFragment>
+    `);
   });
 
   it('has correct displayName', () => {

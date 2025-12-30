@@ -1,0 +1,391 @@
+---
+sidebar_position: 1
+---
+
+# AutoComplete
+
+Input box auto-completion feature that provides input suggestions.
+
+## When to Use
+
+- Need to provide relevant suggestions based on user input
+- Need to quickly search and select data
+- Input box requires intelligent prompting functionality
+
+## Examples
+
+### Basic Usage
+
+Basic usage, set the data source for auto-completion through `options`.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+  const [options, setOptions] = React.useState([]);
+
+  const handleSearch = (searchText) => {
+    if (!searchText) {
+      setOptions([]);
+    } else {
+      setOptions([
+        { value: searchText },
+        { value: searchText + searchText },
+        { value: searchText + searchText + searchText },
+      ]);
+    }
+  };
+
+  const handleChange = (data) => {
+    setValue(data);
+  };
+
+  return (
+    <AutoComplete
+      value={value}
+      options={options}
+      style={{ width: 300 }}
+      onSearch={handleSearch}
+      onChange={handleChange}
+      placeholder="Enter content to see suggestions"
+    />
+  );
+}
+```
+
+### Custom Options
+
+Configure different option content through `options`.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+  const [options, setOptions] = React.useState([]);
+
+  const searchResult = (query) => {
+    const results = [
+      { value: `${query}@gmail.com`, text: `${query}@gmail.com` },
+      { value: `${query}@163.com`, text: `${query}@163.com` },
+      { value: `${query}@qq.com`, text: `${query}@qq.com` },
+      { value: `${query}@outlook.com`, text: `${query}@outlook.com` },
+    ];
+    return results;
+  };
+
+  const handleSearch = (searchText) => {
+    setOptions(!searchText ? [] : searchResult(searchText));
+  };
+
+  return (
+    <AutoComplete
+      value={value}
+      options={options}
+      style={{ width: 300 }}
+      onSearch={handleSearch}
+      onChange={setValue}
+      placeholder="Enter email prefix"
+    />
+  );
+}
+```
+
+### Query Mode
+
+Implement remote search functionality through `onSearch`.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+  const [options, setOptions] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+
+  const mockSearch = (query) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const data = ['Kubernetes', 'KubeSphere', 'Docker', 'Helm', 'Istio', 'Prometheus'].filter(
+          (item) => item.toLowerCase().includes(query.toLowerCase())
+        );
+        resolve(data.map((item) => ({ value: item })));
+      }, 300);
+    });
+  };
+
+  const handleSearch = async (searchText) => {
+    if (!searchText) {
+      setOptions([]);
+      return;
+    }
+
+    setLoading(true);
+    const results = await mockSearch(searchText);
+    setOptions(results);
+    setLoading(false);
+  };
+
+  return (
+    <AutoComplete
+      value={value}
+      options={options}
+      style={{ width: 300 }}
+      onSearch={handleSearch}
+      onChange={setValue}
+      placeholder="Search cloud native tools"
+    />
+  );
+}
+```
+
+### Selection Callback
+
+Use `onSelect` to get the selected value.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+  const [options, setOptions] = React.useState([]);
+  const [selected, setSelected] = React.useState('');
+
+  const handleSearch = (searchText) => {
+    if (!searchText) {
+      setOptions([]);
+    } else {
+      setOptions(
+        [
+          { value: 'Kubernetes', text: 'Kubernetes - Container Orchestration' },
+          { value: 'Docker', text: 'Docker - Container Engine' },
+          { value: 'Helm', text: 'Helm - Package Manager' },
+        ].filter((item) => item.value.toLowerCase().includes(searchText.toLowerCase()))
+      );
+    }
+  };
+
+  const handleSelect = (data) => {
+    setSelected(`You selected: ${data}`);
+  };
+
+  return (
+    <div>
+      <AutoComplete
+        value={value}
+        options={options}
+        style={{ width: 300 }}
+        onSearch={handleSearch}
+        onChange={setValue}
+        onSelect={handleSelect}
+        placeholder="Enter and select an option"
+      />
+      {selected && <div style={{ marginTop: '12px', color: '#55bc8a' }}>{selected}</div>}
+    </div>
+  );
+}
+```
+
+### Case Insensitive
+
+Implement case-insensitive search functionality.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+  const [options, setOptions] = React.useState([]);
+
+  const allOptions = ['JavaScript', 'TypeScript', 'Python', 'Java', 'Golang', 'Rust', 'C++', 'PHP'];
+
+  const handleSearch = (searchText) => {
+    if (!searchText) {
+      setOptions([]);
+    } else {
+      const filtered = allOptions.filter((item) =>
+        item.toLowerCase().includes(searchText.toLowerCase())
+      );
+      setOptions(filtered.map((item) => ({ value: item })));
+    }
+  };
+
+  return (
+    <AutoComplete
+      value={value}
+      options={options}
+      style={{ width: 300 }}
+      onSearch={handleSearch}
+      onChange={setValue}
+      placeholder="Search programming languages (case insensitive)"
+    />
+  );
+}
+```
+
+### Custom Input Box
+
+You can customize the input box style.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+  const [options, setOptions] = React.useState([]);
+
+  const handleSearch = (searchText) => {
+    if (!searchText) {
+      setOptions([]);
+    } else {
+      setOptions([
+        { value: `Search for "${searchText}"` },
+        { value: `Find "${searchText}" related content` },
+        { value: `Look up "${searchText}" in documentation` },
+      ]);
+    }
+  };
+
+  return (
+    <AutoComplete
+      value={value}
+      options={options}
+      style={{ width: 400 }}
+      onSearch={handleSearch}
+      onChange={setValue}
+      placeholder="Enter search content"
+    />
+  );
+}
+```
+
+### Disabled State
+
+Disable AutoComplete.
+
+```jsx live
+function Demo() {
+  return (
+    <Group>
+      <AutoComplete disabled placeholder="Disabled autocomplete" style={{ width: 300 }} />
+      <AutoComplete value="Selected value" disabled placeholder="Disabled with value" style={{ width: 300 }} />
+    </Group>
+  );
+}
+```
+
+### With Clear Button
+
+Set `allowClear` to display the clear button.
+
+```jsx live
+function Demo() {
+  const [value, setValue] = React.useState('');
+  const [options, setOptions] = React.useState([]);
+
+  const handleSearch = (searchText) => {
+    if (!searchText) {
+      setOptions([]);
+    } else {
+      setOptions([{ value: 'Option 1' }, { value: 'Option 2' }, { value: 'Option 3' }]);
+    }
+  };
+
+  return (
+    <AutoComplete
+      value={value}
+      options={options}
+      style={{ width: 300 }}
+      onSearch={handleSearch}
+      onChange={setValue}
+      allowClear
+      placeholder="Clearable autocomplete"
+    />
+  );
+}
+```
+
+## API
+
+### AutoComplete Properties
+
+| Property     | Description                          | Type                                      | Default |
+| ------------ | ------------------------------------ | ----------------------------------------- | ------- |
+| value        | The value of input box               | `string`                                  | -       |
+| defaultValue | Default value                        | `string`                                  | -       |
+| options      | Data source                          | `Array<{ value: string; text?: string }>` | `[]`    |
+| placeholder  | Input box placeholder                | `string`                                  | -       |
+| disabled     | Whether to disable                   | `boolean`                                 | `false` |
+| allowClear   | Whether to show clear button         | `boolean`                                 | `false` |
+| onSearch     | Callback when searching for completion items | `(value: string) => void`        | -       |
+| onChange     | Callback when input box value changes | `(value: string) => void`                | -       |
+| onSelect     | Callback when an option is selected  | `(value: string) => void`                 | -       |
+| onFocus      | Callback when gaining focus          | `() => void`                              | -       |
+| onBlur       | Callback when losing focus           | `() => void`                              | -       |
+| Others       | Native attributes                    | `React.HTMLAttributes<HTMLDivElement>`    | -       |
+
+:::info
+
+**Options Data Format**:
+
+- Simple format: `[{ value: 'text' }]`
+- Complete format: `[{ value: 'value', text: 'display text' }]`
+- String arrays are automatically converted to `{ value: string }` format
+
+**Search Logic**:
+
+- `onSearch` is triggered when the input box value changes
+- Update `options` through `onSearch` to display the suggestion list
+- It's recommended to implement debounce logic in `onSearch` to optimize performance
+
+The AutoComplete component inherits most properties and methods from the Select component.
+
+:::
+
+## Usage Recommendations
+
+### Performance Optimization
+
+For large amounts of data or remote search, it's recommended to implement debouncing:
+
+```jsx
+import { useDebouncedValue } from '@kubed/hooks';
+
+function Demo() {
+  const [value, setValue] = React.useState('');
+  const [debouncedValue] = useDebouncedValue(value, 300);
+
+  React.useEffect(() => {
+    if (debouncedValue) {
+      // Execute search
+    }
+  }, [debouncedValue]);
+
+  return <AutoComplete value={value} onChange={setValue} />;
+}
+```
+
+### Data Filtering
+
+Recommended filtering logic:
+
+```jsx
+const filterOptions = (searchText, allOptions) => {
+  const query = searchText.toLowerCase().trim();
+  if (!query) return [];
+
+  return allOptions.filter((option) => option.value.toLowerCase().includes(query)).slice(0, 10); // Limit result count
+};
+```
+
+### Remote Search
+
+Best practices when implementing remote search:
+
+```jsx
+const handleSearch = async (searchText) => {
+  if (!searchText || searchText.length < 2) {
+    setOptions([]);
+    return;
+  }
+
+  setLoading(true);
+  try {
+    const results = await fetchSuggestions(searchText);
+    setOptions(results);
+  } catch (error) {
+    console.error('Search failed:', error);
+  } finally {
+    setLoading(false);
+  }
+};
+```

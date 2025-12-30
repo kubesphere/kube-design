@@ -1,0 +1,742 @@
+---
+sidebar_position: 1
+---
+
+# TypeSelect
+
+A card-style selector for choosing types or strategies.
+
+## When to Use
+
+- Need to select from multiple types or strategies
+- Options require rich descriptions and icons for clarity
+- Need to display detailed information for each option
+- Scenarios requiring visual comparison of options
+
+In Kube Design, the TypeSelect component provides a visual selection experience:
+
+- **Card Display**: Each option displayed as a card with icon, title, and description
+- **Searchable**: Supports searching option titles and descriptions
+- **Individual Disable**: Supports disabling individual options
+- **Click Outside Close**: Automatically closes selection panel when clicking outside
+- **Rich Content**: Uses Entity/Field components to render rich option content
+
+## Examples
+
+### Basic Usage
+
+The most basic type selector usage.
+
+```jsx live
+function Demo() {
+  const { Backup, ReplicaSet, StatefulSet } = KubedIcons;
+  const [value, setValue] = React.useState('');
+
+  const options = [
+    {
+      label: '滚动更新',
+      value: 'rolling',
+      description: '逐步替换旧版本的容器组,确保服务不中断',
+      icon: <Backup size={40} />,
+    },
+    {
+      label: '重新创建',
+      value: 'recreate',
+      description: '先删除所有旧版本容器组,再创建新版本',
+      icon: <ReplicaSet size={40} />,
+    },
+    {
+      label: '金丝雀发布',
+      value: 'canary',
+      description: '先发布少量新版本,逐步增加新版本比例',
+      icon: <StatefulSet size={40} />,
+    },
+  ];
+
+  return (
+    <Group direction="column" spacing="md">
+      <TypeSelect options={options} value={value} onChange={(val) => setValue(val)} />
+      {value && (
+        <Text size="sm">
+          Selected strategy: {options.find((o) => o.value === value)?.label}
+        </Text>
+      )}
+    </Group>
+  );
+}
+```
+
+### With Search
+
+Enable search functionality through the `searchable` property.
+
+```jsx live
+function Demo() {
+  const { Backup, ReplicaSet, StatefulSet, DaemonSet, Task } = KubedIcons;
+  const [value, setValue] = React.useState('');
+
+  const options = [
+    {
+      label: 'Deployment',
+      value: 'deployment',
+      description: '无状态应用,适用于 Web 服务、API 服务等',
+      icon: <Backup size={40} />,
+    },
+    {
+      label: 'StatefulSet',
+      value: 'statefulset',
+      description: '有状态应用,适用于数据库、消息队列等',
+      icon: <StatefulSet size={40} />,
+    },
+    {
+      label: 'DaemonSet',
+      value: 'daemonset',
+      description: '守护进程,在每个节点上运行一个副本',
+      icon: <DaemonSet size={40} />,
+    },
+    {
+      label: 'Job',
+      value: 'job',
+      description: '一次性任务,执行完成后自动终止',
+      icon: <Task size={40} />,
+    },
+    {
+      label: 'CronJob',
+      value: 'cronjob',
+      description: '定时任务,按照 Cron 表达式定时执行',
+      icon: <ReplicaSet size={40} />,
+    },
+  ];
+
+  return (
+    <Group direction="column" spacing="md">
+      <TypeSelect
+        options={options}
+        value={value}
+        onChange={(val) => setValue(val)}
+        searchable
+        placeholder="搜索工作负载类型"
+      />
+      {value && (
+        <Text size="sm">
+          Selected type: {options.find((o) => o.value === value)?.label}
+        </Text>
+      )}
+    </Group>
+  );
+}
+```
+
+### Disabled Options
+
+Disable individual options through the `disabled` property on options.
+
+```jsx live
+function Demo() {
+  const { Backup, ReplicaSet, StatefulSet } = KubedIcons;
+  const [value, setValue] = React.useState('');
+
+  const options = [
+    {
+      label: '滚动更新',
+      value: 'rolling',
+      description: '逐步替换旧版本的容器组,确保服务不中断',
+      icon: <Backup size={40} />,
+    },
+    {
+      label: '重新创建',
+      value: 'recreate',
+      description: '先删除所有旧版本容器组,再创建新版本',
+      icon: <ReplicaSet size={40} />,
+      disabled: true,
+    },
+    {
+      label: '金丝雀发布',
+      value: 'canary',
+      description: '先发布少量新版本,逐步增加新版本比例',
+      icon: <StatefulSet size={40} />,
+      disabled: true,
+    },
+  ];
+
+  return (
+    <TypeSelect
+      options={options}
+      value={value}
+      onChange={(val) => setValue(val)}
+      placeholder="选择更新策略"
+    />
+  );
+}
+```
+
+### Custom Width
+
+Set selector width through the `width` property.
+
+```jsx live
+function Demo() {
+  const { Backup, ReplicaSet } = KubedIcons;
+  const [value, setValue] = React.useState('');
+
+  const options = [
+    {
+      label: '快速部署',
+      value: 'fast',
+      description: '使用默认配置快速部署',
+      icon: <Backup size={40} />,
+    },
+    {
+      label: '自定义部署',
+      value: 'custom',
+      description: '完全自定义所有配置项',
+      icon: <ReplicaSet size={40} />,
+    },
+  ];
+
+  return (
+    <TypeSelect
+      options={options}
+      value={value}
+      onChange={(val) => setValue(val)}
+      width={400}
+      placeholder="选择部署方式"
+    />
+  );
+}
+```
+
+### onChange Callback
+
+The `onChange` callback receives two parameters: selected value and option object.
+
+```jsx live
+function Demo() {
+  const { Backup, ReplicaSet, StatefulSet } = KubedIcons;
+  const [value, setValue] = React.useState('');
+  const [selectedOption, setSelectedOption] = React.useState(null);
+
+  const options = [
+    {
+      label: '滚动更新',
+      value: 'rolling',
+      description: '逐步替换旧版本的容器组,确保服务不中断',
+      icon: <Backup size={40} />,
+    },
+    {
+      label: '重新创建',
+      value: 'recreate',
+      description: '先删除所有旧版本容器组,再创建新版本',
+      icon: <ReplicaSet size={40} />,
+    },
+    {
+      label: '金丝雀发布',
+      value: 'canary',
+      description: '先发布少量新版本,逐步增加新版本比例',
+      icon: <StatefulSet size={40} />,
+    },
+  ];
+
+  const handleChange = (val, option) => {
+    setValue(val);
+    setSelectedOption(option);
+  };
+
+  return (
+    <Group direction="column" spacing="md">
+      <TypeSelect
+        options={options}
+        value={value}
+        onChange={handleChange}
+        placeholder="选择更新策略"
+      />
+      {selectedOption && (
+        <Card style={{ padding: '12px', background: '#f0f9ff' }}>
+          <Text size="sm" weight={600}>
+            {selectedOption.label}
+          </Text>
+          <Text size="xs" color="secondary" style={{ marginTop: '4px' }}>
+            {selectedOption.description}
+          </Text>
+        </Card>
+      )}
+    </Group>
+  );
+}
+```
+
+### Storage Class Selection
+
+Apply in a storage class selection scenario.
+
+```jsx live
+function Demo() {
+  const { Storage } = KubedIcons;
+  const [value, setValue] = React.useState('');
+
+  const options = [
+    {
+      label: 'Standard',
+      value: 'standard',
+      description: '标准存储类,适用于频繁访问的数据,高性能 SSD',
+      icon: <Storage size={40} />,
+    },
+    {
+      label: 'Standard_IA',
+      value: 'standard-ia',
+      description: '低频访问存储,适用于不频繁访问但需要快速读取的数据',
+      icon: <Storage size={40} />,
+    },
+    {
+      label: 'Archive',
+      value: 'archive',
+      description: '归档存储,适用于长期保存但几乎不访问的数据,成本最低',
+      icon: <Storage size={40} />,
+    },
+  ];
+
+  return (
+    <Card>
+      <Text size="sm" weight={600} style={{ marginBottom: '12px' }}>
+        选择存储类型
+      </Text>
+      <TypeSelect
+        options={options}
+        value={value}
+        onChange={(val) => setValue(val)}
+        placeholder="请选择存储类型"
+      />
+    </Card>
+  );
+}
+```
+
+### Backup Strategy Selection
+
+Apply in a backup strategy selection scenario.
+
+```jsx live
+function Demo() {
+  const { Backup, Storage, Task } = KubedIcons;
+  const [value, setValue] = React.useState('');
+
+  const options = [
+    {
+      label: '完全备份',
+      value: 'full',
+      description: '备份所有数据,恢复速度快但占用空间大',
+      icon: <Backup size={40} />,
+    },
+    {
+      label: '增量备份',
+      value: 'incremental',
+      description: '仅备份变化的数据,节省空间但恢复较慢',
+      icon: <Storage size={40} />,
+    },
+    {
+      label: '差异备份',
+      value: 'differential',
+      description: '备份自上次完全备份后的所有变化,平衡空间和速度',
+      icon: <Task size={40} />,
+    },
+  ];
+
+  return (
+    <Card>
+      <Text size="sm" weight={600} style={{ marginBottom: '12px' }}>
+        选择备份策略
+      </Text>
+      <TypeSelect
+        options={options}
+        value={value}
+        onChange={(val) => setValue(val)}
+        searchable
+        placeholder="搜索备份策略"
+      />
+    </Card>
+  );
+}
+```
+
+### Complete Creation Wizard
+
+A comprehensive example of using TypeSelect in a creation wizard.
+
+```jsx live
+function Demo() {
+  const { Backup, StatefulSet, DaemonSet } = KubedIcons;
+  const [step, setStep] = React.useState(1);
+  const [workloadType, setWorkloadType] = React.useState('');
+  const [updateStrategy, setUpdateStrategy] = React.useState('');
+
+  const workloadOptions = [
+    {
+      label: 'Deployment',
+      value: 'deployment',
+      description: '无状态应用,适用于 Web 服务、API 服务等',
+      icon: <Backup size={40} />,
+    },
+    {
+      label: 'StatefulSet',
+      value: 'statefulset',
+      description: '有状态应用,适用于数据库、消息队列等',
+      icon: <StatefulSet size={40} />,
+    },
+    {
+      label: 'DaemonSet',
+      value: 'daemonset',
+      description: '守护进程,在每个节点上运行一个副本',
+      icon: <DaemonSet size={40} />,
+    },
+  ];
+
+  const strategyOptions = [
+    {
+      label: '滚动更新',
+      value: 'rolling',
+      description: '逐步替换旧版本的容器组,确保服务不中断',
+      icon: <Backup size={40} />,
+    },
+    {
+      label: '重新创建',
+      value: 'recreate',
+      description: '先删除所有旧版本容器组,再创建新版本',
+      icon: <StatefulSet size={40} />,
+    },
+  ];
+
+  return (
+    <Card>
+      <Text size="sm" weight={600} style={{ marginBottom: '16px' }}>
+        创建工作负载 - 步骤 {step}/2
+      </Text>
+
+      {step === 1 && (
+        <>
+          <Text size="sm" style={{ marginBottom: '12px' }}>
+            选择工作负载类型:
+          </Text>
+          <TypeSelect
+            options={workloadOptions}
+            value={workloadType}
+            onChange={(val) => setWorkloadType(val)}
+            searchable
+            placeholder="搜索工作负载类型"
+          />
+        </>
+      )}
+
+      {step === 2 && (
+        <>
+          <Text size="sm" style={{ marginBottom: '12px' }}>
+            选择更新策略:
+          </Text>
+          <TypeSelect
+            options={strategyOptions}
+            value={updateStrategy}
+            onChange={(val) => setUpdateStrategy(val)}
+            placeholder="选择更新策略"
+          />
+        </>
+      )}
+
+      <Group spacing="sm" position="right" style={{ marginTop: '16px' }}>
+        {step > 1 && (
+          <Button onClick={() => setStep(step - 1)} variant="outline">
+            上一步
+          </Button>
+        )}
+        {step < 2 ? (
+          <Button onClick={() => setStep(step + 1)} disabled={!workloadType}>
+            下一步
+          </Button>
+        ) : (
+          <Button disabled={!updateStrategy}>创建</Button>
+        )}
+      </Group>
+    </Card>
+  );
+}
+```
+
+## API
+
+### TypeSelect
+
+| Property    | Description                        | Type                                           | Default        |
+| ----------- | ---------------------------------- | ---------------------------------------------- | -------------- |
+| options     | Option list                        | `TypeSelectOption[]`                           | **Required**   |
+| value       | Currently selected value           | `string`                                       | -              |
+| onChange    | Callback when selection changes    | `(value: string, option: TypeSelectOption) => void` | - |
+| searchable  | Enable search functionality        | `boolean`                                      | `false`        |
+| placeholder | Placeholder text                   | `string`                                       | `'请选择'`     |
+| width       | Selector width                     | `number \| string`                             | `'100%'`       |
+| disabled    | Whether disabled                   | `boolean`                                      | `false`        |
+| className   | Custom class name                  | `string`                                       | -              |
+| style       | Custom styles                      | `CSSProperties`                                | -              |
+
+### TypeSelectOption
+
+| Property    | Description                        | Type          | Default |
+| ----------- | ---------------------------------- | ------------- | ------- |
+| label       | Option title                       | `ReactNode`   | **Required** |
+| value       | Option value                       | `string`      | **Required** |
+| description | Option description                 | `ReactNode`   | -       |
+| icon        | Option icon                        | `ReactNode`   | -       |
+| disabled    | Whether option is disabled         | `boolean`     | `false` |
+
+:::info
+
+**About option rendering**:
+
+- TypeSelect uses Entity/Field components to render each option
+- Option card structure:
+  - Left: Icon (from `icon` property)
+  - Center: Title and description (from `label` and `description`)
+  - Right: Radio button indicator
+- Selected option displays a highlighted radio button
+- Disabled options are grayed out and unselectable
+
+**About search functionality**:
+
+- `searchable={true}` shows a search input at the top
+- Search filters options by matching `label` and `description` text
+- Search is case-insensitive
+- Empty search results show "No matching options" message
+
+**About click outside behavior**:
+
+- Uses `useClickOutside` hook to detect clicks outside the dropdown
+- Clicking outside automatically closes the dropdown panel
+- Can prevent close by clicking inside the dropdown area
+
+**About onChange callback**:
+
+- First parameter: `value` - Selected option's value string
+- Second parameter: `option` - Complete option object
+- Callback is triggered when user clicks an option card
+- Disabled options do not trigger onChange
+
+**About disabled state**:
+
+- Global `disabled` property disables the entire selector
+- Individual option `disabled` property disables specific options
+- Disabled options show gray styling and are unclickable
+- Disabled selector shows disabled cursor
+
+**About width control**:
+
+- Default width is `100%` (fills parent container)
+- Can set fixed pixel width like `width={400}`
+- Can set percentage width like `width="50%"`
+- Dropdown panel matches trigger button width
+
+**About accessibility**:
+
+- Each option card has proper click handlers
+- Keyboard navigation support (arrow keys, Enter)
+- Screen reader-friendly labels
+- Disabled state announced to screen readers
+
+:::
+
+## Usage Recommendations
+
+### Provide Clear Icons
+
+Use distinct icons for each option to aid recognition:
+
+```jsx
+import { Backup, StatefulSet, DaemonSet } from '@kubed/icons';
+
+const options = [
+  {
+    label: 'Deployment',
+    value: 'deployment',
+    icon: <Backup size={40} />,
+    description: '无状态应用',
+  },
+  {
+    label: 'StatefulSet',
+    value: 'statefulset',
+    icon: <StatefulSet size={40} />,
+    description: '有状态应用',
+  },
+  {
+    label: 'DaemonSet',
+    value: 'daemonset',
+    icon: <DaemonSet size={40} />,
+    description: '守护进程',
+  },
+];
+```
+
+### Write Clear Descriptions
+
+Descriptions should help users understand differences between options:
+
+```jsx
+// Recommended: Clear, differentiated descriptions
+const options = [
+  {
+    label: '滚动更新',
+    description: '逐步替换旧版本容器组,确保服务不中断,适用于生产环境',
+    // ...
+  },
+  {
+    label: '重新创建',
+    description: '先删除所有旧版本容器组,再创建新版本,会有短暂服务中断',
+    // ...
+  },
+];
+
+// Not recommended: Vague descriptions
+const options = [
+  {
+    label: '滚动更新',
+    description: '更新方式一',
+    // ...
+  },
+];
+```
+
+### Enable Search for Many Options
+
+Enable search when there are many options:
+
+```jsx
+// More than 5 options: Enable search
+<TypeSelect
+  options={manyOptions}
+  value={value}
+  onChange={setValue}
+  searchable
+  placeholder="搜索工作负载类型"
+/>
+```
+
+### Disable Unavailable Options
+
+Use disabled state to indicate unavailable options:
+
+```jsx
+const options = [
+  {
+    label: '高性能存储',
+    value: 'high-performance',
+    description: '高性能 SSD 存储',
+    disabled: false,
+  },
+  {
+    label: '归档存储',
+    value: 'archive',
+    description: '长期归档存储 (配额已满)',
+    disabled: true, // Indicate why unavailable
+  },
+];
+```
+
+### Show Selected Result
+
+Display selected option information after selection:
+
+```jsx
+<>
+  <TypeSelect options={options} value={value} onChange={setValue} />
+  {value && (
+    <Card style={{ marginTop: '12px', padding: '12px', background: '#f0f9ff' }}>
+      <Text size="sm" weight={600}>
+        已选择: {options.find((o) => o.value === value)?.label}
+      </Text>
+    </Card>
+  )}
+</>
+```
+
+### Use in Multi-Step Wizards
+
+TypeSelect works well in multi-step forms:
+
+```jsx
+<Steps active={active}>
+  <Step label="选择类型">
+    <TypeSelect
+      options={typeOptions}
+      value={type}
+      onChange={setType}
+      searchable
+    />
+  </Step>
+  <Step label="配置参数">
+    {/* Configuration form */}
+  </Step>
+</Steps>
+```
+
+### Validate Selection
+
+Validate that user has made a selection:
+
+```jsx
+const [value, setValue] = useState('');
+const [error, setError] = useState('');
+
+const handleNext = () => {
+  if (!value) {
+    setError('请选择一个选项');
+    return;
+  }
+  // Proceed to next step
+};
+
+<>
+  <TypeSelect options={options} value={value} onChange={setValue} />
+  {error && <Text color="error" size="xs">{error}</Text>}
+  <Button onClick={handleNext}>下一步</Button>
+</>
+```
+
+### Group Related Options
+
+Organize options logically:
+
+```jsx
+const options = [
+  // Basic types
+  { label: 'Deployment', value: 'deployment', description: '基础无状态应用' },
+  { label: 'StatefulSet', value: 'statefulset', description: '基础有状态应用' },
+
+  // Advanced types
+  { label: 'DaemonSet', value: 'daemonset', description: '高级守护进程' },
+  { label: 'Job', value: 'job', description: '高级任务' },
+];
+```
+
+### Provide Default Selection
+
+Provide reasonable default selection when appropriate:
+
+```jsx
+// Default to most commonly used option
+<TypeSelect
+  options={options}
+  value={value || 'rolling'} // Default to rolling update
+  onChange={setValue}
+/>
+```
+
+### Add Help Text
+
+Add explanatory text above the selector:
+
+```jsx
+<Group direction="column" spacing="sm">
+  <Text size="sm">
+    请选择工作负载类型:
+  </Text>
+  <Text size="xs" color="secondary">
+    不同类型的工作负载适用于不同的场景,请根据实际需求选择
+  </Text>
+  <TypeSelect options={options} value={value} onChange={setValue} />
+</Group>
+```

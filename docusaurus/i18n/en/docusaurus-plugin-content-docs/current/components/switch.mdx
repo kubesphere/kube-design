@@ -1,0 +1,493 @@
+---
+sidebar_position: 1
+---
+
+# Switch
+
+A switch selector for toggling between two mutually exclusive states.
+
+## When to Use
+
+- Need to represent switch state / toggle between two states
+- Unlike Checkbox, Switch triggers state change immediately, while Checkbox is generally used for state marking and requires submit action
+- Need to display text hints for current state (on/off)
+- Used for switch control in settings
+
+## Examples
+
+### Basic Usage
+
+The simplest usage, get switch state through `onChange`.
+
+```jsx live
+function Demo() {
+  const [checked, setChecked] = React.useState(false);
+
+  return (
+    <div>
+      <Switch checked={checked} onChange={setChecked} />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        Current state: {checked ? 'On' : 'Off'}
+      </div>
+    </div>
+  );
+}
+```
+
+### Default Checked
+
+Set default checked state using `defaultChecked`.
+
+```jsx live
+function Demo() {
+  return (
+    <Group>
+      <Switch />
+      <Switch defaultChecked />
+    </Group>
+  );
+}
+```
+
+### Disabled State
+
+Disable the switch using the `disabled` prop.
+
+```jsx live
+function Demo() {
+  return (
+    <Group>
+      <Switch disabled />
+      <Switch defaultChecked disabled />
+    </Group>
+  );
+}
+```
+
+### With Label
+
+Add label text using the `label` prop.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Switch label="Receive notifications" defaultChecked />
+      <Switch label="Auto update" />
+      <Switch label="Enable debug mode" disabled />
+    </Group>
+  );
+}
+```
+
+### With Text
+
+Display text inside the switch using `okText` and `offText`.
+
+```jsx live
+function Demo() {
+  return (
+    <Group direction="column">
+      <Switch okText="On" offText="Off" defaultChecked />
+      <Switch okText="ON" offText="OFF" />
+      <Switch okText="Enable" offText="Disable" defaultChecked />
+    </Group>
+  );
+}
+```
+
+### Button Variant
+
+Use button-style switch with `variant="button"`.
+
+```jsx live
+function Demo() {
+  const [checked, setChecked] = React.useState(false);
+
+  return (
+    <div>
+      <Group direction="column">
+        <Switch variant="button" label="Auto save" checked={checked} onChange={setChecked} />
+        <Switch variant="button" label="Enable cache" defaultChecked />
+        <Switch variant="button" label="Debug mode" disabled />
+      </Group>
+      <div style={{ marginTop: '16px', color: '#79879c', fontSize: '14px' }}>
+        Auto save: {checked ? 'Enabled' : 'Disabled'}
+      </div>
+    </div>
+  );
+}
+```
+
+### Controlled Component
+
+Implement controlled component using `checked` and `onChange`.
+
+```jsx live
+function Demo() {
+  const [checked, setChecked] = React.useState(false);
+
+  const handleToggle = () => {
+    setChecked(!checked);
+  };
+
+  return (
+    <div>
+      <Switch checked={checked} onChange={setChecked} label="Switch state" />
+      <Group style={{ marginTop: '16px' }}>
+        <Button onClick={handleToggle}>Toggle State</Button>
+        <Button onClick={() => setChecked(true)}>Turn On</Button>
+        <Button onClick={() => setChecked(false)}>Turn Off</Button>
+      </Group>
+    </div>
+  );
+}
+```
+
+### Loading State
+
+Simulate loading state during async operations.
+
+```jsx live
+function Demo() {
+  const [checked, setChecked] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+
+  const handleChange = (value) => {
+    setLoading(true);
+    // Simulate async operation
+    setTimeout(() => {
+      setChecked(value);
+      setLoading(false);
+    }, 1000);
+  };
+
+  return (
+    <div>
+      <Switch checked={checked} onChange={handleChange} disabled={loading} label="Enable service" />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        {loading ? 'Processing...' : `Service status: ${checked ? 'Enabled' : 'Disabled'}`}
+      </div>
+    </div>
+  );
+}
+```
+
+### Confirm Action
+
+Show confirmation dialog before switching.
+
+```jsx live
+function Demo() {
+  const [checked, setChecked] = React.useState(false);
+
+  const handleChange = (value) => {
+    if (value) {
+      if (confirm('Are you sure you want to enable this feature?')) {
+        setChecked(value);
+      }
+    } else {
+      setChecked(value);
+    }
+  };
+
+  return (
+    <Switch
+      checked={checked}
+      onChange={handleChange}
+      label="Dangerous action (requires confirmation)"
+    />
+  );
+}
+```
+
+### Switch List
+
+Implement a group of switch configurations.
+
+```jsx live
+function Demo() {
+  const [settings, setSettings] = React.useState({
+    notifications: true,
+    autoUpdate: false,
+    debugMode: false,
+    analytics: true,
+  });
+
+  const handleChange = (key, value) => {
+    setSettings({ ...settings, [key]: value });
+  };
+
+  return (
+    <div>
+      <Group direction="column" spacing="md">
+        <Switch
+          label="Push notifications"
+          checked={settings.notifications}
+          onChange={(value) => handleChange('notifications', value)}
+        />
+        <Switch
+          label="Auto update"
+          checked={settings.autoUpdate}
+          onChange={(value) => handleChange('autoUpdate', value)}
+        />
+        <Switch
+          label="Debug mode"
+          checked={settings.debugMode}
+          onChange={(value) => handleChange('debugMode', value)}
+        />
+        <Switch
+          label="Analytics"
+          checked={settings.analytics}
+          onChange={(value) => handleChange('analytics', value)}
+        />
+      </Group>
+      <div
+        style={{
+          marginTop: '16px',
+          padding: '12px',
+          background: '#f7f8fa',
+          borderRadius: '4px',
+          fontSize: '14px',
+        }}
+      >
+        <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>Current settings:</div>
+        <div>Push notifications: {settings.notifications ? 'On' : 'Off'}</div>
+        <div>Auto update: {settings.autoUpdate ? 'On' : 'Off'}</div>
+        <div>Debug mode: {settings.debugMode ? 'On' : 'Off'}</div>
+        <div>Analytics: {settings.analytics ? 'On' : 'Off'}</div>
+      </div>
+    </div>
+  );
+}
+```
+
+### Permission Control
+
+Control switch availability based on permissions.
+
+```jsx live
+function Demo() {
+  const [userRole, setUserRole] = React.useState('user');
+  const [featureEnabled, setFeatureEnabled] = React.useState(false);
+
+  const isAdmin = userRole === 'admin';
+
+  return (
+    <div>
+      <Group style={{ marginBottom: '16px' }}>
+        <Button onClick={() => setUserRole('admin')} variant={userRole === 'admin' ? 'filled' : 'outline'}>
+          Admin Mode
+        </Button>
+        <Button onClick={() => setUserRole('user')} variant={userRole === 'user' ? 'filled' : 'outline'}>
+          User Mode
+        </Button>
+      </Group>
+      <Switch
+        label="Advanced features (Admin only)"
+        checked={featureEnabled}
+        onChange={setFeatureEnabled}
+        disabled={!isAdmin}
+      />
+      <div style={{ marginTop: '12px', color: '#79879c', fontSize: '14px' }}>
+        Current role: {userRole === 'admin' ? 'Admin' : 'User'}
+        {!isAdmin && ' - You do not have permission to modify this setting'}
+      </div>
+    </div>
+  );
+}
+```
+
+## API
+
+### Switch Props
+
+| Property       | Description                           | Type                                | Default     |
+| -------------- | ------------------------------------- | ----------------------------------- | ----------- |
+| checked        | Whether checked (controlled)          | `boolean`                           | -           |
+| defaultChecked | Default checked state (uncontrolled)  | `boolean`                           | `false`     |
+| disabled       | Whether disabled                      | `boolean`                           | `false`     |
+| label          | Label text                            | `ReactNode`                         | -           |
+| variant        | Switch variant                        | `'default' \| 'button'`             | `'default'` |
+| okText         | Text displayed when checked           | `ReactNode`                         | -           |
+| offText        | Text displayed when unchecked         | `ReactNode`                         | -           |
+| id             | ID of input element                   | `string`                            | -           |
+| onChange       | Callback when state changes           | `(checked: boolean, event) => void` | -           |
+| onClick        | Callback when clicked                 | `(checked: boolean, event) => void` | -           |
+| others         | Native attributes                     | `HTMLAttributes<HTMLInputElement>`  | -           |
+
+:::info
+
+**About Controlled vs Uncontrolled**:
+- Use `checked` + `onChange` for controlled component, fully control switch state
+- Use `defaultChecked` for uncontrolled component, component manages state internally
+- In controlled mode, must provide `onChange` handler to update `checked`
+
+**About Variants**:
+- `default`: Default style, classic switch appearance
+- `button`: Button style, suitable for scenarios requiring more prominence
+
+**About Text Display**:
+- `okText` / `offText`: Only effective when `variant="default"`
+- Text is displayed inside the switch and switches automatically based on state
+
+**About Disabled**:
+- In disabled state, switch is not clickable and `onChange` will not be triggered
+- Commonly used for permission control or loading states
+
+Switch component inherits all native HTML input[type="checkbox"] element attributes.
+
+:::
+
+## Usage Guidelines
+
+### Controlled vs Uncontrolled
+
+Choose the appropriate usage based on scenario:
+
+```jsx
+// Uncontrolled: suitable for simple scenarios without external state control
+<Switch defaultChecked label="Receive notifications" />
+
+// Controlled: suitable for scenarios requiring external control or complex interactions
+const [checked, setChecked] = React.useState(false);
+<Switch checked={checked} onChange={setChecked} label="Receive notifications" />
+```
+
+### Switch vs Checkbox
+
+Choosing between Switch and Checkbox:
+
+```jsx
+// Switch: Immediately effective toggle operations
+<Switch
+  label="Enable notifications"
+  checked={enabled}
+  onChange={(value) => {
+    setEnabled(value);
+    // Save to backend immediately
+    saveSettings({ notifications: value });
+  }}
+/>
+
+// Checkbox: Options that need to work with form submission
+<Form onSubmit={handleSubmit}>
+  <Checkbox label="Email notifications" name="emailNotification" />
+  <Checkbox label="SMS notifications" name="smsNotification" />
+  <Button type="submit">Save Settings</Button>
+</Form>
+```
+
+### Async Operations
+
+Recommended approach for handling async operations:
+
+```jsx
+const [checked, setChecked] = React.useState(false);
+const [loading, setLoading] = React.useState(false);
+
+const handleChange = async (value) => {
+  setLoading(true);
+  try {
+    await updateSettings({ feature: value });
+    setChecked(value);
+  } catch (error) {
+    // Keep original state
+    alert('Operation failed, please retry');
+  } finally {
+    setLoading(false);
+  }
+};
+
+<Switch
+  checked={checked}
+  onChange={handleChange}
+  disabled={loading}
+  label={loading ? 'Processing...' : 'Enable feature'}
+/>
+```
+
+### Confirmation
+
+For important operations, it's recommended to add confirmation steps:
+
+```jsx
+const handleChange = (value) => {
+  if (value) {
+    // Confirm when enabling
+    if (confirm('Are you sure you want to enable this feature? This may affect system performance.')) {
+      setChecked(value);
+      saveSettings(value);
+    }
+  } else {
+    // Execute directly when disabling
+    setChecked(value);
+    saveSettings(value);
+  }
+};
+
+<Switch checked={checked} onChange={handleChange} />
+```
+
+### Working with Form Components
+
+Recommendations when using Switch in forms:
+
+```jsx
+// Use FormItem's valuePropName
+<Form onFinish={handleFinish}>
+  <FormItem
+    name="notifications"
+    label="Push notifications"
+    valuePropName="checked"
+  >
+    <Switch />
+  </FormItem>
+  <FormItem
+    name="autoUpdate"
+    label="Auto update"
+    valuePropName="checked"
+  >
+    <Switch />
+  </FormItem>
+</Form>
+```
+
+### Batch Operations
+
+Implement "select all" functionality:
+
+```jsx
+const [items, setItems] = React.useState({
+  feature1: false,
+  feature2: false,
+  feature3: false,
+});
+
+const allChecked = Object.values(items).every(Boolean);
+
+const handleToggleAll = (checked) => {
+  setItems({
+    feature1: checked,
+    feature2: checked,
+    feature3: checked,
+  });
+};
+
+<>
+  <Switch
+    label="Enable all"
+    checked={allChecked}
+    onChange={handleToggleAll}
+  />
+  <Divider />
+  {Object.keys(items).map(key => (
+    <Switch
+      key={key}
+      label={key}
+      checked={items[key]}
+      onChange={(value) => setItems({ ...items, [key]: value })}
+    />
+  ))}
+</>
+```

@@ -1,13 +1,12 @@
 import React from 'react';
 import {
-  checkAccessibility,
+  multipleCheckRTLAccessibility,
   itSupportsStyle,
   itSupportsOthers,
   itSupportsClassName,
   itRendersChildren,
   itSupportsRef,
-  shallowWithTheme,
-  mountWithTheme,
+  renderWithTheme,
 } from '@kubed/tests';
 import { Text } from '../Text/Text';
 import { Alert } from './Alert';
@@ -28,28 +27,26 @@ describe('@kubed/components/Alert', () => {
   itRendersChildren(Alert, {});
   itSupportsRef(Alert, {}, HTMLDivElement);
 
-  checkAccessibility([
-    mountWithTheme(
+  multipleCheckRTLAccessibility([
+    renderWithTheme(
       <Alert title="Error happened" type="error">
         <Text>Something bad happened</Text>
       </Alert>
     ),
-    mountWithTheme(
+    renderWithTheme(
       <Alert type="error">
         <Text>Something bad happened</Text>
       </Alert>
     ),
   ]);
 
-  it('renders given hasTitle, closable and showIcon', () => {
-    const wrapper = shallowWithTheme(
+  it('render correct style (snapshot)', () => {
+    const { asFragment } = renderWithTheme(
       <Alert title="KubeSphere" type="info" closable>
         Kubesphere.io is an upstream project of the KubeSphere container management platform.
       </Alert>
     );
-    expect(wrapper.find(Alert).prop('title')).toBe('KubeSphere');
-    expect(wrapper.find(Alert).prop('type')).toBe('info');
-    expect(wrapper.find(Alert).prop('closable')).toBe(true);
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it('has correct displayName', () => {

@@ -1,0 +1,536 @@
+---
+sidebar_position: 1
+---
+
+# Notify 通知提醒
+
+在页面右上角显示全局通知提醒信息。
+
+## 何时使用
+
+- 需要向用户全局展示提醒信息时
+- 异步操作的结果反馈
+- 系统主动推送消息给用户
+- 需要一个不打断用户操作的轻量级提示
+
+在 Kube Design 中,Notify 组件基于 react-hot-toast 封装,提供了灵活的通知功能:
+
+- **多种类型**:支持普通(blank)、success、error、loading 四种通知类型
+- **函数式调用**:无需手动管理状态,直接调用函数即可
+- **可更新**:支持更新已显示的通知内容
+- **自动消失**:可配置自动关闭时间
+
+## 示例
+
+### 基础用法
+
+最基本的通知用法,包含四种类型。
+
+```jsx live
+function Demo() {
+  const showInfo = () => notify('这是一条普通通知');
+  const showSuccess = () => notify.success('操作成功!');
+  const showError = () => notify.error('操作失败,请重试');
+  const showLoading = () => notify.loading('正在处理...');
+
+  return (
+    <>
+      <Group spacing="xs">
+        <Button onClick={showInfo}>普通通知</Button>
+        <Button onClick={showSuccess}>成功通知</Button>
+        <Button onClick={showError}>错误通知</Button>
+        <Button onClick={showLoading}>加载通知</Button>
+      </Group>
+      <Notify />
+    </>
+  );
+}
+```
+
+### 带标题的通知
+
+使用 `Notify.WithTitle` 组件添加标题和内容。
+
+```jsx live
+function Demo() {
+  const { WithTitle } = Notify;
+
+  const showNotify = () => {
+    notify.success(<WithTitle title="操作成功" message="您的数据已成功保存到系统中" />);
+  };
+
+  const showError = () => {
+    notify.error(<WithTitle title="操作失败" message="网络连接错误,请检查网络后重试" />);
+  };
+
+  return (
+    <>
+      <Group spacing="xs">
+        <Button onClick={showNotify}>成功通知(带标题)</Button>
+        <Button onClick={showError}>错误通知(带标题)</Button>
+      </Group>
+      <Notify />
+    </>
+  );
+}
+```
+
+### 自定义持续时间
+
+通过 `duration` 属性设置通知的���示时长(毫秒)。
+
+```jsx live
+function Demo() {
+  const show1s = () => notify.success('1 秒后自动关闭', { duration: 1000 });
+  const show3s = () => notify.success('3 秒后自动关闭', { duration: 3000 });
+  const show10s = () => notify.success('10 秒后自动关闭', { duration: 10000 });
+  const showForever = () => notify('不会自动关闭', { duration: Infinity });
+
+  return (
+    <>
+      <Group spacing="xs">
+        <Button onClick={show1s}>1秒</Button>
+        <Button onClick={show3s}>3秒</Button>
+        <Button onClick={show10s}>10秒</Button>
+        <Button onClick={showForever}>不自动关闭</Button>
+      </Group>
+      <Notify />
+    </>
+  );
+}
+```
+
+### 长文本内容
+
+通知支持显示较长的文本内容,会自动换行。
+
+```jsx live
+function Demo() {
+  const showLongContent = () => {
+    notify.success(
+      '这是一条很长的通知消息。当通知内容较长时,会自动换行显示,确保所有内容都能被用户看到。建议通知内容保持简洁,避免过长的文本影响用户体验。'
+    );
+  };
+
+  return (
+    <>
+      <Button onClick={showLongContent}>显示长文本通知</Button>
+      <Notify />
+    </>
+  );
+}
+```
+
+### 更新通知
+
+可以动态更新已显示的通知内容,常用于异步操作的状态更新。
+
+```jsx live
+function Demo() {
+  let notifyId;
+
+  const startUpload = () => {
+    notifyId = notify.loading('正在上传文件...');
+  };
+
+  const uploadSuccess = () => {
+    notify.success('文件上传成功!', { id: notifyId });
+  };
+
+  const uploadError = () => {
+    notify.error('文件上传失败,请重试', { id: notifyId });
+  };
+
+  return (
+    <>
+      <Group spacing="xs">
+        <Button onClick={startUpload}>开始上传</Button>
+        <Button onClick={uploadSuccess}>上传成功</Button>
+        <Button onClick={uploadError}>上传失败</Button>
+      </Group>
+      <Notify />
+    </>
+  );
+}
+```
+
+### 手动关闭通知
+
+使用 `notify.dismiss()` 手动关闭指定的通知。
+
+```jsx live
+function Demo() {
+  let notifyId;
+
+  const showNotify = () => {
+    notifyId = notify('这条通知不会自动关闭', { duration: Infinity });
+  };
+
+  const closeNotify = () => {
+    notify.dismiss(notifyId);
+  };
+
+  const closeAll = () => {
+    notify.dismiss();
+  };
+
+  return (
+    <>
+      <Group spacing="xs">
+        <Button onClick={showNotify}>显示通知</Button>
+        <Button onClick={closeNotify}>关闭通知</Button>
+        <Button onClick={closeAll}>关闭所有</Button>
+      </Group>
+      <Notify />
+    </>
+  );
+}
+```
+
+### 异步操作反馈
+
+在异步操作中使用通知提示操作结果。
+
+```jsx live
+function Demo() {
+  const handleSave = async () => {
+    const toastId = notify.loading('正在保存数据...');
+
+    try {
+      // 模拟异步操作
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      notify.success('数据保存成功!', { id: toastId });
+    } catch (error) {
+      notify.error('保存失败,请重试', { id: toastId });
+    }
+  };
+
+  return (
+    <>
+      <Button onClick={handleSave}>保存数据</Button>
+      <Notify />
+    </>
+  );
+}
+```
+
+### Promise 通知
+
+基于 Promise 自动更新通知状态。
+
+```jsx live
+function Demo() {
+  const handleSubmit = () => {
+    const myPromise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        Math.random() > 0.5 ? resolve('成功') : reject('失败');
+      }, 2000);
+    });
+
+    notify.promise(myPromise, {
+      loading: '正在提交...',
+      success: '提交成功!',
+      error: '提交失败,请重试',
+    });
+  };
+
+  return (
+    <>
+      <Button onClick={handleSubmit}>提交表单(随机成功/失败)</Button>
+      <Notify />
+    </>
+  );
+}
+```
+
+### 不同场景的通知
+
+展示不同业务场景下的通知提示。
+
+```jsx live
+function Demo() {
+  const { WithTitle } = Notify;
+
+  const showCreateSuccess = () => {
+    notify.success(<WithTitle title="创建成功" message="工作负载 nginx-deployment 已创建" />);
+  };
+
+  const showDeleteConfirm = () => {
+    notify.error(<WithTitle title="删除失败" message="无法删除正在运行的 Pod" />);
+  };
+
+  const showUpdateInfo = () => {
+    notify(<WithTitle title="配置更新" message="集群配置将在 5 分钟后生效" />);
+  };
+
+  return (
+    <>
+      <Group spacing="xs">
+        <Button onClick={showCreateSuccess}>创建成功</Button>
+        <Button onClick={showDeleteConfirm}>删除失败</Button>
+        <Button onClick={showUpdateInfo}>更新提示</Button>
+      </Group>
+      <Notify />
+    </>
+  );
+}
+```
+
+## API
+
+### Notify 组件
+
+Notify 组件需要放在应用的顶层,用于显示通知。
+
+| 属性     | 说明                   | 类型                                                                         | 默认值       |
+| -------- | ---------------------- | ---------------------------------------------------------------------------- | ------------ |
+| position | 通知显示位置           | `'top-left' \| 'top-center' \| 'top-right' \| 'bottom-left' \| 'bottom-center' \| 'bottom-right'` | `'top-right'` |
+| duration | 默认显示时长(毫秒)     | `number`                                                                     | -            |
+| gutter   | 通知之间的间距(像素)   | `number`                                                                     | `20`         |
+
+### notify 函数
+
+通过 `notify()` 函数调用通知。
+
+```typescript
+// 基础调用
+notify(message: string | ReactNode, options?: NotifyOptions): string
+
+// 类型化调用
+notify.success(message: string | ReactNode, options?: NotifyOptions): string
+notify.error(message: string | ReactNode, options?: NotifyOptions): string
+notify.loading(message: string | ReactNode, options?: NotifyOptions): string
+
+// Promise 调用
+notify.promise(
+  promise: Promise,
+  messages: {
+    loading: string,
+    success: string,
+    error: string
+  },
+  options?: NotifyOptions
+): string
+
+// 关闭通知
+notify.dismiss(id?: string): void
+```
+
+### NotifyOptions
+
+notify 函数的选项配置,这些选项会传递给每个单独的通知。
+
+| 属性     | 说明               | 类型     | 默认值 |
+| -------- | ------------------ | -------- | ------ |
+| id       | 通知的唯一标识,用于更新或关闭特定通知 | `string` | 自动生成 |
+| duration | 该通知的显示时长(毫秒) | `number` | 继承全局设置或 4000 |
+| icon     | 自定义图标         | `ReactNode` | -   |
+
+### Notify.WithTitle
+
+用于创建带标题的通知内容。
+
+| 属性    | 说明     | 类型        | 默认值 |
+| ------- | -------- | ----------- | ------ |
+| title   | 通知标题 | `ReactNode` | -      |
+| message | 通知内容 | `ReactNode` | -      |
+
+:::info
+
+**关于位置**:
+
+- 默认位置为右上角 (`top-right`)
+- 通知会从指定位置滑入
+- 多个通知会按时间顺序堆叠显示
+
+**关于持续时间**:
+
+- 默认使用 react-hot-toast 的默认持续时间(4秒)
+- 可以通过 Notify 组件的 duration 属性设置全局默认值
+- 设置 `duration: Infinity` 可以让通知不自动关闭
+- loading 类型的通知默认不会自动关闭
+
+**关于更新通知**:
+
+- `notify()` 函数返回通知的 ID
+- 使用相同的 ID 可以更新已显示的通知
+- 适合用于异步操作的状态更新
+
+**关于类型**:
+
+- `notify()`: 普通信息通知(蓝色)
+- `notify.success()`: 成功通知(绿色)
+- `notify.error()`: 错误通知(红色)
+- `notify.loading()`: 加载通知(蓝色,带加载动画)
+
+**关于关闭**:
+
+- 用户可以点击关闭按钮手动关闭
+- loading 类型的通知没有关闭按钮
+- 使用 `notify.dismiss()` 可以关闭所有通知
+- 使用 `notify.dismiss(id)` 关闭指定通知
+
+:::
+
+## 使用建议
+
+### 放置 Notify 组件
+
+在应用的根组件中放置 Notify:
+
+```jsx
+function App() {
+  return (
+    <div>
+      {/* 应用内容 */}
+      <Notify position="top-right" />
+    </div>
+  );
+}
+```
+
+### 异步操作反馈
+
+使用通知提示异步操作的结果:
+
+```jsx
+const handleDelete = async () => {
+  const toastId = notify.loading('正在删除...');
+
+  try {
+    await deleteResource(id);
+    notify.success('删除成功', { id: toastId });
+  } catch (error) {
+    notify.error('删除失败: ' + error.message, { id: toastId });
+  }
+};
+```
+
+### 使用 Promise 方式
+
+对于 Promise 操作,使用 `notify.promise()` 更简洁:
+
+```jsx
+const handleSubmit = () => {
+  notify.promise(
+    submitData(),
+    {
+      loading: '正在提交...',
+      success: '提交成功!',
+      error: (err) => `提交失败: ${err.message}`,
+    }
+  );
+};
+```
+
+### 带标题的通知
+
+重要信息使用带标题的通知:
+
+```jsx
+const { WithTitle } = Notify;
+
+notify.success(
+  <WithTitle
+    title="部署成功"
+    message="应用 my-app 已成功部署到生产环境"
+  />
+);
+```
+
+### 持续时间设置
+
+根据重要程度设置持续时间:
+
+```jsx
+// 一般提示: 3秒
+notify('操作完成', { duration: 3000 });
+
+// 重要信息: 6秒
+notify.success('部署成功', { duration: 6000 });
+
+// 错误信息: 不自动关闭
+notify.error('操作失败', { duration: Infinity });
+```
+
+### 不要过度使用
+
+避免频繁显示通知:
+
+```jsx
+// 不推荐: 每个操作都显示通知
+onChange={() => {
+  notify('值已更改');
+}}
+
+// 推荐: 只在重要操作完成时显示
+onSubmit={() => {
+  notify.success('保存成功');
+}}
+```
+
+### 信息简洁明了
+
+通知内容应该简洁:
+
+```jsx
+// 推荐: 简洁明了
+notify.success('文件上传成功');
+
+// 不推荐: 过于冗长
+notify.success(
+  '您选择的文件已经成功上传到服务器,系统正在处理中,处理完成后会自动刷新页面显示最新内容'
+);
+```
+
+### 错误处理
+
+错误通知应该提供有用信息:
+
+```jsx
+try {
+  await saveData();
+  notify.success('保存成功');
+} catch (error) {
+  // 推荐: 提供具体错误信息
+  notify.error(`保存失败: ${error.message}`);
+
+  // 不推荐: 模糊的错误提示
+  notify.error('操作失败');
+}
+```
+
+### 多步骤操作
+
+对于多步骤操作,更新同一个通知:
+
+```jsx
+const deployApp = async () => {
+  const toastId = notify.loading('正在构建镜像...');
+
+  await buildImage();
+  notify.loading('正在推送镜像...', { id: toastId });
+
+  await pushImage();
+  notify.loading('正在部署应用...', { id: toastId });
+
+  await deploy();
+  notify.success('部署完成!', { id: toastId });
+};
+```
+
+### 通知与 Modal 的选择
+
+选择合适的反馈方式:
+
+```jsx
+// 使用通知: 不需要用户确认的信息
+notify.success('保存成功');
+
+// 使用 Modal: 需要用户确认的操作
+modal.confirm({
+  title: '确认删除',
+  content: '此操作不可撤销',
+  onOk: handleDelete,
+});
+```
