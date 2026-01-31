@@ -19,7 +19,7 @@
     "gray-matter": "^4.0.3",
     "i18next": "23.11.5",
     "lodash": "^4.17.21",
-    "next": "14.2.35",
+    "next": "16.1.5",
     "next-i18next": "15.3.0",
     "prism-react-renderer": "^1.2.1",
     "react": "^18.3.1",
