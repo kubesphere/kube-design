@@ -93,7 +93,7 @@
     "react-docgen-typescript": "2.1.0",
     "react-dom": "^18.3.1",
     "rimraf": "^3.0.2",
-    "rollup": "^2.50.5",
+    "rollup": "^2.80.0",
     "rollup-plugin-esbuild": "^4.2.3",
     "rollup-plugin-node-externals": "^2.2.0",
     "rollup-plugin-visualizer": "^5.5.0",
