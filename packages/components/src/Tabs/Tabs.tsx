@@ -138,7 +138,7 @@ export function Tabs({
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (variant === 'outline') return null;
+    if (variant === 'outline') return;
     const observer = new ResizeObserver(() => {
       if (_activeKey in refs.current && wrapperRef.current) {
         const element = refs.current[_activeKey];
