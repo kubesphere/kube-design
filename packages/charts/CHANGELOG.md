@@ -1,5 +1,15 @@
 # @kubed/charts
 
+## 0.2.36
+
+### Patch Changes
+
+- [#396](https://github.com/kubesphere/kube-design/pull/396) [`31dc154`](https://github.com/kubesphere/kube-design/commit/31dc154740c1f3fd5a94095ef3b730fb57170610) Thanks [@donniean](https://github.com/donniean)! - fix: compatible with React 18
+
+- Updated dependencies [[`31dc154`](https://github.com/kubesphere/kube-design/commit/31dc154740c1f3fd5a94095ef3b730fb57170610)]:
+  - @kubed/hooks@0.2.36
+  - @kubed/icons@0.2.36
+
 ## 0.2.35
 
 ### Patch Changes
