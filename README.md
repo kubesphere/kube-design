@@ -8,10 +8,10 @@ A suite of components, hooks, and icons. Originally built for KubeSphere Console
 
 ## Requirement
 
-Ensure your have the latest version of NodeJS, and a package manager: NPM or Yarn.
+Ensure you have Node.js 24 and Yarn Classic installed.
 
-- Node.js 12.18+ ([installation with nvm](https://github.com/creationix/nvm#usage))
-- Yarn 1.22.4+
+- Node.js 24.x
+- Yarn 1.22.22
 
 ## Installation
 
