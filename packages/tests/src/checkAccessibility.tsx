@@ -1,5 +1,5 @@
-import { ReactWrapper } from 'enzyme';
 import { axe, toHaveNoViolations } from 'jest-axe';
+import { ReactWrapper } from './reactWrapper';
 
 const config = {
   rules: {

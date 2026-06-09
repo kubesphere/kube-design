@@ -25,7 +25,7 @@ function getInitialValue(query: string) {
 
 export function useMediaQuery(query: string) {
   const [matches, setMatches] = useState(getInitialValue(query));
-  const queryRef = useRef<MediaQueryList>();
+  const queryRef = useRef<MediaQueryList | null>(null);
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {

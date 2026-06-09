@@ -37,7 +37,7 @@ export interface LogViewerProps {
   }: {
     hasError: boolean;
     errors: Map<HTMLDivElement, ErrorMatcherPattern[]>;
-  }) => JSX.Element;
+  }) => React.ReactElement;
 }
 
 export const LogViewer = ({

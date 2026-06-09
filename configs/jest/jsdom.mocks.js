@@ -11,3 +11,16 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: jest.fn(),
   })),
 });
+
+class ResizeObserver {
+  observe() {}
+
+  unobserve() {}
+
+  disconnect() {}
+}
+
+window.ResizeObserver = ResizeObserver;
+global.ResizeObserver = ResizeObserver;
+
+HTMLCanvasElement.prototype.getContext = jest.fn();

@@ -20,9 +20,8 @@ export interface MenuProps extends DefaultProps, React.ComponentPropsWithoutRef<
 
 export const Menu = forwardRef<MenuProps, 'div'>(
   ({ children, width = 210, themeType, ...rest }, ref) => {
-    const items = toArray(children).filter(
-      (item: MenuItemType) =>
-        item.type === MenuItem || item.type === Divider || item.type === MenuLabel
+    const items = (toArray(children) as MenuItemType[]).filter(
+      (item) => item.type === MenuItem || item.type === Divider || item.type === MenuLabel
     ) as MenuItemType[];
 
     const buttonsRefs = useRef<Record<string, HTMLButtonElement>>({});

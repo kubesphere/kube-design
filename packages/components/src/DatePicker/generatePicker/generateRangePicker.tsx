@@ -35,7 +35,7 @@ export default function generateRangePicker<DateType>(
       ...(picker === 'time' ? getTimeProps({ format, ...props, picker } as any) : {}),
     };
 
-    const pickerRef = useRef<RCRangePicker<DateType>>();
+    const pickerRef = useRef<RCRangePicker<DateType> | null>(null);
     useImperativeHandle(ref, () => ({
       focus: () => {
         if (pickerRef.current) {

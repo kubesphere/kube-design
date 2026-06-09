@@ -74,56 +74,59 @@ export const Steps = forwardRef<StepsProps, 'div'>(
     },
     ref
   ) => {
-    const convertedChildren = Children.toArray(children) as React.ReactElement[];
+    const convertedChildren = Children.toArray(children) as React.ReactElement<any>[];
     const _children = convertedChildren.filter((child) => child.type !== StepCompleted);
     const completedStep = convertedChildren.find((item) => item.type === StepCompleted);
 
-    const items = _children.reduce<React.ReactElement[]>((acc, item, index) => {
-      const shouldAllowSelect =
-        typeof item.props.allowStepSelect === 'boolean'
-          ? item.props.allowStepSelect
-          : typeof onStepClick === 'function';
+    const items = _children.reduce<React.ReactElement[]>(
+      (acc, item: React.ReactElement<any>, index) => {
+        const shouldAllowSelect =
+          typeof item.props.allowStepSelect === 'boolean'
+            ? item.props.allowStepSelect
+            : typeof onStepClick === 'function';
 
-      const itemState =
-        item.props.state ||
-        (active === index ? 'stepProgress' : active > index ? 'stepCompleted' : 'stepInactive');
+        const itemState =
+          item.props.state ||
+          (active === index ? 'stepProgress' : active > index ? 'stepCompleted' : 'stepInactive');
 
-      acc.push(
-        cloneElement(item, {
-          __staticSelector: 'Stepper',
-          icon: item.props.icon || index + 1,
-          key: index,
-          state: itemState,
-          onClick: () =>
-            shouldAllowSelect && typeof onStepClick === 'function' && onStepClick(index),
-          allowStepClick: shouldAllowSelect && typeof onStepClick === 'function',
-          completedIcon: item.props.completedIcon || completedIcon,
-          progressIcon: item.props.progressIcon || progressIcon,
-          color: item.props.color || color,
-          iconSize,
-          size,
-          radius,
-          classNames,
-          styles,
-          iconPosition: item.props.iconPosition || iconPosition,
-          orientation,
-          variant,
-        })
-      );
-
-      if (index !== _children.length - 1 && variant === 'default') {
         acc.push(
-          <StepsSeparator
-            className={cx('step-separator', { 'is-active': index < active })}
-            $active={index < active}
-            $vertical={orientation === 'vertical'}
-            key={`separator-${index}`}
-          />
+          cloneElement(item, {
+            __staticSelector: 'Stepper',
+            icon: item.props.icon || index + 1,
+            key: index,
+            state: itemState,
+            onClick: () =>
+              shouldAllowSelect && typeof onStepClick === 'function' && onStepClick(index),
+            allowStepClick: shouldAllowSelect && typeof onStepClick === 'function',
+            completedIcon: item.props.completedIcon || completedIcon,
+            progressIcon: item.props.progressIcon || progressIcon,
+            color: item.props.color || color,
+            iconSize,
+            size,
+            radius,
+            classNames,
+            styles,
+            iconPosition: item.props.iconPosition || iconPosition,
+            orientation,
+            variant,
+          })
         );
-      }
 
-      return acc;
-    }, []);
+        if (index !== _children.length - 1 && variant === 'default') {
+          acc.push(
+            <StepsSeparator
+              className={cx('step-separator', { 'is-active': index < active })}
+              $active={index < active}
+              $vertical={orientation === 'vertical'}
+              key={`separator-${index}`}
+            />
+          );
+        }
+
+        return acc;
+      },
+      []
+    );
 
     const stepContent = _children[active]?.props?.children;
     const completedContent = completedStep?.props?.children;

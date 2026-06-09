@@ -174,7 +174,7 @@ export const HasLoading = () => {
   const [loading, setLoading] = React.useState(false);
   const [options, setOptions] = React.useState<any[]>([]);
 
-  const timerRef = React.useRef<any>();
+  const timerRef = React.useRef<any>(undefined);
   const handleChange = (value?: string) => {
     setLoading(true);
     if (timerRef.current) {

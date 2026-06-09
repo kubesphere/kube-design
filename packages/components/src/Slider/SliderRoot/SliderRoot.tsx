@@ -8,13 +8,17 @@ interface SliderRootProps extends DefaultProps, React.ComponentPropsWithoutRef<'
 }
 
 export const SliderRoot = forwardRef<HTMLDivElement, SliderRootProps>(
-  (
-    { className, children, style, size, classNames, styles, ...others }: SliderRootProps,
-    ref,
-    ...rest
-  ) => {
+  ({ className, children, style, size, classNames, styles, ...others }: SliderRootProps, ref) => {
     return (
-      <RootWrapper {...rest} tabIndex={-1} role="slider" ref={ref} style={styles}>
+      <RootWrapper
+        {...others}
+        className={className}
+        size={size}
+        tabIndex={-1}
+        role="slider"
+        ref={ref}
+        style={style}
+      >
         {children}
       </RootWrapper>
     );

@@ -101,7 +101,7 @@ export const Textarea = forwardRef<TextareaProps, 'textarea'>(
     const isControlledComponent = useMemo(() => value !== undefined, [value]);
     const [selfValue, setSelfValue] = useState<string>(defaultValue as string);
     const [focused, setFocused] = useState(false);
-    const textareaRef = useRef<HTMLTextAreaElement>();
+    const textareaRef = useRef<HTMLTextAreaElement | null>(null);
     const mergedRef = useMergedRef(ref, textareaRef);
 
     const autoResize = () => {

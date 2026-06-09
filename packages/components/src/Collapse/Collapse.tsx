@@ -58,7 +58,7 @@ const DEFAULT_PROPS: Required<Pick<CollapseProps, 'expandIcon'>> = {
   },
 };
 
-const Collapse: CollapseInterface = (props: PropsWithChildren<CollapseInterface>) => {
+const Collapse: CollapseInterface = (props: PropsWithChildren<CollapseProps>) => {
   const openMotion: CSSMotionProps = {
     ...collapseMotion,
     motionAppear: false,
@@ -67,7 +67,7 @@ const Collapse: CollapseInterface = (props: PropsWithChildren<CollapseInterface>
 
   const getItems = () => {
     const { children } = props;
-    return toArray(children).map((child: React.ReactElement, index: number) => {
+    return toArray(children).map((child: React.ReactElement<PanelProps>, index: number) => {
       if (child.props?.disabled) {
         const key = child.key || String(index);
         const { disabled, collapsible } = child.props;

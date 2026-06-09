@@ -1,4 +1,5 @@
 import React from 'react';
+import type { ValidationMap, WeakValidationMap } from 'prop-types';
 
 export type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends Record<string, any> ? DeepPartial<T[P]> : T[P];
@@ -49,11 +50,11 @@ export type ComponentWithAs<Component extends As, Props extends object = {}> = {
       Props,
       AsComponent
     >
-  ): JSX.Element;
+  ): React.ReactElement | null;
 
   displayName?: string;
-  propTypes?: React.WeakValidationMap<any>;
-  contextTypes?: React.ValidationMap<any>;
+  propTypes?: WeakValidationMap<any>;
+  contextTypes?: ValidationMap<any>;
   defaultProps?: Partial<any>;
   id?: string;
 };

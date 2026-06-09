@@ -18,7 +18,7 @@ export interface RawLoggerProps {
 }
 
 const LINK_REGEX =
-  /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
+  /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
 
 /**
  * Create a class string.
@@ -198,7 +198,14 @@ export function RawLoggerBase({
         <div
           key={`folder-placeholder-${index}`}
           className="fold-line"
+          role="button"
+          tabIndex={0}
           onClick={() => setFold(!fold)}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              setFold(!fold);
+            }
+          }}
         >
           {partical.label
             ? ansiToJSON(partical.label).map(convertBundleIntoReact.bind(null, useClasses, linkify))

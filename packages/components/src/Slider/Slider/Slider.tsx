@@ -108,7 +108,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(
       onChange,
     });
     // const container = useRef<HTMLDivElement>();
-    const thumb = useRef<HTMLDivElement>();
+    const thumb = useRef<HTMLDivElement | null>(null);
     // const start = useRef<number>();
     // const offset = useRef<number>();
     const position = getUnevenPosition({ value: _value, min, max, marks });

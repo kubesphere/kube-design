@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { KubedTheme, themeUtils } from '../../theme';
+import { themeUtils } from '../../theme';
 
 export const StepWrapper = styled.div`
   display: flex;
