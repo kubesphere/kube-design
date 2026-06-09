@@ -17,7 +17,7 @@ export const SliderRoot = forwardRef<HTMLDivElement, SliderRootProps>(
         tabIndex={-1}
         role="slider"
         ref={ref}
-        style={style}
+        style={styles ?? style}
       >
         {children}
       </RootWrapper>
