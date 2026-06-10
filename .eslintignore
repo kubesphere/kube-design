@@ -1,7 +1,13 @@
 esm
 cjs
 dist
+packages/*/lib
+packages/*/esm
+packages/*/cjs
+packages/*/dist
 public
 .cache
+.next
+**/.next
 .eslintrc.js
 *.d.ts

@@ -69,14 +69,22 @@ export default function Prism({
           {tokens
             .map((line, index) => {
               const lineNumber = index + 1;
-              const lineProps = getLineProps({ line, key: index });
+              const { key: lineKey, ...lineProps } = getLineProps({
+                line,
+                key: index,
+              }) as React.HTMLAttributes<HTMLElement> & { key?: React.Key };
               return (
-                <LineContainer {...lineProps}>
+                <LineContainer key={lineKey ?? index} {...lineProps}>
                   {withLineNumbers && <LineNumber>{lineNumber}</LineNumber>}
                   <div className="line-content">
-                    {line.map((token, key) => (
-                      <span {...getTokenProps({ token, key })} />
-                    ))}
+                    {line.map((token, key) => {
+                      const { key: tokenKey, ...tokenProps } = getTokenProps({
+                        token,
+                        key,
+                      }) as React.HTMLAttributes<HTMLElement> & { key?: React.Key };
+
+                      return <span key={tokenKey ?? key} {...tokenProps} />;
+                    })}
                   </div>
                 </LineContainer>
               );

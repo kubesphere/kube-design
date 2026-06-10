@@ -83,7 +83,7 @@ export const Banner = forwardRef<BannerProps, 'div'>(
     const tips: BannerTipProps[] = [];
     const others = [];
 
-    React.Children.forEach(children, (child: React.ReactElement) => {
+    React.Children.forEach(children, (child: React.ReactElement<any>) => {
       if (!child) return;
       if (child.type === BannerTip) {
         if (child.key && removedTipKeys.indexOf(child.key) < 0) {

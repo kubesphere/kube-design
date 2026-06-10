@@ -1,4 +1,3 @@
-const withPlugins = require('next-compose-plugins');
 // const withTM = require('next-transpile-modules')([
 //   '@kubed/components',
 //   '@kubed/hooks',
@@ -10,8 +9,8 @@ process.env.I18NEXT_DEFAULT_CONFIG_PATH = `${__dirname}/next-i18next.config.cjs`
 
 const { i18n } = require('./next-i18next.config.cjs');
 
-module.exports = withPlugins([], {
-  transpilePackages: ['@kubed/components', '@kubed/hooks', '@kubed/hooks'],
+module.exports = {
+  transpilePackages: ['@kubed/components', '@kubed/hooks'],
   reactStrictMode: false,
   i18n,
   experimental: {
@@ -60,4 +59,4 @@ module.exports = withPlugins([], {
 
     return config;
   },
-});
+};

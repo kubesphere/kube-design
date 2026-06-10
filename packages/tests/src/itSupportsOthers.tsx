@@ -1,11 +1,11 @@
 import React from 'react';
-import { shallow } from 'enzyme';
 import { ThemeProvider } from 'styled-components';
 import { themeUtils } from '@kubed/components';
+import { createWrapper } from './reactWrapper';
 
 export function itSupportsOthers(Component: React.ElementType, requiredProps: Record<string, any>) {
   it('supports ...others props', () => {
-    const element = shallow(
+    const element = createWrapper(
       <ThemeProvider theme={themeUtils.getPresets()[0]}>
         <Component {...requiredProps} data-other-attribute="test" />
       </ThemeProvider>

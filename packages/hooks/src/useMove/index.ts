@@ -21,7 +21,7 @@ export function useMove<T extends HTMLElement = HTMLDivElement>(
   onChange: (value: UseMovePosition) => void,
   handlers?: useMoveHandlers
 ) {
-  const ref = useRef<T>();
+  const ref = useRef<T | null>(null);
   const mounted = useRef<boolean>(false);
   const isSliding = useRef(false);
   const frame = useRef(0);

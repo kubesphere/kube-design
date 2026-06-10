@@ -9,14 +9,14 @@ export interface DropzoneStatusProps {
 }
 
 function createDropzoneStatus(status: keyof DropzoneContextValue) {
-  const Component = (props: DropzoneStatusProps): JSX.Element => {
+  const Component = (props: DropzoneStatusProps): React.ReactElement | null => {
     const { children, ...others } = props;
 
     const ctx = useDropzoneContext();
     const _children = isElement(children) ? children : <span>{children}</span>;
 
     if (ctx[status]) {
-      return cloneElement(_children, others);
+      return cloneElement(_children as React.ReactElement<any>, others);
     }
 
     return null;

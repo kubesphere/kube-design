@@ -1,7 +1,32 @@
 {
   "extends": "./tsconfig.base.json",
   "include": ["./packages", "./types", "./docs", "./scripts", "./configs", "./envs"],
-  "exclude": ["public", ".cache", "configs/jest"],
+  "exclude": [
+    "public",
+    ".cache",
+    ".next",
+    "**/.next",
+    "configs/jest",
+    "node_modules",
+    "lib",
+    "esm",
+    "cjs",
+    "dist",
+    "packages/*/lib",
+    "packages/*/esm",
+    "packages/*/cjs",
+    "packages/*/dist",
+    "packages/**/lib",
+    "packages/**/esm",
+    "packages/**/cjs",
+    "packages/**/dist",
+    "**/*.story.ts",
+    "**/*.story.tsx",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "jest-config.js",
+    "configs/storybook/main.js"
+  ],
   "compilerOptions": {
     "paths": {
       "@kubed/*": ["packages/*/src"],

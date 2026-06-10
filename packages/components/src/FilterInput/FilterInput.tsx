@@ -70,7 +70,7 @@ export const FilterInput = forwardRef<FilterInputProps, null>((props, ref) => {
   const optionRef = useClickOutside(() => {
     setOptionVisible(false);
   });
-  const inputRef = useRef<HTMLInputElement>();
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const [filters, setFilters] = React.useState(props.filters);
   React.useEffect(() => {

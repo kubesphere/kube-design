@@ -26,7 +26,7 @@ const parseSvg = (svg: string) => {
   //   return val.includes(ident) ? '{color}' : '"var(--geist-icons-background)"';
   // };
 
-  let newSvg = svg.replace(/-([a-z])(?=[a-z\-]*[=\s/>])/g, (g) => g[1].toUpperCase());
+  let newSvg = svg.replace(/-([a-z])(?=[a-z-]*[=\s/>])/g, (g) => g[1].toUpperCase());
   newSvg = newSvg.replace(
     /<svg([^>]+)>/,
     `<svg$1 fill="#b6c2cd" ref={ref} color="#324558" {...props} height={size} width={size} className={classNames}>`

@@ -59,7 +59,7 @@ export default function generatePicker<DateType>(generateConfig: GenerateConfig<
       const { DatePicker: datePickerLocales } = locales;
       dayjs.locale(locale);
 
-      const pickerRef = useRef<CommonPickerMethods>();
+      const pickerRef = useRef<CommonPickerMethods | null>(null);
       useImperativeHandle(ref, () => ({
         focus: () => {
           if (pickerRef.current) {

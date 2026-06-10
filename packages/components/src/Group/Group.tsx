@@ -74,7 +74,7 @@ export function Group({
   direction = 'row',
   ...rest
 }: PropsWithChildren<GroupProps>) {
-  const items = (Children.toArray(children) as React.ReactElement[]).map((child) =>
+  const items = (Children.toArray(children) as React.ReactElement<any>[]).map((child) =>
     cloneElement(child, {
       className: cx('group-child', child.props?.className),
     })

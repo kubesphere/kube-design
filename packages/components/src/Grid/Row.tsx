@@ -58,7 +58,7 @@ export function Row({
   columns = 12,
   ...others
 }: RowProps) {
-  const cols = (Children.toArray(children) as React.ReactElement[]).map((col, index) =>
+  const cols = (Children.toArray(children) as React.ReactElement<ColProps>[]).map((col, index) =>
     React.cloneElement(col, { gutter, grow, columns, key: index })
   );
 

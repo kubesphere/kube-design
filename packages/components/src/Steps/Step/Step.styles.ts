@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { KubedTheme, themeUtils } from '../../theme';
 
 export const StepWrapper = styled.div`
   display: flex;
@@ -55,10 +54,6 @@ export const StepIcon = styled.div`
     color: #fff;
   }
 `;
-
-// const getSeparatorDistanceFromIcon = (theme: KubedTheme) => {
-//   theme.layout.spacing.;
-// };
 
 export const StepIconWrapper = styled.div`
   position: relative;

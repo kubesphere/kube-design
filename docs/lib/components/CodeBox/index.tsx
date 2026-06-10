@@ -1,14 +1,12 @@
 import React, { useContext } from 'react';
 import { Language } from 'prism-react-renderer';
-import { LiveProvider } from 'react-live';
+import dynamic from 'next/dynamic';
 import { mdx, MDXContext } from '@mdx-js/react';
 import styled from 'styled-components';
-import { useTheme } from '@kubed/components';
-import { dark, light } from './prismTheme';
-import ReactLivePreview from './ReactLivePreview';
 
 import Prism from './Prism';
-import LivePreview from './LivePreview';
+
+const LiveCodeBlock = dynamic(() => import('./LiveCodeBlock'), { ssr: false });
 
 interface CodeBoxProps {
   className?: string;
@@ -69,8 +67,6 @@ export default function CodeBox({
   withLineNumbers = true,
 }: CodeBoxProps) {
   const language = className.replace(/language-/, '') as Language;
-  const theme = useTheme();
-  const prismTheme = theme.type === 'dark' ? dark : light;
 
   const mdxContext = useContext(MDXContext) as object;
   const scope = { mdx, ...mdxContext, TestWrapper };
@@ -78,7 +74,7 @@ export default function CodeBox({
   if (live) {
     return (
       <CodeBoxWrapper live>
-        <ReactLivePreview language={language} code={children} scope={scope} />
+        <LiveCodeBlock language={language} code={children} scope={scope} mode="live" />
       </CodeBoxWrapper>
     );
   }
@@ -86,9 +82,7 @@ export default function CodeBox({
   if (render) {
     return (
       <CodeBoxWrapper>
-        <LiveProvider language={language} code={children.trim()} scope={scope} theme={prismTheme}>
-          <LivePreview />
-        </LiveProvider>
+        <LiveCodeBlock language={language} code={children} scope={scope} mode="render" />
       </CodeBoxWrapper>
     );
   }

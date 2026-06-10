@@ -1,5 +1,17 @@
 # @kubed/code-editor
 
+## 0.3.0-alpha.1
+
+### Minor Changes
+
+- Upgrade React, React DOM, and React type definitions to 19.
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @kubed/hooks@0.3.0-alpha.1
+  - @kubed/icons@0.3.0-alpha.1
+
 ## 0.2.36
 
 ### Patch Changes

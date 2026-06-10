@@ -88,6 +88,7 @@ export const FormItem = forwardRef<FormItemProps, 'div'>(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   (
     { name, label, formItemLayout, help, tooltip, rules, validateStatus, children, ...rest },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ref
   ) => {
     const formContext = React.useContext(FormContext);
@@ -114,7 +115,7 @@ export const FormItem = forwardRef<FormItemProps, 'div'>(
           const childNode =
             typeof children === 'function'
               ? children(control, meta, form)
-              : React.cloneElement(children as React.ReactElement, { ...control, size });
+              : React.cloneElement(children as React.ReactElement<any>, { ...control, size });
 
           const formItemStatus = getStatus(meta);
           const wrapperClassName = formItemStatus && `form-item-status-${formItemStatus}`;

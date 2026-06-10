@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Menu, MenuItem } from '../Menu/Menu';
+import { Menu } from '../Menu/Menu';
 import { addColorAlpha } from '../utils/color';
 
 export const Wrapper = styled.div`

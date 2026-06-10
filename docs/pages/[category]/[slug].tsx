@@ -98,7 +98,7 @@ export default function Slug(props: any) {
   return (
     <DocLayout category={category} slug={slug}>
       <Head>
-        <title>{title} - Kube Design</title>
+        <title>{`${title} - Kube Design`}</title>
       </Head>
       {group === 'components' && (
         <>
