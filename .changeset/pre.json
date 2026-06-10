@@ -1,0 +1,18 @@
+{
+  "mode": "pre",
+  "tag": "alpha",
+  "initialVersions": {
+    "kubed-documents": "0.2.36",
+    "@kubed/charts": "0.2.36",
+    "@kubed/code-editor": "0.2.36",
+    "@kubed/components": "0.2.36",
+    "@kubed/diff-viewer": "0.2.36",
+    "@kubed/hooks": "0.2.36",
+    "@kubed/icons": "0.2.36",
+    "@kubed/log-viewer": "0.2.36",
+    "@kubed/tests": "0.2.36"
+  },
+  "changesets": [
+    "release-alpha-one"
+  ]
+}

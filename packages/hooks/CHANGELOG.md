@@ -1,5 +1,11 @@
 # @kubed/hooks
 
+## 0.3.0-alpha.1
+
+### Minor Changes
+
+- Upgrade React, React DOM, and React type definitions to 19.
+
 ## 0.2.36
 
 ### Patch Changes
