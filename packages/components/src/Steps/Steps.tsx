@@ -50,6 +50,27 @@ export interface StepsProps extends DefaultProps {
   variant?: 'default' | 'tab';
 }
 
+function getElementChildren(children: React.ReactNode): React.ReactElement<any>[] {
+  const elements: React.ReactElement<any>[] = [];
+
+  Children.forEach(children, (child) => {
+    if (!React.isValidElement(child)) {
+      return;
+    }
+
+    if (child.type === React.Fragment) {
+      elements.push(
+        ...getElementChildren((child.props as { children?: React.ReactNode }).children)
+      );
+      return;
+    }
+
+    elements.push(child);
+  });
+
+  return elements;
+}
+
 export const Steps = forwardRef<StepsProps, 'div'>(
   (
     {
@@ -74,7 +95,7 @@ export const Steps = forwardRef<StepsProps, 'div'>(
     },
     ref
   ) => {
-    const convertedChildren = Children.toArray(children) as React.ReactElement<any>[];
+    const convertedChildren = getElementChildren(children);
     const _children = convertedChildren.filter((child) => child.type !== StepCompleted);
     const completedStep = convertedChildren.find((item) => item.type === StepCompleted);
 
