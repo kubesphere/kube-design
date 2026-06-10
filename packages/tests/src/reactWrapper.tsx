@@ -3,8 +3,12 @@ import { createRoot } from 'react-dom/client';
 
 type WrapperFactory = (element: React.ReactElement) => React.ReactElement;
 type Selector = string | React.ElementType;
+type MountedWrapper = {
+  unmount: () => void;
+};
 
 const booleanAttributes = new Set(['checked', 'disabled', 'multiple', 'readOnly', 'selected']);
+const mountedWrappers = new Set<MountedWrapper>();
 
 function getDisplayName(type: React.ElementType | string): string {
   if (typeof type === 'string') {
@@ -177,6 +181,8 @@ export class ReactWrapper {
 
   private readonly renderedElement: React.ReactElement;
 
+  private unmounted = false;
+
   constructor(
     private readonly element: React.ReactElement,
     private readonly wrapElement: WrapperFactory = (value) => value
@@ -189,6 +195,8 @@ export class ReactWrapper {
     act(() => {
       this.root.render(this.renderedElement);
     });
+
+    mountedWrappers.add(this);
   }
 
   find(selector: Selector) {
@@ -216,8 +224,33 @@ export class ReactWrapper {
   getDOMNode() {
     return this.container.firstElementChild || this.container;
   }
+
+  unmount() {
+    if (this.unmounted) {
+      return;
+    }
+
+    act(() => {
+      this.root.unmount();
+    });
+
+    this.container.remove();
+    mountedWrappers.delete(this);
+    this.unmounted = true;
+  }
 }
 
 export function createWrapper(element: React.ReactElement, wrapElement?: WrapperFactory) {
   return new ReactWrapper(element, wrapElement);
+}
+
+function cleanupMountedWrappers() {
+  mountedWrappers.forEach((wrapper) => {
+    wrapper.unmount();
+  });
+  mountedWrappers.clear();
+}
+
+if (typeof afterEach === 'function') {
+  afterEach(cleanupMountedWrappers);
 }
