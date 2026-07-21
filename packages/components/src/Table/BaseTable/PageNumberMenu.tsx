@@ -34,52 +34,63 @@ interface PageNumberMenuProps {
   onPageChange: (pageIndex: number) => void;
 }
 
-export const PageNumberMenu = ({ pageCount, pageIndex, onPageChange }: PageNumberMenuProps) => {
-  const pageIndexes = React.useMemo(
-    () => Array.from({ length: pageCount }, (_, index) => index),
-    [pageCount]
-  );
-  const virtualListRef = React.useRef<VListHandle>(null);
+export interface PageNumberMenuHandle {
+  scrollToCurrentPage: () => void;
+}
 
-  React.useEffect(() => {
-    if (pageCount > VIRTUALIZATION_THRESHOLD) {
-      virtualListRef.current?.scrollToIndex(pageIndex, { align: 'center' });
-    }
-  }, [pageCount, pageIndex]);
-
-  if (pageCount > VIRTUALIZATION_THRESHOLD) {
-    return (
-      <VirtualPageMenu>
-        <VList
-          ref={virtualListRef}
-          data={pageIndexes}
-          itemSize={PAGE_ITEM_HEIGHT}
-          keepMounted={[pageIndex]}
-          style={{ height: PAGE_MENU_VIEWPORT_HEIGHT }}
-        >
-          {(index) => (
-            <MenuButton
-              key={index}
-              aria-current={index === pageIndex ? 'page' : undefined}
-              onClick={() => onPageChange(index)}
-            >
-              {index + 1}
-            </MenuButton>
-          )}
-        </VList>
-      </VirtualPageMenu>
+export const PageNumberMenu = React.forwardRef<PageNumberMenuHandle, PageNumberMenuProps>(
+  ({ pageCount, pageIndex, onPageChange }, ref) => {
+    const pageIndexes = React.useMemo(
+      () => Array.from({ length: pageCount }, (_, index) => index),
+      [pageCount]
     );
+    const virtualListRef = React.useRef<VListHandle>(null);
+
+    const scrollToCurrentPage = React.useCallback(() => {
+      if (pageCount > VIRTUALIZATION_THRESHOLD) {
+        virtualListRef.current?.scrollToIndex(pageIndex, { align: 'center' });
+      }
+    }, [pageCount, pageIndex]);
+
+    React.useImperativeHandle(ref, () => ({ scrollToCurrentPage }), [scrollToCurrentPage]);
+    React.useEffect(scrollToCurrentPage, [scrollToCurrentPage]);
+
+    if (pageCount > VIRTUALIZATION_THRESHOLD) {
+      return (
+        <VirtualPageMenu>
+          <VList
+            ref={virtualListRef}
+            data={pageIndexes}
+            itemSize={PAGE_ITEM_HEIGHT}
+            keepMounted={[pageIndex]}
+            style={{ height: PAGE_MENU_VIEWPORT_HEIGHT }}
+          >
+            {(index) => (
+              <MenuButton
+                key={index}
+                aria-current={index === pageIndex ? 'page' : undefined}
+                onClick={() => onPageChange(index)}
+              >
+                {index + 1}
+              </MenuButton>
+            )}
+          </VList>
+        </VirtualPageMenu>
+      );
+    }
+
+    const items = pageIndexes.map((index) => (
+      <MenuItem
+        key={index}
+        aria-current={index === pageIndex ? 'page' : undefined}
+        onClick={() => onPageChange(index)}
+      >
+        {index + 1}
+      </MenuItem>
+    ));
+
+    return <PageMenu>{items}</PageMenu>;
   }
+);
 
-  const items = pageIndexes.map((index) => (
-    <MenuItem
-      key={index}
-      aria-current={index === pageIndex ? 'page' : undefined}
-      onClick={() => onPageChange(index)}
-    >
-      {index + 1}
-    </MenuItem>
-  ));
-
-  return <PageMenu>{items}</PageMenu>;
-};
+PageNumberMenu.displayName = '@kubed/components/Table/PageNumberMenu';

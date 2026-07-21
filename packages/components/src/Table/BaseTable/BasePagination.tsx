@@ -7,7 +7,7 @@ import { Updater } from '@tanstack/react-table';
 import { ButtonContainer } from '../../Button/Button.styles';
 import { useLocales } from '../../ConfigProvider/LocaleProvider/LocaleContext';
 import { Button, Dropdown, Menu, MenuItem } from '../../index';
-import { PageNumberMenu } from './PageNumberMenu';
+import { PageNumberMenu, PageNumberMenuHandle } from './PageNumberMenu';
 
 const flex = css`
   display: flex;
@@ -144,11 +144,17 @@ export const BasePagination = ({
   const pageCount = getPageCount();
   const { locales } = useLocales();
   const { Pagination: pageLocales } = locales;
+  const pageNumberMenuRef = React.useRef<PageNumberMenuHandle>(null);
 
   const renderPageDropDown = () => {
     if (pageCount && pageCount > 0) {
       return (
-        <PageNumberMenu pageCount={pageCount} pageIndex={pageIndex} onPageChange={setPageIndex} />
+        <PageNumberMenu
+          ref={pageNumberMenuRef}
+          pageCount={pageCount}
+          pageIndex={pageIndex}
+          onPageChange={setPageIndex}
+        />
       );
     }
     return null;
@@ -200,7 +206,12 @@ export const BasePagination = ({
           >
             <Previous size={20} />
           </Button>
-          <Dropdown trigger="mouseenter click" content={renderPageDropDown()} interactive>
+          <Dropdown
+            trigger="mouseenter click"
+            content={renderPageDropDown()}
+            interactive
+            onShow={() => pageNumberMenuRef.current?.scrollToCurrentPage()}
+          >
             <PageIndex>
               {pageIndex + 1} / {pageCount}
             </PageIndex>
