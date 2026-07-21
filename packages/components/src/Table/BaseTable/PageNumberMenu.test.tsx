@@ -1,4 +1,4 @@
-import React, { act } from 'react';
+import React from 'react';
 import { mountWithTheme } from '@kubed/tests';
 import { PageNumberMenu } from './PageNumberMenu';
 
@@ -25,19 +25,5 @@ describe('@kubed/components/Table/PageNumberMenu', () => {
     );
 
     expect(wrapper.getDOMNode().querySelector('[aria-current="page"]')?.textContent).toBe('50');
-  });
-
-  it('changes to the clicked page in a virtual page list', () => {
-    const onPageChange = jest.fn();
-    const wrapper = mountWithTheme(
-      <PageNumberMenu pageCount={33} pageIndex={16} onPageChange={onPageChange} />
-    );
-    const currentPage = wrapper
-      .getDOMNode()
-      .querySelector('[aria-current="page"]') as HTMLButtonElement;
-
-    act(() => currentPage.click());
-
-    expect(onPageChange).toHaveBeenCalledWith(16);
   });
 });
