@@ -7,6 +7,7 @@ import { Updater } from '@tanstack/react-table';
 import { ButtonContainer } from '../../Button/Button.styles';
 import { useLocales } from '../../ConfigProvider/LocaleProvider/LocaleContext';
 import { Button, Dropdown, Menu, MenuItem } from '../../index';
+import { PageNumberMenu } from './PageNumberMenu';
 
 const flex = css`
   display: flex;
@@ -146,12 +147,9 @@ export const BasePagination = ({
 
   const renderPageDropDown = () => {
     if (pageCount && pageCount > 0) {
-      const items = Array.from({ length: pageCount }, (_, i) => i).map((item) => (
-        <MenuItem key={item} onClick={() => setPageIndex(item)}>
-          {item + 1}
-        </MenuItem>
-      ));
-      return <MenuWrapper>{items}</MenuWrapper>;
+      return (
+        <PageNumberMenu pageCount={pageCount} pageIndex={pageIndex} onPageChange={setPageIndex} />
+      );
     }
     return null;
   };
