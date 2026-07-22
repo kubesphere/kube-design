@@ -210,7 +210,8 @@ export const BasePagination = ({
             trigger="mouseenter click"
             content={renderPageDropDown()}
             interactive
-            onShow={() => pageNumberMenuRef.current?.scrollToCurrentPage()}
+            onShow={() => pageNumberMenuRef.current?.resetVirtualList()}
+            onShown={() => pageNumberMenuRef.current?.scrollToCurrentPage()}
           >
             <PageIndex>
               {pageIndex + 1} / {pageCount}

@@ -11,6 +11,7 @@ const PAGE_ITEM_HEIGHT = 36;
 const PAGE_MENU_HEIGHT = 176;
 const PAGE_MENU_PADDING = 8;
 const PAGE_MENU_VIEWPORT_HEIGHT = PAGE_MENU_HEIGHT - PAGE_MENU_PADDING * 2;
+const MAX_SCROLL_ATTEMPTS = 30;
 
 const PageMenu = styled(Menu)`
   box-sizing: border-box;
@@ -35,6 +36,7 @@ interface PageNumberMenuProps {
 }
 
 export interface PageNumberMenuHandle {
+  resetVirtualList: () => void;
   scrollToCurrentPage: () => void;
 }
 
@@ -44,21 +46,52 @@ export const PageNumberMenu = React.forwardRef<PageNumberMenuHandle, PageNumberM
       () => Array.from({ length: pageCount }, (_, index) => index),
       [pageCount]
     );
+    const [virtualListKey, setVirtualListKey] = React.useState(0);
     const virtualListRef = React.useRef<VListHandle>(null);
+    const scrollFrameRef = React.useRef<number>();
+
+    const resetVirtualList = React.useCallback(() => {
+      if (pageCount > VIRTUALIZATION_THRESHOLD) {
+        setVirtualListKey((key) => key + 1);
+      }
+    }, [pageCount]);
 
     const scrollToCurrentPage = React.useCallback(() => {
-      if (pageCount > VIRTUALIZATION_THRESHOLD) {
-        virtualListRef.current?.scrollToIndex(pageIndex, { align: 'center' });
+      if (pageCount <= VIRTUALIZATION_THRESHOLD) {
+        return;
       }
+
+      window.cancelAnimationFrame(scrollFrameRef.current);
+
+      let attempts = 0;
+      const scrollWhenMeasured = () => {
+        const virtualList = virtualListRef.current;
+
+        if (virtualList?.viewportSize) {
+          virtualList.scrollToIndex(pageIndex, { align: 'center' });
+          return;
+        }
+
+        attempts += 1;
+        if (attempts < MAX_SCROLL_ATTEMPTS) {
+          scrollFrameRef.current = window.requestAnimationFrame(scrollWhenMeasured);
+        }
+      };
+
+      scrollWhenMeasured();
     }, [pageCount, pageIndex]);
 
-    React.useImperativeHandle(ref, () => ({ scrollToCurrentPage }), [scrollToCurrentPage]);
-    React.useEffect(scrollToCurrentPage, [scrollToCurrentPage]);
+    React.useImperativeHandle(ref, () => ({ resetVirtualList, scrollToCurrentPage }), [
+      resetVirtualList,
+      scrollToCurrentPage,
+    ]);
+    React.useEffect(() => () => window.cancelAnimationFrame(scrollFrameRef.current), []);
 
     if (pageCount > VIRTUALIZATION_THRESHOLD) {
       return (
         <VirtualPageMenu>
           <VList
+            key={virtualListKey}
             ref={virtualListRef}
             data={pageIndexes}
             itemSize={PAGE_ITEM_HEIGHT}
