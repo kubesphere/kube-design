@@ -7,12 +7,14 @@ import { PageNumberMenu, PageNumberMenuHandle } from './PageNumberMenu';
 const mockScrollToIndex = jest.fn();
 let mockViewportSize = 160;
 let mockVListMountCount = 0;
+let mockVListStyle: React.CSSProperties | undefined;
 
 jest.mock('virtua', () => {
   const React = require('react');
 
   return {
     VList: React.forwardRef((props, ref) => {
+      mockVListStyle = props.style;
       React.useEffect(() => {
         mockVListMountCount += 1;
       }, []);
@@ -84,9 +86,7 @@ describe('@kubed/components/Table/PageNumberMenu positioning', () => {
     act(() => dropdowns.at(1).prop('onShow')?.());
 
     expect(mockVListMountCount).toBe(previousMountCount + 1);
-
-    act(() => dropdowns.at(1).prop('onShown')?.());
-
+    expect(mockVListStyle?.visibility).toBe('hidden');
     expect(mockScrollToIndex).not.toHaveBeenCalled();
 
     act(() => animationFrames.shift()?.(0));
@@ -96,6 +96,10 @@ describe('@kubed/components/Table/PageNumberMenu positioning', () => {
     act(() => animationFrames.shift()?.(0));
 
     expect(mockScrollToIndex).toHaveBeenCalledWith(0, { align: 'center' });
+    expect(mockVListStyle?.visibility).toBe('hidden');
+
+    act(() => animationFrames.shift()?.(0));
+    expect(mockVListStyle?.visibility).toBe('visible');
     requestAnimationFrame.mockRestore();
   });
 

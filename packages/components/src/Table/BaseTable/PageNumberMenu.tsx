@@ -47,11 +47,14 @@ export const PageNumberMenu = React.forwardRef<PageNumberMenuHandle, PageNumberM
       [pageCount]
     );
     const [virtualListKey, setVirtualListKey] = React.useState(0);
+    const [isVirtualListPositioned, setIsVirtualListPositioned] = React.useState(true);
     const virtualListRef = React.useRef<VListHandle>(null);
     const scrollFrameRef = React.useRef<number>();
 
     const resetVirtualList = React.useCallback(() => {
       if (pageCount > VIRTUALIZATION_THRESHOLD) {
+        window.cancelAnimationFrame(scrollFrameRef.current);
+        setIsVirtualListPositioned(false);
         setVirtualListKey((key) => key + 1);
       }
     }, [pageCount]);
@@ -69,6 +72,9 @@ export const PageNumberMenu = React.forwardRef<PageNumberMenuHandle, PageNumberM
 
         if (virtualList?.viewportSize) {
           virtualList.scrollToIndex(pageIndex, { align: 'center' });
+          scrollFrameRef.current = window.requestAnimationFrame(() => {
+            setIsVirtualListPositioned(true);
+          });
           return;
         }
 
@@ -85,6 +91,11 @@ export const PageNumberMenu = React.forwardRef<PageNumberMenuHandle, PageNumberM
       resetVirtualList,
       scrollToCurrentPage,
     ]);
+    React.useEffect(() => {
+      if (virtualListKey > 0) {
+        scrollToCurrentPage();
+      }
+    }, [scrollToCurrentPage, virtualListKey]);
     React.useEffect(() => () => window.cancelAnimationFrame(scrollFrameRef.current), []);
 
     if (pageCount > VIRTUALIZATION_THRESHOLD) {
@@ -96,7 +107,10 @@ export const PageNumberMenu = React.forwardRef<PageNumberMenuHandle, PageNumberM
             data={pageIndexes}
             itemSize={PAGE_ITEM_HEIGHT}
             keepMounted={[pageIndex]}
-            style={{ height: PAGE_MENU_VIEWPORT_HEIGHT }}
+            style={{
+              height: PAGE_MENU_VIEWPORT_HEIGHT,
+              visibility: isVirtualListPositioned ? 'visible' : 'hidden',
+            }}
           >
             {(index) => (
               <MenuButton
