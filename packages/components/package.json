@@ -1,6 +1,6 @@
 {
   "name": "@kubed/components",
-  "version": "0.2.36",
+  "version": "0.2.37",
   "description": "React components library for KubeSphere console.",
   "repository": {
     "type": "git",
@@ -42,11 +42,11 @@
     "virtua": "^0.49.3"
   },
   "devDependencies": {
-    "@kubed/tests": "0.2.36"
+    "@kubed/tests": "0.2.37"
   },
   "peerDependencies": {
-    "@kubed/hooks": "0.2.36",
-    "@kubed/icons": "0.2.36",
+    "@kubed/hooks": "0.2.37",
+    "@kubed/icons": "0.2.37",
     "react": ">=16.14.0",
     "react-dom": ">=16.14.0",
     "react-is": "^17.0.2"

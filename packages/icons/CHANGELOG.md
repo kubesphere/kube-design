@@ -1,5 +1,11 @@
 # @kubed/icons
 
+## 0.2.37
+
+### Patch Changes
+
+- [#408](https://github.com/kubesphere/kube-design/pull/408) [`22c4c04`](https://github.com/kubesphere/kube-design/commit/22c4c0431f92909a3c7abbbe342244eb7fd43cda) Thanks [@yazhouio](https://github.com/yazhouio)! - Virtualize table pagination page lists with more than 32 pages and require React 16.14 or newer.
+
 ## 0.2.36
 
 ### Patch Changes
