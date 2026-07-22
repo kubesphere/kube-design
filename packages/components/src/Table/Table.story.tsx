@@ -241,6 +241,13 @@ export const paginationTable = () => {
   return <BaseTable.Pagination total={100} pagination={state} onChange={setState} />;
 };
 
+export const virtualPaginationTable = () => {
+  const [state, setState] = React.useState({
+    page: 50,
+  });
+  return <BaseTable.Pagination total={1000} pagination={state} onChange={setState} />;
+};
+
 export const TableWithPaginationAndToolbar = () => {
   const [page, setPage] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(10);
