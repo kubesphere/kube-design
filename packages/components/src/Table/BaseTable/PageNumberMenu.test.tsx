@@ -1,6 +1,8 @@
 import React from 'react';
-import { mountWithTheme } from '@kubed/tests';
+import { mockResizeObserver, mountWithTheme } from '@kubed/tests';
 import { PageNumberMenu } from './PageNumberMenu';
+
+mockResizeObserver();
 
 describe('@kubed/components/Table/PageNumberMenu', () => {
   it('renders every page when there are exactly 32 pages', () => {
