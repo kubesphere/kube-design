@@ -29,6 +29,7 @@ React 16.14, which includes this runtime.
 | `@kubed/charts`      | `recharts@^2.15.4`          | 2.15.4                     |
 | `@kubed/log-viewer`  | `react-virtualized@^9.22.6` | 9.22.6                     |
 | `@kubed/components`  | `rc-motion@^2.9.5`         | 2.9.5                      |
+| `@kubed/components`  | `rc-picker@^4.11.3`        | 4.11.3                     |
 
 React Ace 14 declares React 19 support. Recharts 2.15.4 and react-virtualized 9.22.6
 also include React 19 in their peer ranges; the latter uses element refs for cell
@@ -58,7 +59,7 @@ yarn build:all
 The Build workflow runs these checks for pull requests targeting `master` and
 `react-19`.
 
-- 37 Jest suites and 158 tests pass, including ref cleanup, Modal and Tooltip lifecycle,
+- 37 Jest suites and 165 tests pass, including ref cleanup, picker, Modal and Tooltip lifecycle,
   popup interactions, Cartesian chart geometry, and virtual pagination.
 - All seven public packages build successfully. ESM/CommonJS entry points are
   retained, and their JSX runtime imports remain external. Generated icons also
@@ -78,8 +79,9 @@ Tippy emits its keyboard-order accessibility warning for the interactive paginat
 popup. This check does not establish full application or service compatibility;
 Nexus and its services require validation against the selected package candidate.
 
-DatePicker still uses rc-picker 2, whose trigger reads the legacy `element.ref`
-API. Its migration requires separate date, time, range, and public type validation.
+DatePicker and TimePicker use rc-picker 4 with typed refs and scalar/range callback
+contracts. See [Date and time pickers](date-time-picker.md) for supported popup
+options, behavior changes, and date/time/range validation.
 Consumers with an existing lockfile should also verify that rc-dialog resolves
 rc-motion 2.9.5 or newer when adopting this candidate.
 

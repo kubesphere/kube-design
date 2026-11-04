@@ -5,6 +5,7 @@ import { Dayjs } from 'dayjs';
 import { DatePicker } from '../DatePicker/DatePicker';
 // eslint-disable-next-line import/no-cycle
 import { PickerTimeProps, RangePickerTimeProps } from '../DatePicker/generatePicker';
+import { CommonPickerMethods } from '../DatePicker/generatePicker/interface';
 
 const { TimePicker: InternalTimePicker, RangePicker: InternalRangePicker } = DatePicker;
 
@@ -17,8 +18,7 @@ export interface TimeRangePickerProps extends Omit<RangePickerTimeProps<Dayjs>, 
   popupClassName?: string;
 }
 
-const RangePicker = React.forwardRef<any, TimeRangePickerProps>((props, ref) => (
-  // @ts-ignore
+const RangePicker = React.forwardRef<CommonPickerMethods, TimeRangePickerProps>((props, ref) => (
   <InternalRangePicker {...props} picker="time" mode={undefined} ref={ref} />
 ));
 
@@ -26,7 +26,7 @@ export interface TimePickerProps extends Omit<PickerTimeProps<Dayjs>, 'picker'> 
   popupClassName?: string;
 }
 
-const TimePicker = React.forwardRef<any, TimePickerProps>(
+const TimePicker = React.forwardRef<CommonPickerMethods, TimePickerProps>(
   ({ renderExtraFooter, ...restProps }, ref) => {
     const internalRenderExtraFooter = React.useMemo(() => {
       if (renderExtraFooter) {
@@ -39,7 +39,6 @@ const TimePicker = React.forwardRef<any, TimePickerProps>(
       <InternalTimePicker
         {...restProps}
         mode={undefined}
-        // @ts-ignore
         ref={ref}
         renderExtraFooter={internalRenderExtraFooter}
       />

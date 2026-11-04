@@ -3,6 +3,7 @@ import { addColorAlpha } from '../utils/color';
 
 export const PickerDropdown = createGlobalStyle`
   .kubed-picker {
+    position: relative;
     display: inline-flex;
     min-width: 200px;
     border-radius: 3px;
@@ -22,6 +23,10 @@ export const PickerDropdown = createGlobalStyle`
 
     &:hover {
       border-color: ${({ theme }) => theme.palette.accents_5};
+
+      .kubed-picker-clear {
+        opacity: 1;
+      }
     }
 
     input {
@@ -78,7 +83,7 @@ export const PickerDropdown = createGlobalStyle`
     transform: translateY(-50%);
     cursor: pointer;
     opacity: 0;
-    right: 0;
+    right: 12px;
     background-color: ${({ theme }) => theme.palette.background};
   }
 
@@ -374,6 +379,33 @@ export const PickerDropdown = createGlobalStyle`
     .kubed-picker-panels {
       display: inline-flex;
       flex-wrap: nowrap;
+    }
+  }
+
+  .kubed-picker-panel-layout {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: stretch;
+  }
+
+  .kubed-picker-presets {
+    min-width: 100px;
+    border-right: 1px solid ${({ theme }) => theme.palette.border};
+
+    ul {
+      padding: 8px;
+      margin: 0;
+      list-style: none;
+    }
+
+    li {
+      padding: 4px 8px;
+      cursor: pointer;
+      border-radius: 3px;
+
+      &:hover {
+        background-color: ${({ theme }) => theme.palette.accents_1};
+      }
     }
   }
 

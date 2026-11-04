@@ -1,21 +1,21 @@
 // https://github.com/ant-design/ant-design/blob/master/components/date-picker/generatePicker/generateSinglePicker.tsx
-import React, { FunctionComponent, useImperativeHandle, useRef } from 'react';
+import React, { useImperativeHandle, useRef } from 'react';
 import cx from 'classnames';
 import { Close, Clock, Calendar } from '@kubed/icons';
 import RCPicker from 'rc-picker';
-import { PickerMode } from 'rc-picker/lib/interface';
+import { PickerMode, PickerRef } from 'rc-picker/lib/interface';
 import { GenerateConfig } from 'rc-picker/lib/generate';
 import dayjs from 'dayjs';
 import { getPlaceholder } from '../util';
 import { useLocales } from '../../ConfigProvider/LocaleProvider/LocaleContext';
-import { PickerProps, PickerDateProps, PickerTimeProps, getTimeProps, Components } from '.';
+import { PickerProps, PickerDateProps, PickerTimeProps, Components } from '.';
 import { CommonPickerMethods } from './interface';
 import forwardRef from '../../utils/forwardRef';
 import { PickerDropdown } from '../DatePicker.styles';
 
-// const getPopupContainer = (triggerNode) => triggerNode;
-
-export default function generatePicker<DateType>(generateConfig: GenerateConfig<DateType>) {
+export default function generatePicker<DateType extends object>(
+  generateConfig: GenerateConfig<DateType>
+) {
   type DatePickerProps = PickerProps<DateType>;
 
   function getPicker<InnerPickerProps extends DatePickerProps>(
@@ -24,42 +24,34 @@ export default function generatePicker<DateType>(generateConfig: GenerateConfig<
   ) {
     const Picker = forwardRef<InnerPickerProps, any>((props, ref) => {
       const prefixCls = 'kubed-picker';
-      // const rootPrefixCls = 'kubed-picker-root';
-
       const {
         prefixCls: customizePrefixCls,
-        getPopupContainer: customizeGetPopupContainer,
         className,
         size: customizeSize,
         bordered = true,
         placeholder,
+        locale: customizeLocale,
+        dropdownClassName,
+        popupClassName,
+        popupStyle,
+        dropdownAlign,
+        popupAlign,
+        classNames,
+        styles,
+        allowClear = true,
+        clearIcon = <Close size={16} />,
+        showToday = true,
+        showNow,
         ...restProps
       } = props;
-      const { format, showTime } = props as any;
-
-      const additionalProps = {
-        showToday: true,
-      };
-
-      let additionalOverrideProps: any = {};
-      if (picker) {
-        additionalOverrideProps.picker = picker;
-      }
       const mergedPicker = picker || props.picker;
-
-      additionalOverrideProps = {
-        ...additionalOverrideProps,
-        ...(showTime ? getTimeProps({ format, picker: mergedPicker, ...showTime }) : {}),
-        ...(mergedPicker === 'time'
-          ? getTimeProps({ format, ...props, picker: mergedPicker })
-          : {}),
-      };
 
       const { locales, locale } = useLocales();
       const { DatePicker: datePickerLocales } = locales;
+      const mergedLocale = customizeLocale || datePickerLocales;
       dayjs.locale(locale);
 
-      const pickerRef = useRef<CommonPickerMethods | null>(null);
+      const pickerRef = useRef<PickerRef | null>(null);
       useImperativeHandle(ref, () => ({
         focus: () => {
           if (pickerRef.current) {
@@ -76,21 +68,30 @@ export default function generatePicker<DateType>(generateConfig: GenerateConfig<
       return (
         <>
           <PickerDropdown />
-          <RCPicker
+          <RCPicker<DateType>
             ref={pickerRef}
-            placeholder={getPlaceholder(mergedPicker, datePickerLocales, placeholder)}
+            placeholder={getPlaceholder(mergedPicker, mergedLocale, placeholder)}
             suffixIcon={mergedPicker === 'time' ? <Clock size={16} /> : <Calendar size={16} />}
-            clearIcon={<Close size={16} />}
             prevIcon={<span className={`${prefixCls}-prev-icon`} />}
             nextIcon={<span className={`${prefixCls}-next-icon`} />}
             superPrevIcon={<span className={`${prefixCls}-super-prev-icon`} />}
             superNextIcon={<span className={`${prefixCls}-super-next-icon`} />}
-            allowClear
-            // transitionName={`${rootPrefixCls}-slide-up`}
-            {...additionalProps}
             {...restProps}
-            {...additionalOverrideProps}
-            locale={datePickerLocales!.lang}
+            picker={mergedPicker}
+            multiple={false}
+            showNow={showNow ?? (!mergedPicker || mergedPicker === 'date' ? showToday : undefined)}
+            allowClear={
+              allowClear
+                ? { clearIcon, ...(typeof allowClear === 'object' ? allowClear : {}) }
+                : false
+            }
+            locale={mergedLocale.lang}
+            popupAlign={popupAlign || dropdownAlign}
+            classNames={{
+              ...classNames,
+              popup: cx(dropdownClassName, popupClassName, classNames?.popup),
+            }}
+            styles={{ ...styles, popup: { ...popupStyle, ...styles?.popup } }}
             className={cx(
               {
                 [`${prefixCls}-borderless`]: !bordered,
@@ -98,7 +99,6 @@ export default function generatePicker<DateType>(generateConfig: GenerateConfig<
               className
             )}
             prefixCls={prefixCls}
-            // getPopupContainer={customizeGetPopupContainer || getPopupContainer}
             generateConfig={generateConfig}
             components={Components}
           />
@@ -110,7 +110,9 @@ export default function generatePicker<DateType>(generateConfig: GenerateConfig<
       Picker.displayName = displayName;
     }
 
-    return Picker as FunctionComponent<InnerPickerProps>;
+    return Picker as React.ForwardRefExoticComponent<
+      React.PropsWithoutRef<InnerPickerProps> & React.RefAttributes<CommonPickerMethods>
+    >;
   }
 
   const DatePicker = getPicker<DatePickerProps>();
@@ -118,7 +120,7 @@ export default function generatePicker<DateType>(generateConfig: GenerateConfig<
   const MonthPicker = getPicker<Omit<PickerDateProps<DateType>, 'picker'>>('month', 'MonthPicker');
   const YearPicker = getPicker<Omit<PickerDateProps<DateType>, 'picker'>>('year', 'YearPicker');
   const TimePicker = getPicker<Omit<PickerTimeProps<DateType>, 'picker'>>('time', 'TimePicker');
-  const QuarterPicker = getPicker<Omit<PickerTimeProps<DateType>, 'picker'>>(
+  const QuarterPicker = getPicker<Omit<PickerDateProps<DateType>, 'picker'>>(
     'quarter',
     'QuarterPicker'
   );

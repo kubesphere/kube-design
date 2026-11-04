@@ -6,6 +6,9 @@ A suite of components, hooks, and icons. Originally built for KubeSphere Console
 
 [https://kubesphere-design.netlify.app/zh](https://kubesphere-design.netlify.app/zh)
 
+[Date and time picker compatibility](docs/date-time-picker.md) describes the
+React 19 picker baseline, supported APIs, and validation.
+
 ## Requirement
 
 Ensure you have Node.js 24 and Yarn Classic installed.

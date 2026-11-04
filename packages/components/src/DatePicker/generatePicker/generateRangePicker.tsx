@@ -1,41 +1,44 @@
-import React, { FC, useImperativeHandle, useRef } from 'react';
+import React, { useImperativeHandle, useRef } from 'react';
 import cx from 'classnames';
 import { Calendar, Clock, Close, Next } from '@kubed/icons';
 import { RangePicker as RCRangePicker } from 'rc-picker';
 import { GenerateConfig } from 'rc-picker/lib/generate';
+import { RangePickerRef } from 'rc-picker/lib/interface';
 import dayjs from 'dayjs';
 import { getRangePlaceholder } from '../util';
-import { RangePickerProps, getTimeProps, Components } from '.';
+import { RangePickerProps, Components } from '.';
+import { CommonPickerMethods } from './interface';
+import { PickerDropdown } from '../DatePicker.styles';
 import forwardRef from '../../utils/forwardRef';
 import { useLocales } from '../../ConfigProvider/LocaleProvider/LocaleContext';
 
-export default function generateRangePicker<DateType>(
+export default function generateRangePicker<DateType extends object>(
   generateConfig: GenerateConfig<DateType>
-): FC<RangePickerProps<DateType>> {
+) {
   const RangePicker = forwardRef<RangePickerProps<DateType>, any>((props, ref) => {
     const {
       prefixCls: customizePrefixCls,
-      getPopupContainer: customGetPopupContainer,
       className,
       size: customizeSize,
       bordered = true,
       placeholder,
+      locale: customizeLocale,
+      dropdownClassName,
+      popupClassName,
+      popupStyle,
+      dropdownAlign,
+      popupAlign,
+      classNames,
+      styles,
+      allowClear = true,
+      clearIcon = <Close size={16} />,
+      dateRender,
+      cellRender,
       ...restProps
     } = props;
-    const { format, showTime, picker } = props as any;
+    const { picker } = props;
     const prefixCls = 'kubed-picker';
-    // const rootPrefixCls = 'kubed-picker-root';
-
-    let additionalOverrideProps: any = {};
-
-    additionalOverrideProps = {
-      ...additionalOverrideProps,
-      ...(showTime ? getTimeProps({ format, picker, ...showTime }) : {}),
-      // FIXME: remove any
-      ...(picker === 'time' ? getTimeProps({ format, ...props, picker } as any) : {}),
-    };
-
-    const pickerRef = useRef<RCRangePicker<DateType> | null>(null);
+    const pickerRef = useRef<RangePickerRef | null>(null);
     useImperativeHandle(ref, () => ({
       focus: () => {
         if (pickerRef.current) {
@@ -51,39 +54,58 @@ export default function generateRangePicker<DateType>(
 
     const { locales, locale } = useLocales();
     const { DatePicker: datePickerLocales } = locales;
+    const mergedLocale = customizeLocale || datePickerLocales;
     dayjs.locale(locale);
 
     return (
-      <RCRangePicker<DateType>
-        separator={<Next size={16} />}
-        ref={pickerRef}
-        placeholder={getRangePlaceholder(picker, datePickerLocales, placeholder)}
-        suffixIcon={picker === 'time' ? <Clock size={16} /> : <Calendar size={16} />}
-        clearIcon={<Close size={16} />}
-        prevIcon={<span className={`${prefixCls}-prev-icon`} />}
-        nextIcon={<span className={`${prefixCls}-next-icon`} />}
-        superPrevIcon={<span className={`${prefixCls}-super-prev-icon`} />}
-        superNextIcon={<span className={`${prefixCls}-super-next-icon`} />}
-        allowClear
-        // transitionName={`${rootPrefixCls}-slide-up`}
-        {...restProps}
-        {...additionalOverrideProps}
-        className={cx(
-          {
-            // [`${prefixCls}-${mergedSize}`]: mergedSize,
-            [`${prefixCls}-borderless`]: !bordered,
-          },
-          className
-        )}
-        locale={datePickerLocales!.lang}
-        prefixCls={prefixCls}
-        // getPopupContainer={customGetPopupContainer || getPopupContainer}
-        generateConfig={generateConfig}
-        components={Components}
-        // direction={direction}
-      />
+      <>
+        <PickerDropdown />
+        <RCRangePicker<DateType>
+          separator={<Next size={16} />}
+          ref={pickerRef}
+          placeholder={getRangePlaceholder(picker, mergedLocale, placeholder)}
+          suffixIcon={picker === 'time' ? <Clock size={16} /> : <Calendar size={16} />}
+          prevIcon={<span className={`${prefixCls}-prev-icon`} />}
+          nextIcon={<span className={`${prefixCls}-next-icon`} />}
+          superPrevIcon={<span className={`${prefixCls}-super-prev-icon`} />}
+          superNextIcon={<span className={`${prefixCls}-super-next-icon`} />}
+          {...restProps}
+          cellRender={
+            cellRender ||
+            (dateRender
+              ? (current, info) =>
+                  info.type === 'date'
+                    ? dateRender(current as DateType, info.today, { range: info.range! })
+                    : info.originNode
+              : undefined)
+          }
+          allowClear={
+            allowClear
+              ? { clearIcon, ...(typeof allowClear === 'object' ? allowClear : {}) }
+              : false
+          }
+          popupAlign={popupAlign || dropdownAlign}
+          classNames={{
+            ...classNames,
+            popup: cx(dropdownClassName, popupClassName, classNames?.popup),
+          }}
+          styles={{ ...styles, popup: { ...popupStyle, ...styles?.popup } }}
+          className={cx(
+            {
+              [`${prefixCls}-borderless`]: !bordered,
+            },
+            className
+          )}
+          locale={mergedLocale.lang}
+          prefixCls={prefixCls}
+          generateConfig={generateConfig}
+          components={Components}
+        />
+      </>
     );
   });
 
-  return RangePicker;
+  return RangePicker as React.ForwardRefExoticComponent<
+    RangePickerProps<DateType> & React.RefAttributes<CommonPickerMethods>
+  >;
 }
