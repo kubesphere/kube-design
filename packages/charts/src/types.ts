@@ -8,6 +8,7 @@ export interface ChartBaseProps extends CategoricalChartProps {
   dataKey: string;
   showXAxis?: boolean;
   showYAxis?: boolean;
+  /** Width of the Y axis in pixels. Defaults to 60. */
   yAxisWidth?: number;
   showAnimation?: boolean;
   showTooltip?: boolean;

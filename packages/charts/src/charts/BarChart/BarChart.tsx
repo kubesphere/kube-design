@@ -30,7 +30,7 @@ export const BarChart = ({
   // width,
   // height,
   layout = 'horizontal',
-  yAxisWidth,
+  yAxisWidth = 60,
   valueFormatter = defaultValueFormatter,
   showGradient,
   showLegend = true,

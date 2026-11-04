@@ -13,6 +13,15 @@ Ensure you have Node.js 24 and Yarn Classic installed.
 - Node.js 24.x
 - Yarn 1.22.22
 
+## React compatibility
+
+The `react-19` branch builds UI packages with the automatic JSX transform and keeps
+`react/jsx-runtime` external. These packages require React 16.14 or newer. React 19
+applications must also enable the automatic JSX transform in their own build.
+
+See [React 19 compatibility and validation](docs/react-19-compatibility.md) for the
+dependency baseline, ref behavior, and verification scope.
+
 ## Installation
 
 ```sh

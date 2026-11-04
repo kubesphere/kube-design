@@ -14,10 +14,11 @@ export function clamp({ value, min, max }: Clamp) {
   return Math.min(Math.max(value, min), max);
 }
 
-export function assignRef<T = any>(ref: React.ForwardedRef<T>, value: T | null) {
+export function assignRef<T = any>(ref: React.Ref<T>, value: T | null): void | (() => void) {
   if (typeof ref === 'function') {
-    ref(value);
-  } else if (typeof ref === 'object' && ref !== null && 'current' in ref) {
+    return ref(value);
+  }
+  if (typeof ref === 'object' && ref !== null && 'current' in ref) {
     // eslint-disable-next-line no-param-reassign
     ref.current = value;
   }

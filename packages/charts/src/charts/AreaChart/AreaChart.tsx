@@ -38,7 +38,7 @@ export const AreaChart = ({
   categories = [],
   // width,
   // height,
-  yAxisWidth,
+  yAxisWidth = 60,
   valueFormatter = defaultValueFormatter,
   showGradient,
   showLegend = true,

@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Instance, Props } from 'tippy.js';
 import type { TippyProps } from '@tippyjs/react';
+import { useMergedRef } from '@kubed/hooks';
 import { StyledTippy } from './Tooltip.styles';
 
 export type BasePlacement = 'top' | 'left' | 'right' | 'bottom';
@@ -20,7 +21,7 @@ export interface TooltipProps extends TippyProps {
   appendTo?: 'parent' | Element | ((ref: Element) => Element);
 
   /** The react component to use as the trigger for the tooltip */
-  children: React.ReactElement;
+  children: React.ReactElement | null;
 
   /** Tooltip content */
   content?: React.ReactNode;
@@ -61,19 +62,37 @@ export interface TooltipProps extends TippyProps {
 
 export type TooltipInstance<T = Props> = Instance<T>;
 
-export function Tooltip({
-  children,
-  content,
-  maxWidth = 200,
-  animation = 'shift-toward-subtle',
-  ...rest
-}: TooltipProps) {
-  return (
-    // @ts-ignore
-    <StyledTippy content={content} maxWidth={maxWidth} animation={animation} {...rest}>
-      {children}
-    </StyledTippy>
-  );
-}
+export const Tooltip = React.forwardRef<Element, TooltipProps>(
+  (
+    { children, content, maxWidth = 200, animation = 'shift-toward-subtle', reference, ...rest },
+    forwardedRef
+  ) => {
+    const [trigger, setTrigger] = React.useState<Element | null>(null);
+    const child = children as React.ReactElement<{ ref?: React.Ref<Element> }>;
+    const childRef =
+      parseInt(React.version, 10) >= 19
+        ? child?.props.ref
+        : (child as unknown as { ref?: React.Ref<Element> })?.ref;
+    const mergedRef = useMergedRef(setTrigger, childRef, forwardedRef);
+    // Bind through reference so Tippy does not clone children through its legacy ref API.
+    const target = reference || trigger;
+
+    return (
+      <>
+        {child && React.cloneElement(child, { ref: mergedRef })}
+        {target && (
+          // @ts-ignore Tippy and styled-components both define a theme prop.
+          <StyledTippy
+            content={content}
+            maxWidth={maxWidth}
+            animation={animation}
+            {...rest}
+            reference={target}
+          />
+        )}
+      </>
+    );
+  }
+);
 
 Tooltip.displayName = '@kubed/components/Tooltip';
