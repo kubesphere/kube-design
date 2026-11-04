@@ -29,7 +29,7 @@
     "rc-drawer": "^4.4.3",
     "rc-field-form": "^1.27.1",
     "rc-input-number": "^7.3.0",
-    "rc-motion": "^2.4.4",
+    "rc-motion": "^2.9.5",
     "rc-picker": "^2.5.19",
     "rc-select": "^14.16.6",
     "react-dropzone": "^14.2.3",

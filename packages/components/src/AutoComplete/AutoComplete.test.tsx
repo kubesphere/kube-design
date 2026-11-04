@@ -1,7 +1,7 @@
 import React from 'react';
 import { mountWithTheme } from '@kubed/tests';
 import { AutoComplete } from './AutoComplete';
-import { Input } from '../input/Input';
+import { Input } from '../Input/Input';
 
 describe('AutoComplete', () => {
   it('AutoComplete with custom Input render perfectly', () => {

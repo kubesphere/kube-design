@@ -17,6 +17,8 @@ React 16.14, which includes this runtime.
 - AreaChart, BarChart, and LineChart default `yAxisWidth` to 60 pixels. This keeps
   the axis width defined when Recharts reads JSX child props before rendering,
   preserving finite chart coordinates. An explicit zero-width axis is supported.
+- Modal uses the React 19 ref handling in rc-motion 2.9.5. The lockfile resolves
+  the motion dependencies to this version and rc-util 5.44.4.
 
 ## Dependency baseline
 
@@ -26,6 +28,7 @@ React 16.14, which includes this runtime.
 | `@kubed/code-editor` | `ace-builds@^1.36.3`        | 1.45.2                     |
 | `@kubed/charts`      | `recharts@^2.15.4`          | 2.15.4                     |
 | `@kubed/log-viewer`  | `react-virtualized@^9.22.6` | 9.22.6                     |
+| `@kubed/components`  | `rc-motion@^2.9.5`         | 2.9.5                      |
 
 React Ace 14 declares React 19 support. Recharts 2.15.4 and react-virtualized 9.22.6
 also include React 19 in their peer ranges; the latter uses element refs for cell
@@ -55,7 +58,7 @@ yarn build:all
 The Build workflow runs these checks for pull requests targeting `master` and
 `react-19`.
 
-- 37 Jest suites and 157 tests pass, including ref cleanup, Tooltip lifecycle,
+- 37 Jest suites and 158 tests pass, including ref cleanup, Modal and Tooltip lifecycle,
   popup interactions, Cartesian chart geometry, and virtual pagination.
 - All seven public packages build successfully. ESM/CommonJS entry points are
   retained, and their JSX runtime imports remain external. Generated icons also
@@ -67,11 +70,18 @@ Development and production browser checks use the generated package entry points
 `KubedConfigProvider`/`CssBaseline`. It covers Tooltip placement, Dropdown and
 Popover interactions, YAML editing, stacked chart tooltips and resizing, virtual
 log scrolling and append, pagination selection and reopening, and fixture unmount
-and remount. Callback attachments and cleanup calls balance on unmount.
+and remount. Modal checks cover close-button and Escape dismissal, reopening,
+focus restoration, and scroll-lock cleanup when unmounted while open. Callback
+attachments and cleanup calls balance on unmount.
 
 Tippy emits its keyboard-order accessibility warning for the interactive pagination
 popup. This check does not establish full application or service compatibility;
 Nexus and its services require validation against the selected package candidate.
+
+DatePicker still uses rc-picker 2, whose trigger reads the legacy `element.ref`
+API. Its migration requires separate date, time, range, and public type validation.
+Consumers with an existing lockfile should also verify that rc-dialog resolves
+rc-motion 2.9.5 or newer when adopting this candidate.
 
 ## References
 
