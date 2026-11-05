@@ -9,6 +9,7 @@
   "types": "lib/index.d.ts",
   "peerDependencies": {
     "jest-axe": ">=4.1.0",
-    "react": ">=16.8.6"
+    "react": ">=19.0.0 <20",
+    "react-dom": ">=19.0.0 <20"
   }
 }
