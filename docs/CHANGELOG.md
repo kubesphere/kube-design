@@ -1,5 +1,14 @@
 # kubed-documents
 
+## 0.3.0-alpha.2
+
+### Patch Changes
+
+- Updated dependencies [[`4e333ed`](https://github.com/kubesphere/kube-design/commit/4e333edf148f3ad68cd608cb651f0360a23da4c7)]:
+  - @kubed/hooks@0.3.0-alpha.2
+  - @kubed/icons@0.3.0-alpha.2
+  - @kubed/components@0.3.0-alpha.2
+
 ## 0.3.0-alpha.1
 
 ### Minor Changes
