@@ -1,4 +1,4 @@
-import yargs from 'yargs/yargs';
+import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
 import { buildPackage, BuildOptions } from './utils/build-package';

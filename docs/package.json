@@ -2,6 +2,9 @@
   "name": "kubed-documents",
   "version": "0.2.37",
   "private": true,
+  "engines": {
+    "node": ">=26.0.0 <27.0.0"
+  },
   "scripts": {
     "build": "cd .. && npm run docs:docgen && cd packages/icons && npm run build && cd ../../docs && next build",
     "dev": "next dev",

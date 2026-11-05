@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - master
+      - next
   workflow_dispatch:
 
 jobs:
@@ -24,3 +25,6 @@ jobs:
 
       - name: Build
         run: yarn build:all
+
+      - name: Build Documentation
+        run: yarn build:docs
