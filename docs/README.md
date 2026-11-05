@@ -2,8 +2,6 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-Use Node.js 26.x and Yarn 1.22.22, matching the repository root. Install workspace dependencies with `yarn install --frozen-lockfile` from the repository root before running the documentation commands below.
-
 First, run the development server:
 
 ```bash
