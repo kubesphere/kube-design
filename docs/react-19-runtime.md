@@ -11,8 +11,13 @@ should use the same version of React, React DOM, and `react-is`.
   `reference` API. Object refs, callback refs, React 19 cleanup callbacks,
   explicit references, and trigger replacement retain their lifecycle behavior.
 - Virtual logs use DOM refs for row measurement. Each viewer owns its measurement
-  cache; folds and content updates trigger measurement. Automatic following
-  pauses when the user scrolls upward and resumes near the bottom.
+  cache; folds and content updates trigger measurement, while appended output
+  preserves measurements for unchanged rows.
+- Log sections matched by the default `travis_fold` matcher start collapsed in
+  both virtual and non-virtual viewers and can be expanded to display their content.
+- With `autoScroll={true}`, following pauses when the user scrolls upward and
+  resumes near the bottom. `autoScroll={false}` keeps following disabled, and
+  changes to the prop take effect in both viewer modes.
 - Line, area, and bar charts retain the 60-pixel default Y-axis width and accept
   explicit widths with the automatic JSX runtime.
 
@@ -49,6 +54,13 @@ range, and time selection, focus/blur refs, disabled dates and `popupStyle`, edi
 refs, controlled values, input, read-only mode, uploads, save/cancel/close, chart legends, custom
 tooltips, animation and resizing, and virtual log folding, append, follow,
 pause/resume, and unmount/remount.
+
+Log-following verification also covers `autoScroll={false}`, enabling and disabling
+following through prop updates, and the default `travis_fold` matcher in both
+viewer modes. These checks use the packed log-viewer through Nexus's actual
+wrapper with React 19.0.0 and Nexus's React 19.3.1 runtime. Regression tests verify
+that appending output preserves existing row measurements and updates to content
+at the same index still remeasure its height.
 
 ## Integration observations
 

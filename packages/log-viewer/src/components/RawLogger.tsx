@@ -185,7 +185,7 @@ export function RawLoggerBase({
 
   useLayoutEffect(() => {
     onMeasure?.();
-  }, [fold, partical, onMeasure]);
+  }, [fold, foldable, partical.content, partical.label, onMeasure]);
 
   const line = React.useMemo(() => {
     return ansiToJSON(partical.content).reduce(

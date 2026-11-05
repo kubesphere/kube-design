@@ -15,3 +15,6 @@ virtual-list dependencies for React 19.
 Preserve chart axis width defaults with automatic JSX. Measure virtual log rows
 through DOM refs, remeasure folded and updated content, isolate measurement
 caches, and follow appended rows while respecting manual scrolling.
+
+Log sections matched by the default `travis_fold` matcher start collapsed in
+both virtual and non-virtual viewers. Expand a section to display its content.
