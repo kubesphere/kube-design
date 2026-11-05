@@ -27,6 +27,7 @@ export interface LogViewerProps {
   logStyle?: React.CSSProperties;
   matchers?: Matcher[];
   errorMatchers?: ErrorMatcherPatterns;
+  /** Follow appended output, pausing while the user scrolls away from the bottom. */
   autoScroll?: boolean;
   showHeader?: boolean;
   linkify?: boolean;
@@ -73,20 +74,27 @@ export const LogViewer = ({
   const foldedLogger = React.useMemo(() => spliter.execute(logArray), [spliter, log]);
 
   useEffect(() => {
-    if (autoScrollFlag && bodyRef.current) {
+    setAutoScrollFlag(autoScroll);
+  }, [autoScroll]);
+
+  useEffect(() => {
+    if (autoScroll && autoScrollFlag && bodyRef.current) {
       bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
     }
-  }, [log, matchers, bodyRef.current]);
+  }, [log, matchers, autoScroll, autoScrollFlag]);
 
   // Event listener: if user scrolling log content, then pause auto scroll
   // resume: scroll to bottom
-  const pauseOrResumeScrolling = React.useCallback((event: Event) => {
-    const target = event.target as HTMLElement;
-    // AutoSizer's resize sensors also dispatch scroll events.
-    if (target !== bodyRef.current && !target.classList.contains('kubed-virtual-log')) return;
-    const { scrollHeight, scrollTop, clientHeight } = target;
-    setAutoScrollFlag(scrollHeight - (scrollTop + clientHeight) < 50);
-  }, []);
+  const pauseOrResumeScrolling = React.useCallback(
+    (event: Event) => {
+      const target = event.target as HTMLElement;
+      // AutoSizer's resize sensors also dispatch scroll events.
+      if (target !== bodyRef.current && !target.classList.contains('kubed-virtual-log')) return;
+      const { scrollHeight, scrollTop, clientHeight } = target;
+      setAutoScrollFlag(autoScroll && scrollHeight - (scrollTop + clientHeight) < 50);
+    },
+    [autoScroll]
+  );
 
   useEffect(() => {
     const body = bodyRef.current;
@@ -106,7 +114,7 @@ export const LogViewer = ({
             linkify={linkify}
             errorMatcher={errorMatcher}
             virtual={virtual}
-            autoScroll={autoScrollFlag}
+            autoScroll={autoScroll && autoScrollFlag}
           />
         </LogBody>
       </LogMain>
