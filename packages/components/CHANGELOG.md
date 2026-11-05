@@ -1,5 +1,24 @@
 # @kubed/components
 
+## 0.3.0-alpha.2
+
+### Patch Changes
+
+- [#451](https://github.com/kubesphere/kube-design/pull/451) [`4e333ed`](https://github.com/kubesphere/kube-design/commit/4e333edf148f3ad68cd608cb651f0360a23da4c7) Thanks [@donniean](https://github.com/donniean)! - Build React 19 packages with the automatic JSX runtime. Preserve Tooltip and
+  Popover trigger refs and cleanup callbacks, and update motion, chart, and
+  virtual-list dependencies for React 19.
+
+  Preserve chart axis width defaults with automatic JSX. Measure virtual log rows
+  through DOM refs, remeasure folded and updated content, isolate measurement
+  caches, and follow appended rows while respecting manual scrolling.
+
+  Log sections matched by the default `travis_fold` matcher start collapsed in
+  both virtual and non-virtual viewers. Expand a section to display its content.
+
+- Updated dependencies [[`4e333ed`](https://github.com/kubesphere/kube-design/commit/4e333edf148f3ad68cd608cb651f0360a23da4c7)]:
+  - @kubed/hooks@0.3.0-alpha.2
+  - @kubed/icons@0.3.0-alpha.2
+
 ## 0.3.0-alpha.1
 
 ### Minor Changes

@@ -13,6 +13,8 @@
     "@kubed/tests": "0.2.36"
   },
   "changesets": [
+    "friendly-clouds-measure",
+    "quiet-logs-follow",
     "release-alpha-one"
   ]
 }
