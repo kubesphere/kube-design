@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useLayoutEffect } from 'react';
 import Anser, { AnserJsonEntry } from 'anser';
 import { escapeCarriageReturn } from 'escape-carriage';
 import { Partical } from '../matcher';
@@ -15,6 +15,7 @@ export interface RawLoggerProps {
   linkify?: boolean;
   style?: React.CSSProperties;
   showLineNumber?: boolean;
+  onMeasure?: () => void;
 }
 
 const LINK_REGEX =
@@ -133,11 +134,13 @@ export function Line({
   index,
   saveRef,
   showLineNumber,
+  hidden,
 }: {
   line: string;
   errors: ErrorMatcher['patterns'];
   index: number;
   showLineNumber?: boolean;
+  hidden?: boolean;
   saveRef: (errors: ErrorMatcherPattern[], ref: HTMLDivElement) => void;
 }) {
   const ref = React.createRef<HTMLDivElement>();
@@ -149,7 +152,12 @@ export function Line({
   }, [ref.current, errors]);
 
   return (
-    <div className={`log-line ${errors.length ? 'line-error' : ''}`} key={index} ref={ref}>
+    <div
+      className={`log-line ${errors.length ? 'line-error' : ''}`}
+      key={index}
+      ref={ref}
+      hidden={hidden}
+    >
       {showLineNumber && (
         <a className="line-number" key={`lineNo-${index}`}>
           {index}
@@ -169,10 +177,15 @@ export function RawLoggerBase({
   linkify = false,
   forwardRef,
   style,
+  onMeasure,
 }: RawLoggerProps & { forwardRef?: React.ForwardedRef<any> }) {
   const { setErrorRefs } = useContext(ErrorContext);
   const lineProps = { useClasses, linkify, errorMatcher };
   const [fold, setFold] = useState(partical.fold);
+
+  useLayoutEffect(() => {
+    onMeasure?.();
+  }, [fold, partical, onMeasure]);
 
   const line = React.useMemo(() => {
     return ansiToJSON(partical.content).reduce(
@@ -215,6 +228,7 @@ export function RawLoggerBase({
         </div>
         <Line
           {...lineProps}
+          hidden={fold}
           line={line.content}
           errors={line.errors}
           index={index}

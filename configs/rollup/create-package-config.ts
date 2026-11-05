@@ -40,6 +40,7 @@ export default async function createPackageConfig(config: PkgConfigInput): Promi
     }),
     nodeResolve({ extensions: ['.ts', '.tsx', '.js', '.jsx'] }),
     esbuild({
+      jsx: 'automatic',
       minify: true,
       sourceMap: false,
       tsconfig: path.resolve(process.cwd(), 'tsconfig.json'),
@@ -124,7 +125,8 @@ export default async function createPackageConfig(config: PkgConfigInput): Promi
   return {
     input: config?.entry || path.resolve(config.basePath, 'src/index.ts'),
     output,
-    external: externals,
+    external: (id) =>
+      id === 'react/jsx-runtime' || id === 'react/jsx-dev-runtime' || externals.includes(id),
     plugins,
   };
 }

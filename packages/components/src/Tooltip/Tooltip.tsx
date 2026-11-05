@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { cloneElement, useCallback, useState } from 'react';
 import type { Instance, Props } from 'tippy.js';
 import type { TippyProps } from '@tippyjs/react';
 import { StyledTippy } from './Tooltip.styles';
@@ -66,13 +66,53 @@ export function Tooltip({
   content,
   maxWidth = 200,
   animation = 'shift-toward-subtle',
+  reference,
+  ref,
   ...rest
 }: TooltipProps) {
+  // Tippy clones children through element.ref; pass the trigger DOM node through reference instead.
+  const [referenceNode, setReferenceNode] = useState<Element | null>(null);
+  const child = children as React.ReactElement<{ ref?: React.Ref<Element> }>;
+  const childRef = child?.props.ref;
+  const attachReference = useCallback(
+    (node: Element | null) => {
+      setReferenceNode(node);
+      const refs = [childRef, ref];
+      const cleanups = refs.map((target) => {
+        if (typeof target === 'function') return target(node);
+        // eslint-disable-next-line no-param-reassign
+        if (target) target.current = node;
+        return undefined;
+      });
+
+      return () => {
+        setReferenceNode(null);
+        refs.forEach((target, index) => {
+          const cleanup = cleanups[index];
+          if (typeof cleanup === 'function') cleanup();
+          else if (typeof target === 'function') target(null);
+          // eslint-disable-next-line no-param-reassign
+          else if (target) target.current = null;
+        });
+      };
+    },
+    [childRef, ref]
+  );
+
   return (
-    // @ts-ignore
-    <StyledTippy content={content} maxWidth={maxWidth} animation={animation} {...rest}>
-      {children}
-    </StyledTippy>
+    <>
+      {child && cloneElement(child, { ref: attachReference })}
+      {(!child || reference || referenceNode) && (
+        // @ts-ignore Tippy and styled-components both declare a different theme prop.
+        <StyledTippy
+          content={content}
+          maxWidth={maxWidth}
+          animation={animation}
+          {...rest}
+          reference={reference || referenceNode}
+        />
+      )}
+    </>
   );
 }
 

@@ -80,23 +80,21 @@ export const LogViewer = ({
 
   // Event listener: if user scrolling log content, then pause auto scroll
   // resume: scroll to bottom
-  const pauseOrResumeScrolling = React.useCallback(() => {
-    if (!bodyRef.current) {
-      return;
-    }
-
-    const { scrollHeight, scrollTop, offsetHeight } = bodyRef.current;
-    setAutoScrollFlag(scrollHeight - (scrollTop + offsetHeight) < 50);
-  }, [bodyRef.current]);
+  const pauseOrResumeScrolling = React.useCallback((event: Event) => {
+    const target = event.target as HTMLElement;
+    // AutoSizer's resize sensors also dispatch scroll events.
+    if (target !== bodyRef.current && !target.classList.contains('kubed-virtual-log')) return;
+    const { scrollHeight, scrollTop, clientHeight } = target;
+    setAutoScrollFlag(scrollHeight - (scrollTop + clientHeight) < 50);
+  }, []);
 
   useEffect(() => {
-    if (bodyRef.current) {
-      bodyRef.current.addEventListener('scroll', pauseOrResumeScrolling);
-    }
+    const body = bodyRef.current;
+    body?.addEventListener('scroll', pauseOrResumeScrolling, true);
     return () => {
-      bodyRef.current && bodyRef.current.removeEventListener('scroll', pauseOrResumeScrolling);
+      body?.removeEventListener('scroll', pauseOrResumeScrolling, true);
     };
-  }, [bodyRef.current, pauseOrResumeScrolling]);
+  }, [pauseOrResumeScrolling]);
 
   return (
     <ErrorContext.Provider value={{ setErrorRefs }}>
