@@ -111,7 +111,7 @@ export interface RadioProps extends DefaultProps {
 }
 
 export const Radio = forwardRef<RadioProps, 'input'>(
-  ({ id, checked, defaultChecked, onChange, disabled, label, ...restProps }, ref) => {
+  ({ id, checked, defaultChecked, onChange, disabled, label, children, ...restProps }, ref) => {
     const uuid = useId(id);
     const [_checked, setChecked] = useUncontrolled({
       value: checked,
@@ -159,9 +159,9 @@ export const Radio = forwardRef<RadioProps, 'input'>(
             {...restProps}
           />
         </RadioControl>
-        {label && (
+        {(label || children) && (
           <LabelWrap htmlFor={uuid} disabled={isDisabled}>
-            {label}
+            {label || children}
           </LabelWrap>
         )}
       </RadioWrap>

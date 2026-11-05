@@ -194,11 +194,19 @@ export function RawLoggerBase({
   if (foldable) {
     return (
       <div className={fold ? 'fold' : 'foldOpen'} ref={forwardRef} style={style}>
-        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
         <div
           key={`folder-placeholder-${index}`}
           className="fold-line"
+          role="button"
+          aria-expanded={!fold}
+          tabIndex={0}
           onClick={() => setFold(!fold)}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              setFold((value) => !value);
+            }
+          }}
         >
           {partical.label
             ? ansiToJSON(partical.label).map(convertBundleIntoReact.bind(null, useClasses, linkify))
