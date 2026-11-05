@@ -25,7 +25,7 @@ export const LineChart = ({
   data = [],
   dataKey,
   categories = [],
-  yAxisWidth,
+  yAxisWidth = 60,
   valueFormatter = defaultValueFormatter,
   showLegend = true,
   showTooltip = true,

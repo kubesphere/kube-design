@@ -13,6 +13,19 @@ To develop and build this repository, including the documentation site in `docs/
 - Node.js 26.x
 - Yarn 1.22.22
 
+The `next` packages support React 19. Keep `react`, `react-dom`, and `react-is`
+on the same React 19 version in the consuming application. Package builds and
+tests use the automatic JSX runtime.
+
+`@kubed/charts` uses Recharts 2.15.4 or later in the 2.x line. Recharts 2 declares
+an older `react-is` dependency, so consumers must override its `react-is`
+resolution to the application's React 19 version. Configure this in the
+application's Yarn `resolutions`, pnpm `overrides`, or npm `overrides`; the
+resolutions in this repository apply only to its own workspace installation.
+
+React 19 runtime verification and dependency details are recorded in
+[the compatibility notes](docs/react-19-runtime.md).
+
 ## Installation
 
 ```sh

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
   AutoSizer,
   CellMeasurer,
@@ -19,11 +19,6 @@ export interface LogContentProps {
   autoScroll?: boolean;
 }
 
-const measurementCache = new CellMeasurerCache({
-  fixedWidth: true,
-  defaultHeight: 25,
-});
-
 export function VirtualLogContent({
   particals,
   style,
@@ -31,6 +26,10 @@ export function VirtualLogContent({
   errorMatcher,
   autoScroll,
 }: LogContentProps) {
+  const measurementCache = useMemo(
+    () => new CellMeasurerCache({ fixedWidth: true, defaultHeight: 25 }),
+    []
+  );
   const rowRenderer: ListRowRenderer = useCallback(
     ({ key, index, style, parent }) => {
       const partical = particals[index];
@@ -42,19 +41,22 @@ export function VirtualLogContent({
           key={key}
           parent={parent}
         >
-          <RawLogger
-            partical={partical}
-            key={`logger-line-${index}`}
-            foldable={partical.type === 'partical'}
-            index={index}
-            linkify={linkify}
-            errorMatcher={errorMatcher}
-            style={style}
-          />
+          {({ measure }) => (
+            <RawLogger
+              onMeasure={measure}
+              partical={partical}
+              key={`logger-line-${index}`}
+              foldable={partical.type === 'partical'}
+              index={index}
+              linkify={linkify}
+              errorMatcher={errorMatcher}
+              style={style}
+            />
+          )}
         </CellMeasurer>
       );
     },
-    [particals, linkify, errorMatcher]
+    [particals, linkify, errorMatcher, measurementCache]
   );
 
   return (
@@ -62,6 +64,7 @@ export function VirtualLogContent({
       <AutoSizer>
         {({ width, height }) => (
           <List
+            className="kubed-virtual-log"
             rowCount={particals.length}
             rowRenderer={rowRenderer}
             width={width}
@@ -69,6 +72,7 @@ export function VirtualLogContent({
             deferredMeasurementCache={measurementCache}
             rowHeight={measurementCache.rowHeight}
             overscanRowCount={10}
+            scrollToIndex={autoScroll ? particals.length - 1 : undefined}
             scrollToAlignment={autoScroll ? 'end' : 'auto'}
           />
         )}
