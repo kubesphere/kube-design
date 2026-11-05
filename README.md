@@ -8,9 +8,9 @@ A suite of components, hooks, and icons. Originally built for KubeSphere Console
 
 ## Requirement
 
-Ensure you have Node.js 24 and Yarn Classic installed.
+To develop and build this repository, including the documentation site in `docs/`, install Node.js 26 and Yarn Classic.
 
-- Node.js 24.x
+- Node.js 26.x
 - Yarn 1.22.22
 
 ## Installation
