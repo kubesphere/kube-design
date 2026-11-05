@@ -199,11 +199,13 @@ export function RawLoggerBase({
           key={`folder-placeholder-${index}`}
           className="fold-line"
           role="button"
+          aria-expanded={!fold}
           tabIndex={0}
           onClick={() => setFold(!fold)}
           onKeyDown={(event) => {
             if (event.key === 'Enter' || event.key === ' ') {
-              setFold(!fold);
+              event.preventDefault();
+              setFold((value) => !value);
             }
           }}
         >
