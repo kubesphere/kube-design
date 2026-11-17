@@ -1,5 +1,7 @@
 # @kubed/icons
 
+## 0.3.0-alpha.3
+
 ## 0.3.0-alpha.2
 
 ### Patch Changes

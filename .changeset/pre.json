@@ -15,6 +15,7 @@
   "changesets": [
     "friendly-clouds-measure",
     "quiet-logs-follow",
-    "release-alpha-one"
+    "release-alpha-one",
+    "tidy-form-labels"
   ]
 }

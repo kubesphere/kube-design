@@ -1,5 +1,15 @@
 # @kubed/components
 
+## 0.3.0-alpha.3
+
+### Patch Changes
+
+- [#454](https://github.com/kubesphere/kube-design/pull/454) [`167892c`](https://github.com/kubesphere/kube-design/commit/167892cfeee62ef5fe85f02743808e8a89a0c737) Thanks [@donniean](https://github.com/donniean)! - Generate valid FormItem label CSS for optional fields while preserving required
+  field markers. This fixes repeated CSS stylesheet parsing errors in jsdom.
+- Updated dependencies []:
+  - @kubed/hooks@0.3.0-alpha.3
+  - @kubed/icons@0.3.0-alpha.3
+
 ## 0.3.0-alpha.2
 
 ### Patch Changes
