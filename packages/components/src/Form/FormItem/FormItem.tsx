@@ -42,19 +42,15 @@ const FieldLabel = styled('label')<FieldLabelProps>`
   &:after {
     color: ${({ theme }) => theme.palette.error};
   }
-  ${({ isRequired }) => `
-    ${
-      isRequired
-        ? `
+  ${({ isRequired }) =>
+    isRequired &&
+    `
       &:after {
         font-weight: 400;
         content: '*';
         margin-left: 3px;
       }
-    `
-        : null
-    };
-  `}
+    `}
 `;
 
 const FieldWrapper = styled('div')`
